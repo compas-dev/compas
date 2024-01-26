@@ -56,6 +56,13 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         self._guids_faces = None
         self._guids_edges = None
         self._guids_vertices = None
+        self._guids_vertexnormals = None
+        self._guids_facenormals = None
+        self._guids_vertexlabels = None
+        self._guids_edgelabels = None
+        self._guids_facelabels = None
+        self._guids_spheres = None
+        self._guids_pipes = None
 
     # ==========================================================================
     # clear
@@ -69,8 +76,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         None
 
         """
-        guids = compas_rhino.objects.get_objects(name="{}.*".format(self.mesh.name))  # type: ignore
-        compas_rhino.objects.delete_objects(guids, purge=True)
+        compas_rhino.objects.delete_objects(self.guids, purge=True)
 
     def clear_vertices(self):
         """Delete all vertices drawn by this scene object.
@@ -80,8 +86,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         None
 
         """
-        guids = compas_rhino.objects.get_objects(name="{}.vertex.*".format(self.mesh.name))  # type: ignore
-        compas_rhino.objects.delete_objects(guids, purge=True)
+        compas_rhino.objects.delete_objects(self._guids_vertices, purge=True)
 
     def clear_edges(self):
         """Delete all edges drawn by this scene object.
@@ -91,8 +96,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         None
 
         """
-        guids = compas_rhino.objects.get_objects(name="{}.edge.*".format(self.mesh.name))  # type: ignore
-        compas_rhino.objects.delete_objects(guids, purge=True)
+        compas_rhino.objects.delete_objects(self._guids_edges, purge=True)
 
     def clear_faces(self):
         """Delete all faces drawn by this scene object.
@@ -102,8 +106,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         None
 
         """
-        guids = compas_rhino.objects.get_objects(name="{}.face.*".format(self.mesh.name))  # type: ignore
-        compas_rhino.objects.delete_objects(guids, purge=True)
+        compas_rhino.objects.delete_objects(self._guids_faces, purge=True)
 
     def clear_vertexnormals(self):
         """Delete all vertex normals drawn by this scene object.
@@ -113,8 +116,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         None
 
         """
-        guids = compas_rhino.objects.get_objects(name="{}.vertex.*.normal".format(self.mesh.name))  # type: ignore
-        compas_rhino.objects.delete_objects(guids, purge=True)
+        compas_rhino.objects.delete_objects(self._guids_vertexnormals, purge=True)
 
     def clear_facenormals(self):
         """Delete all face normals drawn by this scene object.
@@ -124,8 +126,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         None
 
         """
-        guids = compas_rhino.objects.get_objects(name="{}.face.*.normal".format(self.mesh.name))  # type: ignore
-        compas_rhino.objects.delete_objects(guids, purge=True)
+        compas_rhino.objects.delete_objects(self._guids_facenormals, purge=True)
 
     def clear_vertexlabels(self):
         """Delete all vertex labels drawn by this scene object.
@@ -135,8 +136,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         None
 
         """
-        guids = compas_rhino.objects.get_objects(name="{}.vertex.*.label".format(self.mesh.name))  # type: ignore
-        compas_rhino.objects.delete_objects(guids, purge=True)
+        compas_rhino.objects.delete_objects(self._guids_vertexlabels, purge=True)
 
     def clear_edgelabels(self):
         """Delete all edge labels drawn by this scene object.
@@ -146,8 +146,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         None
 
         """
-        guids = compas_rhino.objects.get_objects(name="{}.edge.*.label".format(self.mesh.name))  # type: ignore
-        compas_rhino.objects.delete_objects(guids, purge=True)
+        compas_rhino.objects.delete_objects(self._guids_edgelabels, purge=True)
 
     def clear_facelabels(self):
         """Delete all face labels drawn by this scene object.
@@ -157,8 +156,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         None
 
         """
-        guids = compas_rhino.objects.get_objects(name="{}.face.*.label".format(self.mesh.name))  # type: ignore
-        compas_rhino.objects.delete_objects(guids, purge=True)
+        compas_rhino.objects.delete_objects(self._guids_facelabels, purge=True)
 
     # ==========================================================================
     # draw
@@ -401,6 +399,8 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         if group:
             self.add_to_group(group, guids)
 
+        self._guids_vertexlabels = guids
+
         return guids
 
     def draw_edgelabels(self, text, color=None, group=None, fontheight=10, fontface="Arial Regular"):
@@ -447,6 +447,8 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         if group:
             self.add_to_group(group, guids)
 
+        self._guids_edgelabels = guids
+
         return guids
 
     def draw_facelabels(self, text, color=None, group=None, fontheight=10, fontface="Arial Regular"):
@@ -490,6 +492,8 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
 
         if group:
             self.add_to_group(group, guids)
+
+        self._guids_facelabels = guids
 
         return guids
 
@@ -535,6 +539,8 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         if group:
             self.add_to_group(group, guids)
 
+        self._guids_vertexnormals = guids
+
         return guids
 
     def draw_facenormals(self, faces=None, color=(0, 255, 255), scale=1.0, group=None):
@@ -574,6 +580,8 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
 
         if group:
             self.add_to_group(group, guids)
+
+        self._guids_facenormals = guids
 
         return guids
 
@@ -617,6 +625,8 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         if group:
             self.add_to_group(group, guids)
 
+        self._guids_spheres = guids
+
         return guids
 
     def draw_pipes(self, radius, color=None, group=None):
@@ -655,5 +665,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
 
         if group:
             self.add_to_group(group, guids)
+
+        self._guids_pipes = guids
 
         return guids
