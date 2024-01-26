@@ -26,7 +26,7 @@ component on your Grasshopper canvas, paste the following script and hit `OK`.
 
     scene = Scene()
     scene.add(mesh)
-    a = scene.redraw()
+    a = scene.draw()
 
 
 .. figure:: /_images/userguide/cad.grasshopper.gh_verify.jpg

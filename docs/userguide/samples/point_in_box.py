@@ -22,4 +22,4 @@ for point in pcl:
         size = 30
     scene.add(point, pointcolor=color, pointsize=size)
 
-scene.redraw()
+scene.draw()

@@ -45,8 +45,8 @@ class GraphObject(RhinoSceneObject, BaseGraphObject):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.*".format(self.graph.name))  # type: ignore
-        compas_rhino.delete_objects(guids, purge=True)
+        guids = compas_rhino.objects.get_objects(name="{}.*".format(self.graph.name))  # type: ignore
+        compas_rhino.objects.delete_objects(guids, purge=True)
 
     def clear_nodes(self):
         """Delete all nodes drawn by this scene object.
@@ -56,8 +56,8 @@ class GraphObject(RhinoSceneObject, BaseGraphObject):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.node.*".format(self.graph.name))  # type: ignore
-        compas_rhino.delete_objects(guids, purge=True)
+        guids = compas_rhino.objects.get_objects(name="{}.node.*".format(self.graph.name))  # type: ignore
+        compas_rhino.objects.delete_objects(guids, purge=True)
 
     def clear_edges(self):
         """Delete all edges drawn by this scene object.
@@ -67,8 +67,8 @@ class GraphObject(RhinoSceneObject, BaseGraphObject):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.edge.*".format(self.graph.name))  # type: ignore
-        compas_rhino.delete_objects(guids, purge=True)
+        guids = compas_rhino.objects.get_objects(name="{}.edge.*".format(self.graph.name))  # type: ignore
+        compas_rhino.objects.delete_objects(guids, purge=True)
 
     # ==========================================================================
     # draw

@@ -12,6 +12,17 @@ ITEM_SCENEOBJECT = defaultdict(dict)
 
 @pluggable(category="drawing-utils")
 def clear(guids=None):
+    """Pluggable to clear the current context of the scene or a list of objects through guids.
+
+    Parameters
+    ----------
+    guids : list, optional
+        A list of guids to clear.
+
+    Returns
+    -------
+    None
+    """
     raise NotImplementedError
 
 
@@ -19,27 +30,38 @@ clear.__pluggable__ = True
 
 
 @pluggable(category="drawing-utils")
-def redraw():
-    raise NotImplementedError
+def before_draw():
+    """Pluggable to perform operations before drawing the scene.
 
+    Returns
+    -------
+    None
 
-redraw.__pluggable__ = True
-
-
-@pluggable(category="drawing-utils")
-def predraw():
+    """
     pass
 
 
-predraw.__pluggable__ = True
+before_draw.__pluggable__ = True
 
 
 @pluggable(category="drawing-utils")
-def postdraw():
+def after_draw(drawn_objects):
+    """Pluggable to perform operations after drawing the scene.
+
+    Parameters
+    ----------
+    drawn_objects : list
+        A list of objects that were drawn.
+
+    Returns
+    -------
+    None
+
+    """
     pass
 
 
-postdraw.__pluggable__ = True
+after_draw.__pluggable__ = True
 
 
 @pluggable(category="factories", selector="collect_all")

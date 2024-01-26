@@ -205,7 +205,7 @@ def surface_to_compas_mesh(surface, cls=None, facefilter=None, cleanup=False):
 
     >>> scene = Scene()
     >>> scene.add(mesh, layer="Blocks")
-    >>> scene.redraw()
+    >>> scene.draw()
 
     """
     if not surface.HasBrepForm:
