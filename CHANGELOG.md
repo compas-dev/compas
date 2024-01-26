@@ -15,6 +15,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `before_draw` pluggable to `compas.scene.Scene.draw`.
 * Added `after_draw` pluggable to `compas.scene.Scene.draw`.
 * Added description in tutorial about `compas.scene.context`.
+* Added `compas_blender.data`.
+* Added `compas_blender.collections`.
+* Added `compas_blender.objects`.
+* Added `compas_rhino.ui`.
+* Added `compas_rhino.unload_modules`.
+* Added `compas_ghpython.unload_modules`.
+* Added `compas_ghpython.sets`.
+* Added `compas_ghpython.timer`.
 
 ### Changed
 
@@ -29,6 +37,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed `compas_blender.geometry.curves`.
 * Removed `compas_rhino.utilities.objects`.
 * Removed `compas_rhino.utilities.layers`.
+* Removed `compas_rhino.utilities.constructors`.
+* Removed `compas_rhino.utilities.document`.
+* Removed `compas_rhino.utilities.geometry`.
+* Removed `compas_rhino.utilities.misc`.
+* Removed `compas_blender.utilities.data`.
+* Removed `compas_blender.utilities.collections`.
+* Removed `compas_blender.utilities.objects`.
+* Removed `compas_ghpython.utilities.sets`.
+* Removed `compas_ghpython.utilities.timer`.
 
 ## [2.0.0-beta.3] 2024-01-19
 

@@ -61,7 +61,7 @@ def clear_blender(guids=None):
 
 @plugin(category="drawing-utils", pluggable_name="after_draw", requires=["bpy"])
 def after_draw_blender(drawn_objects):
-    compas_blender.redraw()
+    compas_blender.redraw()  # not sure we should do this
 
 
 @plugin(category="factories", requires=["bpy"])

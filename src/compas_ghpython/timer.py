@@ -2,10 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-try:
-    import Grasshopper as gh
-except ImportError:
-    pass
+import Grasshopper  # type: ignore
 
 
 def update_component(ghenv, delay):
@@ -33,7 +30,7 @@ def update_component(ghenv, delay):
     ghdoc = ghcomp.OnPingDocument()
 
     def callback(ghdoc):
-        if ghdoc.SolutionState != gh.Kernel.GH_ProcessStep.Process:
+        if ghdoc.SolutionState != Grasshopper.Kernel.GH_ProcessStep.Process:
             ghcomp.ExpireSolution(False)
 
-    ghdoc.ScheduleSolution(delay, gh.Kernel.GH_Document.GH_ScheduleDelegate(callback))
+    ghdoc.ScheduleSolution(delay, Grasshopper.Kernel.GH_Document.GH_ScheduleDelegate(callback))
