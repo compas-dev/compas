@@ -12,6 +12,17 @@ ITEM_SCENEOBJECT = defaultdict(dict)
 
 @pluggable(category="drawing-utils")
 def clear(guids=None):
+    """Pluggable to clear the current context of the scene or a list of objects through guids.
+
+    Parameters
+    ----------
+    guids : list, optional
+        A list of guids to clear.
+
+    Returns
+    -------
+    None
+    """
     raise NotImplementedError
 
 
@@ -19,11 +30,37 @@ clear.__pluggable__ = True
 
 
 @pluggable(category="drawing-utils")
-def redraw():
-    raise NotImplementedError
+def before_draw():
+    """Pluggable to perform operations before drawing the scene. This function is automatically called in the beginning of `compas.scene.Scene.draw()`.
+
+    Returns
+    -------
+    None
+
+    """
+    pass
 
 
-redraw.__pluggable__ = True
+before_draw.__pluggable__ = True
+
+
+@pluggable(category="drawing-utils")
+def after_draw(drawn_objects):
+    """Pluggable to perform operations after drawing the scene. This function is automatically called at the end of `compas.scene.Scene.draw()`.
+    Parameters
+    ----------
+    drawn_objects : list
+        A list of objects that were drawn.
+
+    Returns
+    -------
+    None
+
+    """
+    pass
+
+
+after_draw.__pluggable__ = True
 
 
 @pluggable(category="factories", selector="collect_all")
@@ -82,9 +119,6 @@ def detect_current_context():
 
     """
 
-    if not ITEM_SCENEOBJECT:
-        register_scene_objects()
-
     if is_viewer_open():
         return "Viewer"
     if compas.is_grasshopper():
@@ -126,6 +160,9 @@ def _get_sceneobject_cls(data, **kwargs):
 
 
 def get_sceneobject_cls(item, **kwargs):
+    if not ITEM_SCENEOBJECT:
+        register_scene_objects()
+
     if item is None:
         raise ValueError(
             "Cannot create a scene object for None. Please ensure you pass a instance of a supported class."

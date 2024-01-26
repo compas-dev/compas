@@ -3,7 +3,8 @@ from compas.datastructures import Tree
 from compas.datastructures import TreeNode
 
 from .context import clear
-from .context import redraw
+from .context import before_draw
+from .context import after_draw
 from .context import detect_current_context
 from .sceneobject import SceneObject
 
@@ -199,7 +200,7 @@ class Scene(Data):
     >>> scene = Scene()
     >>> box = Box.from_width_height_depth(1, 1, 1)
     >>> scene.add(box)
-    >>> scene.redraw()
+    >>> scene.draw()
 
     """
 
@@ -287,8 +288,10 @@ class Scene(Data):
             sceneobject._guids = None
         clear(guids=guids)
 
-    def redraw(self):
-        """Redraw the scene."""
+    def draw(self):
+        """Draw the scene."""
+
+        before_draw()
 
         if not self.context:
             raise ValueError("No context detected.")
@@ -299,8 +302,7 @@ class Scene(Data):
         for sceneobject in self.objects:
             drawn_objects += sceneobject.draw()
 
-        if drawn_objects:
-            redraw()
+        after_draw(drawn_objects)
 
         return drawn_objects
 

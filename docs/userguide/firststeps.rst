@@ -28,7 +28,7 @@ A Simple Box
 
     scene = Scene()
     scene.add(box)
-    scene.redraw()
+    scene.draw()
 
 
 Points-in-box Test
@@ -51,7 +51,7 @@ Points-in-box Test
     for point in pcl:
         color = Color.red() if box.contains(point) else Color.blue()
         scene.add(point, color=color)
-    scene.redraw()
+    scene.draw()
 
 
 Creating a Mesh From an OBJ File
@@ -67,4 +67,4 @@ Creating a Mesh From an OBJ File
 
     scene = Scene()
     scene.add(mesh)
-    scene.redraw()
+    scene.draw()

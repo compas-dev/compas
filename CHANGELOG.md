@@ -12,12 +12,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas_rhino.objects`.
 * Added `compas_rhino.layers`.
 * Added `compas_rhino.install_with_pip`.
+* Added `before_draw` pluggable to `compas.scene.Scene.draw`.
+* Added `after_draw` pluggable to `compas.scene.Scene.draw`.
 
 ### Changed
 
 * Changed `compas.tolerance.Tolerance` into singleton.
 * Changed `compas_rhino.geometry.curves.nursb.RhinoNurbsCurve` to use private data API.
 * Changed `compas_rhino.geometry.surfaces.nursb.RhinoNurbsSurface` to use private data API.
+* Changed `compas.scene.Scene.redraw` to `draw`.
+* Fixed `register_scene_objects` not called when there is a context given in kwargs of `SceneObject`.
 
 ### Removed
 
