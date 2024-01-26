@@ -1,7 +1,7 @@
 import bpy  # type: ignore
 from typing import List, Text
 
-from compas_blender.utilities import delete_objects
+from compas_blender.objects import delete_objects
 
 
 def collection_path(collection, names=[]):
