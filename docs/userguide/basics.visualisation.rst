@@ -119,7 +119,7 @@ PointObject
 Scene Context
 =============
 
-Depends on where the code is executed, the "scene" will detect the current visualisation context.
+Depending on where the code is executed, the "scene" will detect the current visualisation context.
 If the code is executed in the Rhino, the scene context will be automatically set as "Rhino". 
 
 >>> from compas.scene import Scene
@@ -128,13 +128,13 @@ If the code is executed in the Rhino, the scene context will be automatically se
 >>> scene.context
 Rhino
 
-Depends on the context, the different implementations of the scene objects will be used.
+For every context, the appropriate scene object implementations will be used automatically.
 
 >>> box = Box.from_width_height_depth(1, 1, 1)
 >>> scene.add(box)
 <compas_rhino.scene.BoxObject>
 
-User can also mannually set the scene context by using the following code:
+Users can also set the scene context manually:
 
 >>> scene = Scene(context="MyContextName")
 >>> scene.context
