@@ -644,6 +644,32 @@ The scene tree has an implicit root node, which is the scene itself.</p>
 </pre></div>
 </div>
 </section>
+<section id="scene-context">
+<h2>Scene Context</h2>
+<p>Depending on where the code is executed, the “scene” will detect the current visualisation context.
+If the code is executed in the Rhino, the scene context will be automatically set as “Rhino”.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.scene</span> <span class="kn">import</span> <span class="n">Scene</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Box</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">scene</span> <span class="o">=</span> <span class="n">Scene</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">scene</span><span class="o">.</span><span class="n">context</span>
+<span class="go">Rhino</span>
+</pre></div>
+</div>
+<p>For every context, the appropriate scene object implementations will be used automatically.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">box</span> <span class="o">=</span> <span class="n">Box</span><span class="o">.</span><span class="n">from_width_height_depth</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">scene</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+<span class="go">&lt;compas_rhino.scene.BoxObject&gt;</span>
+</pre></div>
+</div>
+<p>Users can also set the scene context manually:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">scene</span> <span class="o">=</span> <span class="n">Scene</span><span class="p">(</span><span class="n">context</span><span class="o">=</span><span class="s2">&quot;MyContextName&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">scene</span><span class="o">.</span><span class="n">context</span>
+<span class="go">MyContextName</span>
+</pre></div>
+</div>
+<p>The currently supported contexts are: “Viewer”, “Rhino”, “Grasshopper”, “Blender” and None.
+For working with different contexts please refer to the next section “Tutorial: Working in CAD”.</p>
+</section>
 </section>
 
 
@@ -671,6 +697,7 @@ The scene tree has an implicit root node, which is the scene itself.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualiation-settings">Visualiation Settings</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#object-transformation">Object Transformation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scene-hierarchy">Scene Hierarchy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scene-context">Scene Context</a></li>
 </ul>
   </nav></div>
 
