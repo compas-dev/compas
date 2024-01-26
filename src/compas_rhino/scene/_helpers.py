@@ -45,7 +45,7 @@ def ngon(v):
     if v < 3:
         return
     if v == 3:
-        return [0, 1, 2, 2]
+        return [0, 1, 2]
     if v == 4:
         return [0, 1, 2, 3]
     return list(range(v))
