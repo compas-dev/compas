@@ -31,7 +31,7 @@ clear.__pluggable__ = True
 
 @pluggable(category="drawing-utils")
 def before_draw():
-    """Pluggable to perform operations before drawing the scene.
+    """Pluggable to perform operations before drawing the scene. This function is automatically called in the beginning of `compas.scene.Scene.draw()`.
 
     Returns
     -------
@@ -46,8 +46,7 @@ before_draw.__pluggable__ = True
 
 @pluggable(category="drawing-utils")
 def after_draw(drawn_objects):
-    """Pluggable to perform operations after drawing the scene.
-
+    """Pluggable to perform operations after drawing the scene. This function is automatically called at the end of `compas.scene.Scene.draw()`.
     Parameters
     ----------
     drawn_objects : list
