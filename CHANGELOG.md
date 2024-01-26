@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas_rhino.geometry.surfaces.nursb.RhinoNurbsSurface` to use private data API.
 * Changed `compas.scene.Scene.redraw` to `draw`.
 * Fixed `register_scene_objects` not called when there is a context given in kwargs of `SceneObject`.
+* Changed `compas.scene.Mesh`'s `show_vertices`, `show_edges`, `show_faces` to optionally accept a sequence of keys.
 
 ### Removed
 

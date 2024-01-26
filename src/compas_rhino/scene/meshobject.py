@@ -176,20 +176,33 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         # when drawing the mesh as individual components (vertices, edges, faces)
         # colors have to be provided as dicts that map colors to specific components
 
-        color = Color.coerce(color) or self.color
-        attr = attributes(name=self.mesh.name, color=color, layer=self.layer)  # type: ignore
+        self._guids = []
 
-        geometry = mesh_to_rhino(
-            self.mesh,
-            color=color,
-            vertexcolors=vertexcolors,
-            facecolors=facecolors,
-            disjoint=disjoint,
-        )
+        if self.show_faces is True:
+            color = Color.coerce(color) or self.color
+            attr = attributes(name=self.mesh.name, color=color, layer=self.layer)  # type: ignore
 
-        geometry.Transform(transformation_to_rhino(self.worldtransformation))
+            geometry = mesh_to_rhino(
+                self.mesh,
+                color=color,
+                vertexcolors=vertexcolors,
+                facecolors=facecolors,
+                disjoint=disjoint,
+            )
 
-        self._guids = [sc.doc.Objects.AddMesh(geometry, attr)]
+            geometry.Transform(transformation_to_rhino(self.worldtransformation))
+
+            self._guids += [sc.doc.Objects.AddMesh(geometry, attr)]
+
+        elif self.show_faces:
+            self._guids += self.draw_faces(faces=self.show_faces, color=self.facecolor)
+
+        if self.show_vertices:
+            self._guids += self.draw_vertices(vertices=self.show_vertices, color=self.vertexcolor)
+
+        if self.show_edges:
+            self._guids += self.draw_edges(edges=self.show_edges, color=self.edgecolor)
+
         return self.guids
 
     def draw_vertices(self, vertices=None, color=None, group=None):
@@ -214,6 +227,9 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         guids = []
 
         self.vertexcolor = color
+
+        if vertices is True:
+            vertices = list(self.mesh.vertices())
 
         for vertex in vertices or self.mesh.vertices():  # type: ignore
             name = "{}.vertex.{}".format(self.mesh.name, vertex)  # type: ignore
@@ -257,6 +273,9 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
 
         self.edgecolor = color
 
+        if edges is True:
+            edges = list(self.mesh.edges())
+
         for edge in edges or self.mesh.edges():  # type: ignore
             name = "{}.edge.{}-{}".format(self.mesh.name, *edge)  # type: ignore
             color = self.edgecolor[edge]  # type: ignore
@@ -298,6 +317,9 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         guids = []
 
         self.facecolor = color
+
+        if faces is True:
+            faces = list(self.mesh.faces())
 
         for face in faces or self.mesh.faces():  # type: ignore
             name = "{}.face.{}".format(self.mesh.name, face)  # type: ignore
