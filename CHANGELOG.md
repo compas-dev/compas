@@ -20,7 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas.tolerance.Tolerance` into singleton.
 * Changed `compas_rhino.geometry.curves.nursb.RhinoNurbsCurve` to use private data API.
 * Changed `compas_rhino.geometry.surfaces.nursb.RhinoNurbsSurface` to use private data API.
-* Changed `compas.scene.Scene.redraw` to `draw`, `redraw` is kept as alias.
+* Changed `compas.scene.Scene.redraw` to `draw`.
 * Fixed `register_scene_objects` not called when there is a context given in kwargs of `SceneObject`.
 * Changed `compas.scene.SceneObject` to raise `TypeError` when item is instance of `compas.data.Data`.
 
