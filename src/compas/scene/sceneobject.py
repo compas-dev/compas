@@ -8,7 +8,6 @@ from .descriptors.color import ColorAttribute
 from .context import clear
 from .context import get_sceneobject_cls
 from compas.geometry import Transformation
-from compas.data import Data
 from functools import reduce
 from operator import mul
 
@@ -60,9 +59,6 @@ class SceneObject(object):
     color = ColorAttribute()
 
     def __new__(cls, item, **kwargs):
-        if not isinstance(item, Data):
-            raise TypeError("SceneObject can only be created for compas.data.Data items.")
-
         sceneobject_cls = get_sceneobject_cls(item, **kwargs)
         return super(SceneObject, cls).__new__(sceneobject_cls)
 
