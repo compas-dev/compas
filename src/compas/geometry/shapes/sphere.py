@@ -107,6 +107,10 @@ class Sphere(Shape):
     # ==========================================================================
 
     @property
+    def base(self):
+        return self.frame.point
+
+    @property
     def radius(self):
         if self._radius is None:
             raise ValueError("The radius of the sphere is not set.")
