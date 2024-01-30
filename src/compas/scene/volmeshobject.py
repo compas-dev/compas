@@ -46,7 +46,7 @@ class VolMeshObject(SceneObject):
         Default is ``True``.
     show_faces : Union[bool, sequence[int]]
         Flag for showing or hiding the faces, or a list of keys for the faces to show.
-        Default is ``True``.
+        Default is ``False``.
     show_cells : bool
         Flag for showing or hiding the cells, or a list of keys for the cells to show.
         Default is ``True``.
@@ -76,7 +76,7 @@ class VolMeshObject(SceneObject):
         self.edgewidth = kwargs.get("edgewidth", 1.0)
         self.show_vertices = kwargs.get("show_vertices", False)
         self.show_edges = kwargs.get("show_edges", True)
-        self.show_faces = kwargs.get("show_faces", True)
+        self.show_faces = kwargs.get("show_faces", False)
         self.show_cells = kwargs.get("show_cells", True)
 
     @property

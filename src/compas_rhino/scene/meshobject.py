@@ -42,16 +42,12 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
     disjoint : bool, optional
         Draw the faces of the mesh disjointed.
         Default is ``False``.
-    group : str, optional
-        The name of the group to add the mesh components. The group will be created if not already present.
-        Default is ``None``.
 
     """
 
-    def __init__(self, mesh, **kwargs):
+    def __init__(self, mesh, disjoint=False, **kwargs):
         super(MeshObject, self).__init__(mesh=mesh, **kwargs)
-        self.disjoint = kwargs.get("disjoint", False)
-        self.group = kwargs.get("group", None)
+        self.disjoint = disjoint
         self._guid_mesh = None
         self._guids_faces = None
         self._guids_edges = None
