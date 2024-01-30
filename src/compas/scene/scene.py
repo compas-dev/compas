@@ -300,7 +300,8 @@ class Scene(Data):
 
         drawn_objects = []
         for sceneobject in self.objects:
-            drawn_objects += sceneobject.draw()
+            if sceneobject.show:
+                drawn_objects += sceneobject.draw()
 
         after_draw(drawn_objects)
 

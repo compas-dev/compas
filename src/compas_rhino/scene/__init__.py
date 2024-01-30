@@ -32,6 +32,7 @@ from compas.geometry import Brep
 from compas.datastructures import Mesh
 from compas.datastructures import Graph
 from compas.datastructures import VolMesh
+from compas.datastructures import CellNetwork
 
 import compas_rhino
 
@@ -57,6 +58,7 @@ from .torusobject import TorusObject
 from .meshobject import MeshObject
 from .graphobject import GraphObject
 from .volmeshobject import VolMeshObject
+from .cellnetworkobject import CellNetworkObject
 
 from .curveobject import CurveObject
 from .surfaceobject import SurfaceObject
@@ -94,6 +96,7 @@ def register_scene_objects():
     register(Mesh, MeshObject, context="Rhino")
     register(Graph, GraphObject, context="Rhino")
     register(VolMesh, VolMeshObject, context="Rhino")
+    register(CellNetwork, CellNetworkObject, context="Rhino")
     register(Curve, CurveObject, context="Rhino")
     register(Surface, SurfaceObject, context="Rhino")
     register(Brep, BrepObject, context="Rhino")
@@ -121,6 +124,7 @@ __all__ = [
     "MeshObject",
     "GraphObject",
     "VolMeshObject",
+    "CellNetworkObject",
     "CurveObject",
     "SurfaceObject",
     "BrepObject",

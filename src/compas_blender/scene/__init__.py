@@ -29,6 +29,7 @@ from compas.geometry import Vector
 from compas.datastructures import Mesh
 from compas.datastructures import Graph
 from compas.datastructures import VolMesh
+from compas.datastructures import CellNetwork
 
 from .sceneobject import BlenderSceneObject
 from .boxobject import BoxObject
@@ -52,6 +53,7 @@ from .surfaceobject import SurfaceObject
 from .torusobject import TorusObject
 from .vectorobject import VectorObject
 from .volmeshobject import VolMeshObject
+from .cellnetworkobject import CellNetworkObject
 
 
 @plugin(category="drawing-utils", pluggable_name="clear", requires=["bpy"])
@@ -87,6 +89,7 @@ def register_scene_objects():
     register(Torus, TorusObject, context="Blender")
     register(Vector, VectorObject, context="Blender")
     register(VolMesh, VolMeshObject, context="Blender")
+    register(CellNetwork, CellNetworkObject, context="Blender")
     print("Blender Objects registered.")
 
 
@@ -113,4 +116,5 @@ __all__ = [
     "TorusObject",
     "VectorObject",
     "VolMeshObject",
+    "CellNetworkObject",
 ]

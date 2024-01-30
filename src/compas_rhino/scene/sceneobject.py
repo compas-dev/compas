@@ -15,14 +15,18 @@ class RhinoSceneObject(SceneObject):
     ----------
     layer : str, optional
         A layer name.
+    group : str, optional
+        The name of the group to add the mesh components. The group will be created if not already present.
+        Default is ``None``.
     **kwargs : dict, optional
         Additional keyword arguments.
 
     """
 
-    def __init__(self, layer=None, **kwargs):
+    def __init__(self, layer=None, group=None, **kwargs):
         super(RhinoSceneObject, self).__init__(**kwargs)
         self.layer = layer
+        self.group = group
 
     def get_group(self, name):
         """Find the group with the given name, or create a new one.

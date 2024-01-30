@@ -7,7 +7,7 @@ import scriptcontext as sc  # type: ignore
 
 from compas.geometry import centroid_points
 from compas.geometry import Line
-from compas.scene import VolMeshObject as BaseVolMeshObject
+from compas.scene import CellNetworkObject as BaseCellNetworkObject
 
 import compas_rhino.objects
 from compas_rhino.conversions import point_to_rhino
@@ -19,13 +19,13 @@ from ._helpers import attributes
 from ._helpers import ngon
 
 
-class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
-    """Scene object for drawing volmesh data structures.
+class CellNetworkObject(RhinoSceneObject, BaseCellNetworkObject):
+    """Scene object for drawing cellnetwork data structures.
 
     Parameters
     ----------
-    volmesh : :class:`compas.datastructures.VolMesh`
-        A COMPAS volmesh.
+    cellnetwork : :class:`compas.datastructures.CellNetwork`
+        A COMPAS cellnetwork.
     disjoint : bool, optional
         Draw the faces of the mesh disjointed.
         Default is ``True``.
@@ -34,8 +34,8 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
 
     """
 
-    def __init__(self, volmesh, disjoint=True, **kwargs):
-        super(VolMeshObject, self).__init__(volmesh=volmesh, **kwargs)
+    def __init__(self, cellnetwork, disjoint=True, **kwargs):
+        super(CellNetworkObject, self).__init__(cellnetwork=cellnetwork, **kwargs)
         self.disjoint = disjoint
         self._guids_vertices = None
         self._guids_edges = None
@@ -183,10 +183,10 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
         guids = []
 
         if vertices is True:
-            vertices = list(self.volmesh.vertices())
+            vertices = list(self.cellnetwork.vertices())
 
-        for vertex in vertices or self.volmesh.vertices():  # type: ignore
-            name = "{}.vertex.{}".format(self.volmesh.name, vertex)  # type: ignore
+        for vertex in vertices or self.cellnetwork.vertices():  # type: ignore
+            name = "{}.vertex.{}".format(self.cellnetwork.name, vertex)  # type: ignore
             color = self.vertexcolor[vertex]  # type: ignore
             attr = attributes(name=name, color=color, layer=self.layer)
 
@@ -221,10 +221,10 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
         guids = []
 
         if edges is True:
-            edges = list(self.volmesh.edges())
+            edges = list(self.cellnetwork.edges())
 
-        for edge in edges or self.volmesh.edges():  # type: ignore
-            name = "{}.edge.{}-{}".format(self.volmesh.name, *edge)  # type: ignore
+        for edge in edges or self.cellnetwork.edges():  # type: ignore
+            name = "{}.edge.{}-{}".format(self.cellnetwork.name, *edge)  # type: ignore
             color = self.edgecolor[edge]  # type: ignore
             attr = attributes(name=name, color=color, layer=self.layer)
 
@@ -262,14 +262,14 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
         guids = []
 
         if faces is True:
-            faces = list(self.volmesh.faces())
+            faces = list(self.cellnetwork.faces())
 
-        for face in faces or self.volmesh.faces():  # type: ignore
-            name = "{}.face.{}".format(self.volmesh.name, face)  # type: ignore
+        for face in faces or self.cellnetwork.faces():  # type: ignore
+            name = "{}.face.{}".format(self.cellnetwork.name, face)  # type: ignore
             color = self.facecolor[face]  # type: ignore
             attr = attributes(name=name, color=color, layer=self.layer)
 
-            vertices = [self.vertex_xyz[vertex] for vertex in self.volmesh.face_vertices(face)]  # type: ignore
+            vertices = [self.vertex_xyz[vertex] for vertex in self.cellnetwork.face_vertices(face)]  # type: ignore
             facet = ngon(len(vertices))
 
             if facet:
@@ -306,18 +306,18 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
         guids = []
 
         if cells is True:
-            cells = list(self.volmesh.cells())
+            cells = list(self.cellnetwork.cells())
 
-        for cell in cells or self.volmesh.cells():  # type: ignore
-            name = "{}.cell.{}".format(self.volmesh.name, cell)  # type: ignore
+        for cell in cells or self.cellnetwork.cells():  # type: ignore
+            name = "{}.cell.{}".format(self.cellnetwork.name, cell)  # type: ignore
             color = self.cellcolor[cell]  # type: ignore
             attr = attributes(name=name, color=color, layer=self.layer)
 
-            vertices = self.volmesh.cell_vertices(cell)  # type: ignore
-            faces = self.volmesh.cell_faces(cell)  # type: ignore
+            vertices = self.cellnetwork.cell_vertices(cell)  # type: ignore
+            faces = self.cellnetwork.cell_faces(cell)  # type: ignore
             vertex_index = dict((vertex, index) for index, vertex in enumerate(vertices))
             vertices = [self.vertex_xyz[vertex] for vertex in vertices]
-            faces = [[vertex_index[vertex] for vertex in self.volmesh.halfface_vertices(face)] for face in faces]  # type: ignore
+            faces = [[vertex_index[vertex] for vertex in self.cellnetwork.face_vertices(face)] for face in faces]  # type: ignore
 
             guid = sc.doc.Objects.AddMesh(vertices_and_faces_to_rhino(vertices, faces, disjoint=self.disjoint), attr)
             guids.append(guid)
@@ -355,7 +355,7 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
         guids = []
 
         for vertex in text:
-            name = "{}.vertex.{}.label".format(self.volmesh.name, vertex)  # type: ignore
+            name = "{}.vertex.{}.label".format(self.cellnetwork.name, vertex)  # type: ignore
             color = self.vertexcolor[vertex]  # type: ignore
             attr = attributes(name=name, color=color, layer=self.layer)
 
@@ -400,7 +400,7 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
         guids = []
 
         for edge in text:
-            name = "{}.edge.{}-{}.label".format(self.volmesh.name, *edge)  # type: ignore
+            name = "{}.edge.{}-{}.label".format(self.cellnetwork.name, *edge)  # type: ignore
             color = self.edgecolor[edge]  # type: ignore
             attr = attributes(name="{}.label".format(name), color=color, layer=self.layer)
 
@@ -446,11 +446,11 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
         guids = []
 
         for face in text:
-            name = "{}.face.{}.label".format(self.volmesh.name, face)  # type: ignore
+            name = "{}.face.{}.label".format(self.cellnetwork.name, face)  # type: ignore
             color = self.facecolor[face]  # type: ignore
             attr = attributes(name="{}.label".format(name), color=color, layer=self.layer)
 
-            vertices = [self.vertex_xyz[vertex] for vertex in self.volmesh.face_vertices(face)]  # type: ignore
+            vertices = [self.vertex_xyz[vertex] for vertex in self.cellnetwork.face_vertices(face)]  # type: ignore
             point = point_to_rhino(centroid_points(vertices))  # type: ignore
 
             dot = TextDot(str(text[face]), point)  # type: ignore
@@ -492,11 +492,11 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
         guids = []
 
         for cell in text:
-            name = "{}.cell.{}.label".format(self.volmesh.name, cell)  # type: ignore
+            name = "{}.cell.{}.label".format(self.cellnetwork.name, cell)  # type: ignore
             color = self.cellcolor[cell]  # type: ignore
             attr = attributes(name="{}.label".format(name), color=color, layer=self.layer)
 
-            vertices = [self.vertex_xyz[vertex] for vertex in self.volmesh.cell_vertices(cell)]  # type: ignore
+            vertices = [self.vertex_xyz[vertex] for vertex in self.cellnetwork.cell_vertices(cell)]  # type: ignore
             point = point_to_rhino(centroid_points(vertices))  # type: ignore
 
             dot = TextDot(str(text[cell]), point)  # type: ignore

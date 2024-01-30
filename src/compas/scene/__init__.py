@@ -14,6 +14,7 @@ from .meshobject import MeshObject
 from .graphobject import GraphObject
 from .geometryobject import GeometryObject
 from .volmeshobject import VolMeshObject
+from .cellnetworkobject import CellNetworkObject
 
 from .context import clear
 from .context import before_draw
@@ -31,6 +32,7 @@ from compas.geometry import Geometry
 from compas.datastructures import Mesh
 from compas.datastructures import Graph
 from compas.datastructures import VolMesh
+from compas.datastructures import CellNetwork
 
 
 @plugin(category="factories", pluggable_name="register_scene_objects")
@@ -39,6 +41,7 @@ def register_scene_objects_base():
     register(Mesh, MeshObject, context=None)
     register(Graph, GraphObject, context=None)
     register(VolMesh, VolMeshObject, context=None)
+    register(CellNetwork, CellNetworkObject, context=None)
 
 
 __all__ = [
@@ -48,6 +51,7 @@ __all__ = [
     "GraphObject",
     "GeometryObject",
     "VolMeshObject",
+    "CellNetworkObject",
     "Scene",
     "SceneObjectNode",
     "SceneTree",

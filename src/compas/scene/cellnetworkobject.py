@@ -7,18 +7,18 @@ from .sceneobject import SceneObject
 from .descriptors.colordict import ColorDictAttribute
 
 
-class VolMeshObject(SceneObject):
-    """Scene object for drawing volmesh data structures.
+class CellNetworkObject(SceneObject):
+    """Scene object for drawing cellnetwork data structures.
 
     Parameters
     ----------
-    volmesh : :class:`compas.datastructures.VolMesh`
-        A COMPAS volmesh.
+    cellnetwork : :class:`compas.datastructures.CellNetwork`
+        A COMPAS cellnetwork.
 
     Attributes
     ----------
-    volmesh : :class:`compas.datastructures.VolMesh`
-        The COMPAS volmesh associated with the scene object.
+    cellnetwork : :class:`compas.datastructures.CellNetwork`
+        The COMPAS cellnetwork associated with the scene object.
     vertex_xyz : dict[int, list[float]]
         The view coordinates of the vertices.
         By default, the actual vertex coordinates are used.
@@ -38,7 +38,7 @@ class VolMeshObject(SceneObject):
         The size of the vertices. Default is ``1.0``.
     edgewidth : float
         The width of the edges. Default is ``1.0``.
-    show_vertices : Union[bool, sequence[float]]
+    show_vertices : Union[bool, sequence[int]]
         Flag for showing or hiding the vertices, or a list of keys for the vertices to show.
         Default is ``False``.
     show_edges : Union[bool, sequence[tuple[int, int]]]
@@ -46,8 +46,8 @@ class VolMeshObject(SceneObject):
         Default is ``True``.
     show_faces : Union[bool, sequence[int]]
         Flag for showing or hiding the faces, or a list of keys for the faces to show.
-        Default is ``False``.
-    show_cells : bool
+        Default is ``True``.
+    show_cells : Union[bool, sequence[int]]
         Flag for showing or hiding the cells, or a list of keys for the cells to show.
         Default is ``True``.
 
@@ -63,11 +63,11 @@ class VolMeshObject(SceneObject):
     facecolor = ColorDictAttribute()
     cellcolor = ColorDictAttribute()
 
-    def __init__(self, volmesh, **kwargs):
-        super(VolMeshObject, self).__init__(item=volmesh, **kwargs)
-        self._volmesh = None
+    def __init__(self, cellnetwork, **kwargs):
+        super(CellNetworkObject, self).__init__(item=cellnetwork, **kwargs)
+        self._cellnetwork = None
         self._vertex_xyz = None
-        self.volmesh = volmesh
+        self.cellnetwork = cellnetwork
         self.vertexcolor = kwargs.get("vertexcolor", self.color)
         self.edgecolor = kwargs.get("edgecolor", self.color)
         self.facecolor = kwargs.get("facecolor", self.color)
@@ -76,16 +76,16 @@ class VolMeshObject(SceneObject):
         self.edgewidth = kwargs.get("edgewidth", 1.0)
         self.show_vertices = kwargs.get("show_vertices", False)
         self.show_edges = kwargs.get("show_edges", True)
-        self.show_faces = kwargs.get("show_faces", False)
+        self.show_faces = kwargs.get("show_faces", True)
         self.show_cells = kwargs.get("show_cells", True)
 
     @property
-    def volmesh(self):
-        return self._volmesh
+    def cellnetwork(self):
+        return self._cellnetwork
 
-    @volmesh.setter
-    def volmesh(self, volmesh):
-        self._volmesh = volmesh
+    @cellnetwork.setter
+    def cellnetwork(self, cellnetwork):
+        self._cellnetwork = cellnetwork
         self._transformation = None
         self._vertex_xyz = None
 
@@ -101,9 +101,9 @@ class VolMeshObject(SceneObject):
     @property
     def vertex_xyz(self):
         if self._vertex_xyz is None:
-            points = self.volmesh.vertices_attributes("xyz")  # type: ignore
+            points = self.cellnetwork.vertices_attributes("xyz")  # type: ignore
             points = transform_points(points, self.worldtransformation)
-            self._vertex_xyz = dict(zip(self.volmesh.vertices(), points))  # type: ignore
+            self._vertex_xyz = dict(zip(self.cellnetwork.vertices(), points))  # type: ignore
         return self._vertex_xyz
 
     @vertex_xyz.setter
@@ -111,7 +111,7 @@ class VolMeshObject(SceneObject):
         self._vertex_xyz = vertex_xyz
 
     def draw_vertices(self, vertices=None, color=None, text=None):
-        """Draw the vertices of the mesh.
+        """Draw the vertices of the cellnetwork.
 
         Parameters
         ----------
@@ -135,7 +135,7 @@ class VolMeshObject(SceneObject):
         raise NotImplementedError
 
     def draw_edges(self, edges=None, color=None, text=None):
-        """Draw the edges of the mesh.
+        """Draw the edges of the cellnetwork.
 
         Parameters
         ----------
@@ -159,7 +159,7 @@ class VolMeshObject(SceneObject):
         raise NotImplementedError
 
     def draw_faces(self, faces=None, color=None, text=None):
-        """Draw the faces of the mesh.
+        """Draw the faces of the cellnetwork.
 
         Parameters
         ----------
@@ -183,7 +183,7 @@ class VolMeshObject(SceneObject):
         raise NotImplementedError
 
     def draw_cells(self, cells=None, color=None, text=None):
-        """Draw the cells of the mesh.
+        """Draw the cells of the cellnetwork.
 
         Parameters
         ----------
@@ -207,11 +207,11 @@ class VolMeshObject(SceneObject):
         raise NotImplementedError
 
     def draw(self):
-        """Draw the volmesh."""
+        """Draw the cellnetwork."""
         raise NotImplementedError
 
     def clear_vertices(self):
-        """Clear the vertices of the mesh.
+        """Clear the vertices of the cellnetwork.
 
         Returns
         -------
@@ -221,7 +221,7 @@ class VolMeshObject(SceneObject):
         raise NotImplementedError
 
     def clear_edges(self):
-        """Clear the edges of the mesh.
+        """Clear the edges of the cellnetwork.
 
         Returns
         -------
@@ -231,7 +231,7 @@ class VolMeshObject(SceneObject):
         raise NotImplementedError
 
     def clear_faces(self):
-        """Clear the faces of the mesh.
+        """Clear the faces of the cellnetwork.
 
         Returns
         -------
@@ -241,7 +241,7 @@ class VolMeshObject(SceneObject):
         raise NotImplementedError
 
     def clear_cells(self):
-        """Clear the cells of the mesh.
+        """Clear the cells of the cellnetwork.
 
         Returns
         -------

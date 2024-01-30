@@ -32,6 +32,12 @@ class GraphObject(RhinoSceneObject, BaseGraphObject):
 
     def __init__(self, graph, **kwargs):
         super(GraphObject, self).__init__(graph=graph, **kwargs)
+        self._guids_nodes = None
+        self._guids_edges = None
+        self._guids_nodelabels = None
+        self._guids_edgelabels = None
+        self._guids_spheres = None
+        self._guids_pipes = None
 
     # ==========================================================================
     # clear
@@ -45,8 +51,7 @@ class GraphObject(RhinoSceneObject, BaseGraphObject):
         None
 
         """
-        guids = compas_rhino.objects.get_objects(name="{}.*".format(self.graph.name))  # type: ignore
-        compas_rhino.objects.delete_objects(guids, purge=True)
+        compas_rhino.objects.delete_objects(self.guids, purge=True)
 
     def clear_nodes(self):
         """Delete all nodes drawn by this scene object.
@@ -56,8 +61,7 @@ class GraphObject(RhinoSceneObject, BaseGraphObject):
         None
 
         """
-        guids = compas_rhino.objects.get_objects(name="{}.node.*".format(self.graph.name))  # type: ignore
-        compas_rhino.objects.delete_objects(guids, purge=True)
+        compas_rhino.objects.delete_objects(self._guids_nodes, purge=True)
 
     def clear_edges(self):
         """Delete all edges drawn by this scene object.
@@ -67,34 +71,14 @@ class GraphObject(RhinoSceneObject, BaseGraphObject):
         None
 
         """
-        guids = compas_rhino.objects.get_objects(name="{}.edge.*".format(self.graph.name))  # type: ignore
-        compas_rhino.objects.delete_objects(guids, purge=True)
+        compas_rhino.objects.delete_objects(self._guids_edges, purge=True)
 
     # ==========================================================================
     # draw
     # ==========================================================================
 
-    def draw(
-        self,
-        nodes=None,
-        edges=None,
-        nodecolor=None,
-        edgecolor=None,
-    ):
+    def draw(self):
         """Draw the graph using the chosen visualisation settings.
-
-        Parameters
-        ----------
-        nodes : list[int], optional
-            A list of nodes to draw.
-            Default is None, in which case all nodes are drawn.
-        edges : list[tuple[int, int]], optional
-            A list of edges to draw.
-            The default is None, in which case all edges are drawn.
-        nodecolor : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
-            The color of the nodes.
-        edgecolor : :class:`compas.colors.Color` | dict[tuple[int, int], :class:`compas.colors.Color`], optional
-            The color of the edges.
 
         Returns
         -------
@@ -103,8 +87,8 @@ class GraphObject(RhinoSceneObject, BaseGraphObject):
 
         """
         self.clear()
-        guids = self.draw_nodes(nodes=nodes, color=nodecolor)
-        guids += self.draw_edges(edges=edges, color=edgecolor)
+        guids = self.draw_nodes(nodes=self.show_nodes, color=self.nodecolor, group=self.group)
+        guids += self.draw_edges(edges=self.show_edges, color=self.edgecolor, group=self.group)
         self._guids = guids
         return self.guids
 
@@ -129,6 +113,9 @@ class GraphObject(RhinoSceneObject, BaseGraphObject):
 
         self.nodecolor = color
 
+        if nodes is True:
+            nodes = list(self.graph.nodes())
+
         for node in nodes or self.graph.nodes():  # type: ignore
             name = "{}.node.{}".format(self.graph.name, node)  # type: ignore
             attr = attributes(name=name, color=self.nodecolor[node], layer=self.layer)  # type: ignore
@@ -140,6 +127,8 @@ class GraphObject(RhinoSceneObject, BaseGraphObject):
 
         if group:
             self.add_to_group(group, guids)
+
+        self._guids_nodes = guids
 
         return guids
 
@@ -169,6 +158,9 @@ class GraphObject(RhinoSceneObject, BaseGraphObject):
         arrow = "end" if show_direction else None
         self.edgecolor = color
 
+        if edges is True:
+            edges = list(self.graph.edges())
+
         for edge in edges or self.graph.edges():  # type: ignore
             u, v = edge
 
@@ -183,6 +175,8 @@ class GraphObject(RhinoSceneObject, BaseGraphObject):
 
         if group:
             self.add_to_group(group, guids)
+
+        self._guids_edges = guids
 
         return guids
 
@@ -232,6 +226,8 @@ class GraphObject(RhinoSceneObject, BaseGraphObject):
         if group:
             self.add_to_group(group, guids)
 
+        self._guids_nodelabels = guids
+
         return guids
 
     def draw_edgelabels(self, text, color=None, group=None, fontheight=10, fontface="Arial Regular"):
@@ -280,6 +276,8 @@ class GraphObject(RhinoSceneObject, BaseGraphObject):
         if group:
             self.add_to_group(group, guids)
 
+        self._guids_edgelabels = guids
+
         return guids
 
     # =============================================================================
@@ -322,6 +320,8 @@ class GraphObject(RhinoSceneObject, BaseGraphObject):
         if group:
             self.add_to_group(group, guids)
 
+        self._guids_spheres = guids
+
         return guids
 
     def draw_pipes(self, radius, color=None, group=None):
@@ -360,5 +360,7 @@ class GraphObject(RhinoSceneObject, BaseGraphObject):
 
         if group:
             self.add_to_group(group, guids)
+
+        self._guids_pipes = guids
 
         return guids
