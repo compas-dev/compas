@@ -154,7 +154,7 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
             guids += self.draw_faces(faces=self.show_faces, color=self.facecolor, group=self.group)
         if self.show_cells:
             guids += self.draw_cells(cells=self.show_cells, color=self.cellcolor, group=self.group)
-    
+
         self._guids = guids
 
         return self.guids
