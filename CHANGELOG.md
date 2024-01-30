@@ -22,9 +22,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-* Removed kwargs from `compas.scene.MeshObject.draw`.
-* Removed kwargs from `compas.scene.GraphObject.draw`.
-* Removed kwargs from `compas.scene.VolMeshObject.draw`.
+* Removed kwargs from `compas_rhino.scene.MeshObject.draw`.
+* Removed kwargs from `compas_rhino.scene.GraphObject.draw`.
+* Removed kwargs from `compas_rhino.scene.VolMeshObject.draw`.
 
 ## [2.0.0-beta.4] 2024-01-26
 
