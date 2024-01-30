@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `_guid_mesh`, `_guids_vertices`, `_guids_edges`, `_guids_faces`, `_guids_vertexlabels`, `_guids_edgelables`, `_guids_facelabels`, `_guids_vertexnormals`, `_guids_facenormals`, `_guids_spheres`, `_guids_pipes`, `disjoint` attributes to `compas_rhino.scene.MeshObject`.
 * Added `_guids_nodes`, `_guids_edges`, `_guids_nodelabels`, `_guids_edgelables`, `_guids_spheres`, `_guids_pipes` attributes to `compas_rhino.scene.GraphObject`.
 * Added `_guids_vertices`, `_guids_edges`, `_guids_faces`, `_guids_cells`, `_guids_vertexlabels`, `_guids_edgelables`, `_guids_facelabels`, `_guids_celllabels`, `disjoint` attributes to `compas_rhino.scene.MeshObject`.
+* Added `compas.scene.CellNetworkObject`.
+* Added `compas_rhino.scene.CellNetworkObject`.
+* Added `compas_ghpython.scene.CellNetworkObject`.
+* Added `compas_blender.scene.CellNetworkObject`.
 
 ### Changed
 

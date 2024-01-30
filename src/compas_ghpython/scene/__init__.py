@@ -30,6 +30,7 @@ from compas.geometry import Brep
 from compas.datastructures import Mesh
 from compas.datastructures import Graph
 from compas.datastructures import VolMesh
+from compas.datastructures import CellNetwork
 
 from .sceneobject import GHSceneObject
 from .boxobject import BoxObject
@@ -53,6 +54,7 @@ from .surfaceobject import SurfaceObject
 from .torusobject import TorusObject
 from .vectorobject import VectorObject
 from .volmeshobject import VolMeshObject
+from .cellnetworkobject import CellNetworkObject
 from .brepobject import BrepObject
 
 
@@ -84,6 +86,7 @@ def register_scene_objects():
     register(Torus, TorusObject, context="Grasshopper")
     register(Vector, VectorObject, context="Grasshopper")
     register(VolMesh, VolMeshObject, context="Grasshopper")
+    register(CellNetwork, CellNetworkObject, context="Grasshopper")
     register(Brep, BrepObject, context="Grasshopper")
     print("GH SceneObjects registered.")
 
@@ -111,4 +114,6 @@ __all__ = [
     "TorusObject",
     "VectorObject",
     "VolMeshObject",
+    "CellNetworkObject",
+    "BrepObject",
 ]
