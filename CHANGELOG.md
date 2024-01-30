@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Fixed missing implementation of `Sphere.base`.
+* Fixed bug in `intersection_sphere_sphere`.
+
 ### Removed
 
 ## [2.0.0-beta.4] 2024-01-26
