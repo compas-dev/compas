@@ -1,6 +1,7 @@
 """
 Draws COMPAS geometry in Grasshopper.
 """
+
 from ghpythonlib.componentbase import executingcomponent as component
 
 from compas.scene import SceneObject
