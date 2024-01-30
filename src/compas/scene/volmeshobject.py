@@ -38,14 +38,18 @@ class VolMeshObject(SceneObject):
         The size of the vertices. Default is ``1.0``.
     edgewidth : float
         The width of the edges. Default is ``1.0``.
-    show_vertices : bool
-        Flag for showing or hiding the vertices. Default is ``False``.
-    show_edges : bool
-        Flag for showing or hiding the edges. Default is ``True``.
-    show_faces : bool
-        Flag for showing or hiding the faces. Default is ``True``.
+    show_vertices : Union[bool, sequence[float]]
+        Flag for showing or hiding the vertices, or a list of keys for the vertices to show.
+        Default is ``False``.
+    show_edges : Union[bool, sequence[tuple[int, int]]]
+        Flag for showing or hiding the edges, or a list of keys for the edges to show.
+        Default is ``True``.
+    show_faces : Union[bool, sequence[int]]
+        Flag for showing or hiding the faces, or a list of keys for the faces to show.
+        Default is ``True``.
     show_cells : bool
-        Flag for showing or hiding the cells. Default is ``True``.
+        Flag for showing or hiding the cells, or a list of keys for the cells to show.
+        Default is ``True``.
 
     See Also
     --------

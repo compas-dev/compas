@@ -34,10 +34,10 @@ class MeshObject(SceneObject):
         The size of the vertices. Default is ``1.0``.
     edgewidth : float
         The width of the edges. Default is ``1.0``.
-    show_vertices : Union[bool, sequence[int]]
+    show_vertices : Union[bool, sequence[float]]
         Flag for showing or hiding the vertices, or a list of keys for the vertices to show.
         Default is ``False``.
-    show_edges : Union[bool, sequence[int]]
+    show_edges : Union[bool, sequence[tuple[int, int]]]
         Flag for showing or hiding the edges, or a list of keys for the edges to show.
         Default is ``True``.
     show_faces : Union[bool, sequence[int]]
