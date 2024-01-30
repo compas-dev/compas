@@ -2,13 +2,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from System import Array
-
-try:
-    from Grasshopper import DataTree as Tree
-    from Grasshopper.Kernel.Data import GH_Path as Path
-except ImportError:
-    pass
+import System  # type: ignore
+import Grasshopper  # type: ignore
 
 
 def list_to_ghtree(items, none_and_holes=False, base_path=[0]):
@@ -30,7 +25,7 @@ def list_to_ghtree(items, none_and_holes=False, base_path=[0]):
     """
 
     def process_one_item(items, tree, track):
-        path = Path(Array[int](track))
+        path = Grasshopper.Kernel.Data.GH_Path(System.Array[int](track))
         if len(items) == 0 and none_and_holes:
             tree.EnsurePath(path)
             return
@@ -45,7 +40,7 @@ def list_to_ghtree(items, none_and_holes=False, base_path=[0]):
                 elif item is not None:
                     tree.Add(item, path)
 
-    tree = Tree[object]()
+    tree = Grasshopper.DataTree[object]()
     if items is not None:
         process_one_item(items, tree, base_path[:])
     return tree

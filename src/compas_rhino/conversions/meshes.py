@@ -148,8 +148,12 @@ def vertices_and_faces_to_rhino(
         if len(vertices) != len(vertexcolors):
             raise ValueError("The number of vertex colors does not match the number of vertices.")
 
-    face_callback = face_callback or (lambda _: None)
     mesh = Rhino.Geometry.Mesh()
+
+    if not face_callback:
+
+        def face_callback(face):
+            pass
 
     if disjoint:
         vertexcolors = []
@@ -202,7 +206,6 @@ def vertices_and_faces_to_rhino(
 
     # if color:
     #     mesh.VertexColors.CreateMonotoneMesh(SystemColor.FromArgb(*color.rgb255))
-
     # else:
     if not color:
         if vertexcolors:
