@@ -71,37 +71,37 @@ def items():
 def assert_is_data_equal(obj1, obj2, path=""):
 
     if type(obj1) is not type(obj2):
-        print(f"Type mismatch: {type(obj1)} != {type(obj2)} for {path}:{obj1} and {path}:{obj2}")
+        print("Type mismatch: {} != {} for {}:{} and {}:{}".format(type(obj1), type(obj2), path, obj1, path, obj2))
         return False
 
     if isinstance(obj1, (list, tuple)):
         if len(obj1) != len(obj2):
-            print(f"Length mismatch: {len(obj1)} != {len(obj2)} for {path} and {path}")
+            print("Length mismatch: {} != {} for {} and {}".format(len(obj1), len(obj2), path, path))
             return False
 
         for i, (item1, item2) in enumerate(zip(obj1, obj2)):
-            if not assert_is_data_equal(item1, item2, path=f"{path}[{i}]"):
+            if not assert_is_data_equal(item1, item2, path="{}[{}]".format(path, i)):
                 return False
 
         return True
 
     elif isinstance(obj1, dict):
         if len(obj1) != len(obj2):
-            print(f"Length mismatch: {len(obj1)} != {len(obj2)} for {path} and {path}")
+            print("Length mismatch: {} != {} for {} and {}".format(len(obj1), len(obj2), path, path))
             return False
 
         for key in obj1:
-            if not assert_is_data_equal(obj1[key], obj2[key], path=f'{path}["{key}"]'):
+            if not assert_is_data_equal(obj1[key], obj2[key], path='{}["{}"]'.format(path, key)):
                 return False
 
         return True
 
     elif isinstance(obj1, Data):
-        return assert_is_data_equal(obj1.__data__, obj2.__data__, path=f"{path}.__data__")
+        return assert_is_data_equal(obj1.__data__, obj2.__data__, path="{}.__data__".format(path))
 
     else:
         if obj1 != obj2:
-            print(f"Value mismatch: {obj1} != {obj2} for {path}:{obj1} and {path}:{obj2}")
+            print("Value mismatch: {} != {} for {}:{} and {}:{}".format(obj1, obj2, path, obj1, path, obj2))
             return False
         else:
             return True
