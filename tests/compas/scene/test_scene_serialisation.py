@@ -86,8 +86,8 @@ def assert_is_data_equal(obj1, obj2, path=""):
         return True
 
     elif isinstance(obj1, dict):
-        if len(obj1) != len(obj2):
-            print("Length mismatch: {} != {} for {} and {}".format(len(obj1), len(obj2), path, path))
+        if set(obj1.keys()) != set(obj2.keys()):
+            print("Key mismatch: {} != {} for {} and {}".format(set(obj1.keys()), set(obj2.keys()), path, path))
             return False
 
         for key in obj1:
