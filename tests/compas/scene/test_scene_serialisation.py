@@ -1,4 +1,5 @@
 import pytest  # noqa: F401
+import compas
 
 from compas.data import Data
 from compas.scene import Scene
@@ -107,7 +108,11 @@ def assert_is_data_equal(obj1, obj2, path=""):
             return True
 
 
-def test_scene_serialisation(items):
+def test_scene_serialisation(items, mocker):
+
+    if compas.IPY:
+        mocker.patch("compas.scene.context.compas.is_rhino", return_value=False)
+
     scene1 = Scene()
     for item in items:
         scene1.add(item)
