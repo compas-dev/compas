@@ -3,8 +3,6 @@ from __future__ import division
 from __future__ import print_function
 
 import Rhino  # type: ignore
-from Rhino.Geometry import Interval  # type: ignore
-from Rhino.Geometry import RevSurface  # type: ignore
 
 from compas.geometry import Brep
 from compas.geometry import BrepFace
@@ -62,18 +60,18 @@ class RhinoBrepFace(BrepFace):
     # ==============================================================================
 
     @property
-    def data(self):
+    def __data__(self):
         surface_type, surface, uv_domain, plane = self._get_surface_geometry(self._face.UnderlyingSurface())
         return {
             "surface_type": surface_type,
-            "surface": surface.data,
+            "surface": surface.__data__,
             "uv_domain": uv_domain,
-            "frame": plane_to_compas_frame(plane).data,  # until all shapes have a frame
-            "loops": [loop.data for loop in self._loops],
+            "frame": plane_to_compas_frame(plane).__data__,  # until all shapes have a frame
+            "loops": [loop.__data__ for loop in self._loops],
         }
 
     @classmethod
-    def from_data(cls, data, builder):
+    def __from_data__(cls, data, builder):
         """Construct an object of this type from the provided data.
 
         Parameters
@@ -91,12 +89,12 @@ class RhinoBrepFace(BrepFace):
         """
 
         instance = cls()
-        instance._surface = instance._make_surface_from_data(
+        instance._surface = instance._make_surface__from_data__(
             data["surface_type"], data["surface"], data["uv_domain"], data["frame"]
         )
         face_builder = builder.add_face(instance._surface)
         for loop_data in data["loops"]:
-            RhinoBrepLoop.from_data(loop_data, face_builder)
+            RhinoBrepLoop.__from_data__(loop_data, face_builder)
         instance.native_face = face_builder.result
         return instance
 
@@ -208,7 +206,7 @@ class RhinoBrepFace(BrepFace):
         if isinstance(surface, Rhino.Geometry.NurbsSurface):
             _, plane = surface.FrameAt(0.0, 0.0)
             return "nurbs", RhinoNurbsSurface.from_rhino(surface), uv_domain, plane
-        if isinstance(surface, Rhino.Geometry.RevSurface):
+        if isinstance(surface, Rhino.Geometry.Rhino.Geometry.RevSurface):
             success, cast_surface = surface.TryGetSphere()
             if success:
                 return "sphere", sphere_to_compas(cast_surface), uv_domain, cast_surface.EquatorialPlane
@@ -220,11 +218,11 @@ class RhinoBrepFace(BrepFace):
             "Support for surface type: {} is not yet implemented.".format(surface.__class__.__name__)
         )
 
-    def _make_surface_from_data(self, surface_type, surface_data, uv_domain, frame_data):
+    def _make_surface__from_data__(self, surface_type, surface_data, uv_domain, frame_data):
         u_domain, v_domain = uv_domain
-        frame = Frame.from_data(frame_data)  # workaround until all shapes have a frame
+        frame = Frame.__from_data__(frame_data)  # workaround until all shapes have a frame
         if surface_type == "plane":
-            frame = Frame.from_data(surface_data)  # redundancy in shapes which already have a frame
+            frame = Frame.__from_data__(surface_data)  # redundancy in shapes which already have a frame
             surface = RhinoSurface.from_frame(frame, u_domain, v_domain)
         elif surface_type == "sphere":
             sphere = self._make_sphere_surface(surface_data, u_domain, v_domain, frame)
@@ -233,34 +231,36 @@ class RhinoBrepFace(BrepFace):
             cylinder = self._make_cylinder_surface(surface_data, u_domain, v_domain, frame)
             surface = RhinoSurface.from_rhino(cylinder)
         elif surface_type == "nurbs":
-            surface = RhinoNurbsSurface.from_data(surface_data)
+            surface = RhinoNurbsSurface.__from_data__(surface_data)
         elif surface_type == "torus":
             raise NotImplementedError("Support for torus surface is not yet implemented!")
-        surface.rhino_surface.SetDomain(0, Interval(*u_domain))
-        surface.rhino_surface.SetDomain(1, Interval(*v_domain))
+        else:
+            raise NotImplementedError("Support for surface type: {} is not yet implemented.".format(surface_type))
+        surface.rhino_surface.SetDomain(0, Rhino.Geometry.Interval(*u_domain))
+        surface.rhino_surface.SetDomain(1, Rhino.Geometry.Interval(*v_domain))
         return surface
 
     @staticmethod
     def _make_cylinder_surface(surface_data, u_domain, v_domain, frame):
-        cylinder = Cylinder.from_data(surface_data)
+        cylinder = Cylinder.__from_data__(surface_data)
         cylinder = cylinder_to_rhino(cylinder)
         cylinder.BasePlane = frame_to_rhino_plane(frame)
-        surface = RevSurface.CreateFromCylinder(cylinder)
-        surface.SetDomain(0, Interval(*u_domain))
-        surface.SetDomain(1, Interval(*v_domain))
+        surface = Rhino.Geometry.RevSurface.CreateFromCylinder(cylinder)
+        surface.SetDomain(0, Rhino.Geometry.Interval(*u_domain))
+        surface.SetDomain(1, Rhino.Geometry.Interval(*v_domain))
         return surface
 
     @staticmethod
     def _make_sphere_surface(surface_data, u_domain, v_domain, frame):
-        sphere = Sphere.from_data(surface_data)
+        sphere = Sphere.__from_data__(surface_data)
         sphere = sphere_to_rhino(sphere)
-        # seems Sphere => RevSurface conversion modifies the orientation of the sphere
+        # seems Sphere => Rhino.Geometry.RevSurface conversion modifies the orientation of the sphere
         # setting the plane here is overriden by this modification and surface ends up oriented differntly than
         # original.
         # sphere.EquatorialPlane = frame_to_rhino_plane(frame)
-        surface = RevSurface.CreateFromSphere(sphere)
-        surface.SetDomain(0, Interval(*u_domain))
-        surface.SetDomain(1, Interval(*v_domain))
+        surface = Rhino.Geometry.RevSurface.CreateFromSphere(sphere)
+        surface.SetDomain(0, Rhino.Geometry.Interval(*u_domain))
+        surface.SetDomain(1, Rhino.Geometry.Interval(*v_domain))
         return surface
 
     # ==============================================================================

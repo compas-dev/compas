@@ -2,16 +2,16 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import Rhino  # type: ignore
+
 from compas.tolerance import TOL
 
 from compas.geometry import Point
 from compas.datastructures import Mesh
 from compas.utilities import memoize
 
-from Rhino.Geometry import NurbsSurface as RhinoNurbsSurface  # type: ignore
-from Rhino.Geometry import Brep as RhinoBrep  # type: ignore
-
 from .exceptions import ConversionError
+
 from .geometry import point_to_rhino
 from .geometry import point_to_compas
 
@@ -49,12 +49,12 @@ def data_to_rhino_surface(data):
     :rhino:`Rhino.Geometry.NurbsSurface`
 
     """
-    points = [[Point.from_data(point) for point in row] for row in data["points"]]
+    points = [[Point.__from_data__(point) for point in row] for row in data["points"]]
 
     nu = len(points[0])
     nv = len(points)
 
-    nurbs = RhinoNurbsSurface.Create(3, False, data["u_degree"] + 1, data["v_degree"] + 1, nu, nv)
+    nurbs = Rhino.Geometry.NurbsSurface.Create(3, False, data["u_degree"] + 1, data["v_degree"] + 1, nu, nv)
     for i in range(nu):
         for j in range(nv):
             nurbs.Points.SetPoint(i, j, point_to_rhino(points[j][i]))
@@ -155,14 +155,12 @@ def surface_to_compas(surface):
     :class:`compas.geometry.Surface`
 
     """
-    from compas_rhino.geometry import RhinoNurbsSurface
-
-    brep = RhinoBrep.TryConvertBrep(surface)
+    brep = Rhino.Geometry.Brep.TryConvertBrep(surface)
 
     if brep.Surfaces.Count > 1:  # type: ignore
         raise ConversionError("Conversion of a BRep with multiple underlying surface is currently not supported.")
 
-    return RhinoNurbsSurface.from_rhino(brep.Surfaces[0])
+    return Rhino.Geometry.NurbsSurface.from_rhino(brep.Surfaces[0])
 
 
 def surface_to_compas_mesh(surface, cls=None, facefilter=None, cleanup=False):
@@ -190,7 +188,7 @@ def surface_to_compas_mesh(surface, cls=None, facefilter=None, cleanup=False):
     Examples
     --------
     >>> import compas_rhino
-    >>> from compas_rhino.geometry import RhinoSurface
+    >>> from compas_rhino8.geometry import RhinoSurface
     >>> from compas.scene import Scene
 
     >>> def facefilter(face):
@@ -202,18 +200,18 @@ def surface_to_compas_mesh(surface, cls=None, facefilter=None, cleanup=False):
     ...
 
     >>> guid = compas_rhino.select_surface()
-    >>> surf = RhinoSurface.from_guid(guid)
+    >>> surf = Rhino.Geometry.Surface.from_guid(guid)
     >>> mesh = surf.to_compas(facefilter=facefilter)
 
     >>> scene = Scene()
     >>> scene.add(mesh, layer="Blocks")
-    >>> scene.redraw()
+    >>> scene.draw()
 
     """
     if not surface.HasBrepForm:
         return
 
-    brep = RhinoBrep.TryConvertBrep(surface)
+    brep = Rhino.Geometry.Brep.TryConvertBrep(surface)
 
     if facefilter and callable(facefilter):
         brepfaces = [face for face in brep.Faces if facefilter(face)]
@@ -303,7 +301,7 @@ def surface_to_compas_quadmesh(surface, nu, nv=None, weld=False, facefilter=None
     if not surface.HasBrepForm:
         return
 
-    brep = RhinoBrep.TryConvertBrep(surface)
+    brep = Rhino.Geometry.Brep.TryConvertBrep(surface)
 
     if facefilter and callable(facefilter):
         faces = [face for face in brep.Faces if facefilter(face)]

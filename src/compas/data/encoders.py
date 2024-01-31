@@ -72,7 +72,7 @@ class DataEncoder(json.JSONEncoder):
     * iterables to lists; and
     * :class:`compas.data.Data` objects,
       such as geometric primitives and shapes, data structures, robots, ...,
-      to a dict with the following structure: ``{'dtype': o.dtype, 'value': o.data}``
+      to a dict with the following structure: ``{'dtype': o.__dtype__, 'data': o.__data__}``
 
     See Also
     --------
@@ -167,9 +167,9 @@ class DataDecoder(json.JSONDecoder):
 
     The reconstruction is possible if
 
-    * the serialized data has the following structure: ``{"dtype": "...", 'value': {...}}``;
+    * the serialized data has the following structure: ``{"dtype": "...", 'data': {...}}``;
     * a class can be imported into the current scope from the info in ``o["dtype"]``; and
-    * the imported class has a method ``from_data``.
+    * the imported class has a method ``__from_data__``.
 
     See Also
     --------
@@ -231,12 +231,12 @@ class DataDecoder(json.JSONDecoder):
 
         data = o["data"]
         guid = o.get("guid")
-        attrs = o.get("attrs")
+        name = o.get("name")
 
-        # Kick-off from_data from a rebuilt Python dictionary instead of the C# data type
+        # Kick-off __from_data__ from a rebuilt Python dictionary instead of the C# data type
         if IDictionary and isinstance(o, IDictionary[str, object]):
             data = {key: data[key] for key in data.Keys}
 
-        obj = cls.__jsonload__(data, guid, attrs)
+        obj = cls.__jsonload__(data, guid=guid, name=name)
 
         return obj

@@ -36,6 +36,8 @@ class Frame(Geometry):
         The x-axis of the frame. Defaults to the unit X vector.
     yaxis : [float, float, float] | :class:`compas.geometry.Vector`, optional
         The y-axis of the frame. Defaults to the unit Y vector.
+    name : str, optional
+        The name of the frame.
 
     Attributes
     ----------
@@ -81,8 +83,16 @@ class Frame(Geometry):
         "required": ["point", "xaxis", "yaxis"],
     }
 
-    def __init__(self, point, xaxis=None, yaxis=None, **kwargs):
-        super(Frame, self).__init__(**kwargs)
+    @property
+    def __data__(self):
+        return {
+            "point": self.point.__data__,
+            "xaxis": self.xaxis.__data__,
+            "yaxis": self.yaxis.__data__,
+        }
+
+    def __init__(self, point, xaxis=None, yaxis=None, name=None):
+        super(Frame, self).__init__(name=name)
         self._point = None
         self._xaxis = None
         self._yaxis = None
@@ -129,18 +139,6 @@ class Frame(Geometry):
         if not hasattr(other, "__iter__") or not hasattr(other, "__len__") or len(self) != len(other):
             return False
         return TOL.is_allclose(self, other, atol=tol)
-
-    # ==========================================================================
-    # Data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return {
-            "point": self.point.data,
-            "xaxis": self.xaxis.data,
-            "yaxis": self.yaxis.data,
-        }
 
     # ==========================================================================
     # Properties

@@ -157,6 +157,8 @@ class Polyhedron(Geometry):
         The point locations of the vertices of the polyhedron.
     faces : list[list[int]]
         The faces as a list of index lists.
+    name : str, optional
+        The name of the polyhedron.
 
     Attributes
     ----------
@@ -195,8 +197,12 @@ class Polyhedron(Geometry):
         "required": ["vertices", "faces"],
     }
 
-    def __init__(self, vertices, faces, **kwargs):
-        super(Polyhedron, self).__init__(**kwargs)
+    @property
+    def __data__(self):
+        return {"vertices": self.vertices, "faces": self.faces}
+
+    def __init__(self, vertices, faces, name=None):
+        super(Polyhedron, self).__init__(name=name)
         self._vertices = None
         self._faces = None
         self.vertices = vertices
@@ -257,14 +263,6 @@ class Polyhedron(Geometry):
 
     def __or__(self, other):
         return self.__add__(other)
-
-    # ==========================================================================
-    # Data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return {"vertices": self.vertices, "faces": self.faces}
 
     # ==========================================================================
     # Properties

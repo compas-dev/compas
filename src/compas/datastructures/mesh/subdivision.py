@@ -150,7 +150,7 @@ def mesh_subdivide_tri(mesh, k=1):
     for _ in range(k):
         for fkey in list(subd.faces()):
             subd.insert_vertex(fkey)
-    return cls.from_data(subd.data)
+    return cls.__from_data__(subd.__data__)
 
 
 def mesh_subdivide_quad(mesh, k=1):
@@ -205,7 +205,7 @@ def mesh_subdivide_quad(mesh, k=1):
                 subd.facedata[newface]["path"] = subd.facedata[face]["path"] + [i]
             del subd.face[face]
             del subd.facedata[face]
-    subd2 = cls.from_data(subd.data)
+    subd2 = cls.__from_data__(subd.__data__)
     return subd2
 
 
@@ -248,7 +248,7 @@ def mesh_subdivide_corner(mesh, k=1):
             subd.add_face(center)
             del subd.face[fkey]
         mesh = subd
-    subd2 = cls.from_data(mesh.data)
+    subd2 = cls.__from_data__(mesh.__data__)
     return subd2
 
 
@@ -432,7 +432,7 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
         mesh = subd
 
-    subd2 = cls.from_data(mesh.data)
+    subd2 = cls.__from_data__(mesh.__data__)
     return subd2
 
 
@@ -547,7 +547,7 @@ def mesh_subdivide_doosabin(mesh, k=1, fixed=None):
 
         mesh = subd
 
-    subd2 = cls.from_data(mesh.data)
+    subd2 = cls.__from_data__(mesh.__data__)
     return subd2
 
 
@@ -615,7 +615,7 @@ def mesh_subdivide_frames(mesh, offset, add_windows=False):
         if add_windows:
             subd.add_face(window)
 
-    return cls.from_data(subd.data)
+    return cls.__from_data__(subd.__data__)
 
 
 def trimesh_subdivide_loop(mesh, k=1, fixed=None):
@@ -756,4 +756,4 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
 
             del subd.face[fkey]
 
-    return cls.from_data(subd.data)
+    return cls.__from_data__(subd.__data__)

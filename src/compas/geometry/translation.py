@@ -10,6 +10,7 @@ following online resources:
 Many thanks to Christoph Gohlke, Martin John Baker, Sachin Joglekar and Andrew
 Ippoliti for providing code and documentation.
 """
+
 from compas.utilities import flatten
 from compas.geometry import allclose
 from compas.geometry import matrix_from_translation
@@ -26,6 +27,8 @@ class Translation(Transformation):
         A 4x4 matrix (or similar) representing a translation.
     check : bool, optional
         If ``True``, the provided matrix will be checked for validity.
+    name : str, optional
+        The name of the transformation.
 
     Attributes
     ----------
@@ -66,12 +69,12 @@ class Translation(Transformation):
 
     """
 
-    def __init__(self, matrix=None, check=False):
+    def __init__(self, matrix=None, check=False, name=None):
         if matrix and check:
             translation = translation_from_matrix(matrix)
             if not allclose(flatten(matrix), flatten(matrix_from_translation(translation))):
                 raise ValueError("This is not a proper translation matrix.")
-        super(Translation, self).__init__(matrix=matrix)
+        super(Translation, self).__init__(matrix=matrix, name=name)
 
     @property
     def translation_vector(self):

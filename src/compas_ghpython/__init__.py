@@ -6,7 +6,10 @@ import zipfile
 import compas
 import compas_rhino
 
-__version__ = "2.0.0-beta.2"
+from compas_rhino import unload_modules  # noqa: F401
+
+
+__version__ = "2.0.0-beta.4"
 
 if compas.is_rhino():
     from .utilities import *  # noqa: F401 F403
@@ -32,6 +35,28 @@ __all_plugins__ = [
 def _get_grasshopper_special_folder(version, folder_name):
     grasshopper = compas_rhino._get_rhino_grasshopperplugin_path(version)
     return os.path.join(grasshopper, folder_name)
+
+
+def create_id(component, name):
+    """Creates an identifier string using `name` and the ID of the component passed to it.
+
+    The resulting string can be used to store data elements in the global sticky dictionary.
+    This can be useful when setting variable in a condition activated by a button.
+
+    Parameters
+    ----------
+    components : `ghpythonlib.componentbase.executingcomponent`
+        The components instance. Use `self` in advanced (SDK) mode and `ghenv.Components` otherwise.
+    name : str
+        A user chosen prefix for the identifier.
+
+    Returns
+    -------
+    str
+        For example: `somename55dd-c7cc-43c8-9d6a-65e4c8503abd`
+
+    """
+    return "{}_{}".format(name, component.InstanceGuid)
 
 
 # =============================================================================

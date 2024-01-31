@@ -10,6 +10,7 @@ following online resources:
 Many thanks to Christoph Gohlke, Martin John Baker, Sachin Joglekar and Andrew
 Ippoliti for providing code and documentation.
 """
+
 from compas.data import Data
 
 from compas.tolerance import TOL
@@ -45,6 +46,8 @@ class Transformation(Data):
     ----------
     matrix : list[list[float]], optional
         The 4x4 transformation matrix.
+    name : str, optional
+        The name of the transformation.
 
     Attributes
     ----------
@@ -95,8 +98,12 @@ class Transformation(Data):
         "required": ["matrix"],
     }
 
-    def __init__(self, matrix=None):
-        super(Transformation, self).__init__()
+    @property
+    def __data__(self):
+        return {"matrix": self.matrix}
+
+    def __init__(self, matrix=None, name=None):
+        super(Transformation, self).__init__(name=name)
         if not matrix:
             matrix = identity_matrix(4)
         self.matrix = matrix
@@ -142,14 +149,6 @@ class Transformation(Data):
 
     def __len__(self):
         return len(self.matrix)
-
-    # ==========================================================================
-    # Data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return {"matrix": self.matrix}
 
     # ==========================================================================
     # Properties

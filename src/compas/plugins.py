@@ -2,6 +2,7 @@
 COMPAS has an extensible architecture based on plugins that allows to
 customize and extend the functionality of the core framework.
 """
+
 # The COMPAS plugin system owes a lot to pluggy, the pytest plugin framework
 # There are portions of code loosely based on pluggy's
 # and while it is not strictly derivative work, we include

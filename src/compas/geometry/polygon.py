@@ -43,6 +43,8 @@ class Polygon(Geometry):
     ----------
     points : list[[float, float, float] | :class:`compas.geometry.Point`]
         An ordered list of points.
+    name : str, optional
+        The name of the polygon.
 
     Attributes
     ----------
@@ -86,8 +88,12 @@ class Polygon(Geometry):
         "required": ["points"],
     }
 
-    def __init__(self, points, **kwargs):
-        super(Polygon, self).__init__(**kwargs)
+    @property
+    def __data__(self):
+        return {"points": [point.__data__ for point in self.points]}
+
+    def __init__(self, points, name=None):
+        super(Polygon, self).__init__(name=name)
         self._points = []
         self._lines = []
         self._vertices = []
@@ -114,14 +120,6 @@ class Polygon(Geometry):
         if not hasattr(other, "__iter__") or not hasattr(other, "__len__") or len(self) != len(other):
             return False
         return allclose(self, other)
-
-    # ==========================================================================
-    # Data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return {"points": [point.data for point in self.points]}
 
     # ==========================================================================
     # Properties

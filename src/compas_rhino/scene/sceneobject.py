@@ -4,7 +4,7 @@ from __future__ import division
 
 import scriptcontext as sc  # type: ignore
 
-import compas_rhino
+import compas_rhino.layers
 from compas.scene import SceneObject
 
 
@@ -72,4 +72,4 @@ class RhinoSceneObject(SceneObject):
 
         """
         if self.layer:
-            compas_rhino.clear_layer(self.layer)
+            compas_rhino.layers.clear_layer(self.layer)

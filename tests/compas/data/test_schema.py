@@ -13,10 +13,10 @@ def test_schema_dataclasses():
 
 def test_schema_dataclasses_typeschema():
     for cls in compas_dataclasses():
-        dtype = dataclass_typeschema(cls)
-        modname, clsname = dtype["const"].split("/")  # type: ignore
+        __dtype__ = dataclass_typeschema(cls)
+        modefault_node_attributesme, clsname = __dtype__["const"].split("/")  # type: ignore
         assert cls.__name__ == clsname
-        # module = __import__(modname, fromlist=[clsname])
+        # module = __import__(modefault_node_attributesme, fromlist=[clsname])
         # assert hasattr(module, clsname)
         # assert getattr(module, clsname) == cls
 

@@ -221,7 +221,7 @@ class Curve(Geometry):
         points = [self.point_at(t) for t in linspace(start, end, n)]
         return points
 
-    def to_polyline(self, n=16, domain=None):
+    def to_polyline(self, n=128, domain=None):
         """Convert the curve to a polyline.
 
         Parameters

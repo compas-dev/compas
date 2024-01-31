@@ -2,6 +2,7 @@
 This package provides scene object plugins for visualising COMPAS objects in Grasshopper.
 When working in GH Python components, :class:`compas.scene.SceneObject` will automatically use the corresponding GHPython scene object for each COMPAS object type.
 """
+
 from __future__ import absolute_import
 
 from compas.plugins import plugin
@@ -58,11 +59,6 @@ from .brepobject import BrepObject
 
 @plugin(category="drawing-utils", pluggable_name="clear", requires=["Grasshopper"])
 def clear_GH(guids=None):
-    pass
-
-
-@plugin(category="drawing-utils", pluggable_name="redraw", requires=["Grasshopper"])
-def redraw_GH():
     pass
 
 

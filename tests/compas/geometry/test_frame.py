@@ -41,7 +41,7 @@ def test_frame_data():
     xaxis = [random(), random(), random()]
     yaxis = [random(), random(), random()]
     frame = Frame(point, xaxis, yaxis)
-    other = Frame.from_data(json.loads(json.dumps(frame.data)))
+    other = Frame.__from_data__(json.loads(json.dumps(frame.__data__)))
 
     assert allclose(frame.point, other.point, tol=1e-12)
     assert allclose(frame.xaxis, other.xaxis, tol=1e-12)
@@ -49,8 +49,8 @@ def test_frame_data():
     assert frame.guid != other.guid
 
     if not compas.IPY:
-        assert Frame.validate_data(frame.data)
-        assert Frame.validate_data(other.data)
+        assert Frame.validate_data(frame.__data__)
+        assert Frame.validate_data(other.__data__)
 
 
 def test_frame_predefined():

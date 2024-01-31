@@ -1,7 +1,7 @@
 import bpy  # type: ignore
 from typing import List, Iterable, Text
 
-from compas_blender.utilities.data import delete_unused_data
+from compas_blender.data import delete_unused_data
 
 
 # ==============================================================================

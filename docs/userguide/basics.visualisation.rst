@@ -9,7 +9,7 @@ COMPAS (data) objects can be visualised by placing them into a "scene".
 >>> box = Box(1)
 >>> scene = Scene()
 >>> scene.add(box)
->>> scene.redraw()
+>>> scene.draw()
 
 .. When a COMPAS object is added, the scene automatically creates a corresponding scene object for the current/active visualisation context.
 .. Currently, four visualisation contexts are supported: COMPAS Viewer (default), Rhino, Grasshopper, and Blender.
@@ -114,3 +114,31 @@ To use a different scene object as the parent, the parent attribute of the scene
 >>> boxobj = scene.add(box, parent=pointobj)
 >>> boxobj.parent
 PointObject
+
+
+Scene Context
+=============
+
+Depending on where the code is executed, the "scene" will detect the current visualisation context.
+If the code is executed in the Rhino, the scene context will be automatically set as "Rhino". 
+
+>>> from compas.scene import Scene
+>>> from compas.geometry import Box
+>>> scene = Scene()
+>>> scene.context
+Rhino
+
+For every context, the appropriate scene object implementations will be used automatically.
+
+>>> box = Box.from_width_height_depth(1, 1, 1)
+>>> scene.add(box)
+<compas_rhino.scene.BoxObject>
+
+Users can also set the scene context manually:
+
+>>> scene = Scene(context="MyContextName")
+>>> scene.context
+MyContextName
+
+The currently supported contexts are: "Viewer", "Rhino", "Grasshopper", "Blender" and None.
+For working with different contexts please refer to the next section "Tutorial: Working in CAD".

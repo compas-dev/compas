@@ -5,7 +5,6 @@ import compas
 from compas.plugins import PluginValidator
 from compas.plugins import pluggable
 
-from .exceptions import NoSceneObjectContextError
 from .exceptions import SceneObjectNotRegisteredError
 
 ITEM_SCENEOBJECT = defaultdict(dict)
@@ -13,6 +12,17 @@ ITEM_SCENEOBJECT = defaultdict(dict)
 
 @pluggable(category="drawing-utils")
 def clear(guids=None):
+    """Pluggable to clear the current context of the scene or a list of objects through guids.
+
+    Parameters
+    ----------
+    guids : list, optional
+        A list of guids to clear.
+
+    Returns
+    -------
+    None
+    """
     raise NotImplementedError
 
 
@@ -20,11 +30,37 @@ clear.__pluggable__ = True
 
 
 @pluggable(category="drawing-utils")
-def redraw():
-    raise NotImplementedError
+def before_draw():
+    """Pluggable to perform operations before drawing the scene. This function is automatically called in the beginning of `compas.scene.Scene.draw()`.
+
+    Returns
+    -------
+    None
+
+    """
+    pass
 
 
-redraw.__pluggable__ = True
+before_draw.__pluggable__ = True
+
+
+@pluggable(category="drawing-utils")
+def after_draw(drawn_objects):
+    """Pluggable to perform operations after drawing the scene. This function is automatically called at the end of `compas.scene.Scene.draw()`.
+    Parameters
+    ----------
+    drawn_objects : list
+        A list of objects that were drawn.
+
+    Returns
+    -------
+    None
+
+    """
+    pass
+
+
+after_draw.__pluggable__ = True
 
 
 @pluggable(category="factories", selector="collect_all")
@@ -69,7 +105,7 @@ def is_viewer_open():
     return Scene.viewerinstance is not None
 
 
-def _detect_current_context():
+def detect_current_context():
     """Chooses an appropriate context depending on available contexts and open instances. with the following priority:
     1. Viewer
     2. Plotter
@@ -82,6 +118,7 @@ def _detect_current_context():
         Name of an available context, used as key in :attr:`SceneObject.ITEM_SCENEOBJECT`
 
     """
+
     if is_viewer_open():
         return "Viewer"
     if compas.is_grasshopper():
@@ -93,12 +130,13 @@ def _detect_current_context():
     other_contexts = [v for v in ITEM_SCENEOBJECT.keys()]
     if other_contexts:
         return other_contexts[0]
-    raise NoSceneObjectContextError()
+
+    return None
 
 
 def _get_sceneobject_cls(data, **kwargs):
     # in any case user gets to override the choice
-    context_name = kwargs.get("context") or _detect_current_context()
+    context_name = kwargs.get("context") or detect_current_context()
 
     dtype = type(data)
     cls = None

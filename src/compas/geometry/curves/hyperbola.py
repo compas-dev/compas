@@ -43,6 +43,8 @@ class Hyperbola(Conic):
     frame : :class:`compas.geometry.Frame`, optional
         The local coordinate system of the hyperbola.
         The default value is ``None``, in which case the hyperbola is constructed in the XY plane of the world coordinate system.
+    name : str, optional
+        The name of the hyperbola.
 
     Attributes
     ----------
@@ -117,11 +119,27 @@ class Hyperbola(Conic):
             "minor": {"type": "number", "minimum": 0},
             "frame": Frame.DATASCHEMA,
         },
-        "required": ["frame", "major", "minor"],
+        "required": ["major", "minor", "frame"],
     }
 
-    def __init__(self, major, minor, frame=None, **kwargs):
-        super(Hyperbola, self).__init__(frame=frame, **kwargs)
+    @property
+    def __data__(self):
+        return {
+            "major": self.major,
+            "minor": self.minor,
+            "frame": self.frame.__data__,
+        }
+
+    @classmethod
+    def __from_data__(cls, data):
+        return cls(
+            major=data["major"],
+            minor=data["minor"],
+            frame=Frame.__from_data__(data["frame"]),
+        )
+
+    def __init__(self, major, minor, frame=None, name=None):
+        super(Hyperbola, self).__init__(frame=frame, name=name)
         self._major = None
         self._minor = None
         self.major = major
@@ -140,26 +158,6 @@ class Hyperbola(Conic):
             return self.major == other.major and self.minor == other.minor, self.frame == other.frame
         except AttributeError:
             return False
-
-    # ==========================================================================
-    # Data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return {
-            "major": self.major,
-            "minor": self.minor,
-            "frame": self.frame.data,
-        }
-
-    @classmethod
-    def from_data(cls, data):
-        return cls(
-            major=data["major"],
-            minor=data["minor"],
-            frame=Frame.from_data(data["frame"]),
-        )
 
     # ==========================================================================
     # Properties

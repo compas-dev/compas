@@ -21,8 +21,14 @@ class Quaternion(Geometry):
     ----------
     w : float
         The scalar (real) part of a quaternion.
-    x, y, z : float
-        Components of the vector (complex, imaginary) part of a quaternion.
+    x : float
+        X component of the vector (complex, imaginary) part of a quaternion.
+    y : float
+        Y component of the vector (complex, imaginary) part of a quaternion.
+    z : float
+        Z component of the vector (complex, imaginary) part of a quaternion.
+    name : str, optional
+        The name of the transformation.
 
     Attributes
     ----------
@@ -121,8 +127,12 @@ class Quaternion(Geometry):
         "required": ["w", "x", "y", "z"],
     }
 
-    def __init__(self, w, x, y, z, **kwargs):
-        super(Quaternion, self).__init__(**kwargs)
+    @property
+    def __data__(self):
+        return {"w": self.w, "x": self.x, "y": self.y, "z": self.z}
+
+    def __init__(self, w, x, y, z, name=None):
+        super(Quaternion, self).__init__(name=name)
         self._w = None
         self._x = None
         self._y = None
@@ -169,14 +179,6 @@ class Quaternion(Geometry):
 
     def __len__(self):
         return 4
-
-    # ==========================================================================
-    # Data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return {"w": self.w, "x": self.x, "y": self.y, "z": self.z}
 
     # ==========================================================================
     # Properties

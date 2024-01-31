@@ -9,7 +9,6 @@ from __future__ import absolute_import
 from __future__ import division
 
 from .exceptions import SceneObjectNotRegisteredError
-from .exceptions import NoSceneObjectContextError
 from .sceneobject import SceneObject
 from .meshobject import MeshObject
 from .graphobject import GraphObject
@@ -17,7 +16,8 @@ from .geometryobject import GeometryObject
 from .volmeshobject import VolMeshObject
 
 from .context import clear
-from .context import redraw
+from .context import before_draw
+from .context import after_draw
 from .context import register_scene_objects
 from .context import get_sceneobject_cls
 from .context import register
@@ -26,9 +26,23 @@ from .scene import Scene
 from .scene import SceneObjectNode
 from .scene import SceneTree
 
+from compas.plugins import plugin
+from compas.geometry import Geometry
+from compas.datastructures import Mesh
+from compas.datastructures import Graph
+from compas.datastructures import VolMesh
+
+
+@plugin(category="factories", pluggable_name="register_scene_objects")
+def register_scene_objects_base():
+    register(Geometry, GeometryObject, context=None)
+    register(Mesh, MeshObject, context=None)
+    register(Graph, GraphObject, context=None)
+    register(VolMesh, VolMeshObject, context=None)
+
+
 __all__ = [
     "SceneObjectNotRegisteredError",
-    "NoSceneObjectContextError",
     "SceneObject",
     "MeshObject",
     "GraphObject",
@@ -38,7 +52,8 @@ __all__ = [
     "SceneObjectNode",
     "SceneTree",
     "clear",
-    "redraw",
+    "before_draw",
+    "after_draw",
     "register_scene_objects",
     "get_sceneobject_cls",
     "register",

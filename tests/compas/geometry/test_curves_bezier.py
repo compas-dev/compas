@@ -31,7 +31,7 @@ def test_bezier_create_with_frame():
 
 def test_bezier_data():
     curve = Bezier([[-1, 0, 0], [0, 1, 0], [+1, 0, 0]])
-    other = Bezier.from_data(json.loads(json.dumps(curve.data)))
+    other = Bezier.__from_data__(json.loads(json.dumps(curve.__data__)))
 
     assert curve.points == other.points
     assert curve.frame.point == other.frame.point
@@ -39,8 +39,8 @@ def test_bezier_data():
     assert allclose(curve.frame.yaxis, other.frame.yaxis, tol=1e-12)
 
     if not compas.IPY:
-        assert Bezier.validate_data(curve.data)
-        assert Bezier.validate_data(other.data)
+        assert Bezier.validate_data(curve.__data__)
+        assert Bezier.validate_data(other.__data__)
 
 
 # =============================================================================

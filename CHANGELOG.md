@@ -9,19 +9,91 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+* Fixed missing implementation of `Sphere.base`.
+* Fixed bug in `intersection_sphere_sphere`.
+
+### Removed
+
+## [2.0.0-beta.4] 2024-01-26
+
+### Added
+
+* Added `compas_rhino.objects`.
+* Added `compas_rhino.layers`.
+* Added `compas_rhino.install_with_pip`.
+* Added `before_draw` pluggable to `compas.scene.Scene.draw`.
+* Added `after_draw` pluggable to `compas.scene.Scene.draw`.
+* Added description in tutorial about `compas.scene.context`.
+* Added `compas_blender.data`.
+* Added `compas_blender.collections`.
+* Added `compas_blender.objects`.
+* Added `compas_rhino.ui`.
+* Added `compas_rhino.unload_modules`.
+* Added `compas_ghpython.unload_modules`.
+* Added `compas_ghpython.sets`.
+* Added `compas_ghpython.timer`.
+* Added `scale` and `scaled` to `compas.datastructures.Datastructure`.
+* Added `rotate` and `rotated` to `compas.datastructures.Datastructure`.
+* Added `translate` and `translated` to `compas.datastructures.Datastructure`.
+
+### Changed
+
+* Changed `compas.tolerance.Tolerance` into singleton.
+* Changed `compas_rhino.geometry.curves.nursb.RhinoNurbsCurve` to use private data API.
+* Changed `compas_rhino.geometry.surfaces.nursb.RhinoNurbsSurface` to use private data API.
+* Changed `compas.scene.Scene.redraw` to `draw`.
+* Fixed `register_scene_objects` not called when there is a context given in kwargs of `SceneObject`.
+
+### Removed
+
+* Removed `compas_blender.geometry.curves`.
+* Removed `compas_rhino.utilities.objects`.
+* Removed `compas_rhino.utilities.layers`.
+* Removed `compas_rhino.utilities.constructors`.
+* Removed `compas_rhino.utilities.document`.
+* Removed `compas_rhino.utilities.geometry`.
+* Removed `compas_rhino.utilities.misc`.
+* Removed `compas_blender.utilities.data`.
+* Removed `compas_blender.utilities.collections`.
+* Removed `compas_blender.utilities.objects`.
+* Removed `compas_ghpython.utilities.sets`.
+* Removed `compas_ghpython.utilities.timer`.
+
+## [2.0.0-beta.3] 2024-01-19
+
+### Added
+
 * Added `compas.dtastructures.Network` as alias of `compas.datastructures.Graph`.
+* Added `compas.data.Data.name` and included it in serialisation in case `compas.data.Data._name is not None`.
 
 ### Changed
 
 * Merged `compas.datastructures.Halfedge` into `compas.datastructures.Mesh`.
 * Merged `compas.datastructures.Network` into `compas.datastructures.Graph`.
 * Merged `compas.datastructures.Halfface` into `compas.datastructures.VolMesh`.
+* Fixed `RhinoBrep` doesn't get capped after trimming.
+* Changed `compas.data.Data.data` to `compas.data.Data.__data__`.
+* Changed `compas.data.Data.dtype` to `compas.data.Data.__dtype__`.
+* Changed `compas.data.Data.from_data` to `compas.data.Data.__from_data__`.
+* Changed `compas.geometry.triangulation_earclip` face vertex index reversion when the polygon is flipped.
 
 ### Removed
 
 * Removed `compas.datastructures.Network`.
 * Removed `compas.datastructures.Halfedge`.
 * Removed `compas.datastructures.Halfface`.
+* Removed `compas.data.Data.attributes`.
+* Removed `compas.data.Datastructure.attributes`.
+* Removed `attributes` from `compas.datastructures.Assembly.data`.
+* Removed `attributes` from `compas.datastructures.CellNetwork.data`.
+* Removed `attributes` from `compas.datastructures.Graph.data`.
+* Removed `attributes` from `compas.datastructures.Mesh.data`.
+* Removed `attributes` from `compas.datastructures.Tree.data`.
+* Removed `attributes` from `compas.datastructures.VolMesh.data`.
+* Removed `compas.data.Data.to_data`.
+* Removed `compas.rpc.XFunc`.
 
 ## [2.0.0-beta.2] 2024-01-12
 
@@ -85,6 +157,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed typo in name `Rhino.Geometry.MeshingParameters` in `compas_rhino.geometry.RhinoBrep.to_meshes()`.
 * Fixed `TypeErrorException` when serializing a `Mesh` which has been converted from Rhino.
 * Fixed color conversions in `compas_rhion.conversions.mesh_to_compas`.
+* Changed `SceneObject` registration to allow for `None` context.
 * Changed `compas.data.Data.name` to be stored in `compas.data.Data.attributes`.
 * Changed `compas.data.Data.__jsondump__` to include `compas.data.Data.attributes` if the dict is not empty.
 * Changed `compas.data.Data.__jsonload__` to update `compas.data.Data.attributes` if the attribute dict is provided.
@@ -105,6 +178,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 * Removed `compas_rhino.forms`. Forms will be moved to `compas_ui`.
+* Removed `compas.scene.NoSceneObjectContextError`.
 * Removed `compas.datastructures.Datastructure.attributes` and `compas.datastructures.Datastructure.name` (moved to `compas.data.Data`).
 * Removed `attributes` from `compas.datastructures.Graph.data`.
 * Removed `attributes` from `compas.datastructures.Network.data`.

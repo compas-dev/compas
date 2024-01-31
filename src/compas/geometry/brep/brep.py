@@ -137,6 +137,15 @@ class Brep(Geometry):
 
     """
 
+    @property
+    def __dtype__(self):
+        return "compas.geometry/Brep"
+
+    @classmethod
+    def __from_data__(cls, data):
+        cls = new_brep(cls)
+        return cls.__from_data__(data)
+
     def __new__(cls, *args, **kwargs):
         return new_brep(cls, *args, **kwargs)
 
@@ -156,19 +165,6 @@ class Brep(Geometry):
             "Volume: {}".format(self.volume),
         ]
         return "\n".join(lines)
-
-    # ==============================================================================
-    # Data
-    # ==============================================================================
-
-    @property
-    def dtype(self):
-        return "compas.geometry/Brep"
-
-    @classmethod
-    def from_data(cls, data):
-        cls = new_brep(cls)
-        return cls.from_data(data)
 
     # ==============================================================================
     # Properties

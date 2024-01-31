@@ -47,8 +47,23 @@ class TreeNode(Data):
         "required": ["attributes", "children"],
     }
 
+    @property
+    def __data__(self):
+        return {
+            "attributes": self.attributes,
+            "children": [child.__data__ for child in self.children],
+        }
+
+    @classmethod
+    def __from_data__(cls, data):
+        node = cls(**data["attributes"])
+        for child in data["children"]:
+            node.add(cls.__from_data__(child))
+        return node
+
     def __init__(self, **kwargs):
         super(TreeNode, self).__init__(**kwargs)
+        self.attributes = kwargs
         self._parent = None
         self._children = []
         self._tree = None
@@ -82,25 +97,6 @@ class TreeNode(Data):
             return self._tree
         else:
             return self.parent.tree  # type: ignore
-
-    @property
-    def data(self):
-        return {
-            # this duplicates the behaviour of the Data class
-            # but it is necessary to make the tree serializable
-            # however, it only duplicates the attributes if the node is serialized independently
-            # perhaps this should not be possible
-            # in this sense, the node is a prototype of an independen graph node, or mesh vertex
-            "attributes": self.attributes,
-            "children": [child.data for child in self.children],
-        }
-
-    @classmethod
-    def from_data(cls, data):
-        node = cls(**data["attributes"])
-        for child in data["children"]:
-            node.add(cls.from_data(child))
-        return node
 
     def add(self, node):
         """
@@ -205,12 +201,15 @@ class TreeNode(Data):
 
 
 class Tree(Datastructure):
-    """A hierarchical data structure that organizes elements into parent-child relationships. The tree starts from a unique root node, and every node (excluding the root) has exactly one parent.
+    """A hierarchical data structure that organizes elements into parent-child relationships.
+    The tree starts from a unique root node, and every node (excluding the root) has exactly one parent.
 
     Parameters
     ----------
-    **kwargs : dict[str, Any], optional
-        User-defined attributes of the tree.
+    name : str, optional
+        The name of the tree.
+    **kwargs : dict, optional
+        Additional keyword arguments, which are stored in the attributes dict.
 
     Attributes
     ----------
@@ -247,26 +246,29 @@ class Tree(Datastructure):
         "type": "object",
         "properties": {
             "root": TreeNode.DATASCHEMA,
+            "attributes": {"type": "object"},
         },
-        "required": ["root"],
+        "required": ["root", "attributes"],
     }
 
-    def __init__(self, **kwargs):
-        super(Tree, self).__init__(**kwargs)
-        self._root = None
-
     @property
-    def data(self):
+    def __data__(self):
         return {
-            "root": self.root.data,  # type: ignore
+            "attributes": self.attributes,
+            "root": self.root.__data__,  # type: ignore
         }
 
     @classmethod
-    def from_data(cls, data):
+    def __from_data__(cls, data):
         tree = cls()
-        root = TreeNode.from_data(data["root"])
+        tree.attributes.update(data["attributes"] or {})
+        root = TreeNode.__from_data__(data["root"])
         tree.add(root)
         return tree
+
+    def __init__(self, name=None, **kwargs):
+        super(Tree, self).__init__(kwargs, name=name)
+        self._root = None
 
     @property
     def root(self):

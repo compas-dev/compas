@@ -16,7 +16,6 @@ class MineType(object):
 
 # I changed the name of this so as not to collide with compas.Base
 class BaseGLTFDataClass(object):
-
     IS_BASE_GLTF_DATA = True  # only needed for ipy in `GLTFContent.check_extensions_texture_recursively`
 
     def __init__(self, extras=None, extensions=None):
@@ -146,7 +145,6 @@ class TextureData(BaseGLTFDataClass):
 
 
 class TextureInfoData(BaseGLTFDataClass):
-
     IS_TEXTURE_INFO_DATA = True  # only needed for ipy in `GLTFContent.check_extensions_texture_recursively`
 
     def __init__(self, index, tex_coord=None, extras=None, extensions=None):
@@ -550,7 +548,7 @@ class SkinData(BaseGLTFDataClass):
         if self.inverse_bind_matrices is not None:
             skin_dict["inverseBindMatrices"] = accessor_index
         if self.extensions is not None:
-            skin_dict["extensions"] = self.extensions_from_data()
+            skin_dict["extensions"] = self.extensions_to_data()  # type: ignore
         return skin_dict
 
     @classmethod
@@ -598,7 +596,7 @@ class ImageData(BaseGLTFDataClass):
         elif self.uri is not None:
             image_dict["uri"] = self.uri
         if self.extensions is not None:
-            image_dict["extensions"] = self.extensions_from_data()
+            image_dict["extensions"] = self.extensions_to_data()
         return image_dict
 
     @classmethod

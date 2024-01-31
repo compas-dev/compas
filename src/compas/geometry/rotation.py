@@ -10,6 +10,7 @@ following online resources:
 Many thanks to Christoph Gohlke, Martin John Baker, Sachin Joglekar and Andrew
 Ippoliti for providing code and documentation.
 """
+
 from compas.utilities import flatten
 from compas.geometry import normalize_vector
 from compas.geometry import cross_vectors
@@ -38,6 +39,8 @@ class Rotation(Transformation):
         A 4x4 matrix (or similar) representing a rotation.
     check : bool, optional
         If ``True``, the provided matrix will be checked for validity.
+    name : str, optional
+        The name of the transformation.
 
     Attributes
     ----------
@@ -72,12 +75,12 @@ class Rotation(Transformation):
 
     """
 
-    def __init__(self, matrix=None, check=False):
+    def __init__(self, matrix=None, check=False, name=None):
         if matrix and check:
             _, _, angles, _, _ = decompose_matrix(matrix)
             if not allclose(flatten(matrix), flatten(matrix_from_euler_angles(angles))):
                 raise ValueError("This is not a proper rotation matrix.")
-        super(Rotation, self).__init__(matrix=matrix)
+        super(Rotation, self).__init__(matrix=matrix, name=name)
 
     @property
     def quaternion(self):

@@ -14,11 +14,11 @@ class Assembly(Datastructure):
     ----------
     name : str, optional
         The name of the assembly.
+    **kwargs : dict, optional
+        Additional keyword arguments, which are stored in the attributes dict.
 
     Attributes
     ----------
-    attributes : dict[str, Any]
-        General attributes of the data structure that will be included in the data dict and serialization.
     graph : :class:`compas.datastructures.Graph`
         The graph that is used under the hood to store the parts and their connections.
 
@@ -33,53 +33,35 @@ class Assembly(Datastructure):
     DATASCHEMA = {
         "type": "object",
         "properties": {
-            "attributes": {"type": "object"},
             "graph": Graph.DATASCHEMA,
+            "attributes": {"type": "object"},
         },
-        "required": ["graph"],
+        "required": ["graph", "attributes"],
     }
 
+    @property
+    def __data__(self):
+        return {
+            "graph": self.graph.__data__,
+            "attributes": self.attributes,
+        }
+
+    @classmethod
+    def __from_data__(cls, data):
+        assembly = cls()
+        assembly.attributes.update(data["attributes"] or {})
+        assembly.graph = Graph.__from_data__(data["graph"])
+        assembly._parts = {part.guid: part.key for part in assembly.parts()}  # type: ignore
+        return assembly
+
     def __init__(self, name=None, **kwargs):
-        super(Assembly, self).__init__()
-        self.attributes = {"name": name or "Assembly"}
-        self.attributes.update(kwargs)
+        super(Assembly, self).__init__(kwargs, name=name)
         self.graph = Graph()
         self._parts = {}
 
     def __str__(self):
         tpl = "<Assembly with {} parts and {} connections>"
         return tpl.format(self.graph.number_of_nodes(), self.graph.number_of_edges())
-
-    # ==========================================================================
-    # Data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return {
-            "attributes": self.attributes,
-            "graph": self.graph.data,
-        }
-
-    @classmethod
-    def from_data(cls, data):
-        assembly = cls()
-        assembly.attributes.update(data["attributes"] or {})
-        assembly.graph = Graph.from_data(data["graph"])
-        assembly._parts = {part.guid: part.key for part in assembly.parts()}  # type: ignore
-        return assembly
-
-    # ==========================================================================
-    # Properties
-    # ==========================================================================
-
-    @property
-    def name(self):
-        return self.attributes.get("name") or self.__class__.__name__
-
-    @name.setter
-    def name(self, value):
-        self.attributes["name"] = value
 
     # ==========================================================================
     # Constructors

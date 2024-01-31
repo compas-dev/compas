@@ -6,7 +6,7 @@ from typing import Text
 
 import bpy  # type: ignore
 
-from compas_blender.utilities import create_collection
+from compas_blender.collections import create_collection
 
 from compas.geometry import centroid_points
 from compas.geometry import distance_point_point

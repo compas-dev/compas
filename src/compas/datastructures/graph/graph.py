@@ -53,12 +53,14 @@ class Graph(Datastructure):
 
     Parameters
     ----------
-    default_node_attributes: dict, optional
+    default_node_attributes : dict, optional
         Default values for node attributes.
-    default_edge_attributes: dict, optional
+    default_edge_attributes : dict, optional
         Default values for edge attributes.
+    name : str, optional
+        The name of the graph.
     **kwargs : dict, optional
-        Additional attributes to add to the graph.
+        Additional keyword arguments, which are stored in the attributes dict.
 
     Attributes
     ----------
@@ -73,11 +75,24 @@ class Graph(Datastructure):
 
     """
 
+    split_edge = graph_split_edge
+    join_edges = graph_join_edges
+    smooth = graph_smooth_centroid
+    is_crossed = graph_is_crossed
+    is_planar = graph_is_planar
+    is_planar_embedding = graph_is_planar_embedding
+    is_xy = graph_is_xy
+    count_crossings = graph_count_crossings
+    find_crossings = graph_find_crossings
+    embed_in_plane = graph_embed_in_plane
+    find_cycles = graph_find_cycles
+
     DATASCHEMA = {
         "type": "object",
         "properties": {
-            "dna": {"type": "object"},
-            "dea": {"type": "object"},
+            "attributes": {"type": "object"},
+            "default_node_attributes": {"type": "object"},
+            "default_edge_attributes": {"type": "object"},
             "node": {
                 "type": "object",
                 "additionalProperties": {"type": "object"},
@@ -92,30 +107,59 @@ class Graph(Datastructure):
             "max_node": {"type": "integer", "minimum": -1},
         },
         "required": [
-            "dna",
-            "dea",
+            "attributes",
+            "default_node_attributes",
+            "default_edge_attributes",
             "node",
             "edge",
             "max_node",
         ],
     }
 
-    split_edge = graph_split_edge
-    join_edges = graph_join_edges
-    smooth = graph_smooth_centroid
+    @property
+    def __data__(self):
+        return self.__before_json_dump__(
+            {
+                "attributes": self.attributes,
+                "default_node_attributes": self.default_node_attributes,
+                "default_edge_attributes": self.default_edge_attributes,
+                "node": self.node,
+                "edge": self.edge,
+                "max_node": self._max_node,
+            }
+        )
 
-    is_crossed = graph_is_crossed
-    is_planar = graph_is_planar
-    is_planar_embedding = graph_is_planar_embedding
-    is_xy = graph_is_xy
-    count_crossings = graph_count_crossings
-    find_crossings = graph_find_crossings
-    embed_in_plane = graph_embed_in_plane
+    def __before_json_dump__(self, data):
+        data["node"] = {repr(key): attr for key, attr in data["node"].items()}
+        data["edge"] = {repr(u): {repr(v): attr for v, attr in nbrs.items()} for u, nbrs in data["edge"].items()}
+        return data
 
-    find_cycles = graph_find_cycles
+    def __after_json_load__(self, data):
+        l_e = literal_eval
+        nodes = data["node"] or {}
+        edges = data["edge"] or {}
+        data["node"] = {l_e(node): attr for node, attr in nodes.items()}
+        data["edge"] = {l_e(u): {l_e(v): attr for v, attr in nbrs.items()} for u, nbrs in edges.items()}
+        return data
 
-    def __init__(self, default_node_attributes=None, default_edge_attributes=None, **kwargs):
-        super(Graph, self).__init__(**kwargs)
+    @classmethod
+    def __from_data__(cls, data):
+        graph = cls(
+            default_node_attributes=data.get("default_node_attributes"),
+            default_edge_attributes=data.get("default_edge_attributes"),
+        )
+        graph.attributes.update(data["attributes"] or {})
+        data = graph.__after_json_load__(data)
+        for node, attr in iter(data["node"].items()):
+            graph.add_node(key=node, attr_dict=attr)
+        for u, nbrs in iter(data["edge"].items()):
+            for v, attr in iter(nbrs.items()):
+                graph.add_edge(u, v, attr_dict=attr)
+        graph._max_node = data.get("max_node", graph._max_node)
+        return graph
+
+    def __init__(self, default_node_attributes=None, default_edge_attributes=None, name=None, **kwargs):
+        super(Graph, self).__init__(kwargs, name=name)
         self._max_node = -1
         self.node = {}
         self.edge = {}
@@ -130,52 +174,6 @@ class Graph(Datastructure):
     def __str__(self):
         tpl = "<Graph with {} nodes, {} edges>"
         return tpl.format(self.number_of_nodes(), self.number_of_edges())
-
-    # --------------------------------------------------------------------------
-    # Data
-    # --------------------------------------------------------------------------
-
-    @property
-    def data(self):
-        data = {
-            "dna": self.default_node_attributes,
-            "dea": self.default_edge_attributes,
-            "node": {},
-            "edge": {},
-            "max_node": self._max_node,
-        }
-        for key in self.node:
-            data["node"][repr(key)] = self.node[key]
-        for u in self.edge:
-            ru = repr(u)
-            data["edge"][ru] = {}
-            for v in self.edge[u]:
-                rv = repr(v)
-                data["edge"][ru][rv] = self.edge[u][v]
-        return data
-
-    @classmethod
-    def from_data(cls, data):
-        dna = data.get("dna") or {}
-        dea = data.get("dea") or {}
-        node = data.get("node") or {}
-        edge = data.get("edge") or {}
-
-        graph = cls(default_node_attributes=dna, default_edge_attributes=dea)
-
-        for node, attr in iter(node.items()):
-            node = literal_eval(node)
-            graph.add_node(key=node, attr_dict=attr)
-
-        for u, nbrs in iter(edge.items()):
-            u = literal_eval(u)
-            for v, attr in iter(nbrs.items()):
-                v = literal_eval(v)
-                graph.add_edge(u, v, attr_dict=attr)
-
-        graph._max_node = data.get("max_node", graph._max_node)
-
-        return graph
 
     # --------------------------------------------------------------------------
     # Constructors
@@ -227,7 +225,7 @@ class Graph(Datastructure):
 
         """
         g = cls()
-        g.attributes.update(graph.graph)
+        g.name = graph.graph.get("name")
 
         for node in graph.nodes():
             g.add_node(node, **graph.nodes[node])
@@ -473,7 +471,7 @@ class Graph(Datastructure):
         import networkx as nx
 
         G = nx.DiGraph()
-        G.graph.update(self.attributes)  # type: ignore
+        G.graph["name"] = self.name  # type: ignore
 
         for node, attr in self.nodes(data=True):
             G.add_node(node, **attr)  # type: ignore
@@ -1257,9 +1255,6 @@ class Graph(Datastructure):
             attr_dict = {}
         attr_dict.update(kwattr)
         self.default_edge_attributes.update(attr_dict)
-
-    update_dna = update_default_node_attributes
-    update_dea = update_default_edge_attributes
 
     # --------------------------------------------------------------------------
     # Node attributes

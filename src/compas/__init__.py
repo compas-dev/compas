@@ -21,7 +21,7 @@ __author__ = "Tom Van Mele and many others (see AUTHORS.md)"
 __copyright__ = "Copyright 2014-2022 - ETH Zurich, Copyright 2023 - COMPAS Association"
 __license__ = "MIT License"
 __email__ = "tom.v.mele@gmail.com"
-__version__ = "2.0.0-beta.2"
+__version__ = "2.0.0-beta.4"
 
 version = LooseVersion(compas.__version__)
 versionstring = version.vstring.split("-")[0]
@@ -135,6 +135,7 @@ __all__ = [
 
 __all_plugins__ = [
     "compas.geometry.booleans.booleans_shapely",
+    "compas.scene",
 ]
 
 

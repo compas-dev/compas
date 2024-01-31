@@ -39,12 +39,6 @@ class Data(object):
 
     Attributes
     ----------
-    dtype : str, read-only
-        The type of the object in the form of a fully qualified module name and a class name, separated by a forward slash ("/").
-        For example: ``"compas.datastructures/Mesh"``.
-    data : dict
-        The representation of the object as a dictionary containing only built-in Python data types.
-        The structure of the dict is described by the data schema.
     guid : str, read-only
         The globally unique identifier of the object.
         The guid is generated with ``uuid.uuid4()``.
@@ -72,11 +66,19 @@ class Data(object):
 
     DATASCHEMA = {}
 
-    def __init__(self, name=None, **kwargs):
+    def __init__(self, name=None):
         self._guid = None
-        self.attributes = kwargs or {}
+        self._name = None
         if name:
             self.name = name
+
+    @property
+    def __dtype__(self):
+        return "{}/{}".format(".".join(self.__class__.__module__.split(".")[:2]), self.__class__.__name__)
+
+    @property
+    def __data__(self):
+        raise NotImplementedError
 
     def __jsondump__(self, minimal=False):
         """Return the required information for serialization with the COMPAS JSON serializer.
@@ -92,18 +94,18 @@ class Data(object):
 
         """
         state = {
-            "dtype": self.dtype,
-            "data": self.data,
+            "dtype": self.__dtype__,
+            "data": self.__data__,
         }
-        if self.attributes:
-            state["attrs"] = self.attributes
         if minimal:
             return state
+        if self._name is not None:
+            state["name"] = self._name
         state["guid"] = str(self.guid)
         return state
 
     @classmethod
-    def __jsonload__(cls, data, guid=None, attrs=None):
+    def __jsonload__(cls, data, guid=None, name=None):
         """Construct an object of this type from the provided data to support COMPAS JSON serialization.
 
         Parameters
@@ -112,19 +114,19 @@ class Data(object):
             The raw Python data representing the object.
         guid : str, optional
             The GUID of the object.
-        attrs : dict, optional
-            The additional attributes of the object.
+        name : str, optional
+            The name of the object.
 
         Returns
         -------
         object
 
         """
-        obj = cls.from_data(data)
+        obj = cls.__from_data__(data)
         if guid is not None:
             obj._guid = UUID(guid)
-        if attrs is not None:
-            obj.attributes.update(attrs)
+        if name is not None:
+            obj.name = name
         return obj
 
     def __getstate__(self):
@@ -136,17 +138,25 @@ class Data(object):
         self.__dict__.update(state["__dict__"])
         if "guid" in state:
             self._guid = UUID(state["guid"])
-        # could be that this is already taken care of by the first line
-        if "attrs" in state:
-            self.attributes.update(state["attrs"])
+        if "name" in state:
+            self.name = state["name"]
 
-    @property
-    def dtype(self):
-        return "{}/{}".format(".".join(self.__class__.__module__.split(".")[:2]), self.__class__.__name__)
+    @classmethod
+    def __from_data__(cls, data):  # type: (dict) -> Data
+        """Construct an object of this type from the provided data.
 
-    @property
-    def data(self):
-        raise NotImplementedError
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Returns
+        -------
+        :class:`compas.data.Data`
+            An instance of this object type if the data contained in the dict has the correct schema.
+
+        """
+        return cls(**data)
 
     def ToString(self):
         """Converts the instance to a string.
@@ -170,39 +180,11 @@ class Data(object):
 
     @property
     def name(self):
-        return self.attributes.get("name") or self.__class__.__name__
+        return self._name or self.__class__.__name__
 
     @name.setter
     def name(self, name):
-        self.attributes["name"] = name
-
-    @classmethod
-    def from_data(cls, data):  # type: (dict) -> Data
-        """Construct an object of this type from the provided data.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`compas.data.Data`
-            An instance of this object type if the data contained in the dict has the correct schema.
-
-        """
-        return cls(**data)
-
-    def to_data(self):
-        """Convert an object to its native data representation.
-
-        Returns
-        -------
-        dict
-            The data representation of the object as described by the schema.
-
-        """
-        return self.data
+        self._name = name
 
     @classmethod
     def from_json(cls, filepath):  # type: (...) -> Data
@@ -302,8 +284,8 @@ class Data(object):
         """
         if not cls:
             cls = type(self)
-        obj = cls.from_data(deepcopy(self.data))
-        obj.attributes = deepcopy(self.attributes)
+        obj = cls.__from_data__(deepcopy(self.__data__))
+        obj.name = self.name
         return obj  # type: ignore
 
     def sha256(self, as_string=False):
@@ -342,7 +324,7 @@ class Data(object):
     def validate_data(cls, data):
         """Validate the data against the object's data schema.
 
-        The data is the raw data that can be used to construct an object of this type with the classmethod ``from_data``.
+        The data is the raw data that can be used to construct an object of this type with the classmethod ``__from_data__``.
 
         Parameters
         ----------

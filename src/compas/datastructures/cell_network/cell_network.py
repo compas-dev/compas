@@ -2,7 +2,6 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-# from itertools import product
 from random import sample
 
 from compas.datastructures import Mesh
@@ -28,8 +27,6 @@ from compas.geometry import length_vector
 from compas.geometry import normal_polygon
 from compas.geometry import normalize_vector
 from compas.geometry import volume_polyhedron
-
-# from compas.topology import face_adjacency
 from compas.geometry import add_vectors
 from compas.geometry import bestfit_plane
 from compas.geometry import project_point_plane
@@ -37,9 +34,6 @@ from compas.geometry import scale_vector
 from compas.geometry import subtract_vectors
 from compas.geometry import bounding_box
 
-# from compas.geometry import transform_points
-
-# from compas.utilities import linspace
 from compas.utilities import pairwise
 
 from compas.tolerance import TOL
@@ -58,13 +52,13 @@ class CellNetwork(Datastructure):
         Default values for face attributes.
     default_cell_attributes: dict, optional
         Default values for cell attributes.
+    name : str, optional
+        The name of the cell network.
     **kwargs : dict, optional
-        Additional attributes for the data structure itself.
+        Additional keyword arguments, which are stored in the attributes dict.
 
     Attributes
     ----------
-    attributes : dict[str, Any]
-        General attributes of the data structure which will be included in the data representation.
     default_vertex_attributes : dict[str, Any]
         Default attributes of the vertices.
     default_edge_attributes: dict[str, Any]
@@ -91,13 +85,36 @@ class CellNetwork(Datastructure):
     DATASCHEMA = {
         "type": "object",
         "properties": {
-            "dva": {"type": "object"},
-            "dea": {"type": "object"},
-            "dfa": {"type": "object"},
-            "dca": {"type": "object"},
+            "attributes": {"type": "object"},
+            "default_vertex_attributes": {"type": "object"},
+            "default_edge_attributes": {"type": "object"},
+            "default_face_attributes": {"type": "object"},
+            "default_cell_attributes": {"type": "object"},
             "vertex": {
                 "type": "object",
                 "patternProperties": {"^[0-9]+$": {"type": "object"}},
+                "additionalProperties": False,
+            },
+            "edge": {
+                "type": "object",
+                "patternProperties": {
+                    "^[0-9]+$": {
+                        "type": "object",
+                        "patternProperties": {"^[0-9]+$": {"type": "object"}},
+                        "additionalProperties": False,
+                    }
+                },
+                "additionalProperties": False,
+            },
+            "face": {
+                "type": "object",
+                "patternProperties": {
+                    "^[0-9]+$": {
+                        "type": "array",
+                        "items": {"type": "integer", "minimum": 0},
+                        "minItems": 3,
+                    }
+                },
                 "additionalProperties": False,
             },
             "cell": {
@@ -115,11 +132,6 @@ class CellNetwork(Datastructure):
                 },
                 "additionalProperties": False,
             },
-            "edge_data": {
-                "type": "object",
-                "patternProperties": {"^\\([0-9]+, [0-9]+\\)$": {"type": "object"}},
-                "additionalProperties": False,
-            },
             "face_data": {
                 "type": "object",
                 "patternProperties": {"^\\([0-9]+(, [0-9]+){3, }\\)$": {"type": "object"}},
@@ -135,13 +147,15 @@ class CellNetwork(Datastructure):
             "max_cell": {"type": "number", "minimum": -1},
         },
         "required": [
-            "dva",
-            "dea",
-            "dfa",
-            "dca",
+            "attributes",
+            "default_vertex_attributes",
+            "default_edge_attributes",
+            "default_face_attributes",
+            "default_cell_attributes",
             "vertex",
+            "edge",
+            "face",
             "cell",
-            "edge_data",
             "face_data",
             "cell_data",
             "max_vertex",
@@ -150,15 +164,79 @@ class CellNetwork(Datastructure):
         ],
     }
 
+    @property
+    def __data__(self):
+        cell = {}
+        for c in self._cell:
+            faces = set()
+            for u in self._cell[c]:
+                for v in self._cell[c][u]:
+                    faces.add(self._cell[c][u][v])
+            cell[c] = sorted(list(faces))
+
+        return {
+            "attributes": self.attributes,
+            "default_vertex_attributes": self.default_vertex_attributes,
+            "default_edge_attributes": self.default_edge_attributes,
+            "default_face_attributes": self.default_face_attributes,
+            "default_cell_attributes": self.default_cell_attributes,
+            "vertex": self._vertex,
+            "edge": self._edge,
+            "face": self._face,
+            "cell": cell,
+            "face_data": self._face_data,
+            "cell_data": self._cell_data,
+            "max_vertex": self._max_vertex,
+            "max_face": self._max_face,
+            "max_cell": self._max_cell,
+        }
+
+    @classmethod
+    def __from_data__(cls, data):
+        cell_network = cls(
+            default_vertex_attributes=data.get("default_vertex_attributes"),
+            default_edge_attributes=data.get("default_edge_attributes"),
+            default_face_attributes=data.get("default_face_attributes"),
+            default_cell_attributes=data.get("default_cell_attributes"),
+        )
+        cell_network.attributes.update(data.get("attributes") or {})
+
+        vertex = data["vertex"] or {}
+        edge = data["edge"] or {}
+        face = data["face"] or {}
+        cell = data["cell"] or {}
+
+        for key, attr in iter(vertex.items()):
+            cell_network.add_vertex(key=key, attr_dict=attr)
+
+        for u in edge:
+            for v, attr in edge[u].items():
+                cell_network.add_edge(u, v, attr_dict=attr)
+
+        face_data = data.get("face_data") or {}
+        for key, vertices in iter(face.items()):
+            cell_network.add_face(vertices, fkey=key, attr_dict=face_data.get(key))
+
+        cell_data = data.get("cell_data") or {}
+        for ckey, faces in iter(cell.items()):
+            cell_network.add_cell(faces, ckey=ckey, attr_dict=cell_data.get(ckey))
+
+        cell_network._max_vertex = data.get("max_vertex", cell_network._max_vertex)
+        cell_network._max_face = data.get("max_face", cell_network._max_face)
+        cell_network._max_cell = data.get("max_cell", cell_network._max_cell)
+
+        return cell_network
+
     def __init__(
         self,
         default_vertex_attributes=None,
         default_edge_attributes=None,
         default_face_attributes=None,
         default_cell_attributes=None,
+        name=None,
         **kwargs
     ):
-        super(Datastructure, self).__init__(**kwargs)
+        super(CellNetwork, self).__init__(kwargs, name=name)
         self._max_vertex = -1
         self._max_face = -1
         self._max_cell = -1
