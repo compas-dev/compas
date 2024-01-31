@@ -76,6 +76,14 @@ class Plane(Geometry):
             self.normal,
         )
 
+    def __str__(self):
+        return "{0}(point={1}, normal={2})".format(
+            type(self).__name__,
+            self.point.__str__(),
+            self.normal.__str__(),
+        )
+
+
     def __len__(self):
         return 2
 
