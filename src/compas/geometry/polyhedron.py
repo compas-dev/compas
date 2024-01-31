@@ -270,7 +270,7 @@ class Polyhedron(Geometry):
 
     @property
     def vertices(self):
-        if not self._vertices:
+        if self._vertices is None:
             self._vertices = []
         return self._vertices
 
@@ -280,7 +280,7 @@ class Polyhedron(Geometry):
 
     @property
     def faces(self):
-        if not self._faces:
+        if self._faces is None:
             self._faces = []
         return self._faces
 
