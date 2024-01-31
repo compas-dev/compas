@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+### Removed
+
+
+## [2.0.0] 2024-01-31
+
+### Added
+
 * Added `group` attribute to `compas_rhino.scene.RhinoSceneObject`.
 * Added `_guid_mesh`, `_guids_vertices`, `_guids_edges`, `_guids_faces`, `_guids_vertexlabels`, `_guids_edgelables`, `_guids_facelabels`, `_guids_vertexnormals`, `_guids_facenormals`, `_guids_spheres`, `_guids_pipes`, `disjoint` attributes to `compas_rhino.scene.MeshObject`.
 * Added `_guids_nodes`, `_guids_edges`, `_guids_nodelabels`, `_guids_edgelables`, `_guids_spheres`, `_guids_pipes` attributes to `compas_rhino.scene.GraphObject`.

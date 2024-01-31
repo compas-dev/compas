@@ -11,7 +11,7 @@ else:
     from .utilities import *  # noqa: F401 F403
 
 
-__version__ = "2.0.0-beta.4"
+__version__ = "2.0.0"
 
 
 INSTALLABLE_PACKAGES = ["compas", "compas_blender"]
