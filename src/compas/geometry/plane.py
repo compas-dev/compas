@@ -83,7 +83,6 @@ class Plane(Geometry):
             self.normal.__str__(),
         )
 
-
     def __len__(self):
         return 2
 
