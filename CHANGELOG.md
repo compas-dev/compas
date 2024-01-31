@@ -34,6 +34,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas_ghpython.unload_modules`.
 * Added `compas_ghpython.sets`.
 * Added `compas_ghpython.timer`.
+* Added `scale` and `scaled` to `compas.datastructures.Datastructure`.
+* Added `rotate` and `rotated` to `compas.datastructures.Datastructure`.
+* Added `translate` and `translated` to `compas.datastructures.Datastructure`.
 
 ### Changed
 
