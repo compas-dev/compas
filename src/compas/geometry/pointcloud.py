@@ -245,11 +245,9 @@ class Pointcloud(Geometry):
         True
 
         """
-        points = box.points
-        x, y, z = zip(*points)
-        xmin, xmax = min(x), max(x)
-        ymin, ymax = min(y), max(y)
-        zmin, zmax = min(z), max(z)
+        xmin, xmax = box.xmin, box.xmax
+        ymin, ymax = box.ymin, box.ymax
+        zmin, zmax = box.zmin, box.zmax
         x = [uniform(xmin, xmax) for i in range(n)]
         y = [uniform(ymin, ymax) for i in range(n)]
         z = [uniform(zmin, zmax) for i in range(n)]
