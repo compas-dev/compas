@@ -1126,25 +1126,11 @@ document.write(`
 <h1>GraphObject.draw</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_rhino.scene.GraphObject.draw">
-<span class="sig-prename descclassname"><span class="pre">GraphObject.</span></span><span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodecolor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edgecolor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/5c292ca/src/compas/../compas_rhino/scene/graphobject.py#L77"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">GraphObject.</span></span><span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/ee7621b/src/compas/../compas_rhino/scene/graphobject.py#L80"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Draw the graph using the chosen visualisation settings.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>nodes</strong><span class="classifier">list[int], optional</span></dt><dd><p>A list of nodes to draw.
-Default is None, in which case all nodes are drawn.</p>
-</dd>
-<dt><strong>edges</strong><span class="classifier">list[tuple[int, int]], optional</span></dt><dd><p>A list of edges to draw.
-The default is None, in which case all edges are drawn.</p>
-</dd>
-<dt><strong>nodecolor</strong><span class="classifier"><a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.colors.Color</span></code></a> | dict[int, <a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.colors.Color</span></code></a>], optional</span></dt><dd><p>The color of the nodes.</p>
-</dd>
-<dt><strong>edgecolor</strong><span class="classifier"><a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.colors.Color</span></code></a> | dict[tuple[int, int], <a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.colors.Color</span></code></a>], optional</span></dt><dd><p>The color of the edges.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
 <dt>list[System.Guid]</dt><dd><p>The GUIDs of the created Rhino objects.</p>
 </dd>
 </dl>

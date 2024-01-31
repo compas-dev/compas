@@ -1126,20 +1126,11 @@ document.write(`
 <h1>MeshObject.draw</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_rhino.scene.MeshObject.draw">
-<span class="sig-prename descclassname"><span class="pre">MeshObject.</span></span><span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertexcolors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facecolors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disjoint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/5c292ca/src/compas/../compas_rhino/scene/meshobject.py#L152"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Draw the mesh as a consolidated RhinoMesh.</p>
+<span class="sig-prename descclassname"><span class="pre">MeshObject.</span></span><span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/ee7621b/src/compas/../compas_rhino/scene/meshobject.py#L161"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Draw the mesh or its components in Rhino.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>color</strong><span class="classifier">tuple[int, int, int], optional</span></dt><dd><p>The color of the mesh.
-Default is the value of <code class="xref py py-attr docutils literal notranslate"><span class="pre">MeshObject.default_color</span></code>.</p>
-</dd>
-<dt><strong>disjoint</strong><span class="classifier">bool, optional</span></dt><dd><p>If True, draw the faces of the mesh with disjoint vertices.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
 <dt>list[System.Guid]</dt><dd><p>The GUIDs of the created Rhino objects.</p>
 </dd>
 </dl>

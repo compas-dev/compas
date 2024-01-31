@@ -1121,7 +1121,7 @@ document.write(`
 <h1>MeshObject</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas_rhino.scene.MeshObject">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_rhino.scene.</span></span><span class="sig-name descname"><span class="pre">MeshObject</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/5c292ca/src/compas/../compas_rhino/scene/meshobject.py#L30"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_rhino.scene.</span></span><span class="sig-name descname"><span class="pre">MeshObject</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/ee7621b/src/compas/../compas_rhino/scene/meshobject.py#L30"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas_rhino.scene.RhinoSceneObject.html#compas_rhino.scene.RhinoSceneObject" title="compas_rhino.scene.sceneobject.RhinoSceneObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">RhinoSceneObject</span></code></a>, <a class="reference internal" href="compas.scene.MeshObject.html#compas.scene.MeshObject" title="compas.scene.meshobject.MeshObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeshObject</span></code></a></p>
 <p>Scene object for drawing mesh data structures.</p>
 <dl class="field-list">
@@ -1130,6 +1130,13 @@ document.write(`
 <dt><strong>mesh</strong><span class="classifier"><a class="reference internal" href="../compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a></span></dt><dd><p>A COMPAS mesh.</p>
 </dd>
 <dt><strong>**kwargs</strong><span class="classifier">dict, optional</span></dt><dd><p>Additional keyword arguments.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>disjoint</strong><span class="classifier">bool, optional</span></dt><dd><p>Draw the faces of the mesh disjointed.
+Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 </dd>
 </dl>
 </dd>
@@ -1165,7 +1172,7 @@ document.write(`
 <td><p>Delete all vertices drawn by this scene object.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.scene.MeshObject.draw.html#compas_rhino.scene.MeshObject.draw" title="compas_rhino.scene.MeshObject.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a></p></td>
-<td><p>Draw the mesh as a consolidated RhinoMesh.</p></td>
+<td><p>Draw the mesh or its components in Rhino.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.scene.MeshObject.draw_edgelabels.html#compas_rhino.scene.MeshObject.draw_edgelabels" title="compas_rhino.scene.MeshObject.draw_edgelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edgelabels</span></code></a></p></td>
 <td><p>Draw labels for a selection of edges.</p></td>
