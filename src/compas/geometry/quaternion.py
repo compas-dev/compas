@@ -145,6 +145,15 @@ class Quaternion(Geometry):
     def __repr__(self):
         return "{0}({1}, {2}, {3}, {4})".format(type(self).__name__, self.w, self.x, self.y, self.z)
 
+    def __str__(self):
+        return "{0}({1}, {2}, {3}, {4})".format(
+            type(self).__name__,
+            TOL.format_number(self.w),
+            TOL.format_number(self.x),
+            TOL.format_number(self.y),
+            TOL.format_number(self.z),
+        )
+
     def __eq__(self, other, tol=None):
         if not hasattr(other, "__iter__") or not hasattr(other, "__len__") or len(self) != len(other):
             return False
