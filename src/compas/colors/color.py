@@ -12,6 +12,7 @@ import re
 
 from compas.colors.html_colors import HTML_TO_RGB255
 from compas.data import Data
+from compas.tolerance import TOL
 
 BASE16 = "0123456789abcdef"
 
@@ -170,7 +171,16 @@ class Color(Data):
         self.a = alpha
 
     def __repr__(self):
-        return "{0}({1}, {2}, {3}, alpha={4})".format(type(self).__name__, self.r, self.g, self.b, self.a)
+        return "{0}(red={1}, green={2}, blue={3}, alpha={4})".format(type(self).__name__, self.r, self.g, self.b, self.a)
+
+    def __str__(self):
+        return "{0}(red={1}, green={2}, blue={3}, alpha={4})".format(
+            type(self).__name__,
+            TOL.format_number(self.r),
+            TOL.format_number(self.g),
+            TOL.format_number(self.b),
+            TOL.format_number(self.a),
+        )
 
     def __getitem__(self, key):
         if key == 0:
