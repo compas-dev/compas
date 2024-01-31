@@ -9,14 +9,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `group` attribute to `compas_rhino.scene.RhinoSceneObject`.
+* Added `_guid_mesh`, `_guids_vertices`, `_guids_edges`, `_guids_faces`, `_guids_vertexlabels`, `_guids_edgelables`, `_guids_facelabels`, `_guids_vertexnormals`, `_guids_facenormals`, `_guids_spheres`, `_guids_pipes`, `disjoint` attributes to `compas_rhino.scene.MeshObject`.
+* Added `_guids_nodes`, `_guids_edges`, `_guids_nodelabels`, `_guids_edgelables`, `_guids_spheres`, `_guids_pipes` attributes to `compas_rhino.scene.GraphObject`.
+* Added `_guids_vertices`, `_guids_edges`, `_guids_faces`, `_guids_cells`, `_guids_vertexlabels`, `_guids_edgelables`, `_guids_facelabels`, `_guids_celllabels`, `disjoint` attributes to `compas_rhino.scene.MeshObject`.
 * Added test for `compas.scene.Scene` serialisation.
 
 ### Changed
 
+* Changed `compas.scene.Mesh`'s `show_vertices`, `show_edges`, `show_faces` to optionally accept a sequence of keys.
+* Changed `compas.scene.Graph`'s `show_nodes`, `show_edges` to optionally accept a sequence of keys.
+* Changed `compas.scene.VolMesh`'s `show_vertices`, `show_edges`, `show_faces`, `show_cells` to optionally accept a sequence of keys.
 * Fixed missing implementation of `Sphere.base`.
 * Fixed bug in `intersection_sphere_sphere`.
 
 ### Removed
+
+* Removed kwargs from `compas_rhino.scene.MeshObject.draw`.
+* Removed kwargs from `compas_rhino.scene.GraphObject.draw`.
+* Removed kwargs from `compas_rhino.scene.VolMeshObject.draw`.
 
 ## [2.0.0-beta.4] 2024-01-26
 
