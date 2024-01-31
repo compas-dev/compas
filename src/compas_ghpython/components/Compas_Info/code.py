@@ -1,6 +1,7 @@
 """
 Displays information about the active COMPAS environment.
 """
+
 import compas_bootstrapper
 from ghpythonlib.componentbase import executingcomponent as component
 

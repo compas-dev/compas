@@ -4,6 +4,7 @@ The server binds to all network interfaces (i.e. ``0.0.0.0``) and
 it listens to requests on port ``1753``.
 
 """
+
 from compas.rpc import Server
 from compas.rpc import Dispatcher
 

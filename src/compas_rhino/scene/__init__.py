@@ -2,6 +2,7 @@
 This package provides scene object plugins for visualising COMPAS objects in Rhino.
 When working in Rhino, :class:`compas.scene.SceneObject` will automatically use the corresponding Rhino scene object for each COMPAS object type.
 """
+
 from __future__ import absolute_import
 
 from compas.plugins import plugin
