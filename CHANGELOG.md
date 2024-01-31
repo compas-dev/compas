@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added test for `compas.scene.Scene` serialisation.
+
 ### Changed
 
 * Fixed missing implementation of `Sphere.base`.
