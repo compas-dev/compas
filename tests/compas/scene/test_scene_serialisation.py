@@ -111,7 +111,7 @@ def assert_is_data_equal(obj1, obj2, path=""):
 def test_scene_serialisation(items, mocker):
 
     if compas.IPY:
-        mocker.patch("compas.scene.context.detect_current_context", return_value=None)
+        mocker.patch("compas.is_rhino", return_value=False)
 
     scene1 = Scene()
     for item in items:
