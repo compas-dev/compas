@@ -32,7 +32,6 @@ User Guide
     advanced.tolerance
     advanced.serialisation
     advanced.rpc
-    advanced.pluggables
 
 
 .. toctree::
@@ -44,7 +43,6 @@ User Guide
     cad.rhino8
     cad.grasshopper
     cad.blender
-    cad.other
 
 
 .. toctree::

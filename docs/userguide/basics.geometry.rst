@@ -12,5 +12,4 @@ Geometry
     basics.geometry.curves_and_surfaces
     basics.geometry.solids
     basics.geometry.breps
-    basics.geometry.intersections
     basics.geometry.transformations
