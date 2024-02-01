@@ -1121,12 +1121,12 @@ document.write(`
 <h1>surface_to_compas_mesh</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas_rhino.conversions.surface_to_compas_mesh">
-<span class="sig-prename descclassname"><span class="pre">compas_rhino.conversions.</span></span><span class="sig-name descname"><span class="pre">surface_to_compas_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">surface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facefilter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cleanup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/73f9efb/src/compas/../compas_rhino/conversions/surfaces.py#L166"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas_rhino.conversions.</span></span><span class="sig-name descname"><span class="pre">surface_to_compas_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">surface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facefilter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cleanup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/bdff919/src/compas/../compas_rhino/conversions/surfaces.py#L173"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Convert the surface b-rep loops to a COMPAS mesh.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>cls</strong><span class="classifier"><a class="reference internal" href="../compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>, optional</span></dt><dd><p>The type of COMPAS mesh.</p>
+<dt><strong>surface</strong><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rhino.Geometry.Surface</span></code></span></dt><dd><p>A Rhino surface.</p>
 </dd>
 <dt><strong>facefilter</strong><span class="classifier">callable, optional</span></dt><dd><p>A filter for selection which Brep faces to include.
 If provided, the filter should return True or False per face.
@@ -1136,6 +1136,8 @@ Default parameter value is None in which case all faces are included.</p>
 <dt><strong>cleanup</strong><span class="classifier">bool, optional</span></dt><dd><p>Flag indicating to clean up the result.
 Cleaning up means to remove isolated faces and unused vertices.
 Default is False.</p>
+</dd>
+<dt><strong>cls</strong><span class="classifier"><a class="reference internal" href="../compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>, optional</span></dt><dd><p>The type of COMPAS mesh.</p>
 </dd>
 </dl>
 </dd>
