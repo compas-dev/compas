@@ -5,10 +5,10 @@ import compas
 
 try:
     import bpy
+    import compas_blender.data
+
 except ImportError:
     pass
-else:
-    from .utilities import *  # noqa: F401 F403
 
 
 __version__ = "2.0.0"
@@ -51,7 +51,7 @@ def clear(guids=None):
         bpy.ops.object.select_all(action="SELECT")
         bpy.ops.object.delete(use_global=True, confirm=False)
         # delete data
-        delete_unused_data()  # noqa: F405
+        compas_blender.data.delete_unused_data()
         # delete collections
         for collection in bpy.context.scene.collection.children:
             bpy.context.scene.collection.children.unlink(collection)

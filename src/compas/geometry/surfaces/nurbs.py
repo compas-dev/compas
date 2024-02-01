@@ -17,6 +17,11 @@ def new_nurbssurface(cls, *args, **kwargs):
 
 
 @pluggable(category="factories")
+def new_nurbssurface_from_native(cls, *args, **kwargs):
+    raise PluginNotInstalledError
+
+
+@pluggable(category="factories")
 def new_nurbssurface_from_parameters(cls, *args, **kwargs):
     raise PluginNotInstalledError
 
@@ -185,6 +190,23 @@ class NurbsSurface(Surface):
     # ==============================================================================
     # Constructors
     # ==============================================================================
+
+    @classmethod
+    def from_native(cls, surface):
+        """Construct a NURBS surface from a surface object.
+
+        Parameters
+        ----------
+        surface : :class:`Rhino.Geometry.NurbsSurface`
+            A CAD native surface object.
+
+        Returns
+        -------
+        :class:`compas.geometry.NurbsSurface`
+            A COMPAS NURBS surface.
+
+        """
+        return new_nurbssurface_from_native(cls, surface)
 
     @classmethod
     def from_parameters(

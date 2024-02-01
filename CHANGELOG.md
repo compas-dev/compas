@@ -9,9 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added pluggable `compas.geometry.surfaces.nurbs.new_nurbssurface_from_native`.
+* Added `compas.geometry.NurbsSurface.from_native`.
+* Added plugin `compas_rhino.geometry.surfaces.new_nurbssurface_from_plane`.
+
 ### Changed
 
+* Fixed bug in `compas_blender.clear`.
+* Fixed bug in `compas_rhino.conversions.surface_to_compas`.
+* Fixed bug in `compas_rhino.conversions.surface_to_compas_mesh`.
+* Fixed bug in `compas_rhino.conversions.surface_to_compas_quadmesh`.
+* Fixed bug in plugin `compas_rhino.geometry.curves.new_nurbscurve_from_native`.
+* Fixed bug in plugin `compas_rhino.geometry.surfaces.new_nurbssurface_from_native`.
+
 ### Removed
+
+* Removed plugin `compas_rhino.geometry.surfaces.new_surface_from_plane`.
 
 
 ## [2.0.0] 2024-01-31

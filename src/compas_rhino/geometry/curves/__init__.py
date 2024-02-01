@@ -20,7 +20,7 @@ def new_nurbscurve(cls, *args, **kwargs):
 
 @plugin(category="factories", requires=["Rhino"])
 def new_nurbscurve_from_native(cls, *args, **kwargs):
-    return RhinoCurve.from_rhino(*args, **kwargs)
+    return RhinoNurbsCurve.from_rhino(*args, **kwargs)
 
 
 @plugin(category="factories", requires=["Rhino"])
