@@ -58,7 +58,7 @@ class Pointcloud(Geometry):
         return "{0}(points={1!r})".format(type(self).__name__, self.points)
 
     def __str__(self):
-        return "{0}(len(points)={1})".format(type(self).__name__, [point.__str__() for point in self.points])
+        return "{0}(len(points)={1})".format(type(self).__name__, len(self.points))
 
     def __len__(self):
         return len(self.points)
