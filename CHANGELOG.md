@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added Blender paths for Windows.
+* Added `compas_rhino.print_python_path`.
+* Added `compas_blender.print_python_path`.
+
 ### Changed
 
 ### Removed
