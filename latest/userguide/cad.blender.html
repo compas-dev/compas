@@ -551,19 +551,46 @@ It has currently only been tested on macOS, and may change in the future.</p>
 <li><p>by installing COMPAS in Blender’s Python environment using <code class="docutils literal notranslate"><span class="pre">pip</span></code>, or</p></li>
 <li><p>by using the <code class="docutils literal notranslate"><span class="pre">compas_blender.install</span></code> command.</p></li>
 </ul>
-<section id="using-pip">
-<h3>Using <code class="docutils literal notranslate"><span class="pre">pip</span></code></h3>
+<section id="using-pip-recommended">
+<h3>Using <code class="docutils literal notranslate"><span class="pre">pip</span></code> (recommended)</h3>
 <p>Blender comes with its own Python installation.
 This procedure simply uses that Python installation and associated <code class="docutils literal notranslate"><span class="pre">pip</span></code> to install COMPAS.
-It doesn’t require an existing COMPAS installation on your system.</p>
-<p>You need to know the path to the Python executable that comes with Blender.
-On macOS, this is typically something like <code class="docutils literal notranslate"><span class="pre">/Applications/Blender.app/Contents/Resources/4.0/python/bin/python3.10</span></code>.</p>
+The location of the executable is different on different platforms.
+The default locations are:</p>
+<ul class="simple">
+<li><p>Windows: <code class="docutils literal notranslate"><span class="pre">C:\Program</span> <span class="pre">Files\Blender</span> <span class="pre">Foundation\Blender</span> <span class="pre">4.0\4.0\python\bin\python.exe</span></code></p></li>
+<li><p>macOS: <code class="docutils literal notranslate"><span class="pre">/Applications/Blender.app/Contents/Resources/4.0/python/bin/python3.10</span></code></p></li>
+<li><p>Linux: <code class="docutils literal notranslate"><span class="pre">/usr/share/blender/4.0/python/bin/python3.10</span></code> (i think :)</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you already have an installation of COMPAS on your system, you can try finding the Rhino 8 Python executable by running the following in a terminal or command prompt:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">print_python_path</span>
+</pre></div>
+</div>
+</div>
+<section id="install-from-pypi">
+<h4>Install from PyPI</h4>
+<p>For example on Mac:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>/Applications/Blender.app/Contents/Resources/4.0/python/bin/python3.10<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>compas
 </pre></div>
 </div>
 </section>
+<section id="install-from-source">
+<h4>Install from Source</h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>path/to/compas
+$<span class="w"> </span>/Applications/Blender.app/Contents/Resources/4.0/python/bin/python3.10<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
+</pre></div>
+</div>
+</section>
+</section>
 <section id="using-compas-blender-install">
 <h3>Using <code class="docutils literal notranslate"><span class="pre">compas_blender.install</span></code></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This procedure will not install any of the dependencies required by COMPAS.
+They have to already be present in the Blender Python environment.</p>
+</div>
 <p>The <code class="docutils literal notranslate"><span class="pre">compas_blender.install</span></code> command installs COMPAS in Blender’s Python <code class="docutils literal notranslate"><span class="pre">site-packages</span></code> folder
 by creating symlinks to COMPAS packages installed in an existing (<code class="docutils literal notranslate"><span class="pre">conda</span></code>) environment.
 Therefore, before running the command below, you should activate the environment in which you have installed COMPAS.</p>
@@ -624,15 +651,6 @@ For more information on visualisation scenes, see <a class="reference internal" 
 </pre></div>
 </div>
 </section>
-<section id="data-exchange">
-<h2>Data Exchange</h2>
-</section>
-<section id="remote-procedure-calls">
-<h2>Remote Procedure Calls</h2>
-</section>
-<section id="known-issues">
-<h2>Known Issues</h2>
-</section>
 </section>
 
 
@@ -657,16 +675,17 @@ For more information on visualisation scenes, see <a class="reference internal" 
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-pip">Using <code class="docutils literal notranslate"><span class="pre">pip</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-pip-recommended">Using <code class="docutils literal notranslate"><span class="pre">pip</span></code> (recommended)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#install-from-pypi">Install from PyPI</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#install-from-source">Install from Source</a></li>
+</ul>
+</li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-compas-blender-install">Using <code class="docutils literal notranslate"><span class="pre">compas_blender.install</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verification">Verification</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisation">Visualisation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conversions">Conversions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-exchange">Data Exchange</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#remote-procedure-calls">Remote Procedure Calls</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#known-issues">Known Issues</a></li>
 </ul>
   </nav></div>
 

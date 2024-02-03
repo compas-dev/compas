@@ -538,13 +538,6 @@ document.write(`
 </div>
 <section id="installation">
 <h2>Installation</h2>
-<p>The installation of COMPAS in Rhino 8 can be done in two ways:</p>
-<ul class="simple">
-<li><p>by using the <code class="docutils literal notranslate"><span class="pre">compas_rhino.install_with_pip</span></code> command, or</p></li>
-<li><p>by installing COMPAS in Rhino 8’s Python environment using <code class="docutils literal notranslate"><span class="pre">pip</span></code> directly.</p></li>
-</ul>
-<section id="using-pip">
-<h3>Using <code class="docutils literal notranslate"><span class="pre">pip</span></code></h3>
 <p>Rhino 8 comes with its own CPython executable (Python 3.9).
 This procedure simply uses that executable and its associated <code class="docutils literal notranslate"><span class="pre">pip</span></code> to install COMPAS.
 The location of the executable is different on different platforms.</p>
@@ -552,41 +545,26 @@ The location of the executable is different on different platforms.</p>
 <li><p>Windows: <code class="docutils literal notranslate"><span class="pre">%USERPROFILE%\.rhinocode\py39-rh8\python.exe</span></code></p></li>
 <li><p>macOS: <code class="docutils literal notranslate"><span class="pre">~/.rhinocode/py39-rh8/python3.9</span></code></p></li>
 </ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you already have an installation of COMPAS on your system, you can try finding the Rhino 8 Python executable by running the following in a terminal or command prompt:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>compas_rhino.print_python_path
+</pre></div>
+</div>
+</div>
 <section id="install-from-pypi">
-<h4>Install from PyPI</h4>
+<h3>Install from PyPI</h3>
 <p>For example on Mac:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>~/.rhinocode/py39-rh8/python3.9<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>compas
 </pre></div>
 </div>
 </section>
 <section id="install-from-source">
-<h4>Install from Source</h4>
+<h3>Install from Source</h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>path/to/compas
 $<span class="w"> </span>~/.rhinocode/py39-rh8/python3.9<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
 </pre></div>
 </div>
-</section>
-</section>
-<section id="using-compas-rhino-install-with-pip">
-<h3>Using <code class="docutils literal notranslate"><span class="pre">compas_rhino.install_with_pip</span></code></h3>
-<p>To simplify the above procedure, <code class="docutils literal notranslate"><span class="pre">compas_rhino</span></code> provides a convnience command.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>This command is experimental and may not yet work properly on your system.</p>
-</div>
-<section id="id1">
-<h4>Install from PyPI</h4>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>compas_rhino.install_with_pip<span class="w"> </span>compas
-</pre></div>
-</div>
-</section>
-<section id="id2">
-<h4>Install from Source</h4>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>/path/to/compas
-$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>compas_rhino.install_with_pip<span class="w"> </span><span class="s2">&quot;-e .&quot;</span>
-</pre></div>
-</div>
-</section>
 </section>
 </section>
 <section id="verification">
@@ -597,35 +575,6 @@ $<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span
 </pre></div>
 </div>
 <p>If everything is installed correctly, this should print the version number of the installed COMPAS package.</p>
-</section>
-<section id="visualisation">
-<h2>Visualisation</h2>
-<p>Visualisation of COMPAS objects in Rhino 8 is handled the same way as in other Rhino version, using viualisation scenes.
-For more information on visualisation scenes, see <a class="reference internal" href="basics.visualisation.html"><span class="doc">Visualisation</span></a>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">compas</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
-<span class="kn">from</span> <span class="nn">compas.scene</span> <span class="kn">import</span> <span class="n">Scene</span>
-
-<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tubemesh.obj&#39;</span><span class="p">))</span>
-
-<span class="n">scene</span> <span class="o">=</span> <span class="n">Scene</span><span class="p">()</span>
-<span class="n">scene</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-<span class="n">scene</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
-<span class="n">scene</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
-</pre></div>
-</div>
-</section>
-<section id="conversions">
-<h2>Conversions</h2>
-</section>
-<section id="data-exchange">
-<h2>Data Exchange</h2>
-</section>
-<section id="remote-procedure-calls">
-<h2>Remote Procedure Calls</h2>
-</section>
-<section id="known-issues">
-<h2>Known Issues</h2>
 </section>
 </section>
 
@@ -651,24 +600,11 @@ For more information on visualisation scenes, see <a class="reference internal" 
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-pip">Using <code class="docutils literal notranslate"><span class="pre">pip</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#install-from-pypi">Install from PyPI</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#install-from-source">Install from Source</a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-compas-rhino-install-with-pip">Using <code class="docutils literal notranslate"><span class="pre">compas_rhino.install_with_pip</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Install from PyPI</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Install from Source</a></li>
-</ul>
-</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-from-pypi">Install from PyPI</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-from-source">Install from Source</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verification">Verification</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisation">Visualisation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conversions">Conversions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-exchange">Data Exchange</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#remote-procedure-calls">Remote Procedure Calls</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#known-issues">Known Issues</a></li>
 </ul>
   </nav></div>
 
