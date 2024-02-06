@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Fixed bug in `compas.tolerange.Tolerance.format_number()` related to IronPython environment.
+
 ### Removed
 
 

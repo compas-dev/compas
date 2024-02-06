@@ -9,6 +9,7 @@ from __future__ import division
 from compas.data import Data
 from decimal import Decimal
 
+import compas
 
 __all__ = ["Tolerance", "TOL"]
 
@@ -683,6 +684,9 @@ class Tolerance(Data):
         '12300'
 
         """
+        if compas.IPY:
+            number = float(number)
+
         if not precision:
             precision = self.precision
 
