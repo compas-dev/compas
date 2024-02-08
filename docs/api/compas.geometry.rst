@@ -91,7 +91,6 @@ Functions
 
     add_vectors
     add_vectors_xy
-    allclose
     angle_planes
     angle_points
     angle_points_xy
@@ -102,7 +101,6 @@ Functions
     angles_points_xy
     angles_vectors
     angles_vectors_xy
-    archimedean_spiral_evaluate
     area_polygon
     area_polygon_xy
     area_triangle
@@ -127,10 +125,6 @@ Functions
     centroid_polygon_vertices_xy
     centroid_polygon_xy
     centroid_polyhedron
-    circle_evaluate
-    circle_from_points
-    circle_from_points_xy
-    close
     closest_line_to_point
     closest_point_in_cloud
     closest_point_in_cloud_xy
@@ -169,11 +163,9 @@ Functions
     dot_vectors
     dot_vectors_xy
     earclip_polygon
-    ellipse_evaluate
     euler_angles_from_matrix
     euler_angles_from_quaternion
     find_span
-    helix_evaluate
     homogenize_vectors
     identity_matrix
     intersection_circle_circle_xy
@@ -232,7 +224,6 @@ Functions
     length_vector_xy
     local_axes
     local_to_world_coordinates
-    logarithmic_spiral_evaluate
     matrix_determinant
     matrix_from_axis_and_angle
     matrix_from_axis_angle_vector
