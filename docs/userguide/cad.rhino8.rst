@@ -6,7 +6,7 @@ Working in Rhino 8
 
     Support for the new Rhino 8 ScriptEditor is experimental.
 
-.. info::
+.. note::
 
     The installation procedures listed here are for using COMPAS with CPython in Rhino 8.
     For using COMPAS with IronPython in Rhino 8, see :doc:`/userguide/cad.rhino`.
