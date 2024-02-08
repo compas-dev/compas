@@ -255,10 +255,33 @@ class Circle(Conic):
 
         """
         from compas.geometry import Plane
-        from compas.geometry import circle_from_points
 
-        (point, normal), radius = circle_from_points(a, b, c)
+        a = Point(*a)
+        b = Point(*b)
+        c = Point(*c)
+
+        ab = b - a
+        cb = b - c
+        ba = a - b
+        ca = a - c
+        ac = c - a
+        bc = c - b
+
+        normal = ab.cross(ac).unitized()
+
+        d = 2 * ba.cross(cb).length ** 2
+
+        A = cb.length**2 * ba.dot(ca) / d
+        B = ca.length**2 * ab.dot(cb) / d
+        C = ba.length**2 * ac.dot(bc) / d
+        Aa = a.scaled(A)
+        Bb = b.scaled(B)
+        Cc = c.scaled(C)
+
+        point = Aa + Bb + Cc
+        radius = (a - point).length
         plane = Plane(point, normal)
+
         return cls.from_plane_and_radius(plane, radius)
 
     @classmethod
