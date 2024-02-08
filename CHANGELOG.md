@@ -9,12 +9,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `compas.linalg`.
+* Added `compas.matrices`.
+* Added `compas.itertools`.
+* Added `compas_rhino.scene.helpers`.
+* Added `compas.scene.SceneObject.contrastcolor`.
+
 ### Changed
 
 * Fixed bug in `compas.geometry.oriented_bounding_box_numpy` to support points in plane.
+* Changed `compas_rhino.scene.RhinoSceneObject` to pass on positional arguments.
+* Changed `compas_rhino.scene.RhinoBoxObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoBrepObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoCapsuleObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoCircleObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoConeObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoCurveObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoCylinderObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoEllipseObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoFrameObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoGraphObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoLineObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoMeshObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoPlaneObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoPointObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoPolygonObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoPolyhedronObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoPolylineObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoSphereObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoSurfaceObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoTorusObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoVectorObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoVolMeshObject.draw` to use attributes only.
 
 ### Removed
 
+* Removed `compas.geometry.linalg`.
+* Removed `compas.topology.matrices`.
+* Removed `compas.utilities.itertools`.
 
 ## [2.0.2] 2024-02-06
 
