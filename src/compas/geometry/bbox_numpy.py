@@ -103,10 +103,10 @@ def oriented_bounding_box_numpy(points, tol=None):
         area2 = (rect2[1][0] - rect2[0][0]) * (rect2[3][1] - rect2[0][1])
 
         if area1 < area2:
-            rect = [[x, y, 0.0] for x, y in rect1]
+            rect = [[pt[0], pt[1], 0.0] for pt in rect1]
             bbox = rect + rect
         else:
-            rect = [[x, y, 0.0] for x, y in rect2]
+            rect = [[pt[0], pt[1], 0.0] for pt in rect2]
             bbox = local_to_world_coordinates_numpy(frame, rect)
             bbox = vstack((bbox, bbox)).tolist()
 
