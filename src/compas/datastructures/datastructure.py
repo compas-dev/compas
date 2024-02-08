@@ -18,6 +18,40 @@ class Datastructure(Data):
     def __init__(self, attributes=None, name=None):
         super(Datastructure, self).__init__(name=name)
         self.attributes = attributes or {}
+        self._aabb = None
+        self._obb = None
+
+    @property
+    def aabb(self):
+        if self._aabb is None:
+            self._aabb = self.compute_aabb()
+        return self._aabb
+
+    @property
+    def obb(self):
+        if self._obb is None:
+            self._obb = self.compute_obb()
+        return self._obb
+
+    def compute_aabb(self):
+        """Compute the axis-aligned bounding box of the datastructure.
+
+        Returns
+        -------
+        :class:`compas.geometry.Box`
+
+        """
+        raise NotImplementedError
+
+    def compute_obb(self):
+        """Compute the oriented bounding box of the datastructure.
+
+        Returns
+        -------
+        :class:`compas.geometry.Box`
+
+        """
+        raise NotImplementedError
 
     def transform(self, transformation):
         """Transforms the data structure.

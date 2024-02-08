@@ -39,6 +39,26 @@ class Geometry(Data):
             self._obb = self.compute_obb()
         return self._obb
 
+    def compute_aabb(self):
+        """Compute the axis-aligned bounding box of the geometry.
+
+        Returns
+        -------
+        :class:`compas.geometry.Box`
+
+        """
+        raise NotImplementedError
+
+    def compute_obb(self):
+        """Compute the oriented bounding box of the geometry.
+
+        Returns
+        -------
+        :class:`compas.geometry.Box`
+
+        """
+        raise NotImplementedError
+
     def transform(self, transformation):
         """Transform the geometry.
 
@@ -274,23 +294,3 @@ class Geometry(Data):
             axis = [0.0, 0.0, 1.0]
 
         return self.transformed(Rotation.from_axis_and_angle(axis, angle, point))
-
-    def compute_aabb(self):
-        """Compute the axis-aligned bounding box of the geometry.
-
-        Returns
-        -------
-        :class:`compas.geometry.Box`
-
-        """
-        raise NotImplementedError
-
-    def compute_obb(self):
-        """Compute the oriented bounding box of the geometry.
-
-        Returns
-        -------
-        :class:`compas.geometry.Box`
-
-        """
-        raise NotImplementedError
