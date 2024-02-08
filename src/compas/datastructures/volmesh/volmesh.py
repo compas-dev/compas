@@ -19,6 +19,7 @@ from compas.geometry import Vector
 from compas.geometry import Line
 from compas.geometry import Polygon
 from compas.geometry import Polyhedron
+from compas.geometry import Box
 from compas.geometry import add_vectors
 from compas.geometry import bestfit_plane
 from compas.geometry import centroid_points
@@ -33,6 +34,7 @@ from compas.geometry import scale_vector
 from compas.geometry import subtract_vectors
 from compas.geometry import bounding_box
 from compas.geometry import transform_points
+from compas.geometry import oriented_bounding_box
 
 from compas.utilities import linspace
 from compas.utilities import pairwise
@@ -951,12 +953,22 @@ class VolMesh(Datastructure):
 
         Returns
         -------
-        list[[float, float, float]]
-            XYZ coordinates of 8 points defining a box.
+        :class:`compas.geometry.Box`
 
         """
         xyz = self.vertices_attributes("xyz")
-        return bounding_box(xyz)
+        return Box.from_bounding_box(bounding_box(xyz))
+
+    def obb(self):
+        """Calculate the oriented bounding box of the datastructure.
+
+        Returns
+        -------
+        :class:`compas.geometry.Box`
+
+        """
+        xyz = self.vertices_attributes("xyz")
+        return Box.from_bounding_box(oriented_bounding_box(xyz))
 
     # --------------------------------------------------------------------------
     # VolMesh Topology

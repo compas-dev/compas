@@ -28,6 +28,7 @@ from compas.geometry import Polygon
 from compas.geometry import Circle
 from compas.geometry import Frame
 from compas.geometry import Polyhedron
+from compas.geometry import Box
 from compas.geometry import angle_points
 from compas.geometry import area_polygon
 from compas.geometry import bestfit_plane
@@ -3927,24 +3928,22 @@ class Mesh(Datastructure):
 
         Returns
         -------
-        list[[float, float, float]]
-            XYZ coordinates of 8 points defining a box.
+        :class:`compas.geometry.Box`
 
         """
         xyz = self.vertices_attributes("xyz")
-        return bounding_box(xyz)
+        return Box.from_bounding_box(bounding_box(xyz))
 
     def obb(self):
         """Calculate the oriented bounding box of the mesh.
 
         Returns
         -------
-        list[[float, float, float]]
-            XYZ coordinates of 8 points defining a box.
+        :class:`compas.geometry.Box`
 
         """
         xyz = self.vertices_attributes("xyz")
-        return oriented_bounding_box(xyz)
+        return Box.from_bounding_box(oriented_bounding_box(xyz))
 
     # --------------------------------------------------------------------------
     # Vertex geometry
@@ -4842,7 +4841,7 @@ class Mesh(Datastructure):
             The adjacency matrix.
 
         """
-        from compas.topology import adjacency_matrix
+        from compas.matrices import adjacency_matrix
 
         vertex_index = self.vertex_index()
         adjacency = [[vertex_index[nbr] for nbr in self.vertex_neighbors(vertex)] for vertex in self.vertices()]
@@ -4862,7 +4861,7 @@ class Mesh(Datastructure):
             The connectivity matrix.
 
         """
-        from compas.topology import connectivity_matrix
+        from compas.matrices import connectivity_matrix
 
         vertex_index = self.vertex_index()
         adjacency = [[vertex_index[nbr] for nbr in self.vertex_neighbors(vertex)] for vertex in self.vertices()]
@@ -4882,7 +4881,7 @@ class Mesh(Datastructure):
             The degree matrix.
 
         """
-        from compas.topology import degree_matrix
+        from compas.matrices import degree_matrix
 
         vertex_index = self.vertex_index()
         adjacency = [[vertex_index[nbr] for nbr in self.vertex_neighbors(vertex)] for vertex in self.vertices()]
@@ -4936,7 +4935,7 @@ class Mesh(Datastructure):
         True
 
         """
-        from compas.topology import face_matrix
+        from compas.matrices import face_matrix
 
         vertex_index = self.vertex_index()
         faces = [[vertex_index[vertex] for vertex in self.face_vertices(face)] for face in self.faces()]
@@ -4993,7 +4992,7 @@ class Mesh(Datastructure):
         >>> d = L.dot(xyz)
 
         """
-        from compas.topology import laplacian_matrix
+        from compas.matrices import laplacian_matrix
 
         vertex_index = self.vertex_index()
         adjacency = [[vertex_index[nbr] for nbr in self.vertex_neighbors(vertex)] for vertex in self.vertices()]

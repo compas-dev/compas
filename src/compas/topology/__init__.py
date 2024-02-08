@@ -4,8 +4,6 @@ Package containing topological algorithms for traversal, connectivity, combinato
 
 from __future__ import absolute_import
 
-import compas
-
 from .traversal import (
     depth_first_ordering,
     breadth_first_ordering,
@@ -26,16 +24,6 @@ from .connectivity import (
     faces_from_edges,
 )
 
-if not compas.IPY:
-    from .matrices import (
-        adjacency_matrix,
-        degree_matrix,
-        connectivity_matrix,
-        laplacian_matrix,
-        face_matrix,
-    )
-
-
 __all__ = [
     "astar_lightest_path",
     "astar_shortest_path",
@@ -55,12 +43,3 @@ __all__ = [
     "vertex_adjacency_from_faces",
     "vertex_coloring",
 ]
-
-if not compas.IPY:
-    __all__ += [
-        "adjacency_matrix",
-        "degree_matrix",
-        "connectivity_matrix",
-        "laplacian_matrix",
-        "face_matrix",
-    ]
