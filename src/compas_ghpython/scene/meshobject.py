@@ -5,7 +5,7 @@ from __future__ import print_function
 from compas.scene import MeshObject as BaseMeshObject
 from compas.colors import Color
 from compas_rhino import conversions
-from compas_rhino.scene._helpers import ngon
+from compas_rhino.scene.helpers import ngon
 from .sceneobject import GHSceneObject
 
 

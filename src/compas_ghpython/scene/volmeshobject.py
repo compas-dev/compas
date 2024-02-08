@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 from compas_rhino import conversions
-from compas_rhino.scene._helpers import ngon
+from compas_rhino.scene.helpers import ngon
 
 from compas.scene import VolMeshObject as BaseVolMeshObject
 from .sceneobject import GHSceneObject
