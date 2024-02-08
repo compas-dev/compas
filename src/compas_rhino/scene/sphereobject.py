@@ -5,11 +5,10 @@ from __future__ import division
 import scriptcontext as sc  # type: ignore
 
 from compas.scene import GeometryObject
-from compas.colors import Color
 from compas_rhino.conversions import sphere_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
 from .sceneobject import RhinoSceneObject
-from ._helpers import attributes
+from .helpers import attributes
 
 
 class SphereObject(RhinoSceneObject, GeometryObject):
@@ -27,13 +26,8 @@ class SphereObject(RhinoSceneObject, GeometryObject):
     def __init__(self, sphere, **kwargs):
         super(SphereObject, self).__init__(geometry=sphere, **kwargs)
 
-    def draw(self, color=None):
+    def draw(self):
         """Draw the sphere associated with the scene object.
-
-        Parameters
-        ----------
-        color : rgb1 | rgb255 | :class:`compas.colors.Color`, optional
-            The RGB color of the sphere.
 
         Returns
         -------
@@ -41,8 +35,7 @@ class SphereObject(RhinoSceneObject, GeometryObject):
             The GUIDs of the objects created in Rhino.
 
         """
-        color = Color.coerce(color) or self.color
-        attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
+        attr = attributes(name=self.geometry.name, color=self.color, layer=self.layer)
         geometry = sphere_to_rhino(self.geometry)
         geometry.Transform(transformation_to_rhino(self.worldtransformation))
 

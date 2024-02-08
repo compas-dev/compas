@@ -23,8 +23,8 @@ class RhinoSceneObject(SceneObject):
 
     """
 
-    def __init__(self, layer=None, group=None, **kwargs):
-        super(RhinoSceneObject, self).__init__(**kwargs)
+    def __init__(self, *args, layer=None, group=None, **kwargs):
+        super(RhinoSceneObject, self).__init__(*args, **kwargs)
         self.layer = layer
         self.group = group
 

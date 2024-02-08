@@ -41,7 +41,6 @@ class PlaneObject(RhinoSceneObject, GeometryObject):
             The GUIDs of the created Rhino objects.
 
         """
-
         frame = Frame.from_plane(self._item)
 
         guids = [

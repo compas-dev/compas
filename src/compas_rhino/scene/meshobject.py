@@ -23,8 +23,8 @@ from compas_rhino.conversions import sphere_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
 
 from .sceneobject import RhinoSceneObject
-from ._helpers import attributes
-from ._helpers import ngon
+from .helpers import attributes
+from .helpers import ngon
 
 
 class MeshObject(RhinoSceneObject, BaseMeshObject):

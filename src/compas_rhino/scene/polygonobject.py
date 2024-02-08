@@ -11,7 +11,7 @@ from compas_rhino.conversions import line_to_rhino
 from compas_rhino.conversions import vertices_and_faces_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
 from .sceneobject import RhinoSceneObject
-from ._helpers import attributes
+from .helpers import attributes
 
 
 class PolygonObject(RhinoSceneObject, GeometryObject):
@@ -29,13 +29,8 @@ class PolygonObject(RhinoSceneObject, GeometryObject):
     def __init__(self, polygon, **kwargs):
         super(PolygonObject, self).__init__(geometry=polygon, **kwargs)
 
-    def draw(self, color=None):
+    def draw(self):
         """Draw the polygon.
-
-        Parameters
-        ----------
-        color : rgb1 | rgb255 | :class:`compas.colors.Color`, optional
-            The RGB color of the polygon.
 
         Returns
         -------
@@ -43,8 +38,7 @@ class PolygonObject(RhinoSceneObject, GeometryObject):
             List of GUIDs of the objects created in Rhino.
 
         """
-        color = Color.coerce(color) or self.color
-        attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
+        attr = attributes(name=self.geometry.name, color=self.color, layer=self.layer)
 
         vertices = self.geometry.points
         faces = self.geometry.faces

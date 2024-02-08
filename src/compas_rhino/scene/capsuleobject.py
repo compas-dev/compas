@@ -5,11 +5,10 @@ from __future__ import division
 import scriptcontext as sc  # type: ignore
 
 from compas.scene import GeometryObject
-from compas.colors import Color
 from compas_rhino.conversions import capsule_to_rhino_brep
 from compas_rhino.conversions import transformation_to_rhino
 from .sceneobject import RhinoSceneObject
-from ._helpers import attributes
+from .helpers import attributes
 
 
 class CapsuleObject(RhinoSceneObject, GeometryObject):
@@ -27,13 +26,8 @@ class CapsuleObject(RhinoSceneObject, GeometryObject):
     def __init__(self, capsule, **kwargs):
         super(CapsuleObject, self).__init__(geometry=capsule, **kwargs)
 
-    def draw(self, color=None):
+    def draw(self):
         """Draw the capsule associated with the scene object.
-
-        Parameters
-        ----------
-        color : rgb1 | rgb255 | :class:`compas.colors.Color`, optional
-            The RGB color of the capsule.
 
         Returns
         -------
@@ -41,9 +35,7 @@ class CapsuleObject(RhinoSceneObject, GeometryObject):
             The GUIDs of the objects created in Rhino.
 
         """
-        color = Color.coerce(color) or self.color
-        attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
-
+        attr = attributes(name=self.geometry.name, color=self.color, layer=self.layer)
         breps = capsule_to_rhino_brep(self.geometry)
         transformation = transformation_to_rhino(self.worldtransformation)
         for geometry in breps:

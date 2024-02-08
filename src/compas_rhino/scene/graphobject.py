@@ -15,7 +15,7 @@ from compas_rhino.conversions import line_to_rhino
 from compas_rhino.conversions import sphere_to_rhino
 from compas_rhino.conversions import cylinder_to_rhino_brep
 from .sceneobject import RhinoSceneObject
-from ._helpers import attributes
+from .helpers import attributes
 
 
 class GraphObject(RhinoSceneObject, BaseGraphObject):

@@ -15,8 +15,8 @@ from compas_rhino.conversions import line_to_rhino
 from compas_rhino.conversions import vertices_and_faces_to_rhino
 
 from .sceneobject import RhinoSceneObject
-from ._helpers import attributes
-from ._helpers import ngon
+from .helpers import attributes
+from .helpers import ngon
 
 
 class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
