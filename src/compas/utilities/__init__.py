@@ -9,7 +9,7 @@ from .decorators import (
     print_profile,
 )
 
-from .itertools import (
+from ..itertools import (
     flatten,
     reshape,
     grouper,
