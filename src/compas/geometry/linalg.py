@@ -1,26 +1,19 @@
 import sys
-
 from functools import wraps
-
-# from numpy import array
+from numpy import array
 from numpy import asarray
 from numpy import atleast_2d
 from numpy import nan_to_num
-
-# from numpy import nonzero
-
+from numpy import nonzero
 from numpy import sum
-
-# from numpy import absolute
+from numpy import absolute
 from numpy import cross
 from numpy.linalg import cond
-
 from scipy.linalg import cho_factor  # type: ignore
 from scipy.linalg import cho_solve  # type: ignore
 from scipy.linalg import lstsq  # type: ignore
-
-# from scipy.linalg import qr  # type: ignore
-# from scipy.linalg import svd  # type: ignore
+from scipy.linalg import qr  # type: ignore
+from scipy.linalg import svd  # type: ignore
 from scipy.sparse.linalg import factorized  # type: ignore
 from scipy.sparse.linalg import spsolve  # type: ignore
 
@@ -30,258 +23,258 @@ from scipy.sparse.linalg import spsolve  # type: ignore
 # ==============================================================================
 
 
-# def nullspace(A, tol=0.001):
-#     r"""Calculates the nullspace of the input matrix A.
+def nullspace(A, tol=0.001):
+    r"""Calculates the nullspace of the input matrix A.
 
-#     Parameters
-#     ----------
-#     A : array-like
-#         Matrix A represented as an array or list.
-#     tol : float
-#         Tolerance.
+    Parameters
+    ----------
+    A : array-like
+        Matrix A represented as an array or list.
+    tol : float
+        Tolerance.
 
-#     Returns
-#     -------
-#     array
-#         Null(A).
+    Returns
+    -------
+    array
+        Null(A).
 
-#     Notes
-#     -----
-#     The nullspace is the set of vector solutions to the equation
+    Notes
+    -----
+    The nullspace is the set of vector solutions to the equation
 
-#     .. math::
+    .. math::
 
-#         \mathbf{A} \mathbf{x} = 0
+        \mathbf{A} \mathbf{x} = 0
 
-#     where 0 is a vector of zeros.
+    where 0 is a vector of zeros.
 
-#     When determining the nullspace using SVD decomposition (A = U S Vh),
-#     the right-singular vectors (rows of Vh or columns of V) corresponding to
-#     vanishing singular values of A, span the nullspace of A.
+    When determining the nullspace using SVD decomposition (A = U S Vh),
+    the right-singular vectors (rows of Vh or columns of V) corresponding to
+    vanishing singular values of A, span the nullspace of A.
 
-#     Examples
-#     --------
-#     >>> nullspace(array([[2, 3, 5], [-4, 2, 3]]))
-#     array([[-0.03273853],
-#            [-0.85120179],
-#            [ 0.52381648]])
+    Examples
+    --------
+    >>> nullspace(array([[2, 3, 5], [-4, 2, 3]]))
+    array([[-0.03273853],
+           [-0.85120179],
+           [ 0.52381648]])
 
-#     """
-#     A = atleast_2d(asarray(A, dtype=float))
-#     u, s, vh = svd(A, compute_uv=True)
-#     tol = s[0] * tol
-#     r = (s >= tol).sum()
-#     # nullspace
-#     # ---------
-#     # if A is m x n
-#     # the last (n - r) columns of v (or the last n - r rows of vh)
-#     null = vh[r:].conj().T
-#     return null
-
-
-# def rank(A, tol=0.001):
-#     r"""Calculates the rank of the input matrix A.
-
-#     Parameters
-#     ----------
-#     A : array-like
-#         Matrix A represented as an array or list.
-#     tol : float
-#         Tolerance.
-
-#     Returns
-#     -------
-#     int
-#         rank(A)
-
-#     Notes
-#     -----
-#     The rank of a matrix is the maximum number of linearly independent rows in
-#     a matrix. Note that the row rank is equal to the column rank of the matrix.
-
-#     Examples
-#     --------
-#     >>> rank([[1, 2, 1], [-2, -3, 1], [3, 5, 0]])
-#     2
-
-#     """
-#     A = atleast_2d(asarray(A, dtype=float))
-#     s = svd(A, compute_uv=False)
-#     tol = s[0] * tol
-#     r = (s >= tol).sum()
-#     return r
+    """
+    A = atleast_2d(asarray(A, dtype=float))
+    u, s, vh = svd(A, compute_uv=True)
+    tol = s[0] * tol
+    r = (s >= tol).sum()
+    # nullspace
+    # ---------
+    # if A is m x n
+    # the last (n - r) columns of v (or the last n - r rows of vh)
+    null = vh[r:].conj().T
+    return null
 
 
-# def dof(A, tol=0.001, condition=False):
-#     r"""Returns the degrees-of-freedom of the input matrix A.
+def rank(A, tol=0.001):
+    r"""Calculates the rank of the input matrix A.
 
-#     Parameters
-#     ----------
-#     A : array-like
-#         Matrix A represented as an array or list.
-#     tol : float (0.001)
-#         Tolerance.
-#     condition : bool (False)
-#         Return the condition number of the matrix.
+    Parameters
+    ----------
+    A : array-like
+        Matrix A represented as an array or list.
+    tol : float
+        Tolerance.
 
-#     Returns
-#     -------
-#     int
-#         Column degrees-of-freedom.
-#     int
-#         Row degrees-of-freedom.
-#     float
-#         Condition number, if ``condition`` is ``True``.
+    Returns
+    -------
+    int
+        rank(A)
 
-#     Notes
-#     -----
-#     The degrees-of-freedom are the number of columns and rows minus the rank.
+    Notes
+    -----
+    The rank of a matrix is the maximum number of linearly independent rows in
+    a matrix. Note that the row rank is equal to the column rank of the matrix.
 
-#     Examples
-#     --------
-#     >>> from numpy import allclose
-#     >>> d = dof([[2, -1, 3], [1, 0, 1], [0, 2, -1], [1, 1, 4]], condition=True)
-#     >>> allclose(d, (0, 1, 5.073596551))
-#     True
+    Examples
+    --------
+    >>> rank([[1, 2, 1], [-2, -3, 1], [3, 5, 0]])
+    2
 
-#     """
-#     A = atleast_2d(asarray(A, dtype=float))
-#     r = rank(A, tol=tol)
-#     k = A.shape[1] - r
-#     m = A.shape[0] - r
-#     if condition:
-#         c = cond(A)
-#         return k, m, c
-#     return k, m
+    """
+    A = atleast_2d(asarray(A, dtype=float))
+    s = svd(A, compute_uv=False)
+    tol = s[0] * tol
+    r = (s >= tol).sum()
+    return r
 
 
-# def pivots(U, tol=None):
-#     r"""Identify the pivots of input matrix U.
+def dof(A, tol=0.001, condition=False):
+    r"""Returns the degrees-of-freedom of the input matrix A.
 
-#     Parameters
-#     ----------
-#     U : array-like
-#         Matrix U represented as an array or list.
+    Parameters
+    ----------
+    A : array-like
+        Matrix A represented as an array or list.
+    tol : float (0.001)
+        Tolerance.
+    condition : bool (False)
+        Return the condition number of the matrix.
 
-#     Returns
-#     -------
-#     list
-#         Pivot column indices.
+    Returns
+    -------
+    int
+        Column degrees-of-freedom.
+    int
+        Row degrees-of-freedom.
+    float
+        Condition number, if ``condition`` is ``True``.
 
-#     Notes
-#     -----
-#     If the matrix U is in Reduced Row Echelon Form,
-#     the pivots are the columns with leading non-zero coefficients per row.
+    Notes
+    -----
+    The degrees-of-freedom are the number of columns and rows minus the rank.
 
-#     Examples
-#     --------
-#     >>> A = [[1, 0, 1, 3], [2, 3, 4, 7], [-1, -3, -3, -4]]
-#     >>> n = rref_sympy(A)
-#     >>> pivots(n)
-#     [0, 1]
+    Examples
+    --------
+    >>> from numpy import allclose
+    >>> d = dof([[2, -1, 3], [1, 0, 1], [0, 2, -1], [1, 1, 4]], condition=True)
+    >>> allclose(d, (0, 1, 5.073596551))
+    True
 
-#     """
-#     if tol is None:
-#         tol = sys.float_info.epsilon
-#     U = atleast_2d(array(U, dtype=float))
-#     U[absolute(U) < tol] = 0.0
-#     pivots = []
-#     for row in U:
-#         cols = nonzero(row)[0]
-#         if len(cols):
-#             pivots.append(cols[0])
-#     return pivots
-
-
-# def nonpivots(U, tol=None):
-#     r"""Identify the non-pivots of input matrix U.
-
-#     Parameters
-#     ----------
-#     U : array-like
-#         Matrix U represented as an array or list.
-
-#     Returns
-#     -------
-#     list
-#         Non-pivot column indices.
-
-#     Notes
-#     -----
-#     If the matrix U is in Reduced Row Echelon Form,
-#     the nonpivots are the columns with non-zero coefficients that are not leading their row.
-
-#     Examples
-#     --------
-#     >>> A = [[1, 0, 1, 3], [2, 3, 4, 7], [-1, -3, -3, -4]]
-#     >>> n = rref_sympy(A)
-#     >>> nonpivots(n)
-#     [2, 3]
-
-#     """
-#     U = atleast_2d(asarray(U, dtype=float))
-#     cols = pivots(U, tol=tol)
-#     return list(set(range(U.shape[1])) - set(cols))
+    """
+    A = atleast_2d(asarray(A, dtype=float))
+    r = rank(A, tol=tol)
+    k = A.shape[1] - r
+    m = A.shape[0] - r
+    if condition:
+        c = cond(A)
+        return k, m, c
+    return k, m
 
 
-# def rref(A, tol=None):
-#     r"""Reduced row-echelon form of matrix A.
+def pivots(U, tol=None):
+    r"""Identify the pivots of input matrix U.
 
-#     Parameters
-#     ----------
-#     A : array-like
-#         Matrix A represented as an array or list.
-#     tol : float
-#         Tolerance.
+    Parameters
+    ----------
+    U : array-like
+        Matrix U represented as an array or list.
 
-#     Returns
-#     -------
-#     array
-#         RREF of A.
+    Returns
+    -------
+    list
+        Pivot column indices.
 
-#     Notes
-#     -----
-#     A matrix is in reduced row-echelon form after Gauss-Jordan elimination.
+    Notes
+    -----
+    If the matrix U is in Reduced Row Echelon Form,
+    the pivots are the columns with leading non-zero coefficients per row.
 
-#     Examples
-#     --------
-#     >>>
+    Examples
+    --------
+    >>> A = [[1, 0, 1, 3], [2, 3, 4, 7], [-1, -3, -3, -4]]
+    >>> n = rref_sympy(A)
+    >>> pivots(n)
+    [0, 1]
 
-#     """
-#     A = atleast_2d(asarray(A, dtype=float))
+    """
+    if tol is None:
+        tol = sys.float_info.epsilon
+    U = atleast_2d(array(U, dtype=float))
+    U[absolute(U) < tol] = 0.0
+    pivots = []
+    for row in U:
+        cols = nonzero(row)[0]
+        if len(cols):
+            pivots.append(cols[0])
+    return pivots
 
-#     # do qr with column pivoting
-#     # to have non-decreasing absolute values on the diagonal of R
-#     # column pivoting ensures that the largest absolute value is used
-#     # as leading element
-#     _, U = qr(A)  # type: ignore
-#     lead_pos = 0
-#     num_rows, num_cols = U.shape
-#     for r in range(num_rows):
-#         if lead_pos >= num_cols:
-#             return
-#         i = r
-#         # find a nonzero lead in column lead_pos
-#         while U[i][lead_pos] == 0:
-#             i += 1
-#             if i == num_rows:
-#                 i = r
-#                 lead_pos += 1
-#                 if lead_pos == num_cols:
-#                     return
-#         # swap the row with the nonzero lead with the current row
-#         U[[i, r]] = U[[r, i]]  # type: ignore
-#         # "normalize" the values of the row
-#         lead_val = U[r][lead_pos]
-#         U[r] = U[r] / lead_val
-#         # make sure all other column values are zero
-#         for i in range(num_rows):
-#             if i != r:
-#                 lead_val = U[i][lead_pos]
-#                 U[i] = U[i] - lead_val * U[r]
-#         # go to the next column
-#         lead_pos += 1
-#     return U
+
+def nonpivots(U, tol=None):
+    r"""Identify the non-pivots of input matrix U.
+
+    Parameters
+    ----------
+    U : array-like
+        Matrix U represented as an array or list.
+
+    Returns
+    -------
+    list
+        Non-pivot column indices.
+
+    Notes
+    -----
+    If the matrix U is in Reduced Row Echelon Form,
+    the nonpivots are the columns with non-zero coefficients that are not leading their row.
+
+    Examples
+    --------
+    >>> A = [[1, 0, 1, 3], [2, 3, 4, 7], [-1, -3, -3, -4]]
+    >>> n = rref_sympy(A)
+    >>> nonpivots(n)
+    [2, 3]
+
+    """
+    U = atleast_2d(asarray(U, dtype=float))
+    cols = pivots(U, tol=tol)
+    return list(set(range(U.shape[1])) - set(cols))
+
+
+def rref(A, tol=None):
+    r"""Reduced row-echelon form of matrix A.
+
+    Parameters
+    ----------
+    A : array-like
+        Matrix A represented as an array or list.
+    tol : float
+        Tolerance.
+
+    Returns
+    -------
+    array
+        RREF of A.
+
+    Notes
+    -----
+    A matrix is in reduced row-echelon form after Gauss-Jordan elimination.
+
+    Examples
+    --------
+    >>>
+
+    """
+    A = atleast_2d(asarray(A, dtype=float))
+
+    # do qr with column pivoting
+    # to have non-decreasing absolute values on the diagonal of R
+    # column pivoting ensures that the largest absolute value is used
+    # as leading element
+    _, U = qr(A)  # type: ignore
+    lead_pos = 0
+    num_rows, num_cols = U.shape
+    for r in range(num_rows):
+        if lead_pos >= num_cols:
+            return
+        i = r
+        # find a nonzero lead in column lead_pos
+        while U[i][lead_pos] == 0:
+            i += 1
+            if i == num_rows:
+                i = r
+                lead_pos += 1
+                if lead_pos == num_cols:
+                    return
+        # swap the row with the nonzero lead with the current row
+        U[[i, r]] = U[[r, i]]  # type: ignore
+        # "normalize" the values of the row
+        lead_val = U[r][lead_pos]
+        U[r] = U[r] / lead_val
+        # make sure all other column values are zero
+        for i in range(num_rows):
+            if i != r:
+                lead_val = U[i][lead_pos]
+                U[i] = U[i] - lead_val * U[r]
+        # go to the next column
+        lead_pos += 1
+    return U
 
 
 # ==============================================================================
@@ -411,7 +404,7 @@ def uvw_lengths(C, X):
 
     Examples
     --------
-    >>> from compas.topology import connectivity_matrix
+    >>> from compas.matrices import connectivity_matrix
     >>> C = connectivity_matrix([[0, 1], [1, 2]], 'csr')
     >>> X = array([[0, 0, 0], [1, 1, 0], [0, 0, 1]])
     >>> uvw_lengths(C, X)
