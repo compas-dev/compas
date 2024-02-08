@@ -17,6 +17,8 @@ class Geometry(Data):
 
     def __init__(self, name=None):
         super(Geometry, self).__init__(name=name)
+        self._aabb = None
+        self._obb = None
 
     def __eq__(self, other):
         raise NotImplementedError
@@ -24,6 +26,18 @@ class Geometry(Data):
     def __ne__(self, other):
         # this is not obvious to ironpython
         return not self.__eq__(other)
+
+    @property
+    def aabb(self):
+        if self._aabb is None:
+            self._aabb = self.compute_aabb()
+        return self._aabb
+
+    @property
+    def obb(self):
+        if self._obb is None:
+            self._obb = self.compute_obb()
+        return self._obb
 
     def transform(self, transformation):
         """Transform the geometry.
@@ -260,3 +274,23 @@ class Geometry(Data):
             axis = [0.0, 0.0, 1.0]
 
         return self.transformed(Rotation.from_axis_and_angle(axis, angle, point))
+
+    def compute_aabb(self):
+        """Compute the axis-aligned bounding box of the geometry.
+
+        Returns
+        -------
+        :class:`compas.geometry.Box`
+
+        """
+        raise NotImplementedError
+
+    def compute_obb(self):
+        """Compute the oriented bounding box of the geometry.
+
+        Returns
+        -------
+        :class:`compas.geometry.Box`
+
+        """
+        raise NotImplementedError
