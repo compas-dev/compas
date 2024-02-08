@@ -8,10 +8,9 @@ from compas.scene import GeometryObject
 from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
 from .sceneobject import RhinoSceneObject
-from .helpers import attributes
 
 
-class PointObject(RhinoSceneObject, GeometryObject):
+class RhinoPointObject(RhinoSceneObject, GeometryObject):
     """Scene object for drawing points.
 
     Parameters
@@ -24,7 +23,7 @@ class PointObject(RhinoSceneObject, GeometryObject):
     """
 
     def __init__(self, point, **kwargs):
-        super(PointObject, self).__init__(geometry=point, **kwargs)
+        super(RhinoPointObject, self).__init__(geometry=point, **kwargs)
 
     def draw(self):
         """Draw the point.
@@ -35,7 +34,7 @@ class PointObject(RhinoSceneObject, GeometryObject):
             List of GUIDs of the objects created in Rhino.
 
         """
-        attr = attributes(name=self.geometry.name, color=self.color, layer=self.layer)
+        attr = self.compile_attributes()
         geometry = point_to_rhino(self.geometry)
         geometry.Transform(transformation_to_rhino(self.worldtransformation))
 

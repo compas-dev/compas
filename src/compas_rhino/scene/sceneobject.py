@@ -3,9 +3,12 @@ from __future__ import absolute_import
 from __future__ import division
 
 import scriptcontext as sc  # type: ignore
+import Rhino  # type: ignore
+import System  # type: ignore
 
 import compas_rhino.layers
 from compas.scene import SceneObject
+from .helpers import ensure_layer
 
 
 class RhinoSceneObject(SceneObject):
@@ -77,3 +80,43 @@ class RhinoSceneObject(SceneObject):
         """
         if self.layer:
             compas_rhino.layers.clear_layer(self.layer)
+
+    def compile_attributes(self, name=None, color=None, arrow=None):
+        """Compile Rhino DocObject Attributes.
+
+        Parameters
+        ----------
+        name : str, optional
+            The name of the object.
+        color : :class:`compas.colors.Color`, optional
+            The color of the object.
+        arrow : {'end', 'start'}, optional
+            Add an arrow at the start or end of the object.
+
+        Returns
+        -------
+        :rhino:`Rhino.DocObjects.ObjectAttributes`
+
+        """
+        name = name or self.item.name
+        color = color or self.color
+
+        attributes = Rhino.DocObjects.ObjectAttributes()
+
+        if name:
+            attributes.Name = name
+
+        if color:
+            attributes.ObjectColor = System.Drawing.Color.FromArgb(*color.rgb255)
+            attributes.ColorSource = Rhino.DocObjects.ObjectColorSource.ColorFromObject
+
+        if self.layer:
+            attributes.LayerIndex = ensure_layer(self.layer)
+
+        if arrow:
+            if arrow == "end":
+                attributes.ObjectDecoration = Rhino.DocObjects.ObjectDecoration.EndArrowhead
+            elif arrow == "start":
+                attributes.ObjectDecoration = Rhino.DocObjects.ObjectDecoration.StartArrowhead
+
+        return attributes

@@ -8,10 +8,9 @@ from compas.scene import GeometryObject
 from compas_rhino.conversions import capsule_to_rhino_brep
 from compas_rhino.conversions import transformation_to_rhino
 from .sceneobject import RhinoSceneObject
-from .helpers import attributes
 
 
-class CapsuleObject(RhinoSceneObject, GeometryObject):
+class RhinoCapsuleObject(RhinoSceneObject, GeometryObject):
     """Scene object for drawing capsule shapes.
 
     Parameters
@@ -24,7 +23,7 @@ class CapsuleObject(RhinoSceneObject, GeometryObject):
     """
 
     def __init__(self, capsule, **kwargs):
-        super(CapsuleObject, self).__init__(geometry=capsule, **kwargs)
+        super(RhinoCapsuleObject, self).__init__(geometry=capsule, **kwargs)
 
     def draw(self):
         """Draw the capsule associated with the scene object.
@@ -35,7 +34,7 @@ class CapsuleObject(RhinoSceneObject, GeometryObject):
             The GUIDs of the objects created in Rhino.
 
         """
-        attr = attributes(name=self.geometry.name, color=self.color, layer=self.layer)
+        attr = self.compile_attributes()
         breps = capsule_to_rhino_brep(self.geometry)
         transformation = transformation_to_rhino(self.worldtransformation)
         for geometry in breps:

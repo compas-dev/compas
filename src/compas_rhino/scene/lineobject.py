@@ -8,10 +8,9 @@ from compas.scene import GeometryObject
 from compas_rhino.conversions import line_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
 from .sceneobject import RhinoSceneObject
-from .helpers import attributes
 
 
-class LineObject(RhinoSceneObject, GeometryObject):
+class RhinoLineObject(RhinoSceneObject, GeometryObject):
     """Scene object for drawing lines.
 
     Parameters
@@ -24,7 +23,7 @@ class LineObject(RhinoSceneObject, GeometryObject):
     """
 
     def __init__(self, line, **kwargs):
-        super(LineObject, self).__init__(geometry=line, **kwargs)
+        super(RhinoLineObject, self).__init__(geometry=line, **kwargs)
 
     def draw(self):
         """Draw the line.
@@ -35,7 +34,7 @@ class LineObject(RhinoSceneObject, GeometryObject):
             The GUID of the created Rhino object.
 
         """
-        attr = attributes(name=self.geometry.name, color=self.color, layer=self.layer)
+        attr = self.compile_attributes()
         geometry = line_to_rhino(self.geometry)
         geometry.Transform(transformation_to_rhino(self.worldtransformation))
 

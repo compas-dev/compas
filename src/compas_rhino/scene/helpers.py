@@ -2,8 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import System  # type: ignore
-import Rhino  # type: ignore
 import rhinoscriptsyntax as rs  # type: ignore
 import scriptcontext as sc  # type: ignore
 
@@ -23,22 +21,6 @@ def ensure_layer(layerpath):
     else:
         index = 0
     return index
-
-
-def attributes(name=None, color=None, layer=None, arrow=None):
-    attributes = Rhino.DocObjects.ObjectAttributes()
-    if name:
-        attributes.Name = name
-    if color:
-        attributes.ObjectColor = System.Drawing.Color.FromArgb(*color.rgb255)
-        attributes.ColorSource = Rhino.DocObjects.ObjectColorSource.ColorFromObject
-    if layer:
-        attributes.LayerIndex = ensure_layer(layer)
-    if arrow == "end":
-        attributes.ObjectDecoration = Rhino.DocObjects.ObjectDecoration.EndArrowhead
-    elif arrow == "start":
-        attributes.ObjectDecoration = Rhino.DocObjects.ObjectDecoration.StartArrowhead
-    return attributes
 
 
 def ngon(v):

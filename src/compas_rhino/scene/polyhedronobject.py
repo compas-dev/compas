@@ -8,10 +8,9 @@ from compas.scene import GeometryObject
 from compas_rhino.conversions import vertices_and_faces_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
 from .sceneobject import RhinoSceneObject
-from .helpers import attributes
 
 
-class PolyhedronObject(RhinoSceneObject, GeometryObject):
+class RhinoPolyhedronObject(RhinoSceneObject, GeometryObject):
     """Scene object for drawing polyhedron shapes.
 
     Parameters
@@ -24,7 +23,7 @@ class PolyhedronObject(RhinoSceneObject, GeometryObject):
     """
 
     def __init__(self, polyhedron, **kwargs):
-        super(PolyhedronObject, self).__init__(geometry=polyhedron, **kwargs)
+        super(RhinoPolyhedronObject, self).__init__(geometry=polyhedron, **kwargs)
 
     def draw(self):
         """Draw the polyhedron associated with the scene object.
@@ -35,7 +34,7 @@ class PolyhedronObject(RhinoSceneObject, GeometryObject):
             The GUIDs of the objects created in Rhino.
 
         """
-        attr = attributes(name=self.geometry.name, color=self.color, layer=self.layer)
+        attr = self.compile_attributes()
         vertices = [list(vertex) for vertex in self.geometry.vertices]
         faces = self.geometry.faces
         geometry = vertices_and_faces_to_rhino(vertices, faces)

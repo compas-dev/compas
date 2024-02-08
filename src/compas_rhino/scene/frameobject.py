@@ -9,10 +9,9 @@ from compas.colors import Color
 from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
 from .sceneobject import RhinoSceneObject
-from .helpers import attributes
 
 
-class FrameObject(RhinoSceneObject, GeometryObject):
+class RhinoFrameObject(RhinoSceneObject, GeometryObject):
     """Scene object for drawing frames.
 
     Parameters
@@ -41,7 +40,7 @@ class FrameObject(RhinoSceneObject, GeometryObject):
     """
 
     def __init__(self, frame, scale=1.0, **kwargs):
-        super(FrameObject, self).__init__(geometry=frame, **kwargs)
+        super(RhinoFrameObject, self).__init__(geometry=frame, **kwargs)
         self.scale = scale or 1.0
         self.color_origin = Color.black()
         self.color_xaxis = Color.red()
@@ -59,11 +58,11 @@ class FrameObject(RhinoSceneObject, GeometryObject):
         """
         guids = []
 
-        attr = attributes(name=self.geometry.name, color=self.color_origin, layer=self.layer)
+        attr = self.compile_attributes(color=self.color_origin)
         guid = sc.doc.Objects.AddPoint(point_to_rhino(self.geometry.point), attr)
         guids.append(guid)
 
-        attr = attributes(name=self.geometry.name, color=self.color_xaxis, layer=self.layer, arrow="end")
+        attr = self.compile_attributes(color=self.color_xaxis, arrow="end")
         guid = sc.doc.Objects.AddLine(
             point_to_rhino(self.geometry.point),
             point_to_rhino(self.geometry.point + self.geometry.xaxis.scaled(self.scale)),
@@ -71,7 +70,7 @@ class FrameObject(RhinoSceneObject, GeometryObject):
         )
         guids.append(guid)
 
-        attr = attributes(name=self.geometry.name, color=self.color_yaxis, layer=self.layer, arrow="end")
+        attr = self.compile_attributes(color=self.color_yaxis, arrow="end")
         guid = sc.doc.Objects.AddLine(
             point_to_rhino(self.geometry.point),
             point_to_rhino(self.geometry.point + self.geometry.yaxis.scaled(self.scale)),
@@ -79,7 +78,7 @@ class FrameObject(RhinoSceneObject, GeometryObject):
         )
         guids.append(guid)
 
-        attr = attributes(name=self.geometry.name, color=self.color_zaxis, layer=self.layer, arrow="end")
+        attr = self.compile_attributes(color=self.color_zaxis, arrow="end")
         guid = sc.doc.Objects.AddLine(
             point_to_rhino(self.geometry.point),
             point_to_rhino(self.geometry.point + self.geometry.zaxis.scaled(self.scale)),

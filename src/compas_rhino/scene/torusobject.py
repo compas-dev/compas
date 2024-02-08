@@ -8,10 +8,9 @@ from compas.scene import GeometryObject
 from compas_rhino.conversions import torus_to_rhino_brep
 from compas_rhino.conversions import transformation_to_rhino
 from .sceneobject import RhinoSceneObject
-from .helpers import attributes
 
 
-class TorusObject(RhinoSceneObject, GeometryObject):
+class RhinoTorusObject(RhinoSceneObject, GeometryObject):
     """Scene object for drawing torus shapes.
 
     Parameters
@@ -24,7 +23,7 @@ class TorusObject(RhinoSceneObject, GeometryObject):
     """
 
     def __init__(self, torus, **kwargs):
-        super(TorusObject, self).__init__(geometry=torus, **kwargs)
+        super(RhinoTorusObject, self).__init__(geometry=torus, **kwargs)
 
     def draw(self):
         """Draw the torus associated with the scene object.
@@ -35,7 +34,7 @@ class TorusObject(RhinoSceneObject, GeometryObject):
             The GUIDs of the objects created in Rhino.
 
         """
-        attr = attributes(name=self.geometry.name, color=self.color, layer=self.layer)
+        attr = self.compile_attributes()
         brep = torus_to_rhino_brep(self.geometry)
         brep.Transform(transformation_to_rhino(self.worldtransformation))
 

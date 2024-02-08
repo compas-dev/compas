@@ -4,7 +4,6 @@ from __future__ import division
 
 import scriptcontext as sc  # type: ignore
 
-
 from compas.scene import GeometryObject
 from .sceneobject import RhinoSceneObject
 from compas_rhino.conversions import point_to_rhino
@@ -13,7 +12,7 @@ from compas_rhino.conversions import vertices_and_faces_to_rhino
 from compas.geometry import Frame
 
 
-class PlaneObject(RhinoSceneObject, GeometryObject):
+class RhinoPlaneObject(RhinoSceneObject, GeometryObject):
     """Scene object for drawing planes.
 
     Parameters
@@ -29,7 +28,7 @@ class PlaneObject(RhinoSceneObject, GeometryObject):
     """
 
     def __init__(self, plane, scale=1.0, **kwargs):
-        super(PlaneObject, self).__init__(geometry=plane, **kwargs)
+        super(RhinoPlaneObject, self).__init__(geometry=plane, **kwargs)
         self.scale = scale
 
     def draw(self):

@@ -8,10 +8,9 @@ from compas.scene import GeometryObject
 from compas_rhino.conversions import box_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
 from .sceneobject import RhinoSceneObject
-from .helpers import attributes
 
 
-class BoxObject(RhinoSceneObject, GeometryObject):
+class RhinoBoxObject(RhinoSceneObject, GeometryObject):
     """Scene object for drawing box shapes.
 
     Parameters
@@ -24,7 +23,7 @@ class BoxObject(RhinoSceneObject, GeometryObject):
     """
 
     def __init__(self, box, **kwargs):
-        super(BoxObject, self).__init__(geometry=box, **kwargs)
+        super(RhinoBoxObject, self).__init__(geometry=box, **kwargs)
         self.box = box
 
     def draw(self):
@@ -36,10 +35,9 @@ class BoxObject(RhinoSceneObject, GeometryObject):
             List of GUIDs of the objects created in Rhino.
 
         """
-        attr = attributes(name=self.geometry.name, color=self.color, layer=self.layer)
+        attr = self.compile_attributes()
         geometry = box_to_rhino(self.geometry)
-        transformation = transformation_to_rhino(self.worldtransformation)
-        geometry.Transform(transformation)
+        geometry.Transform(transformation_to_rhino(self.worldtransformation))
 
         self._guids = [sc.doc.Objects.AddBox(geometry, attr)]
         return self.guids

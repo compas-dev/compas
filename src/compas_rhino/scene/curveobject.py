@@ -8,10 +8,9 @@ from compas.scene import GeometryObject
 from compas_rhino.conversions import curve_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
 from .sceneobject import RhinoSceneObject
-from .helpers import attributes
 
 
-class CurveObject(RhinoSceneObject, GeometryObject):
+class RhinoCurveObject(RhinoSceneObject, GeometryObject):
     """Scene object for drawing curves.
 
     Parameters
@@ -24,7 +23,7 @@ class CurveObject(RhinoSceneObject, GeometryObject):
     """
 
     def __init__(self, curve, **kwargs):
-        super(CurveObject, self).__init__(geometry=curve, **kwargs)
+        super(RhinoCurveObject, self).__init__(geometry=curve, **kwargs)
 
     def draw(self):
         """Draw the curve.
@@ -35,7 +34,7 @@ class CurveObject(RhinoSceneObject, GeometryObject):
             List of GUIDs of the objects created in Rhino.
 
         """
-        attr = attributes(name=self.geometry.name, color=self.color, layer=self.layer)
+        attr = self.compile_attributes()
         geometry = curve_to_rhino(self.geometry)
         geometry.Transform(transformation_to_rhino(self.worldtransformation))
 

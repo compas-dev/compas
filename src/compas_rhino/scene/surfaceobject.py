@@ -8,10 +8,9 @@ from compas.scene import GeometryObject
 from compas_rhino.conversions import surface_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
 from .sceneobject import RhinoSceneObject
-from .helpers import attributes
 
 
-class SurfaceObject(RhinoSceneObject, GeometryObject):
+class RhinoSurfaceObject(RhinoSceneObject, GeometryObject):
     """Scene object for drawing surfaces.
 
     Parameters
@@ -24,7 +23,7 @@ class SurfaceObject(RhinoSceneObject, GeometryObject):
     """
 
     def __init__(self, surface, **kwargs):
-        super(SurfaceObject, self).__init__(geometry=surface, **kwargs)
+        super(RhinoSurfaceObject, self).__init__(geometry=surface, **kwargs)
 
     def draw(self):
         """Draw the surface.
@@ -35,7 +34,7 @@ class SurfaceObject(RhinoSceneObject, GeometryObject):
             The GUIDs of the objects created in Rhino.
 
         """
-        attr = attributes(name=self.geometry.name, color=self.color, layer=self.layer)
+        attr = self.compile_attributes()
         surface = surface_to_rhino(self.geometry)
         surface.Transform(transformation_to_rhino(self.worldtransformation))
         self._guids = [sc.doc.Objects.AddSurface(surface, attr)]

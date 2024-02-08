@@ -8,10 +8,9 @@ from compas.scene import GeometryObject
 from compas_rhino.conversions import circle_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
 from .sceneobject import RhinoSceneObject
-from .helpers import attributes
 
 
-class CircleObject(RhinoSceneObject, GeometryObject):
+class RhinoCircleObject(RhinoSceneObject, GeometryObject):
     """Scene object for drawing circles.
 
     Parameters
@@ -24,7 +23,7 @@ class CircleObject(RhinoSceneObject, GeometryObject):
     """
 
     def __init__(self, circle, **kwargs):
-        super(CircleObject, self).__init__(geometry=circle, **kwargs)
+        super(RhinoCircleObject, self).__init__(geometry=circle, **kwargs)
 
     def draw(self):
         """Draw the circle.
@@ -35,7 +34,7 @@ class CircleObject(RhinoSceneObject, GeometryObject):
             List of GUIDs of the objects created in Rhino.
 
         """
-        attr = attributes(name=self.geometry.name, color=self.color, layer=self.layer)
+        attr = self.compile_attributes()
         geometry = circle_to_rhino(self.geometry)
         geometry.Transform(transformation_to_rhino(self.worldtransformation))
 

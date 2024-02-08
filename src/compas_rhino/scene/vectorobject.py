@@ -9,10 +9,9 @@ from compas.scene import GeometryObject
 from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
 from .sceneobject import RhinoSceneObject
-from .helpers import attributes
 
 
-class VectorObject(RhinoSceneObject, GeometryObject):
+class RhinoVectorObject(RhinoSceneObject, GeometryObject):
     """Scene object for drawing vectors.
 
     Parameters
@@ -25,7 +24,7 @@ class VectorObject(RhinoSceneObject, GeometryObject):
     """
 
     def __init__(self, vector, **kwargs):
-        super(VectorObject, self).__init__(geometry=vector, **kwargs)
+        super(RhinoVectorObject, self).__init__(geometry=vector, **kwargs)
 
     def draw(self):
         """Draw the vector.
@@ -36,8 +35,7 @@ class VectorObject(RhinoSceneObject, GeometryObject):
             List of GUIDs of the objects created in Rhino.
 
         """
-        attr = attributes(name=self.geometry.name, color=self.color, layer=self.layer, arrow="end")
-
+        attr = self.compile_attributes(arrow="end")
         start = Point(0, 0, 0)
         end = start + self.geometry
         start_geometry = point_to_rhino(start)

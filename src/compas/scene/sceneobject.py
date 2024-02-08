@@ -45,6 +45,9 @@ class SceneObject(object):
         The transformation of the scene object in world coordinates.
     color : :class:`compas.colors.Color`
         The color of the object.
+    contrastcolor : :class:`compas.colors.Color`, readon-only
+        The contrastcolor wrt to the color.
+        This is a 50% darket or lighter version of the color, depending on whether the color is light or dark.
     opacity : float
         The opacity of the object.
     show : bool

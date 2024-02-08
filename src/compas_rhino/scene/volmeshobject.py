@@ -7,7 +7,7 @@ import scriptcontext as sc  # type: ignore
 
 from compas.geometry import centroid_points
 from compas.geometry import Line
-from compas.scene import VolMeshObject as BaseVolMeshObject
+from compas.scene import VolMeshObject
 
 import compas_rhino.objects
 from compas_rhino.conversions import point_to_rhino
@@ -15,11 +15,10 @@ from compas_rhino.conversions import line_to_rhino
 from compas_rhino.conversions import vertices_and_faces_to_rhino
 
 from .sceneobject import RhinoSceneObject
-from .helpers import attributes
 from .helpers import ngon
 
 
-class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
+class RhinoVolMeshObject(RhinoSceneObject, VolMeshObject):
     """Scene object for drawing volmesh data structures.
 
     Parameters
@@ -35,7 +34,7 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
     """
 
     def __init__(self, volmesh, disjoint=True, **kwargs):
-        super(VolMeshObject, self).__init__(volmesh=volmesh, **kwargs)
+        super(RhinoVolMeshObject, self).__init__(volmesh=volmesh, **kwargs)
         self.disjoint = disjoint
         self._guids_vertices = None
         self._guids_edges = None
@@ -187,8 +186,8 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
 
         for vertex in vertices or self.volmesh.vertices():  # type: ignore
             name = "{}.vertex.{}".format(self.volmesh.name, vertex)  # type: ignore
-            color = self.vertexcolor[vertex]  # type: ignore
-            attr = attributes(name=name, color=color, layer=self.layer)
+            color = self.vertexcolor[vertex]
+            attr = self.compile_attributes(name=name, color=color)
 
             point = self.vertex_xyz[vertex]
 
@@ -225,8 +224,8 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
 
         for edge in edges or self.volmesh.edges():  # type: ignore
             name = "{}.edge.{}-{}".format(self.volmesh.name, *edge)  # type: ignore
-            color = self.edgecolor[edge]  # type: ignore
-            attr = attributes(name=name, color=color, layer=self.layer)
+            color = self.edgecolor[edge]
+            attr = self.compile_attributes(name=name, color=color)
 
             line = Line(self.vertex_xyz[edge[0]], self.vertex_xyz[edge[1]])
 
@@ -266,8 +265,8 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
 
         for face in faces or self.volmesh.faces():  # type: ignore
             name = "{}.face.{}".format(self.volmesh.name, face)  # type: ignore
-            color = self.facecolor[face]  # type: ignore
-            attr = attributes(name=name, color=color, layer=self.layer)
+            color = self.facecolor[face]
+            attr = self.compile_attributes(name=name, color=color)
 
             vertices = [self.vertex_xyz[vertex] for vertex in self.volmesh.face_vertices(face)]  # type: ignore
             facet = ngon(len(vertices))
@@ -310,8 +309,8 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
 
         for cell in cells or self.volmesh.cells():  # type: ignore
             name = "{}.cell.{}".format(self.volmesh.name, cell)  # type: ignore
-            color = self.cellcolor[cell]  # type: ignore
-            attr = attributes(name=name, color=color, layer=self.layer)
+            color = self.cellcolor[cell]
+            attr = self.compile_attributes(name=name, color=color)
 
             vertices = self.volmesh.cell_vertices(cell)  # type: ignore
             faces = self.volmesh.cell_faces(cell)  # type: ignore
@@ -356,8 +355,8 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
 
         for vertex in text:
             name = "{}.vertex.{}.label".format(self.volmesh.name, vertex)  # type: ignore
-            color = self.vertexcolor[vertex]  # type: ignore
-            attr = attributes(name=name, color=color, layer=self.layer)
+            color = self.vertexcolor[vertex]
+            attr = self.compile_attributes(name=name, color=color)
 
             point = self.vertex_xyz[vertex]
 
@@ -401,8 +400,8 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
 
         for edge in text:
             name = "{}.edge.{}-{}.label".format(self.volmesh.name, *edge)  # type: ignore
-            color = self.edgecolor[edge]  # type: ignore
-            attr = attributes(name="{}.label".format(name), color=color, layer=self.layer)
+            color = self.edgecolor[edge]
+            attr = self.compile_attributes(name="{}.label".format(name), color=color)
 
             line = Line(self.vertex_xyz[edge[0]], self.vertex_xyz[edge[1]])
             point = point_to_rhino(line.midpoint)
@@ -447,11 +446,11 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
 
         for face in text:
             name = "{}.face.{}.label".format(self.volmesh.name, face)  # type: ignore
-            color = self.facecolor[face]  # type: ignore
-            attr = attributes(name="{}.label".format(name), color=color, layer=self.layer)
+            color = self.facecolor[face]
+            attr = self.compile_attributes(name="{}.label".format(name), color=color)
 
             vertices = [self.vertex_xyz[vertex] for vertex in self.volmesh.face_vertices(face)]  # type: ignore
-            point = point_to_rhino(centroid_points(vertices))  # type: ignore
+            point = point_to_rhino(centroid_points(vertices))
 
             dot = TextDot(str(text[face]), point)  # type: ignore
             dot.FontHeight = fontheight
@@ -493,11 +492,11 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
 
         for cell in text:
             name = "{}.cell.{}.label".format(self.volmesh.name, cell)  # type: ignore
-            color = self.cellcolor[cell]  # type: ignore
-            attr = attributes(name="{}.label".format(name), color=color, layer=self.layer)
+            color = self.cellcolor[cell]
+            attr = self.compile_attributes(name="{}.label".format(name), color=color)
 
             vertices = [self.vertex_xyz[vertex] for vertex in self.volmesh.cell_vertices(cell)]  # type: ignore
-            point = point_to_rhino(centroid_points(vertices))  # type: ignore
+            point = point_to_rhino(centroid_points(vertices))
 
             dot = TextDot(str(text[cell]), point)  # type: ignore
             dot.FontHeight = fontheight

@@ -8,10 +8,9 @@ from compas.scene import GeometryObject
 from compas_rhino.conversions import cone_to_rhino_brep
 from compas_rhino.conversions import transformation_to_rhino
 from .sceneobject import RhinoSceneObject
-from .helpers import attributes
 
 
-class ConeObject(RhinoSceneObject, GeometryObject):
+class RhinoConeObject(RhinoSceneObject, GeometryObject):
     """Scene object for drawing cone shapes.
 
     Parameters
@@ -24,7 +23,7 @@ class ConeObject(RhinoSceneObject, GeometryObject):
     """
 
     def __init__(self, cone, **kwargs):
-        super(ConeObject, self).__init__(geometry=cone, **kwargs)
+        super(RhinoConeObject, self).__init__(geometry=cone, **kwargs)
 
     def draw(self):
         """Draw the cone associated with the scene object.
@@ -35,7 +34,7 @@ class ConeObject(RhinoSceneObject, GeometryObject):
             The GUID of the object created in Rhino.
 
         """
-        attr = attributes(name=self.geometry.name, color=self.color, layer=self.layer)
+        attr = self.compile_attributes()
         geometry = cone_to_rhino_brep(self.geometry)
         geometry.Transform(transformation_to_rhino(self.worldtransformation))
 

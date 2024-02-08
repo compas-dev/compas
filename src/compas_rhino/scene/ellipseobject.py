@@ -9,10 +9,9 @@ from compas_rhino.conversions import ellipse_to_rhino
 
 from compas_rhino.conversions import transformation_to_rhino
 from .sceneobject import RhinoSceneObject
-from .helpers import attributes
 
 
-class EllipseObject(RhinoSceneObject, GeometryObject):
+class RhinoEllipseObject(RhinoSceneObject, GeometryObject):
     """Scene object for drawing ellipses.
 
     Parameters
@@ -25,7 +24,7 @@ class EllipseObject(RhinoSceneObject, GeometryObject):
     """
 
     def __init__(self, ellipse, **kwargs):
-        super(EllipseObject, self).__init__(geometry=ellipse, **kwargs)
+        super(RhinoEllipseObject, self).__init__(geometry=ellipse, **kwargs)
 
     def draw(self):
         """Draw the ellipse.
@@ -36,7 +35,7 @@ class EllipseObject(RhinoSceneObject, GeometryObject):
             The GUIDs of the objects created in Rhino.
 
         """
-        attr = attributes(name=self.geometry.name, color=self.color, layer=self.layer)
+        attr = self.compile_attributes()
         ellipse = ellipse_to_rhino(self.geometry)
         ellipse = ellipse.ToNurbsCurve()
         ellipse.Transform(transformation_to_rhino(self.worldtransformation))

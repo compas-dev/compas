@@ -8,10 +8,9 @@ from compas.scene import GeometryObject
 from compas_rhino.conversions import sphere_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
 from .sceneobject import RhinoSceneObject
-from .helpers import attributes
 
 
-class SphereObject(RhinoSceneObject, GeometryObject):
+class RhinoSphereObject(RhinoSceneObject, GeometryObject):
     """Scene object for drawing sphere shapes.
 
     Parameters
@@ -24,7 +23,7 @@ class SphereObject(RhinoSceneObject, GeometryObject):
     """
 
     def __init__(self, sphere, **kwargs):
-        super(SphereObject, self).__init__(geometry=sphere, **kwargs)
+        super(RhinoSphereObject, self).__init__(geometry=sphere, **kwargs)
 
     def draw(self):
         """Draw the sphere associated with the scene object.
@@ -35,7 +34,7 @@ class SphereObject(RhinoSceneObject, GeometryObject):
             The GUIDs of the objects created in Rhino.
 
         """
-        attr = attributes(name=self.geometry.name, color=self.color, layer=self.layer)
+        attr = self.compile_attributes()
         geometry = sphere_to_rhino(self.geometry)
         geometry.Transform(transformation_to_rhino(self.worldtransformation))
 

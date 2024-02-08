@@ -8,10 +8,9 @@ from compas.scene import GeometryObject
 from compas_rhino.conversions import cylinder_to_rhino_brep
 from compas_rhino.conversions import transformation_to_rhino
 from .sceneobject import RhinoSceneObject
-from .helpers import attributes
 
 
-class CylinderObject(RhinoSceneObject, GeometryObject):
+class RhinoCylinderObject(RhinoSceneObject, GeometryObject):
     """Scene object for drawing cylinder shapes.
 
     Parameters
@@ -24,7 +23,7 @@ class CylinderObject(RhinoSceneObject, GeometryObject):
     """
 
     def __init__(self, cylinder, **kwargs):
-        super(CylinderObject, self).__init__(geometry=cylinder, **kwargs)
+        super(RhinoCylinderObject, self).__init__(geometry=cylinder, **kwargs)
 
     def draw(self):
         """Draw the cylinder associated with the scene object.
@@ -35,7 +34,7 @@ class CylinderObject(RhinoSceneObject, GeometryObject):
             The GUIDs of the objects created in Rhino.
 
         """
-        attr = attributes(name=self.geometry.name, color=self.color, layer=self.layer)
+        attr = self.compile_attributes()
         geometry = cylinder_to_rhino_brep(self.geometry)
         geometry.Transform(transformation_to_rhino(self.worldtransformation))
 
