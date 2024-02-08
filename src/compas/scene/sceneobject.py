@@ -7,6 +7,7 @@ from .descriptors.protocol import DescriptorProtocol
 from .descriptors.color import ColorAttribute
 from .context import clear
 from .context import get_sceneobject_cls
+from compas.colors import Color
 from compas.geometry import Transformation
 from functools import reduce
 from operator import mul
@@ -68,6 +69,7 @@ class SceneObject(object):
         self._node = None
         self._frame = kwargs.get("frame", None)
         self._transformation = kwargs.get("transformation", None)
+        self._contrastcolor = None
         self.name = kwargs.get("name", item.name or item.__class__.__name__)
         self.color = kwargs.get("color", self.color)
         self.opacity = kwargs.get("opacity", 1.0)
@@ -131,6 +133,19 @@ class SceneObject(object):
             worldtransformation *= self.transformation
 
         return worldtransformation
+
+    @property
+    def contrastcolor(self):
+        if not self._contrastcolor:
+            if self.color.is_light:
+                self._contrastcolor = self.color.darkened(50)
+            else:
+                self._contrastcolor = self.color.lightened(50)
+        return self._contrastcolor
+
+    @contrastcolor.setter
+    def contrastcolor(self, color):
+        self._contrastcolor = Color.coerce(color)
 
     def add(self, item, **kwargs):
         """Add a child item to the scene object.

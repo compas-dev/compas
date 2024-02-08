@@ -60,13 +60,13 @@ class MeshObject(SceneObject):
         self._mesh = None
         self._vertex_xyz = None
         self.mesh = mesh
-        self.vertexcolor = kwargs.get("vertexcolor", self.color)
-        self.edgecolor = kwargs.get("edgecolor", self.color)
+        self.vertexcolor = kwargs.get("vertexcolor", self.contrastcolor)
+        self.edgecolor = kwargs.get("edgecolor", self.contrastcolor)
         self.facecolor = kwargs.get("facecolor", self.color)
         self.vertexsize = kwargs.get("vertexsize", 1.0)
         self.edgewidth = kwargs.get("edgewidth", 1.0)
         self.show_vertices = kwargs.get("show_vertices", False)
-        self.show_edges = kwargs.get("show_edges", True)
+        self.show_edges = kwargs.get("show_edges", False)
         self.show_faces = kwargs.get("show_faces", True)
 
     @property
