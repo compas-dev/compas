@@ -256,13 +256,13 @@ def earclip_polygon(polygon):
 
     Parameters
     ----------
-    polygon : :class:`compas.geometry.Polygon` | list[:class:`compas.geometry.Point`]
+    polygon : :class:`compas.geometry.Polygon`
         A polygon defined by a sequence of points.
 
     Returns
     -------
-    list[[point, point, point]]
-        A list of triangles.
+    list[[int, int, int]]
+        A list of triangles referencing the points of the original polygon.
 
     Raises
     ------
