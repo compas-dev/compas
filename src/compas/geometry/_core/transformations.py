@@ -19,13 +19,14 @@ from ._algebra import multiply_matrix_vector
 from ._algebra import multiply_matrices
 from ._algebra import transpose_matrix
 from ._algebra import norm_vector
+from ._algebra import matrix_from_axis_and_angle
+from ._algebra import matrix_from_scale_factors
+from ._algebra import matrix_from_change_of_basis
+
 from .angles import angle_vectors
 from .distance import closest_point_on_plane
 from .distance import closest_point_on_line
 from .distance import closest_point_on_line_xy
-from .matrices import matrix_from_axis_and_angle
-from .matrices import matrix_from_scale_factors
-from .matrices import matrix_from_change_of_basis
 
 
 # this function will not always work
