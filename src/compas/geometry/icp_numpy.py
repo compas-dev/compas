@@ -7,11 +7,9 @@ from scipy.linalg import svd
 from scipy.linalg import norm
 
 from compas.tolerance import TOL
-
 from compas.geometry import pca_numpy
 from compas.geometry import transform_points_numpy
-
-from .linalg import normrow
+from compas.linalg import normrow
 
 
 def bestfit_transform(A, B):

@@ -2,11 +2,10 @@ import numpy as np
 from scipy.linalg import solve
 from scipy.spatial import distance_matrix
 
-from .linalg import normalizerow
-
 from compas.geometry import cross_vectors
 from compas.geometry import is_ccw_xy
 from compas.geometry import is_point_in_triangle
+from compas.linalg import normalizerow
 
 
 def trimesh_pull_points_numpy(M, points):
