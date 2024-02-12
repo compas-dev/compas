@@ -19,18 +19,18 @@ body {
 /* Layout */
 
 /* default is 60em */
-.bd-main .bd-content .bd-article-container {
+/* .bd-main .bd-content .bd-article-container {
     max-width: 100%;
-}
+} */
 .bd-main.no-sidebars .bd-content .bd-article-container {
     max-width: 60rem;
     margin: 0 auto;
 }
 
 /* default is 88rem */
-.bd-page-width {
+/* .bd-page-width {
     max-width: 1920px;
-}
+} */
 
 /*
 Ideally max-width would only be applied to the content of the sidebar
@@ -38,10 +38,10 @@ and the sidebar itself would be 25% of the page width.
 The content then should be aligned to the right.
 */
 
-.bd-sidebar-primary {
+/* .bd-sidebar-primary {
     width: 25%;
-    max-width: 22rem; /* 360px ish */
-}
+    max-width: 22rem;
+} */
 
 .bd-header {
     box-shadow: none;
