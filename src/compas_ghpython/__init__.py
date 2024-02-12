@@ -9,7 +9,7 @@ import compas_rhino
 from compas_rhino import unload_modules  # noqa: F401
 
 
-__version__ = "2.0.3"
+__version__ = "2.0.4"
 
 if compas.is_rhino():
     from .utilities import *  # noqa: F401 F403
