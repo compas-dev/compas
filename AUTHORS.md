@@ -34,6 +34,7 @@
 - Nizar Taha <<taha@arch.ethz.ch>> [@nizartaha](https://github.com/nizartaha)
 - Gene Ting-Chun Kao <<kao@arch.ethz.ch>> [@GeneKao](https://github.com/GeneKao)
 - Chen Kasirer <<kasirer@arch.ethz.ch>> [@chenkasirer](https://github.com/chenkasirer)
+- Aleksandra Apolinarska <<apolinarska@arch.ethz.ch>> [@funkchaser](https://github.com/funkchaser)
 - Nickolas Maslarinos <<maslarinosnickolas@gmail.com>> [@nmaslarinos](https://github.com/nmaslarinos)
 - Katerina Toumpektsi <<e.toumpeksti@gmail.com>> [@katarametin](https://github.com/katarametin)
 - Joelle Baehr-Bruyere <<joelle.baehr-bruyere@epfl.ch>> [@baehrjo](https://github.com/baehrjo)
