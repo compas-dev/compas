@@ -14,6 +14,7 @@ def new_brep(*args, **kwargs):
 def from_extrusion(*args, **kwargs):
     return RhinoBrep.from_extrusion(*args, **kwargs)
 
+
 @plugin(category="factories", requires=["Rhino"])
 def from_native(*args, **kwargs):
     return RhinoBrep.from_native(*args, **kwargs)
