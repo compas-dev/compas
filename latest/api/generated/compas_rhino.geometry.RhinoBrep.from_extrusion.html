@@ -59,8 +59,8 @@
         </script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="RhinoBrep.from_iges" href="compas_rhino.geometry.RhinoBrep.from_iges.html" />
-    <link rel="prev" title="RhinoBrep.from_curves" href="compas_rhino.geometry.RhinoBrep.from_curves.html" />
+    <link rel="next" title="RhinoBrep.from_mesh" href="compas_rhino.geometry.RhinoBrep.from_mesh.html" />
+    <link rel="prev" title="RhinoBrep.from_cylinder" href="compas_rhino.geometry.RhinoBrep.from_cylinder.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -1117,20 +1117,22 @@ document.write(`
 <h1>RhinoBrep.from_extrusion</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_rhino.geometry.RhinoBrep.from_extrusion">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RhinoBrep.</span></span><span class="sig-name descname"><span class="pre">from_extrusion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">curve</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/f079752/src/compas/geometry/brep/brep.py#L391"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Construct a Brep by extruding a closed curve along a direction vector.</p>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RhinoBrep.</span></span><span class="sig-name descname"><span class="pre">from_extrusion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">curve</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cap_ends</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/4ad6cce/src/compas/../compas_rhino/geometry/brep/brep.py#L222"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Create a RhinoBrep from an extrusion.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>curve</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Curve.html#compas.geometry.Curve" title="compas.geometry.Curve"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Curve</span></code></a></span></dt><dd><p>The curve to extrude</p>
+<dt><strong>curve</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Curve.html#compas.geometry.Curve" title="compas.geometry.Curve"><code class="xref py py-class docutils literal notranslate"><span class="pre">Curve</span></code></a></span></dt><dd><p>The curve to extrude.</p>
 </dd>
-<dt><strong>vector</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a></span></dt><dd><p>The vector to extrude the curve by</p>
+<dt><strong>vector</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code></a></span></dt><dd><p>The vector to extrude the curve along.</p>
+</dd>
+<dt><strong>cap_ends</strong><span class="classifier">bool, optional</span></dt><dd><p>If True, the plannar ends of the extrusion will be capped, if possible.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt><a class="reference internal" href="compas.geometry.Brep.html#compas.geometry.Brep" title="compas.geometry.Brep"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Brep</span></code></a></dt><dd></dd>
+<dt><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.html#compas_rhino.geometry.RhinoBrep" title="compas_rhino.geometry.RhinoBrep"><code class="xref py py-class docutils literal notranslate"><span class="pre">RhinoBrep</span></code></a></dt><dd></dd>
 </dl>
 </dd>
 </dl>
