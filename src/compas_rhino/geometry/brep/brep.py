@@ -20,6 +20,8 @@ from compas_rhino.conversions import mesh_to_compas
 from compas_rhino.conversions import mesh_to_rhino
 from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import curve_to_compas
+from compas_rhino.conversions import curve_to_rhino
+from compas_rhino.conversions import vector_to_rhino
 
 from .builder import _RhinoBrepBuilder
 from .face import RhinoBrepFace
@@ -216,6 +218,34 @@ class RhinoBrep(Brep):
         """
         rhino_box = box_to_rhino(box)
         return cls.from_native(rhino_box.ToBrep())
+
+    @classmethod
+    def from_extrusion(cls, curve, vector, cap_ends=True):
+        """Create a RhinoBrep from an extrusion.
+
+        Parameters
+        ----------
+        curve : :class:`~compas.geometry.Curve`
+            The curve to extrude.
+        vector : :class:`~compas.geometry.Vector`
+            The vector to extrude the curve along.
+        cap_ends : bool, optional
+            If True, the plannar ends of the extrusion will be capped, if possible.
+
+        Returns
+        -------
+        :class:`~compas_rhino.geometry.RhinoBrep`
+
+        """
+        extrusion = Rhino.Geometry.Surface.CreateExtrusion(curve_to_rhino(curve), vector_to_rhino(vector))
+        if extrusion is None:
+            raise BrepError("Failed to create extrusion from curve: {} and vector: {}".format(curve, vector))
+        rhino_brep = extrusion.ToBrep()
+        if cap_ends:
+            capped = rhino_brep.CapPlanarHoles(TOLERANCE)
+            if capped:
+                rhino_brep = capped
+        return cls.from_native(rhino_brep)
 
     @classmethod
     def from_sphere(cls, sphere):

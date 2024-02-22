@@ -389,7 +389,7 @@ class Brep(Geometry):
         return from_cylinder(cylinder)
 
     @classmethod
-    def from_extrusion(cls, curve, vector):
+    def from_extrusion(cls, curve, vector, cap_ends=True):
         """Construct a Brep by extruding a closed curve along a direction vector.
 
         Parameters
@@ -398,13 +398,15 @@ class Brep(Geometry):
             The curve to extrude
         vector : :class:`compas.geometry.Vector`
             The vector to extrude the curve by
+        cap_ends : bool, optional
+            If True, the plannar ends of the extrusion will be capped, if possible.
 
         Returns
         -------
         :class:`compas.geometry.Brep`
 
         """
-        return from_extrusion(curve, vector)
+        return from_extrusion(curve, vector, cap_ends)
 
     @classmethod
     def from_iges(cls, filename):
