@@ -20,7 +20,7 @@ def install(version=None, packages=None, clean=False):
     ----------
     version : {'5.0', '6.0', '7.0', '8.0'}, optional
         The version number of Rhino.
-        Default is ``'7.0'``.
+        Default is the latest supported version you have installed.
     packages : list of str, optional
         List of packages to install or None to use default package list.
         Default is the result of ``installable_rhino_packages``,
@@ -41,7 +41,10 @@ def install(version=None, packages=None, clean=False):
         python -m compas_rhino.install
 
     """
+    version = "{:.1f}".format(float(version))
     version = compas_rhino._check_rhino_version(version)
+
+    # Check if the
 
     # We install COMPAS packages in the scripts folder
     # instead of directly as IPy module.
