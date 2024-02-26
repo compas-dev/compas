@@ -11,8 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added optional argument `cap_ends` to `Brep.from_extrusion()`.
 * Added implementation in `RhinoBrep.from_extrusion()`.
+* Added `max_depth` to `compas.datastructures.Tree.print_hierarchy()`.
+* Added `compas.datastructures.Tree.to_graph()`.
 
 ### Changed
+
+* Changed `compas.datastructures.TreeNode` to skip serialising `attributes`, `name` and `children` if being empty. 
+* Changed `compas.datastructures.TreeNode.__repr__` to omit `name` if `None`.
 
 ### Removed
 
