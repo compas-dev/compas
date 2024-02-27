@@ -16,8 +16,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-* Changed `compas.datastructures.TreeNode` to skip serialising `attributes`, `name` and `children` if being empty. 
+* Changed `compas.datastructures.TreeNode` to skip serialising `attributes`, `name` and `children` if being empty.
 * Changed `compas.datastructures.TreeNode.__repr__` to omit `name` if `None`.
+* Changed `compas.scene.descriptors.ColorDictAttribute` to accept a `compas.colors.ColorDict` as value.
+* Changed `compas_rhino.scene.RhinoMeshObject.draw` to preprocess vertex and face color dicts into lists.
+* Changed `compas_rhino.conversions.vertices_and_faces_to_rhino` to handle vertex color information correctly.
 
 ### Removed
 
