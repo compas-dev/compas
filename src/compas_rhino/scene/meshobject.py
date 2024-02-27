@@ -181,11 +181,19 @@ class RhinoMeshObject(RhinoSceneObject, MeshObject):
         if self.show_faces is True:
             attr = self.compile_attributes()
 
+            vertexcolors = []
+            if len(self.vertexcolor):
+                vertexcolors = [self.vertexcolor[vertex] for vertex in self.mesh.vertices()]
+
+            facecolors = []
+            if len(self.facecolor):
+                facecolors = [self.facecolor[face] for face in self.mesh.faces()]
+
             geometry = mesh_to_rhino(
                 self.mesh,
                 color=self.color,
-                vertexcolors=self.vertexcolor,
-                facecolors=self.facecolor,
+                vertexcolors=vertexcolors,
+                facecolors=facecolors,
                 disjoint=self.disjoint,
             )
 
