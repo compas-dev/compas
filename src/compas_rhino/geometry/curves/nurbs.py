@@ -187,6 +187,7 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
 
         """
         curve = cls()
+        degree = min(degree, len(points) - 1)
         curve.rhino_curve = rhino_curve_from_parameters(points, weights, knots, multiplicities, degree)
         return curve
 
@@ -208,9 +209,10 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
         :class:`compas_rhino.geometry.RhinoNurbsCurve`
 
         """
-        points[:] = [point_to_rhino(point) for point in points]
         curve = cls()
-        curve.rhino_curve = Rhino.Geometry.NurbsCurve.Create(is_periodic, degree, points)
+        degree = min(degree, len(points) - 1)
+        rhino_curve = Rhino.Geometry.NurbsCurve.Create(is_periodic, degree, [point_to_rhino(point) for point in points])
+        curve.rhino_curve = rhino_curve
         return curve
 
     @classmethod
