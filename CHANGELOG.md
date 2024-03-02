@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+* Removed `compas.scene.SceneObjectNode`, functionalities merged into `compas.scene.SceneObject`.
+
 
 ## [2.1.0] 2024-03-01
 
