@@ -7,13 +7,14 @@ from .descriptors.protocol import DescriptorProtocol
 from .descriptors.color import ColorAttribute
 from .context import clear
 from .context import get_sceneobject_cls
+from compas.datastructures import TreeNode
 from compas.colors import Color
 from compas.geometry import Transformation
 from functools import reduce
 from operator import mul
 
 
-class SceneObject(object):
+class SceneObject(TreeNode):
     """Base class for all scene objects.
 
     Parameters
@@ -33,10 +34,6 @@ class SceneObject(object):
         The node in the scene tree which represents the scene object.
     guids : list[object]
         The GUIDs of the items drawn in the visualization context.
-    parent : :class:`compas.scene.SceneObject`
-        The parent scene object.
-    children : list[:class:`compas.scene.SceneObject`]
-        The child scene objects.
     frame : :class:`compas.geometry.Frame`
         The local frame of the scene object, in relation to its parent frame.
     transformation : :class:`compas.geometry.Transformation`
@@ -66,17 +63,33 @@ class SceneObject(object):
         sceneobject_cls = get_sceneobject_cls(item, **kwargs)
         return super(SceneObject, cls).__new__(sceneobject_cls)
 
-    def __init__(self, item, **kwargs):
+    def __init__(self, item, name=None, **kwargs):
+        name = name or item.name
+        super(SceneObject, self).__init__(name=name, **kwargs)
         self._item = item
         self._guids = None
         self._node = None
         self._frame = kwargs.get("frame", None)
         self._transformation = kwargs.get("transformation", None)
         self._contrastcolor = None
-        self.name = kwargs.get("name", item.name or item.__class__.__name__)
         self.color = kwargs.get("color", self.color)
         self.opacity = kwargs.get("opacity", 1.0)
         self.show = kwargs.get("show", True)
+
+    @property
+    def __data__(self):
+        return {
+            "item": str(self.item.guid),
+            "settings": self.settings,
+            "children": [child.__data__ for child in self.children],
+        }
+
+    @classmethod
+    def __from_data__(cls, data):
+        raise TypeError("Serialisation outside Scene not allowed.")
+
+    def __repr__(self):
+        return "<{}: {}>".format(self.__class__.__name__, self.name)
 
     @property
     def item(self):
@@ -85,22 +98,6 @@ class SceneObject(object):
     @property
     def guids(self):
         return self._guids or []
-
-    @property
-    def node(self):
-        return self._node
-
-    @property
-    def parent(self):
-        if self.node:
-            return self.node.parentobject
-
-    @property
-    def children(self):
-        if self.node:
-            return self.node.childobjects
-        else:
-            return []
 
     @property
     def frame(self):
@@ -122,7 +119,7 @@ class SceneObject(object):
     def worldtransformation(self):
         frame_stack = []
         parent = self.parent
-        while parent:
+        while parent and not parent.is_root:
             if parent.frame:
                 frame_stack.append(parent.frame)
             parent = parent.parent
@@ -170,10 +167,12 @@ class SceneObject(object):
         ValueError
             If the scene object does not have an associated scene node.
         """
-        if self.node:
-            return self.node.add_item(item, **kwargs)
+        if isinstance(item, SceneObject):
+            sceneobject = item
         else:
-            raise ValueError("Cannot add items to a scene object without a node.")
+            sceneobject = SceneObject(item, **kwargs)
+        super().add(sceneobject)
+        return sceneobject
 
     @property
     def settings(self):
