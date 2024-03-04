@@ -7,6 +7,11 @@ from .descriptors.protocol import DescriptorProtocol
 from .descriptors.color import ColorAttribute
 from .context import clear
 from .context import get_sceneobject_cls
+
+import compas.colors  # noqa: F401
+import compas.datastructures  # noqa: F401
+import compas.geometry  # noqa: F401
+
 from compas.datastructures import TreeNode
 from compas.colors import Color
 from compas.geometry import Transformation
@@ -64,8 +69,11 @@ class SceneObject(TreeNode):
         return super(SceneObject, cls).__new__(sceneobject_cls)
 
     def __init__(self, item, name=None, **kwargs):
+        # type: (compas.geometry.Geometry | compas.datastructures.Datastructure, str | None, dict) -> None
+
         name = name or item.name
         super(SceneObject, self).__init__(name=name, **kwargs)
+        self.context = kwargs.get("context")
         self._item = item
         self._guids = None
         self._node = None
@@ -78,6 +86,7 @@ class SceneObject(TreeNode):
 
     @property
     def __data__(self):
+        # type: () -> dict
         return {
             "item": str(self.item.guid),
             "settings": self.settings,
@@ -86,37 +95,46 @@ class SceneObject(TreeNode):
 
     @classmethod
     def __from_data__(cls, data):
+        # type: (dict) -> None
         raise TypeError("Serialisation outside Scene not allowed.")
 
     def __repr__(self):
+        # type: () -> str
         return "<{}: {}>".format(self.__class__.__name__, self.name)
 
     @property
     def item(self):
+        # type: () -> compas.geometry.Geometry | compas.datastructures.Datastructure
         return self._item
 
     @property
     def guids(self):
+        # type: () -> list[str]
         return self._guids or []
 
     @property
     def frame(self):
+        # type: () -> compas.geometry.Frame | None
         return self._frame
 
     @frame.setter
     def frame(self, frame):
+        # type: (compas.geometry.Frame) -> None
         self._frame = frame
 
     @property
     def transformation(self):
+        # type: () -> compas.geometry.Transformation | None
         return self._transformation
 
     @transformation.setter
     def transformation(self, transformation):
+        # type: (compas.geometry.Transformation) -> None
         self._transformation = transformation
 
     @property
     def worldtransformation(self):
+        # type: () -> compas.geometry.Transformation
         frame_stack = []
         parent = self.parent
         while parent and not parent.is_root:
@@ -136,6 +154,7 @@ class SceneObject(TreeNode):
 
     @property
     def contrastcolor(self):
+        # type: () -> compas.colors.Color
         if not self._contrastcolor:
             if self.color.is_light:
                 self._contrastcolor = self.color.darkened(50)
@@ -145,9 +164,28 @@ class SceneObject(TreeNode):
 
     @contrastcolor.setter
     def contrastcolor(self, color):
+        # type: (compas.colors.Color) -> None
         self._contrastcolor = Color.coerce(color)
 
+    @property
+    def settings(self):
+        # type: () -> dict
+        settings = {
+            "name": self.name,
+            "color": self.color,
+            "opacity": self.opacity,
+            "show": self.show,
+        }
+
+        if self.frame:
+            settings["frame"] = self.frame
+        if self.transformation:
+            settings["transformation"] = self.transformation
+
+        return settings
+
     def add(self, item, **kwargs):
+        # type: (compas.geometry.Geometry | compas.datastructures.Datastructure, dict) -> SceneObject
         """Add a child item to the scene object.
 
         Parameters
@@ -170,25 +208,10 @@ class SceneObject(TreeNode):
         if isinstance(item, SceneObject):
             sceneobject = item
         else:
-            sceneobject = SceneObject(item, **kwargs)
-        super().add(sceneobject)
+            sceneobject = SceneObject(item, context=self.context, **kwargs)  # type: ignore
+
+        super(SceneObject, self).add(sceneobject)
         return sceneobject
-
-    @property
-    def settings(self):
-        settings = {
-            "name": self.name,
-            "color": self.color,
-            "opacity": self.opacity,
-            "show": self.show,
-        }
-
-        if self.frame:
-            settings["frame"] = self.frame
-        if self.transformation:
-            settings["transformation"] = self.transformation
-
-        return settings
 
     @abstractmethod
     def draw(self):

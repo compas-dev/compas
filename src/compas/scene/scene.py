@@ -1,3 +1,5 @@
+import compas.datastructures  # noqa: F401
+import compas.geometry  # noqa: F401
 from compas.data import Data
 from compas.datastructures import Tree
 from compas.datastructures import TreeNode
@@ -21,9 +23,11 @@ class SceneTree(Tree):
 
     @classmethod
     def __from_data__(cls, data):
+        # type: (dict) -> SceneTree
         raise TypeError("SceneTree cannot be created from data. Use Scene.__from_data__ instead.")
 
     def __init__(self, name=None):
+        # type: (str | None) -> None
         super(SceneTree, self).__init__(name=name)
         root = TreeNode(name="ROOT")
         self.add(root)
@@ -57,10 +61,9 @@ class Scene(Data):
 
     """
 
-    viewerinstance = None
-
     @property
     def __data__(self):
+        # type: () -> dict
         items = {str(object.item.guid): object.item for object in self.objects}
         return {
             "name": self.name,
@@ -70,6 +73,7 @@ class Scene(Data):
 
     @classmethod
     def __from_data__(cls, data):
+        # type: (dict) -> Scene
         scene = cls(data["name"])
         items = {str(item.guid): item for item in data["items"]}
 
@@ -85,19 +89,25 @@ class Scene(Data):
         return scene
 
     def __init__(self, name=None, context=None):
+        # type: (str | None, str | None) -> None
         super(Scene, self).__init__(name)
-        self._tree = SceneTree("Scene")
+        self._tree = SceneTree(name="Scene")
         self.context = context or detect_current_context()
 
     @property
     def tree(self):
+        # type: () -> SceneTree
         return self._tree
 
     @property
     def objects(self):
-        return [node for node in self.tree.nodes if not node.is_root]
+        # type: () -> list[SceneObject]
+        # this is flagged by the type checker
+        # because the tree returns nodes of type TreeNode
+        return [node for node in self.tree.nodes if not node.is_root]  # type: ignore
 
     def add(self, item, parent=None, **kwargs):
+        # type: (compas.geometry.Geometry | compas.datastructures.Datastructure, SceneObject | TreeNode | None, dict) -> SceneObject
         """Add an item to the scene.
 
         Parameters
@@ -120,11 +130,12 @@ class Scene(Data):
         if isinstance(item, SceneObject):
             sceneobject = item
         else:
-            sceneobject = SceneObject(item, context=self.context, **kwargs)
+            sceneobject = SceneObject(item, context=self.context, **kwargs)  # type: ignore
         self.tree.add(sceneobject, parent=parent)
         return sceneobject
 
     def remove(self, sceneobject):
+        # type: (SceneObject) -> None
         """Remove a scene object from the scene.
 
         Parameters
@@ -136,10 +147,12 @@ class Scene(Data):
         self.tree.remove(sceneobject)
 
     def clear(self):
+        # type: () -> None
         """Clear the current context of the scene."""
         clear()
 
     def clear_objects(self):
+        # type: () -> None
         """Clear all objects inside the scene."""
         guids = []
         for sceneobject in self.objects:
