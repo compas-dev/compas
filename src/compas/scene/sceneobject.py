@@ -19,6 +19,13 @@ from functools import reduce
 from operator import mul
 
 
+# if we know the parameters
+# we should document them
+# and not just make everything kwargs
+# not only is this not very helpful for the user
+# it does not allow for proper propagation of parameters across the inheritance chain
+
+
 class SceneObject(TreeNode):
     """Base class for all scene objects.
 
@@ -26,8 +33,14 @@ class SceneObject(TreeNode):
     ----------
     item : Any
         The item which should be visualized using the created SceneObject.
-    **kwargs : dict
-        Additional keyword arguments for constructing SceneObject.
+    name
+    color
+    opacity
+    show
+    frame
+    transformation
+    context
+    **kwargs
 
     Attributes
     ----------
