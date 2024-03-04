@@ -107,7 +107,7 @@ if not compas.IPY:
     #     assert isinstance(sceneobject, FakeViewerSceneObject)
 
     def test_sceneobject_auto_context_discovery_no_context(mocker):
-        mocker.patch("compas.scene.context.is_viewer_open", return_value=False)
+        # mocker.patch("compas.scene.context.is_viewer_open", return_value=False)
         mocker.patch("compas.scene.context.compas.is_grasshopper", return_value=False)
         mocker.patch("compas.scene.context.compas.is_rhino", return_value=False)
 
