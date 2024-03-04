@@ -130,6 +130,14 @@ class Scene(Data):
         if isinstance(item, SceneObject):
             sceneobject = item
         else:
+            if "context" in kwargs:
+                if kwargs["context"] != self.context:
+                    raise Exception(
+                        "Object context should be the same as scene context: {} != {}".format(
+                            kwargs["context"], self.context
+                        )
+                    )
+                del kwargs["context"]  # otherwist the SceneObject receives "context" twice, which results in an error
             sceneobject = SceneObject(item, context=self.context, **kwargs)  # type: ignore
         self.tree.add(sceneobject, parent=parent)
         return sceneobject

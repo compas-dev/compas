@@ -68,21 +68,33 @@ class SceneObject(TreeNode):
         sceneobject_cls = get_sceneobject_cls(item, **kwargs)
         return super(SceneObject, cls).__new__(sceneobject_cls)
 
-    def __init__(self, item, name=None, **kwargs):
-        # type: (compas.geometry.Geometry | compas.datastructures.Datastructure, str | None, dict) -> None
-
+    def __init__(
+        self,
+        item,  # type: compas.geometry.Geometry | compas.datastructures.Datastructure
+        name=None,  # type: str | None
+        color=None,  # type: compas.colors.Color | None
+        opacity=1.0,  # type: float
+        show=True,  # type: bool
+        frame=None,  # type: compas.geometry.Frame | None
+        transformation=None,  # type: compas.geometry.Transformation | None
+        context=None,  # type: str | None
+        **kwargs  # type: dict
+    ):  # type: (...) -> None
         name = name or item.name
         super(SceneObject, self).__init__(name=name, **kwargs)
-        self.context = kwargs.get("context")
+        # the scene object needs to store the context
+        # because it has no access to the tree and/or the scene before it is added
+        # which means that adding child objects will be added in context "None"
+        self.context = context
         self._item = item
         self._guids = None
         self._node = None
-        self._frame = kwargs.get("frame", None)
-        self._transformation = kwargs.get("transformation", None)
+        self._frame = frame
+        self._transformation = transformation
         self._contrastcolor = None
-        self.color = kwargs.get("color", self.color)
-        self.opacity = kwargs.get("opacity", 1.0)
-        self.show = kwargs.get("show", True)
+        self.color = color or self.color
+        self.opacity = opacity
+        self.show = show
 
     @property
     def __data__(self):
@@ -185,7 +197,6 @@ class SceneObject(TreeNode):
         return settings
 
     def add(self, item, **kwargs):
-        # type: (compas.geometry.Geometry | compas.datastructures.Datastructure, dict) -> SceneObject
         """Add a child item to the scene object.
 
         Parameters
@@ -208,6 +219,14 @@ class SceneObject(TreeNode):
         if isinstance(item, SceneObject):
             sceneobject = item
         else:
+            if "context" in kwargs:
+                if kwargs["context"] != self.context:
+                    raise Exception(
+                        "Child context should be the same as parent context: {} != {}".format(
+                            kwargs["context"], self.context
+                        )
+                    )
+                del kwargs["context"]  # otherwist the SceneObject receives "context" twice, which results in an error
             sceneobject = SceneObject(item, context=self.context, **kwargs)  # type: ignore
 
         super(SceneObject, self).add(sceneobject)
