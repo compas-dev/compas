@@ -31,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas.scene.descriptors.ColorDictAttribute` to accept a `compas.colors.ColorDict` as value.
 * Changed `compas_rhino.scene.RhinoMeshObject.draw` to preprocess vertex and face color dicts into lists.
 * Changed `compas_rhino.conversions.vertices_and_faces_to_rhino` to handle vertex color information correctly.
+* Changed `compas_rhino.conversions.average_color` return type `compas.colors.Color` instead of tuple.
 
 ### Removed
 

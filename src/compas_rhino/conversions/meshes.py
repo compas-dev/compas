@@ -23,7 +23,7 @@ def average_color(colors):
     r = sum(r) / c
     g = sum(g) / c
     b = sum(b) / c
-    return int(r), int(g), int(b)
+    return Color(int(r), int(g), int(b))
 
 
 def connected_ngon(face, vertices, rmesh):
