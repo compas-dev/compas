@@ -1,6 +1,5 @@
 import compas.datastructures  # noqa: F401
 import compas.geometry  # noqa: F401
-from compas.data import Data
 from compas.datastructures import Tree
 from compas.datastructures import TreeNode
 
@@ -147,4 +146,3 @@ class Scene(Tree):
         after_draw(drawn_objects)
 
         return drawn_objects
-
