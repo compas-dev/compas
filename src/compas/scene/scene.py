@@ -11,29 +11,7 @@ from .context import detect_current_context
 from .sceneobject import SceneObject
 
 
-class SceneTree(Tree):
-    """A tree structure for storing the hierarchy of scene objects in a scene. The SceneTree should only be used internally by the Scene.
-
-    Parameters
-    ----------
-    name : str, optional
-        The name of the tree.
-
-    """
-
-    @classmethod
-    def __from_data__(cls, data):
-        # type: (dict) -> SceneTree
-        raise TypeError("SceneTree cannot be created from data. Use Scene.__from_data__ instead.")
-
-    def __init__(self, name=None):
-        # type: (str | None) -> None
-        super(SceneTree, self).__init__(name=name)
-        root = TreeNode(name="ROOT")
-        self.add(root)
-
-
-class Scene(Data):
+class Scene(Tree):
     """A scene is a container for hierarchical scene objects which are to be visualised in a given context.
 
     Parameters
@@ -67,7 +45,7 @@ class Scene(Data):
         items = {str(object.item.guid): object.item for object in self.objects}
         return {
             "name": self.name,
-            "tree": self.tree.__data__,
+            "root": self.root.__data__,  # type: ignore
             "items": list(items.values()),
         }
 
@@ -84,27 +62,22 @@ class Scene(Data):
                 sceneobject = parent.add(items[guid], **settings)
                 add(child_node, sceneobject, items)
 
-        add(data["tree"]["root"], scene, items)
+        add(data["root"], scene, items)
 
         return scene
 
-    def __init__(self, name=None, context=None):
-        # type: (str | None, str | None) -> None
-        super(Scene, self).__init__(name)
-        self._tree = SceneTree(name="Scene")
+    def __init__(self, name="Scene", context=None):
+        # type: (str | "Scene", str | None) -> None
+        super(Scene, self).__init__(name=name)
+        super(Scene, self).add(TreeNode(name="ROOT"))
         self.context = context or detect_current_context()
-
-    @property
-    def tree(self):
-        # type: () -> SceneTree
-        return self._tree
 
     @property
     def objects(self):
         # type: () -> list[SceneObject]
         # this is flagged by the type checker
         # because the tree returns nodes of type TreeNode
-        return [node for node in self.tree.nodes if not node.is_root]  # type: ignore
+        return [node for node in self.nodes if not node.is_root]  # type: ignore
 
     def add(self, item, parent=None, **kwargs):
         # type: (compas.geometry.Geometry | compas.datastructures.Datastructure, SceneObject | TreeNode | None, dict) -> SceneObject
@@ -125,7 +98,7 @@ class Scene(Data):
             The scene object associated with the item.
         """
 
-        parent = parent or self.tree.root
+        parent = parent or self.root
 
         if isinstance(item, SceneObject):
             sceneobject = item
@@ -139,20 +112,8 @@ class Scene(Data):
                     )
                 del kwargs["context"]  # otherwist the SceneObject receives "context" twice, which results in an error
             sceneobject = SceneObject(item, context=self.context, **kwargs)  # type: ignore
-        self.tree.add(sceneobject, parent=parent)
+        super(Scene, self).add(sceneobject, parent=parent)
         return sceneobject
-
-    def remove(self, sceneobject):
-        # type: (SceneObject) -> None
-        """Remove a scene object from the scene.
-
-        Parameters
-        ----------
-        sceneobject : :class:`compas.scene.SceneObject`
-            The scene object to remove.
-
-        """
-        self.tree.remove(sceneobject)
 
     def clear(self):
         # type: () -> None
@@ -187,6 +148,3 @@ class Scene(Data):
 
         return drawn_objects
 
-    def print_hierarchy(self):
-        """Print the hierarchy of the scene."""
-        self.tree.print_hierarchy()
