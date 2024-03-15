@@ -19,13 +19,6 @@ from functools import reduce
 from operator import mul
 
 
-# if we know the parameters
-# we should document them
-# and not just make everything kwargs
-# not only is this not very helpful for the user
-# it does not allow for proper propagation of parameters across the inheritance chain
-
-
 class SceneObject(TreeNode):
     """Base class for all scene objects.
 
@@ -33,14 +26,22 @@ class SceneObject(TreeNode):
     ----------
     item : Any
         The item which should be visualized using the created SceneObject.
-    name
-    color
-    opacity
-    show
-    frame
-    transformation
-    context
-    **kwargs
+    name : str, optional
+        The name of the scene object. Note that is is not the same as the name of underlying data item, since different scene objects can refer to the same data item.
+    color : :class:`compas.colors.Color`, optional
+        The color of the object.
+    opacity : float, optional
+        The opacity of the object.
+    show : bool, optional
+        Flag for showing or hiding the object. Default is ``True``.
+    frame : :class:`compas.geometry.Frame`, optional
+        The local frame of the scene object, in relation to its parent frame.
+    transformation : :class:`compas.geometry.Transformation`, optional
+        The local transformation of the scene object in relation to its frame.
+    context : str, optional
+        The context in which the scene object is created.
+    **kwargs : dict
+        Additional keyword arguments to create the scene object for the item.
 
     Attributes
     ----------
@@ -68,7 +69,9 @@ class SceneObject(TreeNode):
     show : bool
         Flag for showing or hiding the object. Default is ``True``.
     settings : dict
-        The settings including necessary attributes for reconstructing the scene object.
+        The settings including necessary attributes for reconstructing the scene object besides the Data item.
+    context : str
+        The context in which the scene object is created.
 
     """
 
@@ -195,6 +198,7 @@ class SceneObject(TreeNode):
     @property
     def settings(self):
         # type: () -> dict
+        # The settings are all the nessessary attributes to reconstruct the scene object besides the Data item.
         settings = {
             "name": self.name,
             "color": self.color,
