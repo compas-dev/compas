@@ -132,7 +132,7 @@ However, using the following template we can compare various examples.
 >>> from compas.utilities import linspace, pairwise
 >>> from compas.datastructures import Mesh
 >>> from compas.colors import Color, ColorMap
->>> from compas_view2.app import App
+>>> from compas_viewer import Viewer
 
 >>> n = 1000
 >>> t = 0.3
@@ -151,11 +151,10 @@ However, using the following template we can compare various examples.
 >>> mesh = Mesh.from_polygons(polygons)
 
 >>> cmap = ...  # define color map here
->>> facecolors = {i: cmap(i, minval=0, maxval=n - 1) for i in range(n)}
+>>> facecolor = {i: cmap(i, minval=0, maxval=n - 1) for i in range(n)}
 
->>> viewer = App()
->>> viewer.view.show_grid = False
->>> viewer.add(mesh, facecolor=facecolors, show_lines=False)
+>>> viewer = Viewer(show_grid = False)
+>>> viewer.scene.add(mesh, facecolor=facecolor, show_lines=False)
 >>> viewer.show()
 
 

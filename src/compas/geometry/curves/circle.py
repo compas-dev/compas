@@ -78,12 +78,12 @@ class Circle(Conic):
 
     Visualise the line, circle, and frame of the circle with the COMPAS viewer.
 
-    >>> from compas_view2.app import App  # doctest: +SKIP
-    >>> viewer = App()                    # doctest: +SKIP
-    >>> viewer.add(line)                  # doctest: +SKIP
-    >>> viewer.add(circle)                # doctest: +SKIP
-    >>> viewer.add(circle.frame)          # doctest: +SKIP
-    >>> viewer.run()                      # doctest: +SKIP
+    >>> from compas_viewer import Viewer  # doctest: +SKIP
+    >>> viewer = Viewer()                    # doctest: +SKIP
+    >>> viewer.scene.add(line)                  # doctest: +SKIP
+    >>> viewer.scene.add(circle)                # doctest: +SKIP
+    >>> viewer.scene.add(circle.frame)          # doctest: +SKIP
+    >>> viewer.show()                      # doctest: +SKIP
 
     """
 

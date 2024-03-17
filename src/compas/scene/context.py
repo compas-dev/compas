@@ -93,7 +93,7 @@ def register(item_type, sceneobject_type, context=None):
 
 
 def is_viewer_open():
-    """Returns True if an instance of the compas_view2 App is available.
+    """Returns True if an instance of the compas_viewer is available.
 
     Returns
     -------

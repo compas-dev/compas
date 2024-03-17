@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 ### Changed
+* Changed and update the `compas_view2` examples into `compas_viewer`.
 
 ### Removed
 
@@ -24,7 +25,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.datastructures.Tree.to_graph()`.
 
 ### Changed
-
 * Changed `compas.datastructures.TreeNode` to skip serialising `attributes`, `name` and `children` if being empty.
 * Changed `compas.datastructures.TreeNode.__repr__` to omit `name` if `None`.
 * Fix bug in `compas_rhino.geometry.NurbsCurve.from_parameters` and `compas_rhino.geometry.NurbsCurve.from_points` related to the value of the parameter `degree`.
