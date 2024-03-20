@@ -7,7 +7,7 @@ from compas.geometry import Geometry
 from compas.geometry import Transformation
 from compas.geometry import Plane
 from compas.geometry import Frame
-from compas.utilities import linspace
+from compas.itertools import linspace
 
 
 @pluggable(category="factories")

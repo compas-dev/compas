@@ -3,7 +3,7 @@ import json
 import compas
 from random import random
 
-from compas.utilities import linspace
+from compas.itertools import linspace
 from compas.geometry import Point  # noqa: F401
 from compas.geometry import Vector  # noqa: F401
 from compas.geometry import Frame

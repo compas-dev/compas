@@ -4,7 +4,7 @@ from __future__ import division
 
 from math import pi
 
-from compas.utilities import pairwise
+from compas.itertools import pairwise
 from compas.geometry import angle_vectors
 from compas.geometry import is_ccw_xy
 

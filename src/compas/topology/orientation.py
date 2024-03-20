@@ -5,7 +5,7 @@ from __future__ import division
 import random
 from compas.topology import breadth_first_traverse
 from compas.geometry import centroid_points
-from compas.utilities import pairwise
+from compas.itertools import pairwise
 
 
 def _closest_faces(vertices, faces, nmax=10, radius=10.0):

@@ -34,7 +34,7 @@ from compas.geometry import scale_vector
 from compas.geometry import subtract_vectors
 from compas.geometry import bounding_box
 
-from compas.utilities import pairwise
+from compas.itertools import pairwise
 
 from compas.tolerance import TOL
 

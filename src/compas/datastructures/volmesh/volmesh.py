@@ -36,8 +36,8 @@ from compas.geometry import bounding_box
 from compas.geometry import transform_points
 from compas.geometry import oriented_bounding_box
 
-from compas.utilities import linspace
-from compas.utilities import pairwise
+from compas.itertools import linspace
+from compas.itertools import pairwise
 
 from compas.tolerance import TOL
 

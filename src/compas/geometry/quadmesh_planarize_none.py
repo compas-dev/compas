@@ -10,7 +10,7 @@ from compas.geometry import distance_line_line
 from compas.geometry import bestfit_plane
 
 from compas.utilities import window
-from compas.utilities import pairwise
+from compas.itertools import pairwise
 
 
 def mesh_flatness(mesh, maxdev=1.0):

@@ -9,7 +9,7 @@ from compas.geometry import Frame
 from compas.geometry import Transformation
 from compas.geometry import Point
 from compas.plugins import pluggable
-from compas.utilities import linspace
+from compas.itertools import linspace
 
 
 @pluggable(category="factories")

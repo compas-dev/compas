@@ -4,7 +4,7 @@ import compas
 from random import random
 from compas.geometry import Point
 from compas.geometry import Polygon
-from compas.utilities import pairwise
+from compas.itertools import pairwise
 
 
 @pytest.mark.parametrize(

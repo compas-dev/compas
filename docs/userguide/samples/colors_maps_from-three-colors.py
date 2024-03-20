@@ -7,8 +7,8 @@ from compas.colors import ColorMap
 from compas.datastructures import Mesh
 from compas.geometry import Point
 from compas.geometry import Polygon
-from compas.utilities import linspace
-from compas.utilities import pairwise
+from compas.itertools import linspace
+from compas.itertools import pairwise
 
 n = 1000
 t = 0.3

@@ -10,7 +10,7 @@ from compas.geometry import centroid_points
 from compas.geometry import offset_polygon
 
 from compas.utilities import iterable_like
-from compas.utilities import pairwise
+from compas.itertools import pairwise
 
 
 def subd_factory(cls):

@@ -8,8 +8,8 @@ from compas.geometry import Bezier
 from compas.geometry import Point
 from compas.geometry import Polygon
 from compas.geometry import Vector
-from compas.utilities import linspace
-from compas.utilities import pairwise
+from compas.itertools import linspace
+from compas.itertools import pairwise
 
 n = 5000
 
