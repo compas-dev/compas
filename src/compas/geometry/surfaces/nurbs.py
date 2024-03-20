@@ -5,7 +5,7 @@ from __future__ import division
 from compas.plugins import pluggable
 from compas.plugins import PluginNotInstalledError
 from compas.geometry import Point
-from compas.utilities import linspace
+from compas.itertools import linspace
 from compas.utilities import meshgrid
 
 from .surface import Surface

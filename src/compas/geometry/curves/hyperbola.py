@@ -103,12 +103,12 @@ class Hyperbola(Conic):
 
     Visualise the line, hyperbola, and frame of the hyperbola with the COMPAS viewer.
 
-    >>> from compas_view2.app import App  # doctest: +SKIP
-    >>> viewer = App()                    # doctest: +SKIP
-    >>> viewer.add(line)                  # doctest: +SKIP
-    >>> viewer.add(hyperbola)               # doctest: +SKIP
-    >>> viewer.add(hyperbola.frame)         # doctest: +SKIP
-    >>> viewer.run()                      # doctest: +SKIP
+    >>> from compas_viewer import Viewer  # doctest: +SKIP
+    >>> viewer = Viewer()                    # doctest: +SKIP
+    >>> viewer.scene.add(line)                  # doctest: +SKIP
+    >>> viewer.scene.add(hyperbola)               # doctest: +SKIP
+    >>> viewer.scene.add(hyperbola.frame)         # doctest: +SKIP
+    >>> viewer.show()                      # doctest: +SKIP
 
     """
 

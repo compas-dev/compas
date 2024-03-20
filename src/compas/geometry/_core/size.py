@@ -4,7 +4,7 @@ from __future__ import division
 
 from math import fabs
 
-from compas.utilities import pairwise
+from compas.itertools import pairwise
 
 from ._algebra import subtract_vectors
 from ._algebra import subtract_vectors_xy

@@ -1,11 +1,10 @@
 # type: ignore
 
-from compas.geometry import Box, Circle, Frame
-from compas.colors import Color, ColorMap
-from compas_view2.app import App
+from compas.geometry import Circle, Frame
+from compas.colors import Color
+from compas_viewer import Viewer
 
-viewer = App()
-viewer.view.show_grid = False
+viewer = Viewer(show_grid = False)
 
 colors = [
     Color.red(),
@@ -24,6 +23,6 @@ colors = [
 
 for up in range(11):
     for right, color in enumerate(colors):
-        viewer.add(Circle(0.4, Frame([right, up, 0])).to_polygon(n=100), facecolor=color.desaturated(up * 10))
+        viewer.scene.add(Circle(0.4, Frame([right, up, 0])), linecolor=color.desaturated(up * 10), n=100)
 
-viewer.run()
+viewer.show()

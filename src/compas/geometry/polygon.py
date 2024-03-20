@@ -4,7 +4,7 @@ from __future__ import division
 
 import math
 
-from compas.utilities import pairwise
+from compas.itertools import pairwise
 from compas.geometry import allclose
 from compas.geometry import area_polygon
 from compas.geometry import centroid_polygon

@@ -23,7 +23,7 @@ from System.Drawing import Color
 from System.Enum import ToObject
 
 from compas.geometry import centroid_points
-from compas.utilities import pairwise
+from compas.itertools import pairwise
 from compas_rhino.utilities.drawing import _face_to_max_quad
 
 try:

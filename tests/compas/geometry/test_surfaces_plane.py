@@ -8,7 +8,7 @@ from compas.geometry import Vector  # noqa: F401
 from compas.geometry import Frame
 from compas.geometry import PlanarSurface
 from compas.geometry import close
-from compas.utilities import linspace
+from compas.itertools import linspace
 
 
 @pytest.mark.parametrize(

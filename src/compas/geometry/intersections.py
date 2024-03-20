@@ -7,7 +7,7 @@ from math import sqrt
 
 from compas.tolerance import TOL
 
-from compas.utilities import pairwise
+from compas.itertools import pairwise
 from compas.plugins import pluggable
 from compas.plugins import PluginNotInstalledError
 

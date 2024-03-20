@@ -5,7 +5,7 @@ from __future__ import division
 from compas.topology import vertex_adjacency_from_edges
 from compas.topology import connected_components
 
-from compas.utilities import pairwise
+from compas.itertools import pairwise
 
 from .substitute import mesh_substitute_vertex_in_faces
 

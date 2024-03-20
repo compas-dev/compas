@@ -5,7 +5,7 @@ from __future__ import division
 from math import fabs
 from math import sqrt
 
-from compas.utilities import pairwise
+from compas.itertools import pairwise
 from compas.tolerance import TOL
 
 from ._algebra import add_vectors
