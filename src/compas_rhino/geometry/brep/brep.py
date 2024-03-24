@@ -381,11 +381,8 @@ class RhinoBrep(Brep):
         None
 
         """
-        results = self.trimmed(plane, tolerance)
-        if not results:
-            raise BrepTrimmingError("Trim operation ended with no result")
-
-        self._brep = results[0].native_brep
+        result = self.trimmed(plane, tolerance)
+        self._brep = result.native_brep
 
     def trimmed(self, plane, tolerance=TOLERANCE):
         """Returns a trimmed copy of this brep by the given trimming plane.
@@ -406,14 +403,13 @@ class RhinoBrep(Brep):
         if isinstance(plane, Frame):
             plane = Plane.from_frame(plane)
         results = self._brep.Trim(plane_to_rhino(plane), tolerance)
-
-        breps = []
-        for result in results:
-            capped = result.CapPlanarHoles(TOLERANCE)
-            if capped:
-                result = capped
-            breps.append(RhinoBrep.from_native(result))
-        return breps
+        if not results:
+            raise BrepTrimmingError("Trim operation ended with no result")
+        result = results[0]
+        capped = result.CapPlanarHoles(TOLERANCE)
+        if capped:
+            result = capped
+        return RhinoBrep.from_native(result)
 
     @classmethod
     def from_boolean_difference(cls, breps_a, breps_b):
