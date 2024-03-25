@@ -1,4 +1,5 @@
-from compas.data import Data
+import compas.datastructures  # noqa: F401
+import compas.geometry  # noqa: F401
 from compas.datastructures import Tree
 from compas.datastructures import TreeNode
 
@@ -9,174 +10,7 @@ from .context import detect_current_context
 from .sceneobject import SceneObject
 
 
-class SceneObjectNode(TreeNode):
-    """A node representing a scene object in a scene tree. The SceneObjectNode should only be used internally by the SceneTree.
-
-    Parameters
-    ----------
-    object : :class:`compas.scene.SceneObject`
-        The scene object associated with the node.
-
-    Attributes
-    ----------
-    name : str
-        The name of the node, same as the underlying scene object.
-    object : :class:`compas.scene.SceneObject`
-        The scene object associated with the node.
-    parentobject : :class:`compas.scene.SceneObject`
-        The scene object associated with the parent node.
-    childobjects : list[:class:`compas.scene.SceneObject`]
-        The scene objects associated with the child nodes.
-
-    """
-
-    @property
-    def __data__(self):
-        return {
-            "item": str(self.object.item.guid),
-            "settings": self.object.settings,
-            "children": [child.__data__ for child in self.children],
-        }
-
-    @classmethod
-    def __from_data__(cls, data):
-        raise TypeError("SceneObjectNode cannot be created from data. Use Scene.__from_data__ instead.")
-
-    def __init__(self, sceneobject, name=None):
-        super(SceneObjectNode, self).__init__(name=name)
-        self.object = sceneobject
-
-    @property
-    def name(self):
-        if self.object:
-            return self.object.name
-
-    @property
-    def parentobject(self):
-        if self.parent and isinstance(self.parent, SceneObjectNode):
-            return self.parent.object
-        return None
-
-    @property
-    def childobjects(self):
-        return [child.object for child in self.children]
-
-    def add_item(self, item, **kwargs):
-        """Add an child item to the node.
-
-        Parameters
-        ----------
-        item : :class:`compas.data.Data`
-            The item to add.
-        **kwargs : dict
-            Additional keyword arguments to create the scene object for the item.
-
-        Returns
-        -------
-        :class:`compas.scene.SceneObject`
-            The scene object associated with the item.
-
-        """
-        sceneobject = SceneObject(item, **kwargs)
-        node = SceneObjectNode(sceneobject)
-        self.add(node)
-        sceneobject._node = node  # type: ignore
-        return sceneobject
-
-
-class SceneTree(Tree):
-    """A tree structure for storing the hierarchy of scene objects in a scene. The SceneTree should only be used internally by the Scene.
-
-    Parameters
-    ----------
-    name : str, optional
-        The name of the tree.
-
-    Attributes
-    ----------
-    objects : list[:class:`compas.scene.SceneObject`]
-        All scene objects in the scene tree.
-
-    """
-
-    @classmethod
-    def __from_data__(cls, data):
-        raise TypeError("SceneTree cannot be created from data. Use Scene.__from_data__ instead.")
-
-    def __init__(self, name=None):
-        super(SceneTree, self).__init__(name=name)
-        root = TreeNode(name="root")
-        self.add(root)
-
-    @property
-    def objects(self):
-        return [node.object for node in self.nodes if isinstance(node, SceneObjectNode)]
-
-    def add_object(self, sceneobject, parent=None):
-        """Add a scene object to the tree.
-
-        Parameters
-        ----------
-        sceneobject : :class:`compas.scene.SceneObject`
-            The scene object to add.
-        parent : :class:`compas.scene.SceneObject`, optional
-            The parent scene object.
-
-        Returns
-        -------
-        :class:`compas.scene.SceneObjectNode`
-            The node associated with the scene object.
-
-        """
-        node = SceneObjectNode(sceneobject)
-        if parent is None:
-            self.add(node, parent=self.root)
-        else:
-            parent_node = self.get_node_from_object(parent)
-            self.add(node, parent=parent_node)
-
-        sceneobject._node = node
-        return node
-
-    def remove_object(self, sceneobject):
-        """Remove a scene object from the tree.
-
-        Parameters
-        ----------
-        sceneobject : :class:`compas.scene.SceneObject`
-            The scene object to remove.
-
-        """
-        node = self.get_node_from_object(sceneobject)
-        self.remove(node)
-
-    def get_node_from_object(self, sceneobject):
-        """Get the node associated with a scene object.
-
-        Parameters
-        ----------
-        sceneobject : :class:`compas.scene.SceneObject`
-            The scene object.
-
-        Returns
-        -------
-        :class:`compas.scene.SceneObjectNode`
-            The node associated with the scene object.
-
-        Raises
-        ------
-        ValueError
-            If the scene object is not in the scene tree.
-
-        """
-        for node in self.nodes:
-            if isinstance(node, SceneObjectNode):
-                if node.object is sceneobject:
-                    return node
-        raise ValueError("Scene object not in scene tree")
-
-
-class Scene(Data):
+class Scene(Tree):
     """A scene is a container for hierarchical scene objects which are to be visualised in a given context.
 
     Parameters
@@ -204,19 +38,19 @@ class Scene(Data):
 
     """
 
-    viewerinstance = None
-
     @property
     def __data__(self):
+        # type: () -> dict
         items = {str(object.item.guid): object.item for object in self.objects}
         return {
             "name": self.name,
-            "tree": self.tree.__data__,
+            "root": self.root.__data__,  # type: ignore
             "items": list(items.values()),
         }
 
     @classmethod
     def __from_data__(cls, data):
+        # type: (dict) -> Scene
         scene = cls(data["name"])
         items = {str(item.guid): item for item in data["items"]}
 
@@ -227,24 +61,25 @@ class Scene(Data):
                 sceneobject = parent.add(items[guid], **settings)
                 add(child_node, sceneobject, items)
 
-        add(data["tree"]["root"], scene, items)
+        add(data["root"], scene, items)
 
         return scene
 
-    def __init__(self, name=None, context=None):
-        super(Scene, self).__init__(name)
-        self._tree = SceneTree("Scene")
+    def __init__(self, name="Scene", context=None):
+        # type: (str | "Scene", str | None) -> None
+        super(Scene, self).__init__(name=name)
+        super(Scene, self).add(TreeNode(name="ROOT"))
         self.context = context or detect_current_context()
 
     @property
-    def tree(self):
-        return self._tree
-
-    @property
     def objects(self):
-        return self.tree.objects
+        # type: () -> list[SceneObject]
+        # this is flagged by the type checker
+        # because the tree returns nodes of type TreeNode
+        return [node for node in self.nodes if not node.is_root]  # type: ignore
 
     def add(self, item, parent=None, **kwargs):
+        # type: (compas.geometry.Geometry | compas.datastructures.Datastructure, SceneObject | TreeNode | None, dict) -> SceneObject
         """Add an item to the scene.
 
         Parameters
@@ -261,26 +96,31 @@ class Scene(Data):
         :class:`compas.scene.SceneObject`
             The scene object associated with the item.
         """
-        sceneobject = SceneObject(item, context=self.context, **kwargs)
-        self.tree.add_object(sceneobject, parent=parent)
+
+        parent = parent or self.root
+
+        if isinstance(item, SceneObject):
+            sceneobject = item
+        else:
+            if "context" in kwargs:
+                if kwargs["context"] != self.context:
+                    raise Exception(
+                        "Object context should be the same as scene context: {} != {}".format(
+                            kwargs["context"], self.context
+                        )
+                    )
+                del kwargs["context"]  # otherwist the SceneObject receives "context" twice, which results in an error
+            sceneobject = SceneObject(item, context=self.context, **kwargs)  # type: ignore
+        super(Scene, self).add(sceneobject, parent=parent)
         return sceneobject
 
-    def remove(self, sceneobject):
-        """Remove a scene object from the scene.
-
-        Parameters
-        ----------
-        sceneobject : :class:`compas.scene.SceneObject`
-            The scene object to remove.
-
-        """
-        self.tree.remove_object(sceneobject)
-
     def clear(self):
+        # type: () -> None
         """Clear the current context of the scene."""
         clear()
 
     def clear_objects(self):
+        # type: () -> None
         """Clear all objects inside the scene."""
         guids = []
         for sceneobject in self.objects:
@@ -306,7 +146,3 @@ class Scene(Data):
         after_draw(drawn_objects)
 
         return drawn_objects
-
-    def print_hierarchy(self):
-        """Print the hierarchy of the scene."""
-        self.tree.print_hierarchy()

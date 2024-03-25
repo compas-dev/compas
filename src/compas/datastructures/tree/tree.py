@@ -71,7 +71,7 @@ class TreeNode(Data):
         return node
 
     def __init__(self, name=None, **kwargs):
-        super(TreeNode, self).__init__(name=name, **kwargs)
+        super(TreeNode, self).__init__(name=name)
         self.attributes = kwargs
         self._parent = None
         self._children = []
