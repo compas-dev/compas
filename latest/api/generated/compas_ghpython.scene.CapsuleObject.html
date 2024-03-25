@@ -60,7 +60,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="CapsuleObject.draw" href="compas_ghpython.scene.CapsuleObject.draw.html" />
-    <link rel="prev" title="BoxObject.clear" href="compas_ghpython.scene.BoxObject.clear.html" />
+    <link rel="prev" title="BoxObject.validate_data" href="compas_ghpython.scene.BoxObject.validate_data.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -1112,7 +1112,7 @@ document.write(`
 <h1>CapsuleObject</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas_ghpython.scene.CapsuleObject">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_ghpython.scene.</span></span><span class="sig-name descname"><span class="pre">CapsuleObject</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/11c50be/src/compas/../compas_ghpython/scene/capsuleobject.py#L11"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_ghpython.scene.</span></span><span class="sig-name descname"><span class="pre">CapsuleObject</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/4f83c09/src/compas/../compas_ghpython/scene/capsuleobject.py#L11"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas_ghpython.scene.GHSceneObject.html#compas_ghpython.scene.GHSceneObject" title="compas_ghpython.scene.sceneobject.GHSceneObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">GHSceneObject</span></code></a>, <a class="reference internal" href="compas.scene.GeometryObject.html#compas.scene.GeometryObject" title="compas.scene.geometryobject.GeometryObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeometryObject</span></code></a></p>
 <p>Scene object for drawing capsule shapes.</p>
 <dl class="field-list">
@@ -1136,11 +1136,41 @@ document.write(`
 <p class="rubric">Inherited Methods</p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.scene.CapsuleObject.add.html#compas_ghpython.scene.CapsuleObject.add" title="compas_ghpython.scene.CapsuleObject.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.scene.CapsuleObject.ToString.html#compas_ghpython.scene.CapsuleObject.ToString" title="compas_ghpython.scene.CapsuleObject.ToString"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ToString</span></code></a></p></td>
+<td><p>Converts the instance to a string.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.scene.CapsuleObject.add.html#compas_ghpython.scene.CapsuleObject.add" title="compas_ghpython.scene.CapsuleObject.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a></p></td>
 <td><p>Add a child item to the scene object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.scene.CapsuleObject.clear.html#compas_ghpython.scene.CapsuleObject.clear" title="compas_ghpython.scene.CapsuleObject.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.scene.CapsuleObject.clear.html#compas_ghpython.scene.CapsuleObject.clear" title="compas_ghpython.scene.CapsuleObject.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a></p></td>
 <td><p>The main clearing method.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.scene.CapsuleObject.copy.html#compas_ghpython.scene.CapsuleObject.copy" title="compas_ghpython.scene.CapsuleObject.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
+<td><p>Make an independent copy of the data object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.scene.CapsuleObject.from_json.html#compas_ghpython.scene.CapsuleObject.from_json" title="compas_ghpython.scene.CapsuleObject.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
+<td><p>Construct an object of this type from a JSON file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.scene.CapsuleObject.from_jsonstring.html#compas_ghpython.scene.CapsuleObject.from_jsonstring" title="compas_ghpython.scene.CapsuleObject.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
+<td><p>Construct an object of this type from a JSON string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.scene.CapsuleObject.remove.html#compas_ghpython.scene.CapsuleObject.remove" title="compas_ghpython.scene.CapsuleObject.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a></p></td>
+<td><p>Remove a child node from this node.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.scene.CapsuleObject.sha256.html#compas_ghpython.scene.CapsuleObject.sha256" title="compas_ghpython.scene.CapsuleObject.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.scene.CapsuleObject.to_json.html#compas_ghpython.scene.CapsuleObject.to_json" title="compas_ghpython.scene.CapsuleObject.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<td><p>Convert an object to its native data representation and save it to a JSON file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.scene.CapsuleObject.to_jsonstring.html#compas_ghpython.scene.CapsuleObject.to_jsonstring" title="compas_ghpython.scene.CapsuleObject.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<td><p>Convert an object to its native data representation and save it to a JSON string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.scene.CapsuleObject.traverse.html#compas_ghpython.scene.CapsuleObject.traverse" title="compas_ghpython.scene.CapsuleObject.traverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">traverse</span></code></a></p></td>
+<td><p>Traverse the tree from this node.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.scene.CapsuleObject.validate_data.html#compas_ghpython.scene.CapsuleObject.validate_data" title="compas_ghpython.scene.CapsuleObject.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<td><p>Validate the data against the object's data schema.</p></td>
 </tr>
 </tbody>
 </table>
