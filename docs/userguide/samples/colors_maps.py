@@ -1,12 +1,16 @@
 # type: ignore
 
-from compas.geometry import Pointcloud, Circle, Frame, Polygon
-from compas.datastructures import Mesh
-from compas.colors import Color, ColorMap
-from compas_view2.app import App
+from compas_viewer import Viewer
 
-viewer = App()
-viewer.view.show_grid = False
+from compas.colors import Color
+from compas.colors import ColorMap
+from compas.datastructures import Mesh
+from compas.geometry import Circle
+from compas.geometry import Frame
+from compas.geometry import Pointcloud
+from compas.geometry import Polygon
+
+viewer = Viewer(show_grid=False)
 
 cmap = ColorMap.from_mpl("viridis")
 w = 16
@@ -31,6 +35,6 @@ for i, color in enumerate(cmap.colors):
     facecolors[i] = color
     # viewer.add(c.to_polygon(100), facecolor=color)
 
-viewer.add(Mesh.from_polygons(polygons), facecolor=facecolors, show_lines=False)
+viewer.scene.add(Mesh.from_polygons(polygons), facecolor=facecolors, show_lines=False, show_points=False)
 
-viewer.run()
+viewer.show()

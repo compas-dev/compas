@@ -13,7 +13,7 @@ import System  # type: ignore
 from compas.colors import Color
 from compas.datastructures import Mesh
 from compas.geometry import centroid_polygon
-from compas.utilities import pairwise
+from compas.itertools import pairwise
 from .geometry import vector_to_compas
 
 
@@ -23,7 +23,7 @@ def average_color(colors):
     r = sum(r) / c
     g = sum(g) / c
     b = sum(b) / c
-    return int(r), int(g), int(b)
+    return Color(int(r), int(g), int(b))
 
 
 def connected_ngon(face, vertices, rmesh):

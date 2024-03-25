@@ -1,10 +1,15 @@
 # type: ignore
 
-from compas.geometry import Point, Polygon, Translation
-from compas.utilities import linspace, pairwise
+from compas_viewer import Viewer
+
+from compas.colors import Color
+from compas.colors import ColorMap
 from compas.datastructures import Mesh
-from compas.colors import Color, ColorMap
-from compas_view2.app import App
+from compas.geometry import Point
+from compas.geometry import Polygon
+from compas.geometry import Translation
+from compas.itertools import linspace
+from compas.itertools import pairwise
 
 n = 1000
 t = 0.3
@@ -22,18 +27,17 @@ for (d, c), (a, b) in zip(pairwise(up), pairwise(down)):
 
 mesh = Mesh.from_polygons(polygons)
 
-viewer = App()
-viewer.view.show_grid = False
+viewer = Viewer(show_grid=False)
 
 cmap = ColorMap.from_two_colors(Color.from_hex("#0092d2"), Color.pink())
 facecolors = {i: cmap(i, minval=0, maxval=n - 1) for i in range(n)}
 
-viewer.add(mesh, facecolor=facecolors, show_lines=False)
+viewer.scene.add(mesh, facecolor=facecolors, show_lines=False, show_points=False)
 
 cmap = ColorMap.from_two_colors(Color.from_hex("#0092d2"), Color.pink(), diverging=True)
 facecolors = {i: cmap(i, minval=0, maxval=n - 1) for i in range(n)}
 
 translation = Translation.from_vector([0, -3 * t, 0])
-viewer.add(mesh.transformed(translation), facecolor=facecolors, show_lines=False)
+viewer.scene.add(mesh.transformed(translation), facecolor=facecolors, show_lines=False, show_points=False)
 
 viewer.show()

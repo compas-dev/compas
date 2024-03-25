@@ -4,7 +4,7 @@ from __future__ import division
 
 from math import sqrt
 
-from compas.utilities import pairwise
+from compas.itertools import pairwise
 from compas.geometry import transform_points
 from compas.geometry import Polygon
 from compas.geometry import Point

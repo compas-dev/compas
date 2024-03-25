@@ -15,7 +15,7 @@ from compas.geometry import is_colinear
 from compas.data.validators import is_item_iterable
 
 from compas.utilities import iterable_like
-from compas.utilities import pairwise
+from compas.itertools import pairwise
 
 
 def intersect_lines(l1, l2, tol):
