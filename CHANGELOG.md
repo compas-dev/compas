@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 * Changed and update the `compas_view2` examples into `compas_viewer`.
+* `RhinoBrep.trimmed` returns single result or raises `BrepTrimmingError` instead of returning a list.
 
 ### Removed
 
