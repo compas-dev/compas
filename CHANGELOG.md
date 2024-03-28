@@ -10,10 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 ### Changed
-
+* Changed and update the `compas_view2` examples into `compas_viewer`.
 * Changed and updated the `compas_view2` examples into `compas_viewer`.
 * Changed `compas.scene.Scene` to inherent from `compas.datastructrues.Tree`.
 * Changed `compas.scene.SceneObject` to inherent from `compas.datastructrues.TreeNode`.
+* `RhinoBrep.trimmed` returns single result or raises `BrepTrimmingError` instead of returning a list.
 
 ### Removed
 

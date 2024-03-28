@@ -372,20 +372,30 @@ class RhinoBrep(Brep):
         ----------
         plane : :class:`compas.geometry.Frame` or :class:`compas.geometry.Plane`
             The frame or plane to use when trimming. The discarded bit is in the direction of the frame's normal.
-
         tolerance : float
             The precision to use for the trimming operation.
+
+        Notes
+        -----
+        Trimming operation may result in multiple results (breps). When trimming, only one is used.
+        The used bit is the one on the opposite side of the cutting plane's normal.
 
         Returns
         -------
         None
 
-        """
-        results = self.trimmed(plane, tolerance)
-        if not results:
-            raise BrepTrimmingError("Trim operation ended with no result")
+        Raises
+        ------
+        BrepTrimmingError
+            If the trimming operation ended with no result.
 
-        self._brep = results[0].native_brep
+        See Also
+        --------
+        :meth:`compas_rhino.geometry.RhinoBrep.trimmed`
+
+        """
+        result = self.trimmed(plane, tolerance)
+        self._brep = result.native_brep
 
     def trimmed(self, plane, tolerance=TOLERANCE):
         """Returns a trimmed copy of this brep by the given trimming plane.
@@ -394,26 +404,38 @@ class RhinoBrep(Brep):
         ----------
         plane : :class:`compas.geometry.Frame` or :class:`compas.geometry.Plane`
             The frame or plane to use when trimming. The discarded bit is in the direction of the plane's normal.
-
         tolerance : float
             The precision to use for the trimming operation.
+
+        Notes
+        -----
+        Trimming operation may result in multiple results (breps). When trimming, only one is used.
+        The used bit is the one on the opposite side of the cutting plane's normal.
 
         Returns
         -------
         :class:`~compas_rhino.geometry.RhinoBrep`
 
+        Raises
+        ------
+        BrepTrimmingError
+            If the trimming operation ended with no result.
+
+        See Also
+        --------
+        :meth:`compas_rhino.geometry.RhinoBrep.trim`
+
         """
         if isinstance(plane, Frame):
             plane = Plane.from_frame(plane)
         results = self._brep.Trim(plane_to_rhino(plane), tolerance)
-
-        breps = []
-        for result in results:
-            capped = result.CapPlanarHoles(TOLERANCE)
-            if capped:
-                result = capped
-            breps.append(RhinoBrep.from_native(result))
-        return breps
+        if not results:
+            raise BrepTrimmingError("Trim operation ended with no result")
+        result = results[0]
+        capped = result.CapPlanarHoles(TOLERANCE)
+        if capped:
+            result = capped
+        return RhinoBrep.from_native(result)
 
     @classmethod
     def from_boolean_difference(cls, breps_a, breps_b):
