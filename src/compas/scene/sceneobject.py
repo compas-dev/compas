@@ -7,21 +7,41 @@ from .descriptors.protocol import DescriptorProtocol
 from .descriptors.color import ColorAttribute
 from .context import clear
 from .context import get_sceneobject_cls
+
+import compas.colors  # noqa: F401
+import compas.datastructures  # noqa: F401
+import compas.geometry  # noqa: F401
+
+from compas.datastructures import TreeNode
 from compas.colors import Color
 from compas.geometry import Transformation
 from functools import reduce
 from operator import mul
 
 
-class SceneObject(object):
+class SceneObject(TreeNode):
     """Base class for all scene objects.
 
     Parameters
     ----------
     item : Any
         The item which should be visualized using the created SceneObject.
+    name : str, optional
+        The name of the scene object. Note that is is not the same as the name of underlying data item, since different scene objects can refer to the same data item.
+    color : :class:`compas.colors.Color`, optional
+        The color of the object.
+    opacity : float, optional
+        The opacity of the object.
+    show : bool, optional
+        Flag for showing or hiding the object. Default is ``True``.
+    frame : :class:`compas.geometry.Frame`, optional
+        The local frame of the scene object, in relation to its parent frame.
+    transformation : :class:`compas.geometry.Transformation`, optional
+        The local transformation of the scene object in relation to its frame.
+    context : str, optional
+        The context in which the scene object is created.
     **kwargs : dict
-        Additional keyword arguments for constructing SceneObject.
+        Additional keyword arguments to create the scene object for the item.
 
     Attributes
     ----------
@@ -33,10 +53,6 @@ class SceneObject(object):
         The node in the scene tree which represents the scene object.
     guids : list[object]
         The GUIDs of the items drawn in the visualization context.
-    parent : :class:`compas.scene.SceneObject`
-        The parent scene object.
-    children : list[:class:`compas.scene.SceneObject`]
-        The child scene objects.
     frame : :class:`compas.geometry.Frame`
         The local frame of the scene object, in relation to its parent frame.
     transformation : :class:`compas.geometry.Transformation`
@@ -53,7 +69,9 @@ class SceneObject(object):
     show : bool
         Flag for showing or hiding the object. Default is ``True``.
     settings : dict
-        The settings including necessary attributes for reconstructing the scene object.
+        The settings including necessary attributes for reconstructing the scene object besides the Data item.
+    context : str
+        The context in which the scene object is created.
 
     """
 
@@ -66,63 +84,88 @@ class SceneObject(object):
         sceneobject_cls = get_sceneobject_cls(item, **kwargs)
         return super(SceneObject, cls).__new__(sceneobject_cls)
 
-    def __init__(self, item, **kwargs):
+    def __init__(
+        self,
+        item,  # type: compas.geometry.Geometry | compas.datastructures.Datastructure
+        name=None,  # type: str | None
+        color=None,  # type: compas.colors.Color | None
+        opacity=1.0,  # type: float
+        show=True,  # type: bool
+        frame=None,  # type: compas.geometry.Frame | None
+        transformation=None,  # type: compas.geometry.Transformation | None
+        context=None,  # type: str | None
+        **kwargs  # type: dict
+    ):  # type: (...) -> None
+        name = name or item.name
+        super(SceneObject, self).__init__(name=name, **kwargs)
+        # the scene object needs to store the context
+        # because it has no access to the tree and/or the scene before it is added
+        # which means that adding child objects will be added in context "None"
+        self.context = context
         self._item = item
         self._guids = None
         self._node = None
-        self._frame = kwargs.get("frame", None)
-        self._transformation = kwargs.get("transformation", None)
+        self._frame = frame
+        self._transformation = transformation
         self._contrastcolor = None
-        self.name = kwargs.get("name", item.name or item.__class__.__name__)
-        self.color = kwargs.get("color", self.color)
-        self.opacity = kwargs.get("opacity", 1.0)
-        self.show = kwargs.get("show", True)
+        self.color = color or self.color
+        self.opacity = opacity
+        self.show = show
+
+    @property
+    def __data__(self):
+        # type: () -> dict
+        return {
+            "item": str(self.item.guid),
+            "settings": self.settings,
+            "children": [child.__data__ for child in self.children],
+        }
+
+    @classmethod
+    def __from_data__(cls, data):
+        # type: (dict) -> None
+        raise TypeError("Serialisation outside Scene not allowed.")
+
+    def __repr__(self):
+        # type: () -> str
+        return "<{}: {}>".format(self.__class__.__name__, self.name)
 
     @property
     def item(self):
+        # type: () -> compas.geometry.Geometry | compas.datastructures.Datastructure
         return self._item
 
     @property
     def guids(self):
+        # type: () -> list[str]
         return self._guids or []
 
     @property
-    def node(self):
-        return self._node
-
-    @property
-    def parent(self):
-        if self.node:
-            return self.node.parentobject
-
-    @property
-    def children(self):
-        if self.node:
-            return self.node.childobjects
-        else:
-            return []
-
-    @property
     def frame(self):
+        # type: () -> compas.geometry.Frame | None
         return self._frame
 
     @frame.setter
     def frame(self, frame):
+        # type: (compas.geometry.Frame) -> None
         self._frame = frame
 
     @property
     def transformation(self):
+        # type: () -> compas.geometry.Transformation | None
         return self._transformation
 
     @transformation.setter
     def transformation(self, transformation):
+        # type: (compas.geometry.Transformation) -> None
         self._transformation = transformation
 
     @property
     def worldtransformation(self):
+        # type: () -> compas.geometry.Transformation
         frame_stack = []
         parent = self.parent
-        while parent:
+        while parent and not parent.is_root:
             if parent.frame:
                 frame_stack.append(parent.frame)
             parent = parent.parent
@@ -139,6 +182,7 @@ class SceneObject(object):
 
     @property
     def contrastcolor(self):
+        # type: () -> compas.colors.Color
         if not self._contrastcolor:
             if self.color.is_light:
                 self._contrastcolor = self.color.darkened(50)
@@ -148,7 +192,26 @@ class SceneObject(object):
 
     @contrastcolor.setter
     def contrastcolor(self, color):
+        # type: (compas.colors.Color) -> None
         self._contrastcolor = Color.coerce(color)
+
+    @property
+    def settings(self):
+        # type: () -> dict
+        # The settings are all the nessessary attributes to reconstruct the scene object besides the Data item.
+        settings = {
+            "name": self.name,
+            "color": self.color,
+            "opacity": self.opacity,
+            "show": self.show,
+        }
+
+        if self.frame:
+            settings["frame"] = self.frame
+        if self.transformation:
+            settings["transformation"] = self.transformation
+
+        return settings
 
     def add(self, item, **kwargs):
         """Add a child item to the scene object.
@@ -170,26 +233,21 @@ class SceneObject(object):
         ValueError
             If the scene object does not have an associated scene node.
         """
-        if self.node:
-            return self.node.add_item(item, **kwargs)
+        if isinstance(item, SceneObject):
+            sceneobject = item
         else:
-            raise ValueError("Cannot add items to a scene object without a node.")
+            if "context" in kwargs:
+                if kwargs["context"] != self.context:
+                    raise Exception(
+                        "Child context should be the same as parent context: {} != {}".format(
+                            kwargs["context"], self.context
+                        )
+                    )
+                del kwargs["context"]  # otherwist the SceneObject receives "context" twice, which results in an error
+            sceneobject = SceneObject(item, context=self.context, **kwargs)  # type: ignore
 
-    @property
-    def settings(self):
-        settings = {
-            "name": self.name,
-            "color": self.color,
-            "opacity": self.opacity,
-            "show": self.show,
-        }
-
-        if self.frame:
-            settings["frame"] = self.frame
-        if self.transformation:
-            settings["transformation"] = self.transformation
-
-        return settings
+        super(SceneObject, self).add(sceneobject)
+        return sceneobject
 
     @abstractmethod
     def draw(self):
