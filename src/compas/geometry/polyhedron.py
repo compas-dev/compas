@@ -9,6 +9,7 @@ from compas.geometry import transform_points
 from compas.geometry import Polygon
 from compas.geometry import Point
 from compas.geometry import Line
+from compas.tolerance import TOL
 from .geometry import Geometry
 
 
@@ -215,6 +216,13 @@ class Polyhedron(Geometry):
             self.faces,
         )
 
+    def __str__(self):
+        return "{0}(vertices={1}, faces={2})".format(
+            type(self).__name__,
+            [[TOL.format_number(num) for num in vertice] for vertice in self.vertices],
+            self.faces,
+        )
+
     def __len__(self):
         return 2
 
@@ -270,7 +278,7 @@ class Polyhedron(Geometry):
 
     @property
     def vertices(self):
-        if not self._vertices:
+        if self._vertices is None:
             self._vertices = []
         return self._vertices
 
@@ -280,7 +288,7 @@ class Polyhedron(Geometry):
 
     @property
     def faces(self):
-        if not self._faces:
+        if self._faces is None:
             self._faces = []
         return self._faces
 
