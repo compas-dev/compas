@@ -14,11 +14,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed and updated the `compas_view2` examples into `compas_viewer`.
 * Changed `compas.scene.Scene` to inherent from `compas.datastructrues.Tree`.
 * Changed `compas.scene.SceneObject` to inherent from `compas.datastructrues.TreeNode`.
+* Changed `compas.datastructures.Tree.print_hierarchy` to `compas.datastructures.Tree.__str__`.
 
 ### Removed
 
 * Removed `compas.scene.SceneObjectNode`, functionalities merged into `compas.scene.SceneObject`.
 * Removed `compas.scene.SceneTree`, functionalities merged into `compas.scene.Scene`.
+* Removed `compas.datastructures.Tree.print_hierarchy`.
 
 
 ## [2.1.0] 2024-03-01
