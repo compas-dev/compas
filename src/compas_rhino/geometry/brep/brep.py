@@ -372,13 +372,26 @@ class RhinoBrep(Brep):
         ----------
         plane : :class:`compas.geometry.Frame` or :class:`compas.geometry.Plane`
             The frame or plane to use when trimming. The discarded bit is in the direction of the frame's normal.
-
         tolerance : float
             The precision to use for the trimming operation.
+
+        Notes
+        -----
+        Trimming operation may result in multiple results (breps). When trimming, only one is used.
+        The used bit is the one on the opposite side of the cutting plane's normal.
 
         Returns
         -------
         None
+
+        Raises
+        ------
+        BrepTrimmingError
+            If the trimming operation ended with no result.
+
+        See Also
+        --------
+        :meth:`compas_rhino.geometry.RhinoBrep.trimmed`
 
         """
         result = self.trimmed(plane, tolerance)
@@ -391,13 +404,26 @@ class RhinoBrep(Brep):
         ----------
         plane : :class:`compas.geometry.Frame` or :class:`compas.geometry.Plane`
             The frame or plane to use when trimming. The discarded bit is in the direction of the plane's normal.
-
         tolerance : float
             The precision to use for the trimming operation.
+
+        Notes
+        -----
+        Trimming operation may result in multiple results (breps). When trimming, only one is used.
+        The used bit is the one on the opposite side of the cutting plane's normal.
 
         Returns
         -------
         :class:`~compas_rhino.geometry.RhinoBrep`
+
+        Raises
+        ------
+        BrepTrimmingError
+            If the trimming operation ended with no result.
+
+        See Also
+        --------
+        :meth:`compas_rhino.geometry.RhinoBrep.trim`
 
         """
         if isinstance(plane, Frame):
