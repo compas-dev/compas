@@ -21,7 +21,7 @@ COMPAS has dedicated packages for working with Rhino, Grasshopper, and Blender, 
 
 We are working on a new major release of the framework, COMPAS 2.0!
 Therefore, be aware that the current version of the repository already contains some changes that are incompatible with the version 1 releases.
-The documentation of the latest stable version (COMPAS 1.17.6) [is available here](https://compas.dev/compas/1.17.6).
+The documentation of the latest stable version (COMPAS 1.17.9) [is available here](https://compas.dev/compas/1.17.9).
 
 ## Installation
 
@@ -32,13 +32,14 @@ conda config --add channels conda-forge
 conda install COMPAS
 ```
 
-For other installation options, see <https://compas.dev/compas/latest/installation.html>
+For other installation options, see <https://compas.dev/compas/latest/userguide/installation.html>
 
 ## First Steps
 
-* <https://compas.dev/compas/latest/gettingstarted.html>
-* <https://compas.dev/compas/latest/tutorial.html>
-* <https://compas.dev/compas/latest/api.html>
+* [First steps](https://compas.dev/compas/latest/userguide/firststeps.html)
+* [Tutorials: geometry basics](https://compas.dev/compas/latest/userguide/basics.geometry.html)
+* [Tutorials: datastructures](https://compas.dev/compas/latest/userguide/basics.datastructures.html)
+* [API Reference](https://compas.dev/compas/latest/api/index.html)
 
 ## Questions and feedback
 
@@ -51,17 +52,17 @@ If you find a bug, please help us solve it by [filing a report](https://github.c
 
 ## Contributing
 
-If you want to contribute, check out the [contribution guidelines](https://compas.dev/compas/latest/devguide.html).
+If you want to contribute, check out the [contribution guidelines](https://compas.dev/compas/latest/devguide/index.html).
 
 ## Changelog
 
-See changes between releases on the [changelog](https://compas.dev/compas/latest/changelog.html).
+See changes between releases on the [changelog](https://github.com/compas-dev/compas/blob/main/CHANGELOG.md).
 
 ## License
 
-The main library of **COMPAS** is [released under the MIT license](https://compas.dev/compas/latest/license.html).
+The main library of **COMPAS** is [released under the MIT license](https://compas.dev/compas/latest/userguide/license.html).
 
 ## Credits
 
 COMPAS is developed by a small team of core developers (`compas-dev`) and with the support of contributers from the open source community.
-See the [list of authors](AUTHORS.md) for a complete overview...
+See the [list of authors](https://github.com/compas-dev/compas/blob/main/AUTHORS.md) for a complete overview...
