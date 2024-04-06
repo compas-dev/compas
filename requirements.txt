@@ -2,6 +2,6 @@
 jsonschema
 networkx >= 3.0
 numpy >= 1.15.4
-scipy >= 1.1
+scipy >= 1.2
 typing_extensions
 watchdog; sys_platform != 'emscripten'

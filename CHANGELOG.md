@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added an `compas.geometry.Frame.interpolate_frame(s)` method
+
 ### Changed
 
 * Changed and updated the `compas_view2` examples into `compas_viewer`.

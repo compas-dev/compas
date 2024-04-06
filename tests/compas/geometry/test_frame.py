@@ -68,3 +68,20 @@ def test_frame_predefined():
     assert frame.point == Point(0, 0, 0)
     assert frame.xaxis == Vector(0, 0, 1)
     assert frame.yaxis == Vector(1, 0, 0)
+
+
+def test_interpolate_frame_start_end():
+    frame1 = Frame(Point(0, 0, 0), Vector(1, 0, 0), Vector(0, 1, 0))
+    frame2 = Frame(Point(1, 1, 1), Vector(0, 0, 1), Vector(0, 1, 0))
+
+    # Test interpolation at the start
+    start_frame = frame1.interpolate_frame(frame2, 0)
+    assert (
+        start_frame.point == frame1.point and start_frame.xaxis == frame1.xaxis and start_frame.yaxis == frame1.yaxis
+    ), "Failed at t=0"
+
+    # Test interpolation at the end
+    end_frame = frame1.interpolate_frame(frame2, 1)
+    assert (
+        end_frame.point == frame2.point and end_frame.xaxis == frame2.xaxis and end_frame.yaxis == frame2.yaxis
+    ), "Failed at t=1"
