@@ -500,19 +500,18 @@ class Quaternion(Geometry):
         >>> t = 0.5
         >>> interpolated_quaternion = Quaternion.slerp(q1, q2, t)
 
-
         """
         epsilon = float_info.epsilon
 
         q1 = self.unitized()
         q2 = other.unitized()
 
-        cosom = self.dot(q2)
+        cosom = q1.dot(q2)
 
         interpolated = Rotation()
         quat = list(interpolated.quaternion)
 
-        # rotate around shortest angle
+        # rotate around the shortest angle
         if cosom < 0.0:
             cosom = -cosom
             quat[0] = -q1[0]
