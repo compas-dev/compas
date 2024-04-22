@@ -16,14 +16,12 @@ from . import from_boolean_intersection
 from . import from_boolean_union
 from . import from_curves
 from . import from_pipe
+from . import from_plane
 from . import from_planes
 from . import from_polygons
 from . import from_step
 from . import from_sweep
 from . import from_native
-
-
-LINEAR_DEFLECTION = 1e-3
 
 
 class BrepType(object):
@@ -490,6 +488,26 @@ class Brep(Geometry):
         return from_pipe(curve, radius, thickness=thickness)
 
     @classmethod
+    def from_plane(cls, plane, domain_u=(-1, +1), domain_v=(-1, +1)):
+        """Construct a Brep from one plane and its u and v domains.
+
+        Parameters
+        ----------
+        plane : :class:`~compas.geometry.Plane`
+            A plane.
+        domain_u : tuple[float, float], optional
+            The surface domain in the u direction.
+        domain_v : tuple[float, float], optional
+            The surface domain in the v direction.
+
+        Returns
+        -------
+        :class:`compas.geometry.Brep`
+
+        """
+        return from_plane(plane, domain_u=domain_u, domain_v=domain_v)
+
+    @classmethod
     def from_planes(cls, planes):
         """Construct a Brep from a set of planes.
 
@@ -768,7 +786,7 @@ class Brep(Geometry):
         """
         raise NotImplementedError
 
-    def to_tesselation(self, linear_deflection=LINEAR_DEFLECTION):
+    def to_tesselation(self, linear_deflection=None):
         """Create a tesselation of the shape for visualisation.
 
         Parameters
@@ -1093,7 +1111,7 @@ class Brep(Geometry):
         """
         raise NotImplementedError
 
-    def overlap(self, other, deflection=LINEAR_DEFLECTION, tolerance=0.0):
+    def overlap(self, other, deflection=None, tolerance=0.0):
         """Compute the overlap between this BRep and another.
 
         Parameters

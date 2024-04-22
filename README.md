@@ -29,10 +29,10 @@ The recommended way to install **COMPAS** is to use [Anaconda/conda](https://con
 
 ```bash
 conda config --add channels conda-forge
-conda install COMPAS
+conda install compas
 ```
 
-For other installation options, see <https://compas.dev/compas/latest/userguide/installation.html>
+For other installation options, [see the user guide](https://compas.dev/compas/latest/userguide/installation.html)
 
 ## First Steps
 
@@ -43,8 +43,7 @@ For other installation options, see <https://compas.dev/compas/latest/userguide/
 
 ## Questions and feedback
 
-The **COMPAS** framework has a forum: <https://forum.compas-framework.org/>
-for questions and discussions.
+The **COMPAS** framework has a [forum for questions and discussions](https://forum.compas-framework.org/).
 
 ## Issue tracker
 

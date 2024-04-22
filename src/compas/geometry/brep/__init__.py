@@ -73,6 +73,11 @@ def from_pipe(*args, **kwargs):
 
 
 @pluggable(category="factories")
+def from_plane(*args, **kwargs):
+    raise PluginNotInstalledError
+
+
+@pluggable(category="factories")
 def from_planes(*args, **kwargs):
     raise PluginNotInstalledError
 
