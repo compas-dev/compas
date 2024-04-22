@@ -6,7 +6,8 @@ import pytest
 import json
 import compas
 from random import random
-from compas.geometry import allclose, Rotation
+from compas.geometry import allclose
+from compas.geometry import Rotation
 from compas.geometry import close
 from compas.geometry import Point
 from compas.geometry import Vector

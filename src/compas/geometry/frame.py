@@ -24,8 +24,6 @@ from .vector import Vector
 from .point import Point
 from .quaternion import Quaternion
 
-from scipy.spatial.transform import Rotation as R
-from scipy.spatial.transform import Slerp
 from compas.itertools import linspace
 
 class Frame(Geometry):

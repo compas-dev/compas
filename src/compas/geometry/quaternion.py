@@ -486,7 +486,6 @@ class Quaternion(Geometry):
         ----------
         other : :class:`compas.geometry.Quaternion`
             The other quaternion to interpolate between.
-
         t : float
             A parameter in the range [0-1].
 
@@ -536,10 +535,10 @@ class Quaternion(Geometry):
             sc1 = 1.0 - t
             sc2 = t
 
-        qW_interp = sc1 * quat[0] + sc2 * q2[0]
-        qX_interp = sc1 * quat[1] + sc2 * q2[1]
-        qY_interp = sc1 * quat[2] + sc2 * q2[2]
-        qZ_interp = sc1 * quat[3] + sc2 * q2[3]
+        qw_interp = sc1 * quat[0] + sc2 * q2[0]
+        qx_interp = sc1 * quat[1] + sc2 * q2[1]
+        qy_interp = sc1 * quat[2] + sc2 * q2[2]
+        qz_interp = sc1 * quat[3] + sc2 * q2[3]
 
-        return Quaternion(qW_interp, qX_interp, qY_interp, qZ_interp)
+        return Quaternion(qw_interp, qx_interp, qy_interp, qz_interp)
 
