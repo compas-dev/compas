@@ -88,7 +88,7 @@ def _face_adjacency(vertices, faces, nmax=10, radius=10.0):
                         found.add(nbr)
                         break
 
-        adjacency[face] = nbrs
+        adjacency[index] = nbrs
 
     return adjacency
 
