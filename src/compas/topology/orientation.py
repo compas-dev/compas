@@ -88,7 +88,7 @@ def _face_adjacency(vertices, faces, nmax=10, radius=10.0):
                         found.add(nbr)
                         break
 
-        adjacency[face] = nbrs
+        adjacency[index] = nbrs
 
     return adjacency
 
@@ -98,8 +98,10 @@ def face_adjacency(points, faces):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
-        A mesh object.
+    points : list[point]
+        The vertex locations of the faces.
+    faces : list[list[int]]
+        The faces defined as list of indices in the points list.
 
     Returns
     -------
