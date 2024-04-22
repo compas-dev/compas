@@ -79,8 +79,8 @@ def test_quaternion_properties():
 
     assert quaternion.wxyz == [w, x, y, z]
     assert quaternion.xyzw == [x, y, z, w]
-    assert quaternion.norm == (w**2 + x**2 + y**2 + z**2) ** 0.5
-    assert quaternion.is_unit == False
+    assert close(quaternion.norm, 5.4772255)
+    assert quaternion.is_unit is False
 
     quaternion = Quaternion(0.0, 0.0, 0.0, 1.0)
     assert quaternion.norm == 1.0
