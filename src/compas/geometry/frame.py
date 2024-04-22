@@ -24,6 +24,8 @@ from .vector import Vector
 from .point import Point
 from .quaternion import Quaternion
 
+from compas.itertools import linspace
+
 
 class Frame(Geometry):
     """A frame is defined by a base point and two orthonormal base vectors.
@@ -591,6 +593,65 @@ class Frame(Geometry):
     # ==========================================================================
     # Methods
     # ==========================================================================
+
+    def interpolate_frame(self, other, t):
+        """Interpolates between two frames at a given parameter t in the range [0, 1]
+
+        Parameters
+        ----------
+        other : :class:`compas.geometry.Frame`
+        t : float
+            A parameter in the range [0-1].
+
+        Returns
+        -------
+        :class:`compas.geometry.Frame`
+            A list of the interpolated :class:`compas.geometry.Frame` instances.
+
+        Examples
+        --------
+        >>> frame1 = Frame(Point(0, 0, 0), Vector(1, 0, 0), Vector(0, 1, 0))
+        >>> frame2 = Frame(Point(1, 1, 1), Vector(0, 0, 1), Vector(0, 1, 0))
+        >>> start_frame = frame1.interpolate_frame(frame2, 0)
+        >>> allclose(start_frame.point, frame1.point) and allclose(start_frame.quaternion, frame1.quaternion)
+        True
+        """
+        quat1 = Quaternion.from_frame(self)
+        quat2 = Quaternion.from_frame(other)
+
+        # Interpolate origin
+        origin_interpolated = (self.point * (1.0 - t)) + other.point * t
+
+        rot_interpolated = quat1.slerp(quat2, t)
+
+        # Create a new frame with the interpolated position and orientation
+        interpolated_frame = Frame.from_quaternion(rot_interpolated, point=origin_interpolated)
+
+        return interpolated_frame
+
+    def interpolate_frames(self, other, steps):
+        """Generates a specified number of interpolated frames between two given frames
+
+        Parameters
+        ----------
+        other : :class:`compas.geometry.Frame`
+        steps : int
+            The number of interpolated frames to return.
+
+        Returns
+        -------
+        list of :class:`compas.geometry.Frame`
+
+        Examples
+        --------
+        >>> frame1 = Frame(Point(0, 0, 0), Vector(1, 0, 0), Vector(0, 1, 0))
+        >>> frame2 = Frame(Point(1, 1, 1), Vector(0, 0, 1), Vector(0, 1, 0))
+        >>> steps = 5
+        >>> frames = frame1.interpolate_frames(frame2, steps)
+        >>> assert len(frames) == steps
+        True
+        """
+        return [self.interpolate_frame(other, t) for t in linspace(0, 1, steps)]
 
     def euler_angles(self, static=True, axes="xyz"):
         """The Euler angles from the rotation given by the frame.
