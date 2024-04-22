@@ -159,7 +159,7 @@ class Quaternion(Geometry):
             return self.y
         if key == 3:
             return self.z
-        raise KeyError
+        raise KeyError(key)
 
     def __setitem__(self, key, value):
         if key == 0:
@@ -170,9 +170,11 @@ class Quaternion(Geometry):
             return
         if key == 2:
             self.y = value
+            return
         if key == 3:
             self.z = value
-        raise KeyError
+            return
+        raise KeyError(key)
 
     def __iter__(self):
         return iter(self.wxyz)
@@ -367,7 +369,7 @@ class Quaternion(Geometry):
         True
 
         """
-        qu = quaternion_unitize(self)
+        qu = quaternion_unitize(list(self))
         self.w, self.x, self.y, self.z = qu
 
     def unitized(self):
@@ -387,7 +389,7 @@ class Quaternion(Geometry):
         True
 
         """
-        qu = quaternion_unitize(self)
+        qu = quaternion_unitize(list(self))
         return Quaternion(*qu)
 
     def canonize(self):
@@ -408,7 +410,7 @@ class Quaternion(Geometry):
         Quaternion(0.500, -0.500, -0.500, -0.500)
 
         """
-        qc = quaternion_canonize(self)
+        qc = quaternion_canonize(list(self))
         self.w, self.x, self.y, self.z = qc  # type: ignore
 
     def canonized(self):
@@ -430,7 +432,7 @@ class Quaternion(Geometry):
         Quaternion(0.500, -0.500, -0.500, -0.500)
 
         """
-        qc = quaternion_canonize(self)
+        qc = quaternion_canonize(list(self))
         return Quaternion(*qc)  # type: ignore
 
     def conjugate(self):
@@ -448,7 +450,7 @@ class Quaternion(Geometry):
         Quaternion(1.000, -1.000, -1.000, -1.000)
 
         """
-        qc = quaternion_conjugate(self)
+        qc = quaternion_conjugate(list(self))
         self.w, self.x, self.y, self.z = qc
 
     def conjugated(self):
@@ -469,5 +471,5 @@ class Quaternion(Geometry):
         Quaternion(1.000, -1.000, -1.000, -1.000)
 
         """
-        qc = quaternion_conjugate(self)
+        qc = quaternion_conjugate(list(self))
         return Quaternion(*qc)
