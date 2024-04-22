@@ -489,7 +489,7 @@ class Brep(Geometry):
 
     @classmethod
     def from_plane(cls, plane, domain_u=(-1, +1), domain_v=(-1, +1)):
-        """Construct a Brep from a set of planes.
+        """Construct a Brep from one plane and its u and v domains.
 
         Parameters
         ----------
