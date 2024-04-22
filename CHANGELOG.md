@@ -22,6 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed to implementation of `Mesh.unify_cycles` to use the corresponding function of `compas.topology.orientation`.
 * Fixed bug in `compas.topology.orientation.unify_cycles`.
 * Fixed bug in `Mesh.thickened`.
+* Fixed various bugs in `compas.geometry.Quaternion`.
+
 
 ### Removed
 
