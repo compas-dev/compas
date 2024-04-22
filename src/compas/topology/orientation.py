@@ -98,8 +98,10 @@ def face_adjacency(points, faces):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
-        A mesh object.
+    points : list[point]
+        The vertex locations of the faces.
+    faces : list[list[int]]
+        The faces defined as list of indices in the points list.
 
     Returns
     -------
