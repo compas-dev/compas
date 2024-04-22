@@ -90,6 +90,8 @@ class Color(Data):
         The perceived freedom of whiteness.
     is_light : bool
         If True, the color is considered light.
+    contrast : :class:`compas.colors.Color`
+        The contrasting color to the current color.
 
     Examples
     --------
@@ -310,6 +312,10 @@ class Color(Data):
         maxval = max(self.r, self.g, self.b)
         minval = min(self.r, self.g, self.b)
         return (maxval - minval) / maxval
+
+    @property
+    def contrast(self):
+        return self.darkened(25) if self.is_light else self.lightened(50)
 
     # --------------------------------------------------------------------------
     # Constructors
