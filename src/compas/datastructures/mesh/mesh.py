@@ -2956,8 +2956,8 @@ class Mesh(Datastructure):
         vertex_index = {}
         index_vertex = {}
         for index, vertex in enumerate(self.vertices()):
-                vertex_index[vertex] = index
-                index_vertex[index] = vertex
+            vertex_index[vertex] = index
+            index_vertex[index] = vertex
         index_face = {index: face for index, face in enumerate(self.faces())}
 
         vertices = self.vertices_attributes("xyz")
