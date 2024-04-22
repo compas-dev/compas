@@ -56,7 +56,6 @@ from compas.itertools import pairwise
 from compas.utilities import window
 
 from compas.topology import breadth_first_traverse
-from compas.topology import face_adjacency
 from compas.topology import connected_components
 from compas.topology import unify_cycles
 
@@ -2958,7 +2957,7 @@ class Mesh(Datastructure):
         index_vertex = {index: vertex for index, vertex in enumerate(self.vertices())}
         index_face = {index: face for index, face in enumerate(self.faces())}
 
-        vertices = self.vertices_attributes('xyz')
+        vertices = self.vertices_attributes("xyz")
         faces = [[vertex_index[vertex] for vertex in self.face_vertices(face)] for face in self.faces()]
 
         unify_cycles(vertices, faces)
@@ -2966,13 +2965,12 @@ class Mesh(Datastructure):
         self.halfedge = {key: {} for key in self.vertices()}
         for index, vertices in enumerate(faces):
             face = index_face[index]
-            vertices =  [index_vertex[vertex] for vertex in vertices]
+            vertices = [index_vertex[vertex] for vertex in vertices]
             self.face[face] = vertices
             for u, v in pairwise(vertices + vertices[:1]):
                 self.halfedge[u][v] = face
                 if u not in self.halfedge[v]:
                     self.halfedge[v][u] = None
-
 
     # --------------------------------------------------------------------------
     # Components
