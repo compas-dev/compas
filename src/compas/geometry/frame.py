@@ -26,6 +26,7 @@ from .quaternion import Quaternion
 
 from compas.itertools import linspace
 
+
 class Frame(Geometry):
     """A frame is defined by a base point and two orthonormal base vectors.
 

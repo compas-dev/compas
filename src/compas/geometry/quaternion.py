@@ -540,4 +540,3 @@ class Quaternion(Geometry):
         qz_interp = sc1 * quat[3] + sc2 * q2[3]
 
         return Quaternion(qw_interp, qx_interp, qy_interp, qz_interp)
-
