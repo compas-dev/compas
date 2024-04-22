@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed and updated the `compas_view2` examples into `compas_viewer`.
 * Changed `compas.scene.Scene` to inherent from `compas.datastructrues.Tree`.
 * Changed `compas.scene.SceneObject` to inherent from `compas.datastructrues.TreeNode`.
+* Changed `compas.geoemetry._core.predicates_3` bug fix in `is_coplanar` while loop when there are 4 points.
 * Changed to implementation of `Mesh.unify_cycles` to use the corresponding function of `compas.topology.orientation`.
 * Fixed bug in `compas.topology.orientation.unify_cycles`.
 * Fixed bug in `Mesh.thickened`.
