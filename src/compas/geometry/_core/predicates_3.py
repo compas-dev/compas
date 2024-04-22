@@ -130,7 +130,7 @@ def is_coplanar(points, tol=None):
 
     temp = points[:]
 
-    while True:
+    while len(temp) >= 3:
         a = temp.pop(0)
         b = temp.pop(0)
         c = temp.pop(0)
