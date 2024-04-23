@@ -912,8 +912,8 @@ class Color(Data):
 
         factor = 1.0 + factor / 100
 
-        h, l, s = self.hls
-        r, g, b = colorsys.hls_to_rgb(h, min(1.0, l * factor), s)
+        hue, luminance, saturation = self.hls
+        r, g, b = colorsys.hls_to_rgb(hue, min(1.0, luminance * factor), saturation)
         self.r = r
         self.g = g
         self.b = b
@@ -963,8 +963,8 @@ class Color(Data):
 
         factor = 1.0 - factor / 100
 
-        h, l, s = self.hls
-        r, g, b = colorsys.hls_to_rgb(h, max(0.0, l * factor), s)
+        hue, luminance, saturation = self.hls
+        r, g, b = colorsys.hls_to_rgb(hue, max(0.0, luminance * factor), saturation)
         self.r = r
         self.g = g
         self.b = b
@@ -1038,8 +1038,8 @@ class Color(Data):
 
         factor = 1.0 + factor / 100
 
-        h, l, s = self.hls
-        r, g, b = colorsys.hls_to_rgb(h, l, min(1.0, s * factor))
+        hue, luminance, saturation = self.hls
+        r, g, b = colorsys.hls_to_rgb(hue, luminance, min(1.0, saturation * factor))
         self.r = r
         self.g = g
         self.b = b
@@ -1089,8 +1089,8 @@ class Color(Data):
 
         factor = 1.0 - factor / 100
 
-        h, l, s = self.hls
-        r, g, b = colorsys.hls_to_rgb(h, l, max(0.0, s * factor))
+        hue, luminance, saturation = self.hls
+        r, g, b = colorsys.hls_to_rgb(hue, luminance, max(0.0, saturation * factor))
         self.r = r
         self.g = g
         self.b = b

@@ -24,13 +24,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed bug in `compas.topology.orientation.unify_cycles`.
 * Fixed bug in `Mesh.thickened`.
 * Fixed various bugs in `compas.geometry.Quaternion`.
-
+* Changed repo config to `pyproject.toml`.
 
 ### Removed
 
 * Removed `compas.scene.SceneObjectNode`, functionalities merged into `compas.scene.SceneObject`.
 * Removed `compas.scene.SceneTree`, functionalities merged into `compas.scene.Scene`.
-
 
 ## [2.1.0] 2024-03-01
 
@@ -52,7 +51,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [2.0.4] 2024-02-12
 
 ### Added
@@ -62,7 +60,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed bug in `compas_rhino.scene`.
 
 ### Removed
-
 
 ## [2.0.3] 2024-02-09
 

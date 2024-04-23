@@ -14,10 +14,10 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
-      - name: "[RPC tests] Set up CPython 3.8"
+      - name: "[RPC tests] Set up CPython 3.9"
         uses: actions/setup-python@v2
         with:
-          python-version: 3.8
+          python-version: 3.9
       - name: "[RPC tests] Install CPython dependencies"
         run: |
           python -m pip install --upgrade pip
