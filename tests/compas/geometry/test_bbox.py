@@ -1,7 +1,7 @@
 import pytest
 
 import compas
-from compas.geometry import allclose
+from compas.tolerance import TOL
 from compas.geometry import bounding_box
 from compas.geometry import bounding_box_xy
 
@@ -120,4 +120,4 @@ def test_oriented_bounding_box_numpy(coords, expected):
 
     results = oriented_bounding_box_numpy(coords)
     for result, expected_values in zip(results, expected):
-        assert allclose(result, expected_values, tol=1e-3)
+        assert TOL.is_allclose(result, expected_values, tol=1e-3)

@@ -12,10 +12,10 @@ Ippoliti for providing code and documentation.
 """
 
 from compas.geometry import Transformation
-from compas.geometry import allclose
 from compas.geometry import decompose_matrix
 from compas.geometry import matrix_from_shear
 from compas.geometry import matrix_from_shear_entries
+from compas.tolerance import TOL
 from compas.utilities import flatten
 
 
@@ -50,7 +50,7 @@ class Shear(Transformation):
     def __init__(self, matrix=None, check=False, name=None):
         if matrix and check:
             _, shear, _, _, _ = decompose_matrix(matrix)
-            if not allclose(flatten(matrix), flatten(matrix_from_shear_entries(shear))):
+            if not TOL.is_allclose(flatten(matrix), flatten(matrix_from_shear_entries(shear))):
                 raise ValueError("This is not a proper shear matrix.")
         super(Shear, self).__init__(matrix=matrix, name=name)
 

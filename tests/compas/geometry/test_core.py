@@ -5,14 +5,13 @@ import pytest
 from compas.geometry import Polyhedron
 from compas.geometry import Point, Polygon
 from compas.geometry import Rotation
-from compas.geometry import allclose
+from compas.tolerance import TOL
 from compas.geometry import angle_vectors
 from compas.geometry import angle_planes
 from compas.geometry import angles_vectors
 from compas.geometry import angle_vectors_signed
 from compas.geometry import centroid_points
 from compas.geometry import centroid_polyhedron
-from compas.geometry import close
 from compas.geometry import length_vector
 from compas.geometry import subtract_vectors
 from compas.geometry import volume_polyhedron
@@ -58,7 +57,7 @@ def triangle():
     ],
 )
 def test_angle_vectors(u, v, angle):
-    assert close(angle_vectors(u, v), angle)
+    assert TOL.is_close(angle_vectors(u, v), angle)
 
 
 # @pytest.mark.parametrize(
@@ -90,7 +89,7 @@ def test_angle_vectors(u, v, angle):
 )
 def test_angles_vectors(u, v, angles):
     a, b = angles
-    assert allclose(angles_vectors(u, v), (a, b))
+    assert TOL.is_allclose(angles_vectors(u, v), (a, b))
 
 
 # @pytest.mark.parametrize(
@@ -124,7 +123,7 @@ def test_angles_vectors(u, v, angles):
     ],
 )
 def test_angle_planes(a, b, angle):
-    assert close(angle_planes(a, b), angle)
+    assert TOL.is_close(angle_planes(a, b), angle)
 
 
 @pytest.mark.parametrize(
@@ -135,7 +134,7 @@ def test_angle_planes(a, b, angle):
     ],
 )
 def test_angle_vectors_signed(u, v, normal, result):
-    assert close(angle_vectors_signed(u, v, normal), result, tol=1e-12)
+    assert TOL.is_close(angle_vectors_signed(u, v, normal), result, tol=1e-12)
 
 
 # ==============================================================================
@@ -172,7 +171,7 @@ def test_centroid_points(points, centroid):
         x, y, z = 0.0, 0.0, 0.0
     else:
         x, y, z = centroid
-    assert allclose(centroid_points(points), (x, y, z), tol=1e-03)
+    assert TOL.is_allclose(centroid_points(points), (x, y, z), tol=1e-03)
 
 
 @pytest.mark.parametrize(("points"), [[0.0, 0.0, 0.0]])
@@ -201,7 +200,7 @@ def test_centroid_points_fails_when_input_is_not_complete_points(points):
 )
 def test_centroid_polyhedron(polyhedron, centroid):
     x, y, z = centroid
-    assert allclose(centroid_polyhedron(polyhedron), (x, y, z))
+    assert TOL.is_allclose(centroid_polyhedron(polyhedron), (x, y, z))
 
 
 # ==============================================================================
@@ -215,31 +214,31 @@ def test_volume_polyhedron(polyhedron, volume):
         L = length_vector(subtract_vectors(polyhedron.vertices[0], polyhedron.vertices[1]))
         volume = L * L * L
     V = volume_polyhedron(polyhedron)
-    assert close(V, volume)
+    assert TOL.is_close(V, volume)
 
 
 def test_area_square(square, R):
-    assert close(area_polygon(square.points), 1)
-    assert close(area_polygon_xy(square.points), 1)
-    assert close(square.area, 1)
+    assert TOL.is_close(area_polygon(square.points), 1)
+    assert TOL.is_close(area_polygon_xy(square.points), 1)
+    assert TOL.is_close(square.area, 1)
     square.transform(R)
-    assert close(area_polygon(square.points), 1)
-    assert close(area_polygon_xy(square.points), 0)
-    assert close(square.area, 1)
+    assert TOL.is_close(area_polygon(square.points), 1)
+    assert TOL.is_close(area_polygon_xy(square.points), 0)
+    assert TOL.is_close(square.area, 1)
 
 
 def test_area_triangle(triangle, R):
-    assert close(area_polygon(triangle.points), 0.5)
-    assert close(area_polygon_xy(triangle.points), 0.5)
-    assert close(area_triangle(triangle.points), 0.5)
-    assert close(area_triangle_xy(triangle.points), 0.5)
-    assert close(triangle.area, 0.5)
+    assert TOL.is_close(area_polygon(triangle.points), 0.5)
+    assert TOL.is_close(area_polygon_xy(triangle.points), 0.5)
+    assert TOL.is_close(area_triangle(triangle.points), 0.5)
+    assert TOL.is_close(area_triangle_xy(triangle.points), 0.5)
+    assert TOL.is_close(triangle.area, 0.5)
     triangle.transform(R)
-    assert close(area_polygon(triangle.points), 0.5)
-    assert close(area_polygon_xy(triangle.points), 0.0)
-    assert close(area_triangle(triangle.points), 0.5)
-    assert close(area_triangle_xy(triangle.points), 0.0)
-    assert close(triangle.area, 0.5)
+    assert TOL.is_close(area_polygon(triangle.points), 0.5)
+    assert TOL.is_close(area_polygon_xy(triangle.points), 0.0)
+    assert TOL.is_close(area_triangle(triangle.points), 0.5)
+    assert TOL.is_close(area_triangle_xy(triangle.points), 0.0)
+    assert TOL.is_close(triangle.area, 0.5)
 
 
 def test_area_polygon():
@@ -261,5 +260,5 @@ def test_normal_polygon():
     polygon = [(0, 0, 0), (10, 0, 0), (10, 10, 0), (0, 10, 0)]
     normal = normal_polygon(polygon, unitized=False)
     area = area_polygon(polygon)
-    assert close(area, 100.0)
-    assert close(area, length_vector(normal))
+    assert TOL.is_close(area, 100.0)
+    assert TOL.is_close(area, length_vector(normal))

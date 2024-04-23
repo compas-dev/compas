@@ -292,12 +292,12 @@ class Quaternion(Geometry):
 
         Examples
         --------
-        >>> from compas.geometry import allclose
+        >>> from compas.tolerance import TOL
         >>> from compas.geometry import Frame
         >>> q = [1., -2., 3., -4.]
         >>> F = Frame.from_quaternion(q)
         >>> Q = Quaternion.from_frame(F)
-        >>> allclose(Q.canonized(), quaternion_canonize(quaternion_unitize(q)))
+        >>> TOL.is_allclose(Q.canonized(), quaternion_canonize(quaternion_unitize(q)))
         True
 
         """

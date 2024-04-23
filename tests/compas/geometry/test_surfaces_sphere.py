@@ -8,7 +8,7 @@ from compas.geometry import Point  # noqa: F401
 from compas.geometry import Vector  # noqa: F401
 from compas.geometry import Frame
 from compas.geometry import SphericalSurface
-from compas.geometry import close
+from compas.tolerance import TOL
 
 
 @pytest.mark.parametrize(
@@ -31,7 +31,7 @@ def test_spherical_surface(radius):
 
     other = eval(repr(surf))
 
-    assert close(surf.radius, other.radius, tol=1e-12)
+    assert TOL.is_close(surf.radius, other.radius, tol=1e-12)
     assert surf.frame == other.frame
 
 
@@ -55,7 +55,7 @@ def test_spherical_surface_with_frame(frame):
 
     other = eval(repr(surf))
 
-    assert close(surf.radius, other.radius, tol=1e-12)
+    assert TOL.is_close(surf.radius, other.radius, tol=1e-12)
     assert surf.frame == other.frame
 
 

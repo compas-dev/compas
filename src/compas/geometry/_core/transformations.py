@@ -62,13 +62,13 @@ def orthonormalize_axes(xaxis, yaxis):
 
     Examples
     --------
-    >>> from compas.geometry import allclose
+    >>> from compas.tolerance import TOL
     >>> xaxis = [1, 4, 5]
     >>> yaxis = [1, 0, -2]
     >>> xaxis, yaxis = orthonormalize_axes(xaxis, yaxis)
-    >>> allclose(xaxis, [0.1543, 0.6172, 0.7715], tol=0.001)
+    >>> TOL.is_allclose(xaxis, [0.1543, 0.6172, 0.7715], atol=0.001)
     True
-    >>> allclose(yaxis, [0.6929, 0.4891, -0.5298], tol=0.001)
+    >>> TOL.is_allclose(yaxis, [0.6929, 0.4891, -0.5298], atol=0.001)
     True
 
     """

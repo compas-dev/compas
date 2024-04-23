@@ -1,6 +1,6 @@
 import pytest
 
-from compas.geometry import allclose
+from compas.tolerance import TOL
 from compas.geometry import Frame
 from compas.geometry import SphericalSurface
 from compas.geometry import CylindricalSurface
@@ -20,49 +20,49 @@ from compas.geometry import PlanarSurface
     ],
 )
 def test_surface_geometry(surface):
-    assert allclose(
+    assert TOL.is_allclose(
         surface.point_at(0, 0),
         surface.point_at(0, 0, world=False).transformed(surface.transformation),
         tol=1e-12,
     )
 
-    assert allclose(
+    assert TOL.is_allclose(
         surface.point_at(0.5, 0),
         surface.point_at(0.5, 0, world=False).transformed(surface.transformation),
         tol=1e-12,
     )
 
-    assert allclose(
+    assert TOL.is_allclose(
         surface.point_at(1.0, 0),
         surface.point_at(1.0, 0, world=False).transformed(surface.transformation),
         tol=1e-12,
     )
 
-    assert allclose(
+    assert TOL.is_allclose(
         surface.point_at(1.0, 0.5),
         surface.point_at(1.0, 0.5, world=False).transformed(surface.transformation),
         tol=1e-12,
     )
 
-    assert allclose(
+    assert TOL.is_allclose(
         surface.point_at(1.0, 1.0),
         surface.point_at(1.0, 1.0, world=False).transformed(surface.transformation),
         tol=1e-12,
     )
 
-    assert allclose(
+    assert TOL.is_allclose(
         surface.point_at(0.5, 1.0),
         surface.point_at(0.5, 1.0, world=False).transformed(surface.transformation),
         tol=1e-12,
     )
 
-    assert allclose(
+    assert TOL.is_allclose(
         surface.point_at(0, 1.0),
         surface.point_at(0, 1.0, world=False).transformed(surface.transformation),
         tol=1e-12,
     )
 
-    assert allclose(
+    assert TOL.is_allclose(
         surface.point_at(0, 0.5),
         surface.point_at(0, 0.5, world=False).transformed(surface.transformation),
         tol=1e-12,
