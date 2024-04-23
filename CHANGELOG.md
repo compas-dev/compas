@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed bug in `Mesh.thickened`.
 * Fixed various bugs in `compas.geometry.Quaternion`.
 * Changed repo config to `pyproject.toml`.
+* Changed order of imports according to `isort` and changed line length to `179`.
 
 ### Removed
 
