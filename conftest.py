@@ -17,6 +17,9 @@ def pytest_ignore_collect(path):
     if "ghpython" in str(path):
         return True
 
+    if str(path).endswith("_cli.py"):
+        return True
+
 
 @pytest.fixture(autouse=True)
 def add_compas(doctest_namespace):
