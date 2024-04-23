@@ -126,8 +126,8 @@ indent-width = 4
 target-version = "py39"
 
 [tool.ruff.lint]
-select = ["E", "F", "I"]
-extend-ignore = ["E501"]
+select = ["E", "F"]
+ignore = ["E501"]
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["I001"]
@@ -136,7 +136,12 @@ extend-ignore = ["E501"]
 
 [tool.ruff.lint.isort]
 force-single-line = true
-known-first-party = ["compas", "compas"]
+known-first-party = [
+    "compas",
+    "compas_blender",
+    "compas_ghpython",
+    "compas_rhino",
+]
 
 [tool.ruff.lint.pydocstyle]
 convention = "numpy"
