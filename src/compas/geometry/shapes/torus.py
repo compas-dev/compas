@@ -6,10 +6,10 @@ from math import cos
 from math import pi
 from math import sin
 
-from compas.geometry import matrix_from_frame
-from compas.geometry import transform_points
 from compas.geometry import Frame
 from compas.geometry import Plane
+from compas.geometry import matrix_from_frame
+from compas.geometry import transform_points
 
 from .shape import Shape
 
@@ -147,9 +147,7 @@ class Torus(Shape):
     # ==========================================================================
 
     def __repr__(self):
-        return "Torus(frame={0!r}, radius_axis={1!r}, radius_pipe={2!r})".format(
-            self.frame, self.radius_axis, self.radius_pipe
-        )
+        return "Torus(frame={0!r}, radius_axis={1!r}, radius_pipe={2!r})".format(self.frame, self.radius_axis, self.radius_pipe)
 
     def __len__(self):
         return 3

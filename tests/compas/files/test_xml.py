@@ -59,9 +59,7 @@ def test_xml_to_pretty_string(basic_xml):
 
 
 def test_namespaces_to_string():
-    xml = XML.from_string(
-        """<?xml version="1.0" encoding="UTF-8"?><robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="panda"><xacro:bamboo/></robot>"""
-    )
+    xml = XML.from_string("""<?xml version="1.0" encoding="UTF-8"?><robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="panda"><xacro:bamboo/></robot>""")
     xml_string = xml.to_string(prettify=True)
     assert b'xmlns:xacro="http://www.ros.org/wiki/xacro"' in xml_string
     assert b"<xacro:bamboo" in xml_string or b"<ns0:bamboo" in xml_string

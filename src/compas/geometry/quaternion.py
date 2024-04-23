@@ -1,20 +1,20 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 import math
-
-from compas.tolerance import TOL
-
-from compas.geometry import quaternion_multiply, Rotation
-from compas.geometry import quaternion_conjugate
-from compas.geometry import quaternion_unitize
-from compas.geometry import quaternion_canonize
-from compas.geometry import quaternion_norm
-from compas.geometry import quaternion_is_unit
-from compas.geometry import quaternion_from_matrix
-from compas.geometry import Geometry
 from sys import float_info
+
+from compas.geometry import Geometry
+from compas.geometry import Rotation
+from compas.geometry import quaternion_canonize
+from compas.geometry import quaternion_conjugate
+from compas.geometry import quaternion_from_matrix
+from compas.geometry import quaternion_is_unit
+from compas.geometry import quaternion_multiply
+from compas.geometry import quaternion_norm
+from compas.geometry import quaternion_unitize
+from compas.tolerance import TOL
 
 
 class Quaternion(Geometry):

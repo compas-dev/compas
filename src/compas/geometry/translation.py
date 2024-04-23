@@ -11,11 +11,11 @@ Many thanks to Christoph Gohlke, Martin John Baker, Sachin Joglekar and Andrew
 Ippoliti for providing code and documentation.
 """
 
-from compas.utilities import flatten
+from compas.geometry import Transformation
 from compas.geometry import allclose
 from compas.geometry import matrix_from_translation
 from compas.geometry import translation_from_matrix
-from compas.geometry import Transformation
+from compas.utilities import flatten
 
 
 class Translation(Transformation):

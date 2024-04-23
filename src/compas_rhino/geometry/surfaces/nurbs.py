@@ -1,18 +1,17 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 from itertools import groupby
 
 import Rhino.Geometry  # type: ignore
 
-from compas.geometry import Point
 from compas.geometry import NurbsSurface
+from compas.geometry import Point
 from compas.geometry import knots_and_mults_to_knotvector
 from compas.utilities import flatten
-
-from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import point_to_compas
+from compas_rhino.conversions import point_to_rhino
 
 from .surface import RhinoSurface
 
@@ -311,9 +310,7 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
 
         """
         surface = cls()
-        surface.rhino_surface = rhino_surface_from_parameters(
-            points, weights, knots_u, knots_v, mults_u, mults_v, degree_u, degree_v
-        )
+        surface.rhino_surface = rhino_surface_from_parameters(points, weights, knots_u, knots_v, mults_u, mults_v, degree_u, degree_v)
         return surface
 
     @classmethod
@@ -342,9 +339,7 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
         pointcount_v = len(points[0])
         points[:] = [point_to_rhino(point) for row in points for point in row]
         surface = cls()
-        surface.rhino_surface = Rhino.Geometry.NurbsSurface.CreateFromPoints(
-            points, pointcount_u, pointcount_v, degree_u, degree_v
-        )
+        surface.rhino_surface = Rhino.Geometry.NurbsSurface.CreateFromPoints(points, pointcount_u, pointcount_v, degree_u, degree_v)
         return surface
 
     @classmethod

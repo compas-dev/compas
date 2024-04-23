@@ -1,11 +1,11 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from .smoothing import mesh_smooth_area
 from .operations.collapse import trimesh_collapse_edge
-from .operations.swap import trimesh_swap_edge
 from .operations.split import trimesh_split_edge
+from .operations.swap import trimesh_swap_edge
+from .smoothing import mesh_smooth_area
 
 
 def trimesh_remesh(

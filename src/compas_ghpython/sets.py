@@ -2,8 +2,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import System  # type: ignore
 import Grasshopper  # type: ignore
+import System  # type: ignore
 
 
 def list_to_ghtree(items, none_and_holes=False, base_path=[0]):

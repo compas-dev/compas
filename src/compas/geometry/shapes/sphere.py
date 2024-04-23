@@ -6,10 +6,11 @@ from math import cos
 from math import pi
 from math import sin
 
-from compas.geometry import transform_points
+from compas.geometry import Circle
 from compas.geometry import Frame
 from compas.geometry import Line
-from compas.geometry import Circle
+from compas.geometry import transform_points
+
 from .shape import Shape
 
 

@@ -1,21 +1,20 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 from functools import wraps
 
+import Rhino  # type: ignore
 import rhinoscriptsyntax as rs  # type: ignore
 import scriptcontext as sc  # type: ignore
 import System  # type: ignore
-import Rhino  # type: ignore
 
 import compas_rhino.objects
-from compas_rhino.layers import create_layers_from_path
-from compas_rhino.layers import clear_layer
-from compas_rhino.layers import clear_current_layer
-from compas_rhino.conversions import vertices_and_faces_to_rhino
-
 from compas.geometry import centroid_polygon
+from compas_rhino.conversions import vertices_and_faces_to_rhino
+from compas_rhino.layers import clear_current_layer
+from compas_rhino.layers import clear_layer
+from compas_rhino.layers import create_layers_from_path
 
 find_object = sc.doc.Objects.Find
 add_point = sc.doc.Objects.AddPoint
@@ -626,9 +625,7 @@ def draw_pipes(pipes, cap=2, fit=1.0, **kwargs):
         if type(radius) in (int, float):
             radius = [radius] * 2
         radius = [float(r) for r in radius]
-        rail = Rhino.Geometry.Curve.CreateControlPointRhino.Geometry.Curve(
-            [Rhino.Geometry.Point3d(*xyz) for xyz in points]
-        )
+        rail = Rhino.Geometry.Curve.CreateControlPointRhino.Geometry.Curve([Rhino.Geometry.Point3d(*xyz) for xyz in points])
         breps = Rhino.Geometry.Brep.CreatePipe(rail, params, radius, 1, cap, fit, abs_tol, ang_tol)
         temp = [add_brep(brep) for brep in breps]
         for guid in temp:
@@ -902,9 +899,7 @@ def draw_circles(circles, **kwargs):
         name = data.get("name", "")
         color = data.get("color")
         layer = data.get("layer")
-        circle = Rhino.Geometry.Circle(
-            Rhino.Geometry.Plane(Rhino.Geometry.Point3d(*point), Rhino.Geometry.Vector3d(*normal)), radius
-        )
+        circle = Rhino.Geometry.Circle(Rhino.Geometry.Plane(Rhino.Geometry.Point3d(*point), Rhino.Geometry.Vector3d(*normal)), radius)
         guid = add_circle(circle)
         if not guid:
             continue

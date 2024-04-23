@@ -1,15 +1,15 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 import json
 
-import compas_rhino
-
-import System  # type: ignore
 import Rhino  # type: ignore
 import rhinoscriptsyntax as rs  # type: ignore
 import scriptcontext as sc  # type: ignore
+import System  # type: ignore
+
+import compas_rhino
 
 find_object = sc.doc.Objects.Find
 
@@ -298,11 +298,7 @@ def set_object_attributes(guid, attr):
         try:
             u.Set(name, value)
         except Exception:
-            print(
-                "The following item cannot be stored in the user dictionary of this object: {0} => {1}".format(
-                    name, value
-                )
-            )
+            print("The following item cannot be stored in the user dictionary of this object: {0} => {1}".format(name, value))
 
 
 def get_object_attributes_from_name(guids, prefix=None):

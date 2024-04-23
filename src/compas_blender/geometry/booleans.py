@@ -1,4 +1,5 @@
 import bpy  # type: ignore
+
 from compas.plugins import plugin
 
 
@@ -78,9 +79,9 @@ boolean_intersection_mesh_mesh.__plugin__ = True
 
 
 def _boolean_operation(A, B, method):
-    from compas_blender.utilities import draw_mesh
     from compas_blender.utilities import delete_object
     from compas_blender.utilities import delete_unused_data
+    from compas_blender.utilities import draw_mesh
 
     A = draw_mesh(*A)
     B = draw_mesh(*B)

@@ -1,9 +1,9 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from compas.tolerance import TOL
-
+from compas.geometry import Geometry
+from compas.geometry import Transformation
 from compas.geometry import argmax
 from compas.geometry import axis_angle_vector_from_matrix
 from compas.geometry import basis_vectors_from_matrix
@@ -16,15 +16,12 @@ from compas.geometry import matrix_from_euler_angles
 from compas.geometry import matrix_from_quaternion
 from compas.geometry import quaternion_from_matrix
 from compas.geometry import subtract_vectors
+from compas.itertools import linspace
+from compas.tolerance import TOL
 
-from compas.geometry import Geometry
-from compas.geometry import Transformation
-
-from .vector import Vector
 from .point import Point
 from .quaternion import Quaternion
-
-from compas.itertools import linspace
+from .vector import Vector
 
 
 class Frame(Geometry):

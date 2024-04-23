@@ -80,15 +80,11 @@ def test_interpolate_frame_start_end():
 
     # Test interpolation at the start
     start_frame = frame1.interpolate_frame(frame2, 0)
-    assert (
-        start_frame.point == frame1.point and start_frame.xaxis == frame1.xaxis and start_frame.yaxis == frame1.yaxis
-    ), "Failed at t=0"
+    assert start_frame.point == frame1.point and start_frame.xaxis == frame1.xaxis and start_frame.yaxis == frame1.yaxis, "Failed at t=0"
 
     # Test interpolation at the end
     end_frame = frame1.interpolate_frame(frame2, 1)
-    assert (
-        end_frame.point == frame2.point and end_frame.xaxis == frame2.xaxis and end_frame.yaxis == frame2.yaxis
-    ), "Failed at t=1"
+    assert end_frame.point == frame2.point and end_frame.xaxis == frame2.xaxis and end_frame.yaxis == frame2.yaxis, "Failed at t=1"
 
     quarter_frame = frame1.interpolate_frame(frame2, 0.25)
     assert allclose([math.degrees(quarter_frame.axis_angle_vector.y)], [-22.5], tol=TOL.angular)

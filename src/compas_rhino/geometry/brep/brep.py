@@ -4,30 +4,29 @@ from __future__ import print_function
 
 import Rhino  # type: ignore
 
-from compas.geometry import Frame
 from compas.geometry import Brep
-from compas.geometry import BrepTrimmingError
 from compas.geometry import BrepError
+from compas.geometry import BrepTrimmingError
+from compas.geometry import Frame
 from compas.geometry import Plane
 from compas.geometry import Point
-
 from compas_rhino.conversions import box_to_rhino
-from compas_rhino.conversions import transformation_to_rhino
-from compas_rhino.conversions import plane_to_rhino
-from compas_rhino.conversions import cylinder_to_rhino
-from compas_rhino.conversions import sphere_to_rhino
-from compas_rhino.conversions import mesh_to_compas
-from compas_rhino.conversions import mesh_to_rhino
-from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import curve_to_compas
 from compas_rhino.conversions import curve_to_rhino
+from compas_rhino.conversions import cylinder_to_rhino
+from compas_rhino.conversions import mesh_to_compas
+from compas_rhino.conversions import mesh_to_rhino
+from compas_rhino.conversions import plane_to_rhino
+from compas_rhino.conversions import point_to_rhino
+from compas_rhino.conversions import sphere_to_rhino
+from compas_rhino.conversions import transformation_to_rhino
 from compas_rhino.conversions import vector_to_rhino
 
 from .builder import _RhinoBrepBuilder
-from .face import RhinoBrepFace
 from .edge import RhinoBrepEdge
-from .vertex import RhinoBrepVertex
+from .face import RhinoBrepFace
 from .loop import RhinoBrepLoop
+from .vertex import RhinoBrepVertex
 
 TOLERANCE = 1e-6
 
