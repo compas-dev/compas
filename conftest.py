@@ -1,8 +1,9 @@
-import pytest
-import compas
 import math
-import numpy
 
+import numpy
+import pytest
+
+import compas
 from compas.geometry import allclose
 
 
