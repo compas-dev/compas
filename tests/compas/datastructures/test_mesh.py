@@ -1082,22 +1082,28 @@ def test_vertex_neighborhood_centroid():
 
 def test_vertex_normal():
     mesh = Mesh.from_obj(compas.get("quadmesh.obj"))
-    assert mesh.vertex_normal(0) == [
-        -0.7875436283909406,
-        0.07148692938164082,
-        0.6120985642103861,
-    ]
-    assert mesh.vertex_normal(5) == [
-        -0.482011312317331,
-        -0.32250183520381565,
-        0.814651864963369,
-    ]
+    assert TOL.is_allclose(
+        mesh.vertex_normal(0),
+        [
+            -0.7875436283909406,
+            0.07148692938164082,
+            0.6120985642103861,
+        ],
+    )
+    assert TOL.is_allclose(
+        mesh.vertex_normal(5),
+        [
+            -0.482011312317331,
+            -0.32250183520381565,
+            0.814651864963369,
+        ],
+    )
 
 
 def test_vertex_curvature():
     mesh = Mesh.from_obj(compas.get("quadmesh.obj"))
-    assert mesh.vertex_curvature(0) == 0.0029617825994936453
-    assert mesh.vertex_curvature(5) == 0.036193074384009094
+    assert TOL.is_close(mesh.vertex_curvature(0), 0.0029617825994936453)
+    assert TOL.is_close(mesh.vertex_curvature(5), 0.036193074384009094)
 
 
 def test_face_coordinates():
@@ -1163,7 +1169,7 @@ def test_face_flatness():
 
 def test_face_aspect_ratio():
     mesh = Mesh.from_obj(compas.get("quadmesh.obj"))
-    assert mesh.face_aspect_ratio(0) == 1.2813792520925738
+    assert TOL.is_close(mesh.face_aspect_ratio(0), 1.2813792520925738)
 
     mesh = Mesh.from_obj(compas.get("faces.obj"))
     assert mesh.face_aspect_ratio(0) == 1
@@ -1171,7 +1177,7 @@ def test_face_aspect_ratio():
 
 def test_face_skewness():
     mesh = Mesh.from_obj(compas.get("quadmesh.obj"))
-    assert mesh.face_skewness(0) == 0.2432393485343291
+    assert TOL.is_close(mesh.face_skewness(0), 0.2432393485343291)
 
     mesh = Mesh.from_obj(compas.get("faces.obj"))
     assert mesh.face_skewness(0) == 0
