@@ -118,15 +118,19 @@ replace = "[{new_version}] {now:%Y-%m-%d}"
 # ============================================================================
 
 [tool.black]
+# we should set this to 179
 line-length = 120
 
 [tool.ruff]
+# we should set this to 179
 line-length = 120
 indent-width = 4
 target-version = "py39"
 
 [tool.ruff.lint]
+# we should add "I"
 select = ["E", "F"]
+# we should remove this
 ignore = ["E501"]
 
 [tool.ruff.lint.per-file-ignores]
@@ -147,6 +151,7 @@ known-first-party = [
 convention = "numpy"
 
 [tool.ruff.lint.pycodestyle]
+# we should set this to 179
 max-doc-length = 120
 
 [tool.ruff.format]
