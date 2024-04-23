@@ -118,10 +118,10 @@ replace = "[{new_version}] {now:%Y-%m-%d}"
 # ============================================================================
 
 [tool.black]
-line-length = 179
+line-length = 120
 
 [tool.ruff]
-line-length = 179
+line-length = 120
 indent-width = 4
 target-version = "py39"
 
@@ -141,7 +141,7 @@ known-first-party = ["compas", "compas"]
 convention = "numpy"
 
 [tool.ruff.lint.pycodestyle]
-max-doc-length = 179
+max-doc-length = 120
 
 [tool.ruff.format]
 docstring-code-format = true
