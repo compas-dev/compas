@@ -60,7 +60,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="RhinoCircleObject.draw" href="compas_rhino.scene.RhinoCircleObject.draw.html" />
-    <link rel="prev" title="RhinoCapsuleObject.validate_data" href="compas_rhino.scene.RhinoCapsuleObject.validate_data.html" />
+    <link rel="prev" title="RhinoCapsuleObject.get_group" href="compas_rhino.scene.RhinoCapsuleObject.get_group.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -1112,7 +1112,7 @@ document.write(`
 <h1>RhinoCircleObject</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas_rhino.scene.RhinoCircleObject">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_rhino.scene.</span></span><span class="sig-name descname"><span class="pre">RhinoCircleObject</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/16897f4/src/compas/../compas_rhino/scene/circleobject.py#L13"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_rhino.scene.</span></span><span class="sig-name descname"><span class="pre">RhinoCircleObject</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/86b1a99/src/compas/../compas_rhino/scene/circleobject.py#L13"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas_rhino.scene.RhinoSceneObject.html#compas_rhino.scene.RhinoSceneObject" title="compas_rhino.scene.sceneobject.RhinoSceneObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">RhinoSceneObject</span></code></a>, <a class="reference internal" href="compas.scene.GeometryObject.html#compas.scene.GeometryObject" title="compas.scene.geometryobject.GeometryObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeometryObject</span></code></a></p>
 <p>Scene object for drawing circles.</p>
 <dl class="field-list">
@@ -1136,53 +1136,23 @@ document.write(`
 <p class="rubric">Inherited Methods</p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.scene.RhinoCircleObject.ToString.html#compas_rhino.scene.RhinoCircleObject.ToString" title="compas_rhino.scene.RhinoCircleObject.ToString"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ToString</span></code></a></p></td>
-<td><p>Converts the instance to a string.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.scene.RhinoCircleObject.add.html#compas_rhino.scene.RhinoCircleObject.add" title="compas_rhino.scene.RhinoCircleObject.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.scene.RhinoCircleObject.add.html#compas_rhino.scene.RhinoCircleObject.add" title="compas_rhino.scene.RhinoCircleObject.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a></p></td>
 <td><p>Add a child item to the scene object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.scene.RhinoCircleObject.add_to_group.html#compas_rhino.scene.RhinoCircleObject.add_to_group" title="compas_rhino.scene.RhinoCircleObject.add_to_group"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_to_group</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.scene.RhinoCircleObject.add_to_group.html#compas_rhino.scene.RhinoCircleObject.add_to_group" title="compas_rhino.scene.RhinoCircleObject.add_to_group"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_to_group</span></code></a></p></td>
 <td><p>Add the objects to the group.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.scene.RhinoCircleObject.clear.html#compas_rhino.scene.RhinoCircleObject.clear" title="compas_rhino.scene.RhinoCircleObject.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.scene.RhinoCircleObject.clear.html#compas_rhino.scene.RhinoCircleObject.clear" title="compas_rhino.scene.RhinoCircleObject.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a></p></td>
 <td><p>The main clearing method.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.scene.RhinoCircleObject.clear_layer.html#compas_rhino.scene.RhinoCircleObject.clear_layer" title="compas_rhino.scene.RhinoCircleObject.clear_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_layer</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.scene.RhinoCircleObject.clear_layer.html#compas_rhino.scene.RhinoCircleObject.clear_layer" title="compas_rhino.scene.RhinoCircleObject.clear_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_layer</span></code></a></p></td>
 <td><p>Clear the layer of the scene object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.scene.RhinoCircleObject.compile_attributes.html#compas_rhino.scene.RhinoCircleObject.compile_attributes" title="compas_rhino.scene.RhinoCircleObject.compile_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compile_attributes</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.scene.RhinoCircleObject.compile_attributes.html#compas_rhino.scene.RhinoCircleObject.compile_attributes" title="compas_rhino.scene.RhinoCircleObject.compile_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compile_attributes</span></code></a></p></td>
 <td><p>Compile Rhino DocObject Attributes.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.scene.RhinoCircleObject.copy.html#compas_rhino.scene.RhinoCircleObject.copy" title="compas_rhino.scene.RhinoCircleObject.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
-<td><p>Make an independent copy of the data object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.scene.RhinoCircleObject.from_json.html#compas_rhino.scene.RhinoCircleObject.from_json" title="compas_rhino.scene.RhinoCircleObject.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
-<td><p>Construct an object of this type from a JSON file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.scene.RhinoCircleObject.from_jsonstring.html#compas_rhino.scene.RhinoCircleObject.from_jsonstring" title="compas_rhino.scene.RhinoCircleObject.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
-<td><p>Construct an object of this type from a JSON string.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.scene.RhinoCircleObject.get_group.html#compas_rhino.scene.RhinoCircleObject.get_group" title="compas_rhino.scene.RhinoCircleObject.get_group"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_group</span></code></a></p></td>
 <td><p>Find the group with the given name, or create a new one.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.scene.RhinoCircleObject.remove.html#compas_rhino.scene.RhinoCircleObject.remove" title="compas_rhino.scene.RhinoCircleObject.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a></p></td>
-<td><p>Remove a child node from this node.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.scene.RhinoCircleObject.sha256.html#compas_rhino.scene.RhinoCircleObject.sha256" title="compas_rhino.scene.RhinoCircleObject.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
-<td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.scene.RhinoCircleObject.to_json.html#compas_rhino.scene.RhinoCircleObject.to_json" title="compas_rhino.scene.RhinoCircleObject.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
-<td><p>Convert an object to its native data representation and save it to a JSON file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.scene.RhinoCircleObject.to_jsonstring.html#compas_rhino.scene.RhinoCircleObject.to_jsonstring" title="compas_rhino.scene.RhinoCircleObject.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
-<td><p>Convert an object to its native data representation and save it to a JSON string.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.scene.RhinoCircleObject.traverse.html#compas_rhino.scene.RhinoCircleObject.traverse" title="compas_rhino.scene.RhinoCircleObject.traverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">traverse</span></code></a></p></td>
-<td><p>Traverse the tree from this node.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.scene.RhinoCircleObject.validate_data.html#compas_rhino.scene.RhinoCircleObject.validate_data" title="compas_rhino.scene.RhinoCircleObject.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
-<td><p>Validate the data against the object's data schema.</p></td>
 </tr>
 </tbody>
 </table>

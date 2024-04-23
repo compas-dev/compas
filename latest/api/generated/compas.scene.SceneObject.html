@@ -1112,29 +1112,15 @@ document.write(`
 <h1>SceneObject</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.scene.SceneObject">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.scene.</span></span><span class="sig-name descname"><span class="pre">SceneObject</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/16897f4/src/compas/scene/sceneobject.py#L22"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TreeNode</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.scene.</span></span><span class="sig-name descname"><span class="pre">SceneObject</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/86b1a99/src/compas/scene/sceneobject.py#L16"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Base class for all scene objects.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
+<dd class="field-odd"><dl class="simple">
 <dt><strong>item</strong><span class="classifier">Any</span></dt><dd><p>The item which should be visualized using the created SceneObject.</p>
 </dd>
-<dt><strong>name</strong><span class="classifier">str, optional</span></dt><dd><p>The name of the scene object. Note that is is not the same as the name of underlying data item, since different scene objects can refer to the same data item.</p>
-</dd>
-<dt><strong>color</strong><span class="classifier"><a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.colors.Color</span></code></a>, optional</span></dt><dd><p>The color of the object.</p>
-</dd>
-<dt><strong>opacity</strong><span class="classifier">float, optional</span></dt><dd><p>The opacity of the object.</p>
-</dd>
-<dt><strong>show</strong><span class="classifier">bool, optional</span></dt><dd><p>Flag for showing or hiding the object. Default is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
-</dd>
-<dt><strong>frame</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code></a>, optional</span></dt><dd><p>The local frame of the scene object, in relation to its parent frame.</p>
-</dd>
-<dt><strong>transformation</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Transformation.html#compas.geometry.Transformation" title="compas.geometry.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Transformation</span></code></a>, optional</span></dt><dd><p>The local transformation of the scene object in relation to its frame.</p>
-</dd>
-<dt><strong>context</strong><span class="classifier">str, optional</span></dt><dd><p>The context in which the scene object is created.</p>
-</dd>
-<dt><strong>**kwargs</strong><span class="classifier">dict</span></dt><dd><p>Additional keyword arguments to create the scene object for the item.</p>
+<dt><strong>**kwargs</strong><span class="classifier">dict</span></dt><dd><p>Additional keyword arguments for constructing SceneObject.</p>
 </dd>
 </dl>
 </dd>
@@ -1147,6 +1133,10 @@ document.write(`
 <dt><strong>node</strong><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.scene.SceneObjectNode</span></code></span></dt><dd><p>The node in the scene tree which represents the scene object.</p>
 </dd>
 <dt><strong>guids</strong><span class="classifier">list[object]</span></dt><dd><p>The GUIDs of the items drawn in the visualization context.</p>
+</dd>
+<dt><strong>parent</strong><span class="classifier"><a class="reference internal" href="#compas.scene.SceneObject" title="compas.scene.SceneObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.scene.SceneObject</span></code></a></span></dt><dd><p>The parent scene object.</p>
+</dd>
+<dt><strong>children</strong><span class="classifier">list[<a class="reference internal" href="#compas.scene.SceneObject" title="compas.scene.SceneObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.scene.SceneObject</span></code></a>]</span></dt><dd><p>The child scene objects.</p>
 </dd>
 <dt><strong>frame</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code></a></span></dt><dd><p>The local frame of the scene object, in relation to its parent frame.</p>
 </dd>
@@ -1163,9 +1153,7 @@ This is a 50% darket or lighter version of the color, depending on whether the c
 </dd>
 <dt><strong>show</strong><span class="classifier">bool</span></dt><dd><p>Flag for showing or hiding the object. Default is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
 </dd>
-<dt><strong>settings</strong><span class="classifier">dict</span></dt><dd><p>The settings including necessary attributes for reconstructing the scene object besides the Data item.</p>
-</dd>
-<dt><strong>context</strong><span class="classifier">str</span></dt><dd><p>The context in which the scene object is created.</p>
+<dt><strong>settings</strong><span class="classifier">dict</span></dt><dd><p>The settings including necessary attributes for reconstructing the scene object.</p>
 </dd>
 </dl>
 </dd>
@@ -1181,41 +1169,6 @@ This is a 50% darket or lighter version of the color, depending on whether the c
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.SceneObject.draw.html#compas.scene.SceneObject.draw" title="compas.scene.SceneObject.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a></p></td>
 <td><p>The main drawing method.</p></td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Inherited Methods</p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.SceneObject.ToString.html#compas.scene.SceneObject.ToString" title="compas.scene.SceneObject.ToString"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ToString</span></code></a></p></td>
-<td><p>Converts the instance to a string.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.SceneObject.copy.html#compas.scene.SceneObject.copy" title="compas.scene.SceneObject.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
-<td><p>Make an independent copy of the data object.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.SceneObject.from_json.html#compas.scene.SceneObject.from_json" title="compas.scene.SceneObject.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
-<td><p>Construct an object of this type from a JSON file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.SceneObject.from_jsonstring.html#compas.scene.SceneObject.from_jsonstring" title="compas.scene.SceneObject.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
-<td><p>Construct an object of this type from a JSON string.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.SceneObject.remove.html#compas.scene.SceneObject.remove" title="compas.scene.SceneObject.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a></p></td>
-<td><p>Remove a child node from this node.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.SceneObject.sha256.html#compas.scene.SceneObject.sha256" title="compas.scene.SceneObject.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
-<td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.SceneObject.to_json.html#compas.scene.SceneObject.to_json" title="compas.scene.SceneObject.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
-<td><p>Convert an object to its native data representation and save it to a JSON file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.SceneObject.to_jsonstring.html#compas.scene.SceneObject.to_jsonstring" title="compas.scene.SceneObject.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
-<td><p>Convert an object to its native data representation and save it to a JSON string.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.SceneObject.traverse.html#compas.scene.SceneObject.traverse" title="compas.scene.SceneObject.traverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">traverse</span></code></a></p></td>
-<td><p>Traverse the tree from this node.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.SceneObject.validate_data.html#compas.scene.SceneObject.validate_data" title="compas.scene.SceneObject.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
-<td><p>Validate the data against the object's data schema.</p></td>
 </tr>
 </tbody>
 </table>

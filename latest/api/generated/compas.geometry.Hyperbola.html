@@ -1113,7 +1113,7 @@ document.write(`
 <h1>Hyperbola</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.Hyperbola">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Hyperbola</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/16897f4/src/compas/geometry/curves/hyperbola.py#L15"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Hyperbola</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/86b1a99/src/compas/geometry/curves/hyperbola.py#L15"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Conic</span></code></p>
 <p>A hyperbola is defined by a coordinate frame and a major and minor axis.</p>
 <p>It is implemented using the equation</p>
@@ -1163,12 +1163,12 @@ The default value is <code class="docutils literal notranslate"><span class="pre
 </pre></div>
 </div>
 <p>Visualise the line, hyperbola, and frame of the hyperbola with the COMPAS viewer.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas_viewer</span> <span class="kn">import</span> <span class="n">Viewer</span>  
-<span class="gp">&gt;&gt;&gt; </span><span class="n">viewer</span> <span class="o">=</span> <span class="n">Viewer</span><span class="p">()</span>                    
-<span class="gp">&gt;&gt;&gt; </span><span class="n">viewer</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>                  
-<span class="gp">&gt;&gt;&gt; </span><span class="n">viewer</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">hyperbola</span><span class="p">)</span>               
-<span class="gp">&gt;&gt;&gt; </span><span class="n">viewer</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">hyperbola</span><span class="o">.</span><span class="n">frame</span><span class="p">)</span>         
-<span class="gp">&gt;&gt;&gt; </span><span class="n">viewer</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>                      
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas_view2.app</span> <span class="kn">import</span> <span class="n">App</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">viewer</span> <span class="o">=</span> <span class="n">App</span><span class="p">()</span>                    
+<span class="gp">&gt;&gt;&gt; </span><span class="n">viewer</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>                  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">viewer</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">hyperbola</span><span class="p">)</span>               
+<span class="gp">&gt;&gt;&gt; </span><span class="n">viewer</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">hyperbola</span><span class="o">.</span><span class="n">frame</span><span class="p">)</span>         
+<span class="gp">&gt;&gt;&gt; </span><span class="n">viewer</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>                      
 </pre></div>
 </div>
 <dl class="field-list">

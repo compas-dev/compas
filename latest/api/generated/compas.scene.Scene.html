@@ -60,7 +60,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Scene.add" href="compas.scene.Scene.add.html" />
-    <link rel="prev" title="GraphObject.validate_data" href="compas.scene.GraphObject.validate_data.html" />
+    <link rel="prev" title="GraphObject.add" href="compas.scene.GraphObject.add.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -1112,8 +1112,8 @@ document.write(`
 <h1>Scene</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.scene.Scene">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.scene.</span></span><span class="sig-name descname"><span class="pre">Scene</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/16897f4/src/compas/scene/scene.py#L13"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Bases: <a class="reference internal" href="../compas.datastructures.Tree.html#compas.datastructures.Tree" title="compas.datastructures.tree.tree.Tree"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tree</span></code></a></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.scene.</span></span><span class="sig-name descname"><span class="pre">Scene</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/86b1a99/src/compas/scene/scene.py#L179"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="compas.data.Data.html#compas.data.Data" title="compas.data.data.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">Data</span></code></a></p>
 <p>A scene is a container for hierarchical scene objects which are to be visualised in a given context.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1159,6 +1159,12 @@ document.write(`
 <tr class="row-even"><td><p><a class="reference internal" href="compas.scene.Scene.draw.html#compas.scene.Scene.draw" title="compas.scene.Scene.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a></p></td>
 <td><p>Draw the scene.</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.Scene.print_hierarchy.html#compas.scene.Scene.print_hierarchy" title="compas.scene.Scene.print_hierarchy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_hierarchy</span></code></a></p></td>
+<td><p>Print the hierarchy of the scene.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.Scene.remove.html#compas.scene.Scene.remove" title="compas.scene.Scene.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a></p></td>
+<td><p>Remove a scene object from the scene.</p></td>
+</tr>
 </tbody>
 </table>
 <p class="rubric">Inherited Methods</p>
@@ -1166,12 +1172,6 @@ document.write(`
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.Scene.ToString.html#compas.scene.Scene.ToString" title="compas.scene.Scene.ToString"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ToString</span></code></a></p></td>
 <td><p>Converts the instance to a string.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.Scene.compute_aabb.html#compas.scene.Scene.compute_aabb" title="compas.scene.Scene.compute_aabb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_aabb</span></code></a></p></td>
-<td><p>Compute the axis-aligned bounding box of the datastructure.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.Scene.compute_obb.html#compas.scene.Scene.compute_obb" title="compas.scene.Scene.compute_obb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_obb</span></code></a></p></td>
-<td><p>Compute the oriented bounding box of the datastructure.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.scene.Scene.copy.html#compas.scene.Scene.copy" title="compas.scene.Scene.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
 <td><p>Make an independent copy of the data object.</p></td>
@@ -1182,62 +1182,14 @@ document.write(`
 <tr class="row-even"><td><p><a class="reference internal" href="compas.scene.Scene.from_jsonstring.html#compas.scene.Scene.from_jsonstring" title="compas.scene.Scene.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
 <td><p>Construct an object of this type from a JSON string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.Scene.get_node_by_name.html#compas.scene.Scene.get_node_by_name" title="compas.scene.Scene.get_node_by_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_node_by_name</span></code></a></p></td>
-<td><p>Get a node by its name.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.Scene.get_nodes_by_name.html#compas.scene.Scene.get_nodes_by_name" title="compas.scene.Scene.get_nodes_by_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_nodes_by_name</span></code></a></p></td>
-<td><p>Get all nodes by their name.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.Scene.print_hierarchy.html#compas.scene.Scene.print_hierarchy" title="compas.scene.Scene.print_hierarchy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_hierarchy</span></code></a></p></td>
-<td><p>Print the spatial hierarchy of the tree.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.Scene.remove.html#compas.scene.Scene.remove" title="compas.scene.Scene.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a></p></td>
-<td><p>Remove a node from the tree.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.Scene.rotate.html#compas.scene.Scene.rotate" title="compas.scene.Scene.rotate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate</span></code></a></p></td>
-<td><p>Rotate the datastructure.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.Scene.rotated.html#compas.scene.Scene.rotated" title="compas.scene.Scene.rotated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotated</span></code></a></p></td>
-<td><p>Returns a rotated copy of this geometry.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.Scene.scale.html#compas.scene.Scene.scale" title="compas.scene.Scene.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a></p></td>
-<td><p>Scale the datastructure.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.Scene.scaled.html#compas.scene.Scene.scaled" title="compas.scene.Scene.scaled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scaled</span></code></a></p></td>
-<td><p>Returns a scaled copy of this geometry.</p></td>
-</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.Scene.sha256.html#compas.scene.Scene.sha256" title="compas.scene.Scene.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.Scene.to_graph.html#compas.scene.Scene.to_graph" title="compas.scene.Scene.to_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_graph</span></code></a></p></td>
-<td><p>Convert the tree to a graph.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.Scene.to_json.html#compas.scene.Scene.to_json" title="compas.scene.Scene.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.Scene.to_json.html#compas.scene.Scene.to_json" title="compas.scene.Scene.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Convert an object to its native data representation and save it to a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.Scene.to_jsonstring.html#compas.scene.Scene.to_jsonstring" title="compas.scene.Scene.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.Scene.to_jsonstring.html#compas.scene.Scene.to_jsonstring" title="compas.scene.Scene.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
 <td><p>Convert an object to its native data representation and save it to a JSON string.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.Scene.transform.html#compas.scene.Scene.transform" title="compas.scene.Scene.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
-<td><p>Transforms the data structure.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.Scene.transform_numpy.html#compas.scene.Scene.transform_numpy" title="compas.scene.Scene.transform_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform_numpy</span></code></a></p></td>
-<td><p>Transforms the data structure.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.Scene.transformed.html#compas.scene.Scene.transformed" title="compas.scene.Scene.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
-<td><p>Returns a transformed copy of this data structure.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.Scene.transformed_numpy.html#compas.scene.Scene.transformed_numpy" title="compas.scene.Scene.transformed_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed_numpy</span></code></a></p></td>
-<td><p>Returns a transformed copy of this data structure.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.Scene.translate.html#compas.scene.Scene.translate" title="compas.scene.Scene.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a></p></td>
-<td><p>Translate the datastructure.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.Scene.translated.html#compas.scene.Scene.translated" title="compas.scene.Scene.translated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translated</span></code></a></p></td>
-<td><p>Returns a translated copy of this geometry.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.Scene.traverse.html#compas.scene.Scene.traverse" title="compas.scene.Scene.traverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">traverse</span></code></a></p></td>
-<td><p>Traverse the tree from the root node.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.scene.Scene.validate_data.html#compas.scene.Scene.validate_data" title="compas.scene.Scene.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
 <td><p>Validate the data against the object's data schema.</p></td>

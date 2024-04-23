@@ -60,7 +60,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="PolygonObject.draw" href="compas_blender.scene.PolygonObject.draw.html" />
-    <link rel="prev" title="PointcloudObject.validate_data" href="compas_blender.scene.PointcloudObject.validate_data.html" />
+    <link rel="prev" title="PointcloudObject.update_object" href="compas_blender.scene.PointcloudObject.update_object.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -1112,7 +1112,7 @@ document.write(`
 <h1>PolygonObject</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas_blender.scene.PolygonObject">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_blender.scene.</span></span><span class="sig-name descname"><span class="pre">PolygonObject</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/16897f4/src/compas/../compas_blender/scene/polygonobject.py#L15"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_blender.scene.</span></span><span class="sig-name descname"><span class="pre">PolygonObject</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/86b1a99/src/compas/../compas_blender/scene/polygonobject.py#L15"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas_blender.scene.BlenderSceneObject.html#compas_blender.scene.BlenderSceneObject" title="compas_blender.scene.sceneobject.BlenderSceneObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">BlenderSceneObject</span></code></a>, <a class="reference internal" href="compas.scene.GeometryObject.html#compas.scene.GeometryObject" title="compas.scene.geometryobject.GeometryObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeometryObject</span></code></a></p>
 <p>Scene object for drawing polygons in Blender.</p>
 <dl class="field-list">
@@ -1136,23 +1136,17 @@ document.write(`
 <p class="rubric">Inherited Methods</p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.scene.PolygonObject.ToString.html#compas_blender.scene.PolygonObject.ToString" title="compas_blender.scene.PolygonObject.ToString"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ToString</span></code></a></p></td>
-<td><p>Converts the instance to a string.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.scene.PolygonObject.add.html#compas_blender.scene.PolygonObject.add" title="compas_blender.scene.PolygonObject.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.scene.PolygonObject.add.html#compas_blender.scene.PolygonObject.add" title="compas_blender.scene.PolygonObject.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a></p></td>
 <td><p>Add a child item to the scene object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.scene.PolygonObject.add_object_to_collection.html#compas_blender.scene.PolygonObject.add_object_to_collection" title="compas_blender.scene.PolygonObject.add_object_to_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_object_to_collection</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.scene.PolygonObject.add_object_to_collection.html#compas_blender.scene.PolygonObject.add_object_to_collection" title="compas_blender.scene.PolygonObject.add_object_to_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_object_to_collection</span></code></a></p></td>
 <td><p>Add an object to a collection.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.scene.PolygonObject.clear.html#compas_blender.scene.PolygonObject.clear" title="compas_blender.scene.PolygonObject.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.scene.PolygonObject.clear.html#compas_blender.scene.PolygonObject.clear" title="compas_blender.scene.PolygonObject.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a></p></td>
 <td><p>The main clearing method.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.scene.PolygonObject.clear_collection.html#compas_blender.scene.PolygonObject.clear_collection" title="compas_blender.scene.PolygonObject.clear_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_collection</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.scene.PolygonObject.clear_collection.html#compas_blender.scene.PolygonObject.clear_collection" title="compas_blender.scene.PolygonObject.clear_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_collection</span></code></a></p></td>
 <td><p>Clear the objects in a collection.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.scene.PolygonObject.copy.html#compas_blender.scene.PolygonObject.copy" title="compas_blender.scene.PolygonObject.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
-<td><p>Make an independent copy of the data object.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.scene.PolygonObject.create_collection.html#compas_blender.scene.PolygonObject.create_collection" title="compas_blender.scene.PolygonObject.create_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_collection</span></code></a></p></td>
 <td><p>Create a collection with the given name.</p></td>
@@ -1163,38 +1157,14 @@ document.write(`
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.scene.PolygonObject.delete_collection.html#compas_blender.scene.PolygonObject.delete_collection" title="compas_blender.scene.PolygonObject.delete_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_collection</span></code></a></p></td>
 <td><p>Delete a collection.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.scene.PolygonObject.from_json.html#compas_blender.scene.PolygonObject.from_json" title="compas_blender.scene.PolygonObject.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
-<td><p>Construct an object of this type from a JSON file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.scene.PolygonObject.from_jsonstring.html#compas_blender.scene.PolygonObject.from_jsonstring" title="compas_blender.scene.PolygonObject.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
-<td><p>Construct an object of this type from a JSON string.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.scene.PolygonObject.remove.html#compas_blender.scene.PolygonObject.remove" title="compas_blender.scene.PolygonObject.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a></p></td>
-<td><p>Remove a child node from this node.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.scene.PolygonObject.set_object_color.html#compas_blender.scene.PolygonObject.set_object_color" title="compas_blender.scene.PolygonObject.set_object_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_object_color</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.scene.PolygonObject.set_object_color.html#compas_blender.scene.PolygonObject.set_object_color" title="compas_blender.scene.PolygonObject.set_object_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_object_color</span></code></a></p></td>
 <td><p>Set the color of a Blender object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.scene.PolygonObject.set_object_tranformation.html#compas_blender.scene.PolygonObject.set_object_tranformation" title="compas_blender.scene.PolygonObject.set_object_tranformation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_object_tranformation</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.scene.PolygonObject.set_object_tranformation.html#compas_blender.scene.PolygonObject.set_object_tranformation" title="compas_blender.scene.PolygonObject.set_object_tranformation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_object_tranformation</span></code></a></p></td>
 <td><p>Set the transformation of a Blender object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.scene.PolygonObject.sha256.html#compas_blender.scene.PolygonObject.sha256" title="compas_blender.scene.PolygonObject.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
-<td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.scene.PolygonObject.to_json.html#compas_blender.scene.PolygonObject.to_json" title="compas_blender.scene.PolygonObject.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
-<td><p>Convert an object to its native data representation and save it to a JSON file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.scene.PolygonObject.to_jsonstring.html#compas_blender.scene.PolygonObject.to_jsonstring" title="compas_blender.scene.PolygonObject.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
-<td><p>Convert an object to its native data representation and save it to a JSON string.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.scene.PolygonObject.traverse.html#compas_blender.scene.PolygonObject.traverse" title="compas_blender.scene.PolygonObject.traverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">traverse</span></code></a></p></td>
-<td><p>Traverse the tree from this node.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.scene.PolygonObject.update_object.html#compas_blender.scene.PolygonObject.update_object" title="compas_blender.scene.PolygonObject.update_object"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_object</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.scene.PolygonObject.update_object.html#compas_blender.scene.PolygonObject.update_object" title="compas_blender.scene.PolygonObject.update_object"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_object</span></code></a></p></td>
 <td><p>Update an object in the Blender scene.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.scene.PolygonObject.validate_data.html#compas_blender.scene.PolygonObject.validate_data" title="compas_blender.scene.PolygonObject.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
-<td><p>Validate the data against the object's data schema.</p></td>
 </tr>
 </tbody>
 </table>
