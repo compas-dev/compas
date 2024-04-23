@@ -2,9 +2,11 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import math
+
 from compas.tolerance import TOL
 
-from compas.geometry import quaternion_multiply
+from compas.geometry import quaternion_multiply, Rotation
 from compas.geometry import quaternion_conjugate
 from compas.geometry import quaternion_unitize
 from compas.geometry import quaternion_canonize
@@ -12,6 +14,7 @@ from compas.geometry import quaternion_norm
 from compas.geometry import quaternion_is_unit
 from compas.geometry import quaternion_from_matrix
 from compas.geometry import Geometry
+from sys import float_info
 
 
 class Quaternion(Geometry):
@@ -159,7 +162,7 @@ class Quaternion(Geometry):
             return self.y
         if key == 3:
             return self.z
-        raise KeyError
+        raise KeyError(key)
 
     def __setitem__(self, key, value):
         if key == 0:
@@ -170,9 +173,11 @@ class Quaternion(Geometry):
             return
         if key == 2:
             self.y = value
+            return
         if key == 3:
             self.z = value
-        raise KeyError
+            return
+        raise KeyError(key)
 
     def __iter__(self):
         return iter(self.wxyz)
@@ -367,7 +372,7 @@ class Quaternion(Geometry):
         True
 
         """
-        qu = quaternion_unitize(self)
+        qu = quaternion_unitize(list(self))
         self.w, self.x, self.y, self.z = qu
 
     def unitized(self):
@@ -387,7 +392,7 @@ class Quaternion(Geometry):
         True
 
         """
-        qu = quaternion_unitize(self)
+        qu = quaternion_unitize(list(self))
         return Quaternion(*qu)
 
     def canonize(self):
@@ -408,7 +413,7 @@ class Quaternion(Geometry):
         Quaternion(0.500, -0.500, -0.500, -0.500)
 
         """
-        qc = quaternion_canonize(self)
+        qc = quaternion_canonize(list(self))
         self.w, self.x, self.y, self.z = qc  # type: ignore
 
     def canonized(self):
@@ -430,7 +435,7 @@ class Quaternion(Geometry):
         Quaternion(0.500, -0.500, -0.500, -0.500)
 
         """
-        qc = quaternion_canonize(self)
+        qc = quaternion_canonize(list(self))
         return Quaternion(*qc)  # type: ignore
 
     def conjugate(self):
@@ -448,7 +453,7 @@ class Quaternion(Geometry):
         Quaternion(1.000, -1.000, -1.000, -1.000)
 
         """
-        qc = quaternion_conjugate(self)
+        qc = quaternion_conjugate(list(self))
         self.w, self.x, self.y, self.z = qc
 
     def conjugated(self):
@@ -469,5 +474,71 @@ class Quaternion(Geometry):
         Quaternion(1.000, -1.000, -1.000, -1.000)
 
         """
-        qc = quaternion_conjugate(self)
+        qc = quaternion_conjugate(list(self))
         return Quaternion(*qc)
+
+    def dot(self, other):
+        """Computes the cosine of the angle between the two quaternions"""
+        return self.w * other.w + self.x * other.x + self.y * other.y + self.z * other.z
+
+    def slerp(self, other, t):
+        """Slerp: spherical interpolation of two quaternions.
+
+        Parameters
+        ----------
+        other : :class:`compas.geometry.Quaternion`
+            The other quaternion to interpolate between.
+        t : float
+            A parameter in the range [0-1].
+
+        Returns
+        -------
+        :class:`compas.geometry.Quaternion`
+
+        Examples
+        --------
+        >>> q1 = Quaternion(1, 0, 0, 0)
+        >>> q2 = Quaternion(0, 1, 0, 0)
+        >>> t = 0.5
+        >>> interpolated_quaternion = Quaternion.slerp(q1, q2, t)
+
+        """
+        epsilon = float_info.epsilon
+
+        q1 = self.unitized()
+        q2 = other.unitized()
+
+        cosom = q1.dot(q2)
+
+        interpolated = Rotation()
+        quat = list(interpolated.quaternion)
+
+        # rotate around the shortest angle
+        if cosom < 0.0:
+            cosom = -cosom
+            quat[0] = -q1[0]
+            quat[1] = -q1[1]
+            quat[2] = -q1[2]
+            quat[3] = -q1[3]
+
+        else:
+            quat[0] = q1[0]
+            quat[1] = q1[1]
+            quat[2] = q1[2]
+            quat[3] = q1[3]
+
+        if (1.0 - cosom) > epsilon:
+            omega = math.acos(cosom)
+            sinom = math.sin(omega)
+            sc1 = math.sin((1.0 - t) * omega) / sinom
+            sc2 = math.sin(t * omega) / sinom
+        else:
+            sc1 = 1.0 - t
+            sc2 = t
+
+        qw_interp = sc1 * quat[0] + sc2 * q2[0]
+        qx_interp = sc1 * quat[1] + sc2 * q2[1]
+        qy_interp = sc1 * quat[2] + sc2 * q2[2]
+        qz_interp = sc1 * quat[3] + sc2 * q2[3]
+
+        return Quaternion(qw_interp, qx_interp, qy_interp, qz_interp)
