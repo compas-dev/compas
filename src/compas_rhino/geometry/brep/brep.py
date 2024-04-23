@@ -10,6 +10,7 @@ from compas.geometry import BrepTrimmingError
 from compas.geometry import BrepError
 from compas.geometry import Plane
 from compas.geometry import Point
+from compas.tolerance import TOL
 
 from compas_rhino.conversions import box_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
@@ -28,8 +29,6 @@ from .face import RhinoBrepFace
 from .edge import RhinoBrepEdge
 from .vertex import RhinoBrepVertex
 from .loop import RhinoBrepLoop
-
-TOLERANCE = 1e-6
 
 
 class RhinoBrep(Brep):
@@ -242,7 +241,7 @@ class RhinoBrep(Brep):
             raise BrepError("Failed to create extrusion from curve: {} and vector: {}".format(curve, vector))
         rhino_brep = extrusion.ToBrep()
         if cap_ends:
-            capped = rhino_brep.CapPlanarHoles(TOLERANCE)
+            capped = rhino_brep.CapPlanarHoles(TOL.absolute)
             if capped:
                 rhino_brep = capped
         return cls.from_native(rhino_brep)
@@ -327,7 +326,7 @@ class RhinoBrep(Brep):
             raise BrepError("Cannot check for containment if brep is not manifold or is not closed")
 
         if isinstance(object, Point):
-            return self._brep.IsPointInside(point_to_rhino(object), TOLERANCE, False)
+            return self._brep.IsPointInside(point_to_rhino(object), TOL.absolute, False)
         else:
             raise NotImplementedError
 
@@ -365,15 +364,15 @@ class RhinoBrep(Brep):
         """
         self._brep.Transform(transformation_to_rhino(matrix))
 
-    def trim(self, plane, tolerance=TOLERANCE):
+    def trim(self, plane, tolerance=None):
         """Trim this brep by the given trimming plane.
 
         Parameters
         ----------
         plane : :class:`compas.geometry.Frame` or :class:`compas.geometry.Plane`
             The frame or plane to use when trimming. The discarded bit is in the direction of the frame's normal.
-        tolerance : float
-            The precision to use for the trimming operation.
+        tolerance : float, optional
+            The precision to use for the trimming operation. Defaults to `TOL.absolute`.
 
         Notes
         -----
@@ -397,15 +396,15 @@ class RhinoBrep(Brep):
         result = self.trimmed(plane, tolerance)
         self._brep = result.native_brep
 
-    def trimmed(self, plane, tolerance=TOLERANCE):
+    def trimmed(self, plane, tolerance=None):
         """Returns a trimmed copy of this brep by the given trimming plane.
 
         Parameters
         ----------
         plane : :class:`compas.geometry.Frame` or :class:`compas.geometry.Plane`
             The frame or plane to use when trimming. The discarded bit is in the direction of the plane's normal.
-        tolerance : float
-            The precision to use for the trimming operation.
+        tolerance : float, optional
+            The precision to use for the trimming operation. Defaults to `TOL.absolute`.
 
         Notes
         -----
@@ -426,13 +425,14 @@ class RhinoBrep(Brep):
         :meth:`compas_rhino.geometry.RhinoBrep.trim`
 
         """
+        tolerance = tolerance or TOL.absolute
         if isinstance(plane, Frame):
             plane = Plane.from_frame(plane)
         results = self._brep.Trim(plane_to_rhino(plane), tolerance)
         if not results:
             raise BrepTrimmingError("Trim operation ended with no result")
         result = results[0]
-        capped = result.CapPlanarHoles(TOLERANCE)
+        capped = result.CapPlanarHoles(tolerance)
         if capped:
             result = capped
         return RhinoBrep.from_native(result)
@@ -461,7 +461,7 @@ class RhinoBrep(Brep):
         resulting_breps = Rhino.Geometry.Brep.CreateBooleanDifference(
             [b.native_brep for b in breps_a],
             [b.native_brep for b in breps_b],
-            TOLERANCE,
+            TOL.absolute,
         )
         return [RhinoBrep.from_native(brep) for brep in resulting_breps]
 
@@ -487,7 +487,9 @@ class RhinoBrep(Brep):
         if not isinstance(breps_b, list):
             breps_b = [breps_b]
 
-        resulting_breps = Rhino.Geometry.Brep.CreateBooleanUnion([b.native_brep for b in breps_a + breps_b], TOLERANCE)
+        resulting_breps = Rhino.Geometry.Brep.CreateBooleanUnion(
+            [b.native_brep for b in breps_a + breps_b], TOL.absolute
+        )
         return [RhinoBrep.from_native(brep) for brep in resulting_breps]
 
     @classmethod
@@ -514,7 +516,7 @@ class RhinoBrep(Brep):
         resulting_breps = Rhino.Geometry.Brep.CreateBooleanIntersection(
             [b.native_brep for b in breps_a],
             [b.native_brep for b in breps_b],
-            TOLERANCE,
+            TOL.absolute,
         )
         return [RhinoBrep.from_native(brep) for brep in resulting_breps]
 
@@ -552,5 +554,5 @@ class RhinoBrep(Brep):
             list of zero or more resulting Breps.
 
         """
-        resulting_breps = self._brep.Split(cutter.native_brep, TOLERANCE)
+        resulting_breps = self._brep.Split(cutter.native_brep, TOL.absolute)
         return [RhinoBrep.from_native(brep) for brep in resulting_breps]
