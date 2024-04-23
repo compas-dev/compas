@@ -10,7 +10,8 @@ from compas.geometry import Box
 from compas.geometry import Polygon
 from compas.geometry import Polyhedron
 from compas.geometry import Translation
-from compas.geometry import allclose
+
+from compas.tolerance import TOL
 
 
 @pytest.fixture
@@ -1018,7 +1019,7 @@ def test_area():
     assert mesh.area() == 6
 
     mesh = Mesh.from_obj(compas.get("quadmesh.obj"))
-    assert mesh.area() == 22.802429316496635
+    assert TOL.is_close(mesh.area(), 22.802429316496635)
 
 
 def test_centroid():
@@ -1029,7 +1030,7 @@ def test_centroid():
     assert mesh.centroid() == [0.0, 0.0, 0.5]
 
     mesh = Mesh.from_obj(compas.get("quadmesh.obj"))
-    assert mesh.centroid() == [2.508081952064351, 2.554046390557884, 1.2687133268242006]
+    assert TOL.is_allclose(mesh.centroid(), [2.508081952064351, 2.554046390557884, 1.2687133268242006])
 
 
 def test_normal():
@@ -1040,11 +1041,14 @@ def test_normal():
     assert mesh.normal() == [0.0, 0.0, 0.0]
 
     mesh = Mesh.from_obj(compas.get("quadmesh.obj"))
-    assert mesh.normal() == [
-        -2.380849234996509e-06,
-        4.1056122145028854e-05,
-        0.8077953732329284,
-    ]
+    assert TOL.is_allclose(
+        mesh.normal(),
+        [
+            -2.380849234996509e-06,
+            4.1056122145028854e-05,
+            0.8077953732329284,
+        ],
+    )
 
 
 # --------------------------------------------------------------------------
@@ -1114,39 +1118,44 @@ def test_face_coordinates():
 
 def test_face_normal():
     mesh = Mesh.from_obj(compas.get("quadmesh.obj"))
-    assert allclose(
+    assert TOL.is_allclose(
         mesh.face_normal(0),
         [0.5435358481001584, -0.16248515023849733, 0.8235091728584537],
-        tol=1e-6,
     )
 
 
 def test_face_centroid():
     mesh = Mesh.from_obj(compas.get("quadmesh.obj"))
-    assert mesh.face_centroid(0) == [
-        3.94185334444046,
-        2.024157851934433,
-        1.3333333134651184,
-    ]
+    assert TOL.is_allclose(
+        mesh.face_centroid(0),
+        [
+            3.94185334444046,
+            2.024157851934433,
+            1.3333333134651184,
+        ],
+    )
 
 
 def test_face_center():
     mesh = Mesh.from_obj(compas.get("quadmesh.obj"))
-    assert mesh.face_center(0) == [
-        3.944329439044577,
-        2.0258867968680776,
-        1.332040166602369,
-    ]
+    assert TOL.is_allclose(
+        mesh.face_center(0),
+        [
+            3.944329439044577,
+            2.0258867968680776,
+            1.332040166602369,
+        ],
+    )
 
 
 def test_face_area():
     mesh = Mesh.from_obj(compas.get("quadmesh.obj"))
-    assert mesh.face_area(0) == 0.3374168482414756
+    assert TOL.is_close(mesh.face_area(0), 0.3374168482414756)
 
 
 def test_face_flatness():
     mesh = Mesh.from_obj(compas.get("quadmesh.obj"))
-    assert mesh.face_flatness(0) == 0.23896112582475654
+    assert TOL.is_close(mesh.face_flatness(0), 0.23896112582475654)
 
     mesh = Mesh.from_obj(compas.get("faces.obj"))
     assert mesh.face_flatness(0) == 0
@@ -1170,7 +1179,7 @@ def test_face_skewness():
 
 def test_face_curvature():
     mesh = Mesh.from_obj(compas.get("quadmesh.obj"))
-    assert mesh.face_curvature(0) == 0.0035753184898039566
+    assert TOL.is_close(mesh.face_curvature(0), 0.0035753184898039566)
 
     mesh = Mesh.from_obj(compas.get("faces.obj"))
     assert mesh.face_curvature(0) == 0
