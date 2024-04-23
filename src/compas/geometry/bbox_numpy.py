@@ -1,22 +1,20 @@
-from numpy import array
-from numpy import asarray
-from numpy import argmax
-from numpy import argmin
 from numpy import amax
 from numpy import amin
+from numpy import argmax
+from numpy import argmin
+from numpy import array
+from numpy import asarray
 from numpy import dot
 from numpy import sum
-from numpy import zeros
 from numpy import vstack
-
+from numpy import zeros
 from scipy.spatial import ConvexHull
 
-from compas.tolerance import TOL
-
-from compas.geometry import pca_numpy
 from compas.geometry import local_axes
-from compas.geometry import world_to_local_coordinates_numpy
 from compas.geometry import local_to_world_coordinates_numpy
+from compas.geometry import pca_numpy
+from compas.geometry import world_to_local_coordinates_numpy
+from compas.tolerance import TOL
 
 from .bbox import bounding_box
 

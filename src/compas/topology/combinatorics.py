@@ -1,8 +1,9 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 from collections import deque
+
 from compas.topology.traversal import breadth_first_traverse
 
 

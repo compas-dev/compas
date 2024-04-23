@@ -5,8 +5,8 @@ it listens to requests on port ``1753``.
 
 """
 
-from compas.rpc import Server
 from compas.rpc import Dispatcher
+from compas.rpc import Server
 
 from .watcher import FileWatcherService
 

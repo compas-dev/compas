@@ -1,8 +1,10 @@
+from typing import Iterable
+from typing import List
+from typing import Text
+
 import bpy  # type: ignore
-from typing import List, Iterable, Text
 
 from compas_blender.data import delete_unused_data
-
 
 # ==============================================================================
 # Delete

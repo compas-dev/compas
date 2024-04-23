@@ -1,6 +1,6 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 
 def mesh_add_vertex_to_face_edge(mesh, key, fkey, v):

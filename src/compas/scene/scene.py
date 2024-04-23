@@ -3,9 +3,9 @@ import compas.geometry  # noqa: F401
 from compas.datastructures import Tree
 from compas.datastructures import TreeNode
 
-from .context import clear
-from .context import before_draw
 from .context import after_draw
+from .context import before_draw
+from .context import clear
 from .context import detect_current_context
 from .sceneobject import SceneObject
 
@@ -104,11 +104,7 @@ class Scene(Tree):
         else:
             if "context" in kwargs:
                 if kwargs["context"] != self.context:
-                    raise Exception(
-                        "Object context should be the same as scene context: {} != {}".format(
-                            kwargs["context"], self.context
-                        )
-                    )
+                    raise Exception("Object context should be the same as scene context: {} != {}".format(kwargs["context"], self.context))
                 del kwargs["context"]  # otherwist the SceneObject receives "context" twice, which results in an error
             sceneobject = SceneObject(item, context=self.context, **kwargs)  # type: ignore
         super(Scene, self).add(sceneobject, parent=parent)

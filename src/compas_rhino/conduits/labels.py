@@ -1,12 +1,13 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from System.Drawing.Color import FromArgb
 from Rhino.Geometry import Point3d
+from System.Drawing.Color import FromArgb
 
-from compas.utilities import iterable_like
 from compas.utilities import is_sequence_of_iterable
+from compas.utilities import iterable_like
+
 from .base import BaseConduit
 
 
@@ -78,10 +79,7 @@ class LabelsConduit(BaseConduit):
             # the first item in the list should be a tuple of colors
             # if not, wrap the tuple
             color = [color]
-        color = [
-            (FromArgb(*bg), FromArgb(*text))
-            for bg, text in iterable_like(self.labels, color, (self.default_color, self.default_textcolor))
-        ]
+        color = [(FromArgb(*bg), FromArgb(*text)) for bg, text in iterable_like(self.labels, color, (self.default_color, self.default_textcolor))]
         self._color = color
 
     def DrawForeground(self, e):

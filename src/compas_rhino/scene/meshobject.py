@@ -1,29 +1,28 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-import scriptcontext as sc  # type: ignore
 import Rhino  # type: ignore
-
-from compas.geometry import centroid_points
-from compas.geometry import Point
-from compas.geometry import Line
-from compas.geometry import Cylinder
-from compas.geometry import Sphere
-from compas.scene import MeshObject
-from compas.colors import Color
+import scriptcontext as sc  # type: ignore
 
 import compas_rhino.objects
-from compas_rhino.conversions import vertices_and_faces_to_rhino
+from compas.colors import Color
+from compas.geometry import Cylinder
+from compas.geometry import Line
+from compas.geometry import Point
+from compas.geometry import Sphere
+from compas.geometry import centroid_points
+from compas.scene import MeshObject
+from compas_rhino.conversions import cylinder_to_rhino_brep
+from compas_rhino.conversions import line_to_rhino
 from compas_rhino.conversions import mesh_to_rhino
 from compas_rhino.conversions import point_to_rhino
-from compas_rhino.conversions import line_to_rhino
-from compas_rhino.conversions import cylinder_to_rhino_brep
 from compas_rhino.conversions import sphere_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
+from compas_rhino.conversions import vertices_and_faces_to_rhino
 
-from .sceneobject import RhinoSceneObject
 from .helpers import ngon
+from .sceneobject import RhinoSceneObject
 
 
 class RhinoMeshObject(RhinoSceneObject, MeshObject):

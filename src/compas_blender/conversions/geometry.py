@@ -2,14 +2,13 @@ from typing import Optional
 
 import bpy  # type: ignore
 
+from compas.geometry import Cylinder
+
 # import bmesh  # type: ignore
 # import mathutils  # type: ignore
-
 from compas.geometry import Point
 from compas.geometry import Pointcloud
 from compas.geometry import Sphere
-from compas.geometry import Cylinder
-
 
 # =============================================================================
 # To Blender
@@ -33,9 +32,7 @@ def point_to_blender_sphere(point: Point) -> bpy.types.Object:
     raise NotImplementedError
 
 
-def pointcloud_to_blender(
-    pointcloud: Pointcloud, radius: float = 0.05, u: int = 16, v: int = 16, name: Optional[str] = None
-) -> bpy.types.Object:
+def pointcloud_to_blender(pointcloud: Pointcloud, radius: float = 0.05, u: int = 16, v: int = 16, name: Optional[str] = None) -> bpy.types.Object:
     """Convert a COMPAS pointcloud to a Blender pointcloud.
 
     Parameters

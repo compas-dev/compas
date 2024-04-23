@@ -41,10 +41,8 @@ import xml.etree.ElementTree as ET
 from urllib import addinfourl
 
 import compas
-
 from compas.files._xml.xml_shared import shared_xml_from_file
 from compas.files._xml.xml_shared import shared_xml_from_string
-
 
 if compas.IPY:
     import clr

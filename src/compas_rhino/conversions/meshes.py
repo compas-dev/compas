@@ -14,6 +14,7 @@ from compas.colors import Color
 from compas.datastructures import Mesh
 from compas.geometry import centroid_polygon
 from compas.itertools import pairwise
+
 from .geometry import vector_to_compas
 
 

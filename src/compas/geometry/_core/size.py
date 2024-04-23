@@ -1,21 +1,19 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 from math import fabs
 
 from compas.itertools import pairwise
 
-from ._algebra import subtract_vectors
-from ._algebra import subtract_vectors_xy
-from ._algebra import length_vector
 from ._algebra import cross_vectors
 from ._algebra import cross_vectors_xy
 from ._algebra import dot_vectors
-
+from ._algebra import length_vector
+from ._algebra import subtract_vectors
+from ._algebra import subtract_vectors_xy
 from .centroids import centroid_points
 from .centroids import centroid_points_xy
-
 from .normals import normal_triangle
 from .normals import normal_triangle_xy
 

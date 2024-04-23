@@ -6,8 +6,8 @@ import Rhino  # type: ignore
 
 from compas.geometry import BrepLoop
 
-from .trim import RhinoBrepTrim
 from .edge import RhinoBrepEdge
+from .trim import RhinoBrepTrim
 
 
 class LoopType(object):
@@ -87,9 +87,7 @@ class RhinoBrepLoop(BrepLoop):
 
         """
         instance = cls()
-        instance._type = (
-            Rhino.Geometry.BrepLoopType.Outer if data["type"] == "Outer" else Rhino.Geometry.BrepLoopType.Inner
-        )
+        instance._type = Rhino.Geometry.BrepLoopType.Outer if data["type"] == "Outer" else Rhino.Geometry.BrepLoopType.Inner
         loop_builder = builder.add_loop(instance._type)
         for trim_data in data["trims"]:
             RhinoBrepTrim.__from_data__(trim_data, loop_builder)

@@ -1,10 +1,10 @@
-import os
 import imp
+import os
 
 import compas_rhino
-
 from compas._os import create_symlinks
 from compas._os import remove_symlinks
+
 from .install import install as install_packages
 
 

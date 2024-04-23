@@ -1,9 +1,9 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from .sceneobject import SceneObject
 from .descriptors.color import ColorAttribute
+from .sceneobject import SceneObject
 
 
 class GeometryObject(SceneObject):

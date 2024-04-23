@@ -5,23 +5,22 @@ from __future__ import print_function
 from itertools import product
 from random import sample
 
-from compas.datastructures.datastructure import Datastructure
-from compas.datastructures.attributes import VertexAttributeView
+from compas.datastructures import Mesh
+from compas.datastructures.attributes import CellAttributeView
 from compas.datastructures.attributes import EdgeAttributeView
 from compas.datastructures.attributes import FaceAttributeView
-from compas.datastructures.attributes import CellAttributeView
-from compas.datastructures import Mesh
-
+from compas.datastructures.attributes import VertexAttributeView
+from compas.datastructures.datastructure import Datastructure
 from compas.files import OBJ
-
-from compas.geometry import Point
-from compas.geometry import Vector
+from compas.geometry import Box
 from compas.geometry import Line
+from compas.geometry import Point
 from compas.geometry import Polygon
 from compas.geometry import Polyhedron
-from compas.geometry import Box
+from compas.geometry import Vector
 from compas.geometry import add_vectors
 from compas.geometry import bestfit_plane
+from compas.geometry import bounding_box
 from compas.geometry import centroid_points
 from compas.geometry import centroid_polygon
 from compas.geometry import centroid_polyhedron
@@ -29,16 +28,13 @@ from compas.geometry import distance_point_point
 from compas.geometry import length_vector
 from compas.geometry import normal_polygon
 from compas.geometry import normalize_vector
+from compas.geometry import oriented_bounding_box
 from compas.geometry import project_point_plane
 from compas.geometry import scale_vector
 from compas.geometry import subtract_vectors
-from compas.geometry import bounding_box
 from compas.geometry import transform_points
-from compas.geometry import oriented_bounding_box
-
 from compas.itertools import linspace
 from compas.itertools import pairwise
-
 from compas.tolerance import TOL
 
 
@@ -435,9 +431,7 @@ class VolMesh(Datastructure):
         vertices = [self.vertex_coordinates(vertex) for vertex in self.vertices()]
         cells = []
         for cell in self.cells():
-            faces = [
-                [vertex_index[vertex] for vertex in self.halfface_vertices(face)] for face in self.cell_faces(cell)
-            ]
+            faces = [[vertex_index[vertex] for vertex in self.halfface_vertices(face)] for face in self.cell_faces(cell)]
             cells.append(faces)
         return vertices, cells
 

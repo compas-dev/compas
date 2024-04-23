@@ -1,6 +1,6 @@
-from __future__ import print_function
-from __future__ import division
 from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 
 class AlphaMode(object):
@@ -30,10 +30,7 @@ class BaseGLTFDataClass(object):
     def extensions_to_data(self, **kwargs):
         if not self.extensions:
             return None
-        return {
-            key: value.to_data(**kwargs) if hasattr(value, "to_data") else value
-            for key, value in self.extensions.items()
-        }
+        return {key: value.to_data(**kwargs) if hasattr(value, "to_data") else value for key, value in self.extensions.items()}
 
     @classmethod
     def extensions_from_data(cls, data):
@@ -488,9 +485,7 @@ class AnimationData(BaseGLTFDataClass):
         self._sampler_index_by_key = None
 
     def to_data(self, samplers_list, node_index_by_key):
-        channels = [
-            channel_data.to_data(node_index_by_key, self._sampler_index_by_key) for channel_data in self.channels
-        ]
+        channels = [channel_data.to_data(node_index_by_key, self._sampler_index_by_key) for channel_data in self.channels]
         animation_dict = {
             "channels": channels,
             "samplers": samplers_list,

@@ -1,11 +1,19 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 from copy import deepcopy
-from math import acos, atan2, asin, cos, fabs, pi, sin, sqrt, tan
-from compas.tolerance import TOL
+from math import acos
+from math import asin
+from math import atan2
+from math import cos
+from math import fabs
+from math import pi
+from math import sin
+from math import sqrt
+from math import tan
 
+from compas.tolerance import TOL
 
 _SPEC2TUPLE = {
     "sxyz": (0, 0, 0, 0),
@@ -2033,10 +2041,7 @@ def axis_and_angle_from_matrix(M):
     eps2 = 0.1  # margin to distinguish between 0 and 180 degrees
 
     if all(fabs(M[i][j] - M[j][i]) < eps for i, j in [(0, 1), (0, 2), (1, 2)]):
-        if (
-            all(fabs(M[i][j] - M[j][i]) < eps2 for i, j in [(0, 1), (0, 2), (1, 2)])
-            and fabs(M[0][0] + M[1][1] + M[2][2] - 3) < eps2
-        ):
+        if all(fabs(M[i][j] - M[j][i]) < eps2 for i, j in [(0, 1), (0, 2), (1, 2)]) and fabs(M[0][0] + M[1][1] + M[2][2] - 3) < eps2:
             return [0, 0, 0], 0
 
         angle = pi
@@ -2068,11 +2073,7 @@ def axis_and_angle_from_matrix(M):
 
         return axis, angle
 
-    s = sqrt(
-        (M[2][1] - M[1][2]) * (M[2][1] - M[1][2])
-        + (M[0][2] - M[2][0]) * (M[0][2] - M[2][0])
-        + (M[1][0] - M[0][1]) * (M[1][0] - M[0][1])
-    )
+    s = sqrt((M[2][1] - M[1][2]) * (M[2][1] - M[1][2]) + (M[0][2] - M[2][0]) * (M[0][2] - M[2][0]) + (M[1][0] - M[0][1]) * (M[1][0] - M[0][1]))
 
     # should this also be an eps?
     if fabs(s) < 0.001:

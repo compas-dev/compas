@@ -2,8 +2,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from math import pi
 from itertools import product
+from math import pi
 from random import sample
 
 import compas
@@ -13,57 +13,53 @@ if compas.PY2:
 else:
     from collections.abc import Mapping
 
-from compas.tolerance import TOL
-
+from compas.datastructures.attributes import EdgeAttributeView
+from compas.datastructures.attributes import FaceAttributeView
+from compas.datastructures.attributes import VertexAttributeView
+from compas.datastructures.datastructure import Datastructure
 from compas.files import OBJ
 from compas.files import OFF
 from compas.files import PLY
 from compas.files import STL
-
-from compas.geometry import Point
-from compas.geometry import Vector
-from compas.geometry import Line
-from compas.geometry import Plane
-from compas.geometry import Polygon
+from compas.geometry import Box
 from compas.geometry import Circle
 from compas.geometry import Frame
+from compas.geometry import Line
+from compas.geometry import Plane
+from compas.geometry import Point
+from compas.geometry import Polygon
 from compas.geometry import Polyhedron
-from compas.geometry import Box
+from compas.geometry import Vector
+from compas.geometry import add_vectors
 from compas.geometry import angle_points
 from compas.geometry import area_polygon
 from compas.geometry import bestfit_plane
+from compas.geometry import bounding_box
 from compas.geometry import centroid_points
 from compas.geometry import centroid_polygon
 from compas.geometry import cross_vectors
+from compas.geometry import distance_line_line
 from compas.geometry import distance_point_plane
 from compas.geometry import distance_point_point
-from compas.geometry import distance_line_line
 from compas.geometry import length_vector
+from compas.geometry import midpoint_line
 from compas.geometry import normal_polygon
 from compas.geometry import normalize_vector
+from compas.geometry import oriented_bounding_box
 from compas.geometry import scale_vector
-from compas.geometry import add_vectors
 from compas.geometry import subtract_vectors
 from compas.geometry import sum_vectors
-from compas.geometry import midpoint_line
-from compas.geometry import vector_average
-from compas.geometry import bounding_box
-from compas.geometry import oriented_bounding_box
 from compas.geometry import transform_points
-
+from compas.geometry import vector_average
 from compas.itertools import linspace
 from compas.itertools import pairwise
-from compas.utilities import window
-
+from compas.tolerance import TOL
 from compas.topology import breadth_first_traverse
 from compas.topology import connected_components
 from compas.topology import unify_cycles
+from compas.utilities import window
 
-from compas.datastructures.datastructure import Datastructure
-from compas.datastructures.attributes import VertexAttributeView
-from compas.datastructures.attributes import EdgeAttributeView
-from compas.datastructures.attributes import FaceAttributeView
-
+from .duality import mesh_dual
 from .operations.collapse import mesh_collapse_edge
 from .operations.merge import mesh_merge_faces
 from .operations.split import mesh_split_edge
@@ -71,13 +67,10 @@ from .operations.split import mesh_split_face
 from .operations.split import mesh_split_strip
 from .operations.weld import mesh_unweld_edges
 from .operations.weld import mesh_unweld_vertices
-
-from .subdivision import mesh_subdivide
-from .duality import mesh_dual
 from .slice import mesh_slice_plane
-
-from .smoothing import mesh_smooth_centroid
 from .smoothing import mesh_smooth_area
+from .smoothing import mesh_smooth_centroid
+from .subdivision import mesh_subdivide
 
 
 class Mesh(Datastructure):

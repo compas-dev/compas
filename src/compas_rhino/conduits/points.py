@@ -1,15 +1,15 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from System.Drawing.Color import FromArgb
-
-from Rhino.Geometry import Point3d
 from Rhino.Display.PointStyle import Simple
+from Rhino.Geometry import Point3d
+from System.Drawing.Color import FromArgb
 
 from compas.utilities import color_to_rgb
 from compas.utilities import iterable_like
 from compas.utilities.coercing import is_sequence_of_iterable
+
 from .base import BaseConduit
 
 

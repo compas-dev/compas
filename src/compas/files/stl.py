@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 import struct
+
 from compas import _iotools
 from compas.geometry import Translation
 from compas.tolerance import TOL

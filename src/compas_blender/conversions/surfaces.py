@@ -1,6 +1,6 @@
 import bpy  # type: ignore
-from compas.geometry import NurbsSurface
 
+from compas.geometry import NurbsSurface
 
 # =============================================================================
 # To Blender

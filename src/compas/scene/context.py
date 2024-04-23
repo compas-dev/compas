@@ -137,9 +137,7 @@ def _get_sceneobject_cls(data, **kwargs):
                 break
 
     if cls is None:
-        raise SceneObjectNotRegisteredError(
-            "No scene object is registered for this data type: {} in this context: {}".format(dtype, context_name)
-        )
+        raise SceneObjectNotRegisteredError("No scene object is registered for this data type: {} in this context: {}".format(dtype, context_name))
 
     return cls
 
@@ -149,9 +147,7 @@ def get_sceneobject_cls(item, **kwargs):
         register_scene_objects()
 
     if item is None:
-        raise ValueError(
-            "Cannot create a scene object for None. Please ensure you pass a instance of a supported class."
-        )
+        raise ValueError("Cannot create a scene object for None. Please ensure you pass a instance of a supported class.")
 
     cls = _get_sceneobject_cls(item, **kwargs)
     PluginValidator.ensure_implementations(cls)
