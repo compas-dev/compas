@@ -34,8 +34,8 @@ def test_torus(radius_axis, radius_pipe):
 
     other = eval(repr(torus))
 
-    assert TOL.is_close(torus.radius_axis, other.radius_axis, tol=1e-12)
-    assert TOL.is_close(torus.radius_pipe, other.radius_pipe, tol=1e-12)
+    assert TOL.is_close(torus.radius_axis, other.radius_axis)
+    assert TOL.is_close(torus.radius_pipe, other.radius_pipe)
     assert torus.frame == other.frame
 
 
@@ -60,8 +60,8 @@ def test_torus_with_frame(frame):
 
     other = eval(repr(torus))
 
-    assert TOL.is_close(torus.radius_axis, other.radius_axis, tol=1e-12)
-    assert TOL.is_close(torus.radius_pipe, other.radius_pipe, tol=1e-12)
+    assert TOL.is_close(torus.radius_axis, other.radius_axis)
+    assert TOL.is_close(torus.radius_pipe, other.radius_pipe)
     assert torus.frame == other.frame
 
 

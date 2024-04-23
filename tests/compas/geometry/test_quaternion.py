@@ -34,10 +34,10 @@ def test_quaternion(w, x, y, z):
 
     other = eval(repr(quaternion))
 
-    assert TOL.is_close(quaternion.w, other.w, tol=1e-12)
-    assert TOL.is_close(quaternion.x, other.x, tol=1e-12)
-    assert TOL.is_close(quaternion.y, other.y, tol=1e-12)
-    assert TOL.is_close(quaternion.z, other.z, tol=1e-12)
+    assert TOL.is_close(quaternion.w, other.w)
+    assert TOL.is_close(quaternion.x, other.x)
+    assert TOL.is_close(quaternion.y, other.y)
+    assert TOL.is_close(quaternion.z, other.z)
 
 
 # =============================================================================

@@ -31,7 +31,7 @@ def test_spherical_surface(radius):
 
     other = eval(repr(surf))
 
-    assert TOL.is_close(surf.radius, other.radius, tol=1e-12)
+    assert TOL.is_close(surf.radius, other.radius)
     assert surf.frame == other.frame
 
 
@@ -55,7 +55,7 @@ def test_spherical_surface_with_frame(frame):
 
     other = eval(repr(surf))
 
-    assert TOL.is_close(surf.radius, other.radius, tol=1e-12)
+    assert TOL.is_close(surf.radius, other.radius)
     assert surf.frame == other.frame
 
 

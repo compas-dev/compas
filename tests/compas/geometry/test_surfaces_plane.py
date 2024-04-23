@@ -34,8 +34,8 @@ def test_plane(xsize, ysize):
 
     other = eval(repr(plane))
 
-    assert TOL.is_close(plane.xsize, other.xsize, tol=1e-12)
-    assert TOL.is_close(plane.ysize, other.ysize, tol=1e-12)
+    assert TOL.is_close(plane.xsize, other.xsize)
+    assert TOL.is_close(plane.ysize, other.ysize)
     assert plane.frame == other.frame
 
 
@@ -62,8 +62,8 @@ def test_plane_frame(frame):
 
     other = eval(repr(plane))
 
-    assert TOL.is_close(plane.xsize, other.xsize, tol=1e-12)
-    assert TOL.is_close(plane.ysize, other.ysize, tol=1e-12)
+    assert TOL.is_close(plane.xsize, other.xsize)
+    assert TOL.is_close(plane.ysize, other.ysize)
     assert plane.frame == other.frame
 
 

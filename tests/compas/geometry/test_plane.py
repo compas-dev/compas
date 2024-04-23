@@ -24,11 +24,11 @@ def test_plane(point, vector):
     assert plane.normal == Vector(*vector).unitized()
     assert isinstance(plane.point, Point)
     assert isinstance(plane.normal, Vector)
-    assert TOL.is_close(plane.normal.length, 1.0, tol=1e-12)
+    assert TOL.is_close(plane.normal.length, 1.0)
 
     other = eval(repr(plane))
-    assert TOL.is_allclose(other.point, plane.point, tol=1e-12)
-    assert TOL.is_allclose(other.normal, plane.normal, tol=1e-12)
+    assert TOL.is_allclose(other.point, plane.point)
+    assert TOL.is_allclose(other.normal, plane.normal)
 
 
 def test_plane_data():
@@ -37,8 +37,8 @@ def test_plane_data():
     plane = Plane(point, vector)
     other = Plane.__from_data__(json.loads(json.dumps(plane.__data__)))
 
-    assert TOL.is_allclose(other.point, plane.point, tol=1e-12)
-    assert TOL.is_allclose(other.normal, plane.normal, tol=1e-12)
+    assert TOL.is_allclose(other.point, plane.point)
+    assert TOL.is_allclose(other.normal, plane.normal)
     assert plane.guid != other.guid
 
     if not compas.IPY:

@@ -29,7 +29,7 @@ def test_from_quaternion():
     q1 = [0.945, -0.021, -0.125, 0.303]
     R = Rotation.from_quaternion(q1)
     q2 = R.quaternion
-    assert TOL.is_allclose(q1, q2, tol=1e-3)
+    assert TOL.is_allclose(q1, q2, atol=1e-3)
 
 
 def test_from_axis_angle_vector():
@@ -61,7 +61,7 @@ def test_quaternion():
     q1 = [0.945, -0.021, -0.125, 0.303]
     R = Rotation.from_quaternion(q1)
     q2 = R.quaternion
-    assert TOL.is_allclose(q1, q2, tol=1e-3)
+    assert TOL.is_allclose(q1, q2, atol=1e-3)
 
 
 def test_axis_and_angle():

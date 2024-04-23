@@ -120,4 +120,4 @@ def test_oriented_bounding_box_numpy(coords, expected):
 
     results = oriented_bounding_box_numpy(coords)
     for result, expected_values in zip(results, expected):
-        assert TOL.is_allclose(result, expected_values, tol=1e-3)
+        assert TOL.is_allclose(result, expected_values)

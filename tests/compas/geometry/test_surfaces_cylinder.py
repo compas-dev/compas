@@ -31,7 +31,7 @@ def test_cylinder(radius):
         for v in linspace(0.0, 1.0, num=100):
             assert cylinder.point_at(u, v) == cylinder.point_at(u, v, world=False)
 
-    assert TOL.is_close(cylinder.radius, other.radius, tol=1e-12)
+    assert TOL.is_close(cylinder.radius, other.radius)
     assert cylinder.frame == other.frame
 
 
@@ -56,7 +56,7 @@ def test_cylinder_frame(frame):
         for v in linspace(0.0, 1.0, num=100):
             assert cylinder.point_at(u, v) == cylinder.point_at(u, v, world=False).transformed(cylinder.transformation)
 
-    assert TOL.is_close(cylinder.radius, other.radius, tol=1e-12)
+    assert TOL.is_close(cylinder.radius, other.radius)
     assert cylinder.frame == other.frame
 
 

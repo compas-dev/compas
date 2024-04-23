@@ -34,8 +34,8 @@ def test_cone(radius, height):
 
     other = eval(repr(cone))
 
-    assert TOL.is_close(cone.radius, other.radius, tol=1e-12)
-    assert TOL.is_close(cone.height, other.height, tol=1e-12)
+    assert TOL.is_close(cone.radius, other.radius)
+    assert TOL.is_close(cone.height, other.height)
     assert cone.frame == other.frame
 
 
@@ -62,8 +62,8 @@ def test_cone_frame(frame):
 
     other = eval(repr(cone))
 
-    assert TOL.is_close(cone.radius, other.radius, tol=1e-12)
-    assert TOL.is_close(cone.height, other.height, tol=1e-12)
+    assert TOL.is_close(cone.radius, other.radius)
+    assert TOL.is_close(cone.height, other.height)
     assert cone.frame == other.frame
 
 

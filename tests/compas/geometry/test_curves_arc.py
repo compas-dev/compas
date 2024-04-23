@@ -25,20 +25,20 @@ def test_arc_create():
     assert TOL.is_close(arc.end_angle, math.pi)
     assert not arc.is_circle
 
-    assert TOL.is_allclose(arc.point_at(0.0, world=True), [1.0, 0.0, 0.0], tol=1e-12)
-    assert TOL.is_allclose(arc.point_at(0.5, world=True), [0.0, 1.0, 0.0], tol=1e-12)
-    assert TOL.is_allclose(arc.point_at(1.0, world=True), [-1.0, 0.0, 0.0], tol=1e-12)
-    assert TOL.is_allclose(arc.point_at(0.0, world=True), arc.point_at(0.0, world=False), tol=1e-12)
-    assert TOL.is_allclose(arc.point_at(0.5, world=True), arc.point_at(0.5, world=False), tol=1e-12)
-    assert TOL.is_allclose(arc.point_at(1.0, world=True), arc.point_at(1.0, world=False), tol=1e-12)
+    assert TOL.is_allclose(arc.point_at(0.0, world=True), [1.0, 0.0, 0.0])
+    assert TOL.is_allclose(arc.point_at(0.5, world=True), [0.0, 1.0, 0.0])
+    assert TOL.is_allclose(arc.point_at(1.0, world=True), [-1.0, 0.0, 0.0])
+    assert TOL.is_allclose(arc.point_at(0.0, world=True), arc.point_at(0.0, world=False))
+    assert TOL.is_allclose(arc.point_at(0.5, world=True), arc.point_at(0.5, world=False))
+    assert TOL.is_allclose(arc.point_at(1.0, world=True), arc.point_at(1.0, world=False))
 
     other = eval(repr(arc))
     assert arc.radius == other.radius
-    assert TOL.is_close(arc.start_angle, other.start_angle, tol=1e-12)
-    assert TOL.is_close(arc.end_angle, other.end_angle, tol=1e-12)
+    assert TOL.is_close(arc.start_angle, other.start_angle)
+    assert TOL.is_close(arc.end_angle, other.end_angle)
     assert arc.frame.point == other.frame.point
-    assert TOL.is_allclose(arc.frame.xaxis, other.frame.xaxis, tol=1e-12)
-    assert TOL.is_allclose(arc.frame.yaxis, other.frame.yaxis, tol=1e-12)
+    assert TOL.is_allclose(arc.frame.xaxis, other.frame.xaxis)
+    assert TOL.is_allclose(arc.frame.yaxis, other.frame.yaxis)
 
 
 def test_arc_create_with_frame(frame):
@@ -52,42 +52,36 @@ def test_arc_create_with_frame(frame):
 
     other = eval(repr(arc))
     assert arc.radius == other.radius
-    assert TOL.is_close(arc.start_angle, other.start_angle, tol=1e-12)
-    assert TOL.is_close(arc.end_angle, other.end_angle, tol=1e-12)
+    assert TOL.is_close(arc.start_angle, other.start_angle)
+    assert TOL.is_close(arc.end_angle, other.end_angle)
     assert arc.frame.point == other.frame.point
-    assert TOL.is_allclose(arc.frame.xaxis, other.frame.xaxis, tol=1e-12)
-    assert TOL.is_allclose(arc.frame.yaxis, other.frame.yaxis, tol=1e-12)
+    assert TOL.is_allclose(arc.frame.xaxis, other.frame.xaxis)
+    assert TOL.is_allclose(arc.frame.yaxis, other.frame.yaxis)
 
     assert not TOL.is_allclose(
         arc.point_at(0.0, world=True),
         arc.point_at(0.0, world=False),
-        tol=1e-12,
     )
     assert not TOL.is_allclose(
         arc.point_at(0.5, world=True),
         arc.point_at(0.5, world=False),
-        tol=1e-12,
     )
     assert not TOL.is_allclose(
         arc.point_at(1.0, world=True),
         arc.point_at(1.0, world=False),
-        tol=1e-12,
     )
 
     assert TOL.is_allclose(
         arc.point_at(0.0, world=True),
         arc.point_at(0.0, world=False).transformed(arc.transformation),
-        tol=1e-12,
     )
     assert TOL.is_allclose(
         arc.point_at(0.5, world=True),
         arc.point_at(0.5, world=False).transformed(arc.transformation),
-        tol=1e-12,
     )
     assert TOL.is_allclose(
         arc.point_at(1.0, world=True),
         arc.point_at(1.0, world=False).transformed(arc.transformation),
-        tol=1e-12,
     )
 
 
@@ -106,11 +100,11 @@ def test_arc_data():
     other = Arc.__from_data__(json.loads(json.dumps(arc.__data__)))
 
     assert arc.radius == other.radius
-    assert TOL.is_close(arc.start_angle, other.start_angle, tol=1e-12)
-    assert TOL.is_close(arc.end_angle, other.end_angle, tol=1e-12)
+    assert TOL.is_close(arc.start_angle, other.start_angle)
+    assert TOL.is_close(arc.end_angle, other.end_angle)
     assert arc.frame.point == other.frame.point
-    assert TOL.is_allclose(arc.frame.xaxis, other.frame.xaxis, tol=1e-12)
-    assert TOL.is_allclose(arc.frame.yaxis, other.frame.yaxis, tol=1e-12)
+    assert TOL.is_allclose(arc.frame.xaxis, other.frame.xaxis)
+    assert TOL.is_allclose(arc.frame.yaxis, other.frame.yaxis)
 
     if not compas.IPY:
         assert Arc.validate_data(arc.__data__)

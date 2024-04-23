@@ -134,7 +134,7 @@ def test_angle_planes(a, b, angle):
     ],
 )
 def test_angle_vectors_signed(u, v, normal, result):
-    assert TOL.is_close(angle_vectors_signed(u, v, normal), result, tol=1e-12)
+    assert TOL.is_close(angle_vectors_signed(u, v, normal), result)
 
 
 # ==============================================================================
@@ -171,7 +171,7 @@ def test_centroid_points(points, centroid):
         x, y, z = 0.0, 0.0, 0.0
     else:
         x, y, z = centroid
-    assert TOL.is_allclose(centroid_points(points), (x, y, z), tol=1e-03)
+    assert TOL.is_allclose(centroid_points(points), (x, y, z), atol=1e-3)
 
 
 @pytest.mark.parametrize(("points"), [[0.0, 0.0, 0.0]])

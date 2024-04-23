@@ -334,14 +334,14 @@ def test_axis_angle_from_quaternion():
     q = [1.0, 1.0, 0.0, 0.0]
     axis, angle = axis_angle_from_quaternion(q)
     assert TOL.is_allclose(axis, [1.0, 0.0, 0.0])
-    assert TOL.is_allclose([angle], [math.pi / 2], 1e-6)
+    assert TOL.is_allclose([angle], [math.pi / 2])
 
 
 def test_quaternion_from_matrix():
     q1 = [0.945, -0.021, -0.125, 0.303]
     R = matrix_from_quaternion(q1)
     q2 = quaternion_from_matrix(R)
-    assert TOL.is_allclose(q1, q2, tol=1e-03)
+    assert TOL.is_allclose(q1, q2, atol=1e-03)
 
 
 def test_quaternion_from_euler_angles():
