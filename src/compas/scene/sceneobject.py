@@ -84,9 +84,8 @@ class SceneObject(TreeNode):
         sceneobject_cls = get_sceneobject_cls(item, **kwargs)
         return super(SceneObject, cls).__new__(sceneobject_cls)
 
-    def __init__(
-        self, item, name=None, color=None, opacity=1.0, show=True, frame=None, transformation=None, context=None, **kwargs
-    ):  # type: (compas.geometry.Geometry | compas.datastructures.Datastructure, str | None, compas.colors.Color | None, float, bool, compas.geometry.Frame | None, compas.geometry.Transformation | None, str | None, dict) -> None
+    def __init__(self, item, name=None, color=None, opacity=1.0, show=True, frame=None, transformation=None, context=None, **kwargs):  # fmt: skip
+        # type: (compas.geometry.Geometry | compas.datastructures.Datastructure, str | None, compas.colors.Color | None, float, bool, compas.geometry.Frame | None, compas.geometry.Transformation | None, str | None, dict) -> None
         name = name or item.name
         super(SceneObject, self).__init__(name=name, **kwargs)
         # the scene object needs to store the context

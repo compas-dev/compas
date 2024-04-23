@@ -202,15 +202,7 @@ class VolMesh(Datastructure):
 
         return volmesh
 
-    def __init__(
-        self,
-        default_vertex_attributes=None,
-        default_edge_attributes=None,
-        default_face_attributes=None,
-        default_cell_attributes=None,
-        name=None,
-        **kwargs
-    ):
+    def __init__(self, default_vertex_attributes=None, default_edge_attributes=None, default_face_attributes=None, default_cell_attributes=None, name=None, **kwargs):  # fmt: skip
         super(VolMesh, self).__init__(kwargs, name=name)
         self._max_vertex = -1
         self._max_face = -1
