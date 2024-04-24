@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed bug in `Mesh.thickened`.
 * Fixed various bugs in `compas.geometry.Quaternion`.
 * Changed repo config to `pyproject.toml`.
+* Fixed broken import in `copas.geometry.trimesh_smoothing_numpy`.
 * Changed `RhinoBrep.trimmed` to return single result or raise `BrepTrimmingError` instead of returning a list.
 * Changed order of imports according to `isort` and changed line length to `179`.
 * Changed use of `compas.geometry.allclose` to `compas.tolerance.TOL.is_allclose`.
@@ -36,6 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Removed `compas.scene.SceneObjectNode`, functionalities merged into `compas.scene.SceneObject`.
 * Removed `compas.scene.SceneTree`, functionalities merged into `compas.scene.Scene`.
+* Removed default implementation of `compas.geometry.trimesh_geodistance` since nonexistent.
 * Removed `compas.utilities.maps` since functionality is replaced by `compas.tolerance`.
 
 ## [2.1.0] 2024-03-01
