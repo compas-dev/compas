@@ -10,7 +10,7 @@ def tangent_points_to_circle_xy(circle, point):
 
     Parameters
     ----------
-    circle : [plane, float] | :class:`compas.geometry.Circle`
+    circle : [plane, float]
         Plane and radius of the circle.
     point : [float, float] or [float, float, float] | :class:`compas.geometry.Point`
         XY(Z) coordinates of a point in the xy plane.

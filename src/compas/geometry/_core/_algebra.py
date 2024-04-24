@@ -2347,7 +2347,7 @@ def matrix_from_orthogonal_projection(plane):
 
     Parameters
     ----------
-    plane : [point, normal] | :class:`compas.geometry.Plane`
+    plane : [point, normal]
         The plane to project onto.
 
     Returns
@@ -2380,7 +2380,7 @@ def matrix_from_parallel_projection(plane, direction):
 
     Parameters
     ----------
-    plane : [point, normal] | :class:`compas.geometry.Plane`
+    plane : [point, normal]
         The plane to project onto.
     direction : [float, float, float] | :class:`compas.geometry.Vector`
         Direction of the projection.
@@ -2417,7 +2417,7 @@ def matrix_from_perspective_projection(plane, center_of_projection):
 
     Parameters
     ----------
-    plane : [point, normal] | :class:`compas.geometry.Plane`
+    plane : [point, normal]
         The plane to project onto.
     center_of_projection : [float, float, float] | :class:`compas.geometry.Point`
         The camera view point.

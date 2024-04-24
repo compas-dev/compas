@@ -298,7 +298,7 @@ def distance_point_plane(point, plane):
     ----------
     point : [float, float, float] | :class:`compas.geometry.Point`
         Point coordinates.
-    plane : [point, vector] | :class:`compas.geometry.Plane`
+    plane : [point, vector]
         A point and a vector defining a plane.
 
     Returns
@@ -353,7 +353,7 @@ def distance_point_plane_signed(point, plane):
     ----------
     point : [float, float, float] | :class:`compas.geometry.Point`
         Point coordinates.
-    plane : [point, vector] | :class:`compas.geometry.Plane`
+    plane : [point, vector]
         A point and a vector defining a plane.
 
     Returns
@@ -838,7 +838,7 @@ def closest_point_on_plane(point, plane):
     ----------
     point : [float, float, float] | :class:`compas.geometry.Point`
         XYZ coordinates of point.
-    plane : [point, vector] | :class:`compas.geometry.Plane`
+    plane : [point, vector]
         The base point and normal defining the plane.
 
     Returns

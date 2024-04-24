@@ -205,7 +205,7 @@ def intersection_line_plane(line, plane, tol=None):
     ----------
     line : [point, point] | :class:`compas.geometry.Line`
         Two points defining the line.
-    plane : [point, vector] | :class:`compas.geometry.Plane`
+    plane : [point, vector]
         The base point and normal defining the plane.
     tol : float, optional
         Tolerance for evaluating that the dot product of the line direction and the plane normal is zero.
@@ -253,7 +253,7 @@ def intersection_segment_plane(segment, plane, tol=None):
     ----------
     segment : [point, point] | :class:`compas.geometry.Line`
         Two points defining the line segment.
-    plane : [point, vector] | :class:`compas.geometry.Plane`
+    plane : [point, vector]
         The base point and normal defining the plane.
     tol : float, optional
         Tolerance for evaluating that the dot product of the line direction and the plane normal is zero.
@@ -305,7 +305,7 @@ def intersection_polyline_plane(polyline, plane, expected_number_of_intersection
     ----------
     polyline : sequence[point] | :class:`compas.geometry.Polyline`
         Polyline to test intersection.
-    plane : [point, vector] | :class:`compas.geometry.Plane`
+    plane : [point, vector]
         Plane to compute intersection.
     expected_number_of_intersections : int, optional
         Number of useful or expected intersections.
@@ -376,9 +376,9 @@ def intersection_plane_plane(plane1, plane2, tol=None):
 
     Parameters
     ----------
-    plane1 : [point, vector] | :class:`compas.geometry.Plane`
+    plane1 : [point, vector]
         The base point and normal (normalized) defining the 1st plane.
-    plane2 : [point, vector] | :class:`compas.geometry.Plane`
+    plane2 : [point, vector]
         The base point and normal (normalized) defining the 2nd plane.
     tol : float, optional
         Tolerance for evaluating if the dot product of the plane normals is one.
@@ -414,11 +414,11 @@ def intersection_plane_plane_plane(plane1, plane2, plane3, tol=None):
 
     Parameters
     ----------
-    plane1 : [point, vector] | :class:`compas.geometry.Plane`
+    plane1 : [point, vector]
         The base point and normal (normalized) defining the 1st plane.
-    plane2 : [point, vector] | :class:`compas.geometry.Plane`
+    plane2 : [point, vector]
         The base point and normal (normalized) defining the 2nd plane.
-    plane3 : [point, vector] | :class:`compas.geometry.Plane`
+    plane3 : [point, vector]
         The base point and normal (normalized) defining the 3rd plane.
     tol : float, optional
         Tolerance for computing the intersection line between the first two planes, and between the intersection line and the third plane.
@@ -450,9 +450,9 @@ def intersection_sphere_sphere(sphere1, sphere2):
 
     Parameters
     ----------
-    sphere1 : [point, float] | :class:`compas.geometry.Sphere`
+    sphere1 : [point, float]
         A sphere defined by a point and radius.
-    sphere2 : [point, float] | :class:`compas.geometry.Sphere`
+    sphere2 : [point, float]
         A sphere defined by a point and radius.
 
     Returns
@@ -589,7 +589,7 @@ def intersection_sphere_line(sphere, line):
 
     Parameters
     ----------
-    sphere : [point, radius] | :class:`compas.geometry.Sphere`
+    sphere : [point, radius]
         A sphere defined by a point and a radius.
     line : [point, point] | :class:`compas.geometry.Line`
         A line defined by two points.
@@ -664,9 +664,9 @@ def intersection_plane_circle(plane, circle):
 
     Parameters
     ----------
-    plane : [point, vector] | :class:`compas.geometry.Plane`
+    plane : [point, vector]
         A plane defined by a point and normal vector.
-    circle : [plane, float] | :class:`compas.geometry.Circle`
+    circle : [plane, float]
         A circle defined by a plane and radius.
 
     Returns
@@ -941,9 +941,9 @@ def intersection_circle_circle_xy(circle1, circle2):
 
     Parameters
     ----------
-    circle1 : [plane, float] | :class:`compas.geometry.Circle`
+    circle1 : [plane, float]
         Circle defined by a plane, with at least XY coordinates, and a radius.
-    circle2 : [plane, float] | :class:`compas.geometry.Circle`
+    circle2 : [plane, float]
         Circle defined by a plane, with at least XY coordinates, and a radius.
 
     Returns

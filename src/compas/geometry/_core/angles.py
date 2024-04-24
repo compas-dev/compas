@@ -384,9 +384,9 @@ def angle_planes(a, b, deg=False):
 
     Parameters
     ----------
-    a : [point, vector] | :class:`compas.geometry.Plane`
+    a : [point, vector]
         The first plane.
-    b : [point, vector] | :class:`compas.geometry.Plane`
+    b : [point, vector]
         The second plane.
     deg : bool, optional
         If True, returns the angle in degrees.

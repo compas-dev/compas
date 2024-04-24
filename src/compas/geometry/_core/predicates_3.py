@@ -237,9 +237,9 @@ def is_parallel_plane_plane(plane1, plane2, tol=None):
 
     Parameters
     ----------
-    plane1 : [point, vector] | :class:`compas.geometry.Plane`
+    plane1 : [point, vector]
         Plane 1.
-    plane2 : [point, vector] | :class:`compas.geometry.Plane`
+    plane2 : [point, vector]
         Plane 2.
     tol : float, optional
         A tolerance for verifying parallelity of the plane normals.
@@ -333,9 +333,9 @@ def is_perpendicular_plane_plane(plane1, plane2, tol=None):
 
     Parameters
     ----------
-    plane1 : [point, vector] | :class:`compas.geometry.Plane`
+    plane1 : [point, vector]
         Plane 1.
-    plane2 : [point, vector] | :class:`compas.geometry.Plane`
+    plane2 : [point, vector]
         Plane 2.
     tol : float, optional
         A tolerance for verifying perpendicularity of the plane normals.
@@ -425,7 +425,7 @@ def is_polyhedron_convex(polyhedron):
 
     Parameters
     ----------
-    polyhedron : [sequence[point], sequence[sequence[int]]] | :class:`compas.geometry.Polyhedron`
+    polyhedron : [sequence[point], sequence[sequence[int]]]
         A polyhedron defined by a sequence of points
         and a sequence of faces, with each face defined as a sequence of indices into the sequence of points.
 
@@ -480,7 +480,7 @@ def is_point_on_plane(point, plane, tol=None):
     ----------
     point : [float, float, float] | :class:`compas.geometry.Point`
         A point.
-    plane : [point, vector] | :class:`compas.geometry.Plane`
+    plane : [point, vector]
         A plane.
     tol : float, optional
         Tolerance for comparing the distance between the point and the plane to zero.
@@ -812,7 +812,7 @@ def is_point_in_polyhedron(point, polyhedron, tol=None):
     ----------
     point : [float, float, float] | :class:`compas.geometry.Point`
         The test point.
-    polyhedron : [sequence[point], sequence[sequence[int]]] | :class:`compas.geometry.Polyhedron`.
+    polyhedron : [sequence[point], sequence[sequence[int]]]
         The polyhedron defined by a sequence of points
         and a sequence of faces, with each face defined as a sequence of indices into the sequence of points.
 
@@ -836,7 +836,7 @@ def is_point_infrontof_plane(point, plane, tol=None):
     ----------
     point : [float, float, float] | :class:`compas.geometry.Point`
         A point.
-    plane : [point, vector] | :class:`compas.geometry.Plane`
+    plane : [point, vector]
         A plane.
     tol : float, optional
         A tolerance for membership verification.
@@ -858,7 +858,7 @@ def is_point_behind_plane(point, plane, tol=None):
     ----------
     point : [float, float, float] | :class:`compas.geometry.Point`
         A point.
-    plane : [point,  normal] | :class:`compas.geometry.Plane`
+    plane : [point,  normal]
         A plane.
     tol : float, optional
         A tolerance for membership verification.
@@ -1025,7 +1025,7 @@ def is_point_behind_plane(point, plane, tol=None):
 #     ----------
 #     line : [point, point] | :class:`compas.geometry.Line`
 #         A line.
-#     plane : [point, vector] | :class:`compas.geometry.Plane`
+#     plane : [point, vector]
 #         A plane.
 #     tol : float, optional
 #         A tolerance for intersection verification.
@@ -1056,7 +1056,7 @@ def is_point_behind_plane(point, plane, tol=None):
 #     ----------
 #     segment : [point, point] | :class:`compas.geometry.Line`
 #         A line segment.
-#     plane : [point, vector] | :class:`compas.geometry.Plane`
+#     plane : [point, vector]
 #         A plane.
 #     tol : float, optional
 #         A tolerance for intersection verification.
@@ -1091,9 +1091,9 @@ def is_point_behind_plane(point, plane, tol=None):
 
 #     Parameters
 #     ----------
-#     plane1 : [point, vector] | :class:`compas.geometry.Plane`
+#     plane1 : [point, vector]
 #         A plane.
-#     plane2 : [point, vector] | :class:`compas.geometry.Plane`
+#     plane2 : [point, vector]
 #         A plane.
 #     tol : float, optional
 #         A tolerance for intersection verification.
