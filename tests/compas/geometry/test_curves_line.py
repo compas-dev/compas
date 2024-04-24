@@ -99,8 +99,7 @@ def test_line_create_from_point_direction_length(point, direction, length):
     line = Line.from_point_direction_length(point, direction, length)
 
     assert line.start == point
-    assert line.end == add_vectors(
-        point, scale_vector(normalize_vector(direction), length))
+    assert line.end == add_vectors(point, scale_vector(normalize_vector(direction), length))
 
 
 # =============================================================================
@@ -230,7 +229,8 @@ def test_line_accessors(p1, p2):
     ],
 )
 @pytest.mark.parametrize(
-    "distance", [0, 1, 4, -9, 3.3, 0.00001, -0.00001],
+    "distance",
+    [0, 1, 4, -9, 3.3, 0.00001, -0.00001],
 )
 def test_line_point_from_start(p1, p2, distance):
     line = Line(p1, p2)
@@ -254,7 +254,8 @@ def test_line_point_from_start(p1, p2, distance):
     ],
 )
 @pytest.mark.parametrize(
-    "distance", [0, 1, 4, -9, 3.3, 0.00001, -0.00001],
+    "distance",
+    [0, 1, 4, -9, 3.3, 0.00001, -0.00001],
 )
 def test_line_point_from_end(p1, p2, distance):
     line = Line(p1, p2)
