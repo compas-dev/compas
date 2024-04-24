@@ -71,8 +71,7 @@ Naming conventions
 Line length
 -----------
 
-**COMPAS uses a line length of 120 characters**. While longer than the 80 characters recommended by ``PEP8``, it is in our opinion a more reasonable limit for modern displays.
-This is enforced and can be automatically set using ``black -l 120``.
+**COMPAS uses a line length of 180 characters**. While longer than the 80 characters recommended by ``PEP8``, it is in our opinion a more reasonable limit for modern displays.
 
 **Indentations are 4 spaces**. Tab to spaces setting can be set in ``.editorconfig`` which is respected by most editors. For more information see `EditorConfig <https://editorconfig.org/>`_.
 
