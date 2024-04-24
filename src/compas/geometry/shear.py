@@ -16,7 +16,7 @@ from compas.geometry import decompose_matrix
 from compas.geometry import matrix_from_shear
 from compas.geometry import matrix_from_shear_entries
 from compas.tolerance import TOL
-from compas.utilities import flatten
+from compas.itertools import flatten
 
 
 class Shear(Transformation):

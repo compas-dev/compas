@@ -6,7 +6,7 @@ from compas.geometry import Point
 from compas.itertools import linspace
 from compas.plugins import PluginNotInstalledError
 from compas.plugins import pluggable
-from compas.utilities import meshgrid
+from compas.itertools import meshgrid
 
 from .surface import Surface
 

@@ -18,7 +18,7 @@ from compas.geometry import matrix_from_scale_factors
 from compas.geometry import matrix_inverse
 from compas.geometry import multiply_matrices
 from compas.tolerance import TOL
-from compas.utilities import flatten
+from compas.itertools import flatten
 
 
 class Scale(Transformation):

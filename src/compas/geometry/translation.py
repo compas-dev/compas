@@ -15,7 +15,7 @@ from compas.geometry import Transformation
 from compas.geometry import matrix_from_translation
 from compas.geometry import translation_from_matrix
 from compas.tolerance import TOL
-from compas.utilities import flatten
+from compas.itertools import flatten
 
 
 class Translation(Transformation):

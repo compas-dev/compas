@@ -6,7 +6,7 @@ from math import pi
 
 from compas.geometry import angle_points
 from compas.plugins import pluggable
-from compas.utilities import window
+from compas.itertools import window
 
 
 @pluggable(category="trimesh")

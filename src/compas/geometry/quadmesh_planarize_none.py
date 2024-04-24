@@ -9,7 +9,7 @@ from compas.geometry import distance_point_point
 from compas.geometry import midpoint_point_point
 from compas.geometry import project_points_plane
 from compas.itertools import pairwise
-from compas.utilities import window
+from compas.itertools import window
 
 
 def mesh_flatness(mesh, maxdev=1.0):

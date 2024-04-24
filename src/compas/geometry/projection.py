@@ -18,7 +18,7 @@ from compas.geometry import matrix_from_parallel_projection
 from compas.geometry import matrix_from_perspective_entries
 from compas.geometry import matrix_from_perspective_projection
 from compas.tolerance import TOL
-from compas.utilities import flatten
+from compas.itertools import flatten
 
 
 class Projection(Transformation):

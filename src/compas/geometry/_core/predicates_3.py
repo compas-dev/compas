@@ -14,7 +14,7 @@ from compas.geometry import length_vector
 from compas.geometry import normal_polygon
 from compas.geometry import subtract_vectors
 from compas.tolerance import TOL
-from compas.utilities import window
+from compas.itertools import window
 
 # =============================================================================
 # =============================================================================

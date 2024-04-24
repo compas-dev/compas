@@ -6,7 +6,7 @@ from Rhino.Geometry import Point3d
 from System.Drawing.Color import FromArgb
 
 from compas.utilities import is_sequence_of_iterable
-from compas.utilities import iterable_like
+from compas.itertools import iterable_like
 
 from .base import BaseConduit
 

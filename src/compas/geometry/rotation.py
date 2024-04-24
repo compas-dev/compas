@@ -24,7 +24,7 @@ from compas.geometry import matrix_from_frame
 from compas.geometry import matrix_from_quaternion
 from compas.geometry import normalize_vector
 from compas.tolerance import TOL
-from compas.utilities import flatten
+from compas.itertools import flatten
 
 
 class Rotation(Transformation):
