@@ -36,6 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Removed `compas.scene.SceneObjectNode`, functionalities merged into `compas.scene.SceneObject`.
 * Removed `compas.scene.SceneTree`, functionalities merged into `compas.scene.Scene`.
+* Removed `compas.utilities.maps` since functionality is replaced by `compas.tolerance`.
 
 ## [2.1.0] 2024-03-01
 
