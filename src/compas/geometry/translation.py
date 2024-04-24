@@ -14,8 +14,8 @@ Ippoliti for providing code and documentation.
 from compas.geometry import Transformation
 from compas.geometry import matrix_from_translation
 from compas.geometry import translation_from_matrix
-from compas.tolerance import TOL
 from compas.itertools import flatten
+from compas.tolerance import TOL
 
 
 class Translation(Transformation):

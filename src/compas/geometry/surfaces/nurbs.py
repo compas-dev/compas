@@ -4,9 +4,9 @@ from __future__ import print_function
 
 from compas.geometry import Point
 from compas.itertools import linspace
+from compas.itertools import meshgrid
 from compas.plugins import PluginNotInstalledError
 from compas.plugins import pluggable
-from compas.itertools import meshgrid
 
 from .surface import Surface
 

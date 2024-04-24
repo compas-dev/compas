@@ -18,8 +18,8 @@ from compas.geometry import dot_vectors
 from compas.geometry import identity_matrix
 from compas.geometry import matrix_from_perspective_entries
 from compas.geometry import normalize_vector
-from compas.tolerance import TOL
 from compas.itertools import flatten
+from compas.tolerance import TOL
 
 
 class Reflection(Transformation):
