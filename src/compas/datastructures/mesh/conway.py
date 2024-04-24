@@ -1,6 +1,6 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 
 def mesh_conway_dual(mesh):
@@ -185,11 +185,7 @@ def mesh_conway_kis(mesh):
     v = mesh.number_of_vertices()
     vkey_index = {vkey: i for i, vkey in enumerate(mesh.vertices())}
     fkey_index = {fkey: i + v for i, fkey in enumerate(mesh.faces())}
-    faces = [
-        [vkey_index[u], vkey_index[v], fkey_index[mesh.halfedge[u][v]]]
-        for fkey in mesh.faces()
-        for u, v in mesh.face_halfedges(fkey)
-    ]
+    faces = [[vkey_index[u], vkey_index[v], fkey_index[mesh.halfedge[u][v]]] for fkey in mesh.faces() for u, v in mesh.face_halfedges(fkey)]
     return cls.from_vertices_and_faces(vertices, faces)
 
 
@@ -427,9 +423,7 @@ def mesh_conway_gyro(mesh):
     F = mesh.number_of_faces()
     vkey_index = {vkey: i for i, vkey in enumerate(mesh.vertices())}
     fkey_index = {fkey: i + V for i, fkey in enumerate(mesh.faces())}
-    ekey_index = {
-        halfedge: i + V + F for i, halfedge in enumerate([(u, v) for u in mesh.vertices() for v in mesh.halfedge[u]])
-    }
+    ekey_index = {halfedge: i + V + F for i, halfedge in enumerate([(u, v) for u in mesh.vertices() for v in mesh.halfedge[u]])}
     faces = []
     for fkey in mesh.faces():
         for u, v in mesh.face_halfedges(fkey):

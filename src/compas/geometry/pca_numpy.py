@@ -41,9 +41,7 @@ def pca_numpy(data):
     n, dim = X.shape
 
     if not n >= dim:
-        raise ValueError(
-            "The number of observations (n) should be higher than the number of measured variables (dimensions)."
-        )
+        raise ValueError("The number of observations (n) should be higher than the number of measured variables (dimensions).")
 
     # the average of the observations for each of the variables
     # for example, if the data are 2D point coordinates,

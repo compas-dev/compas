@@ -1,6 +1,5 @@
 import compas_blender
 
-
 if __name__ == "__main__":
     import argparse
 

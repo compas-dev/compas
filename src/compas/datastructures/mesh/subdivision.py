@@ -1,16 +1,15 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
+from copy import deepcopy
 from math import cos
 from math import pi
-from copy import deepcopy
 
 from compas.geometry import centroid_points
 from compas.geometry import offset_polygon
-
-from compas.utilities import iterable_like
 from compas.itertools import pairwise
+from compas.utilities import iterable_like
 
 
 def subd_factory(cls):
@@ -397,9 +396,7 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
             if C < 2:
                 fnbrs = [mesh.face_centroid(fkey) for fkey in mesh.vertex_faces(key) if fkey is not None]
-                enbrs = [
-                    key_xyz[nbr] for nbr in subd.halfedge[key]
-                ]  # this should be the location of the original neighbour
+                enbrs = [key_xyz[nbr] for nbr in subd.halfedge[key]]  # this should be the location of the original neighbour
                 n = len(enbrs)
                 v = n - 3.0
                 F = centroid_points(fnbrs)
@@ -673,9 +670,7 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
     for _ in range(k):
         key_xyz = {key: subd.vertex_coordinates(key) for key in subd.vertices()}
         fkey_vertices = {fkey: subd.face_vertices(fkey)[:] for fkey in subd.faces()}
-        uv_w = {
-            (u, v): subd.face_vertex_ancestor(fkey, u) for fkey in subd.faces() for u, v in subd.face_halfedges(fkey)
-        }
+        uv_w = {(u, v): subd.face_vertex_ancestor(fkey, u) for fkey in subd.faces() for u, v in subd.face_halfedges(fkey)}
         boundary = set(subd.vertices_on_boundary())
 
         for key in subd.vertices():

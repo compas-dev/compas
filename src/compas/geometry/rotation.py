@@ -11,20 +11,20 @@ Many thanks to Christoph Gohlke, Martin John Baker, Sachin Joglekar and Andrew
 Ippoliti for providing code and documentation.
 """
 
-from compas.utilities import flatten
-from compas.geometry import normalize_vector
-from compas.geometry import cross_vectors
-from compas.geometry import length_vector
-from compas.geometry import allclose
-from compas.geometry import decompose_matrix
-from compas.geometry import matrix_from_euler_angles
-from compas.geometry import euler_angles_from_matrix
-from compas.geometry import matrix_from_axis_and_angle
-from compas.geometry import axis_and_angle_from_matrix
-from compas.geometry import matrix_from_quaternion
-from compas.geometry import matrix_from_frame
-from compas.geometry import basis_vectors_from_matrix
 from compas.geometry import Transformation
+from compas.geometry import allclose
+from compas.geometry import axis_and_angle_from_matrix
+from compas.geometry import basis_vectors_from_matrix
+from compas.geometry import cross_vectors
+from compas.geometry import decompose_matrix
+from compas.geometry import euler_angles_from_matrix
+from compas.geometry import length_vector
+from compas.geometry import matrix_from_axis_and_angle
+from compas.geometry import matrix_from_euler_angles
+from compas.geometry import matrix_from_frame
+from compas.geometry import matrix_from_quaternion
+from compas.geometry import normalize_vector
+from compas.utilities import flatten
 
 
 class Rotation(Transformation):

@@ -2,14 +2,14 @@
 The tolerance module provides functionality to deal with tolerances consistently across all other COMPAS packages.
 """
 
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from compas.data import Data
 from decimal import Decimal
 
 import compas
+from compas.data import Data
 
 __all__ = ["Tolerance", "TOL"]
 
@@ -537,10 +537,7 @@ class Tolerance(Data):
         """
         rtol = rtol or self.relative
         atol = atol or self.absolute
-        return all(
-            self.is_allclose(a, b, rtol, atol) if hasattr(a, "__iter__") else self.compare(a, b, rtol, atol)
-            for a, b in zip(A, B)
-        )
+        return all(self.is_allclose(a, b, rtol, atol) if hasattr(a, "__iter__") else self.compare(a, b, rtol, atol) for a, b in zip(A, B))
 
     def is_angle_zero(self, a, tol=None):
         """Check if an angle is close enough to zero to be considered zero.

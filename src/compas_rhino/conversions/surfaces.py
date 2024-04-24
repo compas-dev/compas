@@ -1,21 +1,18 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 import Rhino  # type: ignore
 
-from compas.tolerance import TOL
-
-from compas.geometry import Point
-from compas.geometry import NurbsSurface
 from compas.datastructures import Mesh
+from compas.geometry import NurbsSurface
+from compas.geometry import Point
+from compas.tolerance import TOL
 from compas.utilities import memoize
 
 from .exceptions import ConversionError
-
-from .geometry import point_to_rhino
 from .geometry import point_to_compas
-
+from .geometry import point_to_rhino
 
 # =============================================================================
 # To Rhino

@@ -1,11 +1,14 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from math import cos, sin, pi
+from math import cos
+from math import pi
+from math import sin
 
-from compas.geometry import Point
 from compas.geometry import Frame
+from compas.geometry import Point
+
 from .surface import Surface
 
 PI2 = 2 * pi
@@ -87,11 +90,7 @@ class ToroidalSurface(Surface):
             other_radius_pipe = other.radius_pipe
         except Exception:
             return False
-        return (
-            self.radius_axis == other_radius_axis
-            and self.radius_pipe == other_radius_pipe
-            and self.frame == other_frame
-        )
+        return self.radius_axis == other_radius_axis and self.radius_pipe == other_radius_pipe and self.frame == other_frame
 
     # =============================================================================
     # Properties

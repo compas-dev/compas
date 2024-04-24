@@ -1,12 +1,13 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from compas.geometry import Vector
-from compas.geometry import Point
 from compas.geometry import Frame
-from .line import Line
+from compas.geometry import Point
+from compas.geometry import Vector
+
 from .conic import Conic
+from .line import Line
 
 
 class Parabola(Conic):

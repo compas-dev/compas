@@ -1,13 +1,14 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-import scriptcontext as sc  # type: ignore
 import Rhino  # type: ignore
+import scriptcontext as sc  # type: ignore
 import System  # type: ignore
 
 import compas_rhino.layers
 from compas.scene import SceneObject
+
 from .helpers import ensure_layer
 
 

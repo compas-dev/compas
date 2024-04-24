@@ -1,24 +1,20 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from compas.tolerance import TOL
-
-from compas.utilities import window
-
-from compas.geometry import subtract_vectors
-from compas.geometry import cross_vectors
-from compas.geometry import dot_vectors
-from compas.geometry import centroid_points
-from compas.geometry import normal_polygon
 from compas.geometry import area_triangle
-from compas.geometry import length_vector
-
-from compas.geometry import distance_point_point
-from compas.geometry import distance_point_plane
-from compas.geometry import distance_point_line
+from compas.geometry import centroid_points
 from compas.geometry import closest_point_on_segment
-
+from compas.geometry import cross_vectors
+from compas.geometry import distance_point_line
+from compas.geometry import distance_point_plane
+from compas.geometry import distance_point_point
+from compas.geometry import dot_vectors
+from compas.geometry import length_vector
+from compas.geometry import normal_polygon
+from compas.geometry import subtract_vectors
+from compas.tolerance import TOL
+from compas.utilities import window
 
 # =============================================================================
 # =============================================================================
@@ -724,11 +720,7 @@ def is_point_in_triangle(point, triangle, tol=None):
     a, b, c = triangle
 
     if is_point_on_plane(point, (a, normal_polygon(triangle)), tol=tol):
-        if (
-            is_on_same_side(point, a, (b, c))
-            and is_on_same_side(point, b, (a, c))
-            and is_on_same_side(point, c, (a, b))
-        ):
+        if is_on_same_side(point, a, (b, c)) and is_on_same_side(point, b, (a, c)) and is_on_same_side(point, c, (a, b)):
             return True
 
     return False

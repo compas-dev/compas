@@ -8,14 +8,13 @@ from typing import Union
 import bpy  # type: ignore
 
 import compas_blender
-from compas.datastructures import Graph
 from compas.colors import Color
+from compas.datastructures import Graph
 from compas.geometry import Line
-
 from compas.scene import GraphObject as BaseSceneObject
-from .sceneobject import BlenderSceneObject
-
 from compas_blender import conversions
+
+from .sceneobject import BlenderSceneObject
 
 
 class GraphObject(BlenderSceneObject, BaseSceneObject):
@@ -186,9 +185,7 @@ class GraphObject(BlenderSceneObject, BaseSceneObject):
         for u, v in edges or self.graph.edges():  # type: ignore
             name = f"{self.graph.name}.edge.{u}-{v}"  # type: ignore
             color = self.edgecolor[u, v]  # type: ignore
-            curve = conversions.line_to_blender_curve(
-                Line(self.graph.nodes_attributes("xyz")[u], self.graph.nodes_attributes("xyz")[v])
-            )
+            curve = conversions.line_to_blender_curve(Line(self.graph.nodes_attributes("xyz")[u], self.graph.nodes_attributes("xyz")[v]))
 
             obj = self.create_object(curve, name=name)
             self.update_object(obj, color=color, collection=collection)

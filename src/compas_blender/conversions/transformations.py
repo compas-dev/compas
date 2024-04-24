@@ -1,6 +1,6 @@
 import mathutils  # type: ignore
-from compas.geometry import Transformation
 
+from compas.geometry import Transformation
 
 # =============================================================================
 # To Blender

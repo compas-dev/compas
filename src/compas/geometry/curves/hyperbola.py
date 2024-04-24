@@ -1,12 +1,15 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from math import cos, sin, sqrt
+from math import cos
 from math import pi
+from math import sin
+from math import sqrt
 
-from compas.geometry import Point
 from compas.geometry import Frame
+from compas.geometry import Point
+
 from .conic import Conic
 
 PI2 = 2 * pi

@@ -6,23 +6,21 @@ import Rhino  # type: ignore
 
 from compas.geometry import Brep
 from compas.geometry import BrepFace
-from compas.geometry import Sphere
 from compas.geometry import Cylinder
 from compas.geometry import Frame
+from compas.geometry import Sphere
 from compas.geometry import SurfaceType
-
-
-from compas_rhino.geometry import RhinoNurbsSurface
-from compas_rhino.geometry.surfaces import RhinoSurface
-from compas_rhino.conversions import plane_to_compas_frame
-from compas_rhino.conversions import sphere_to_compas
 from compas_rhino.conversions import cylinder_to_compas
 from compas_rhino.conversions import cylinder_to_rhino
-from compas_rhino.conversions import sphere_to_rhino
 from compas_rhino.conversions import frame_to_rhino_plane
+from compas_rhino.conversions import plane_to_compas_frame
+from compas_rhino.conversions import sphere_to_compas
+from compas_rhino.conversions import sphere_to_rhino
+from compas_rhino.geometry import RhinoNurbsSurface
+from compas_rhino.geometry.surfaces import RhinoSurface
 
-from .loop import RhinoBrepLoop
 from .edge import RhinoBrepEdge
+from .loop import RhinoBrepLoop
 
 
 class RhinoBrepFace(BrepFace):
@@ -89,9 +87,7 @@ class RhinoBrepFace(BrepFace):
         """
 
         instance = cls()
-        instance._surface = instance._make_surface__from_data__(
-            data["surface_type"], data["surface"], data["uv_domain"], data["frame"]
-        )
+        instance._surface = instance._make_surface__from_data__(data["surface_type"], data["surface"], data["uv_domain"], data["frame"])
         face_builder = builder.add_face(instance._surface)
         for loop_data in data["loops"]:
             RhinoBrepLoop.__from_data__(loop_data, face_builder)
@@ -214,9 +210,7 @@ class RhinoBrepFace(BrepFace):
             if success:
                 return "cylinder", cylinder_to_compas(cast_surface), uv_domain, cast_surface.BasePlane
             success, cast_surface = surface.TryGetTorus()
-        raise NotImplementedError(
-            "Support for surface type: {} is not yet implemented.".format(surface.__class__.__name__)
-        )
+        raise NotImplementedError("Support for surface type: {} is not yet implemented.".format(surface.__class__.__name__))
 
     def _make_surface__from_data__(self, surface_type, surface_data, uv_domain, frame_data):
         u_domain, v_domain = uv_domain

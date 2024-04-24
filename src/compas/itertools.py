@@ -1,14 +1,14 @@
 # recipes with itertools
 # see: https://docs.python.org/3.6/library/itertools.html
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from itertools import islice
+from functools import reduce
 from itertools import chain
+from itertools import islice
 from itertools import repeat
 from itertools import tee
-from functools import reduce
 from operator import mul
 
 try:

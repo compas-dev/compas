@@ -5,11 +5,9 @@ from __future__ import print_function
 import scriptcontext as sc  # type: ignore
 
 from .exceptions import ConversionError
-
 from .shapes import cone_to_compas
 from .shapes import cylinder_to_compas
 from .shapes import sphere_to_compas
-
 
 # =============================================================================
 # To Rhino

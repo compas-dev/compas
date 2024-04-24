@@ -1,32 +1,31 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 import math
 
-from ._algebra import scale_vector
-from ._algebra import scale_vector_xy
-from ._algebra import normalize_vector
 from ._algebra import add_vectors
 from ._algebra import add_vectors_xy
+from ._algebra import cross_vectors
+from ._algebra import dot_vectors
+from ._algebra import matrix_from_axis_and_angle
+from ._algebra import matrix_from_change_of_basis
+from ._algebra import matrix_from_scale_factors
+from ._algebra import multiply_matrices
+from ._algebra import multiply_matrix_vector
+from ._algebra import norm_vector
+from ._algebra import normalize_vector
+from ._algebra import scale_vector
+from ._algebra import scale_vector_xy
 from ._algebra import subtract_vectors
 from ._algebra import subtract_vectors_xy
-from ._algebra import dot_vectors
-from ._algebra import cross_vectors
+from ._algebra import transpose_matrix
 from ._algebra import vector_component
 from ._algebra import vector_component_xy
-from ._algebra import multiply_matrix_vector
-from ._algebra import multiply_matrices
-from ._algebra import transpose_matrix
-from ._algebra import norm_vector
-from ._algebra import matrix_from_axis_and_angle
-from ._algebra import matrix_from_scale_factors
-from ._algebra import matrix_from_change_of_basis
-
 from .angles import angle_vectors
-from .distance import closest_point_on_plane
 from .distance import closest_point_on_line
 from .distance import closest_point_on_line_xy
+from .distance import closest_point_on_plane
 
 
 # this function will not always work

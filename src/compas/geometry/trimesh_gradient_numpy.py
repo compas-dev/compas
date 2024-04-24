@@ -1,8 +1,8 @@
 import numpy as np
 from scipy.sparse import coo_matrix  # type: ignore
 
-from compas.linalg import normrow
 from compas.linalg import normalizerow
+from compas.linalg import normrow
 from compas.linalg import rot90
 
 

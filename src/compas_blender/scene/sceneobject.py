@@ -1,14 +1,13 @@
 from typing import Any
-from typing import Union
 from typing import Optional
+from typing import Union
 
 import bpy  # type: ignore
+
 import compas_blender
-
 from compas.colors import Color
-from compas.scene import SceneObject
 from compas.geometry import Transformation
-
+from compas.scene import SceneObject
 from compas_blender import conversions
 
 
@@ -40,9 +39,7 @@ class BlenderSceneObject(SceneObject):
     # Objects
     # =============================================================================
 
-    def create_object(
-        self, geometry: Union[bpy.types.Mesh, bpy.types.Curve], name: Optional[str] = None
-    ) -> bpy.types.Object:
+    def create_object(self, geometry: Union[bpy.types.Mesh, bpy.types.Curve], name: Optional[str] = None) -> bpy.types.Object:
         """Add an object to the Blender scene.
 
         Parameters
@@ -105,9 +102,7 @@ class BlenderSceneObject(SceneObject):
         self.set_object_tranformation(obj, transformation)
         self.add_object_to_collection(obj, collection)
 
-    def add_object_to_collection(
-        self, obj: bpy.types.Object, name: Optional[str] = None, do_unlink: Optional[bool] = True
-    ) -> bpy.types.Collection:
+    def add_object_to_collection(self, obj: bpy.types.Object, name: Optional[str] = None, do_unlink: Optional[bool] = True) -> bpy.types.Collection:
         """Add an object to a collection.
 
         Parameters

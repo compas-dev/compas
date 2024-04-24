@@ -1,14 +1,13 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from ._algebra import subtract_vectors
-from ._algebra import subtract_vectors_xy
 from ._algebra import cross_vectors
 from ._algebra import cross_vectors_xy
 from ._algebra import length_vector
 from ._algebra import normalize_vector
-
+from ._algebra import subtract_vectors
+from ._algebra import subtract_vectors_xy
 from .centroids import centroid_points
 
 

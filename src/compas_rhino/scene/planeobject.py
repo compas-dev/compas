@@ -1,15 +1,16 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 import scriptcontext as sc  # type: ignore
 
+from compas.geometry import Frame
 from compas.scene import GeometryObject
-from .sceneobject import RhinoSceneObject
 from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
 from compas_rhino.conversions import vertices_and_faces_to_rhino
-from compas.geometry import Frame
+
+from .sceneobject import RhinoSceneObject
 
 
 class RhinoPlaneObject(RhinoSceneObject, GeometryObject):

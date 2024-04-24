@@ -1,6 +1,5 @@
 import compas_rhino
 
-
 if __name__ == "__main__":
     import argparse
 
