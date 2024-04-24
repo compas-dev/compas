@@ -10,6 +10,7 @@ from compas.geometry import BrepTrimmingError
 from compas.geometry import Frame
 from compas.geometry import Plane
 from compas.geometry import Point
+from compas.tolerance import TOL
 from compas_rhino.conversions import box_to_rhino
 from compas_rhino.conversions import curve_to_compas
 from compas_rhino.conversions import curve_to_rhino
