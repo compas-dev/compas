@@ -1,15 +1,14 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 import Rhino  # type: ignore
 
-from compas.geometry import Point
-from compas.geometry import Vector
-from compas.geometry import Plane
 from compas.geometry import Frame
+from compas.geometry import Plane
+from compas.geometry import Point
 from compas.geometry import Polygon
-
+from compas.geometry import Vector
 
 # =============================================================================
 # To Rhino

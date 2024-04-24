@@ -1,13 +1,13 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 from math import sqrt
 
-from compas.plugins import pluggable
-from compas.plugins import PluginNotInstalledError
-from compas.geometry import Point
 from compas.geometry import Frame
+from compas.geometry import Point
+from compas.plugins import PluginNotInstalledError
+from compas.plugins import pluggable
 
 from .curve import Curve
 

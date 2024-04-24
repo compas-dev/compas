@@ -1,9 +1,8 @@
 from numpy import asarray
 from numpy import hstack
 from numpy import ones
-from numpy import vectorize
 from numpy import tile
-
+from numpy import vectorize
 from scipy.linalg import solve  # type: ignore
 
 from ._algebra import cross_vectors

@@ -2,7 +2,6 @@ from numpy import abs
 from numpy import array
 from numpy import asarray
 from numpy import tile
-
 from scipy.sparse import coo_matrix  # type: ignore
 from scipy.sparse import csr_matrix  # type: ignore
 from scipy.sparse import diags  # type: ignore

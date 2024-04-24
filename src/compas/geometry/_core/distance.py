@@ -1,6 +1,6 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 from math import fabs
 from math import sqrt
@@ -10,17 +10,17 @@ from compas.tolerance import TOL
 
 from ._algebra import add_vectors
 from ._algebra import add_vectors_xy
-from ._algebra import subtract_vectors
-from ._algebra import subtract_vectors_xy
-from ._algebra import scale_vector
-from ._algebra import normalize_vector
-from ._algebra import length_vector
-from ._algebra import length_vector_xy
-from ._algebra import length_vector_sqrd
-from ._algebra import length_vector_sqrd_xy
 from ._algebra import cross_vectors
 from ._algebra import cross_vectors_xy
 from ._algebra import dot_vectors
+from ._algebra import length_vector
+from ._algebra import length_vector_sqrd
+from ._algebra import length_vector_sqrd_xy
+from ._algebra import length_vector_xy
+from ._algebra import normalize_vector
+from ._algebra import scale_vector
+from ._algebra import subtract_vectors
+from ._algebra import subtract_vectors_xy
 from ._algebra import vector_component
 from ._algebra import vector_component_xy
 
@@ -592,9 +592,9 @@ def closest_points_in_cloud_numpy(points, cloud, threshold=10**7, distances=True
     True
 
     """
-    from numpy import asarray
     from numpy import argmin
     from numpy import argpartition
+    from numpy import asarray
     from scipy.spatial import distance_matrix
 
     points = asarray(points).reshape((-1, 3))

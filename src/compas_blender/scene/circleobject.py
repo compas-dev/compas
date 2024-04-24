@@ -3,10 +3,10 @@ from typing import Optional
 
 import bpy  # type: ignore
 
-from compas.geometry import Circle
 from compas.colors import Color
-
+from compas.geometry import Circle
 from compas.scene import GeometryObject
+
 from .sceneobject import BlenderSceneObject
 
 

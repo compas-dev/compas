@@ -3,20 +3,20 @@ from __future__ import division
 from __future__ import print_function
 
 from abc import abstractmethod
-from .descriptors.protocol import DescriptorProtocol
-from .descriptors.color import ColorAttribute
-from .context import clear
-from .context import get_sceneobject_cls
+from functools import reduce
+from operator import mul
 
 import compas.colors  # noqa: F401
 import compas.datastructures  # noqa: F401
 import compas.geometry  # noqa: F401
-
-from compas.datastructures import TreeNode
 from compas.colors import Color
+from compas.datastructures import TreeNode
 from compas.geometry import Transformation
-from functools import reduce
-from operator import mul
+
+from .context import clear
+from .context import get_sceneobject_cls
+from .descriptors.color import ColorAttribute
+from .descriptors.protocol import DescriptorProtocol
 
 
 class SceneObject(TreeNode):
@@ -228,11 +228,7 @@ class SceneObject(TreeNode):
         else:
             if "context" in kwargs:
                 if kwargs["context"] != self.context:
-                    raise Exception(
-                        "Child context should be the same as parent context: {} != {}".format(
-                            kwargs["context"], self.context
-                        )
-                    )
+                    raise Exception("Child context should be the same as parent context: {} != {}".format(kwargs["context"], self.context))
                 del kwargs["context"]  # otherwist the SceneObject receives "context" twice, which results in an error
             sceneobject = SceneObject(item, context=self.context, **kwargs)  # type: ignore
 

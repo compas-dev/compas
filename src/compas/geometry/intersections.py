@@ -1,28 +1,26 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 from math import fabs
 from math import sqrt
 
-from compas.tolerance import TOL
-
-from compas.itertools import pairwise
-from compas.plugins import pluggable
-from compas.plugins import PluginNotInstalledError
-
 from compas.geometry import add_vectors
-from compas.geometry import subtract_vectors
-from compas.geometry import scale_vector
 from compas.geometry import cross_vectors
-from compas.geometry import dot_vectors
-from compas.geometry import length_vector_xy
-from compas.geometry import subtract_vectors_xy
-from compas.geometry import normalize_vector
 from compas.geometry import distance_point_point
+from compas.geometry import dot_vectors
+from compas.geometry import is_point_in_triangle
 from compas.geometry import is_point_on_segment
 from compas.geometry import is_point_on_segment_xy
-from compas.geometry import is_point_in_triangle
+from compas.geometry import length_vector_xy
+from compas.geometry import normalize_vector
+from compas.geometry import scale_vector
+from compas.geometry import subtract_vectors
+from compas.geometry import subtract_vectors_xy
+from compas.itertools import pairwise
+from compas.plugins import PluginNotInstalledError
+from compas.plugins import pluggable
+from compas.tolerance import TOL
 
 
 def intersection_line_line(l1, l2, tol=None):
@@ -627,20 +625,9 @@ def intersection_sphere_line(sphere, line):
     sp, radius = sphere
 
     a = (l2[0] - l1[0]) ** 2 + (l2[1] - l1[1]) ** 2 + (l2[2] - l1[2]) ** 2
-    b = 2.0 * (
-        (l2[0] - l1[0]) * (l1[0] - sp[0]) + (l2[1] - l1[1]) * (l1[1] - sp[1]) + (l2[2] - l1[2]) * (l1[2] - sp[2])
-    )
+    b = 2.0 * ((l2[0] - l1[0]) * (l1[0] - sp[0]) + (l2[1] - l1[1]) * (l1[1] - sp[1]) + (l2[2] - l1[2]) * (l1[2] - sp[2]))
 
-    c = (
-        sp[0] ** 2
-        + sp[1] ** 2
-        + sp[2] ** 2
-        + l1[0] ** 2
-        + l1[1] ** 2
-        + l1[2] ** 2
-        - 2.0 * (sp[0] * l1[0] + sp[1] * l1[1] + sp[2] * l1[2])
-        - radius**2
-    )
+    c = sp[0] ** 2 + sp[1] ** 2 + sp[2] ** 2 + l1[0] ** 2 + l1[1] ** 2 + l1[2] ** 2 - 2.0 * (sp[0] * l1[0] + sp[1] * l1[1] + sp[2] * l1[2]) - radius**2
 
     i = b * b - 4.0 * a * c
 

@@ -11,15 +11,15 @@ Many thanks to Christoph Gohlke, Martin John Baker, Sachin Joglekar and Andrew
 Ippoliti for providing code and documentation.
 """
 
-from compas.utilities import flatten
-from compas.geometry import allclose
-from compas.geometry import dot_vectors
-from compas.geometry import cross_vectors
-from compas.geometry import normalize_vector
-from compas.geometry import decompose_matrix
-from compas.geometry import matrix_from_perspective_entries
-from compas.geometry import identity_matrix
 from compas.geometry import Transformation
+from compas.geometry import allclose
+from compas.geometry import cross_vectors
+from compas.geometry import decompose_matrix
+from compas.geometry import dot_vectors
+from compas.geometry import identity_matrix
+from compas.geometry import matrix_from_perspective_entries
+from compas.geometry import normalize_vector
+from compas.utilities import flatten
 
 
 class Reflection(Transformation):

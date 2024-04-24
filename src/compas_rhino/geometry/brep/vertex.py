@@ -2,8 +2,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from compas.geometry import Point
 from compas.geometry import BrepVertex
+from compas.geometry import Point
 from compas_rhino.conversions import point_to_compas
 
 

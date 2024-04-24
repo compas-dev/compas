@@ -134,9 +134,7 @@ class GLTFContent(object):
                     animation.channels.remove(channel)
                 else:
                     visited_sampler_keys.append(channel.sampler)
-            animation.samplers_dict = {
-                key: animation.samplers_dict[key] for key in animation.samplers_dict if key in visited_sampler_keys
-            }
+            animation.samplers_dict = {key: animation.samplers_dict[key] for key in animation.samplers_dict if key in visited_sampler_keys}
             if not animation.samplers_dict:
                 del self.animations[animation_key]
 

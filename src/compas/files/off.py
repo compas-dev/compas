@@ -254,9 +254,7 @@ class OFFWriter(object):
         self.email = email
         self.date = date
         self.precision = precision or compas.PRECISION
-        self.vertex_tpl = (
-            "{0:." + self.precision + "}" + " {1:." + self.precision + "}" + " {2:." + self.precision + "}\n"
-        )
+        self.vertex_tpl = "{0:." + self.precision + "}" + " {1:." + self.precision + "}" + " {2:." + self.precision + "}\n"
         self.v = mesh.number_of_vertices()
         self.f = mesh.number_of_faces()
         self.e = mesh.number_of_edges()

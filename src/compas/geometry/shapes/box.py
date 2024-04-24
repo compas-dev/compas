@@ -2,12 +2,12 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from compas.geometry import Frame
+from compas.geometry import Line
+from compas.geometry import Transformation
+from compas.geometry import Vector
 from compas.geometry import centroid_points
 from compas.geometry import transform_points
-from compas.geometry import Transformation
-from compas.geometry import Frame
-from compas.geometry import Vector
-from compas.geometry import Line
 
 from .shape import Shape
 
@@ -259,18 +259,8 @@ class Box(Shape):
 
     @property
     def diagonal(self):
-        a = (
-            self.frame.point
-            + self.frame.xaxis * -0.5 * self.xsize
-            + self.frame.yaxis * -0.5 * self.ysize
-            + self.frame.zaxis * -0.5 * self.zsize
-        )
-        b = (
-            self.frame.point
-            + self.frame.xaxis * 0.5 * self.xsize
-            + self.frame.yaxis * 0.5 * self.ysize
-            + self.frame.zaxis * 0.5 * self.zsize
-        )
+        a = self.frame.point + self.frame.xaxis * -0.5 * self.xsize + self.frame.yaxis * -0.5 * self.ysize + self.frame.zaxis * -0.5 * self.zsize
+        b = self.frame.point + self.frame.xaxis * 0.5 * self.xsize + self.frame.yaxis * 0.5 * self.ysize + self.frame.zaxis * 0.5 * self.zsize
         return Line(a, b)
 
     @property

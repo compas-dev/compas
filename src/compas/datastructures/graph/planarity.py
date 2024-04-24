@@ -1,17 +1,15 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
-
-from math import cos
-from math import sin
-from math import pi
+from __future__ import print_function
 
 from itertools import product
+from math import cos
+from math import pi
+from math import sin
 
 from compas.geometry import angle_vectors_xy
 from compas.geometry import is_ccw_xy
 from compas.geometry import subtract_vectors_xy
-
 from compas.geometry._core.predicates_2 import is_intersection_segment_segment_xy
 
 

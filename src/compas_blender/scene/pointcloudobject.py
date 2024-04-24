@@ -3,13 +3,12 @@ from typing import Optional
 
 import bpy  # type: ignore
 
-from compas.geometry import Point
 from compas.colors import Color
-
+from compas.geometry import Point
 from compas.scene import GeometryObject
-from .sceneobject import BlenderSceneObject
-
 from compas_blender import conversions
+
+from .sceneobject import BlenderSceneObject
 
 
 class PointcloudObject(BlenderSceneObject, GeometryObject):

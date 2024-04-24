@@ -19,17 +19,13 @@ def mesh_quads():
 def test_quads_subdivide(mesh_quads):
     subd = mesh_quads.subdivided()
     assert subd.number_of_faces() == 4 * mesh_quads.number_of_faces()
-    assert subd.number_of_vertices() == (
-        mesh_quads.number_of_vertices() + mesh_quads.number_of_edges() + mesh_quads.number_of_faces()
-    )
+    assert subd.number_of_vertices() == (mesh_quads.number_of_vertices() + mesh_quads.number_of_edges() + mesh_quads.number_of_faces())
 
 
 def test_tris_subdivide(mesh_tris):
     subd = mesh_tris.subdivided()
     assert subd.number_of_faces() == 3 * mesh_tris.number_of_faces()
-    assert subd.number_of_vertices() == (
-        mesh_tris.number_of_vertices() + mesh_tris.number_of_edges() + mesh_tris.number_of_faces()
-    )
+    assert subd.number_of_vertices() == (mesh_tris.number_of_vertices() + mesh_tris.number_of_edges() + mesh_tris.number_of_faces())
 
 
 def test_quads_subdivide_tri(mesh_quads):
@@ -47,14 +43,10 @@ def test_tris_subdivide_tri(mesh_tris):
 def test_quads_subdivide_quad(mesh_quads):
     subd = mesh_quads.subdivided(scheme="quad")
     assert subd.number_of_faces() == 4 * mesh_quads.number_of_faces()
-    assert subd.number_of_vertices() == (
-        mesh_quads.number_of_vertices() + mesh_quads.number_of_edges() + mesh_quads.number_of_faces()
-    )
+    assert subd.number_of_vertices() == (mesh_quads.number_of_vertices() + mesh_quads.number_of_edges() + mesh_quads.number_of_faces())
 
 
 def test_tris_subdivide_quad(mesh_tris):
     subd = mesh_tris.subdivided(scheme="quad")
     assert subd.number_of_faces() == 3 * mesh_tris.number_of_faces()
-    assert subd.number_of_vertices() == (
-        mesh_tris.number_of_vertices() + mesh_tris.number_of_edges() + mesh_tris.number_of_faces()
-    )
+    assert subd.number_of_vertices() == (mesh_tris.number_of_vertices() + mesh_tris.number_of_edges() + mesh_tris.number_of_faces())

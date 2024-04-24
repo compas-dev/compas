@@ -1,14 +1,13 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-import scriptcontext as sc  # type: ignore
 import Rhino  # type: ignore
+import scriptcontext as sc  # type: ignore
 
 from .shapes import box_to_compas
 from .shapes import cylinder_to_compas
 from .shapes import torus_to_compas
-
 
 # =============================================================================
 # To Rhino

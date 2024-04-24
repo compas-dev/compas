@@ -1,5 +1,7 @@
+from typing import List
+from typing import Text
+
 import bpy  # type: ignore
-from typing import List, Text
 
 from compas_blender.objects import delete_objects
 

@@ -1,7 +1,7 @@
+from compas.geometry import dot_vectors
 from compas.geometry import intersection_segment_plane
 from compas.geometry import length_vector
 from compas.geometry import subtract_vectors
-from compas.geometry import dot_vectors
 
 
 def mesh_slice_plane(mesh, plane):
