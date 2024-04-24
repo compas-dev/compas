@@ -675,6 +675,81 @@ class Tolerance(Data):
 
         return "{0:.{3}f},{1:.{3}f},{2:.{3}f}".format(x, y, z, precision)
 
+    def geometric_key_xy(self, xy, precision=None, sanitize=True):
+        """Compute the geometric key of a point in the XY plane.
+
+        Parameters
+        ----------
+        xy : list of float
+            The XY coordinates of the point.
+        precision : int, optional
+            The precision used when converting numbers to strings.
+            Default is ``None``, in which case ``self.precision`` is used.
+        sanitize : bool, optional
+            If ``True``, minus signs ("-") will be removed from values that are equal to zero up to the given precision.
+
+        Returns
+        -------
+        str
+            The geometric key in XY.
+
+        Raises
+        ------
+        ValueError
+            If the precision is zero.
+
+        Examples
+        --------
+        >>> tol = Tolerance()
+        >>> tol.geometric_key_xy([1.0, 2.0])
+        '1.000,2.000'
+
+        >>> tol = Tolerance()
+        >>> tol.geometric_key_xy([1.05725, 2.0195], precision=3)
+        '1.057,2.019'
+
+        >>> tol = Tolerance()
+        >>> tol.geometric_key_xy([1.0, 2.0], precision=-1)
+        '1,2'
+
+        >>> tol = Tolerance()
+        >>> tol.geometric_key_xy([1.0, 2.0], precision=-3)
+        '0,0'
+
+        >>> tol = Tolerance()
+        >>> tol.geometric_key_xy([1103, 205], precision=-3)
+        '1100,200'
+
+        """
+        x = xy[0]
+        y = xy[1]
+
+        if not precision:
+            precision = self.precision
+
+        if precision == 0:
+            raise ValueError("Precision cannot be zero.")
+
+        if precision == -1:
+            return "{:d},{:d}".format(int(x), int(y))
+
+        if precision < -1:
+            precision = -precision - 1
+            factor = 10**precision
+            return "{:d},{:d}".format(
+                int(round(x / factor) * factor),
+                int(round(y / factor) * factor),
+            )
+
+        if sanitize:
+            minzero = "-{0:.{1}f}".format(0.0, precision)
+            if "{0:.{1}f}".format(x, precision) == minzero:
+                x = 0.0
+            if "{0:.{1}f}".format(y, precision) == minzero:
+                y = 0.0
+
+        return "{0:.{2}f},{1:.{2}f}".format(x, y, precision)
+
     def format_number(self, number, precision=None):
         """Format a number as a string.
 
