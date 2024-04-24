@@ -29,6 +29,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed broken import in `copas.geometry.trimesh_smoothing_numpy`.
 * Changed `RhinoBrep.trimmed` to return single result or raise `BrepTrimmingError` instead of returning a list.
 * Changed order of imports according to `isort` and changed line length to `179`.
+* Changed use of `compas.geometry.allclose` to `compas.tolerance.TOL.is_allclose`.
+* Changed use of `compas.geometry.close` to `compas.tolerance.TOL.is_close`.
 
 ### Removed
 

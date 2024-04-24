@@ -12,13 +12,13 @@ Ippoliti for providing code and documentation.
 """
 
 from compas.geometry import Transformation
-from compas.geometry import allclose
 from compas.geometry import cross_vectors
 from compas.geometry import decompose_matrix
 from compas.geometry import dot_vectors
 from compas.geometry import identity_matrix
 from compas.geometry import matrix_from_perspective_entries
 from compas.geometry import normalize_vector
+from compas.tolerance import TOL
 from compas.utilities import flatten
 
 
@@ -50,7 +50,7 @@ class Reflection(Transformation):
     def __init__(self, matrix=None, check=False, name=None):
         if matrix and check:
             _, _, _, _, perspective = decompose_matrix(matrix)
-            if not allclose(flatten(matrix), flatten(matrix_from_perspective_entries(perspective))):
+            if not TOL.is_allclose(flatten(matrix), flatten(matrix_from_perspective_entries(perspective))):
                 raise ValueError("This is not a proper reflection matrix.")
         super(Reflection, self).__init__(matrix=matrix, name=name)
 

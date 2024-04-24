@@ -12,9 +12,9 @@ Ippoliti for providing code and documentation.
 """
 
 from compas.geometry import Transformation
-from compas.geometry import allclose
 from compas.geometry import matrix_from_translation
 from compas.geometry import translation_from_matrix
+from compas.tolerance import TOL
 from compas.utilities import flatten
 
 
@@ -72,7 +72,7 @@ class Translation(Transformation):
     def __init__(self, matrix=None, check=False, name=None):
         if matrix and check:
             translation = translation_from_matrix(matrix)
-            if not allclose(flatten(matrix), flatten(matrix_from_translation(translation))):
+            if not TOL.is_allclose(flatten(matrix), flatten(matrix_from_translation(translation))):
                 raise ValueError("This is not a proper translation matrix.")
         super(Translation, self).__init__(matrix=matrix, name=name)
 

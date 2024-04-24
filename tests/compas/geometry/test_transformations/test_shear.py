@@ -1,5 +1,5 @@
 from compas.geometry import Shear
-from compas.geometry import allclose
+from compas.tolerance import TOL
 
 
 def test_shear():
@@ -14,7 +14,7 @@ def test_shear():
         [0.0, 0.0, 1.0, -0.0],
         [0.0, 0.0, 0.0, 1.0],
     ]
-    assert allclose(S.matrix, s)
+    assert TOL.is_allclose(S.matrix, s)
 
 
 def test_from_entries():
@@ -26,4 +26,4 @@ def test_from_entries():
         [0.0, 0.0, 1.0, 0.0],
         [0.0, 0.0, 0.0, 1.0],
     ]
-    assert allclose(S.matrix, s)
+    assert TOL.is_allclose(S.matrix, s)

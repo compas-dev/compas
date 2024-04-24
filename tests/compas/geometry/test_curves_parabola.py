@@ -2,7 +2,7 @@ import pytest
 import json
 import compas
 
-from compas.geometry import allclose
+from compas.tolerance import TOL
 from compas.geometry import Frame
 from compas.geometry import Parabola
 
@@ -13,9 +13,9 @@ def test_parabola_create():
     assert parabola.focal == 1
     assert parabola.frame == Frame.worldXY()
 
-    assert allclose(parabola.point_at(0.0), parabola.point_at(0.0, world=False), tol=1e-12)
-    assert allclose(parabola.point_at(0.5), parabola.point_at(0.5, world=False), tol=1e-12)
-    assert allclose(parabola.point_at(1.0), parabola.point_at(1.0, world=False), tol=1e-12)
+    assert TOL.is_allclose(parabola.point_at(0.0), parabola.point_at(0.0, world=False))
+    assert TOL.is_allclose(parabola.point_at(0.5), parabola.point_at(0.5, world=False))
+    assert TOL.is_allclose(parabola.point_at(1.0), parabola.point_at(1.0, world=False))
 
 
 def test_parabola_create_with_frame():
@@ -25,24 +25,21 @@ def test_parabola_create_with_frame():
     assert parabola.focal == 1
     assert parabola.frame == frame
 
-    assert allclose(parabola.point_at(0.0), parabola.point_at(0.0, world=False), tol=1e-12)
-    assert not allclose(parabola.point_at(0.5), parabola.point_at(0.5, world=False), tol=1e-12)
-    assert not allclose(parabola.point_at(1.0), parabola.point_at(1.0, world=False), tol=1e-12)
+    assert TOL.is_allclose(parabola.point_at(0.0), parabola.point_at(0.0, world=False))
+    assert not TOL.is_allclose(parabola.point_at(0.5), parabola.point_at(0.5, world=False))
+    assert not TOL.is_allclose(parabola.point_at(1.0), parabola.point_at(1.0, world=False))
 
-    assert allclose(
+    assert TOL.is_allclose(
         parabola.point_at(0.0),
         parabola.point_at(0.0, world=False).transformed(parabola.transformation),
-        tol=1e-12,
     )
-    assert allclose(
+    assert TOL.is_allclose(
         parabola.point_at(0.5),
         parabola.point_at(0.5, world=False).transformed(parabola.transformation),
-        tol=1e-12,
     )
-    assert allclose(
+    assert TOL.is_allclose(
         parabola.point_at(1.0),
         parabola.point_at(1.0, world=False).transformed(parabola.transformation),
-        tol=1e-12,
     )
 
 
@@ -57,8 +54,8 @@ def test_parabola_data():
 
     assert parabola.focal == other.focal
     assert parabola.frame.point == other.frame.point
-    assert allclose(parabola.frame.xaxis, other.frame.xaxis, tol=1e-12)
-    assert allclose(parabola.frame.yaxis, other.frame.yaxis, tol=1e-12)
+    assert TOL.is_allclose(parabola.frame.xaxis, other.frame.xaxis)
+    assert TOL.is_allclose(parabola.frame.yaxis, other.frame.yaxis)
 
     if not compas.IPY:
         assert Parabola.validate_data(parabola.__data__)

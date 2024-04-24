@@ -4,7 +4,7 @@ from compas.geometry import Scale
 from compas.geometry import Transformation
 from compas.geometry import Translation
 from compas.geometry import Vector
-from compas.geometry import allclose
+from compas.tolerance import TOL
 
 
 def test_transformation():
@@ -48,7 +48,7 @@ def test_from_euler_angles():
         [-0.9090506362335324, -0.35053715668381935, -0.22527903264048646, 0.25],
         [0.0, 0.0, 0.0, 1.0],
     ]
-    assert allclose(R.matrix, matrix)
+    assert TOL.is_allclose(R.matrix, matrix)
 
 
 def test_from_frame():
@@ -89,7 +89,7 @@ def test_rotation():
         [-0.9090506362335324, -0.35053715668381935, -0.22527903264048646, 0.0],
         [0.0, 0.0, 0.0, 1.0],
     ]
-    assert allclose(R.matrix, matrix)
+    assert TOL.is_allclose(R.matrix, matrix)
 
 
 def test_rotation_property():
@@ -113,8 +113,8 @@ def test_basis_vectors():
     S1 = Scale.from_factors(scale1)
     M = (T1 * R1) * S1
     x, y = M.basis_vectors
-    assert allclose(x, Vector(0.41249169135312663, -0.05897071585157175, -0.9090506362335324))
-    assert allclose(y, Vector(-0.8335562904208867, -0.4269749553355485, -0.35053715668381935))
+    assert TOL.is_allclose(x, Vector(0.41249169135312663, -0.05897071585157175, -0.9090506362335324))
+    assert TOL.is_allclose(y, Vector(-0.8335562904208867, -0.4269749553355485, -0.35053715668381935))
 
 
 def test_list():
@@ -145,7 +145,7 @@ def test_concatenated():
     T1 = Translation.from_vector(trans1)
     R1 = Rotation.from_euler_angles(angle1)
     M1 = T1.concatenated(R1)
-    assert allclose(M1, T1 * R1)
+    assert TOL.is_allclose(M1, T1 * R1)
 
 
 def test___repr__():

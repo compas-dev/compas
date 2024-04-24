@@ -4,7 +4,7 @@ import compas
 from random import random
 
 from compas.geometry import Quaternion
-from compas.geometry import close
+from compas.tolerance import TOL
 from compas.geometry import Frame
 
 
@@ -34,10 +34,10 @@ def test_quaternion(w, x, y, z):
 
     other = eval(repr(quaternion))
 
-    assert close(quaternion.w, other.w, tol=1e-12)
-    assert close(quaternion.x, other.x, tol=1e-12)
-    assert close(quaternion.y, other.y, tol=1e-12)
-    assert close(quaternion.z, other.z, tol=1e-12)
+    assert TOL.is_close(quaternion.w, other.w)
+    assert TOL.is_close(quaternion.x, other.x)
+    assert TOL.is_close(quaternion.y, other.y)
+    assert TOL.is_close(quaternion.z, other.z)
 
 
 # =============================================================================
@@ -79,7 +79,7 @@ def test_quaternion_properties():
 
     assert quaternion.wxyz == [w, x, y, z]
     assert quaternion.xyzw == [x, y, z, w]
-    assert close(quaternion.norm, 5.4772255)
+    assert TOL.is_close(quaternion.norm, 5.4772255)
     assert quaternion.is_unit is False
 
     quaternion = Quaternion(0.0, 0.0, 0.0, 1.0)

@@ -609,15 +609,15 @@ def intersection_sphere_line(sphere, line):
 
     Examples
     --------
-    >>> from compas.geometry import allclose
+    >>> from compas.tolerance import TOL
 
     >>> sphere = (3.0, 7.0, 4.0), 10.0
     >>> line = (1.0, 0, 0.5), (2.0, 1.0, 0.5)
     >>> x1, x2 = intersection_sphere_line(sphere, line)
 
-    >>> allclose(x1, [11.634, 10.634, 0.500], 1e-3)
+    >>> TOL.is_allclose(x1, [11.634, 10.634, 0.500], atol=1e-3)
     True
-    >>> allclose(x2, [-0.634, -1.634, 0.50], 1e-3)
+    >>> TOL.is_allclose(x2, [-0.634, -1.634, 0.50], atol=1e-3)
     True
 
     """

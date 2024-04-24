@@ -12,12 +12,12 @@ Ippoliti for providing code and documentation.
 """
 
 from compas.geometry import Transformation
-from compas.geometry import allclose
 from compas.geometry import decompose_matrix
 from compas.geometry import matrix_from_frame
 from compas.geometry import matrix_from_scale_factors
 from compas.geometry import matrix_inverse
 from compas.geometry import multiply_matrices
+from compas.tolerance import TOL
 from compas.utilities import flatten
 
 
@@ -61,7 +61,7 @@ class Scale(Transformation):
     def __init__(self, matrix=None, check=False, name=None):
         if matrix and check:
             scale, _, _, _, _ = decompose_matrix(matrix)
-            if not allclose(flatten(matrix), flatten(matrix_from_scale_factors(scale))):
+            if not TOL.is_allclose(flatten(matrix), flatten(matrix_from_scale_factors(scale))):
                 raise ValueError("This is not a proper scale matrix.")
         super(Scale, self).__init__(matrix=matrix, name=name)
 

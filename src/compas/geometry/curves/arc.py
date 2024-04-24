@@ -10,7 +10,7 @@ from compas.geometry import Circle
 from compas.geometry import Frame
 from compas.geometry import Point
 from compas.geometry import Vector
-from compas.geometry import close
+from compas.tolerance import TOL
 
 from .curve import Curve
 
@@ -244,7 +244,7 @@ class Arc(Curve):
 
     @property
     def is_circle(self):
-        return close(abs(abs(self.angle) - PI2), 0.0)
+        return TOL.is_close(abs(self.angle), PI2)
 
     @property
     def is_closed(self):

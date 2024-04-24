@@ -5,7 +5,7 @@ import pytest
 from compas.geometry import Frame
 from compas.geometry import Rotation
 from compas.geometry import Translation
-from compas.geometry import allclose
+from compas.tolerance import TOL
 from compas.geometry import axis_and_angle_from_matrix
 from compas.geometry import axis_angle_from_quaternion
 from compas.geometry import axis_angle_vector_from_matrix
@@ -55,7 +55,7 @@ def test_matrix_determinant(R, T):
 
 
 def test_matrix_inverse(R, T):
-    assert allclose(
+    assert TOL.is_allclose(
         matrix_inverse(R.matrix),
         [
             [1.0, -0.0, 0.0, -0.0],
@@ -64,7 +64,7 @@ def test_matrix_inverse(R, T):
             [-0.0, 0.0, -0.0, 1.0],
         ],
     )
-    assert allclose(
+    assert TOL.is_allclose(
         matrix_inverse(T.matrix),
         [
             [1.0, -0.0, 0.0, -1.0],
@@ -135,7 +135,7 @@ def test_matrix_from_frame():
         [0.2703110366411609, -0.14975955581430114, 0.9510541619236438, 1.0],
         [0.0, 0.0, 0.0, 1.0],
     ]
-    assert allclose(T, t)
+    assert TOL.is_allclose(T, t)
 
 
 def test_matrix_from_euler_angles():
@@ -148,7 +148,7 @@ def test_matrix_from_euler_angles():
         [-0.479425538604203, 0.8648134986574489, 0.14916020070358058, 0.0],
         [0.0, 0.0, 0.0, 1.0],
     ]
-    assert allclose(R, r)
+    assert TOL.is_allclose(R, r)
 
 
 def test_euler_angles_from_matrix():
@@ -156,7 +156,7 @@ def test_euler_angles_from_matrix():
     args = True, "xyz"
     R = matrix_from_euler_angles(ea1, *args)
     ea2 = euler_angles_from_matrix(R, *args)
-    assert allclose(ea1, ea2)
+    assert TOL.is_allclose(ea1, ea2)
 
 
 def test_matrix_from_axis_angle_vector():
@@ -169,7 +169,7 @@ def test_matrix_from_axis_angle_vector():
         [0.037628871037522216, -0.008171760019527692, 0.9992583701939277, 0.0],
         [0.0, 0.0, 0.0, 1.0],
     ]
-    assert allclose(R, r)
+    assert TOL.is_allclose(R, r)
 
 
 def test_matrix_from_basis_vectors():
@@ -182,7 +182,7 @@ def test_matrix_from_basis_vectors():
         [0.2703110366411609, -0.14975954908850603, 0.9510541192112079, 0.0],
         [0.0, 0.0, 0.0, 1.0],
     ]
-    assert allclose(R, r)
+    assert TOL.is_allclose(R, r)
 
 
 def test_matrix_from_translation():
@@ -193,7 +193,7 @@ def test_matrix_from_translation():
         [0.0, 0.0, 1.0, 3.0],
         [0.0, 0.0, 0.0, 1.0],
     ]
-    assert allclose(T, t)
+    assert TOL.is_allclose(T, t)
 
 
 def test_matrix_from_orthogonal_projection():
@@ -206,7 +206,7 @@ def test_matrix_from_orthogonal_projection():
         [0.0, 0.0, 0.0, 0.0],
         [0.0, 0.0, 0.0, 1.0],
     ]
-    assert allclose(P, p)
+    assert TOL.is_allclose(P, p)
 
 
 def test_matrix_from_parallel_projection():
@@ -220,7 +220,7 @@ def test_matrix_from_parallel_projection():
         [0.0, 0.0, 0.0, 0.0],
         [0.0, 0.0, 0.0, 1.0],
     ]
-    assert allclose(P, p)
+    assert TOL.is_allclose(P, p)
 
 
 def test_matrix_from_perspective_projection():
@@ -234,7 +234,7 @@ def test_matrix_from_perspective_projection():
         [0.0, 0.0, 0.0, 0.0],
         [0.0, 0.0, -1.0, 0.0],
     ]
-    assert allclose(P, p)
+    assert TOL.is_allclose(P, p)
 
 
 def test_matrix_from_perspective_entries():
@@ -282,7 +282,7 @@ def test_matrix_from_shear():
         ],
         [0.0, 0.0, 0.0, 1.0],
     ]
-    assert allclose(S, s)
+    assert TOL.is_allclose(S, s)
 
 
 def test_matrix_from_scale_factors():
@@ -304,14 +304,14 @@ def test_matrix_from_quaternion():
         [0.22332300929163754, -0.11533619742231993, 0.9678968927964832, 0.0],
         [0.0, 0.0, 0.0, 1.0],
     ]
-    assert allclose(R, r)
+    assert TOL.is_allclose(R, r)
 
 
 def test_euler_angles_from_quaternion():
     axis = [1.0, 0.0, 0.0]
     angle = math.pi / 2
     q = quaternion_from_axis_angle(axis, angle)
-    assert allclose(euler_angles_from_quaternion(q), [math.pi / 2, 0, 0])
+    assert TOL.is_allclose(euler_angles_from_quaternion(q), [math.pi / 2, 0, 0])
 
 
 def test_axis_and_angle_from_matrix():
@@ -319,35 +319,35 @@ def test_axis_and_angle_from_matrix():
     angle1 = 0.1
     R = matrix_from_axis_and_angle(axis1, angle1)
     axis2, angle2 = axis_and_angle_from_matrix(R)
-    assert allclose(axis1, axis2)
-    assert allclose([angle1], [angle2])
+    assert TOL.is_allclose(axis1, axis2)
+    assert TOL.is_allclose([angle1], [angle2])
 
 
 def test_axis_angle_vector_from_matrix():
     aav1 = [-0.043, -0.254, 0.617]
     R = matrix_from_axis_angle_vector(aav1)
     aav2 = axis_angle_vector_from_matrix(R)
-    assert allclose(aav1, aav2)
+    assert TOL.is_allclose(aav1, aav2)
 
 
 def test_axis_angle_from_quaternion():
     q = [1.0, 1.0, 0.0, 0.0]
     axis, angle = axis_angle_from_quaternion(q)
-    assert allclose(axis, [1.0, 0.0, 0.0])
-    assert allclose([angle], [math.pi / 2], 1e-6)
+    assert TOL.is_allclose(axis, [1.0, 0.0, 0.0])
+    assert TOL.is_allclose([angle], [math.pi / 2])
 
 
 def test_quaternion_from_matrix():
     q1 = [0.945, -0.021, -0.125, 0.303]
     R = matrix_from_quaternion(q1)
     q2 = quaternion_from_matrix(R)
-    assert allclose(q1, q2, tol=1e-03)
+    assert TOL.is_allclose(q1, q2, atol=1e-03)
 
 
 def test_quaternion_from_euler_angles():
     axis = [1.0, 0.0, 0.0]
     angle = math.pi / 2
-    assert allclose(
+    assert TOL.is_allclose(
         quaternion_from_axis_angle(axis, angle),
         quaternion_from_euler_angles([math.pi / 2, 0, 0]),
     )
@@ -357,15 +357,15 @@ def test_quaternion_from_axis_angle():
     axis = [1.0, 0.0, 0.0]
     angle = math.pi / 2
     q = quaternion_from_axis_angle(axis, angle)
-    assert allclose(q, [math.sqrt(2) / 2, math.sqrt(2) / 2, 0, 0])
+    assert TOL.is_allclose(q, [math.sqrt(2) / 2, math.sqrt(2) / 2, 0, 0])
 
 
 def test_basis_vectors_from_matrix():
     f = Frame([0, 0, 0], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
     R = matrix_from_frame(f)
     xaxis, yaxis = basis_vectors_from_matrix(R)
-    assert allclose(xaxis, [0.6807833515407016, 0.6807833515407016, 0.2703110366411609])
-    assert allclose(yaxis, [-0.6687681911461376, 0.7282315441900513, -0.14975955581430114])
+    assert TOL.is_allclose(xaxis, [0.6807833515407016, 0.6807833515407016, 0.2703110366411609])
+    assert TOL.is_allclose(yaxis, [-0.6687681911461376, 0.7282315441900513, -0.14975955581430114])
 
 
 def test_translation_from_matrix():
