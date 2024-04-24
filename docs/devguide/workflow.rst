@@ -92,7 +92,7 @@ The procedure for submitting a PR is the following.
 
    .. code-block:: bash
 
-        invoke check
+        invoke lint
         invoke test
         invoke docs
 
