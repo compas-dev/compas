@@ -140,8 +140,7 @@ class Line(Curve):
 
     @frame.setter
     def frame(self, frame):
-        raise AttributeError(
-            "Setting the coordinate frame of a line is not supported.")
+        raise AttributeError("Setting the coordinate frame of a line is not supported.")
 
     @property
     def point(self):
