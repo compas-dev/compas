@@ -78,7 +78,7 @@ def mesh_dual(mesh, cls=None, include_boundary=False):
     edge_vertex = {}
     for boundary in mesh.edges_on_boundaries():
         for u, v in boundary:
-            x, y, z = mesh.edge_midpoint(u, v)
+            x, y, z = mesh.edge_midpoint((u, v))
             edge_vertex[u, v] = edge_vertex[v, u] = dual.add_vertex(x=x, y=y, z=z)
 
     vertex_vertex = {}
@@ -97,7 +97,7 @@ def mesh_dual(mesh, cls=None, include_boundary=False):
             nbrs = mesh.vertex_neighbors(vertex, ordered=True)[::-1]
             vertices.append(edge_vertex[vertex, nbrs[0]])
             for nbr in nbrs[:-1]:
-                vertices.append(mesh.halfedge_face(vertex, nbr))
+                vertices.append(mesh.halfedge_face((vertex, nbr)))
             vertices.append(edge_vertex[vertex, nbrs[-1]])
             dual.add_face(vertices[::-1])
 

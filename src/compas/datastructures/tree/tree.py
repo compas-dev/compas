@@ -244,10 +244,6 @@ class Tree(Datastructure):
     >>> branch.add(leaf2)
     >>> print(tree)
     <Tree with 4 nodes>
-    |--<TreeNode: root>
-        |-- <TreeNode: branch>
-            |-- <TreeNode: leaf1>
-            |-- <TreeNode: leaf2>
 
     """
 

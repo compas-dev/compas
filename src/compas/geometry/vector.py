@@ -43,26 +43,36 @@ class Vector(Geometry):
     --------
     >>> u = Vector(1, 0, 0)
     >>> v = Vector(0, 1, 0)
-    >>> u
-    Vector(1.000, 0.000, 0.000)
-    >>> v
-    Vector(0.000, 1.000, 0.000)
+    >>> print(u)
+    Vector(x=1.000, y=0.000, z=0.000)
+    >>> print(v)
+    Vector(x=0.000, y=1.000, z=0.000)
+
     >>> u.x
     1.0
     >>> u[0]
     1.0
     >>> u.length
     1.0
-    >>> u + v
-    Vector(1.000, 1.000, 0.000)
-    >>> u + [0.0, 1.0, 0.0]
-    Vector(1.000, 1.000, 0.000)
-    >>> u * 2
-    Vector(2.000, 0.000, 0.000)
+
+    >>> result = u + v
+    >>> print(result)
+    Vector(x=1.000, y=1.000, z=0.000)
+
+    >>> result = u + [0.0, 1.0, 0.0]
+    >>> print(result)
+    Vector(x=1.000, y=1.000, z=0.000)
+
+    >>> result = u * 2
+    >>> print(result)
+    Vector(x=2.000, y=0.000, z=0.000)
+
     >>> u.dot(v)
     0.0
-    >>> u.cross(v)
-    Vector(0.000, 0.000, 1.000)
+
+    >>> w = u.cross(v)
+    >>> print(w)
+    Vector(x=0.000, y=0.000, z=1.000)
 
     """
 

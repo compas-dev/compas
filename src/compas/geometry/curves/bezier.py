@@ -74,7 +74,7 @@ def bernstein_polynomial(n, k, t):
 
     Examples
     --------
-    >>> bernstein(3, 2, 0.5)
+    >>> bernstein_polynomial(3, 2, 0.5)
     0.375
 
     """
@@ -157,8 +157,8 @@ class Bezier(Curve):
 
     Note that the input control points are automatically converted to COMPAS points.
 
-    >>> curve.points
-    [Point(0.000, 0.000, 0.000), Point(0.500, 1.000, 0.000), Point(1.000, 0.000, 0.000)]
+    >>> print(curve.points)
+    [Point(x=0.000, y=0.000, z=0.000), Point(x=0.500, y=1.000, z=0.000), Point(x=1.000, y=0.000, z=0.000)]
 
     """
 
@@ -265,10 +265,10 @@ class Bezier(Curve):
         Examples
         --------
         >>> curve = Bezier([[0.0, 0.0, 0.0], [0.5, 1.0, 0.0], [1.0, 0.0, 0.0]])
-        >>> curve.point_at(0.0)
-        Point(0.000, 0.000, 0.000)
-        >>> curve.point_at(1.0)
-        Point(1.000, 0.000, 0.000)
+        >>> print(curve.point_at(0.0))
+        Point(x=0.000, y=0.000, z=0.000)
+        >>> print(curve.point_at(1.0))
+        Point(x=1.000, y=0.000, z=0.000)
 
         """
         n = self.degree
@@ -298,8 +298,8 @@ class Bezier(Curve):
         Examples
         --------
         >>> curve = Bezier([[0.0, 0.0, 0.0], [0.5, 1.0, 0.0], [1.0, 0.0, 0.0]])
-        >>> curve.tangent_at(0.5)
-        Vector(1.000, 0.000, 0.000)
+        >>> print(curve.tangent_at(0.5))
+        Vector(x=1.000, y=0.000, z=0.000)
 
         """
         n = self.degree
@@ -329,8 +329,8 @@ class Bezier(Curve):
         Examples
         --------
         >>> curve = Bezier([[0.0, 0.0, 0.0], [0.5, 1.0, 0.0], [1.0, 0.0, 0.0]])
-        >>> curve.normal_at(0.5)
-        Vector(0.000, 0.000, 1.000)
+        >>> print(curve.normal_at(0.5))
+        Vector(x=0.000, y=-1.000, z=0.000)
 
         """
         tangent = self.tangent_at(t)

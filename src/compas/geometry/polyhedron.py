@@ -578,7 +578,7 @@ class Polyhedron(Geometry):
         Examples
         --------
         >>> from compas.geometry import Box, Sphere
-        >>> A = Box(size=2).to_polyhedron()
+        >>> A = Box(2).to_polyhedron()
         >>> B = Sphere(point=[1, 1, 1], radius=1.0).to_polyhedron(u=16)
         >>> C = A.boolean_union(B)
 
@@ -607,7 +607,7 @@ class Polyhedron(Geometry):
         Examples
         --------
         >>> from compas.geometry import Box, Sphere
-        >>> A = Box(size=2).to_polyhedron()
+        >>> A = Box(2).to_polyhedron()
         >>> B = Sphere(point=[1, 1, 1], radius=1.0).to_polyhedron(u=16)
         >>> C = A.boolean_difference(B)
 
@@ -636,7 +636,7 @@ class Polyhedron(Geometry):
         Examples
         --------
         >>> from compas.geometry import Box, Sphere
-        >>> A = Box(size=2).to_polyhedron()
+        >>> A = Box(2).to_polyhedron()
         >>> B = Sphere(point=[1, 1, 1], radius=1.0).to_polyhedron(u=16)
         >>> C = A.boolean_intersection(B)
 

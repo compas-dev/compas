@@ -39,10 +39,10 @@ class Plane(Geometry):
     Examples
     --------
     >>> plane = Plane([0, 0, 0], [0, 0, 1])
-    >>> plane.point
-    Point(0.000, 0.000, 0.000)
-    >>> plane.normal
-    Vector(0.000, 0.000, 1.000)
+    >>> print(plane.point)
+    Point(x=0.000, y=0.000, z=0.000)
+    >>> print(plane.normal)
+    Vector(x=0.000, y=0.000, z=1.000)
 
     """
 
@@ -164,10 +164,10 @@ class Plane(Geometry):
         Examples
         --------
         >>> plane = Plane.from_three_points([0.0, 0.0, 0.0], [2.0, 1.0, 0.0], [0.0, 3.0, 0.0])
-        >>> plane.point
-        Point(0.000, 0.000, 0.000)
-        >>> plane.normal
-        Vector(0.000, 0.000, 1.000)
+        >>> print(plane.point)
+        Point(x=0.000, y=0.000, z=0.000)
+        >>> print(plane.normal)
+        Vector(x=0.000, y=0.000, z=1.000)
 
         """
         a = Point(*a)
@@ -198,10 +198,10 @@ class Plane(Geometry):
         Examples
         --------
         >>> plane = Plane.from_point_and_two_vectors([0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0])
-        >>> plane.point
-        Point(0.000, 0.000, 0.000)
-        >>> plane.normal
-        Vector(0.000, 0.000, 1.000)
+        >>> print(plane.point)
+        Point(x=0.000, y=0.000, z=0.000)
+        >>> print(plane.normal)
+        Vector(x=0.000, y=0.000, z=1.000)
 
         """
         normal = Vector(*cross_vectors(u, v))
@@ -276,8 +276,11 @@ class Plane(Geometry):
         --------
         >>> from compas.geometry import Frame
         >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> Plane.from_frame(frame)
-        Plane(Point(1.000, 1.000, 1.000), Vector(-0.299, -0.079, 0.951))
+        >>> plane = Plane.from_frame(frame)
+        >>> print(plane.point)
+        Point(x=1.000, y=1.000, z=1.000)
+        >>> print(plane.normal)
+        Vector(x=-0.299, y=-0.079, z=0.951))
 
         """
         return cls(frame.point, frame.normal)
@@ -306,10 +309,10 @@ class Plane(Geometry):
         --------
         >>> points = [[0.0, 0.0, 0.0], [2.0, 1.0, 0.0], [0.0, 3.0, 0.0]]
         >>> plane = Plane.from_points(points)
-        >>> plane.point
-        Point(0.000, 0.000, 0.000)
-        >>> plane.normal
-        Vector(0.000, 0.000, 1.000)
+        >>> print(plane.point)
+        Point(x=0.000, y=0.000, z=0.000)
+        >>> print(plane.normal)
+        Vector(x=0.000, y=0.000, z=1.000)
 
         """
         if len(points) == 3:
@@ -476,10 +479,12 @@ class Plane(Geometry):
         Examples
         --------
         >>> plane = Plane.worldXY()
-        >>> plane.closest_point([1.0, 1.0, 1.0])
-        Point(1.000, 1.000, 0.000)
+        >>> point = plane.closest_point([1.0, 1.0, 1.0])
+        >>> print(point)
+        Point(x=1.000, y=1.000, z=0.000)
 
         """
+        point = Point(*point)
         vector = self.point - point
         distance = self.normal.dot(vector)
         return point + self.normal.scaled(distance)
@@ -503,8 +508,9 @@ class Plane(Geometry):
         Examples
         --------
         >>> plane = Plane.worldXY()
-        >>> plane.projected_point([1.0, 1.0, 1.0])
-        Point(1.000, 1.000, 0.000)
+        >>> point = plane.projected_point([1.0, 1.0, 1.0])
+        >>> print(point)
+        Point(x=1.000, y=1.000, z=0.000)
 
         """
         if not direction:
@@ -535,10 +541,12 @@ class Plane(Geometry):
         Examples
         --------
         >>> plane = Plane.worldXY()
-        >>> plane.mirrored_point([1.0, 1.0, 1.0])
-        Point(1.000, 1.000, -1.000)
+        >>> point = plane.mirrored_point([1.0, 1.0, 1.0])
+        >>> print(point)
+        Point(x=1.000, y=1.000, z=-1.000)
 
         """
+        point = Point(*point)
         vector = self.point - point
         distance = self.normal.dot(vector)
         return point + self.normal.scaled(2 * distance)
@@ -561,10 +569,12 @@ class Plane(Geometry):
 
         Examples
         --------
+        >>> from compas.geometry import Line
         >>> plane = Plane.worldXY()
-        >>> line = Line(Point(0, 0, 1), Vector(1, 1, 1))
-        >>> plane.intersection_with_line(line)
-        Point(0.000, 0.000, 0.000)
+        >>> line = Line.from_point_and_vector(Point(0, 0, 1), Vector(1, 1, 1))
+        >>> point = plane.intersection_with_line(line)
+        >>> print(point)
+        Point(x=-1.000, y=-1.000, z=0.000)
 
         """
         # The line is parallel to the plane
@@ -591,8 +601,7 @@ class Plane(Geometry):
         --------
         >>> plane1 = Plane.worldXY()
         >>> plane2 = Plane([1.0, 1.0, 1.0], [0.0, 0.0, 1.0])
-        >>> plane1.intersection(plane2)
-        Line(Point(0.000, 0.000, 0.000), Vector(0.000, 0.000, 1.000))
+        >>> line = plane1.intersection_with_plane(plane2)
 
         """
         from compas.geometry import Line
@@ -625,18 +634,24 @@ class Plane(Geometry):
         list of :class:`compas.geometry.Point`
             The intersection points.
 
-        Examples
-        --------
-        >>> plane = Plane.worldXY()
-        >>> line = Line(Point(0, 0, 1), Vector(1, 1, 1))
-        >>> plane.intersection_with_curve(line)
-        [Point(0.000, 0.000, 0.000)]
-
         """
-        pass
+        raise NotImplementedError
 
     def intersections_with_surface(self, surface):
-        pass
+        """Compute the intersection of a plane and a surface.
+
+        Parameters
+        ----------
+        surface : :class:`compas.geometry.Surface`
+            The surface.
+
+        Returns
+        -------
+        list of :class:`compas.geometry.Point`
+            The intersection points.
+
+        """
+        raise NotImplementedError
 
     def offset(self, distance):
         """Returns a new offset plane by a given distance.

@@ -69,8 +69,8 @@ class Capsule(Shape):
     Examples
     --------
     >>> frame = Frame.worldXY()
-    >>> capsule = Capsule(frame=frame, radius=0.3, heigth=1.0)
-    >>> capsule = Capsule(radius=0.3, heigth=1.0)
+    >>> capsule = Capsule(radius=0.3, height=1.0, frame=frame)
+    >>> capsule = Capsule(radius=0.3, height=1.0)
     >>> capsule = Capsule()
 
     """
@@ -204,7 +204,7 @@ class Capsule(Shape):
 
         Examples
         --------
-        >>> line = Line(Point(0, 0, 0), Point(0, 0, 1))
+        >>> line = Line([0, 0, 0], [0, 0, 1])
         >>> capsule = Capsule.from_line_and_radius(line, 0.3)
 
         """
@@ -233,7 +233,7 @@ class Capsule(Shape):
 
         Examples
         --------
-        >>> circle = Circle(Frame.worldXY(), 0.3)
+        >>> circle = Circle(0.3)
         >>> capsule = Capsule.from_circle_and_height(circle, 1.0)
 
         """
