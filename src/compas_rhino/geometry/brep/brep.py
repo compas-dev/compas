@@ -11,7 +11,6 @@ from compas.geometry import Frame
 from compas.geometry import Plane
 from compas.geometry import Point
 from compas.tolerance import TOL
-
 from compas_rhino.conversions import box_to_rhino
 from compas_rhino.conversions import curve_to_compas
 from compas_rhino.conversions import curve_to_rhino
@@ -487,9 +486,7 @@ class RhinoBrep(Brep):
         if not isinstance(breps_b, list):
             breps_b = [breps_b]
 
-        resulting_breps = Rhino.Geometry.Brep.CreateBooleanUnion(
-            [b.native_brep for b in breps_a + breps_b], TOL.absolute
-        )
+        resulting_breps = Rhino.Geometry.Brep.CreateBooleanUnion([b.native_brep for b in breps_a + breps_b], TOL.absolute)
         return [RhinoBrep.from_native(brep) for brep in resulting_breps]
 
     @classmethod
