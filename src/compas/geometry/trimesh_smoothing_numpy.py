@@ -1,6 +1,6 @@
 from numpy import array
 
-from ._algebra import trimesh_cotangent_laplacian_matrix
+from .trimesh_matrices_numpy import trimesh_cotangent_laplacian_matrix
 
 
 def trimesh_smooth_laplacian_cotangent(trimesh, fixed, kmax=10):

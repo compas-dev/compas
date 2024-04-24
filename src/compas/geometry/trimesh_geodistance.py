@@ -1,7 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
-
 from compas.plugins import pluggable
 
 
@@ -33,12 +29,7 @@ def trimesh_geodistance(M, source, method="exact"):
     >>>
 
     """
-    from .trimesh_geodistance_numpy import trimesh_geodesic_distances_numpy
-
-    if method == "exact":
-        raise NotImplementedError
-
-    return trimesh_geodesic_distances_numpy(M, [source])
+    raise NotImplementedError
 
 
 trimesh_geodistance.__pluggable__ = True
