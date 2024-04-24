@@ -123,7 +123,7 @@ def meshgrid(x, y, indexing="xy"):
 
     Examples
     --------
-    >>> from compas.utilities import linspace, meshgrid
+    >>> from compas.itertools import linspace, meshgrid
     >>> x = list(linspace(0, 1, 3))
     >>> y = list(linspace(0, 1, 2))
 
@@ -181,7 +181,7 @@ def linspace(start, stop, num=50):
 
     Examples
     --------
-    >>> from compas.utilities import linspace
+    >>> from compas.itertools import linspace
     >>> list(linspace(0, 1, 3))
     [0.0, 0.5, 1.0]
 

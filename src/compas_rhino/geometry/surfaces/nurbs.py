@@ -9,7 +9,7 @@ import Rhino.Geometry  # type: ignore
 from compas.geometry import NurbsSurface
 from compas.geometry import Point
 from compas.geometry import knots_and_mults_to_knotvector
-from compas.utilities import flatten
+from compas.itertools import flatten
 from compas_rhino.conversions import point_to_compas
 from compas_rhino.conversions import point_to_rhino
 

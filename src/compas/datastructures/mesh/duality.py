@@ -4,7 +4,7 @@ from __future__ import print_function
 
 from math import pi
 
-from compas.utilities import flatten
+from compas.itertools import flatten
 
 PI2 = 2.0 * pi
 

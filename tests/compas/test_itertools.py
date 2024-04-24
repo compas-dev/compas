@@ -2,9 +2,9 @@ import compas
 import pytest
 
 from compas.datastructures import Mesh
-from compas.utilities import iterable_like
-from compas.utilities import reshape
-from compas.utilities import flatten
+from compas.itertools import iterable_like
+from compas.itertools import reshape
+from compas.itertools import flatten
 from compas.tolerance import TOL
 
 

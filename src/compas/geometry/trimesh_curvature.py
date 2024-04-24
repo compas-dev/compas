@@ -5,8 +5,8 @@ from __future__ import print_function
 from math import pi
 
 from compas.geometry import angle_points
+from compas.itertools import window
 from compas.plugins import pluggable
-from compas.utilities import window
 
 
 @pluggable(category="trimesh")

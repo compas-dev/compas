@@ -12,8 +12,8 @@ from compas.geometry import normal_polygon
 from compas.geometry import normalize_vector
 from compas.geometry import scale_vector
 from compas.geometry import subtract_vectors
+from compas.itertools import iterable_like
 from compas.itertools import pairwise
-from compas.utilities import iterable_like
 
 
 def intersect_lines(l1, l2, tol):

@@ -53,11 +53,11 @@ from compas.geometry import transform_points
 from compas.geometry import vector_average
 from compas.itertools import linspace
 from compas.itertools import pairwise
+from compas.itertools import window
 from compas.tolerance import TOL
 from compas.topology import breadth_first_traverse
 from compas.topology import connected_components
 from compas.topology import unify_cycles
-from compas.utilities import window
 
 from .duality import mesh_dual
 from .operations.collapse import mesh_collapse_edge

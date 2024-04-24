@@ -23,8 +23,8 @@ from compas.geometry import matrix_from_euler_angles
 from compas.geometry import matrix_from_frame
 from compas.geometry import matrix_from_quaternion
 from compas.geometry import normalize_vector
+from compas.itertools import flatten
 from compas.tolerance import TOL
-from compas.utilities import flatten
 
 
 class Rotation(Transformation):
