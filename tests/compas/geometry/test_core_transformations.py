@@ -49,10 +49,13 @@ def test_transform_points(T):
 
 
 def test_transform_vectors(R):
-    assert transform_vectors([[1, 2, 3], [5, 6, 7]], R) == [
+    known = [
         [1.0, -3.5781372230600135, 0.44377247881360526],
         [5.0, -8.946418341978926, 2.227464668699156],
     ]
+    result = transform_vectors([[1, 2, 3], [5, 6, 7]], R)
+    for a, b in zip(result, known):
+        assert TOL.is_allclose(a, b)
 
 
 # def test_homogenize():
