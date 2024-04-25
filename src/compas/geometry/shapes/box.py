@@ -151,36 +151,6 @@ class Box(Shape):
             self.frame,
         )
 
-    def __len__(self):
-        return 4
-
-    def __getitem__(self, key):
-        if key == 0:
-            return self.xsize
-        elif key == 1:
-            return self.ysize
-        elif key == 2:
-            return self.zsize
-        elif key == 3:
-            return self.frame
-        else:
-            raise KeyError
-
-    def __setitem__(self, key, value):
-        if key == 0:
-            self.xsize = value
-        elif key == 1:
-            self.ysize = value
-        elif key == 2:
-            self.zsize = value
-        elif key == 3:
-            self.frame = value
-        else:
-            raise KeyError
-
-    def __iter__(self):
-        return iter([self.xsize, self.ysize, self.zsize, self.frame])
-
     # ==========================================================================
     # Properties
     # ==========================================================================

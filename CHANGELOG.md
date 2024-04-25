@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed default implementation of `compas.geometry.trimesh_geodistance` since nonexistent.
 * Removed `compas.utilities.geometric_key` and replaced it by `compas.tolerance.TOL.geometric_key`.
 * Removed `compas.utilities.geometric_key_xy` and replaced it by `compas.tolerance.TOL.geometric_key_xy`.
+* Removed indexed attribute access from all geometry classes except `Point`, `Vector`, `Line`, `Polygon`, `Polyline`.
 
 ## [2.1.0] 2024-03-01
 
