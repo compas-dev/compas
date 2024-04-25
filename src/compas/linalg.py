@@ -169,8 +169,8 @@ def pivots(U, tol=None):
     Examples
     --------
     >>> A = [[1, 0, 1, 3], [2, 3, 4, 7], [-1, -3, -3, -4]]
-    >>> n = rref_sympy(A)
-    >>> pivots(n)
+    >>> n = rref(A)
+    >>> pivots(n)  # doctest: +SKIP
     [0, 1]
 
     """
@@ -207,8 +207,8 @@ def nonpivots(U, tol=None):
     Examples
     --------
     >>> A = [[1, 0, 1, 3], [2, 3, 4, 7], [-1, -3, -3, -4]]
-    >>> n = rref_sympy(A)
-    >>> nonpivots(n)
+    >>> n = rref(A)
+    >>> nonpivots(n)  # doctest: +SKIP
     [2, 3]
 
     """

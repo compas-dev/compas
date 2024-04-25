@@ -70,7 +70,7 @@ class Cylinder(Shape):
     >>> frame = Frame.worldXY()
     >>> cylinder = Cylinder(frame=frame, radius=0.3, height=1.0)
     >>> cylinder = Cylinder(radius=0.3, height=1.0)
-    >>> cylinder = Cylinder()
+    >>> cylinder = Cylinder(0.3, 1.0)
 
     """
 

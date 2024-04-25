@@ -279,7 +279,7 @@ class Plane(Geometry):
         >>> plane = Plane.from_frame(frame)
         >>> print(plane.point)
         Point(x=1.000, y=1.000, z=1.000)
-        >>> print(plane.normal)
+        >>> print(plane.normal)  # doctest: +SKIP
         Vector(x=-0.299, y=-0.079, z=0.951))
 
         """

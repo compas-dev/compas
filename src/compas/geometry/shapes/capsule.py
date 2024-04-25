@@ -71,7 +71,7 @@ class Capsule(Shape):
     >>> frame = Frame.worldXY()
     >>> capsule = Capsule(radius=0.3, height=1.0, frame=frame)
     >>> capsule = Capsule(radius=0.3, height=1.0)
-    >>> capsule = Capsule()
+    >>> capsule = Capsule(3.0, 1.0)
 
     """
 

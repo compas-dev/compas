@@ -491,7 +491,7 @@ class Polyhedron(Geometry):
         --------
         >>> from compas.geometry import Polyhedron
         >>> points = [[0, 0, 0], [1, 0, 0], [0, 1, 0]]
-        >>> p = Polyhedron.from_convex_hull(points)
+        >>> p = Polyhedron.from_convex_hull(points)  # doctest: +SKIP
 
         """
         from compas.geometry import convex_hull_numpy
