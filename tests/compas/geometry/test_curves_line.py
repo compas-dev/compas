@@ -99,7 +99,8 @@ def test_line_create_from_point_direction_length(point, direction, length):
     line = Line.from_point_direction_length(point, direction, length)
 
     assert line.start == point
-    assert line.end == add_vectors(point, scale_vector(normalize_vector(direction), length))
+    assert line.end == add_vectors(
+        point, scale_vector(normalize_vector(direction), length))
 
 
 # =============================================================================
@@ -228,20 +229,18 @@ def test_line_accessors(p1, p2):
         ([-11.1, 22.2, 33.3], [1.1, -2.2, -3.3]),
     ],
 )
-@pytest.mark.parametrize(
-    "distance",
-    [0, 1, 4, -9, 3.3, 0.00001, -0.00001],
-)
-def test_line_point_from_start(p1, p2, distance):
-    line = Line(p1, p2)
-    point = line.point_from_start(distance)
-    distance_to_start = distance_point_point(point, p1)
-    distance_to_end = distance_point_point(point, p2)
-    # Check that the distance is correct
-    assert TOL.is_close(distance_to_start, abs(distance))
-    # Check that negative distance gives a point far away from end
-    if distance < 0:
-        assert distance_to_end > line.length
+def test_line_point_from_start(p1, p2):
+    distances = [0, 1, 4, -9, 3.3, 0.00001, -0.00001]
+    for distance in distances:
+        line = Line(p1, p2)
+        point = line.point_from_start(distance)
+        distance_to_start = distance_point_point(point, p1)
+        distance_to_end = distance_point_point(point, p2)
+        # Check that the distance is correct
+        assert TOL.is_close(distance_to_start, abs(distance))
+        # Check that negative distance gives a point far away from end
+        if distance < 0:
+            assert distance_to_end > line.length
 
 
 @pytest.mark.parametrize(
