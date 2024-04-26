@@ -251,7 +251,7 @@ def test_line_point_from_start(p1, p2):
         ([-11.1, 22.2, 33.3], [1.1, -2.2, -3.3]),
     ],
 )
-def test_line_point_from_end(p1, p2, distance):
+def test_line_point_from_end(p1, p2):
     distances = [0, 1, 4, -9, 3.3, 0.00001, -0.00001]
     for distance in distances:
         line = Line(p1, p2)
