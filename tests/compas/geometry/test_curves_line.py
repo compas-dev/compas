@@ -99,8 +99,7 @@ def test_line_create_from_point_direction_length(point, direction, length):
     line = Line.from_point_direction_length(point, direction, length)
 
     assert line.start == point
-    assert line.end == add_vectors(
-        point, scale_vector(normalize_vector(direction), length))
+    assert line.end == add_vectors(point, scale_vector(normalize_vector(direction), length))
 
 
 # =============================================================================
