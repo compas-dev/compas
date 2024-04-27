@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `compas.geometry.Line.point_from_start` and `compas.geometry.Line.point_from_end`.
+* Added `compas.geometry.Line.flip` and `compas.geometry.Line.flipped`.
 * Added an `compas.geometry.Frame.interpolate_frame(s)` method
 * Added `compas.colors.Color.contrast`.
 * Added `compas.geometry.Brep.from_plane`.

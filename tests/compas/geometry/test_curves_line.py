@@ -11,6 +11,7 @@ from compas.geometry import Point
 from compas.geometry import Vector
 from compas.geometry import Frame
 from compas.geometry import Line
+from compas.tolerance import TOL
 
 
 @pytest.mark.parametrize(
@@ -216,3 +217,68 @@ def test_line_accessors(p1, p2):
 # =============================================================================
 # Other Methods
 # =============================================================================
+
+
+@pytest.mark.parametrize(
+    "p1,p2",
+    [
+        ([0, 0, 0], [1, 0, 0]),
+        ([0, 0, 0], [1, 2, 3]),
+        ([1, 2, 3], [-1, -2, -3]),
+        ([-11.1, 22.2, 33.3], [1.1, -2.2, -3.3]),
+    ],
+)
+def test_line_point_from_start(p1, p2):
+    distances = [0, 1, 4, -9, 3.3, 0.00001, -0.00001]
+    for distance in distances:
+        line = Line(p1, p2)
+        point = line.point_from_start(distance)
+        distance_to_start = distance_point_point(point, p1)
+        distance_to_end = distance_point_point(point, p2)
+        # Check that the distance is correct
+        assert TOL.is_close(distance_to_start, abs(distance))
+        # Check that negative distance gives a point far away from end
+        if distance < 0:
+            assert distance_to_end > line.length
+
+
+@pytest.mark.parametrize(
+    "p1,p2",
+    [
+        ([0, 0, 0], [1, 0, 0]),
+        ([0, 0, 0], [1, 2, 3]),
+        ([1, 2, 3], [-1, -2, -3]),
+        ([-11.1, 22.2, 33.3], [1.1, -2.2, -3.3]),
+    ],
+)
+def test_line_point_from_end(p1, p2):
+    distances = [0, 1, 4, -9, 3.3, 0.00001, -0.00001]
+    for distance in distances:
+        line = Line(p1, p2)
+        point = line.point_from_end(distance)
+        distance_to_start = distance_point_point(point, p1)
+        distance_to_end = distance_point_point(point, p2)
+        # Check that the distance is correct
+        assert TOL.is_close(distance_to_end, abs(distance))
+        # Check that negative distance gives a point far away from start
+        if distance < 0:
+            assert distance_to_start > line.length
+
+
+@pytest.mark.parametrize(
+    "p1,p2",
+    [
+        ([0, 0, 0], [1, 0, 0]),
+        ([0, 0, 0], [1, 2, 3]),
+        ([1, 2, 3], [-1, -2, -3]),
+        ([-11.1, 22.2, 33.3], [1.1, -2.2, -3.3]),
+    ],
+)
+def test_line_flip(p1, p2):
+    line = Line(p1, p2)
+    line.flip()
+    assert TOL.is_zero(distance_point_point(line.start, p2))
+    assert TOL.is_zero(distance_point_point(line.end, p1))
+    flipped_line = Line(p1, p2).flipped()
+    assert TOL.is_zero(distance_point_point(flipped_line.start, p2))
+    assert TOL.is_zero(distance_point_point(flipped_line.end, p1))
