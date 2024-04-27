@@ -220,12 +220,12 @@ class Frame(Geometry):
         Examples
         --------
         >>> frame = Frame.worldXY()
-        >>> frame.point
-        Point(0.000, 0.000, 0.000)
-        >>> frame.xaxis
-        Vector(1.000, 0.000, 0.000)
-        >>> frame.yaxis
-        Vector(0.000, 1.000, 0.000)
+        >>> print(frame.point)
+        Point(x=0.000, y=0.000, z=0.000)
+        >>> print(frame.xaxis)
+        Vector(x=1.000, y=0.000, z=0.000)
+        >>> print(frame.yaxis)
+        Vector(x=0.000, y=1.000, z=0.000)
 
         """
         return cls([0, 0, 0], [1, 0, 0], [0, 1, 0])
@@ -242,12 +242,12 @@ class Frame(Geometry):
         Examples
         --------
         >>> frame = Frame.worldZX()
-        >>> frame.point
-        Point(0.000, 0.000, 0.000)
-        >>> frame.xaxis
-        Vector(0.000, 0.000, 1.000)
-        >>> frame.yaxis
-        Vector(1.000, 0.000, 0.000)
+        >>> print(frame.point)
+        Point(x=0.000, y=0.000, z=0.000)
+        >>> print(frame.xaxis)
+        Vector(x=0.000, y=0.000, z=1.000)
+        >>> print(frame.yaxis)
+        Vector(x=1.000, y=0.000, z=0.000)
 
         """
         return cls([0, 0, 0], [0, 0, 1], [1, 0, 0])
@@ -264,12 +264,12 @@ class Frame(Geometry):
         Examples
         --------
         >>> frame = Frame.worldYZ()
-        >>> frame.point
-        Point(0.000, 0.000, 0.000)
-        >>> frame.xaxis
-        Vector(0.000, 1.000, 0.000)
-        >>> frame.yaxis
-        Vector(0.000, 0.000, 1.000)
+        >>> print(frame.point)
+        Point(x=0.000, y=0.000, z=0.000)
+        >>> print(frame.xaxis)
+        Vector(x=0.000, y=1.000, z=0.000)
+        >>> print(frame.yaxis)
+        Vector(x=0.000, y=0.000, z=1.000)
 
         """
         return cls([0, 0, 0], [0, 1, 0], [0, 0, 1])
@@ -295,12 +295,12 @@ class Frame(Geometry):
         Examples
         --------
         >>> frame = Frame.from_points([0, 0, 0], [1, 0, 0], [0, 1, 0])
-        >>> frame.point
-        Point(0.000, 0.000, 0.000)
-        >>> frame.xaxis
-        Vector(1.000, 0.000, 0.000)
-        >>> frame.yaxis
-        Vector(0.000, 1.000, 0.000)
+        >>> print(frame.point)
+        Point(x=0.000, y=0.000, z=0.000)
+        >>> print(frame.xaxis)
+        Vector(x=1.000, y=0.000, z=0.000)
+        >>> print(frame.yaxis)
+        Vector(x=0.000, y=1.000, z=0.000)
 
         """
         xaxis = subtract_vectors(point_xaxis, point)
@@ -383,11 +383,12 @@ class Frame(Geometry):
         Examples
         --------
         >>> from compas.geometry import matrix_from_euler_angles
+        >>> from compas.tolerance import TOL
         >>> ea1 = [0.5, 0.4, 0.8]
         >>> M = matrix_from_euler_angles(ea1)
         >>> f = Frame.from_matrix(M)
         >>> ea2 = f.euler_angles()
-        >>> allclose(ea1, ea2)
+        >>> TOL.is_allclose(ea1, ea2)
         True
 
         """
@@ -456,10 +457,11 @@ class Frame(Geometry):
 
         Examples
         --------
+        >>> from compas.tolerance import TOL
         >>> q1 = [0.945, -0.021, -0.125, 0.303]
         >>> f = Frame.from_quaternion(q1, point=[1., 1., 1.])
         >>> q2 = f.quaternion
-        >>> allclose(q1, q2)
+        >>> TOL.is_allclose(q1, q2, atol=1e-3)
         True
 
         """
@@ -486,10 +488,11 @@ class Frame(Geometry):
 
         Examples
         --------
+        >>> from compas.tolerance import TOL
         >>> aav1 = [-0.043, -0.254, 0.617]
         >>> f = Frame.from_axis_angle_vector(aav1, point=[0, 0, 0])
         >>> aav2 = f.axis_angle_vector
-        >>> allclose(aav1, aav2)
+        >>> TOL.is_allclose(aav1, aav2, atol=1e-3)
         True
 
         """
@@ -520,10 +523,11 @@ class Frame(Geometry):
 
         Examples
         --------
+        >>> from compas.tolerance import TOL
         >>> ea1 = 1.4, 0.5, 2.3
         >>> f = Frame.from_euler_angles(ea1, static=True, axes='xyz')
         >>> ea2 = f.euler_angles(static=True, axes='xyz')
-        >>> allclose(ea1, ea2)
+        >>> TOL.is_allclose(ea1, ea2)
         True
 
         """
@@ -550,9 +554,10 @@ class Frame(Geometry):
         Examples
         --------
         >>> from compas.geometry import Plane
+        >>> from compas.tolerance import TOL
         >>> plane = Plane([0,0,0], [0,0,1])
         >>> frame = Frame.from_plane(plane)
-        >>> allclose(frame.normal, plane.normal)
+        >>> TOL.is_allclose(frame.normal, plane.normal)
         True
 
         """
@@ -607,10 +612,11 @@ class Frame(Geometry):
 
         Examples
         --------
+        >>> from compas.tolerance import TOL
         >>> frame1 = Frame(Point(0, 0, 0), Vector(1, 0, 0), Vector(0, 1, 0))
         >>> frame2 = Frame(Point(1, 1, 1), Vector(0, 0, 1), Vector(0, 1, 0))
         >>> start_frame = frame1.interpolate_frame(frame2, 0)
-        >>> allclose(start_frame.point, frame1.point) and allclose(start_frame.quaternion, frame1.quaternion)
+        >>> TOL.is_allclose(start_frame.point, frame1.point) and TOL.is_allclose(start_frame.quaternion, frame1.quaternion)
         True
         """
         quat1 = Quaternion.from_frame(self)
@@ -645,7 +651,7 @@ class Frame(Geometry):
         >>> frame2 = Frame(Point(1, 1, 1), Vector(0, 0, 1), Vector(0, 1, 0))
         >>> steps = 5
         >>> frames = frame1.interpolate_frames(frame2, steps)
-        >>> assert len(frames) == steps
+        >>> print(len(frames) == steps)
         True
         """
         return [self.interpolate_frame(other, t) for t in linspace(0, 1, steps)]
@@ -668,10 +674,11 @@ class Frame(Geometry):
 
         Examples
         --------
+        >>> from compas.tolerance import TOL
         >>> ea1 = 1.4, 0.5, 2.3
         >>> f = Frame.from_euler_angles(ea1, static=True, axes='xyz')
         >>> ea2 = f.euler_angles(static=True, axes='xyz')
-        >>> allclose(ea1, ea2)
+        >>> TOL.is_allclose(ea1, ea2)
         True
 
         """
@@ -700,9 +707,9 @@ class Frame(Geometry):
         >>> from compas.geometry import Point
         >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> pw = Point(2, 2, 2) # point in wcf
-        >>> pl = frame.to_local_coordinates(pw) # point in frame
-        >>> frame.to_world_coordinates(pl)
-        Point(2.000, 2.000, 2.000)
+        >>> pl = frame.to_local_coordinates(pw)  # point in frame
+        >>> print(frame.to_world_coordinates(pl))
+        Point(x=2.000, y=2.000, z=2.000)
 
         """
         T = Transformation.from_change_of_basis(Frame.worldXY(), self)
@@ -733,8 +740,8 @@ class Frame(Geometry):
         >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> pl = Point(1.632, -0.090, 0.573) # point in frame
         >>> pw = frame.to_world_coordinates(pl) # point in wcf
-        >>> frame.to_local_coordinates(pw)
-        Point(1.632, -0.090, 0.573)
+        >>> print(frame.to_local_coordinates(pw))
+        Point(x=1.632, y=-0.090, z=0.573)
 
         """
         T = Transformation.from_change_of_basis(self, Frame.worldXY())

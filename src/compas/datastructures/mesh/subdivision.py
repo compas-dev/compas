@@ -313,7 +313,7 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
     >>> top = sorted(cage.faces(), key=lambda face: dot_vectors(cage.face_normal(face), [0, 0, 1]))[-1]
     >>> cage.edges_attribute('crease', 5, keys=list(cage.face_halfedges(top)))
 
-    >>> subd = cage.subdivide(k=4)
+    >>> subd = cage.subdivided(k=4)
 
     """
     cls = type(mesh)

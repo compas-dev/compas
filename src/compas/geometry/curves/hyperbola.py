@@ -99,19 +99,19 @@ class Hyperbola(Conic):
 
     Construct a hyperbola such that the Z axis of its frame aligns with a given line.
 
-    >>> from compas.geometry import Line, Frame, Hyperbola
+    >>> from compas.geometry import Line, Plane, Frame, Hyperbola
     >>> line = Line([0, 0, 0], [1, 1, 1])
     >>> plane = Plane(line.end, line.direction)
     >>> hyperbola = Hyperbola(major=3, minor=2, frame=Frame.from_plane(plane))
 
     Visualise the line, hyperbola, and frame of the hyperbola with the COMPAS viewer.
 
-    >>> from compas_viewer import Viewer  # doctest: +SKIP
-    >>> viewer = Viewer()                    # doctest: +SKIP
-    >>> viewer.scene.add(line)                  # doctest: +SKIP
+    >>> from compas_viewer import Viewer          # doctest: +SKIP
+    >>> viewer = Viewer()                         # doctest: +SKIP
+    >>> viewer.scene.add(line)                    # doctest: +SKIP
     >>> viewer.scene.add(hyperbola)               # doctest: +SKIP
     >>> viewer.scene.add(hyperbola.frame)         # doctest: +SKIP
-    >>> viewer.show()                      # doctest: +SKIP
+    >>> viewer.show()                             # doctest: +SKIP
 
     """
 

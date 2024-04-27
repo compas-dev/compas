@@ -43,26 +43,36 @@ class Vector(Geometry):
     --------
     >>> u = Vector(1, 0, 0)
     >>> v = Vector(0, 1, 0)
-    >>> u
-    Vector(1.000, 0.000, 0.000)
-    >>> v
-    Vector(0.000, 1.000, 0.000)
+    >>> print(u)
+    Vector(x=1.000, y=0.000, z=0.000)
+    >>> print(v)
+    Vector(x=0.000, y=1.000, z=0.000)
+
     >>> u.x
     1.0
     >>> u[0]
     1.0
     >>> u.length
     1.0
-    >>> u + v
-    Vector(1.000, 1.000, 0.000)
-    >>> u + [0.0, 1.0, 0.0]
-    Vector(1.000, 1.000, 0.000)
-    >>> u * 2
-    Vector(2.000, 0.000, 0.000)
+
+    >>> result = u + v
+    >>> print(result)
+    Vector(x=1.000, y=1.000, z=0.000)
+
+    >>> result = u + [0.0, 1.0, 0.0]
+    >>> print(result)
+    Vector(x=1.000, y=1.000, z=0.000)
+
+    >>> result = u * 2
+    >>> print(result)
+    Vector(x=2.000, y=0.000, z=0.000)
+
     >>> u.dot(v)
     0.0
-    >>> u.cross(v)
-    Vector(0.000, 0.000, 1.000)
+
+    >>> w = u.cross(v)
+    >>> print(w)
+    Vector(x=0.000, y=0.000, z=1.000)
 
     """
 
@@ -255,8 +265,8 @@ class Vector(Geometry):
 
         Examples
         --------
-        >>> Vector.Xaxis()
-        Vector(1.000, 0.000, 0.000)
+        >>> Vector.Xaxis() == [1, 0, 0]
+        True
 
         """
         return cls(1.0, 0.0, 0.0)
@@ -272,8 +282,8 @@ class Vector(Geometry):
 
         Examples
         --------
-        >>> Vector.Yaxis()
-        Vector(0.000, 1.000, 0.000)
+        >>> Vector.Yaxis() == [0, 1, 0]
+        True
 
         """
         return cls(0.0, 1.0, 0.0)
@@ -289,8 +299,8 @@ class Vector(Geometry):
 
         Examples
         --------
-        >>> Vector.Zaxis()
-        Vector(0.000, 0.000, 1.000)
+        >>> Vector.Zaxis() == [0, 0, 1]
+        True
 
         """
         return cls(0.0, 0.0, 1.0)
@@ -313,8 +323,9 @@ class Vector(Geometry):
 
         Examples
         --------
-        >>> Vector.from_start_end([1.0, 0.0, 0.0], [1.0, 1.0, 0.0])
-        Vector(0.000, 1.000, 0.000)
+        >>> vector = Vector.from_start_end([1.0, 0.0, 0.0], [1.0, 1.0, 0.0])
+        >>> print(vector)
+        Vector(x=0.000, y=1.000, z=0.000)
 
         """
         v = subtract_vectors(end, start)
@@ -345,8 +356,8 @@ class Vector(Geometry):
         >>> vectors = [u]
         >>> Vector.transform_collection(vectors, R)
         >>> v = vectors[0]
-        >>> v
-        Vector(0.000, 1.000, 0.000)
+        >>> print(v)
+        Vector(x=0.000, y=1.000, z=0.000)
         >>> u is v
         True
 
@@ -379,8 +390,8 @@ class Vector(Geometry):
         >>> vectors = [u]
         >>> vectors = Vector.transformed_collection(vectors, R)
         >>> v = vectors[0]
-        >>> v
-        Vector(0.000, 1.000, 0.000)
+        >>> print(v)
+        Vector(x=0.000, y=1.000, z=0.000)
         >>> u is v
         False
 
@@ -405,7 +416,8 @@ class Vector(Geometry):
 
         Examples
         --------
-        >>> Vector.length_vectors([[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]])
+        >>> result = Vector.length_vectors([[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]])
+        >>> print(result)
         [1.0, 2.0]
 
         """
@@ -427,8 +439,9 @@ class Vector(Geometry):
 
         Examples
         --------
-        >>> Vector.sum_vectors([[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]])
-        Vector(3.000, 0.000, 0.000)
+        >>> result = Vector.sum_vectors([[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]])
+        >>> print(result)
+        Vector(x=3.000, y=0.000, z=0.000)
 
         """
         return Vector(*[sum(axis) for axis in zip(*vectors)])
@@ -451,7 +464,8 @@ class Vector(Geometry):
 
         Examples
         --------
-        >>> Vector.dot_vectors([[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]], [[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]])
+        >>> result = Vector.dot_vectors([[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]], [[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]])
+        >>> print(result)
         [1.0, 4.0]
 
         """
@@ -475,8 +489,9 @@ class Vector(Geometry):
 
         Examples
         --------
-        >>> Vector.cross_vectors([[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]], [[0.0, 1.0, 0.0], [0.0, 0.0, 2.0]])
-        [Vector(0.000, 0.000, 1.000), Vector(0.000, -4.000, 0.000)]
+        >>> result = Vector.cross_vectors([[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]], [[0.0, 1.0, 0.0], [0.0, 0.0, 2.0]])
+        >>> print(result)
+        [Vector(x=0.000, y=0.000, z=1.000), Vector(x=0.000, y=-4.000, z=0.000)]
 
         """
         # cross_vectors(u,v) from src\compas\geometry\_core\_algebra.py
@@ -500,7 +515,8 @@ class Vector(Geometry):
 
         Examples
         --------
-        >>> Vector.angles_vectors([[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]], [[0.0, 1.0, 0.0], [0.0, 0.0, 2.0]])
+        >>> result = Vector.angles_vectors([[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]], [[0.0, 1.0, 0.0], [0.0, 0.0, 2.0]])
+        >>> print(result)
         [(1.5707963267948966, 4.71238898038469), (1.5707963267948966, 4.71238898038469)]
 
         """
@@ -524,7 +540,8 @@ class Vector(Geometry):
 
         Examples
         --------
-        >>> Vector.angle_vectors([[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]], [[0.0, 1.0, 0.0], [0.0, 0.0, 2.0]])
+        >>> result = Vector.angle_vectors([[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]], [[0.0, 1.0, 0.0], [0.0, 0.0, 2.0]])
+        >>> print(result)
         [1.5707963267948966, 1.5707963267948966]
 
         """
@@ -737,8 +754,9 @@ class Vector(Geometry):
         --------
         >>> u = Vector(1.0, 0.0, 0.0)
         >>> v = Vector(0.0, 1.0, 0.0)
-        >>> u.cross(v)
-        Vector(0.000, 0.000, 1.000)
+        >>> w = u.cross(v)
+        >>> print(w)
+        Vector(x=0.000, y=0.000, z=1.000)
 
         """
         return Vector(*cross_vectors(self, other))
@@ -852,8 +870,8 @@ class Vector(Geometry):
         >>> u = Vector(1.0, 0.0, 0.0)
         >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], math.radians(90))
         >>> u.transform(R)
-        >>> u
-        Vector(0.000, 1.000, 0.000)
+        >>> print(u)
+        Vector(x=0.000, y=1.000, z=0.000)
 
         """
         point = transform_vectors([self], T)[0]
@@ -880,8 +898,8 @@ class Vector(Geometry):
         >>> u = Vector(1.0, 0.0, 0.0)
         >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], math.radians(90))
         >>> v = u.transformed(R)
-        >>> v
-        Vector(0.000, 1.000, 0.000)
+        >>> print(v)
+        Vector(x=0.000, y=1.000, z=0.000)
 
         """
         vector = self.copy()

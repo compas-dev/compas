@@ -73,7 +73,7 @@ class Cone(Shape):
     >>> frame = Frame.worldXY()
     >>> cone = Cone(frame=frame, radius=0.3, height=1.0)
     >>> cone = Cone(radius=0.3, height=1.0)
-    >>> cone = Cone()
+    >>> cone = Cone(0.3, 1.0)
 
     """
 
@@ -196,7 +196,8 @@ class Cone(Shape):
 
         Examples
         --------
-        >>> line = Line(Point(0, 0, 0), Point(0, 0, 1))
+        >>> from compas.geometry import Line
+        >>> line = Line([0, 0, 0], [0, 0, 1])
         >>> cone = Cone.from_line_and_radius(line, 0.3)
 
         """
@@ -225,7 +226,7 @@ class Cone(Shape):
 
         Examples
         --------
-        >>> circle = Circle(Frame.worldXY(), 0.3)
+        >>> circle = Circle(0.3)
         >>> cone = Cone.from_circle_and_height(circle, 1.0)
 
         """

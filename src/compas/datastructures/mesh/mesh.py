@@ -2855,6 +2855,8 @@ class Mesh(Datastructure):
         >>> for x, y, z in mesh.vertices_attributes('xyz', keys=list(mesh.vertices())[:5]):
         ...     mesh.add_vertex(x=x, y=y, z=z)
         ...
+        36
+        37
         38
         39
         40
@@ -4791,9 +4793,9 @@ class Mesh(Datastructure):
         Examples
         --------
         >>> from compas.datastructures import Mesh
-        >>> from compas.geometry import matrix_from_axis_and_angle_numpy
+        >>> from compas.geometry import matrix_from_axis_and_angle
         >>> mesh = Mesh.from_polyhedron(6)
-        >>> T = matrix_from_axis_and_angle_numpy([0, 0, 1], math.pi / 4)
+        >>> T = matrix_from_axis_and_angle([0, 0, 1], math.pi / 4)
         >>> mesh.transform_numpy(T)
 
         """
@@ -4906,9 +4908,9 @@ class Mesh(Datastructure):
         >>> type(F)
         <class 'numpy.ndarray'>
 
-        >>> from numpy import allclose
+        >>> from numpy import allclose, asarray
         >>> xyz = asarray(mesh.vertices_attributes('xyz'))
-        >>> F = mesh.face_matrix(mesh, rtype='csr')
+        >>> F = mesh.face_matrix(rtype='csr')
         >>> c1 = F.dot(xyz) / F.sum(axis=1)
         >>> c2 = [mesh.face_centroid(fkey) for fkey in mesh.faces()]
         >>> allclose(c1, c2)
@@ -4963,10 +4965,11 @@ class Mesh(Datastructure):
         --------
         >>> from compas.datastructures import Mesh
         >>> mesh = Mesh.from_polyhedron(6)
-        >>> L = mesh.laplacian_matrix(mesh, rtype='array')
+        >>> L = mesh.laplacian_matrix(rtype='array')
         >>> type(L)
         <class 'numpy.ndarray'>
 
+        >>> from numpy import asarray
         >>> xyz = asarray(mesh.vertices_attributes('xyz'))
         >>> L = mesh.laplacian_matrix(mesh)
         >>> d = L.dot(xyz)
@@ -5005,11 +5008,11 @@ class Mesh(Datastructure):
 
         Examples
         --------
-        >>> from compas.datastructures import Mesh, mesh_offset
+        >>> from compas.datastructures import Mesh
         >>> from compas.geometry import distance_point_point as dist
         >>> mesh = Mesh.from_vertices_and_faces([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]], [[0, 1, 2, 3]])
-        >>> mesh.offset()
-        <compas.datastructures.mesh.mesh.Mesh object at 0x109eaad60>
+        >>> mesh.offset()  # doctest: +ELLIPSIS
+        <compas.datastructures.mesh.mesh.Mesh object at ...>
 
         """
         offset = self.copy()
@@ -5047,8 +5050,8 @@ class Mesh(Datastructure):
         --------
         >>> from compas.datastructures import Mesh
         >>> mesh = Mesh.from_vertices_and_faces([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]], [[0, 1, 2, 3]])
-        >>> mesh.thicken(mesh)
-        <compas.datastructures.mesh.mesh.Mesh object at 0x109eaad60>
+        >>> mesh.thickened()  # doctest: +ELLIPSIS
+        <compas.datastructures.mesh.mesh.Mesh object at ...>
 
         """
         if thickness <= 0:

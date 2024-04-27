@@ -71,10 +71,17 @@ class CellNetwork(Datastructure):
     >>> vertices = [(0, 0, 0), (0, 1, 0), (1, 1, 0), (1, 0, 0), (0, 0, 1), (1, 0, 1), (1, 1, 1), (0, 1, 1)]
     >>> faces = [[0, 1, 2, 3], [0, 3, 5, 4],[3, 2, 6, 5], [2, 1, 7, 6],[1, 0, 4, 7],[4, 5, 6, 7]]
     >>> cells = [[0, 1, 2, 3, 4, 5]]
-    >>> [network.add_vertex(x=x, y=y, z=z) for x, y, z in vertices]
-    >>> [cell_network.add_face(fverts) for fverts in faces]
-    >>> [cell_network.add_cell(fkeys) for fkeys in cells]
-    >>> cell_network
+    >>> for x, y, z in vertices:
+    ...     vertex = cell_network.add_vertex(x=x, y=y, z=z)
+    ...
+    >>> for face_vertices in faces:
+    ...     face = cell_network.add_face(face_vertices)
+    ...
+    >>> for cell_faces in cells:
+    ...    cell = cell_network.add_cell(cell_faces)
+    ...
+    >>> print(cell_network)
+    <CellNetwork with 8 vertices, 6 faces, 1 cells, 12 edges>
 
     """
 

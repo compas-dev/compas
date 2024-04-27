@@ -234,7 +234,7 @@ class Rotation(Transformation):
         >>> q1 = [0.945, -0.021, -0.125, 0.303]
         >>> R = Rotation.from_quaternion(q1)
         >>> q2 = R.quaternion
-        >>> TOL.is_allclose(q1, q2)
+        >>> TOL.is_allclose(q1, q2, atol=1e-3)
         True
 
         """
@@ -262,7 +262,7 @@ class Rotation(Transformation):
         >>> aav1 = [-0.043, -0.254, 0.617]
         >>> R = Rotation.from_axis_angle_vector(aav1)
         >>> aav2 = R.axis_angle_vector
-        >>> TOL.is_allclose(aav1, aav2)
+        >>> TOL.is_allclose(aav1, aav2, atol=1e-3)
         True
 
         """

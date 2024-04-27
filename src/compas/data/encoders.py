@@ -182,14 +182,14 @@ class DataDecoder(json.JSONDecoder):
 
     >>> import json
     >>> from compas.data import DataDecoder
-    >>> with open('point.json', 'r') as f:
-    ...     point = json.load(f, cls=DataDecoder)
+    >>> with open('point.json', 'r') as f:        # doctest: +SKIP
+    ...     point = json.load(f, cls=DataDecoder) # doctest: +SKIP
     ...
 
     Implicit use case.
 
     >>> from compas.data import json_load
-    >>> point = json_load('point.json')
+    >>> point = json_load('point.json')  # doctest: +SKIP
 
     """
 

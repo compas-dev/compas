@@ -75,8 +75,9 @@ class Polygon(Geometry):
     Examples
     --------
     >>> polygon = Polygon([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]])
-    >>> polygon.centroid
-    Point(0.500, 0.500, 0.000)
+    >>> point = polygon.centroid
+    >>> print(point)
+    Point(x=0.500, y=0.500, z=0.000)
     >>> polygon.area
     1.0
 
@@ -362,8 +363,9 @@ class Polygon(Geometry):
         >>> polygon = Polygon.from_sides_and_radius_xy(4, 1.0)
         >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], radians(45))
         >>> polygon.transform(R)
-        >>> polygon.points[0]
-        Point(-0.707, 0.707, 0.000)
+        >>> point = polygon.points[0]
+        >>> print(point)
+        Point(x=-0.707, y=0.707, z=0.000)
 
         """
         for index, point in enumerate(transform_points(self.points, T)):

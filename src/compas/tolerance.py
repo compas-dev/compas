@@ -486,16 +486,29 @@ class Tolerance(Data):
         Examples
         --------
         >>> tol = Tolerance()
-        >>> tol.is_close(1.0, 1.000001)
-        True
-        >>> tol.is_close(1.0, 1.00001)
-        True
-        >>> tol.is_close(1.0, 1.0001)
-        True
-        >>> tol.is_close(1.0, 1.001)
-        True
-        >>> tol.is_close(1.0, 1.01)
+
+        >>> tol.is_close(1.0, 1.0 + 1e-5)
         False
+        >>> tol.is_close(1.0, 1.0 + 1e-6)
+        True
+
+        >>> tol.is_close(0.1, 0.1 + 1e-5)
+        False
+        >>> tol.is_close(0.1, 0.1 + 1e-6)
+        False
+        >>> tol.is_close(0.1, 0.1 + 1e-7)
+        True
+
+        >>> tol.is_close(0, 0 + 1e-5)
+        False
+        >>> tol.is_close(0, 0 + 1e-6)
+        False
+        >>> tol.is_close(0, 0 + 1e-7)
+        False
+        >>> tol.is_close(0, 0 + 1e-8)
+        False
+        >>> tol.is_close(0, 0 + 1e-9)
+        True
 
         """
         rtol = rtol or self.relative
@@ -527,12 +540,14 @@ class Tolerance(Data):
         Examples
         --------
         >>> tol = Tolerance()
-        >>> tol.is_allclose([0.0, 0.0], [1e-7, 1e-7])
-        True
-        >>> tol.is_allclose([0.0, 0.0], [1e-6, 1e-6])
-        True
-        >>> tol.is_allclose([0.0, 0.0], [1e-6, 1e-5])
+        >>> tol.is_allclose([1.0, 1.0], [1.0 + 1e-5, 1.0 + 1e-6])
         False
+        >>> tol.is_allclose([1.0, 1.0], [1.0 + 1e-6, 1.0 + 1e-6])
+        True
+        >>> tol.is_allclose([0.0, 0.0], [0.0 + 1e-8, 0.0 + 1e-9])
+        False
+        >>> tol.is_allclose([0.0, 0.0], [0.0 + 1e-9, 0.0 + 1e-9])
+        True
 
         """
         rtol = rtol or self.relative
@@ -559,9 +574,9 @@ class Tolerance(Data):
         Examples
         --------
         >>> tol = Tolerance()
-        >>> tol.is_zero_angle(1e-07)
+        >>> tol.is_angle_zero(1e-07)
         True
-        >>> tol.is_zero_angle(1e-05)
+        >>> tol.is_angle_zero(1e-05)
         False
 
         """

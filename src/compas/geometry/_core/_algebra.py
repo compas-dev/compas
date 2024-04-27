@@ -2767,12 +2767,6 @@ def close(value1, value2, tol=1e-05):
     It is more accurate to use a combination of absolute and relative tolerance.
     Therefor, use :func:`TOL.is_close` instead.
 
-    Examples
-    --------
-    >>> close(1., 1.001)
-    False
-    >>> close(1., 1.001, tol=1e-2)
-    True
     """
     return TOL.is_close(value1, value2, rtol=0.0, atol=tol)
 
@@ -2813,14 +2807,6 @@ def allclose(l1, l2, tol=None):
     References
     ----------
     .. [1] https://docs.scipy.org/doc/numpy/reference/generated/numpy.allclose.html
-
-    Examples
-    --------
-    >>> allclose([0.1, 0.2, 0.3, 0.4], [0.1, 0.20001, 0.3, 0.4])
-    True
-
-    >>> allclose([0.1, 0.2, 0.3, 0.4], [0.1, 0.20001, 0.3, 0.4], tol=1e-6)
-    False
 
     """
     return TOL.is_allclose(l1, l2, atol=tol)

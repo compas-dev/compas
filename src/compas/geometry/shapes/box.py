@@ -52,6 +52,8 @@ class Box(Shape):
         The box's frame.
     height : float, read-only
         The height of the box in Z direction.
+    points : list[:class:`compas.geometry.Point`]
+        The corner points of the box.
     volume : float, read-only
         The volume of the box.
     width : float, read-only
@@ -269,6 +271,27 @@ class Box(Shape):
     def top(self):
         return [4, 5, 6, 7]
 
+    @property
+    def points(self):
+        point = self.frame.point
+        xaxis = self.frame.xaxis
+        yaxis = self.frame.yaxis
+        zaxis = self.frame.zaxis
+
+        dx = 0.5 * self.xsize
+        dy = 0.5 * self.ysize
+        dz = 0.5 * self.zsize
+
+        a = point + xaxis * -dx + yaxis * -dy + zaxis * -dz
+        b = point + xaxis * -dx + yaxis * +dy + zaxis * -dz
+        c = point + xaxis * +dx + yaxis * +dy + zaxis * -dz
+        d = point + xaxis * +dx + yaxis * -dy + zaxis * -dz
+        e = a + zaxis * self.zsize
+        f = d + zaxis * self.zsize
+        g = c + zaxis * self.zsize
+        h = b + zaxis * self.zsize
+        return [a, b, c, d, e, f, g, h]
+
     # ==========================================================================
     # Constructors
     # ==========================================================================
@@ -470,25 +493,8 @@ class Box(Shape):
             with each face defined as a list of indices into the list of vertices.
 
         """
-        point = self.frame.point
-        xaxis = self.frame.xaxis
-        yaxis = self.frame.yaxis
-        zaxis = self.frame.zaxis
 
-        dx = 0.5 * self.xsize
-        dy = 0.5 * self.ysize
-        dz = 0.5 * self.zsize
-
-        a = point + xaxis * -dx + yaxis * -dy + zaxis * -dz
-        b = point + xaxis * -dx + yaxis * +dy + zaxis * -dz
-        c = point + xaxis * +dx + yaxis * +dy + zaxis * -dz
-        d = point + xaxis * +dx + yaxis * -dy + zaxis * -dz
-        e = a + zaxis * self.zsize
-        f = d + zaxis * self.zsize
-        g = c + zaxis * self.zsize
-        h = b + zaxis * self.zsize
-
-        vertices = [a, b, c, d, e, f, g, h]
+        vertices = self.points
         _faces = [self.bottom, self.front, self.right, self.back, self.left, self.top]
 
         if triangulated:
@@ -500,6 +506,36 @@ class Box(Shape):
             faces = _faces
 
         return vertices, faces
+
+    def to_polyhedron(self, triangulated=True):
+        """Convert the box to a polyhedron.
+
+        Parameters
+        ----------
+        triangulated : bool, optional
+            If True, triangulate the faces.
+
+        Returns
+        -------
+        :class:`compas.geometry.Polyhedron`
+            The polyhedron representation of the shape.
+
+        """
+        from compas.geometry import Polyhedron
+
+        vertices, faces = self.to_vertices_and_faces()
+
+        if triangulated:
+            triangles = []
+            for face in faces:
+                if len(face) == 4:
+                    triangles.append(face[0:3])
+                    triangles.append([face[0], face[2], face[3]])
+                else:
+                    triangles.append(face)
+            faces = triangles
+
+        return Polyhedron(vertices, faces)
 
     def to_mesh(self, triangulated=False):
         """Returns a mesh representation of the box.
@@ -695,7 +731,7 @@ class Box(Shape):
         Examples
         --------
         >>> from compas.geometry import Point, Box
-        >>> box = Box(Frame.worldXY(), 2.0, 2.0, 2.0)
+        >>> box = Box(2.0, 2.0, 2.0)
         >>> points = [Point(0.0, 0.0, 0.0), Point(1.0, 1.0, 1.0)]
         >>> results = box.contains_points(points)
         >>> all(results)

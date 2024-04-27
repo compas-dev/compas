@@ -78,27 +78,34 @@ class Point(Geometry):
 
     Point objects support basic arithmetic operations.
 
-    >>> p1 + p2
-    Point(5.000, 7.000, 9.000)
-    >>> p1 * 2
-    Point(2.000, 4.000, 6.000)
-    >>> p1 ** 2
-    Point(1.000, 4.000, 9.000)
-    >>> p1
-    Point(1.000, 2.000, 3.000)
+    >>> result = p1 + p2
+    >>> print(result)
+    Point(x=5.000, y=7.000, z=9.000)
+
+    >>> result = p1 * 2
+    >>> print(result)
+    Point(x=2.000, y=4.000, z=6.000)
+
+    >>> result = p1 ** 2
+    >>> print(result)
+    Point(x=1.000, y=4.000, z=9.000)
+
+    >>> print(p1)
+    Point(x=1.000, y=2.000, z=3.000)
 
     Points and lists can be used interchangeably.
 
-    >>> p1 + [4, 5, 6]
-    Point(5.000, 7.000, 9.000)
+    >>> result = p1 + [4, 5, 6]
+    >>> print(result)
+    Point(x=5.000, y=7.000, z=9.000)
 
     Arithmetic operations can also be applied to modify a point object in-place.
 
     >>> p1 += p2
     >>> p1 *= 2
     >>> p1 **= 2
-    >>> p1
-    Point(100.000, 196.000, 324.000)
+    >>> print(p1)
+    Point(x=100.000, y=196.000, z=324.000)
 
     """
 
@@ -430,7 +437,7 @@ class Point(Geometry):
         --------
         >>> from compas.geometry import Line
         >>> line = Line(Point(1.0, 0.0, 0.0), Point(1.0, 1.0, 0.0))
-        >>> point = line.point(1.5)
+        >>> point = line.point_at(1.5)
         >>> point.on_line(line)
         True
 
@@ -458,7 +465,7 @@ class Point(Geometry):
         --------
         >>> from compas.geometry import Line
         >>> line = Line(Point(1.0, 0.0, 0.0), Point(1.0, 1.0, 0.0))
-        >>> point = line.point(1.5)
+        >>> point = line.point_at(1.5)
         >>> point.on_segment(line)
         False
 
@@ -483,7 +490,7 @@ class Point(Geometry):
         --------
         >>> from compas.geometry import Polyline
         >>> poly = Polyline([Point(0.0, 0.0, 0.0), Point(1.0, 0.0, 0.0), Point(2.0, 0.0, 0.0)])
-        >>> point = poly.point(0.5)
+        >>> point = poly.point_at(0.5)
         >>> point.on_polyline(poly)
         True
 
@@ -604,7 +611,7 @@ class Point(Geometry):
         >>> from compas.geometry import Vector
         >>> from compas.geometry import Plane
         >>> from compas.geometry import Circle
-        >>> circle = Circle(Plane(Point(0.0, 0.0, 0.0), Vector(0.0, 0.0, 1.0)), 1.0)
+        >>> circle = Circle(1.0)
         >>> point = Point(0.5, 0.0, 0.0)
         >>> point.in_circle(circle)
         True

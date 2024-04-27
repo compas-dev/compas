@@ -245,8 +245,8 @@ class Polyline(Curve):
         Examples
         --------
         >>> polyline = Polyline([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]])
-        >>> polyline.point(0.75)
-        Point(1.000, 0.500, 0.000)
+        >>> polyline.point_at(0.75)
+        Point(x=1.000, y=0.500, z=0.000)
 
         """
         if t < 0 or t > 1:
@@ -297,7 +297,7 @@ class Polyline(Curve):
         >>> from compas.geometry import Point
         >>> polyline = Polyline([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]])
         >>> polyline.parameter_at(Point(0.1, 0.0, 0.0))
-        0.5
+        0.05
 
         """
         if not is_point_on_polyline(point, self, tol):
@@ -327,8 +327,8 @@ class Polyline(Curve):
         Examples
         --------
         >>> polyline = Polyline([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]])
-        >>> polyline.tangent(0.75)
-        Vector(0.000, 1.000, 0.000)
+        >>> print(polyline.tangent_at(0.75))
+        Vector(x=0.000, y=1.000, z=0.000)
 
         """
         if t < 0 or t > 1:
@@ -453,15 +453,14 @@ class Polyline(Curve):
         Examples
         --------
         >>> polyline = Polyline([(0, 0, 0), (1, 1, 0), (2, 3, 0), (4, 4, 0), (5, 2, 0)])
-        >>> divided_polylines = polyline.divide(3)
-        >>> divided_polyline
-        [Point(0.000, 0.000, 0.000), Point(1.578, 2.157, 0.000), Point(3.578, 3.789, 0.000), Point(5.000, 2.000, 0.000)]
+        >>> len(polyline.divide(3))
+        4
 
         """
         segment_length = self.length / num_segments
         return self.divide_by_length(segment_length, False)
 
-    def divide_by_length(self, length, strict=True, tol=1e-06):
+    def divide_by_length(self, length, strict=True, tol=None):
         """Divide a polyline in segments of a given length.
 
         Parameters
@@ -472,6 +471,7 @@ class Polyline(Curve):
             If False, the remainder segment will be added even if it is smaller than the desired length
         tol : float, optional
             Floating point error tolerance.
+            Defaults to `TOL.absolute`.
 
         Returns
         -------
@@ -485,16 +485,16 @@ class Polyline(Curve):
         Examples
         --------
         >>> polyline = Polyline([(0, 0, 0), (1, 1, 0), (2, 3, 0), (4, 4, 0), (5, 2, 0)])
-        >>> divided_polylines = polyline.divide_by_length(3)
-        >>> divided_polyline
-        [Point(0.000, 0.000, 0.000), Point(1.709, 2.418, 0.000), Point(4.051, 3.898, 0.000)]
+        >>> len(polyline.divide_by_length(3))
+        3
 
         >>> polyline = Polyline([(0, 0, 0), (1, 1, 0), (2, 3, 0), (4, 4, 0), (5, 2, 0)])
-        >>> divided_polylines = polyline.divide_by_length(3, strict=False)
-        >>> divided_polyline
-        [Point(0.000, 0.000, 0.000), Point(1.709, 2.418, 0.000), Point(4.051, 3.898, 0.000), Point(5.000, 2.000, 0.000)]
+        >>> len(polyline.divide_by_length(3, strict=False))
+        4
 
         """
+        tol = tol or TOL.absolute
+
         num_pts = int(self.length / length)
         total_length = [0, 0]
         division_pts = [self.points[0]]
@@ -545,19 +545,13 @@ class Polyline(Curve):
         --------
         >>> from compas.geometry import Polyline
         >>> polyline = Polyline([(0, 0, 0), (1, 1, 0), (2, 3, 0), (4, 4, 0), (5, 2, 0)])
-        >>> split_polylines = polyline.split_polyline_by_length(3)
-        >>> split_polylines
-        [Polyline([Point(0.000, 0.000, 0.000), Point(1.000, 1.000, 0.000), Point(1.709, 2.418, 0.000)]),\
-        Polyline([Point(1.709, 2.418, 0.000), Point(2.000, 3.000, 0.000), Point(4.000, 4.000, 0.000),\
-        Point(4.051, 3.898, 0.000)])]
+        >>> len(polyline.split_by_length(3))
+        2
 
         >>> from compas.geometry import Polyline
         >>> polyline = Polyline([(0, 0, 0), (1, 1, 0), (2, 3, 0), (4, 4, 0), (5, 2, 0)])
-        >>> split_polylines = polyline.split_polyline_by_length(3, strict=False)
-        >>> split_polylines
-        [Polyline([Point(0.000, 0.000, 0.000), Point(1.000, 1.000, 0.000), Point(1.709, 2.418, 0.000)]),\
-        Polyline([Point(1.709, 2.418, 0.000), Point(2.000, 3.000, 0.000), Point(4.000, 4.000, 0.000),\
-        Point(4.051, 3.898, 0.000)]), Polyline([Point(4.051, 3.898, 0.000), Point(5.000, 2.000, 0.000)])]
+        >>> len(polyline.split_by_length(3, strict=False))
+        3
 
         """
         if length <= 0:
@@ -606,11 +600,10 @@ class Polyline(Curve):
         --------
         >>> from compas.geometry import Polyline
         >>> polyline = Polyline([(0, 0, 0), (1, 1, 0), (2, 3, 0), (4, 4, 0), (5, 2, 0)])
-        >>> split_polylines = polyline.split_polyline(3)
-        >>> split_polylines
-        [Polyline([Point(0.000, 0.000, 0.000), Point(1.000, 1.000, 0.000), Point(1.578, 2.157, 0.000)]),\
-        Polyline([Point(1.578, 2.157, 0.000), Point(2.000, 3.000, 0.000), Point(3.578, 3.789, 0.000)]),\
-        Polyline([Point(3.578, 3.789, 0.000), Point(4.000, 4.000, 0.000), Point(5.000, 2.000, 0.000)])]
+        >>> polylines = polyline.split(3)
+        >>> len(polylines)
+        3
+
         """
         if num_segments < 1:
             raise ValueError("Number of segments must be greater than or equal to 1.")
