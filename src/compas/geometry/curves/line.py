@@ -304,7 +304,7 @@ class Line(Curve):
         t : float
             The relative position along the line as a fraction of the length of the line.
             0.0 corresponds to the start point and 1.0 corresponds to the end point.
-            Number outside of this range are also valid and correspond to points beyond the start and end point.
+            Numbers outside of this range are also valid and correspond to points beyond the start and end point.
 
         Returns
         -------
