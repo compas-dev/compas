@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 import Rhino  # type: ignore
+from System import MissingMemberException  # type: ignore
 
 from compas.geometry import Frame
 from compas.geometry import Plane
@@ -110,12 +111,13 @@ def point_to_compas(point):
     :class:`compas.geometry.Point`
 
     """
-    if isinstance(point, Rhino.Geometry.Point3d):
+    try:
         return Point(point.X, point.Y, point.Z)
-    elif isinstance(point, Rhino.Geometry.Point):
-        return Point(point.Location.X, point.Location.Y, point.Location.Z)
-    else:
-        raise TypeError("Expected Rhino.Geometry.Point3d or Rhino.Geometry.Point., got: {}".format(type(point)))
+    except MissingMemberException:
+        try:
+            return Point(point.Location.X, point.Location.Y, point.Location.Z)
+        except MissingMemberException:
+            raise TypeError("Unexpected point type, got: {}".format(type(point)))
 
 
 def vector_to_compas(vector):
