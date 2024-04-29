@@ -103,14 +103,19 @@ def point_to_compas(point):
 
     Parameters
     ----------
-    point : :rhino:`Rhino.Geometry.Point3d`
+    point : :rhino:`Rhino.Geometry.Point3d` | :rhino:`Rhino.Geometry.Point`
 
     Returns
     -------
     :class:`compas.geometry.Point`
 
     """
-    return Point(point.X, point.Y, point.Z)
+    if isinstance(point, Rhino.Geometry.Point3d):
+        return Point(point.X, point.Y, point.Z)
+    elif isinstance(point, Rhino.Geometry.Point):
+        return Point(point.Location.X, point.Location.Y, point.Location.Z)
+    else:
+        raise TypeError("Expected Rhino.Geometry.Point3d or Rhino.Geometry.Point., got: {}".format(type(point)))
 
 
 def vector_to_compas(vector):
