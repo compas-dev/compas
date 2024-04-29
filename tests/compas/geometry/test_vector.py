@@ -52,6 +52,10 @@ def test_vector_operators():
     assert a * 2 == [a.x * 2, a.y * 2, a.z * 2]
     assert a / 2 == [a.x / 2, a.y / 2, a.z / 2]
     assert a**3 == [a.x**3, a.y**3, a.z**3]
+    assert 2 * a == [2 * a.x, 2 * a.y, 2 * a.z]
+    assert a * b == [a.x * b.x, a.y * b.y, a.z * b.z]
+    assert b * a == [a.x * b.x, a.y * b.y, a.z * b.z]
+    assert a / b == [a.x / b.x, a.y / b.y, a.z / b.z]
 
 
 def test_vector_equality():

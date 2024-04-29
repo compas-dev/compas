@@ -148,11 +148,21 @@ class Vector(Geometry):
     def __sub__(self, other):
         return Vector(self.x - other[0], self.y - other[1], self.z - other[2])
 
-    def __mul__(self, n):
-        return Vector(self.x * n, self.y * n, self.z * n)
+    def __mul__(self, other):
+        if isinstance(other, (int, float)):
+            return Vector(self.x * other, self.y * other, self.z * other)
+        elif isinstance(other, Vector):
+            return Vector(self.x * other[0], self.y * other[1], self.z * other[2])
+        else:
+            raise TypeError("Multiplication of Vector with unsupported type: {}".format(type(other)))
 
-    def __truediv__(self, n):
-        return Vector(self.x / n, self.y / n, self.z / n)
+    def __truediv__(self, other):
+        if isinstance(other, (int, float)):
+            return Vector(self.x / other, self.y / other, self.z / other)
+        elif isinstance(other, Vector):
+            return Vector(self.x / other[0], self.y / other[1], self.z / other[2])
+        else:
+            raise TypeError("Division of Vector with unsupported type: {}".format(type(other)))
 
     def __pow__(self, n):
         return Vector(self.x**n, self.y**n, self.z**n)
@@ -189,6 +199,9 @@ class Vector(Geometry):
         self.y **= n
         self.z **= n
         return self
+
+    def __rmul__(self, n):
+        return self.__mul__(n)
 
     # ==========================================================================
     # Properties
