@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.colors.Color.contrast`.
 * Added `compas.geometry.Brep.from_plane`.
 * Added `compas.tolerance.Tolerance.angulardeflection`.
+* Added `compas.tolerance.Tolerance.update_from_dict`.
 
 ### Changed
 
@@ -34,6 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed use of `compas.geometry.allclose` to `compas.tolerance.TOL.is_allclose`.
 * Changed use of `compas.geometry.close` to `compas.tolerance.TOL.is_close`.
 * Changed imports of itertools to `compas.itertools` instead of `compas.utilities`.
+* Changed `compas.tolerance.Tolerance` to a singleton, to ensure having only library-wide tolerance values.
 
 ### Removed
 
