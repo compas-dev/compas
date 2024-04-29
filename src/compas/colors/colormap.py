@@ -7,8 +7,8 @@ import os
 from compas.itertools import linspace
 
 from .color import Color
-from .mpl_colormap import _magma_data
 from .mpl_colormap import _inferno_data
+from .mpl_colormap import _magma_data
 from .mpl_colormap import _plasma_data
 from .mpl_colormap import _viridis_data
 

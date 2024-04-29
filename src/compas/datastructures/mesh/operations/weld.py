@@ -1,11 +1,10 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
-
-from compas.topology import vertex_adjacency_from_edges
-from compas.topology import connected_components
+from __future__ import print_function
 
 from compas.itertools import pairwise
+from compas.topology import connected_components
+from compas.topology import vertex_adjacency_from_edges
 
 from .substitute import mesh_substitute_vertex_in_faces
 

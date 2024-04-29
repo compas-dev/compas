@@ -1,14 +1,17 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from math import pi, cos, sin
+from math import cos
+from math import pi
+from math import sin
 
-from compas.geometry import close
+from compas.geometry import Circle
+from compas.geometry import Frame
 from compas.geometry import Point
 from compas.geometry import Vector
-from compas.geometry import Frame
-from compas.geometry import Circle
+from compas.tolerance import TOL
+
 from .curve import Curve
 
 PI2 = 2.0 * pi
@@ -171,12 +174,7 @@ class Arc(Curve):
 
     def __eq__(self, other):
         try:
-            return (
-                self.radius == other.radius
-                and self.start_angle == other.start
-                and self.end_angle == other.end
-                and self.frame == other.frame
-            )
+            return self.radius == other.radius and self.start_angle == other.start and self.end_angle == other.end and self.frame == other.frame
         except Exception:
             return False
 
@@ -246,7 +244,7 @@ class Arc(Curve):
 
     @property
     def is_circle(self):
-        return close(abs(abs(self.angle) - PI2), 0.0)
+        return TOL.is_close(abs(self.angle), PI2)
 
     @property
     def is_closed(self):

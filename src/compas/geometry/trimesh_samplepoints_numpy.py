@@ -1,12 +1,12 @@
 from numpy import array
+from numpy import clip
+from numpy import cross
+from numpy import finfo
+from numpy import float64
+from numpy import sqrt
+from numpy.linalg import norm
 from numpy.random import choice
 from numpy.random import rand
-from numpy import sqrt
-from numpy import float64
-from numpy import cross
-from numpy.linalg import norm
-from numpy import clip
-from numpy import finfo
 
 
 def trimesh_samplepoints_numpy(M, num_points=1000, return_normals=False):

@@ -2,14 +2,14 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import Rhino  # type: ignore
-import System  # type: ignore
-import clr  # type: ignore
-import scriptcontext  # type: ignore
-
+from math import atan2
 from math import pi
 from math import sqrt
-from math import atan2
+
+import clr  # type: ignore
+import Rhino  # type: ignore
+import scriptcontext  # type: ignore
+import System  # type: ignore
 
 from compas.plugins import plugin
 
@@ -81,9 +81,7 @@ def trimesh_gaussian_curvature(M):
 
     # (3) Main - loop every vertex for angle defect
     for i in range(mesh.Vertices.Count):
-        vert_neighbors_topo = mesh.TopologyVertices.ConnectedTopologyVertices(
-            mesh.TopologyVertices.TopologyVertexIndex(i), True
-        )
+        vert_neighbors_topo = mesh.TopologyVertices.ConnectedTopologyVertices(mesh.TopologyVertices.TopologyVertexIndex(i), True)
         vert_neighbors = []
         if vert_neighbors_topo is None:
             K.append(None)

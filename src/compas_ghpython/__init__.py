@@ -78,9 +78,7 @@ def get_grasshopper_managedplugin_path(version):
         raise NotImplementedError
 
     if not os.path.exists(gh_managedplugin_path):
-        raise Exception(
-            "The Grasshopper (managed) Plug-in folder does not exist in this location: {}".format(gh_managedplugin_path)
-        )
+        raise Exception("The Grasshopper (managed) Plug-in folder does not exist in this location: {}".format(gh_managedplugin_path))
 
     return gh_managedplugin_path
 

@@ -1,19 +1,20 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 import Rhino  # type: ignore
 import scriptcontext as sc  # type: ignore
 
 import compas_rhino
-from compas.geometry import Line
 from compas.geometry import Cylinder
+from compas.geometry import Line
 from compas.geometry import Sphere
 from compas.scene import GraphObject
-from compas_rhino.conversions import point_to_rhino
-from compas_rhino.conversions import line_to_rhino
-from compas_rhino.conversions import sphere_to_rhino
 from compas_rhino.conversions import cylinder_to_rhino_brep
+from compas_rhino.conversions import line_to_rhino
+from compas_rhino.conversions import point_to_rhino
+from compas_rhino.conversions import sphere_to_rhino
+
 from .sceneobject import RhinoSceneObject
 
 

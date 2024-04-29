@@ -1,21 +1,20 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from Rhino.Geometry import TextDot  # type: ignore
 import scriptcontext as sc  # type: ignore
-
-from compas.geometry import centroid_points
-from compas.geometry import Line
-from compas.scene import VolMeshObject
+from Rhino.Geometry import TextDot  # type: ignore
 
 import compas_rhino.objects
-from compas_rhino.conversions import point_to_rhino
+from compas.geometry import Line
+from compas.geometry import centroid_points
+from compas.scene import VolMeshObject
 from compas_rhino.conversions import line_to_rhino
+from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import vertices_and_faces_to_rhino
 
-from .sceneobject import RhinoSceneObject
 from .helpers import ngon
+from .sceneobject import RhinoSceneObject
 
 
 class RhinoVolMeshObject(RhinoSceneObject, VolMeshObject):

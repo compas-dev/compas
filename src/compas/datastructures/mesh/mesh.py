@@ -2,8 +2,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from math import pi
 from itertools import product
+from math import pi
 from random import sample
 
 import compas
@@ -13,57 +13,53 @@ if compas.PY2:
 else:
     from collections.abc import Mapping
 
-from compas.tolerance import TOL
-
+from compas.datastructures.attributes import EdgeAttributeView
+from compas.datastructures.attributes import FaceAttributeView
+from compas.datastructures.attributes import VertexAttributeView
+from compas.datastructures.datastructure import Datastructure
 from compas.files import OBJ
 from compas.files import OFF
 from compas.files import PLY
 from compas.files import STL
-
-from compas.geometry import Point
-from compas.geometry import Vector
-from compas.geometry import Line
-from compas.geometry import Plane
-from compas.geometry import Polygon
+from compas.geometry import Box
 from compas.geometry import Circle
 from compas.geometry import Frame
+from compas.geometry import Line
+from compas.geometry import Plane
+from compas.geometry import Point
+from compas.geometry import Polygon
 from compas.geometry import Polyhedron
-from compas.geometry import Box
+from compas.geometry import Vector
+from compas.geometry import add_vectors
 from compas.geometry import angle_points
 from compas.geometry import area_polygon
 from compas.geometry import bestfit_plane
+from compas.geometry import bounding_box
 from compas.geometry import centroid_points
 from compas.geometry import centroid_polygon
 from compas.geometry import cross_vectors
+from compas.geometry import distance_line_line
 from compas.geometry import distance_point_plane
 from compas.geometry import distance_point_point
-from compas.geometry import distance_line_line
 from compas.geometry import length_vector
+from compas.geometry import midpoint_line
 from compas.geometry import normal_polygon
 from compas.geometry import normalize_vector
+from compas.geometry import oriented_bounding_box
 from compas.geometry import scale_vector
-from compas.geometry import add_vectors
 from compas.geometry import subtract_vectors
 from compas.geometry import sum_vectors
-from compas.geometry import midpoint_line
-from compas.geometry import vector_average
-from compas.geometry import bounding_box
-from compas.geometry import oriented_bounding_box
 from compas.geometry import transform_points
-
+from compas.geometry import vector_average
 from compas.itertools import linspace
 from compas.itertools import pairwise
-from compas.utilities import window
-
+from compas.itertools import window
+from compas.tolerance import TOL
 from compas.topology import breadth_first_traverse
-from compas.topology import face_adjacency
 from compas.topology import connected_components
+from compas.topology import unify_cycles
 
-from compas.datastructures.datastructure import Datastructure
-from compas.datastructures.attributes import VertexAttributeView
-from compas.datastructures.attributes import EdgeAttributeView
-from compas.datastructures.attributes import FaceAttributeView
-
+from .duality import mesh_dual
 from .operations.collapse import mesh_collapse_edge
 from .operations.merge import mesh_merge_faces
 from .operations.split import mesh_split_edge
@@ -71,13 +67,10 @@ from .operations.split import mesh_split_face
 from .operations.split import mesh_split_strip
 from .operations.weld import mesh_unweld_edges
 from .operations.weld import mesh_unweld_vertices
-
-from .subdivision import mesh_subdivide
-from .duality import mesh_dual
 from .slice import mesh_slice_plane
-
-from .smoothing import mesh_smooth_centroid
 from .smoothing import mesh_smooth_area
+from .smoothing import mesh_smooth_centroid
+from .subdivision import mesh_subdivide
 
 
 class Mesh(Datastructure):
@@ -235,14 +228,7 @@ class Mesh(Datastructure):
 
         return mesh
 
-    def __init__(
-        self,
-        default_vertex_attributes=None,
-        default_edge_attributes=None,
-        default_face_attributes=None,
-        name=None,
-        **kwargs
-    ):
+    def __init__(self, default_vertex_attributes=None, default_edge_attributes=None, default_face_attributes=None, name=None, **kwargs):  # fmt: skip
         super(Mesh, self).__init__(kwargs, name=name)
         self._max_vertex = -1
         self._max_face = -1
@@ -2953,42 +2939,25 @@ class Mesh(Datastructure):
             The mesh is modified in place.
 
         """
-
-        def unify(node, nbr):
-            # find the common edge
-            for u, v in self.face_halfedges(nbr):
-                if u in self.face[node] and v in self.face[node]:
-                    # node and nbr have edge u-v in common
-                    i = self.face[node].index(u)
-                    j = self.face[node].index(v)
-                    if i == j - 1 or (j == 0 and u == self.face[node][-1]):
-                        # if the traversal of a neighboring halfedge
-                        # is in the same direction
-                        # flip the neighbor
-                        self.face[nbr][:] = self.face[nbr][::-1]
-                        return
-
-        if root is None:
-            root = self.face_sample(size=1)[0]
-
+        vertex_index = {}
+        index_vertex = {}
+        for index, vertex in enumerate(self.vertices()):
+            vertex_index[vertex] = index
+            index_vertex[index] = vertex
         index_face = {index: face for index, face in enumerate(self.faces())}
-        points = self.vertices_attributes("xyz")
-        faces = [self.face_vertices(face) for face in self.faces()]
 
-        adj = face_adjacency(points, faces)
-        adjacency = {}
-        for face in adj:
-            adjacency[index_face[face]] = [index_face[nbr] for nbr in adj[face]]
+        vertices = self.vertices_attributes("xyz")
+        faces = [[vertex_index[vertex] for vertex in self.face_vertices(face)] for face in self.faces()]
 
-        visited = breadth_first_traverse(adjacency, root, unify)
-
-        if len(list(visited)) != self.number_of_faces():
-            raise Exception("Not all faces were visited.")
+        unify_cycles(vertices, faces)
 
         self.halfedge = {key: {} for key in self.vertices()}
-        for fkey in self.faces():
-            for u, v in self.face_halfedges(fkey):
-                self.halfedge[u][v] = fkey
+        for index, vertices in enumerate(faces):
+            face = index_face[index]
+            vertices = [index_vertex[vertex] for vertex in vertices]
+            self.face[face] = vertices
+            for u, v in pairwise(vertices + vertices[:1]):
+                self.halfedge[u][v] = face
                 if u not in self.halfedge[v]:
                     self.halfedge[v][u] = None
 
@@ -4413,6 +4382,11 @@ class Mesh(Datastructure):
         float
             The flatness.
 
+        Raises
+        ------
+        Exception
+            If the face has more than 4 vertices.
+
         Notes
         -----
         Flatness is computed as the ratio of the distance between the diagonals
@@ -4426,6 +4400,12 @@ class Mesh(Datastructure):
         """
         vertices = self.face_vertices(fkey)
         f = len(vertices)
+
+        if f == 3:
+            return 0.0
+        if f > 4:
+            raise Exception("Computing face flatness for faces with more than 4 vertices is not supported.")
+
         points = self.vertices_attributes("xyz", keys=vertices) or []
         lengths = [distance_point_point(a, b) for a, b in pairwise(points + points[:1])]
         length = sum(lengths) / f
@@ -5075,8 +5055,8 @@ class Mesh(Datastructure):
             raise ValueError("Thickness should be a positive number.")
 
         if both:
-            mesh_top = self.offset(+0.5 * thickness)
-            mesh_bottom = self.offset(-0.5 * thickness)
+            mesh_top = self.offset(+0.5 * thickness)  # type: Mesh
+            mesh_bottom = self.offset(-0.5 * thickness)  # type: Mesh
         else:
             mesh_top = self.offset(thickness)
             mesh_bottom = self.copy()
@@ -5085,7 +5065,8 @@ class Mesh(Datastructure):
         mesh_bottom.flip_cycles()
 
         # join parts
-        thickened_mesh = mesh_top.join(mesh_bottom)
+        thickened_mesh = mesh_top.copy()  # type: Mesh
+        thickened_mesh.join(mesh_bottom)
 
         # close boundaries
         n = thickened_mesh.number_of_vertices() / 2

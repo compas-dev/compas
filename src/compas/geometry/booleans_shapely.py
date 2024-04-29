@@ -1,5 +1,6 @@
-from compas.plugins import plugin
 from shapely.geometry import Polygon
+
+from compas.plugins import plugin
 
 
 @plugin(category="booleans", requires=["shapely"])

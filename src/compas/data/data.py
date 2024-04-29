@@ -1,6 +1,6 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 try:
     from typing import TypeVar  # noqa: F401
@@ -10,12 +10,11 @@ except ImportError:
     pass
 
 import hashlib
-from uuid import uuid4
-from uuid import UUID
 from copy import deepcopy
+from uuid import UUID
+from uuid import uuid4
 
 import compas
-
 
 # ==============================================================================
 # If you ever feel tempted to use ABCMeta in your code: don't, just DON'T.

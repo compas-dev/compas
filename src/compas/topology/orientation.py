@@ -1,11 +1,12 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 import random
-from compas.topology import breadth_first_traverse
+
 from compas.geometry import centroid_points
 from compas.itertools import pairwise
+from compas.topology import breadth_first_traverse
 
 
 def _closest_faces(vertices, faces, nmax=10, radius=10.0):
@@ -24,9 +25,9 @@ def _closest_faces(vertices, faces, nmax=10, radius=10.0):
 
     except Exception:
         try:
+            from Rhino.Geometry import Point3d  # type: ignore
             from Rhino.Geometry import RTree  # type: ignore
             from Rhino.Geometry import Sphere  # type: ignore
-            from Rhino.Geometry import Point3d  # type: ignore
 
         except Exception:
             from compas.geometry import KDTree
@@ -88,7 +89,7 @@ def _face_adjacency(vertices, faces, nmax=10, radius=10.0):
                         found.add(nbr)
                         break
 
-        adjacency[face] = nbrs
+        adjacency[index] = nbrs
 
     return adjacency
 
@@ -98,8 +99,10 @@ def face_adjacency(points, faces):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
-        A mesh object.
+    points : list[point]
+        The vertex locations of the faces.
+    faces : list[list[int]]
+        The faces defined as list of indices in the points list.
 
     Returns
     -------

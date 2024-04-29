@@ -1,12 +1,12 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from compas.plugins import pluggable
-from compas.plugins import PluginNotInstalledError
 from compas.geometry import Point
 from compas.itertools import linspace
-from compas.utilities import meshgrid
+from compas.itertools import meshgrid
+from compas.plugins import PluginNotInstalledError
+from compas.plugins import pluggable
 
 from .surface import Surface
 

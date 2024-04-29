@@ -4,21 +4,22 @@ from __future__ import print_function
 
 from random import sample
 
-from compas.datastructures import Mesh
 from compas.datastructures import Graph
-from compas.datastructures.datastructure import Datastructure
-from compas.datastructures.attributes import VertexAttributeView
+from compas.datastructures import Mesh
+from compas.datastructures.attributes import CellAttributeView
 from compas.datastructures.attributes import EdgeAttributeView
 from compas.datastructures.attributes import FaceAttributeView
-from compas.datastructures.attributes import CellAttributeView
-
+from compas.datastructures.attributes import VertexAttributeView
+from compas.datastructures.datastructure import Datastructure
 from compas.files import OBJ
-
 from compas.geometry import Line
 from compas.geometry import Point
 from compas.geometry import Polygon
 from compas.geometry import Polyhedron
 from compas.geometry import Vector
+from compas.geometry import add_vectors
+from compas.geometry import bestfit_plane
+from compas.geometry import bounding_box
 from compas.geometry import centroid_points
 from compas.geometry import centroid_polygon
 from compas.geometry import centroid_polyhedron
@@ -26,16 +27,11 @@ from compas.geometry import distance_point_point
 from compas.geometry import length_vector
 from compas.geometry import normal_polygon
 from compas.geometry import normalize_vector
-from compas.geometry import volume_polyhedron
-from compas.geometry import add_vectors
-from compas.geometry import bestfit_plane
 from compas.geometry import project_point_plane
 from compas.geometry import scale_vector
 from compas.geometry import subtract_vectors
-from compas.geometry import bounding_box
-
+from compas.geometry import volume_polyhedron
 from compas.itertools import pairwise
-
 from compas.tolerance import TOL
 
 
@@ -227,15 +223,7 @@ class CellNetwork(Datastructure):
 
         return cell_network
 
-    def __init__(
-        self,
-        default_vertex_attributes=None,
-        default_edge_attributes=None,
-        default_face_attributes=None,
-        default_cell_attributes=None,
-        name=None,
-        **kwargs
-    ):
+    def __init__(self, default_vertex_attributes=None, default_edge_attributes=None, default_face_attributes=None, default_cell_attributes=None, name=None, **kwargs):  # fmt: skip
         super(CellNetwork, self).__init__(kwargs, name=name)
         self._max_vertex = -1
         self._max_face = -1

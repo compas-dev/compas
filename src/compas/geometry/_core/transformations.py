@@ -1,32 +1,31 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 import math
 
-from ._algebra import scale_vector
-from ._algebra import scale_vector_xy
-from ._algebra import normalize_vector
 from ._algebra import add_vectors
 from ._algebra import add_vectors_xy
+from ._algebra import cross_vectors
+from ._algebra import dot_vectors
+from ._algebra import matrix_from_axis_and_angle
+from ._algebra import matrix_from_change_of_basis
+from ._algebra import matrix_from_scale_factors
+from ._algebra import multiply_matrices
+from ._algebra import multiply_matrix_vector
+from ._algebra import norm_vector
+from ._algebra import normalize_vector
+from ._algebra import scale_vector
+from ._algebra import scale_vector_xy
 from ._algebra import subtract_vectors
 from ._algebra import subtract_vectors_xy
-from ._algebra import dot_vectors
-from ._algebra import cross_vectors
+from ._algebra import transpose_matrix
 from ._algebra import vector_component
 from ._algebra import vector_component_xy
-from ._algebra import multiply_matrix_vector
-from ._algebra import multiply_matrices
-from ._algebra import transpose_matrix
-from ._algebra import norm_vector
-from ._algebra import matrix_from_axis_and_angle
-from ._algebra import matrix_from_scale_factors
-from ._algebra import matrix_from_change_of_basis
-
 from .angles import angle_vectors
-from .distance import closest_point_on_plane
 from .distance import closest_point_on_line
 from .distance import closest_point_on_line_xy
+from .distance import closest_point_on_plane
 
 
 # this function will not always work
@@ -63,13 +62,13 @@ def orthonormalize_axes(xaxis, yaxis):
 
     Examples
     --------
-    >>> from compas.geometry import allclose
+    >>> from compas.tolerance import TOL
     >>> xaxis = [1, 4, 5]
     >>> yaxis = [1, 0, -2]
     >>> xaxis, yaxis = orthonormalize_axes(xaxis, yaxis)
-    >>> allclose(xaxis, [0.1543, 0.6172, 0.7715], tol=0.001)
+    >>> TOL.is_allclose(xaxis, [0.1543, 0.6172, 0.7715], atol=0.001)
     True
-    >>> allclose(yaxis, [0.6929, 0.4891, -0.5298], tol=0.001)
+    >>> TOL.is_allclose(yaxis, [0.6929, 0.4891, -0.5298], atol=0.001)
     True
 
     """
@@ -140,7 +139,7 @@ def homogenize_and_flatten_frames(frames):
 
     Parameters
     ----------
-    frames : sequence[[point, vector, vector] | :class:`compas.geometry.Frame`]
+    frames : sequence[[point, vector, vector]]
 
     Returns
     -------
@@ -246,7 +245,7 @@ def transform_frames(frames, T):
 
     Parameters
     ----------
-    frames : sequence[[point, vector, vector] | :class:`compas.geometry.Frame`]
+    frames : sequence[[point, vector, vector]]
         A list of frames to be transformed.
     T : list[list[float]] | :class:`compas.geometry.Transformation`
         The transformation to apply on the frames.
@@ -273,7 +272,7 @@ def world_to_local_coordinates(frame, xyz):
 
     Parameters
     ----------
-    frame : [point, vector, vector] | :class:`compas.geometry.Frame`
+    frame : [point, vector, vector]
         The local coordinate system.
     xyz : array-like[[float, float, float] | :class:`compas.geometry.Point`]
         The global coordinates of the points to convert.
@@ -303,7 +302,7 @@ def local_to_world_coordinates(frame, xyz):
 
     Parameters
     ----------
-    frame : [point, vector, vector] | :class:`compas.geometry.Frame`
+    frame : [point, vector, vector]
         The local coordinate system.
     xyz : array-like[[float, float, float] | :class:`compas.geometry.Point`]
         The global coordinates of the points to convert.
@@ -715,7 +714,7 @@ def mirror_point_plane(point, plane):
     ----------
     point : list[float]
         XYZ coordinates of mirror point.
-    plane : [point, vector] | :class:`compas.geometry.Plane`
+    plane : [point, vector]
         Base point and normal defining the mirror plane.
 
     Returns
@@ -735,7 +734,7 @@ def mirror_points_plane(points, plane):
     ----------
     points : sequence[[float, float, float] | :class:`compas.geometry.Point`]
         List of points to mirror.
-    plane : [point, vector] | :class:`compas.geometry.Plane`
+    plane : [point, vector]
         Base point and normal defining the mirror plane.
 
     Returns
@@ -761,7 +760,7 @@ def project_point_plane(point, plane):
     ----------
     point : [float, float, float] | :class:`compas.geometry.Point`
         XYZ coordinates of the point.
-    plane : [point, vector] | :class:`compas.geometry.Plane`
+    plane : [point, vector]
         Base point and normal vector defining the projection plane.
 
     Returns
@@ -803,7 +802,7 @@ def project_points_plane(points, plane):
     ----------
     points : sequence[[float, float, float] | :class:`compas.geometry.Point`]
         List of points.
-    plane : [point, vector] | :class:`compas.geometry.Plane`
+    plane : [point, vector]
         Base point and normal vector defining the projection plane.
 
     Returns
@@ -952,7 +951,7 @@ def reflect_line_plane(line, plane, tol=None):
     ----------
     line : [point, point] | :class:`compas.geometry.Line`
         Two points defining the line.
-    plane : [point, vector] | :class:`compas.geometry.Plane`
+    plane : [point, vector]
         Base point and normal vector of the plane.
     tol : float, optional
         A tolerance for finding the intersection between the line and the plane.
@@ -1067,11 +1066,11 @@ def orient_points(points, reference_plane, target_plane):
 
     Parameters
     ----------
-    points : sequence[[float, float, float] | :class:`compas.geometry.Point`]s
+    points : sequence[[float, float, float] | :class:`compas.geometry.Point`]
         XYZ coordinates of the points.
-    reference_plane : [point, vector] | :class:`compas.geometry.Plane`
+    reference_plane : [point, vector]
         Base point and normal defining a reference plane.
-    target_plane : [point, vector] | :class:`compas.geometry.Plane`
+    target_plane : [point, vector]
         Base point and normal defining a target plane.
 
     Returns

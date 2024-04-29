@@ -4,25 +4,24 @@ from __future__ import print_function
 
 import Rhino  # type: ignore
 
+from compas.geometry import Arc
 from compas.geometry import BrepEdge
-from compas.geometry import Line
 from compas.geometry import Circle
 from compas.geometry import Ellipse
 from compas.geometry import Frame
-from compas.geometry import Arc
-
-from compas_rhino.geometry import RhinoNurbsCurve
-from compas_rhino.conversions import curve_to_compas_line
-from compas_rhino.conversions import plane_to_compas_frame
-from compas_rhino.conversions import circle_to_compas
-from compas_rhino.conversions import ellipse_to_compas
-from compas_rhino.conversions import ellipse_to_rhino
-from compas_rhino.conversions import circle_to_rhino
-from compas_rhino.conversions import frame_to_rhino_plane
-from compas_rhino.conversions import line_to_rhino
+from compas.geometry import Line
 from compas_rhino.conversions import arc_to_compas
 from compas_rhino.conversions import arc_to_rhino
+from compas_rhino.conversions import circle_to_compas
+from compas_rhino.conversions import circle_to_rhino
+from compas_rhino.conversions import curve_to_compas_line
+from compas_rhino.conversions import ellipse_to_compas
+from compas_rhino.conversions import ellipse_to_rhino
+from compas_rhino.conversions import frame_to_rhino_plane
+from compas_rhino.conversions import line_to_rhino
+from compas_rhino.conversions import plane_to_compas_frame
 from compas_rhino.conversions import point_to_compas
+from compas_rhino.geometry import RhinoNurbsCurve
 
 from .vertex import RhinoBrepVertex
 

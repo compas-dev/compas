@@ -61,9 +61,7 @@ def trimesh_pull_points_numpy(M, points):
 
 def _is_point_in_edgezone(p, p0, p1):
     n = cross_vectors(p1 - p0, [0, 0, 1.0])
-    return (
-        is_ccw_xy(p0 - p0, n, p - p0) and not is_ccw_xy(p0 - p0, p1 - p0, p - p0) and not is_ccw_xy(p1 - p1, n, p - p1)
-    )
+    return is_ccw_xy(p0 - p0, n, p - p0) and not is_ccw_xy(p0 - p0, p1 - p0, p - p0) and not is_ccw_xy(p1 - p1, n, p - p1)
 
 
 def _compute_point_on_segment(p, p0, p1):

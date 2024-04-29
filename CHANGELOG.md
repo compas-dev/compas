@@ -9,19 +9,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `compas.geometry.Line.point_from_start` and `compas.geometry.Line.point_from_end`.
+* Added `compas.geometry.Line.flip` and `compas.geometry.Line.flipped`.
+* Added an `compas.geometry.Frame.interpolate_frame(s)` method
+* Added `compas.colors.Color.contrast`.
+* Added `compas.geometry.Brep.from_plane`.
+* Added `compas.tolerance.Tolerance.angulardeflection`.
+
 ### Changed
 
+* Changed and update the `compas_view2` examples into `compas_viewer`.
 * Changed and updated the `compas_view2` examples into `compas_viewer`.
 * Changed `compas.scene.Scene` to inherent from `compas.datastructrues.Tree`.
 * Changed `compas.scene.SceneObject` to inherent from `compas.datastructrues.TreeNode`.
+* Changed `compas.geoemetry._core.predicates_3` bug fix in `is_coplanar` while loop when there are 4 points.
+* Changed to implementation of `Mesh.unify_cycles` to use the corresponding function of `compas.topology.orientation`.
+* Fixed bug in `compas.topology.orientation.unify_cycles`.
+* Fixed bug in `Mesh.thickened`.
+* Fixed various bugs in `compas.geometry.Quaternion`.
+* Changed repo config to `pyproject.toml`.
+* Fixed broken import in `copas.geometry.trimesh_smoothing_numpy`.
+* Changed `RhinoBrep.trimmed` to return single result or raise `BrepTrimmingError` instead of returning a list.
+* Changed order of imports according to `isort` and changed line length to `179`.
+* Changed use of `compas.geometry.allclose` to `compas.tolerance.TOL.is_allclose`.
+* Changed use of `compas.geometry.close` to `compas.tolerance.TOL.is_close`.
+* Changed imports of itertools to `compas.itertools` instead of `compas.utilities`.
 * Changed `compas.datastructures.Tree.print_hierarchy` to `compas.datastructures.Tree.__str__`.
 
 ### Removed
 
 * Removed `compas.scene.SceneObjectNode`, functionalities merged into `compas.scene.SceneObject`.
 * Removed `compas.scene.SceneTree`, functionalities merged into `compas.scene.Scene`.
+* Removed default implementation of `compas.geometry.trimesh_geodistance` since nonexistent.
+* Removed `compas.utilities.geometric_key` and replaced it by `compas.tolerance.TOL.geometric_key`.
+* Removed `compas.utilities.geometric_key_xy` and replaced it by `compas.tolerance.TOL.geometric_key_xy`.
+* Removed indexed attribute access from all geometry classes except `Point`, `Vector`, `Line`, `Polygon`, `Polyline`.
 * Removed `compas.datastructures.Tree.print_hierarchy`.
-
 
 ## [2.1.0] 2024-03-01
 
@@ -33,6 +56,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.datastructures.Tree.to_graph()`.
 
 ### Changed
+
 * Changed `compas.datastructures.TreeNode` to skip serialising `attributes`, `name` and `children` if being empty.
 * Changed `compas.datastructures.TreeNode.__repr__` to omit `name` if `None`.
 * Fix bug in `compas_rhino.geometry.NurbsCurve.from_parameters` and `compas_rhino.geometry.NurbsCurve.from_points` related to the value of the parameter `degree`.
@@ -43,7 +67,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [2.0.4] 2024-02-12
 
 ### Added
@@ -53,7 +76,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed bug in `compas_rhino.scene`.
 
 ### Removed
-
 
 ## [2.0.3] 2024-02-09
 

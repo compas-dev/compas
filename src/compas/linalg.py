@@ -1,13 +1,14 @@
 import sys
 from functools import wraps
+
+from numpy import absolute
 from numpy import array
 from numpy import asarray
 from numpy import atleast_2d
+from numpy import cross
 from numpy import nan_to_num
 from numpy import nonzero
 from numpy import sum
-from numpy import absolute
-from numpy import cross
 from numpy.linalg import cond
 from scipy.linalg import cho_factor  # type: ignore
 from scipy.linalg import cho_solve  # type: ignore
@@ -16,7 +17,6 @@ from scipy.linalg import qr  # type: ignore
 from scipy.linalg import svd  # type: ignore
 from scipy.sparse.linalg import factorized  # type: ignore
 from scipy.sparse.linalg import spsolve  # type: ignore
-
 
 # ==============================================================================
 # Fundamentals

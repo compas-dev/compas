@@ -1,15 +1,14 @@
-from typing import Optional
 from typing import Any
+from typing import Optional
 
 import bpy  # type: ignore
 
-from compas.geometry import Torus
 from compas.colors import Color
-
+from compas.geometry import Torus
 from compas.scene import GeometryObject
-from .sceneobject import BlenderSceneObject
-
 from compas_blender import conversions
+
+from .sceneobject import BlenderSceneObject
 
 
 class TorusObject(BlenderSceneObject, GeometryObject):

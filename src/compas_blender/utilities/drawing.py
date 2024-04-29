@@ -1,17 +1,15 @@
 from typing import Dict
 from typing import List
-from typing import Union
-from typing import Tuple
 from typing import Text
+from typing import Tuple
+from typing import Union
 
 import bpy  # type: ignore
-
-from compas_blender.collections import create_collection
 
 from compas.geometry import centroid_points
 from compas.geometry import distance_point_point
 from compas.geometry import subtract_vectors
-
+from compas_blender.collections import create_collection
 
 RGBColor = Union[Tuple[int, int, int], Tuple[float, float, float]]
 

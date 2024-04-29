@@ -6,10 +6,10 @@ from math import cos
 from math import pi
 from math import sin
 
-from compas.geometry import matrix_from_frame
-from compas.geometry import transform_points
 from compas.geometry import Frame
 from compas.geometry import Plane
+from compas.geometry import matrix_from_frame
+from compas.geometry import transform_points
 
 from .shape import Shape
 
@@ -98,6 +98,13 @@ class Torus(Shape):
         self.radius_axis = radius_axis
         self.radius_pipe = radius_pipe
 
+    def __repr__(self):
+        return "Torus(frame={0!r}, radius_axis={1!r}, radius_pipe={2!r})".format(
+            self.frame,
+            self.radius_axis,
+            self.radius_pipe,
+        )
+
     # ==========================================================================
     # Properties
     # ==========================================================================
@@ -141,41 +148,6 @@ class Torus(Shape):
     @property
     def volume(self):
         return (pi * self.radius_pipe**2) * (2 * pi * self.radius_axis)
-
-    # ==========================================================================
-    # Customisation
-    # ==========================================================================
-
-    def __repr__(self):
-        return "Torus(frame={0!r}, radius_axis={1!r}, radius_pipe={2!r})".format(
-            self.frame, self.radius_axis, self.radius_pipe
-        )
-
-    def __len__(self):
-        return 3
-
-    def __getitem__(self, key):
-        if key == 0:
-            return self.frame
-        elif key == 1:
-            return self.radius_axis
-        elif key == 2:
-            return self.radius_pipe
-        else:
-            raise KeyError
-
-    def __setitem__(self, key, value):
-        if key == 0:
-            self.frame = value
-        elif key == 1:
-            self.radius_axis = value
-        elif key == 2:
-            self.radius_pipe = value
-        else:
-            raise KeyError
-
-    def __iter__(self):
-        return iter([self.frame, self.radius_axis, self.radius_pipe])
 
     # ==========================================================================
     # Constructors

@@ -2,8 +2,7 @@ import pytest
 import json
 import compas
 from random import random
-from compas.geometry import close
-from compas.geometry import allclose
+from compas.tolerance import TOL
 from compas.geometry import Point
 from compas.geometry import Vector
 from compas.geometry import Plane
@@ -25,11 +24,11 @@ def test_plane(point, vector):
     assert plane.normal == Vector(*vector).unitized()
     assert isinstance(plane.point, Point)
     assert isinstance(plane.normal, Vector)
-    assert close(plane.normal.length, 1.0, tol=1e-12)
+    assert TOL.is_close(plane.normal.length, 1.0)
 
     other = eval(repr(plane))
-    assert allclose(other.point, plane.point, tol=1e-12)
-    assert allclose(other.normal, plane.normal, tol=1e-12)
+    assert TOL.is_allclose(other.point, plane.point)
+    assert TOL.is_allclose(other.normal, plane.normal)
 
 
 def test_plane_data():
@@ -38,8 +37,8 @@ def test_plane_data():
     plane = Plane(point, vector)
     other = Plane.__from_data__(json.loads(json.dumps(plane.__data__)))
 
-    assert allclose(other.point, plane.point, tol=1e-12)
-    assert allclose(other.normal, plane.normal, tol=1e-12)
+    assert TOL.is_allclose(other.point, plane.point)
+    assert TOL.is_allclose(other.normal, plane.normal)
     assert plane.guid != other.guid
 
     if not compas.IPY:

@@ -1,6 +1,6 @@
 from .data_classes import BaseGLTFDataClass
-from .data_classes import TextureInfoData
 from .data_classes import NormalTextureInfoData
+from .data_classes import TextureInfoData
 
 
 def create_if_data(cls, data, attr):

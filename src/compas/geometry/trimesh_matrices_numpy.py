@@ -1,13 +1,13 @@
 from numpy import asarray
-from numpy import zeros
-from numpy import cross
 from numpy import bincount
+from numpy import cross
+from numpy import zeros
 from scipy.sparse import coo_matrix
 from scipy.sparse import spdiags
 
+from compas.geometry import cross_vectors
 from compas.geometry import dot_vectors
 from compas.geometry import length_vector
-from compas.geometry import cross_vectors
 from compas.linalg import normrow
 
 

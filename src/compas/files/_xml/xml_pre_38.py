@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 import xml.etree.ElementTree as ET
+
 from compas import _iotools
 from compas.files._xml.xml_cpython import prettify_string  # noqa: F401
 
