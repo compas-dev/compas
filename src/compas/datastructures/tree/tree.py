@@ -454,7 +454,7 @@ class Tree(Datastructure):
 
         """
 
-        hierarchy = {"string": ""}
+        hierarchy = []
 
         def traverse(node, hierarchy, prefix="", last=True, depth=0):
 
@@ -462,14 +462,14 @@ class Tree(Datastructure):
                 return
 
             connector = "└── " if last else "├── "
-            hierarchy["string"] += "{}{}{}\n".format(prefix, connector, node)
+            hierarchy.append("{}{}{}".format(prefix, connector, node))
             prefix += "    " if last else "│   "
             for i, child in enumerate(node.children):
                 traverse(child, hierarchy, prefix, i == len(node.children) - 1, depth + 1)
 
         traverse(self.root, hierarchy)
 
-        return hierarchy["string"]
+        return "\n".join(hierarchy)
 
     def to_graph(self, key_mapper=None):
         """Convert the tree to a graph.
