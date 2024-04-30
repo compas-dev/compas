@@ -281,7 +281,7 @@ class Tree(Datastructure):
         self._root = None
 
     def __str__(self):
-        return "<Tree with {} nodes>\n{}".format(len(list(self.nodes)), self.hierarchy(max_depth=3))
+        return "<Tree with {} nodes>\n{}".format(len(list(self.nodes)), self.get_hierarchy_string(max_depth=3))
 
     @property
     def root(self):
@@ -437,9 +437,9 @@ class Tree(Datastructure):
                 nodes.append(node)
         return nodes
 
-    def hierarchy(self, max_depth=None):
+    def get_hierarchy_string(self, max_depth=None):
         """
-        Return string for the spatial hierarchy of the tree.
+        Return string representation for the spatial hierarchy of the tree.
 
         Parameters
         ----------
@@ -450,7 +450,7 @@ class Tree(Datastructure):
         Returns
         -------
         str
-            The spatial hierarchy of the tree.
+            String representing the spatial hierarchy of the tree.
 
         """
 
