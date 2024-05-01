@@ -534,7 +534,6 @@ class RhinoBrep(Brep):
         if isinstance(plane, Frame):
             plane = Plane.from_frame(plane)
         curves = Rhino.Geometry.Brep.CreateContourCurves(self._brep, plane_to_rhino(plane))
-        print("curves:{}".format(curves))
         return [curve_to_compas(curve) for curve in curves]
 
     def split(self, cutter):
