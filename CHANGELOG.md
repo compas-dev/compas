@@ -34,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed use of `compas.geometry.allclose` to `compas.tolerance.TOL.is_allclose`.
 * Changed use of `compas.geometry.close` to `compas.tolerance.TOL.is_close`.
 * Changed imports of itertools to `compas.itertools` instead of `compas.utilities`.
+* Updated `compas_rhino.conversions.point_to_compas` to allow for `Rhino.Geometry.Point` as input.
 
 ### Removed
 
