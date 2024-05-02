@@ -64,7 +64,6 @@ class CapsuleObject(BlenderSceneObject, GeometryObject):
         vertices, faces = self.geometry.to_vertices_and_faces(u=u, v=v)
         mesh = conversions.vertices_and_faces_to_blender_mesh(vertices, faces, name=self.geometry.name)
         if shade_smooth:
-            print(dir(mesh))
             mesh.shade_smooth()
 
         obj = self.create_object(mesh, name=name)
