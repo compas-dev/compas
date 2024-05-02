@@ -168,13 +168,15 @@ class RhinoSurface(Surface):
         return curve
 
     @classmethod
-    def from_plane(cls, plane, box):
+    def from_plane(cls, plane, box=None):
         """Construct a surface from a plane.
 
         Parameters
         ----------
         plane : :class:`compas.geometry.Plane`
             The plane.
+        box : :class:`compas.geometry.Box`, optional
+            A box that bounds the surface.
 
         Returns
         -------
@@ -182,8 +184,13 @@ class RhinoSurface(Surface):
 
         """
         plane = plane_to_rhino(plane)
-        box = Rhino.Geometry.BoundingBox(box.xmin, box.ymin, box.zmin, box.xmax, box.ymax, box.zmax)
-        rhino_surface = Rhino.Geometry.PlaneSurface.CreateThroughBox(plane, box)
+        if box:
+            box = Rhino.Geometry.BoundingBox(box.xmin, box.ymin, box.zmin, box.xmax, box.ymax, box.zmax)
+            rhino_surface = Rhino.Geometry.PlaneSurface.CreateThroughBox(plane, box)
+        else:
+            rhino_surface = Rhino.Geometry.PlaneSurface(
+                plane, Rhino.Geometry.Interval(0, 1), Rhino.Geometry.Interval(0, 1)
+            )
         return cls.from_rhino(rhino_surface)
 
     @classmethod
