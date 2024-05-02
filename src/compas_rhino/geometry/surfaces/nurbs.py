@@ -10,6 +10,7 @@ from compas.geometry import NurbsSurface
 from compas.geometry import Point
 from compas.geometry import knots_and_mults_to_knotvector
 from compas.itertools import flatten
+from compas_rhino.conversions import plane_to_rhino
 from compas_rhino.conversions import point_to_compas
 from compas_rhino.conversions import point_to_rhino
 
@@ -359,6 +360,32 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
         surface = cls()
         # these curves probably need to be processed first
         surface.rhino_surface = Rhino.Geometry.NurbsSurface.CreateRuledSurface(curve1, curve2)
+        return surface
+
+    @classmethod
+    def from_plane(cls, plane, u_degree=1, v_degree=1):
+        """Construct a NURBS surface from a plane.
+
+        Parameters
+        ----------
+        plane : :class:`compas.geometry.Plane`
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoNurbsSurface`
+
+        """
+        plane = plane_to_rhino(plane)
+        surface = cls()
+        surface.rhino_surface = Rhino.Geometry.NurbsSurface.CreateFromPlane(
+            plane,
+            Rhino.Geometry.Interval(0, 1),
+            Rhino.Geometry.Interval(0, 1),
+            u_degree,
+            v_degree,
+            u_degree + 1,
+            v_degree + 1,
+        )
         return surface
 
     # ==============================================================================

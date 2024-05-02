@@ -188,9 +188,7 @@ class RhinoSurface(Surface):
             box = Rhino.Geometry.BoundingBox(box.xmin, box.ymin, box.zmin, box.xmax, box.ymax, box.zmax)
             rhino_surface = Rhino.Geometry.PlaneSurface.CreateThroughBox(plane, box)
         else:
-            rhino_surface = Rhino.Geometry.PlaneSurface(
-                plane, Rhino.Geometry.Interval(0, 1), Rhino.Geometry.Interval(0, 1)
-            )
+            rhino_surface = Rhino.Geometry.PlaneSurface(plane, Rhino.Geometry.Interval(0, 1), Rhino.Geometry.Interval(0, 1))
         return cls.from_rhino(rhino_surface)
 
     @classmethod
