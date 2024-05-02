@@ -14,6 +14,11 @@ def new_surface(cls, *args, **kwargs):
 
 
 @plugin(category="factories", requires=["Rhino"])
+def new_surface_from_plane(cls, *args, **kwargs):
+    return RhinoSurface.from_plane(*args, **kwargs)
+
+
+@plugin(category="factories", requires=["Rhino"])
 def new_nurbssurface(cls, *args, **kwargs):
     surface = super(NurbsSurface, cls).__new__(cls)
     surface.__init__(*args, **kwargs)
