@@ -8,13 +8,13 @@ from numpy import dot
 from numpy import sum
 from numpy import vstack
 from numpy import zeros
-from numpy.linalg import LinAlgError
 from scipy.spatial import ConvexHull
 
 from compas.geometry import local_axes
 from compas.geometry import local_to_world_coordinates_numpy
 from compas.geometry import pca_numpy
 from compas.geometry import world_to_local_coordinates_numpy
+from compas.geometry import length_vector
 from compas.tolerance import TOL
 
 from .bbox import bounding_box
@@ -199,11 +199,10 @@ def minimum_volume_box(points, return_size=False):
     for simplex in hull.simplices:
         a, b, c = points[simplex]
         uvw = local_axes(a, b, c)
-        frame = [a, uvw[0], uvw[1]]
-        try:
-            rst = world_to_local_coordinates_numpy(frame, xyz)
-        except LinAlgError:
+        if not length_vector(uvw[0]) or not length_vector(uvw[1]):
             continue
+        frame = [a, uvw[0], uvw[1]]
+        rst = world_to_local_coordinates_numpy(frame, xyz)
         rmin, smin, tmin = amin(rst, axis=0)
         rmax, smax, tmax = amax(rst, axis=0)
         dr = rmax - rmin

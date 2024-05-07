@@ -37,7 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed imports of itertools to `compas.itertools` instead of `compas.utilities`.
 * Updated `compas_rhino.conversions.point_to_compas` to allow for `Rhino.Geometry.Point` as input.
 * Changed `compas.datastructures.Tree.print_hierarchy` to `compas.datastructures.Tree.__str__`.
-* Fixed `compas.geometry.bbox_numpy.minimum_volume_box` to ignore `numpy.linalg.LinAlgError`.
+* Fixed `compas.geometry.bbox_numpy.minimum_volume_box` to avoid `numpy.linalg.LinAlgError`.
 
 ### Removed
 
