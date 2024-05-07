@@ -8,6 +8,7 @@ from numpy import dot
 from numpy import sum
 from numpy import vstack
 from numpy import zeros
+from numpy.linalg import LinAlgError
 from scipy.spatial import ConvexHull
 
 from compas.geometry import local_axes
@@ -73,7 +74,7 @@ def oriented_bounding_box_numpy(points, tol=None):
     >>> a = length_vector(subtract_vectors(bbox[1], bbox[0]))
     >>> b = length_vector(subtract_vectors(bbox[3], bbox[0]))
     >>> c = length_vector(subtract_vectors(bbox[4], bbox[0]))
-    >>> close(a * b * c, 30.)
+    >>> close(a * b * c, 30.0)
     True
 
     """
@@ -199,7 +200,10 @@ def minimum_volume_box(points, return_size=False):
         a, b, c = points[simplex]
         uvw = local_axes(a, b, c)
         frame = [a, uvw[0], uvw[1]]
-        rst = world_to_local_coordinates_numpy(frame, xyz)
+        try:
+            rst = world_to_local_coordinates_numpy(frame, xyz)
+        except LinAlgError:
+            continue
         rmin, smin, tmin = amin(rst, axis=0)
         rmax, smax, tmax = amax(rst, axis=0)
         dr = rmax - rmin
