@@ -125,15 +125,11 @@ def test_oriented_bounding_box_numpy(coords, expected):
         assert TOL.is_allclose(result, expected_values)
 
 
-@pytest.fixture
-def bbox_points_00():
-    return compas.json_load(os.path.join(HERE, "fixtures", "bbox_points_00.json"))
-
 @pytest.mark.parametrize(
-    "points, expected",
+    "filename, expected",
     [
         [
-            "bbox_points_00",
+            "bbox_points_00.json",
             [
                 [-16.324597659837302, 17.160372549942966, 3.56729],
                 [-16.324597659837302, 17.160372549942966, 2.45],
@@ -147,11 +143,12 @@ def bbox_points_00():
         ]
     ],
 )
-def test_oriented_bounding_box_numpy_from_fixtures(points, expected, request):
+def test_oriented_bounding_box_numpy_from_fixtures(filename, expected):
     if compas.IPY:
         return
 
-    coords = request.getfixturevalue(points)
+    coords = compas.json_load(os.path.join(HERE, "fixtures", filename))
+
     from compas.geometry import oriented_bounding_box_numpy
 
     results = oriented_bounding_box_numpy(coords)
