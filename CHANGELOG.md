@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.colors.Color.contrast`.
 * Added `compas.geometry.Brep.from_plane`.
 * Added `compas.tolerance.Tolerance.angulardeflection`.
+* Added `compas.scene.SceneObject.scene` attribute.
 
 ### Changed
 
@@ -34,6 +35,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed use of `compas.geometry.allclose` to `compas.tolerance.TOL.is_allclose`.
 * Changed use of `compas.geometry.close` to `compas.tolerance.TOL.is_close`.
 * Changed imports of itertools to `compas.itertools` instead of `compas.utilities`.
+* Updated `compas_rhino.conversions.point_to_compas` to allow for `Rhino.Geometry.Point` as input.
+* Changed `compas.datastructures.Tree.print_hierarchy` to `compas.datastructures.Tree.__str__`.
 * Updated `compas.geometry.vector` with `__rmul__` and allow element-wise multiplication and division with another vector.
 
 ### Removed
@@ -44,6 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed `compas.utilities.geometric_key` and replaced it by `compas.tolerance.TOL.geometric_key`.
 * Removed `compas.utilities.geometric_key_xy` and replaced it by `compas.tolerance.TOL.geometric_key_xy`.
 * Removed indexed attribute access from all geometry classes except `Point`, `Vector`, `Line`, `Polygon`, `Polyline`.
+* Removed `compas.datastructures.Tree.print_hierarchy`.
 
 ## [2.1.0] 2024-03-01
 
