@@ -151,18 +151,22 @@ class Vector(Geometry):
     def __mul__(self, other):
         if isinstance(other, (int, float)):
             return Vector(self.x * other, self.y * other, self.z * other)
-        elif isinstance(other, Vector):
-            return Vector(self.x * other[0], self.y * other[1], self.z * other[2])
         else:
-            raise TypeError("Multiplication of Vector with unsupported type: {}".format(type(other)))
+            try:
+                other = Vector(*other)
+                return Vector(self.x * other.x, self.y * other.y, self.z * other.z)
+            except TypeError:
+                raise TypeError("Cannot cast {} {} to Vector".format(other, type(other)))
 
     def __truediv__(self, other):
         if isinstance(other, (int, float)):
             return Vector(self.x / other, self.y / other, self.z / other)
-        elif isinstance(other, Vector):
-            return Vector(self.x / other[0], self.y / other[1], self.z / other[2])
         else:
-            raise TypeError("Division of Vector with unsupported type: {}".format(type(other)))
+            try:
+                other = Vector(*other)
+                return Vector(self.x / other.x, self.y / other.y, self.z / other.z)
+            except TypeError:
+                raise TypeError("Cannot cast {} {} to Vector".format(other, type(other)))
 
     def __pow__(self, n):
         return Vector(self.x**n, self.y**n, self.z**n)
@@ -202,6 +206,23 @@ class Vector(Geometry):
 
     def __rmul__(self, n):
         return self.__mul__(n)
+
+    def __radd__(self, other):
+        return self.__add__(other)
+
+    def __rsub__(self, other):
+        try:
+            other = Vector(*other)
+            return other - self
+        except TypeError:
+            raise TypeError("Cannot cast {} {} to Vector".format(other, type(other)))
+
+    def __rtruediv__(self, other):
+        try:
+            other = Vector(*other)
+            return other / self
+        except TypeError:
+            raise TypeError("Cannot cast {} {} to Vector".format(other, type(other)))
 
     # ==========================================================================
     # Properties
