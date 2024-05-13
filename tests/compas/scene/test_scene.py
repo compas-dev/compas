@@ -4,7 +4,7 @@ import compas
 from compas.scene import context
 from compas.scene import register
 from compas.scene import SceneObject
-from compas.scene import NoSceneObjectContextError
+from compas.scene import SceneObjectNotRegisteredError
 from compas.data import Data
 
 
@@ -80,37 +80,10 @@ if not compas.IPY:
 
         assert isinstance(sceneobject, FakeSceneObject)
 
-    def test_sceneobject_auto_context_discovery_viewer(mocker):
-        mocker.patch("compas.scene.context.is_viewer_open", return_value=True)
-        context.ITEM_SCENEOBJECT["Viewer"] = {FakeItem: FakeSceneObject}
-
-        item = FakeSubItem()
-        sceneobject = SceneObject(item)
-
-        assert isinstance(sceneobject, FakeSceneObject)
-
-    def test_sceneobject_auto_context_discovery_viewer_priority(mocker):
-        mocker.patch("compas.scene.context.is_viewer_open", return_value=True)
-
-        class FakeViewerSceneObject(FakeSceneObject):
-            pass
-
-        class FakePlotterSceneObject(FakeSceneObject):
-            pass
-
-        context.ITEM_SCENEOBJECT["Viewer"] = {FakeItem: FakeViewerSceneObject}
-        context.ITEM_SCENEOBJECT["Plotter"] = {FakeItem: FakePlotterSceneObject}
-
-        item = FakeSubItem()
-        sceneobject = SceneObject(item)
-
-        assert isinstance(sceneobject, FakeViewerSceneObject)
-
     def test_sceneobject_auto_context_discovery_no_context(mocker):
-        mocker.patch("compas.scene.context.is_viewer_open", return_value=False)
         mocker.patch("compas.scene.context.compas.is_grasshopper", return_value=False)
         mocker.patch("compas.scene.context.compas.is_rhino", return_value=False)
 
-        with pytest.raises(NoSceneObjectContextError):
+        with pytest.raises(SceneObjectNotRegisteredError):
             item = FakeSubItem()
             _ = SceneObject(item)

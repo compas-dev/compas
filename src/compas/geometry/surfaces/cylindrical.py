@@ -1,13 +1,16 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from math import pi, cos, sin
+from math import cos
+from math import pi
+from math import sin
 
+from compas.geometry import Circle
+from compas.geometry import Frame
 from compas.geometry import Point
 from compas.geometry import Vector
-from compas.geometry import Frame
-from compas.geometry import Circle
+
 from .surface import Surface
 
 PI2 = 2 * pi
@@ -22,8 +25,17 @@ class CylindricalSurface(Surface):
         The radius of the cylinder.
     frame : :class:`Frame`
         The local coordinate system of the cylinder.
+    name : str, optional
+        The name of the surface.
 
     """
+
+    # overwriting the __new__ method is necessary
+    # to avoid triggering the plugin mechanism of the base surface class
+    def __new__(cls, *args, **kwargs):
+        surface = object.__new__(cls)
+        surface.__init__(*args, **kwargs)
+        return surface
 
     DATASCHEMA = {
         "type": "object",
@@ -34,15 +46,22 @@ class CylindricalSurface(Surface):
         "required": ["radius", "frame"],
     }
 
-    # overwriting the __new__ method is necessary
-    # to avoid triggering the plugin mechanism of the base surface class
-    def __new__(cls, *args, **kwargs):
-        surface = object.__new__(cls)
-        surface.__init__(*args, **kwargs)
-        return surface
+    @property
+    def __data__(self):
+        return {
+            "radius": self.radius,
+            "frame": self.frame.__data__,
+        }
 
-    def __init__(self, radius, frame=None, **kwargs):
-        super(CylindricalSurface, self).__init__(frame=frame, **kwargs)
+    @classmethod
+    def __from_data__(cls, data):
+        return cls(
+            radius=data["radius"],
+            frame=Frame.__from_data__(data["frame"]),
+        )
+
+    def __init__(self, radius, frame=None, name=None):
+        super(CylindricalSurface, self).__init__(frame=frame, name=name)
         self._radius = None
         self.radius = radius
 
@@ -60,24 +79,6 @@ class CylindricalSurface(Surface):
         except Exception:
             return False
         return self.radius == other_radius and self.frame == other_frame
-
-    # =============================================================================
-    # Data
-    # =============================================================================
-
-    @property
-    def data(self):
-        return {
-            "radius": self.radius,
-            "frame": self.frame.data,
-        }
-
-    @classmethod
-    def from_data(cls, data):
-        return cls(
-            radius=data["radius"],
-            frame=Frame.from_data(data["frame"]),
-        )
 
     # =============================================================================
     # Properties

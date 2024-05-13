@@ -3,15 +3,14 @@ from typing import Optional
 
 import bpy  # type: ignore
 
+from compas.colors import Color
+from compas.geometry import Line
 from compas.geometry import Point
 from compas.geometry import Vector
-from compas.geometry import Line
-from compas.colors import Color
-
 from compas.scene import GeometryObject
-from .sceneobject import BlenderSceneObject
-
 from compas_blender import conversions
+
+from .sceneobject import BlenderSceneObject
 
 
 class VectorObject(BlenderSceneObject, GeometryObject):

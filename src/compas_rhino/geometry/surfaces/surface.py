@@ -1,23 +1,21 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
-
-from compas.geometry import Surface
-
-from compas_rhino.conversions import point_to_rhino
-from compas_rhino.conversions import point_to_compas
-from compas_rhino.conversions import vector_to_compas
-from compas_rhino.conversions import plane_to_compas_frame
-from compas_rhino.conversions import frame_to_rhino_plane
-from compas_rhino.conversions import plane_to_rhino
-from compas_rhino.conversions import box_to_compas
-from compas_rhino.conversions import transformation_to_rhino
-from compas_rhino.conversions import sphere_to_rhino
-from compas_rhino.conversions import cylinder_to_rhino
-
-from compas_rhino.geometry.curves import RhinoCurve
+from __future__ import print_function
 
 import Rhino.Geometry  # type: ignore
+
+from compas.geometry import Surface
+from compas_rhino.conversions import box_to_compas
+from compas_rhino.conversions import cylinder_to_rhino
+from compas_rhino.conversions import frame_to_rhino_plane
+from compas_rhino.conversions import plane_to_compas_frame
+from compas_rhino.conversions import plane_to_rhino
+from compas_rhino.conversions import point_to_compas
+from compas_rhino.conversions import point_to_rhino
+from compas_rhino.conversions import sphere_to_rhino
+from compas_rhino.conversions import transformation_to_rhino
+from compas_rhino.conversions import vector_to_compas
+from compas_rhino.geometry.curves import RhinoCurve
 
 
 class RhinoSurface(Surface):
@@ -400,9 +398,7 @@ class RhinoSurface(Surface):
         list[:class:`compas.geometry.Point`]
 
         """
-        intersections = Rhino.Geometry.Intersect.Intersection.CurveSurface(
-            curve.rhino_curve, self.rhino_surface, tolerance, overlap
-        )
+        intersections = Rhino.Geometry.Intersect.Intersection.CurveSurface(curve.rhino_curve, self.rhino_surface, tolerance, overlap)
         points = []
         for event in intersections:
             if event.IsPoint:

@@ -1,14 +1,9 @@
-from numpy import arange
-from numpy import divide
-from numpy import hstack
-from numpy import tile
-
-from scipy import cross  # type: ignore
+import numpy as np
 from scipy.sparse import coo_matrix  # type: ignore
 
-from compas.numerical.linalg import normrow
-from compas.numerical.linalg import normalizerow
-from compas.numerical.linalg import rot90
+from compas.linalg import normalizerow
+from compas.linalg import normrow
+from compas.linalg import rot90
 
 
 def trimesh_gradient_numpy(M, rtype="array"):
@@ -43,28 +38,30 @@ def trimesh_gradient_numpy(M, rtype="array"):
     v01 = V[f1, :] - V[f0, :]  # Vector from vertex 0 to 1 for each face
     v12 = V[f2, :] - V[f1, :]  # Vector from vertex 1 to 2 for each face
     v20 = V[f0, :] - V[f2, :]  # Vector from vertex 2 to 0 for each face
-    n = cross(v12, v20)  # Normal vector to each face
+    n = np.cross(v12, v20)  # Normal vector to each face
     A2 = normrow(n)  # Length of normal vector is twice the area of the face
-    A2 = tile(A2, (1, 3))
+    A2 = np.tile(A2, (1, 3))
     u = normalizerow(n)  # Unit normals for each face
-    v01_ = divide(rot90(v01, u), A2)  # Vector perpendicular to v01, normalized by A2
-    v20_ = divide(rot90(v20, u), A2)  # Vector perpendicular to v20, normalized by A2
-    i = hstack(
+    v01_ = np.divide(rot90(v01, u), A2)  # Vector perpendicular to v01, normalized by A2
+    v20_ = np.divide(rot90(v20, u), A2)  # Vector perpendicular to v20, normalized by A2
+    i = np.hstack(
         (  # Nonzero rows
-            0 * f + tile(arange(f), (1, 4)),
-            1 * f + tile(arange(f), (1, 4)),
-            2 * f + tile(arange(f), (1, 4)),
+            0 * f + np.tile(np.arange(f), (1, 4)),
+            1 * f + np.tile(np.arange(f), (1, 4)),
+            2 * f + np.tile(np.arange(f), (1, 4)),
         )
     ).flatten()
-    j = tile(hstack((f1, f0, f2, f0)), (1, 3)).flatten()  # Nonzero columns
-    data = hstack(
+    j = np.tile(np.hstack((f1, f0, f2, f0)), (1, 3)).flatten()  # Nonzero columns
+    data = np.hstack(
         (
-            hstack((v20_[:, 0], -v20_[:, 0], v01_[:, 0], -v01_[:, 0])),
-            hstack((v20_[:, 1], -v20_[:, 1], v01_[:, 1], -v01_[:, 1])),
-            hstack((v20_[:, 2], -v20_[:, 2], v01_[:, 2], -v01_[:, 2])),
+            np.hstack((v20_[:, 0], -v20_[:, 0], v01_[:, 0], -v01_[:, 0])),
+            np.hstack((v20_[:, 1], -v20_[:, 1], v01_[:, 1], -v01_[:, 1])),
+            np.hstack((v20_[:, 2], -v20_[:, 2], v01_[:, 2], -v01_[:, 2])),
         )
     ).flatten()
+
     G = coo_matrix((data, (i, j)), shape=(3 * f, v))
+
     if rtype == "array":
         return G.toarray()
     elif rtype == "csr":

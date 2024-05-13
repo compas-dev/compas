@@ -1,6 +1,6 @@
-from __future__ import print_function
-from __future__ import division
 from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 from compas.files.gltf.data_classes import AnimationData
 from compas.files.gltf.data_classes import AnimationSamplerData
@@ -42,26 +42,12 @@ class GLTFParser(object):
         self.content.extensions = self._get_extensions()
 
         self.content.images = {key: image_data for key, image_data in enumerate(self.reader.image_data)}
-        self.content.samplers = {
-            key: SamplerData.from_data(sampler) for key, sampler in enumerate(self.reader.json.get("samplers", []))
-        }
-        self.content.textures = {
-            key: TextureData.from_data(texture) for key, texture in enumerate(self.reader.json.get("textures", []))
-        }
-        self.content.materials = {
-            key: MaterialData.from_data(material) for key, material in enumerate(self.reader.json.get("materials", []))
-        }
-        self.content.cameras = {
-            key: CameraData.from_data(camera) for key, camera in enumerate(self.reader.json.get("cameras", []))
-        }
-        self.content.skins = {
-            key: SkinData.from_data(skin, self.reader.data[skin["inverseBindMatrices"]])
-            for key, skin in enumerate(self.reader.json.get("skins", []))
-        }
-        self.content.animations = {
-            key: self._get_animation_data(animation)
-            for key, animation in enumerate(self.reader.json.get("animations", []))
-        }
+        self.content.samplers = {key: SamplerData.from_data(sampler) for key, sampler in enumerate(self.reader.json.get("samplers", []))}
+        self.content.textures = {key: TextureData.from_data(texture) for key, texture in enumerate(self.reader.json.get("textures", []))}
+        self.content.materials = {key: MaterialData.from_data(material) for key, material in enumerate(self.reader.json.get("materials", []))}
+        self.content.cameras = {key: CameraData.from_data(camera) for key, camera in enumerate(self.reader.json.get("cameras", []))}
+        self.content.skins = {key: SkinData.from_data(skin, self.reader.data[skin["inverseBindMatrices"]]) for key, skin in enumerate(self.reader.json.get("skins", []))}
+        self.content.animations = {key: self._get_animation_data(animation) for key, animation in enumerate(self.reader.json.get("animations", []))}
 
         for mesh in self.reader.json.get("meshes", []):
             self._add_gltf_mesh(mesh)

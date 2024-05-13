@@ -1,7 +1,6 @@
 # flake8: noqa
-jsonschema >= 4.17, < 4.18
+jsonschema
 networkx >= 3.0
 numpy >= 1.15.4
 scipy >= 1.1
-typing_extensions
-watchdog
+watchdog; sys_platform != 'emscripten'

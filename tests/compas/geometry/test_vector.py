@@ -70,15 +70,15 @@ def test_vector_inplace_operators():
 
 def test_vector_data():
     vector = Vector(random(), random(), random())
-    other = Vector.from_data(json.loads(json.dumps(vector.data)))
+    other = Vector.__from_data__(json.loads(json.dumps(vector.__data__)))
 
     assert vector == other
-    assert vector.data == other.data
+    assert vector.__data__ == other.__data__
     assert vector.guid != other.guid
 
     if not compas.IPY:
-        assert Vector.validate_data(vector.data)
-        assert Vector.validate_data(other.data)
+        assert Vector.validate_data(vector.__data__)
+        assert Vector.validate_data(other.__data__)
 
 
 def test_cross_vectors():

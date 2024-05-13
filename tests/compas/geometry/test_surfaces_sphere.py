@@ -3,12 +3,12 @@ import json
 import compas
 from random import random
 
-from compas.utilities import linspace
+from compas.itertools import linspace
 from compas.geometry import Point  # noqa: F401
 from compas.geometry import Vector  # noqa: F401
 from compas.geometry import Frame
 from compas.geometry import SphericalSurface
-from compas.geometry import close
+from compas.tolerance import TOL
 
 
 @pytest.mark.parametrize(
@@ -31,7 +31,7 @@ def test_spherical_surface(radius):
 
     other = eval(repr(surf))
 
-    assert close(surf.radius, other.radius, tol=1e-12)
+    assert TOL.is_close(surf.radius, other.radius)
     assert surf.frame == other.frame
 
 
@@ -55,7 +55,7 @@ def test_spherical_surface_with_frame(frame):
 
     other = eval(repr(surf))
 
-    assert close(surf.radius, other.radius, tol=1e-12)
+    assert TOL.is_close(surf.radius, other.radius)
     assert surf.frame == other.frame
 
 
@@ -67,15 +67,15 @@ def test_spherical_surface_with_frame(frame):
 def test_spherical_surface_data():
     radius = random()
     surf = SphericalSurface(radius=radius)
-    other = SphericalSurface.from_data(json.loads(json.dumps(surf.data)))
+    other = SphericalSurface.__from_data__(json.loads(json.dumps(surf.__data__)))
 
-    assert surf.data == other.data
+    assert surf.__data__ == other.__data__
     assert surf.radius == radius
     assert surf.frame == Frame.worldXY()
 
     if not compas.IPY:
-        assert SphericalSurface.validate_data(surf.data)
-        assert SphericalSurface.validate_data(other.data)
+        assert SphericalSurface.validate_data(surf.__data__)
+        assert SphericalSurface.validate_data(other.__data__)
 
 
 # =============================================================================

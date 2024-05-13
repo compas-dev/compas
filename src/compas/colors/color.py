@@ -40,6 +40,8 @@ class Color(Data):
         Transparency setting.
         If ``alpha = 0.0``, the color is fully transparent.
         If ``alpha = 1.0``, the color is fully opaque.
+    name : str, optional
+        The name of the color.
 
     Attributes
     ----------
@@ -88,6 +90,8 @@ class Color(Data):
         The perceived freedom of whiteness.
     is_light : bool
         If True, the color is considered light.
+    contrast : :class:`compas.colors.Color`
+        The contrasting color to the current color.
 
     Examples
     --------
@@ -152,8 +156,12 @@ class Color(Data):
         "required": ["red", "green", "blue", "alpha"],
     }
 
-    def __init__(self, red, green, blue, alpha=1.0, **kwargs):
-        super(Color, self).__init__(**kwargs)
+    @property
+    def __data__(self):
+        return {"red": self.r, "green": self.g, "blue": self.b, "alpha": self.a}
+
+    def __init__(self, red, green, blue, alpha=1.0, name=None):
+        super(Color, self).__init__(name=name)
         self._r = 1.0
         self._g = 1.0
         self._b = 1.0
@@ -183,14 +191,6 @@ class Color(Data):
 
     def __eq__(self, other):
         return all(a == b for a, b in zip(self, other))
-
-    # --------------------------------------------------------------------------
-    # Data
-    # --------------------------------------------------------------------------
-
-    @property
-    def data(self):
-        return {"red": self.r, "green": self.g, "blue": self.b, "alpha": self.a}
 
     # --------------------------------------------------------------------------
     # Properties
@@ -312,6 +312,10 @@ class Color(Data):
         maxval = max(self.r, self.g, self.b)
         minval = min(self.r, self.g, self.b)
         return (maxval - minval) / maxval
+
+    @property
+    def contrast(self):
+        return self.darkened(25) if self.is_light else self.lightened(50)
 
     # --------------------------------------------------------------------------
     # Constructors
@@ -908,8 +912,8 @@ class Color(Data):
 
         factor = 1.0 + factor / 100
 
-        h, l, s = self.hls
-        r, g, b = colorsys.hls_to_rgb(h, min(1.0, l * factor), s)
+        hue, luminance, saturation = self.hls
+        r, g, b = colorsys.hls_to_rgb(hue, min(1.0, luminance * factor), saturation)
         self.r = r
         self.g = g
         self.b = b
@@ -959,8 +963,8 @@ class Color(Data):
 
         factor = 1.0 - factor / 100
 
-        h, l, s = self.hls
-        r, g, b = colorsys.hls_to_rgb(h, max(0.0, l * factor), s)
+        hue, luminance, saturation = self.hls
+        r, g, b = colorsys.hls_to_rgb(hue, max(0.0, luminance * factor), saturation)
         self.r = r
         self.g = g
         self.b = b
@@ -1034,8 +1038,8 @@ class Color(Data):
 
         factor = 1.0 + factor / 100
 
-        h, l, s = self.hls
-        r, g, b = colorsys.hls_to_rgb(h, l, min(1.0, s * factor))
+        hue, luminance, saturation = self.hls
+        r, g, b = colorsys.hls_to_rgb(hue, luminance, min(1.0, saturation * factor))
         self.r = r
         self.g = g
         self.b = b
@@ -1085,8 +1089,8 @@ class Color(Data):
 
         factor = 1.0 - factor / 100
 
-        h, l, s = self.hls
-        r, g, b = colorsys.hls_to_rgb(h, l, max(0.0, s * factor))
+        hue, luminance, saturation = self.hls
+        r, g, b = colorsys.hls_to_rgb(hue, luminance, max(0.0, saturation * factor))
         self.r = r
         self.g = g
         self.b = b

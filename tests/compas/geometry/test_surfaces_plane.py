@@ -7,8 +7,8 @@ from compas.geometry import Point  # noqa: F401
 from compas.geometry import Vector  # noqa: F401
 from compas.geometry import Frame
 from compas.geometry import PlanarSurface
-from compas.geometry import close
-from compas.utilities import linspace
+from compas.tolerance import TOL
+from compas.itertools import linspace
 
 
 @pytest.mark.parametrize(
@@ -34,8 +34,8 @@ def test_plane(xsize, ysize):
 
     other = eval(repr(plane))
 
-    assert close(plane.xsize, other.xsize, tol=1e-12)
-    assert close(plane.ysize, other.ysize, tol=1e-12)
+    assert TOL.is_close(plane.xsize, other.xsize)
+    assert TOL.is_close(plane.ysize, other.ysize)
     assert plane.frame == other.frame
 
 
@@ -62,8 +62,8 @@ def test_plane_frame(frame):
 
     other = eval(repr(plane))
 
-    assert close(plane.xsize, other.xsize, tol=1e-12)
-    assert close(plane.ysize, other.ysize, tol=1e-12)
+    assert TOL.is_close(plane.xsize, other.xsize)
+    assert TOL.is_close(plane.ysize, other.ysize)
     assert plane.frame == other.frame
 
 
@@ -76,16 +76,16 @@ def test_plane_data():
     xsize = random()
     ysize = random()
     plane = PlanarSurface(xsize=xsize, ysize=ysize)
-    other = PlanarSurface.from_data(json.loads(json.dumps(plane.data)))
+    other = PlanarSurface.__from_data__(json.loads(json.dumps(plane.__data__)))
 
-    assert plane.data == other.data
+    assert plane.__data__ == other.__data__
     assert plane.xsize == xsize
     assert plane.ysize == ysize
     assert plane.frame == Frame.worldXY()
 
     if not compas.IPY:
-        assert PlanarSurface.validate_data(plane.data)
-        assert PlanarSurface.validate_data(other.data)
+        assert PlanarSurface.validate_data(plane.__data__)
+        assert PlanarSurface.validate_data(other.__data__)
 
 
 # =============================================================================

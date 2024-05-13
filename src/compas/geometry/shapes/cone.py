@@ -7,12 +7,12 @@ from math import pi
 from math import sin
 from math import sqrt
 
-from compas.utilities import pairwise
-from compas.geometry import transform_points
 from compas.geometry import Circle
-from compas.geometry import Plane
-from compas.geometry import Line
 from compas.geometry import Frame
+from compas.geometry import Line
+from compas.geometry import Plane
+from compas.geometry import transform_points
+from compas.itertools import pairwise
 
 from .shape import Shape
 
@@ -35,6 +35,8 @@ class Cone(Shape):
         The height of the cone along the z-axis of the frame.
         The base of the cone is at the origin of the frame.
         The entire cone is above the XY plane of the frame.
+    name : str, optional
+        The name of the shape.
 
     Attributes
     ----------
@@ -85,8 +87,24 @@ class Cone(Shape):
         "required": ["radius", "height", "frame"],
     }
 
-    def __init__(self, radius, height, frame=None, **kwargs):
-        super(Cone, self).__init__(frame=frame, **kwargs)
+    @property
+    def __data__(self):
+        return {
+            "radius": self.radius,
+            "height": self.height,
+            "frame": self.frame.__data__,
+        }
+
+    @classmethod
+    def __from_data__(cls, data):
+        return cls(
+            radius=data["radius"],
+            height=data["height"],
+            frame=Frame.__from_data__(data["frame"]),
+        )
+
+    def __init__(self, radius, height, frame=None, name=None):
+        super(Cone, self).__init__(frame=frame, name=name)
         self._radius = None
         self._height = None
         self.radius = radius
@@ -98,26 +116,6 @@ class Cone(Shape):
             self.radius,
             self.height,
             self.frame,
-        )
-
-    # ==========================================================================
-    # data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return {
-            "radius": self.radius,
-            "height": self.height,
-            "frame": self.frame.data,
-        }
-
-    @classmethod
-    def from_data(cls, data):
-        return cls(
-            radius=data["radius"],
-            height=data["height"],
-            frame=Frame.from_data(data["frame"]),
         )
 
     # ==========================================================================

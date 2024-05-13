@@ -1,7 +1,6 @@
 from __future__ import print_function
 
 import os
-from distutils.version import LooseVersion
 
 import compas._os
 from compas._os import (
@@ -21,10 +20,8 @@ __author__ = "Tom Van Mele and many others (see AUTHORS.md)"
 __copyright__ = "Copyright 2014-2022 - ETH Zurich, Copyright 2023 - COMPAS Association"
 __license__ = "MIT License"
 __email__ = "tom.v.mele@gmail.com"
-__version__ = "2.0.0-beta.1"
+__version__ = "2.1.0"
 
-version = LooseVersion(compas.__version__)
-versionstring = version.vstring.split("-")[0]
 
 HERE = compas._os.realpath(os.path.dirname(__file__))
 """str: Path to the location of the compas package."""
@@ -135,6 +132,7 @@ __all__ = [
 
 __all_plugins__ = [
     "compas.geometry.booleans.booleans_shapely",
+    "compas.scene",
 ]
 
 

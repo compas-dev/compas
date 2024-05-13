@@ -7,20 +7,14 @@ try:
 except ImportError:
     from itertools import izip_longest as zip_longest  # type: ignore
 
-from System.Drawing import Color as SystemColor  # type: ignore
-from System.Array import CreateInstance  # type: ignore
-from Rhino.Geometry import Mesh as RhinoMesh  # type: ignore
-
-try:
-    # MeshNgon is not available in older versions of Rhino
-    from Rhino.Geometry import MeshNgon  # type: ignore
-except ImportError:
-    MeshNgon = None
+import Rhino  # type: ignore
+import System  # type: ignore
 
 from compas.colors import Color
 from compas.datastructures import Mesh
 from compas.geometry import centroid_polygon
-from compas.utilities import pairwise
+from compas.itertools import pairwise
+
 from .geometry import vector_to_compas
 
 
@@ -30,7 +24,7 @@ def average_color(colors):
     r = sum(r) / c
     g = sum(g) / c
     b = sum(b) / c
-    return int(r), int(g), int(b)
+    return Color(int(r), int(g), int(b))
 
 
 def connected_ngon(face, vertices, rmesh):
@@ -43,7 +37,7 @@ def connected_ngon(face, vertices, rmesh):
     for i, j in pairwise(face + face[:1]):
         facets.append(rmesh.Faces.AddFace(i, j, c))
 
-    ngon = MeshNgon.Create(face, facets)  # type: ignore
+    ngon = Rhino.Geometry.MeshNgon.Create(face, facets)  # type: ignore
     rmesh.Ngons.AddNgon(ngon)
 
 
@@ -62,7 +56,7 @@ def disjoint_ngon(face, vertices, rmesh):
     for i, j in pairwise(indices + indices[:1]):
         facets.append(rmesh.Faces.AddFace(i, j, c))
 
-    ngon = MeshNgon.Create(indices, facets)  # type: ignore
+    ngon = Rhino.Geometry.MeshNgon.Create(indices, facets)  # type: ignore
     rmesh.Ngons.AddNgon(ngon)
 
 
@@ -155,8 +149,12 @@ def vertices_and_faces_to_rhino(
         if len(vertices) != len(vertexcolors):
             raise ValueError("The number of vertex colors does not match the number of vertices.")
 
-    face_callback = face_callback or (lambda _: None)
-    mesh = RhinoMesh()
+    mesh = Rhino.Geometry.Mesh()
+
+    if not face_callback:
+
+        def face_callback(face):
+            pass
 
     if disjoint:
         vertexcolors = []
@@ -168,7 +166,7 @@ def vertices_and_faces_to_rhino(
                 continue
 
             if f > 4:
-                if MeshNgon is None:
+                if Rhino.Geometry.MeshNgon is None:
                     raise NotImplementedError("MeshNgons are not supported in this version of Rhino.")
 
                 disjoint_ngon(face, vertices, mesh)
@@ -195,7 +193,7 @@ def vertices_and_faces_to_rhino(
                 continue
 
             if f > 4:
-                if MeshNgon is None:
+                if Rhino.Geometry.MeshNgon is None:
                     raise NotImplementedError("MeshNgons are not supported in this version of Rhino.")
 
                 connected_ngon(face, vertices, mesh)
@@ -207,20 +205,18 @@ def vertices_and_faces_to_rhino(
 
             face_callback(face)
 
-    # if color:
-    #     mesh.VertexColors.CreateMonotoneMesh(SystemColor.FromArgb(*color.rgb255))
+    if vertexcolors:
+        if len(mesh.Vertices) != len(vertexcolors):
+            raise ValueError("The number of vertex colors does not match the number of vertices.")
 
-    # else:
-    if not color:
-        if vertexcolors:
-            if len(mesh.Vertices) != len(vertexcolors):
-                raise ValueError("The number of vertex colors does not match the number of vertices.")
+        colors = System.Array.CreateInstance(System.Drawing.Color, len(vertexcolors))
+        for index, color in enumerate(vertexcolors):
+            colors[index] = System.Drawing.Color.FromArgb(*color.rgb255)
 
-            colors = CreateInstance(SystemColor, len(vertexcolors))
-            for index, color in enumerate(vertexcolors):
-                colors[index] = SystemColor.FromArgb(*color.rgb255)
-
-            mesh.VertexColors.SetColors(colors)
+        mesh.VertexColors.SetColors(colors)
+    else:
+        if color:
+            mesh.VertexColors.CreateMonotoneMesh(System.Drawing.Color.FromArgb(*color.rgb255))
 
     # mesh.UnifyNormals()
     mesh.Normals.ComputeNormals()
@@ -252,8 +248,8 @@ def mesh_to_compas(rhinomesh, cls=None):
     """
     cls = cls or Mesh
     mesh = cls()
-    mesh.default_vertex_attributes.update(normal=None, color=None)
-    mesh.default_face_attributes.update(normal=None)
+    mesh.update_default_vertex_attributes(normal=None, color=None)
+    mesh.update_default_face_attributes(normal=None)
 
     vertexcolors = rhinomesh.VertexColors
     if not vertexcolors:

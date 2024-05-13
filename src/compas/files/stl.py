@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 import struct
+
 from compas import _iotools
 from compas.geometry import Translation
 from compas.tolerance import TOL
@@ -328,7 +329,7 @@ class STLParser(object):
 
 
 class STLWriter(object):
-    """Class for writing geometric data to a PLY file.
+    """Class for writing geometric data to a STL file.
 
     Parameters
     ----------
@@ -356,8 +357,8 @@ class STLWriter(object):
 
     @property
     def _vertex_xyz(self):
-        bbox = self.mesh.bounding_box()
-        xmin, ymin, zmin = bbox[0]
+        bbox = self.mesh.aabb()
+        xmin, ymin, zmin = bbox.xmin, bbox.ymin, bbox.zmin
         if not self.binary and (xmin < 0 or ymin < 0 or zmin < 0):
             T = Translation.from_vector([-xmin, -ymin, -zmin])
             mesh = self.mesh.transformed(T)

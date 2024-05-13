@@ -2,8 +2,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from compas.geometry import Point
 from compas.geometry import BrepVertex
+from compas.geometry import Point
 from compas_rhino.conversions import point_to_compas
 
 
@@ -31,13 +31,13 @@ class RhinoBrepVertex(BrepVertex):
     # ==============================================================================
 
     @property
-    def data(self):
+    def __data__(self):
         return {
-            "point": self._point.data,
+            "point": self._point.__data__,
         }
 
     @classmethod
-    def from_data(cls, data, builder):
+    def __from_data__(cls, data, builder):
         """Construct an object of this type from the provided data.
 
         Parameters
@@ -54,7 +54,7 @@ class RhinoBrepVertex(BrepVertex):
 
         """
         instance = cls()
-        instance._point = Point.from_data(data["point"])
+        instance._point = Point.__from_data__(data["point"])
         instance.native_vertex = builder.add_vertex(instance.point)
         return instance
 

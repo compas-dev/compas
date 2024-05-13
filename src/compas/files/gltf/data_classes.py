@@ -1,6 +1,6 @@
-from __future__ import print_function
-from __future__ import division
 from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 
 class AlphaMode(object):
@@ -16,7 +16,6 @@ class MineType(object):
 
 # I changed the name of this so as not to collide with compas.Base
 class BaseGLTFDataClass(object):
-
     IS_BASE_GLTF_DATA = True  # only needed for ipy in `GLTFContent.check_extensions_texture_recursively`
 
     def __init__(self, extras=None, extensions=None):
@@ -31,10 +30,7 @@ class BaseGLTFDataClass(object):
     def extensions_to_data(self, **kwargs):
         if not self.extensions:
             return None
-        return {
-            key: value.to_data(**kwargs) if hasattr(value, "to_data") else value
-            for key, value in self.extensions.items()
-        }
+        return {key: value.to_data(**kwargs) if hasattr(value, "to_data") else value for key, value in self.extensions.items()}
 
     @classmethod
     def extensions_from_data(cls, data):
@@ -146,7 +142,6 @@ class TextureData(BaseGLTFDataClass):
 
 
 class TextureInfoData(BaseGLTFDataClass):
-
     IS_TEXTURE_INFO_DATA = True  # only needed for ipy in `GLTFContent.check_extensions_texture_recursively`
 
     def __init__(self, index, tex_coord=None, extras=None, extensions=None):
@@ -490,9 +485,7 @@ class AnimationData(BaseGLTFDataClass):
         self._sampler_index_by_key = None
 
     def to_data(self, samplers_list, node_index_by_key):
-        channels = [
-            channel_data.to_data(node_index_by_key, self._sampler_index_by_key) for channel_data in self.channels
-        ]
+        channels = [channel_data.to_data(node_index_by_key, self._sampler_index_by_key) for channel_data in self.channels]
         animation_dict = {
             "channels": channels,
             "samplers": samplers_list,
@@ -550,7 +543,7 @@ class SkinData(BaseGLTFDataClass):
         if self.inverse_bind_matrices is not None:
             skin_dict["inverseBindMatrices"] = accessor_index
         if self.extensions is not None:
-            skin_dict["extensions"] = self.extensions_from_data()
+            skin_dict["extensions"] = self.extensions_to_data()  # type: ignore
         return skin_dict
 
     @classmethod
@@ -598,7 +591,7 @@ class ImageData(BaseGLTFDataClass):
         elif self.uri is not None:
             image_dict["uri"] = self.uri
         if self.extensions is not None:
-            image_dict["extensions"] = self.extensions_from_data()
+            image_dict["extensions"] = self.extensions_to_data()
         return image_dict
 
     @classmethod

@@ -14,10 +14,11 @@ from compas.geometry import Polyline
 from compas.geometry import Sphere
 from compas.geometry import Torus
 from compas.geometry import Vector
+
 # from compas.geometry import Plane
 
 from compas.datastructures import Mesh
-from compas.datastructures import Network
+from compas.datastructures import Graph
 from compas.datastructures import VolMesh
 
 from compas.geometry import Translation
@@ -44,7 +45,7 @@ vector = Vector(0, 0, 1)
 
 
 mesh = Mesh.from_polyhedron(8)
-network = Network.from_nodes_and_edges([(0, 0, 0), (0, -1.5, 0), (-1, 1, 0), (1, 1, 0)], [(0, 1), (0, 2), (0, 3)])
+graph = Graph.from_nodes_and_edges([(0, 0, 0), (0, -1.5, 0), (-1, 1, 0), (1, 1, 0)], [(0, 1), (0, 2), (0, 3)])
 volmesh = VolMesh.from_meshgrid(1, 1, 1, 2, 2, 2)
 
 
@@ -68,7 +69,7 @@ scene.add(vector)
 # scene.add(plane)
 
 scene.add(mesh)
-scene.add(network)
+scene.add(graph)
 scene.add(volmesh)
 
 
@@ -83,4 +84,4 @@ for obj in scene.objects:
 
 
 scene.print_hierarchy()
-scene.redraw()
+scene.draw()

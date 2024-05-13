@@ -1,20 +1,19 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 from itertools import groupby
 
-from compas.geometry import Point
-from compas.geometry import NurbsSurface
-from compas.geometry import knots_and_mults_to_knotvector
-from compas.utilities import flatten
+import Rhino.Geometry  # type: ignore
 
-from compas_rhino.conversions import point_to_rhino
+from compas.geometry import NurbsSurface
+from compas.geometry import Point
+from compas.geometry import knots_and_mults_to_knotvector
+from compas.itertools import flatten
 from compas_rhino.conversions import point_to_compas
+from compas_rhino.conversions import point_to_rhino
 
 from .surface import RhinoSurface
-
-import Rhino.Geometry  # type: ignore
 
 
 class ControlPoints(object):
@@ -143,7 +142,7 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
     # ==============================================================================
 
     @property
-    def data(self):
+    def __data__(self):
         # add superfluous knots
         # for compatibility with all/most other NURBS implementations
         # https://developer.rhino3d.com/guides/opennurbs/superfluous-knots/
@@ -154,7 +153,7 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
         mults_v[0] += 1
         mults_v[-1] += 1
         return {
-            "points": [[point.data for point in row] for row in self.points],  # type: ignore
+            "points": [[point.__data__ for point in row] for row in self.points],  # type: ignore
             "weights": self.weights,
             "knots_u": self.knots_u,
             "knots_v": self.knots_v,
@@ -166,33 +165,8 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
             "is_periodic_v": self.is_periodic_v,
         }
 
-    @data.setter
-    def data(self, data):
-        points = [[Point.from_data(point) for point in row] for row in data["points"]]
-        weights = data["weights"]
-        knots_u = data["knots_u"]
-        knots_v = data["knots_v"]
-        mults_u = data["mults_u"]
-        mults_v = data["mults_v"]
-        degree_u = data["degree_u"]
-        degree_v = data["degree_v"]
-        is_periodic_u = data["is_periodic_u"]
-        is_periodic_v = data["is_periodic_v"]
-        self.rhino_surface = NurbsSurface.from_parameters(
-            points,
-            weights,
-            knots_u,
-            knots_v,
-            mults_u,
-            mults_v,
-            degree_u,
-            degree_v,
-            is_periodic_u,
-            is_periodic_v,
-        )
-
     @classmethod
-    def from_data(cls, data):
+    def __from_data__(cls, data):
         """Construct a BSpline surface from its data representation.
 
         Parameters
@@ -206,7 +180,7 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
             The constructed surface.
 
         """
-        points = [[Point.from_data(point) for point in row] for row in data["points"]]
+        points = [[Point.__from_data__(point) for point in row] for row in data["points"]]
         weights = data["weights"]
         knots_u = data["knots_u"]
         knots_v = data["knots_v"]
@@ -336,9 +310,7 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
 
         """
         surface = cls()
-        surface.rhino_surface = rhino_surface_from_parameters(
-            points, weights, knots_u, knots_v, mults_u, mults_v, degree_u, degree_v
-        )
+        surface.rhino_surface = rhino_surface_from_parameters(points, weights, knots_u, knots_v, mults_u, mults_v, degree_u, degree_v)
         return surface
 
     @classmethod
@@ -367,9 +339,7 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
         pointcount_v = len(points[0])
         points[:] = [point_to_rhino(point) for row in points for point in row]
         surface = cls()
-        surface.rhino_surface = Rhino.Geometry.NurbsSurface.CreateFromPoints(
-            points, pointcount_u, pointcount_v, degree_u, degree_v
-        )
+        surface.rhino_surface = Rhino.Geometry.NurbsSurface.CreateFromPoints(points, pointcount_u, pointcount_v, degree_u, degree_v)
         return surface
 
     @classmethod

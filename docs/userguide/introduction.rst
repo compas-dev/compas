@@ -17,7 +17,7 @@ The Framework
 .. The framework consists of a collection of loosely coupled Python packages that can be used alone or in combination with other packages.
 
 The framework consists of a core library (:mod:`compas`), core extensions (:mod:`compas_cgal`, :mod:`compas_libigl`, :mod:`compas_occ`, :mod:`compas_gmsh`),
-a standalone viewer (:mod:`compas_view2`),
+a standalone viewer (:mod:`compas_viewer`),
 dedicated integrations for Rhino (:mod:`compas_rhino`), Grasshopper (:mod:`compas_ghpython`), and Blender (:mod:`compas_blender`),
 and a growing number of packages for specific tasks in the AEC domain, such as:
 

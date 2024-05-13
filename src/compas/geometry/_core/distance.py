@@ -1,26 +1,26 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 from math import fabs
 from math import sqrt
 
-from compas.utilities import pairwise
+from compas.itertools import pairwise
 from compas.tolerance import TOL
 
 from ._algebra import add_vectors
 from ._algebra import add_vectors_xy
-from ._algebra import subtract_vectors
-from ._algebra import subtract_vectors_xy
-from ._algebra import scale_vector
-from ._algebra import normalize_vector
-from ._algebra import length_vector
-from ._algebra import length_vector_xy
-from ._algebra import length_vector_sqrd
-from ._algebra import length_vector_sqrd_xy
 from ._algebra import cross_vectors
 from ._algebra import cross_vectors_xy
 from ._algebra import dot_vectors
+from ._algebra import length_vector
+from ._algebra import length_vector_sqrd
+from ._algebra import length_vector_sqrd_xy
+from ._algebra import length_vector_xy
+from ._algebra import normalize_vector
+from ._algebra import scale_vector
+from ._algebra import subtract_vectors
+from ._algebra import subtract_vectors_xy
 from ._algebra import vector_component
 from ._algebra import vector_component_xy
 
@@ -298,7 +298,7 @@ def distance_point_plane(point, plane):
     ----------
     point : [float, float, float] | :class:`compas.geometry.Point`
         Point coordinates.
-    plane : [point, vector] | :class:`compas.geometry.Plane`
+    plane : [point, vector]
         A point and a vector defining a plane.
 
     Returns
@@ -353,7 +353,7 @@ def distance_point_plane_signed(point, plane):
     ----------
     point : [float, float, float] | :class:`compas.geometry.Point`
         Point coordinates.
-    plane : [point, vector] | :class:`compas.geometry.Plane`
+    plane : [point, vector]
         A point and a vector defining a plane.
 
     Returns
@@ -592,9 +592,9 @@ def closest_points_in_cloud_numpy(points, cloud, threshold=10**7, distances=True
     True
 
     """
-    from numpy import asarray
     from numpy import argmin
     from numpy import argpartition
+    from numpy import asarray
     from scipy.spatial import distance_matrix
 
     points = asarray(points).reshape((-1, 3))
@@ -838,7 +838,7 @@ def closest_point_on_plane(point, plane):
     ----------
     point : [float, float, float] | :class:`compas.geometry.Point`
         XYZ coordinates of point.
-    plane : [point, vector] | :class:`compas.geometry.Plane`
+    plane : [point, vector]
         The base point and normal defining the plane.
 
     Returns

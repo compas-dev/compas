@@ -1,12 +1,12 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 from math import factorial
 
-from compas.geometry import Vector
-from compas.geometry import Point
 from compas.geometry import Frame
+from compas.geometry import Point
+from compas.geometry import Vector
 
 from .curve import Curve
 
@@ -126,6 +126,8 @@ class Bezier(Curve):
     ----------
     points : sequence[point]
         A sequence of control points, represented by their location in 3D space.
+    name : str, optional
+        The name of the curve.
 
     Attributes
     ----------
@@ -160,6 +162,13 @@ class Bezier(Curve):
 
     """
 
+    # overwriting the __new__ method is necessary
+    # to avoid triggering the plugin mechanism of the base curve class
+    def __new__(cls, *args, **kwargs):
+        curve = object.__new__(cls)
+        curve.__init__(*args, **kwargs)
+        return curve
+
     DATASCHEMA = {
         "type": "object",
         "properties": {
@@ -168,28 +177,17 @@ class Bezier(Curve):
         "required": ["points"],
     }
 
-    # overwriting the __new__ method is necessary
-    # to avoid triggering the plugin mechanism of the base curve class
-    def __new__(cls, *args, **kwargs):
-        curve = object.__new__(cls)
-        curve.__init__(*args, **kwargs)
-        return curve
+    @property
+    def __data__(self):
+        return {"points": [point.__data__ for point in self.points]}
 
-    def __init__(self, points, **kwargs):
-        super(Bezier, self).__init__(**kwargs)
+    def __init__(self, points, name=None):
+        super(Bezier, self).__init__(name=name)
         self._points = []
         self.points = points
 
     def __repr__(self):
         return "{0}(points={1!r})".format(type(self).__name__, self.points)
-
-    # ==========================================================================
-    # Data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return {"points": [point.data for point in self.points]}
 
     # ==========================================================================
     # Properties

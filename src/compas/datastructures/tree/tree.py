@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from compas.datastructures import Datastructure
 from compas.data import Data
+from compas.datastructures import Datastructure
 
 
 class TreeNode(Data):
@@ -13,17 +13,11 @@ class TreeNode(Data):
 
     Parameters
     ----------
-    name : str, optional
-        The name of the tree ndoe.
-    attributes : dict[str, Any], optional
-        User-defined attributes of the datastructure.
+    **kwargs : dict[str, Any], optional
+        User-defined attributes of the tree node.
 
     Attributes
     ----------
-    name : str
-        The name of the datastructure.
-    attributes : dict[str, Any]
-        User-defined attributes of the datastructure.
     parent : :class:`compas.datastructures.TreeNode`
         The parent node of the tree node.
     children : list[:class:`compas.datastructures.TreeNode`]
@@ -51,18 +45,42 @@ class TreeNode(Data):
             "attributes": {"type": "object"},
             "children": {"type": "array", "items": {"$recursiveRef": "#"}},
         },
-        "required": ["name", "attributes", "children"],
     }
 
-    def __init__(self, name=None, attributes=None):
+    @property
+    def __data__(self):
+        data = {}
+        if self.name is not None:
+            data["name"] = self.name
+        if self.attributes:
+            data["attributes"] = self.attributes
+        if self.children:
+            data["children"] = [child.__data__ for child in self.children]
+        return data
+
+    @classmethod
+    def __from_data__(cls, data):
+
+        name = data.get("name", None)
+        attributes = data.get("attributes", {})
+        children = data.get("children", [])
+
+        node = cls(name=name, **attributes)
+        for child in children:
+            node.add(cls.__from_data__(child))
+        return node
+
+    def __init__(self, name=None, **kwargs):
         super(TreeNode, self).__init__(name=name)
-        self.attributes = attributes or {}
+        self.attributes = kwargs
         self._parent = None
         self._children = []
         self._tree = None
 
     def __repr__(self):
-        return "<TreeNode {}>".format(self.name)
+        if self._name:
+            return "<TreeNode: {}>".format(self._name)
+        return "<TreeNode>"
 
     @property
     def is_root(self):
@@ -89,22 +107,7 @@ class TreeNode(Data):
         if self.is_root:
             return self._tree
         else:
-            return self.parent.tree
-
-    @property
-    def data(self):
-        return {
-            "name": self.name,
-            "attributes": self.attributes,
-            "children": [child.data for child in self.children],
-        }
-
-    @classmethod
-    def from_data(cls, data):
-        node = cls(data["name"], data["attributes"])
-        for child in data["children"]:
-            node.add(cls.from_data(child))
-        return node
+            return self.parent.tree  # type: ignore
 
     def add(self, node):
         """
@@ -209,21 +212,18 @@ class TreeNode(Data):
 
 
 class Tree(Datastructure):
-    """A hierarchical data structure that organizes elements into parent-child relationships. The tree starts from a unique root node, and every node (excluding the root) has exactly one parent.
+    """A hierarchical data structure that organizes elements into parent-child relationships.
+    The tree starts from a unique root node, and every node (excluding the root) has exactly one parent.
 
     Parameters
     ----------
     name : str, optional
-        The name of the datastructure.
-    attributes : dict[str, Any], optional
-        User-defined attributes of the datastructure.
+        The name of the tree.
+    **kwargs : dict, optional
+        Additional keyword arguments, which are stored in the attributes dict.
 
     Attributes
     ----------
-    name : str
-        The name of the datastructure.
-    attributes : dict[str, Any]
-        User-defined attributes of the datastructure.
     root : :class:`compas.datastructures.TreeNode`
         The root node of the tree.
     nodes : generator[:class:`compas.datastructures.TreeNode`]
@@ -244,44 +244,44 @@ class Tree(Datastructure):
     >>> branch.add(leaf1)
     >>> branch.add(leaf2)
     >>> print(tree)
-    <Tree with 4 nodes, 1 branches, and 2 leaves>
-    >>> tree.print()
-    <TreeNode root>
-        <TreeNode branch>
-            <TreeNode leaf2>
-            <TreeNode leaf1>
+    <Tree with 4 nodes>
+    |--<TreeNode: root>
+        |-- <TreeNode: branch>
+            |-- <TreeNode: leaf1>
+            |-- <TreeNode: leaf2>
 
     """
 
     DATASCHEMA = {
         "type": "object",
         "properties": {
-            "name": {"type": "string"},
             "root": TreeNode.DATASCHEMA,
             "attributes": {"type": "object"},
         },
-        "required": ["name", "root", "attributes"],
+        "required": ["root", "attributes"],
     }
 
-    def __init__(self, name=None, attributes=None):
-        super(Tree, self).__init__(name=name)
-        self.attributes.update(attributes or {})
-        self._root = None
-
     @property
-    def data(self):
+    def __data__(self):
         return {
-            "name": self.name,
-            "root": self.root.data,
             "attributes": self.attributes,
+            "root": self.root.__data__,  # type: ignore
         }
 
     @classmethod
-    def from_data(cls, data):
-        tree = cls(data["name"], data["attributes"])
-        root = TreeNode.from_data(data["root"])
+    def __from_data__(cls, data):
+        tree = cls()
+        tree.attributes.update(data["attributes"] or {})
+        root = TreeNode.__from_data__(data["root"])
         tree.add(root)
         return tree
+
+    def __init__(self, name=None, **kwargs):
+        super(Tree, self).__init__(kwargs, name=name)
+        self._root = None
+
+    def __str__(self):
+        return "<Tree with {} nodes>\n{}".format(len(list(self.nodes)), self.get_hierarchy_string(max_depth=3))
 
     @property
     def root(self):
@@ -326,7 +326,7 @@ class Tree(Datastructure):
                 raise ValueError("The tree already has a root node, remove it first.")
 
             self._root = node
-            node._tree = self
+            node._tree = self  # type: ignore
 
         else:
             # add the node as a child of the parent node
@@ -437,17 +437,70 @@ class Tree(Datastructure):
                 nodes.append(node)
         return nodes
 
-    def __repr__(self):
-        return "<Tree with {} nodes>".format(len(list(self.nodes)))
+    def get_hierarchy_string(self, max_depth=None):
+        """
+        Return string representation for the spatial hierarchy of the tree.
 
-    def print_hierarchy(self):
-        """Print the spatial hierarchy of the tree."""
+        Parameters
+        ----------
+        max_depth : int, optional
+            The maximum depth of the hierarchy to print.
+            Default is ``None``, in which case the entire hierarchy is printed.
 
-        def _print(node, prefix="", last=True):
+        Returns
+        -------
+        str
+            String representing the spatial hierarchy of the tree.
+
+        """
+
+        hierarchy = []
+
+        def traverse(node, hierarchy, prefix="", last=True, depth=0):
+
+            if max_depth is not None and depth > max_depth:
+                return
+
             connector = "└── " if last else "├── "
-            print("{}{}{}".format(prefix, connector, node))
+            hierarchy.append("{}{}{}".format(prefix, connector, node))
             prefix += "    " if last else "│   "
             for i, child in enumerate(node.children):
-                _print(child, prefix, i == len(node.children) - 1)
+                traverse(child, hierarchy, prefix, i == len(node.children) - 1, depth + 1)
 
-        _print(self.root)
+        traverse(self.root, hierarchy)
+
+        return "\n".join(hierarchy)
+
+    def to_graph(self, key_mapper=None):
+        """Convert the tree to a graph.
+
+        Parameters
+        ----------
+        key_mapper : callable, optional
+            A callable to map the tree node to a key in the graph.
+            Default is ``None``, in which case the index of the node is used.
+
+        Returns
+        -------
+        :class:`compas.datastructures.Graph`
+            The graph.
+
+        """
+        from compas.datastructures import Graph
+
+        graph = Graph(**self.attributes)
+        nodes = list(self.nodes)
+
+        if key_mapper is None:
+            key_mapper = lambda node: nodes.index(node)  # noqa: E731
+
+        for node in nodes:
+            graph.add_node(key=key_mapper(node), attr_dict=node.attributes, name=node._name)
+
+        for node in self.nodes:
+            if node.parent:
+                u = key_mapper(node.parent)
+                v = key_mapper(node)
+                graph.add_edge(u, v)
+
+        return graph

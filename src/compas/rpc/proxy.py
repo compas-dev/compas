@@ -7,9 +7,9 @@ import time
 
 import compas
 import compas._os
-from compas.rpc import RPCServerError
 from compas.data import DataDecoder
 from compas.data import DataEncoder
+from compas.rpc import RPCServerError
 
 try:
     from xmlrpclib import ServerProxy
@@ -17,8 +17,8 @@ except ImportError:
     from xmlrpc.client import ServerProxy
 
 try:
-    from subprocess import Popen
     from subprocess import PIPE
+    from subprocess import Popen
 except ImportError:
     from System.Diagnostics import Process
 
@@ -56,6 +56,12 @@ class Proxy(object):
     capture_output : bool, optional
         If True, capture the stdout/stderr output of the remote process.
         In general, `capture_output` should be True when using a `pythonw` as executable (default).
+    path : str, optional
+        Path to the folder containing the module to be proxied.
+        This is useful for cases where the module to be proxied is not on the PYTHONPATH.
+    working_directory : str, optional
+        Current working directory for the process that will be started to run the server.
+        This is useful for cases where a custom service is used and the service is not on the PYTHONPATH.
 
     Attributes
     ----------
@@ -109,6 +115,7 @@ class Proxy(object):
         autoreload=True,
         capture_output=True,
         path=None,
+        working_directory=None,
     ):
         self._package = None
         self._python = compas._os.select_python(python)
@@ -120,6 +127,7 @@ class Proxy(object):
         self._function = None
         self._profile = None
         self._path = path
+        self._working_directory = working_directory
 
         self.service = service
         self.package = package
@@ -256,6 +264,7 @@ class Proxy(object):
 
         """
         env = compas._os.prepare_environment()
+
         # this part starts the server side of the RPC setup
         # it basically launches a subprocess
         # to start the default service
@@ -263,6 +272,7 @@ class Proxy(object):
         # and registers a dispatcher for custom functionality
         try:
             Popen
+
         except NameError:
             self._process = Process()
             for name in env:
@@ -274,9 +284,7 @@ class Proxy(object):
             self._process.StartInfo.RedirectStandardOutput = self.capture_output
             self._process.StartInfo.RedirectStandardError = self.capture_output
             self._process.StartInfo.FileName = self.python
-            self._process.StartInfo.Arguments = "-m {0} --port {1} --{2}autoreload".format(
-                self.service, self._port, "" if self.autoreload else "no-"
-            )
+            self._process.StartInfo.Arguments = "-m {0} --port {1} --{2}autoreload".format(self.service, self._port, "" if self.autoreload else "no-")
             self._process.Start()
         else:
             args = [
@@ -291,12 +299,16 @@ class Proxy(object):
             if self.capture_output:
                 kwargs["stdout"] = PIPE
                 kwargs["stderr"] = PIPE
+            if self._working_directory:
+                kwargs["cwd"] = self._working_directory
 
             self._process = Popen(args, **kwargs)
+
         # this starts the client side
         # it creates a proxy for the server
         # and tries to connect the proxy to the actual server
         server = ServerProxy(self.address)
+
         print("Starting a new proxy server...")
         success = False
         attempt_count = 0
@@ -310,10 +322,12 @@ class Proxy(object):
             else:
                 success = True
                 break
+
         if not success:
             raise RPCServerError("The server is not available.")
         else:
             print("New proxy server started.")
+
         return server
 
     def stop_server(self):

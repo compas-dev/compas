@@ -22,7 +22,7 @@ To set up a developer environment
    .. code-block:: bash
 
        cd path/to/compas
-       pip install -r requirements-dev.txt
+       pip install -e ".[dev]"
 
 4. Make sure all tests pass and the code is free of lint:
 

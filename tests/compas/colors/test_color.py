@@ -4,7 +4,7 @@ import compas
 from random import random
 
 from compas.colors import Color
-from compas.geometry import allclose
+from compas.tolerance import TOL
 
 
 @pytest.mark.parametrize(
@@ -26,12 +26,12 @@ def test_color(color):
     assert c.b == color[2]
     assert c.a == color[3] if len(color) == 4 else 1.0
 
-    assert allclose(eval(repr(c)), c, tol=1e-12)
+    assert TOL.is_allclose(eval(repr(c)), c)
 
 
 def test_color_data():
     color = Color(random(), random(), random(), random())
-    other = Color.from_data(json.loads(json.dumps(color.data)))
+    other = Color.__from_data__(json.loads(json.dumps(color.__data__)))
 
     assert color.r == other.r
     assert color.g == other.g
@@ -41,8 +41,8 @@ def test_color_data():
     assert color == other
 
     if not compas.IPY:
-        assert Color.validate_data(color.data)
-        assert Color.validate_data(other.data)
+        assert Color.validate_data(color.__data__)
+        assert Color.validate_data(other.__data__)
 
 
 def test_color_predefined():

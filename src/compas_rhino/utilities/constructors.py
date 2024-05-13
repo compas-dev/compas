@@ -1,11 +1,11 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
-
-from compas.tolerance import TOL
+from __future__ import print_function
 
 import Rhino  # type: ignore
 import scriptcontext as sc  # type: ignore
+
+from compas.tolerance import TOL
 
 
 def volmesh_from_polysurfaces(cls, guids, precision=None):

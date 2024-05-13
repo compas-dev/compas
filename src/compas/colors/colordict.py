@@ -1,8 +1,9 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 from compas.data import Data
+
 from .color import Color
 
 
@@ -13,6 +14,8 @@ class ColorDict(Data):
     ----------
     default : :class:`compas.colors.Color`
         The default color to use if the requested key is not in the dictionary.
+    name : str, optional
+        The name of the color dictionary.
 
     Attributes
     ----------
@@ -21,8 +24,12 @@ class ColorDict(Data):
 
     """
 
-    def __init__(self, default, **kwargs):
-        super(ColorDict, self).__init__(**kwargs)
+    @property
+    def __data__(self):
+        return {"default": self.default.__data__, "dict": self._dict}
+
+    def __init__(self, default, name=None):
+        super(ColorDict, self).__init__(name=name)
         self._default = None
         self.default = default
         self._dict = {}
@@ -56,10 +63,6 @@ class ColorDict(Data):
 
     def __contains__(self, key):
         return key in self._dict
-
-    @property
-    def data(self):
-        return {"default": self.default.data, "dict": self._dict}
 
     def items(self):
         return self._dict.items()

@@ -25,6 +25,8 @@ class Vector(Geometry):
         The Y component of the vector.
     z : float
         The Z component of the vector.
+    name : str, optional
+        The name of the vector.
 
     Attributes
     ----------
@@ -71,8 +73,16 @@ class Vector(Geometry):
         "items": {"type": "number"},
     }
 
-    def __init__(self, x, y, z=0.0, **kwargs):
-        super(Vector, self).__init__(**kwargs)
+    @property
+    def __data__(self):
+        return list(self)
+
+    @classmethod
+    def __from_data__(cls, data):
+        return cls(*data)
+
+    def __init__(self, x, y, z=0.0, name=None):
+        super(Vector, self).__init__(name=name)
         self._x = 0.0
         self._y = 0.0
         self._z = 0.0
@@ -179,18 +189,6 @@ class Vector(Geometry):
         self.y **= n
         self.z **= n
         return self
-
-    # ==========================================================================
-    # Data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return list(self)
-
-    @classmethod
-    def from_data(cls, data):
-        return cls(*data)
 
     # ==========================================================================
     # Properties

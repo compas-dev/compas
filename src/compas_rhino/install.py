@@ -7,13 +7,9 @@ import itertools
 import os
 import sys
 
-import compas_rhino
-
 import compas._os
 import compas.plugins
-
-
-INSTALLED_VERSION = None
+import compas_rhino
 
 
 def install(version=None, packages=None, clean=False):
@@ -48,7 +44,13 @@ def install(version=None, packages=None, clean=False):
 
     # We install COMPAS packages in the scripts folder
     # instead of directly as IPy module.
-    scripts_path = compas_rhino._get_rhino_scripts_path(version)
+    # scripts_path = compas_rhino._get_rhino_scripts_path(version)
+
+    # In Rhino 8 there is no scripts folder
+    if version == "8.0":
+        installation_path = compas_rhino._get_default_rhino_ironpython_sitepackages_path(version)
+    else:
+        installation_path = compas_rhino._get_rhino_scripts_path(version)
 
     # This is for old installs
     ipylib_path = compas_rhino._get_rhino_ironpython_lib_path(version)
@@ -72,7 +74,7 @@ def install(version=None, packages=None, clean=False):
         try:
             importlib.import_module(name)
         except ImportError:
-            path = os.path.join(scripts_path, name)
+            path = os.path.join(installation_path, name)
             symlinks_to_uninstall.append(dict(name=name, link=path))
             packages.remove(name)
 
@@ -80,8 +82,8 @@ def install(version=None, packages=None, clean=False):
     # because ... they're broken!
     # If it is an actual folder or a file, leave it alone
     # because probably someone put it there on purpose.
-    for name in os.listdir(scripts_path):
-        path = os.path.join(scripts_path, name)
+    for name in os.listdir(installation_path):
+        path = os.path.join(installation_path, name)
         if os.path.islink(path):
             if not os.path.exists(path):
                 symlinks_to_uninstall.append(dict(name=name, link=path))
@@ -97,14 +99,14 @@ def install(version=None, packages=None, clean=False):
     # also remove all existing symlinks that cannot be imported
     # and reinstall symlinks that can be imported
     if clean:
-        for name in os.listdir(scripts_path):
-            path = os.path.join(scripts_path, name)
+        for name in os.listdir(installation_path):
+            path = os.path.join(installation_path, name)
             if os.path.islink(path):
                 if os.path.exists(path):
                     try:
                         importlib.import_module(name)
                     except ImportError:
-                        path = os.path.join(scripts_path, name)
+                        path = os.path.join(installation_path, name)
                         symlinks_to_uninstall.append(dict(name=name, link=path))
                     else:
                         if name not in packages:
@@ -114,7 +116,7 @@ def install(version=None, packages=None, clean=False):
     # to the list of symlinks to uninstall
     # and to the list of symlinks to install
     for package in packages:
-        symlink_path = os.path.join(scripts_path, package)
+        symlink_path = os.path.join(installation_path, package)
         symlinks_to_uninstall.append(dict(name=package, link=symlink_path))
 
         package_path = compas_rhino._get_package_path(importlib.import_module(package))
@@ -190,7 +192,7 @@ def install(version=None, packages=None, clean=False):
         )
     else:
         try:
-            _update_bootstrapper(scripts_path, packages)
+            _update_bootstrapper(installation_path, packages)
             results.append(("compas_bootstrapper", "OK"))
         except:  # noqa: E722
             results.append(
@@ -203,7 +205,7 @@ def install(version=None, packages=None, clean=False):
     # output the outcome of the installation process
     # perhaps we should more info here
     print("\nInstalling COMPAS packages to Rhino {0} scripts folder:".format(version))
-    print("{}\n".format(scripts_path))
+    print("{}\n".format(installation_path))
 
     for package, status in results:
         print("   {} {}".format(package.ljust(20), status))
@@ -219,8 +221,7 @@ def install(version=None, packages=None, clean=False):
     if exit_code != 0:
         sys.exit(exit_code)
 
-    global INSTALLED_VERSION
-    INSTALLED_VERSION = version
+    compas_rhino.INSTALLED_VERSION = version
 
 
 def _run_post_execution_steps(steps_generator):
@@ -240,9 +241,7 @@ def _run_post_execution_steps(steps_generator):
                     all_steps_succeeded = False
                 print("   {} {}: {}".format(package.ljust(20), status, message))
             except ValueError:
-                post_execution_errors.append(
-                    ValueError("Step ran without errors but result is wrongly formatted: {}".format(str(item)))
-                )
+                post_execution_errors.append(ValueError("Step ran without errors but result is wrongly formatted: {}".format(str(item))))
 
     if post_execution_errors:
         print("\nOne or more errors occurred:\n")
@@ -353,9 +352,13 @@ def _filter_installable_packages(version, packages):
     return packages
 
 
-# ==============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
 # Main
-# ==============================================================================
+# =============================================================================
+# =============================================================================
+# =============================================================================
 
 if __name__ == "__main__":
     import argparse

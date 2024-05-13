@@ -1,14 +1,17 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from math import pi, cos, sin
+from math import cos
+from math import pi
+from math import sin
 
-from compas.geometry import close
+from compas.geometry import Circle
+from compas.geometry import Frame
 from compas.geometry import Point
 from compas.geometry import Vector
-from compas.geometry import Frame
-from compas.geometry import Circle
+from compas.tolerance import TOL
+
 from .curve import Curve
 
 PI2 = 2.0 * pi
@@ -38,6 +41,8 @@ class Arc(Curve):
     frame : :class:`compas.geometry.Frame`, optional
         Local coordinate system of the arc.
         Defaults to the world XY plane.
+    name : str, optional
+        The name of the arc.
 
     Attributes
     ----------
@@ -95,21 +100,28 @@ class Arc(Curve):
 
     Visualize the arc using the viewer.
 
-    >>> from compas_view2.app import App   # doctest: +SKIP
-    >>> viewer = App()                     # doctest: +SKIP
-    >>> viewer.add(arc.to_polyline(n=20))  # doctest: +SKIP
-    >>> viewer.add(arc.frame)              # doctest: +SKIP
-    >>> viewer.run()                       # doctest: +SKIP
+    >>> from compas_viewer import Viewer   # doctest: +SKIP
+    >>> viewer = Viewer()                     # doctest: +SKIP
+    >>> viewer.scene.add(arc.to_polyline(n=20))  # doctest: +SKIP
+    >>> viewer.scene.add(arc.frame)              # doctest: +SKIP
+    >>> viewer.show()                       # doctest: +SKIP
 
     Visualize only part of the arc.
 
-    >>> from compas_view2.app import App                        # doctest: +SKIP
-    >>> viewer = App()                                          # doctest: +SKIP
-    >>> viewer.add(arc.to_polyline(n=20, domain=(0.25, 0.75)))  # doctest: +SKIP
-    >>> viewer.add(arc.frame)                                   # doctest: +SKIP
-    >>> viewer.run()                                            # doctest: +SKIP
+    >>> from compas_viewer import Viewer                        # doctest: +SKIP
+    >>> viewer = Viewer()                                          # doctest: +SKIP
+    >>> viewer.scene.add(arc.to_polyline(n=20, domain=(0.25, 0.75)))  # doctest: +SKIP
+    >>> viewer.scene.add(arc.frame)                                   # doctest: +SKIP
+    >>> viewer.show()                                            # doctest: +SKIP
 
     """
+
+    # overwriting the __new__ method is necessary
+    # to avoid triggering the plugin mechanism of the base curve class
+    def __new__(cls, *args, **kwargs):
+        curve = object.__new__(cls)
+        curve.__init__(*args, **kwargs)
+        return curve
 
     DATASCHEMA = {
         "value": {
@@ -124,15 +136,26 @@ class Arc(Curve):
         }
     }
 
-    # overwriting the __new__ method is necessary
-    # to avoid triggering the plugin mechanism of the base curve class
-    def __new__(cls, *args, **kwargs):
-        curve = object.__new__(cls)
-        curve.__init__(*args, **kwargs)
-        return curve
+    @property
+    def __data__(self):
+        return {
+            "radius": self.radius,
+            "start_angle": self.start_angle,
+            "end_angle": self.end_angle,
+            "frame": self.frame.__data__,
+        }
 
-    def __init__(self, radius, start_angle, end_angle, frame=None, **kwargs):
-        super(Arc, self).__init__(frame=frame, **kwargs)
+    @classmethod
+    def __from_data__(cls, data):
+        return cls(
+            radius=data["radius"],
+            start_angle=data["start_angle"],
+            end_angle=data["end_angle"],
+            frame=Frame.__from_data__(data["frame"]),
+        )
+
+    def __init__(self, radius, start_angle, end_angle, frame=None, name=None):
+        super(Arc, self).__init__(frame=frame, name=name)
         self._radius = None
         self._start_angle = None
         self._end_angle = None
@@ -151,36 +174,9 @@ class Arc(Curve):
 
     def __eq__(self, other):
         try:
-            return (
-                self.radius == other.radius
-                and self.start_angle == other.start
-                and self.end_angle == other.end
-                and self.frame == other.frame
-            )
+            return self.radius == other.radius and self.start_angle == other.start and self.end_angle == other.end and self.frame == other.frame
         except Exception:
             return False
-
-    # =============================================================================
-    # Data
-    # =============================================================================
-
-    @property
-    def data(self):
-        return {
-            "radius": self.radius,
-            "start_angle": self.start_angle,
-            "end_angle": self.end_angle,
-            "frame": self.frame.data,
-        }
-
-    @classmethod
-    def from_data(cls, data):
-        return cls(
-            radius=data["radius"],
-            start_angle=data["start_angle"],
-            end_angle=data["end_angle"],
-            frame=Frame.from_data(data["frame"]),
-        )
 
     # =============================================================================
     # Properties
@@ -248,7 +244,7 @@ class Arc(Curve):
 
     @property
     def is_circle(self):
-        return close(abs(abs(self.angle) - PI2), 0.0)
+        return TOL.is_close(abs(self.angle), PI2)
 
     @property
     def is_closed(self):

@@ -1,46 +1,20 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 from functools import wraps
 
-import compas_rhino
-
-from compas.geometry import centroid_polygon
-
-from compas_rhino.utilities import create_layers_from_path
-from compas_rhino.utilities import clear_layer
-from compas_rhino.utilities import clear_current_layer
-from compas_rhino.conversions import vertices_and_faces_to_rhino
-
-import System  # type: ignore
-
-from System.Collections.Generic import List  # type: ignore
-from System.Drawing.Color import FromArgb  # type: ignore
-from System.Enum import ToObject  # type: ignore
-
+import Rhino  # type: ignore
 import rhinoscriptsyntax as rs  # type: ignore
 import scriptcontext as sc  # type: ignore
+import System  # type: ignore
 
-from Rhino.Geometry import Point3d  # type: ignore
-from Rhino.Geometry import Vector3d  # type: ignore
-from Rhino.Geometry import Polyline  # type: ignore
-from Rhino.Geometry import PolylineCurve  # type: ignore
-from Rhino.Geometry import GeometryBase  # type: ignore
-from Rhino.Geometry import Brep  # type: ignore
-from Rhino.Geometry import Cylinder  # type: ignore
-from Rhino.Geometry import Circle  # type: ignore
-from Rhino.Geometry import Plane  # type: ignore
-from Rhino.Geometry import PipeCapMode  # type: ignore
-from Rhino.Geometry import Curve  # type: ignore
-from Rhino.Geometry import Sphere  # type: ignore
-from Rhino.Geometry import TextDot  # type: ignore
-
-from Rhino.DocObjects.ObjectColorSource import ColorFromObject  # type: ignore
-from Rhino.DocObjects.ObjectColorSource import ColorFromLayer  # type: ignore
-from Rhino.DocObjects.ObjectDecoration import EndArrowhead  # type: ignore
-from Rhino.DocObjects.ObjectDecoration import StartArrowhead  # type: ignore
-from Rhino.DocObjects.ObjectPlotWeightSource import PlotWeightFromObject  # type: ignore
+import compas_rhino.objects
+from compas.geometry import centroid_polygon
+from compas_rhino.conversions import vertices_and_faces_to_rhino
+from compas_rhino.layers import clear_current_layer
+from compas_rhino.layers import clear_layer
+from compas_rhino.layers import create_layers_from_path
 
 find_object = sc.doc.Objects.Find
 add_point = sc.doc.Objects.AddPoint
@@ -130,7 +104,7 @@ def draw_labels(labels, **kwargs):
         layer = label.get("layer")
         size = label.get("fontsize", 10)
         font = label.get("font", "Arial Regular")
-        dot = TextDot(str(text), Point3d(*pos))
+        dot = Rhino.Geometry.TextDot(str(text), Rhino.Geometry.Point3d(*pos))
         dot.FontHeight = size
         dot.FontFace = font
         guid = add_dot(dot)
@@ -141,10 +115,10 @@ def draw_labels(labels, **kwargs):
             continue
         attr = obj.Attributes
         if color:
-            attr.ObjectColor = FromArgb(*color)
-            attr.ColorSource = ColorFromObject
+            attr.ObjectColor = System.Drawing.Color.FromArgb(*color)
+            attr.ColorSource = Rhino.DocObjects.ObjectColorSource.ColorFromObject
         else:
-            attr.ColorSource = ColorFromLayer
+            attr.ColorSource = Rhino.DocObjects.ObjectColorSource.ColorFromLayer
         if layer and find_layer_by_fullpath:
             index = find_layer_by_fullpath(layer, True)
             if index >= 0:
@@ -189,7 +163,7 @@ def draw_points(points, **kwargs):
         name = p.get("name", "")
         color = p.get("color")
         layer = p.get("layer")
-        guid = add_point(Point3d(*pos))
+        guid = add_point(Rhino.Geometry.Point3d(*pos))
         if not guid:
             continue
         obj = find_object(guid)
@@ -197,10 +171,10 @@ def draw_points(points, **kwargs):
             continue
         attr = obj.Attributes
         if color:
-            attr.ObjectColor = FromArgb(*color)
-            attr.ColorSource = ColorFromObject
+            attr.ObjectColor = System.Drawing.Color.FromArgb(*color)
+            attr.ColorSource = Rhino.DocObjects.ObjectColorSource.ColorFromObject
         else:
-            attr.ColorSource = ColorFromLayer
+            attr.ColorSource = Rhino.DocObjects.ObjectColorSource.ColorFromLayer
         if layer and find_layer_by_fullpath:
             index = find_layer_by_fullpath(layer, True)
             if index >= 0:
@@ -252,7 +226,7 @@ def draw_lines(lines, **kwargs):
         arrow = line.get("arrow")
         layer = line.get("layer")
         width = line.get("width")
-        guid = add_line(Point3d(*sp), Point3d(*ep))
+        guid = add_line(Rhino.Geometry.Point3d(*sp), Rhino.Geometry.Point3d(*ep))
         if not guid:
             continue
         obj = find_object(guid)
@@ -260,21 +234,21 @@ def draw_lines(lines, **kwargs):
             continue
         attr = obj.Attributes
         if color:
-            attr.ObjectColor = FromArgb(*color)
-            attr.ColorSource = ColorFromObject
+            attr.ObjectColor = System.Drawing.Color.FromArgb(*color)
+            attr.ColorSource = Rhino.DocObjects.ObjectColorSource.ColorFromObject
         else:
-            attr.ColorSource = ColorFromLayer
+            attr.ColorSource = Rhino.DocObjects.ObjectColorSource.ColorFromLayer
         if arrow == "end":
-            attr.ObjectDecoration = EndArrowhead
+            attr.ObjectDecoration = Rhino.DocObjects.ObjectColorSource.EndArrowhead
         if arrow == "start":
-            attr.ObjectDecoration = StartArrowhead
+            attr.ObjectDecoration = Rhino.DocObjects.ObjectColorSource.StartArrowhead
         if layer and find_layer_by_fullpath:
             index = find_layer_by_fullpath(layer, True)
             if index >= 0:
                 attr.LayerIndex = index
         if width:
             attr.PlotWeight = width
-            attr.PlotWeightSource = PlotWeightFromObject
+            attr.PlotWeightSource = Rhino.DocObjects.ObjectPlotWeightSource.PlotWeightFromObject
         attr.Name = name
         obj.CommitChanges()
         guids.append(guid)
@@ -323,7 +297,7 @@ def draw_geodesics(geodesics, **kwargs):
         arrow = g.get("arrow")
         layer = g.get("layer")
         # replace this by a proper rhinocommon call
-        guid = rs.ShortPath(srf, Point3d(*sp), Point3d(*ep))
+        guid = rs.ShortPath(srf, Rhino.Geometry.Point3d(*sp), Rhino.Geometry.Point3d(*ep))
         if not guid:
             continue
         obj = find_object(guid)
@@ -331,14 +305,14 @@ def draw_geodesics(geodesics, **kwargs):
             continue
         attr = obj.Attributes
         if color:
-            attr.ObjectColor = FromArgb(*color)
-            attr.ColorSource = ColorFromObject
+            attr.ObjectColor = System.Drawing.Color.FromArgb(*color)
+            attr.ColorSource = Rhino.DocObjects.ObjectColorSource.ColorFromObject
         else:
-            attr.ColorSource = ColorFromLayer
+            attr.ColorSource = Rhino.DocObjects.ObjectColorSource.ColorFromLayer
         if arrow == "end":
-            attr.ObjectDecoration = EndArrowhead
+            attr.ObjectDecoration = Rhino.DocObjects.ObjectColorSource.EndArrowhead
         if arrow == "start":
-            attr.ObjectDecoration = StartArrowhead
+            attr.ObjectDecoration = Rhino.DocObjects.ObjectColorSource.StartArrowhead
         if layer and find_layer_by_fullpath:
             index = find_layer_by_fullpath(layer, True)
             if index >= 0:
@@ -386,7 +360,7 @@ def draw_polylines(polylines, **kwargs):
         color = p.get("color")
         arrow = p.get("arrow")
         layer = p.get("layer")
-        poly = Polyline([Point3d(*xyz) for xyz in points])
+        poly = Rhino.Geometry.Polyline([Rhino.Geometry.Point3d(*xyz) for xyz in points])
         poly.DeleteShortSegments(TOL)
         guid = add_polyline(poly)
         if not guid:
@@ -396,14 +370,14 @@ def draw_polylines(polylines, **kwargs):
             continue
         attr = obj.Attributes
         if color:
-            attr.ObjectColor = FromArgb(*color)
-            attr.ColorSource = ColorFromObject
+            attr.ObjectColor = System.Drawing.Color.FromArgb(*color)
+            attr.ColorSource = Rhino.DocObjects.ObjectColorSource.ColorFromObject
         else:
-            attr.ColorSource = ColorFromLayer
+            attr.ColorSource = Rhino.DocObjects.ObjectColorSource.ColorFromLayer
         if arrow == "end":
-            attr.ObjectDecoration = EndArrowhead
+            attr.ObjectDecoration = Rhino.DocObjects.ObjectColorSource.EndArrowhead
         if arrow == "start":
-            attr.ObjectDecoration = StartArrowhead
+            attr.ObjectDecoration = Rhino.DocObjects.ObjectColorSource.StartArrowhead
         if layer and find_layer_by_fullpath:
             index = find_layer_by_fullpath(layer, True)
             if index >= 0:
@@ -416,7 +390,7 @@ def draw_polylines(polylines, **kwargs):
 
 @wrap_drawfunc
 def draw_breps(faces, u=10, v=10, join=False, **kwargs):
-    """Draw polygonal faces as Breps, and optionally set individual name, color,
+    """Draw polygonal faces as Rhino.Geometry.Breps, and optionally set individual name, color,
     and layer properties.
 
     Parameters
@@ -474,28 +448,33 @@ def draw_breps(faces, u=10, v=10, join=False, **kwargs):
         name = f.get("name", "")
         color = f.get("color")
         layer = f.get("layer")
-        corners = [Point3d(*point) for point in points + points[:1]]
-        pcurve = PolylineCurve(corners)
-        geo = List[GeometryBase](1)
+        corners = [Rhino.Geometry.Point3d(*point) for point in points + points[:1]]
+        pcurve = Rhino.Geometry.PolylineCurve(corners)
+        geo = System.Collections.Generic.List[Rhino.Geometry.GeometryBase](1)
         geo.Add(pcurve)
         p = len(points)
         if p == 3:
-            brep = Brep.CreateFromCornerPoints(Point3d(*points[0]), Point3d(*points[1]), Point3d(*points[2]), TOL)
+            brep = Rhino.Geometry.Brep.CreateFromCornerPoints(
+                Rhino.Geometry.Point3d(*points[0]),
+                Rhino.Geometry.Point3d(*points[1]),
+                Rhino.Geometry.Point3d(*points[2]),
+                TOL,
+            )
         elif p == 4:
-            brep = Brep.CreateFromCornerPoints(
-                Point3d(*points[0]),
-                Point3d(*points[1]),
-                Point3d(*points[2]),
-                Point3d(*points[3]),
+            brep = Rhino.Geometry.Brep.CreateFromCornerPoints(
+                Rhino.Geometry.Point3d(*points[0]),
+                Rhino.Geometry.Point3d(*points[1]),
+                Rhino.Geometry.Point3d(*points[2]),
+                Rhino.Geometry.Point3d(*points[3]),
                 TOL,
             )
         else:
-            brep = Brep.CreatePatch(geo, u, v, TOL)
+            brep = Rhino.Geometry.Brep.CreatePatch(geo, u, v, TOL)
         if brep:
             breps.append(brep)
 
     if join:
-        breps = Brep.JoinBreps(breps, TOL)
+        breps = Rhino.Geometry.Brep.JoinRhino.Geometry.Breps(breps, TOL)
 
     guids = []
     for brep in breps:
@@ -507,10 +486,10 @@ def draw_breps(faces, u=10, v=10, join=False, **kwargs):
             continue
         attr = obj.Attributes
         if color:
-            attr.ObjectColor = FromArgb(*color)
-            attr.ColorSource = ColorFromObject
+            attr.ObjectColor = System.Drawing.Color.FromArgb(*color)
+            attr.ColorSource = Rhino.DocObjects.ObjectColorSource.ColorFromObject
         else:
-            attr.ColorSource = ColorFromLayer
+            attr.ColorSource = Rhino.DocObjects.ObjectColorSource.ColorFromLayer
         if layer and find_layer_by_fullpath:
             index = find_layer_by_fullpath(layer, True)
             if index >= 0:
@@ -564,15 +543,15 @@ def draw_cylinders(cylinders, cap=False, **kwargs):
         layer = c.get("layer")
         if radius < TOL:
             continue
-        base = Point3d(*start)
-        normal = Point3d(*end) - base
+        base = Rhino.Geometry.Point3d(*start)
+        normal = Rhino.Geometry.Point3d(*end) - base
         height = normal.Length
         if height < TOL:
             continue
-        plane = Plane(base, normal)
-        circle = Circle(plane, radius)
-        cylinder = Cylinder(circle, height)
-        brep = cylinder.ToBrep(cap, cap)
+        plane = Rhino.Geometry.Plane(base, normal)
+        circle = Rhino.Geometry.Circle(plane, radius)
+        cylinder = Rhino.Geometry.Cylinder(circle, height)
+        brep = cylinder.ToRhino.Geometry.Brep(cap, cap)
         if not brep:
             continue
         guid = add_brep(brep)
@@ -583,10 +562,10 @@ def draw_cylinders(cylinders, cap=False, **kwargs):
             continue
         attr = obj.Attributes
         if color:
-            attr.ObjectColor = FromArgb(*color)
-            attr.ColorSource = ColorFromObject
+            attr.ObjectColor = System.Drawing.Color.FromArgb(*color)
+            attr.ColorSource = Rhino.DocObjects.ObjectColorSource.ColorFromObject
         else:
-            attr.ColorSource = ColorFromLayer
+            attr.ColorSource = Rhino.DocObjects.ObjectColorSource.ColorFromLayer
         if layer and find_layer_by_fullpath:
             index = find_layer_by_fullpath(layer, True)
             if index >= 0:
@@ -642,12 +621,12 @@ def draw_pipes(pipes, cap=2, fit=1.0, **kwargs):
         color = p.get("color")
         layer = p.get("layer")
         params = [0.0, 1.0]
-        cap = ToObject(PipeCapMode, cap)
+        cap = System.Enum.ToObject(Rhino.Geometry.PipeCapMode, cap)
         if type(radius) in (int, float):
             radius = [radius] * 2
         radius = [float(r) for r in radius]
-        rail = Curve.CreateControlPointCurve([Point3d(*xyz) for xyz in points])
-        breps = Brep.CreatePipe(rail, params, radius, 1, cap, fit, abs_tol, ang_tol)
+        rail = Rhino.Geometry.Curve.CreateControlPointRhino.Geometry.Curve([Rhino.Geometry.Point3d(*xyz) for xyz in points])
+        breps = Rhino.Geometry.Brep.CreatePipe(rail, params, radius, 1, cap, fit, abs_tol, ang_tol)
         temp = [add_brep(brep) for brep in breps]
         for guid in temp:
             if not guid:
@@ -657,10 +636,10 @@ def draw_pipes(pipes, cap=2, fit=1.0, **kwargs):
                 continue
             attr = obj.Attributes
             if color:
-                attr.ObjectColor = FromArgb(*color)
-                attr.ColorSource = ColorFromObject
+                attr.ObjectColor = System.Drawing.Color.FromArgb(*color)
+                attr.ColorSource = Rhino.DocObjects.ObjectColorSource.ColorFromObject
             else:
-                attr.ColorSource = ColorFromLayer
+                attr.ColorSource = Rhino.DocObjects.ObjectColorSource.ColorFromLayer
             if layer and find_layer_by_fullpath:
                 index = find_layer_by_fullpath(layer, True)
                 if index >= 0:
@@ -708,7 +687,7 @@ def draw_spheres(spheres, **kwargs):
         name = s.get("name", "")
         color = s.get("color")
         layer = s.get("layer")
-        sphere = Sphere(Point3d(*pos), radius)
+        sphere = Rhino.Geometry.Sphere(Rhino.Geometry.Point3d(*pos), radius)
         guid = add_sphere(sphere)
         if not guid:
             continue
@@ -717,10 +696,10 @@ def draw_spheres(spheres, **kwargs):
             continue
         attr = obj.Attributes
         if color:
-            attr.ObjectColor = FromArgb(*color)
-            attr.ColorSource = ColorFromObject
+            attr.ObjectColor = System.Drawing.Color.FromArgb(*color)
+            attr.ColorSource = Rhino.DocObjects.ObjectColorSource.ColorFromObject
         else:
-            attr.ColorSource = ColorFromLayer
+            attr.ColorSource = Rhino.DocObjects.ObjectColorSource.ColorFromLayer
         if layer and find_layer_by_fullpath:
             index = find_layer_by_fullpath(layer, True)
             if index >= 0:
@@ -788,7 +767,7 @@ def draw_mesh(vertices, faces, name=None, color=None, vertex_color=None, disjoin
     if guid != System.Guid.Empty:
         if vertexcolors:
             try:
-                compas_rhino.set_mesh_vertex_colors(guid, vertexcolors)
+                compas_rhino.objects.set_mesh_vertex_colors(guid, vertexcolors)
             except Exception:
                 pass
 
@@ -796,10 +775,10 @@ def draw_mesh(vertices, faces, name=None, color=None, vertex_color=None, disjoin
         if obj:
             attr = obj.Attributes
             if color:
-                attr.ObjectColor = FromArgb(*color)
-                attr.ColorSource = ColorFromObject
+                attr.ObjectColor = System.Drawing.Color.FromArgb(*color)
+                attr.ColorSource = Rhino.DocObjects.ObjectColorSource.ColorFromObject
             else:
-                attr.ColorSource = ColorFromLayer
+                attr.ColorSource = Rhino.DocObjects.ObjectColorSource.ColorFromLayer
             if name:
                 attr.Name = name
             obj.CommitChanges()
@@ -864,7 +843,7 @@ def draw_faces(faces, **kwargs):
 
         if vertexcolors:
             try:
-                compas_rhino.set_mesh_vertex_colors(guid, vertexcolors)
+                compas_rhino.objects.set_mesh_vertex_colors(guid, vertexcolors)
             except Exception:
                 pass
 
@@ -920,7 +899,7 @@ def draw_circles(circles, **kwargs):
         name = data.get("name", "")
         color = data.get("color")
         layer = data.get("layer")
-        circle = Circle(Plane(Point3d(*point), Vector3d(*normal)), radius)
+        circle = Rhino.Geometry.Circle(Rhino.Geometry.Plane(Rhino.Geometry.Point3d(*point), Rhino.Geometry.Vector3d(*normal)), radius)
         guid = add_circle(circle)
         if not guid:
             continue
@@ -929,10 +908,10 @@ def draw_circles(circles, **kwargs):
             continue
         attr = obj.Attributes
         if color:
-            attr.ObjectColor = FromArgb(*color)
-            attr.ColorSource = ColorFromObject
+            attr.ObjectColor = System.Drawing.Color.FromArgb(*color)
+            attr.ColorSource = Rhino.DocObjects.ObjectColorSource.ColorFromObject
         else:
-            attr.ColorSource = ColorFromLayer
+            attr.ColorSource = Rhino.DocObjects.ObjectColorSource.ColorFromLayer
         if layer and find_layer_by_fullpath:
             index = find_layer_by_fullpath(layer, True)
             if index >= 0:
@@ -965,7 +944,7 @@ def draw_curves(curves, **kwargs):
     .. code-block:: python
 
         Schema({
-            'curve': compas.geometry.Curve,
+            'curve': compas.geometry.Rhino.Geometry.Curve,
             Optional('name', default=''): str,
             Optional('color', default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
             Optional('layer', default=None): str
@@ -986,10 +965,10 @@ def draw_curves(curves, **kwargs):
             continue
         attr = obj.Attributes
         if color:
-            attr.ObjectColor = FromArgb(*color)
-            attr.ColorSource = ColorFromObject
+            attr.ObjectColor = System.Drawing.Color.FromArgb(*color)
+            attr.ColorSource = Rhino.DocObjects.ObjectColorSource.ColorFromObject
         else:
-            attr.ColorSource = ColorFromLayer
+            attr.ColorSource = Rhino.DocObjects.ObjectColorSource.ColorFromLayer
         if layer and find_layer_by_fullpath:
             index = find_layer_by_fullpath(layer, True)
             if index >= 0:
@@ -1042,10 +1021,10 @@ def draw_surfaces(surfaces, **kwargs):
             continue
         attr = obj.Attributes
         if color:
-            attr.ObjectColor = FromArgb(*color)
-            attr.ColorSource = ColorFromObject
+            attr.ObjectColor = System.Drawing.Color.FromArgb(*color)
+            attr.ColorSource = Rhino.DocObjects.ObjectColorSource.ColorFromObject
         else:
-            attr.ColorSource = ColorFromLayer
+            attr.ColorSource = Rhino.DocObjects.ObjectColorSource.ColorFromLayer
         if layer and find_layer_by_fullpath:
             index = find_layer_by_fullpath(layer, True)
             if index >= 0:
@@ -1062,7 +1041,7 @@ def draw_brep(brep, color=None, **kwargs):
 
     Parameters
     ----------
-    brep : :class:`compas_rhino.geometry.RhinoBrep`
+    brep : :class:`compas_rhino.geometry.RhinoRhino.Geometry.Brep`
         The brep to draw.
     color : tuple[int, int, int] | tuple[float, float, float], optional
         The color to draw the brep with.
@@ -1070,11 +1049,11 @@ def draw_brep(brep, color=None, **kwargs):
     Returns
     -------
     :rhino:`System.Guid`
-        The Rhino document GUID of the drawn Brep.
+        The Rhino document GUID of the drawn Rhino.Geometry.Brep.
 
     """
     native_brep = brep.native_brep
     if color:
         for face in native_brep.Faces:
-            face.PerFaceColor = FromArgb(*color)
+            face.PerFaceColor = System.Drawing.Color.FromArgb(*color)
     return add_brep(native_brep)

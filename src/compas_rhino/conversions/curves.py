@@ -1,36 +1,24 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
+import Rhino  # type: ignore
 import scriptcontext as sc  # type: ignore
 
-from Rhino.Geometry import Interval  # type: ignore
-from Rhino.Geometry import NurbsCurve as RhinoNurbsCurve  # type: ignore
-from Rhino.Geometry import Line as RhinoLine  # type: ignore
-from Rhino.Geometry import Circle as RhinoCircle  # type: ignore
-from Rhino.Geometry import Ellipse as RhinoEllipse  # type: ignore
-from Rhino.Geometry import Polyline as RhinoPolyline  # type: ignore
-from Rhino.Geometry import PolylineCurve as RhinoPolylineCurve  # type: ignore
-from Rhino.Geometry import Arc as RhinoArc  # type: ignore
-from Rhino.DocObjects import RhinoObject  # type: ignore
-
-from compas.geometry import Line
+from compas.geometry import Arc
 from compas.geometry import Circle
 from compas.geometry import Ellipse
-from compas.geometry import Polyline
-from compas.geometry import Arc
+from compas.geometry import Line
 from compas.geometry import NurbsCurve
+from compas.geometry import Polyline
 
 from .exceptions import ConversionError
-
-from .geometry import point_to_rhino
-from .geometry import plane_to_rhino
 from .geometry import frame_to_rhino_plane
-
-from .geometry import point_to_compas
 from .geometry import plane_to_compas
 from .geometry import plane_to_compas_frame
-
+from .geometry import plane_to_rhino
+from .geometry import point_to_compas
+from .geometry import point_to_rhino
 
 # =============================================================================
 # To Rhino
@@ -49,7 +37,7 @@ def data_to_rhino_curve(data):
     :rhino:`Rhino.Geometry.NurbsCurve`
 
     """
-    nurbs = RhinoNurbsCurve(data["degree"], len(data["points"]))
+    nurbs = Rhino.Geometry.NurbsCurve(data["degree"], len(data["points"]))
 
     for index, xyz in enumerate(data["points"]):
         nurbs.Points.SetPoint(index, *xyz)
@@ -76,7 +64,7 @@ def line_to_rhino(line):
     :rhino:`Rhino.Geometry.Line`
 
     """
-    return RhinoLine(point_to_rhino(line[0]), point_to_rhino(line[1]))
+    return Rhino.Geometry.Line(point_to_rhino(line[0]), point_to_rhino(line[1]))
 
 
 def line_to_rhino_curve(line):
@@ -91,7 +79,7 @@ def line_to_rhino_curve(line):
     :rhino:`Rhino.Geometry.Curve`
 
     """
-    return RhinoNurbsCurve.CreateFromLine(line_to_rhino(line))
+    return Rhino.Geometry.NurbsCurve.CreateFromLine(line_to_rhino(line))
 
 
 def polyline_to_rhino(polyline, tol=None):
@@ -107,7 +95,7 @@ def polyline_to_rhino(polyline, tol=None):
 
     """
     tol = tol or sc.doc.ModelAbsoluteTolerance
-    polyline = RhinoPolyline([point_to_rhino(point) for point in polyline])
+    polyline = Rhino.Geometry.Polyline([point_to_rhino(point) for point in polyline])
     polyline.DeleteShortSegments(tol)
     return polyline
 
@@ -124,7 +112,7 @@ def polyline_to_rhino_curve(polyline):
     :rhino:`Rhino.Geometry.PolylineCurve`
 
     """
-    return RhinoPolylineCurve([point_to_rhino(point) for point in polyline])
+    return Rhino.Geometry.PolylineCurve([point_to_rhino(point) for point in polyline])
 
 
 def circle_to_rhino(circle):
@@ -139,7 +127,7 @@ def circle_to_rhino(circle):
     :rhino:`Rhino.Geometry.Circle`
 
     """
-    return RhinoCircle(plane_to_rhino(circle.plane), circle.radius)
+    return Rhino.Geometry.Circle(plane_to_rhino(circle.plane), circle.radius)
 
 
 def circle_to_rhino_curve(circle):
@@ -154,7 +142,7 @@ def circle_to_rhino_curve(circle):
     :rhino:`Rhino.Geometry.Curve`
 
     """
-    return RhinoNurbsCurve.CreateFromCircle(circle_to_rhino(circle))
+    return Rhino.Geometry.NurbsCurve.CreateFromCircle(circle_to_rhino(circle))
 
 
 def ellipse_to_rhino(ellipse):
@@ -169,7 +157,7 @@ def ellipse_to_rhino(ellipse):
     :rhino:`Rhino.Geometry.Ellipse`
 
     """
-    return RhinoEllipse(plane_to_rhino(ellipse.plane), ellipse.major, ellipse.minor)
+    return Rhino.Geometry.Ellipse(plane_to_rhino(ellipse.plane), ellipse.major, ellipse.minor)
 
 
 def ellipse_to_rhino_curve(ellipse):
@@ -184,7 +172,7 @@ def ellipse_to_rhino_curve(ellipse):
     :rhino:`Rhino.Geometry.Curve`
 
     """
-    return RhinoNurbsCurve.CreateFromEllipse(ellipse_to_rhino(ellipse))
+    return Rhino.Geometry.NurbsCurve.CreateFromEllipse(ellipse_to_rhino(ellipse))
 
 
 def arc_to_rhino(arc):
@@ -201,9 +189,9 @@ def arc_to_rhino(arc):
 
     """
     plane = frame_to_rhino_plane(arc.frame)
-    circle = RhinoCircle(plane, arc.radius)
-    angle_interval = Interval(arc.start_angle, arc.end_angle)
-    return RhinoArc(circle, angle_interval)
+    circle = Rhino.Geometry.Circle(plane, arc.radius)
+    angle_interval = Rhino.Geometry.Interval(arc.start_angle, arc.end_angle)
+    return Rhino.Geometry.Arc(circle, angle_interval)
 
 
 def curve_to_rhino(curve):
@@ -320,7 +308,7 @@ def curve_to_compas_line(curve):
     :class:`compas.geometry.Line`
 
     """
-    if isinstance(curve, RhinoObject):
+    if isinstance(curve, Rhino.DocObjects.RhinoObject):
         curve = curve.Geometry
     return Line(point_to_compas(curve.PointAtStart), point_to_compas(curve.PointAtEnd))
 
@@ -342,7 +330,7 @@ def curve_to_compas_circle(curve):
         If the curve cannot be converted to a circle.
 
     """
-    if isinstance(curve, RhinoObject):
+    if isinstance(curve, Rhino.DocObjects.RhinoObject):
         curve = curve.Geometry
     result, circle = curve.TryGetCircle()
     if not result:
@@ -367,7 +355,7 @@ def curve_to_compas_ellipse(curve):
         If the curve cannot be converted to an ellipse.
 
     """
-    if isinstance(curve, RhinoObject):
+    if isinstance(curve, Rhino.DocObjects.RhinoObject):
         curve = curve.Geometry
     result, ellipse = curve.TryGetEllipse()
     if not result:
@@ -392,7 +380,7 @@ def curve_to_compas_polyline(curve):
         If the curve cannot be converted to a polyline.
 
     """
-    if isinstance(curve, RhinoObject):
+    if isinstance(curve, Rhino.DocObjects.RhinoObject):
         curve = curve.Geometry
     result, polyline = curve.TryGetPolyline()
     if not result:
@@ -412,7 +400,7 @@ def curve_to_compas_data(curve):
     dict
 
     """
-    if isinstance(curve, RhinoObject):
+    if isinstance(curve, Rhino.DocObjects.RhinoObject):
         curve = curve.Geometry
 
     nurbs = curve.ToNurbsCurve()
@@ -459,7 +447,7 @@ def curve_to_compas(curve):
         If the curve cannot be converted to a COMPAS curve.
 
     """
-    if isinstance(curve, RhinoObject):
+    if isinstance(curve, Rhino.DocObjects.RhinoObject):
         curve = curve.Geometry
     nurbs = curve.ToNurbsCurve()
     return NurbsCurve.from_native(nurbs)

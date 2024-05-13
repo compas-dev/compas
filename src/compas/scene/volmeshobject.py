@@ -1,12 +1,11 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
-
-from abc import abstractmethod
+from __future__ import print_function
 
 from compas.geometry import transform_points
-from .sceneobject import SceneObject
+
 from .descriptors.colordict import ColorDictAttribute
+from .sceneobject import SceneObject
 
 
 class VolMeshObject(SceneObject):
@@ -40,18 +39,22 @@ class VolMeshObject(SceneObject):
         The size of the vertices. Default is ``1.0``.
     edgewidth : float
         The width of the edges. Default is ``1.0``.
-    show_vertices : bool
-        Flag for showing or hiding the vertices. Default is ``False``.
-    show_edges : bool
-        Flag for showing or hiding the edges. Default is ``True``.
-    show_faces : bool
-        Flag for showing or hiding the faces. Default is ``True``.
+    show_vertices : Union[bool, sequence[float]]
+        Flag for showing or hiding the vertices, or a list of keys for the vertices to show.
+        Default is ``False``.
+    show_edges : Union[bool, sequence[tuple[int, int]]]
+        Flag for showing or hiding the edges, or a list of keys for the edges to show.
+        Default is ``True``.
+    show_faces : Union[bool, sequence[int]]
+        Flag for showing or hiding the faces, or a list of keys for the faces to show.
+        Default is ``False``.
     show_cells : bool
-        Flag for showing or hiding the cells. Default is ``True``.
+        Flag for showing or hiding the cells, or a list of keys for the cells to show.
+        Default is ``True``.
 
     See Also
     --------
-    :class:`compas.scene.NetworkObject`
+    :class:`compas.scene.GraphObject`
     :class:`compas.scene.MeshObject`
 
     """
@@ -74,7 +77,7 @@ class VolMeshObject(SceneObject):
         self.edgewidth = kwargs.get("edgewidth", 1.0)
         self.show_vertices = kwargs.get("show_vertices", False)
         self.show_edges = kwargs.get("show_edges", True)
-        self.show_faces = kwargs.get("show_faces", True)
+        self.show_faces = kwargs.get("show_faces", False)
         self.show_cells = kwargs.get("show_cells", True)
 
     @property
@@ -108,7 +111,6 @@ class VolMeshObject(SceneObject):
     def vertex_xyz(self, vertex_xyz):
         self._vertex_xyz = vertex_xyz
 
-    @abstractmethod
     def draw_vertices(self, vertices=None, color=None, text=None):
         """Draw the vertices of the mesh.
 
@@ -133,7 +135,6 @@ class VolMeshObject(SceneObject):
         """
         raise NotImplementedError
 
-    @abstractmethod
     def draw_edges(self, edges=None, color=None, text=None):
         """Draw the edges of the mesh.
 
@@ -158,7 +159,6 @@ class VolMeshObject(SceneObject):
         """
         raise NotImplementedError
 
-    @abstractmethod
     def draw_faces(self, faces=None, color=None, text=None):
         """Draw the faces of the mesh.
 
@@ -183,7 +183,6 @@ class VolMeshObject(SceneObject):
         """
         raise NotImplementedError
 
-    @abstractmethod
     def draw_cells(self, cells=None, color=None, text=None):
         """Draw the cells of the mesh.
 
@@ -206,6 +205,10 @@ class VolMeshObject(SceneObject):
             The identifiers of the objects representing the cells in the visualization context.
 
         """
+        raise NotImplementedError
+
+    def draw(self):
+        """Draw the volmesh."""
         raise NotImplementedError
 
     def clear_vertices(self):

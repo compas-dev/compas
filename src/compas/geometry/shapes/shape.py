@@ -1,11 +1,11 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from compas.geometry import Geometry
 from compas.geometry import Frame
-from compas.geometry import Transformation
+from compas.geometry import Geometry
 from compas.geometry import Rotation
+from compas.geometry import Transformation
 
 
 class Shape(Geometry):
@@ -43,8 +43,8 @@ class Shape(Geometry):
 
     """
 
-    def __init__(self, frame=None, **kwargs):
-        super(Shape, self).__init__(**kwargs)
+    def __init__(self, frame=None, name=None):
+        super(Shape, self).__init__(name=name)
         self._frame = None
         self._transformation = None
         self.frame = frame

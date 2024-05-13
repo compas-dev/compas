@@ -1,6 +1,6 @@
-from __future__ import print_function
-from __future__ import division
 from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 import base64
 import json
@@ -238,10 +238,7 @@ class GLTFReader(object):
         buffer_index = buffer_view["buffer"]
         buffer = self._get_buffer(buffer_index)
 
-        data = [
-            unpack_from(buffer[i : i + byte_stride].tobytes())
-            for i in range(offset, offset + count * byte_stride, byte_stride)
-        ]  # noqa E203
+        data = [unpack_from(buffer[i : i + byte_stride].tobytes()) for i in range(offset, offset + count * byte_stride, byte_stride)]  # noqa E203
 
         if num_components == 1:
             data = [item[0] for item in data]  # unwrap scalars from tuple

@@ -1,7 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 from compas.plugins import pluggable
 
 
@@ -24,7 +20,12 @@ def delaunay_triangulation(points):
     >>>
 
     """
-    raise NotImplementedError
+    from numpy import asarray
+    from scipy.spatial import Delaunay
+
+    xyz = asarray(points)
+    d = Delaunay(xyz[:, 0:2])
+    return xyz, d.simplices
 
 
 delaunay_triangulation.__pluggable__ = True

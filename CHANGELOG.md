@@ -8,6 +8,264 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Added
+
+* Added `compas.geometry.Line.point_from_start` and `compas.geometry.Line.point_from_end`.
+* Added `compas.geometry.Line.flip` and `compas.geometry.Line.flipped`.
+* Added an `compas.geometry.Frame.interpolate_frame(s)` method
+* Added `compas.colors.Color.contrast`.
+* Added `compas.geometry.Brep.from_plane`.
+* Added `compas.tolerance.Tolerance.angulardeflection`.
+* Added `compas.scene.SceneObject.scene` attribute.
+
+### Changed
+
+* Changed and update the `compas_view2` examples into `compas_viewer`.
+* Changed and updated the `compas_view2` examples into `compas_viewer`.
+* Changed `compas.scene.Scene` to inherent from `compas.datastructrues.Tree`.
+* Changed `compas.scene.SceneObject` to inherent from `compas.datastructrues.TreeNode`.
+* Changed `compas.geoemetry._core.predicates_3` bug fix in `is_coplanar` while loop when there are 4 points.
+* Changed to implementation of `Mesh.unify_cycles` to use the corresponding function of `compas.topology.orientation`.
+* Fixed bug in `compas.topology.orientation.unify_cycles`.
+* Fixed bug in `Mesh.thickened`.
+* Fixed various bugs in `compas.geometry.Quaternion`.
+* Changed repo config to `pyproject.toml`.
+* Fixed broken import in `copas.geometry.trimesh_smoothing_numpy`.
+* Changed `RhinoBrep.trimmed` to return single result or raise `BrepTrimmingError` instead of returning a list.
+* Changed order of imports according to `isort` and changed line length to `179`.
+* Changed use of `compas.geometry.allclose` to `compas.tolerance.TOL.is_allclose`.
+* Changed use of `compas.geometry.close` to `compas.tolerance.TOL.is_close`.
+* Changed imports of itertools to `compas.itertools` instead of `compas.utilities`.
+* Updated `compas_rhino.conversions.point_to_compas` to allow for `Rhino.Geometry.Point` as input.
+* Changed `compas.datastructures.Tree.print_hierarchy` to `compas.datastructures.Tree.__str__`.
+
+### Removed
+
+* Removed `compas.scene.SceneObjectNode`, functionalities merged into `compas.scene.SceneObject`.
+* Removed `compas.scene.SceneTree`, functionalities merged into `compas.scene.Scene`.
+* Removed default implementation of `compas.geometry.trimesh_geodistance` since nonexistent.
+* Removed `compas.utilities.geometric_key` and replaced it by `compas.tolerance.TOL.geometric_key`.
+* Removed `compas.utilities.geometric_key_xy` and replaced it by `compas.tolerance.TOL.geometric_key_xy`.
+* Removed indexed attribute access from all geometry classes except `Point`, `Vector`, `Line`, `Polygon`, `Polyline`.
+* Removed `compas.datastructures.Tree.print_hierarchy`.
+
+## [2.1.0] 2024-03-01
+
+### Added
+
+* Added optional argument `cap_ends` to `Brep.from_extrusion()`.
+* Added implementation in `RhinoBrep.from_extrusion()`.
+* Added `max_depth` to `compas.datastructures.Tree.print_hierarchy()`.
+* Added `compas.datastructures.Tree.to_graph()`.
+
+### Changed
+
+* Changed `compas.datastructures.TreeNode` to skip serialising `attributes`, `name` and `children` if being empty.
+* Changed `compas.datastructures.TreeNode.__repr__` to omit `name` if `None`.
+* Fix bug in `compas_rhino.geometry.NurbsCurve.from_parameters` and `compas_rhino.geometry.NurbsCurve.from_points` related to the value of the parameter `degree`.
+* Changed `compas.scene.descriptors.ColorDictAttribute` to accept a `compas.colors.ColorDict` as value.
+* Changed `compas_rhino.scene.RhinoMeshObject.draw` to preprocess vertex and face color dicts into lists.
+* Changed `compas_rhino.conversions.vertices_and_faces_to_rhino` to handle vertex color information correctly.
+* Changed `compas_rhino.conversions.average_color` return type `compas.colors.Color` instead of tuple.
+
+### Removed
+
+## [2.0.4] 2024-02-12
+
+### Added
+
+### Changed
+
+* Fixed bug in `compas_rhino.scene`.
+
+### Removed
+
+## [2.0.3] 2024-02-09
+
+### Added
+
+* Added `compas.linalg`.
+* Added `compas.matrices`.
+* Added `compas.itertools`.
+* Added `compas_rhino.scene.helpers`.
+* Added `compas.scene.SceneObject.contrastcolor`.
+
+### Changed
+
+* Fixed bug in `compas.geometry.oriented_bounding_box_numpy` to support points in plane.
+* Changed `compas_rhino.scene.RhinoSceneObject` to pass on positional arguments.
+* Changed `compas_rhino.scene.RhinoBoxObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoBrepObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoCapsuleObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoCircleObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoConeObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoCurveObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoCylinderObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoEllipseObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoFrameObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoGraphObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoLineObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoMeshObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoPlaneObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoPointObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoPolygonObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoPolyhedronObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoPolylineObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoSphereObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoSurfaceObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoTorusObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoVectorObject.draw` to use attributes only.
+* Changed `compas_rhino.scene.RhinoVolMeshObject.draw` to use attributes only.
+
+### Removed
+
+* Removed `compas.geometry.linalg`.
+* Removed `compas.topology.matrices`.
+* Removed `compas.utilities.itertools`.
+
+## [2.0.2] 2024-02-06
+
+### Added
+
+* Added Blender paths for Windows.
+* Added `compas_rhino.print_python_path`.
+* Added `compas_blender.print_python_path`.
+
+### Changed
+
+* Fixed bug in `compas.tolerange.Tolerance.format_number()` related to IronPython environment.
+
+### Removed
+
+
+## [2.0.1] 2024-02-01
+
+### Added
+
+* Added pluggable `compas.geometry.surfaces.nurbs.new_nurbssurface_from_native`.
+* Added `compas.geometry.NurbsSurface.from_native`.
+* Added plugin `compas_rhino.geometry.surfaces.new_nurbssurface_from_plane`.
+
+### Changed
+
+* Fixed bug in `compas_blender.clear`.
+* Fixed bug in `compas_rhino.conversions.surface_to_compas`.
+* Fixed bug in `compas_rhino.conversions.surface_to_compas_mesh`.
+* Fixed bug in `compas_rhino.conversions.surface_to_compas_quadmesh`.
+* Fixed bug in plugin `compas_rhino.geometry.curves.new_nurbscurve_from_native`.
+* Fixed bug in plugin `compas_rhino.geometry.surfaces.new_nurbssurface_from_native`.
+
+### Removed
+
+* Removed plugin `compas_rhino.geometry.surfaces.new_surface_from_plane`.
+
+
+## [2.0.0] 2024-01-31
+
+### Added
+
+* Added `group` attribute to `compas_rhino.scene.RhinoSceneObject`.
+* Added `_guid_mesh`, `_guids_vertices`, `_guids_edges`, `_guids_faces`, `_guids_vertexlabels`, `_guids_edgelables`, `_guids_facelabels`, `_guids_vertexnormals`, `_guids_facenormals`, `_guids_spheres`, `_guids_pipes`, `disjoint` attributes to `compas_rhino.scene.MeshObject`.
+* Added `_guids_nodes`, `_guids_edges`, `_guids_nodelabels`, `_guids_edgelables`, `_guids_spheres`, `_guids_pipes` attributes to `compas_rhino.scene.GraphObject`.
+* Added `_guids_vertices`, `_guids_edges`, `_guids_faces`, `_guids_cells`, `_guids_vertexlabels`, `_guids_edgelables`, `_guids_facelabels`, `_guids_celllabels`, `disjoint` attributes to `compas_rhino.scene.MeshObject`.
+* Added test for `compas.scene.Scene` serialisation.
+
+### Changed
+
+* Changed `compas.scene.Mesh`'s `show_vertices`, `show_edges`, `show_faces` to optionally accept a sequence of keys.
+* Changed `compas.scene.Graph`'s `show_nodes`, `show_edges` to optionally accept a sequence of keys.
+* Changed `compas.scene.VolMesh`'s `show_vertices`, `show_edges`, `show_faces`, `show_cells` to optionally accept a sequence of keys.
+* Fixed missing implementation of `Sphere.base`.
+* Fixed bug in `intersection_sphere_sphere`.
+
+### Removed
+
+* Removed kwargs from `compas_rhino.scene.MeshObject.draw`.
+* Removed kwargs from `compas_rhino.scene.GraphObject.draw`.
+* Removed kwargs from `compas_rhino.scene.VolMeshObject.draw`.
+
+## [2.0.0-beta.4] 2024-01-26
+
+### Added
+
+* Added `compas_rhino.objects`.
+* Added `compas_rhino.layers`.
+* Added `compas_rhino.install_with_pip`.
+* Added `before_draw` pluggable to `compas.scene.Scene.draw`.
+* Added `after_draw` pluggable to `compas.scene.Scene.draw`.
+* Added description in tutorial about `compas.scene.context`.
+* Added `compas_blender.data`.
+* Added `compas_blender.collections`.
+* Added `compas_blender.objects`.
+* Added `compas_rhino.ui`.
+* Added `compas_rhino.unload_modules`.
+* Added `compas_ghpython.unload_modules`.
+* Added `compas_ghpython.sets`.
+* Added `compas_ghpython.timer`.
+* Added `scale` and `scaled` to `compas.datastructures.Datastructure`.
+* Added `rotate` and `rotated` to `compas.datastructures.Datastructure`.
+* Added `translate` and `translated` to `compas.datastructures.Datastructure`.
+
+### Changed
+
+* Changed `compas.tolerance.Tolerance` into singleton.
+* Changed `compas_rhino.geometry.curves.nursb.RhinoNurbsCurve` to use private data API.
+* Changed `compas_rhino.geometry.surfaces.nursb.RhinoNurbsSurface` to use private data API.
+* Changed `compas.scene.Scene.redraw` to `draw`.
+* Fixed `register_scene_objects` not called when there is a context given in kwargs of `SceneObject`.
+
+### Removed
+
+* Removed `compas_blender.geometry.curves`.
+* Removed `compas_rhino.utilities.objects`.
+* Removed `compas_rhino.utilities.layers`.
+* Removed `compas_rhino.utilities.constructors`.
+* Removed `compas_rhino.utilities.document`.
+* Removed `compas_rhino.utilities.geometry`.
+* Removed `compas_rhino.utilities.misc`.
+* Removed `compas_blender.utilities.data`.
+* Removed `compas_blender.utilities.collections`.
+* Removed `compas_blender.utilities.objects`.
+* Removed `compas_ghpython.utilities.sets`.
+* Removed `compas_ghpython.utilities.timer`.
+
+## [2.0.0-beta.3] 2024-01-19
+
+### Added
+
+* Added `compas.dtastructures.Network` as alias of `compas.datastructures.Graph`.
+* Added `compas.data.Data.name` and included it in serialisation in case `compas.data.Data._name is not None`.
+
+### Changed
+
+* Merged `compas.datastructures.Halfedge` into `compas.datastructures.Mesh`.
+* Merged `compas.datastructures.Network` into `compas.datastructures.Graph`.
+* Merged `compas.datastructures.Halfface` into `compas.datastructures.VolMesh`.
+* Fixed `RhinoBrep` doesn't get capped after trimming.
+* Changed `compas.data.Data.data` to `compas.data.Data.__data__`.
+* Changed `compas.data.Data.dtype` to `compas.data.Data.__dtype__`.
+* Changed `compas.data.Data.from_data` to `compas.data.Data.__from_data__`.
+* Changed `compas.geometry.triangulation_earclip` face vertex index reversion when the polygon is flipped.
+
+### Removed
+
+* Removed `compas.datastructures.Network`.
+* Removed `compas.datastructures.Halfedge`.
+* Removed `compas.datastructures.Halfface`.
+* Removed `compas.data.Data.attributes`.
+* Removed `compas.data.Datastructure.attributes`.
+* Removed `attributes` from `compas.datastructures.Assembly.data`.
+* Removed `attributes` from `compas.datastructures.CellNetwork.data`.
+* Removed `attributes` from `compas.datastructures.Graph.data`.
+* Removed `attributes` from `compas.datastructures.Mesh.data`.
+* Removed `attributes` from `compas.datastructures.Tree.data`.
+* Removed `attributes` from `compas.datastructures.VolMesh.data`.
+* Removed `compas.data.Data.to_data`.
+* Removed `compas.rpc.XFunc`.
+
+## [2.0.0-beta.2] 2024-01-12
+
+### Added
+
 * Added `viewerinstance` in `compas.scene.Scene` to support viewers context detection.
 * Added `compas_rhino8` as starting point for Rhino8 support.
 * Added `compas.scene.SceneObjectNode`.
@@ -33,20 +291,92 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `show_edges` flag to `compas.scene.VolMeshObject`.
 * Added `show_faces` flag to `compas.scene.VolMeshObject`.
 * Added `show_cells` flag to `compas.scene.VolMeshObject`.
-* Added `compas.datastructures.HashTree` and `compas.datastructures.HashNode`.
+* Added `compas.data.Data.to_jsonstring` and `compas.data.Data.from_jsonstring`.
+* Added `compas.data.Data.attributes`.
+* Added optional param `working_directory` to `compas.rpc.Proxy` to be able to start services defined in random locations.
+* Added `compas.datastructures.Datastructure.transform` and `compas.datastructures.Datastructure.transformed`.
+* Added `compas.datastructures.Datastructure.transform_numpy` and `compas.datastructures.Datastructure.transformed_numpy`.
+* Added `compas.datastructures.Halfedge.flip_cycles`.
+* Added `compas.datastructures.Halfedge.is_connected`, `compas.datastructures.Halfedge.connected_vertices`, `compas.datastructures.Halfedge.connected_faces`.
+* Added `compas.datastructures.Mesh.join`.
+* Added `compas.datastructures.Mesh.weld` and `compas.datastructures.Mesh.remove_duplicate_vertices`.
+* Added `compas.datastructures.Mesh.quads_to_triangles`.
+* Added `compas.datastructures.Mesh.unify_cycles`.
+* Added `compas.datastructures.Mesh.aabb` and `compas.datastructures.Mesh.obb`.
+* Added `compas.datastructures.Mesh.offset` and `compas.datastructures.Mesh.thickened`.
+* Added `compas.datastructures.Mesh.exploded`.
+* Added `compas.datastructures.Mesh.adjacency_matrix`, `compas.datastructures.Mesh.connectivity_matrix`, `compas.datastructures.Mesh.degree_matrix`, `compas.datastructures.Mesh.laplacian_matrix`.
+* Added `compas.topology.vertex_adjacency_from_edges`, `compas.topology.vertex_adjacency_from_faces`, `compas.topology.edges_from_faces`, `compas.topology.faces_from_edges`.
+* Added `compas.datastructures.Network.split_edge`, `compas.datastructures.Network.join_edges`.
+* Added `compas.datastructures.Network.smooth`.
+* Added `compas.datastructures.Network.is_crossed`, `compas.datastructures.Network.is_xy`, `compas.datastructures.Network.is_planar`, `compas.datastructures.Network.is_planar_embedding`, `compas.datastructures.Network.count_crossings`, `compas.datastructures.Network.find_crossings`, `compas.datastructures.Network.embed_in_plane`.
+* Added `compas.datastructures.Network.find_cycles`.
+* Added `compas.datastructures.Network.shortest_path`.
+* Added `compas.datastructures.Network.transform`.
+* Added `compas.datastructures.Graph.is_connected`.
+* Added `compas.datastructures.Graph.adjacency_matrix`, `compas.datastructures.Graph.connectivity_matrix`, `compas.datastructures.Graph.degree_matrix`, `compas.datastructures.Graph.laplacian_matrix`.
 
 ### Changed
 
 * Changed the `__str__` of `compas.geometry.Point` and `compas.geometry.Vector` to use a limited number of decimals (determined by `Tolerance.PRECISION`). Note: `__repr__` will instead maintain full precision.
-* In pull requests, `docs` Workflow are now only triggered on review approval.
-* The `draw` implementations of `compas.scene.SceneObject` will now always use the `worldtransformation` of the `SceneObject`.
+* Changed `docs` Workflow to only be triggered on review approval in pull requests.
+* Changed `draw` implementations of `compas.scene.SceneObject` to always use the `worldtransformation` of the `SceneObject`.
 * Fixed typo in name `Rhino.Geometry.MeshingParameters` in `compas_rhino.geometry.RhinoBrep.to_meshes()`.
 * Fixed `TypeErrorException` when serializing a `Mesh` which has been converted from Rhino.
 * Fixed color conversions in `compas_rhion.conversions.mesh_to_compas`.
+* Changed `SceneObject` registration to allow for `None` context.
+* Changed `compas.data.Data.name` to be stored in `compas.data.Data.attributes`.
+* Changed `compas.data.Data.__jsondump__` to include `compas.data.Data.attributes` if the dict is not empty.
+* Changed `compas.data.Data.__jsonload__` to update `compas.data.Data.attributes` if the attribute dict is provided.
+* Changed `compas.datastructures.Graph` to take additional `**kwargs`, instead of only `name=None` specifically.
+* Changed `compas.datastructures.Network` to take additional `**kwargs`, instead of only `name=None` specifically.
+* Changed `compas.datastructures.Halfedge` to take additional `**kwargs`, instead of only `name=None` specifically.
+* Changed `compas.datastructures.Mesh` to take additional `**kwargs`, instead of only `name=None` specifically.
+* Moved registration of `ping` and `remote_shutdown` of the RPC server to `compas.rpc.Server.__init__()`.
+* Moved `FileWatcherService` to `compas.rpc.services.watcher` so it can be reused.
+* Changed `compas.datastructures.Mesh.subdivide` to `compas.datastructures.Mesh.subdivided`.
+* Moved `compas.numerical.pca_numpy` to `compas.geometry.pca_numpy`.
+* Moved `compas.numerical.scalafield_contours` to `compas.geometry.scalarfield_contours`.
+* Moved `compas.numerical.matrices` to `compas.topology.matrices`.
+* Moved `compas.numerical.linalg` to `compas.geometry.linalg`.
+* Changed `watchdog` dependency to be only required for platforms other than `emscripten`.
+* Changed `compas.geometry.earclip_polygon` algorithm because the current one does not handle several cases.
 
 ### Removed
 
 * Removed `compas_rhino.forms`. Forms will be moved to `compas_ui`.
+* Removed `compas.scene.NoSceneObjectContextError`.
+* Removed `compas.datastructures.Datastructure.attributes` and `compas.datastructures.Datastructure.name` (moved to `compas.data.Data`).
+* Removed `attributes` from `compas.datastructures.Graph.data`.
+* Removed `attributes` from `compas.datastructures.Network.data`.
+* Removed `attributes` from `compas.datastructures.Halfedge.data`.
+* Removed `attributes` from `compas.datastructures.Mesh.data`.
+* Removed `compas.datastructures.mesh_bounding_box` and `compas.datastructures.mesh_bounding_box_xy`.
+* Removed `compas.datastructures.mesh_oriented_bounding_box_numpy` and `compas.datastructures.mesh_oriented_bounding_box_xy_numpy`.
+* Removed `compas.datastructures.mesh_delete_duplicate_vertices`.
+* Removed `compas.datastructures.mesh_is_connected` and `compas.datastructures.mesh_connected_components`.
+* Removed `compas.datastructures.mesh_isolines_numpy` and `compas.datastructures.mesh_contours_numpy`.
+* Removed `compas.datastructures.trimesh_gaussian_curvature`.
+* Removed `compas.datastructures.trimesh_descent`.
+* Removed `compas.datastructures.mesh_disconnected_vertices`, `compas.datastructures.mesh_disconnected_faces` and `compas.datastructures.mesh_explode`.
+* Removed `compas.datastructures.mesh_geodesic_distances_numpy`.
+* Removed `compas.datastructures.trimesh_face_circle`.
+* Removed `compas.datastructures.mesh_weld`, `compas.datastructures.meshes_join`, `compas.datastructures.meshes_join_and_weld`.
+* Removed `compas.datastructures.mesh_offset` and `compas.datastructures.mesh_thicken`.
+* Removed `compas.datastructures.mesh_face_adjacency` and `compas.datastructures.mesh_unify_cycles`.
+* Removed `compas.datastructures.mesh_transform`, `compas.datastructures.mesh_transformed`, `compas.datastructures.mesh_transform_numpy`, `compas.datastructures.mesh_transformed_numpy`.
+* Removed `compas.datastructures.mesh_quads_to_triangles`.
+* Removed `compas.datastructures.volmesh_bounding_box`.
+* Removed `compas.datastructures.volmesh_transform` and `compas.datastructures.volmesh_transformed`.
+* Removed `compas.topology.unify_cycles_numpy` and `compas.topology.face_adjacency_numpy`.
+* Removed `compas.topology.unify_cycles_rhino` and `compas.topology.face_adjacency_rhino`.
+* Removed `compas.datastructures.network_is_connected`.
+* Removed `compas.datastructures.network_complement`.
+* Removed `compas.datastructures.network_disconnected_nodes`, `compas.datastructures.network_disconnected_edges`, `compas.datastructures.network_explode`.
+* Removed `compas.datastructures.network_adjacency_matrix`, `compas.datastructures.network_connectivity_matrix`, `compas.datastructures.network_degree_matrix`, `compas.datastructures.network_laplacian_matrix`.
+* Removed `compas.datastructures.network_transform`, `compas.datastructures.network_transformed`.
+* Removed `compas.datastructures.network_shortest_path`.
+* Removed `compas.numerical`.
 
 ## [2.0.0-beta.1] 2023-12-20
 

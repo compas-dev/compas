@@ -1,8 +1,9 @@
-import pytest
-import compas
 import math
-import numpy
 
+import numpy
+import pytest
+
+import compas
 from compas.geometry import allclose
 
 
@@ -14,9 +15,6 @@ def pytest_ignore_collect(path):
         return True
 
     if "ghpython" in str(path):
-        return True
-
-    if "matlab" in str(path):
         return True
 
     if str(path).endswith("_cli.py"):

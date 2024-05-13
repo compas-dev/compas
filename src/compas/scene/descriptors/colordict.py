@@ -91,6 +91,11 @@ class ColorDictAttribute(object):
             colordict.clear()
             colordict.update(value)
 
+        elif isinstance(value, ColorDict):
+            colordict.clear()
+            colordict.default = value.default
+            colordict.update(value)
+
         else:
             colordict.clear()
             colordict.default = value

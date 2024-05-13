@@ -1,4 +1,5 @@
 from numpy import asarray
+
 from .trimesh_gradient_numpy import trimesh_gradient_numpy
 
 

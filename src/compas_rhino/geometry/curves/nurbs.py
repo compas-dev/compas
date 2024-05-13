@@ -1,18 +1,18 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 from itertools import groupby
-from compas.geometry import Point
-from compas.geometry import NurbsCurve
-
-from compas_rhino.conversions import point_to_rhino
-from compas_rhino.conversions import point_to_compas
-from compas_rhino.conversions import line_to_rhino
-
-from .curve import RhinoCurve
 
 import Rhino.Geometry  # type: ignore
+
+from compas.geometry import NurbsCurve
+from compas.geometry import Point
+from compas_rhino.conversions import line_to_rhino
+from compas_rhino.conversions import point_to_compas
+from compas_rhino.conversions import point_to_rhino
+
+from .curve import RhinoCurve
 
 
 def rhino_curve_from_parameters(points, weights, knots, multiplicities, degree):
@@ -78,7 +78,7 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
     # ==============================================================================
 
     @property
-    def data(self):
+    def __data__(self):
         # add superfluous knots
         # for compatibility with all/most other NURBS implementations
         # https://developer.rhino3d.com/guides/opennurbs/superfluous-knots/
@@ -86,7 +86,7 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
         multiplicities[0] += 1
         multiplicities[-1] += 1
         return {
-            "points": [point.data for point in self.points],  # type: ignore
+            "points": [point.__data__ for point in self.points],  # type: ignore
             "weights": self.weights,
             "knots": self.knots,
             "multiplicities": multiplicities,
@@ -94,9 +94,9 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
             "is_periodic": self.is_periodic,
         }
 
-    @data.setter
-    def data(self, data):
-        points = [Point.from_data(point) for point in data["points"]]
+    @classmethod
+    def __from_data__(cls, data):
+        points = [Point.__from_data__(point) for point in data["points"]]
         weights = data["weights"]
         knots = data["knots"]
         multiplicities = data["multiplicities"]
@@ -104,7 +104,9 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
         # is_periodic = data['is_periodic']
         # have not found a way to actually set this
         # not sure if that is actually possible...
-        self.rhino_curve = rhino_curve_from_parameters(points, weights, knots, multiplicities, degree)
+        curve = cls()
+        curve.rhino_curve = rhino_curve_from_parameters(points, weights, knots, multiplicities, degree)
+        return curve
 
     # ==============================================================================
     # Rhino Properties
@@ -184,6 +186,7 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
 
         """
         curve = cls()
+        degree = min(degree, len(points) - 1)
         curve.rhino_curve = rhino_curve_from_parameters(points, weights, knots, multiplicities, degree)
         return curve
 
@@ -205,9 +208,10 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
         :class:`compas_rhino.geometry.RhinoNurbsCurve`
 
         """
-        points[:] = [point_to_rhino(point) for point in points]
         curve = cls()
-        curve.rhino_curve = Rhino.Geometry.NurbsCurve.Create(is_periodic, degree, points)
+        degree = min(degree, len(points) - 1)
+        rhino_curve = Rhino.Geometry.NurbsCurve.Create(is_periodic, degree, [point_to_rhino(point) for point in points])
+        curve.rhino_curve = rhino_curve
         return curve
 
     @classmethod

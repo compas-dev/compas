@@ -1,38 +1,29 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
+import Rhino  # type: ignore
 import scriptcontext as sc  # type: ignore
 
-from Rhino.Geometry import Box as RhinoBox  # type: ignore
-from Rhino.Geometry import Sphere as RhinoSphere  # type: ignore
-from Rhino.Geometry import Cone as RhinoCone  # type: ignore
-from Rhino.Geometry import Cylinder as RhinoCylinder  # type: ignore
-from Rhino.Geometry import Torus as RhinoTorus  # type: ignore
-from Rhino.Geometry import Interval  # type: ignore
-from Rhino.Geometry import Brep as RhinoBrep  # type: ignore
-from Rhino.Geometry import PipeCapMode  # type: ignore
-
-from compas.geometry import Plane
-from compas.geometry import Circle
 from compas.geometry import Box
-from compas.geometry import Sphere
+from compas.geometry import Circle
 from compas.geometry import Cone
 from compas.geometry import Cylinder
-from compas.geometry import Torus
 from compas.geometry import Frame
+from compas.geometry import Plane
+from compas.geometry import Sphere
+from compas.geometry import Torus
+
+from .curves import circle_to_rhino
+from .curves import line_to_rhino_curve
 
 # from .geometry import plane_to_rhino
 from .geometry import frame_to_rhino
-from .geometry import point_to_rhino
-from .geometry import plane_to_compas_frame
 from .geometry import plane_to_compas
+from .geometry import plane_to_compas_frame
 from .geometry import point_to_compas
+from .geometry import point_to_rhino
 from .geometry import vector_to_compas
-from .curves import line_to_rhino_curve
-
-from .curves import circle_to_rhino
-
 
 # =============================================================================
 # To Rhino
@@ -51,11 +42,11 @@ def box_to_rhino(box):
     :rhino:`Rhino.Geometry.Box`
 
     """
-    return RhinoBox(
+    return Rhino.Geometry.Box(
         frame_to_rhino(box.frame),
-        Interval(-0.5 * box.xsize, 0.5 * box.xsize),
-        Interval(-0.5 * box.ysize, 0.5 * box.ysize),
-        Interval(-0.5 * box.zsize, 0.5 * box.zsize),
+        Rhino.Geometry.Interval(-0.5 * box.xsize, 0.5 * box.xsize),
+        Rhino.Geometry.Interval(-0.5 * box.ysize, 0.5 * box.ysize),
+        Rhino.Geometry.Interval(-0.5 * box.zsize, 0.5 * box.zsize),
     )
 
 
@@ -71,7 +62,7 @@ def sphere_to_rhino(sphere):
     :rhino:`Rhino.Geometry.Sphere`
 
     """
-    return RhinoSphere(point_to_rhino(sphere.frame.point), sphere.radius)
+    return Rhino.Geometry.Sphere(point_to_rhino(sphere.frame.point), sphere.radius)
 
 
 def cone_to_rhino(cone):
@@ -86,9 +77,9 @@ def cone_to_rhino(cone):
     :rhino:`Rhino.Geometry.Cone`
 
     """
-    # return RhinoCone(plane_to_rhino(cone.circle.plane), cone.height, cone.circle.radius)
+    # return Rhino.Geometry.Cone(plane_to_rhino(cone.circle.plane), cone.height, cone.circle.radius)
     frame = Frame(cone.frame.point + cone.frame.zaxis * cone.height, cone.frame.xaxis, cone.frame.yaxis)
-    return RhinoCone(frame_to_rhino(frame), -cone.height, cone.radius)
+    return Rhino.Geometry.Cone(frame_to_rhino(frame), -cone.height, cone.radius)
 
 
 def cone_to_rhino_brep(cone):
@@ -104,7 +95,7 @@ def cone_to_rhino_brep(cone):
     Rhino.Geometry.Brep
 
     """
-    return RhinoCone.ToBrep(cone_to_rhino(cone), True)
+    return Rhino.Geometry.Cone.ToBrep(cone_to_rhino(cone), True)
 
 
 def cylinder_to_rhino(cylinder):
@@ -121,7 +112,7 @@ def cylinder_to_rhino(cylinder):
     """
     circle = cylinder.circle.copy()
     circle.frame.point += circle.frame.zaxis * (-0.5 * cylinder.height)
-    return RhinoCylinder(circle_to_rhino(circle), cylinder.height)
+    return Rhino.Geometry.Cylinder(circle_to_rhino(circle), cylinder.height)
 
 
 def cylinder_to_rhino_brep(cylinder):
@@ -137,7 +128,7 @@ def cylinder_to_rhino_brep(cylinder):
     Rhino.Geometry.Brep
 
     """
-    return RhinoCylinder.ToBrep(cylinder_to_rhino(cylinder), True, True)
+    return Rhino.Geometry.Cylinder.ToBrep(cylinder_to_rhino(cylinder), True, True)
 
 
 def capsule_to_rhino(capsule):
@@ -175,7 +166,7 @@ def capsule_to_rhino_brep(capsule):
     line = capsule.axis
     curve = line_to_rhino_curve(line)
 
-    return RhinoBrep.CreatePipe(curve, radius, False, PipeCapMode.Round, False, abs_tol, ang_tol)
+    return Rhino.Geometry.Brep.CreatePipe(curve, radius, False, Rhino.Geometry.PipeCapMode.Round, False, abs_tol, ang_tol)
 
 
 def torus_to_rhino(torus):
@@ -190,7 +181,7 @@ def torus_to_rhino(torus):
     :rhino:`Rhino.Geometry.Torus`
 
     """
-    return RhinoTorus(frame_to_rhino(torus.frame), torus.radius_axis, torus.radius_pipe)
+    return Rhino.Geometry.Torus(frame_to_rhino(torus.frame), torus.radius_axis, torus.radius_pipe)
 
 
 def torus_to_rhino_brep(torus):

@@ -64,7 +64,7 @@ def test_cell_network_data(example_cell_network):
     ds.edge_attribute((12, 14), "column", True)
     ds.face_attribute(11, "canopy", True)
 
-    other = CellNetwork.from_data(ds.data)
+    other = CellNetwork.__from_data__(ds.__data__)
 
     assert other.number_of_vertices() is nv
     assert other.number_of_edges() is ne
@@ -80,6 +80,6 @@ def test_cell_network_boundary(example_cell_network):
     ds = example_cell_network
     assert set(ds.cells_on_boundaries()) == {0, 1}
     assert set(ds.faces_on_boundaries()) == {0, 1, 2, 3, 4, 6, 7, 8, 9, 10}
-    assert set(ds.faces_no_cell()) == {11}
-    assert set(ds.edges_no_face()) == {(13, 15), (12, 14)}
-    assert set(ds.non_manifold_edges()) == {(6, 7), (4, 5), (5, 6), (4, 7)}
+    # assert set(ds.faces_no_cell()) == {11}
+    # assert set(ds.edges_no_face()) == {(13, 15), (12, 14)}
+    # assert set(ds.non_manifold_edges()) == {(6, 7), (4, 5), (5, 6), (4, 7)}

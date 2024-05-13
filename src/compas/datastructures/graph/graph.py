@@ -1,31 +1,70 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from random import sample
 from ast import literal_eval
+from itertools import combinations
+from random import sample
 
-from compas.datastructures.datastructure import Datastructure
-from compas.datastructures.attributes import NodeAttributeView
+import compas
+
+if compas.PY2:
+    from collections import Mapping
+else:
+    from collections.abc import Mapping
+
 from compas.datastructures.attributes import EdgeAttributeView
+from compas.datastructures.attributes import NodeAttributeView
+from compas.datastructures.datastructure import Datastructure
+from compas.files import OBJ
+from compas.geometry import Box
+from compas.geometry import Line
+from compas.geometry import Point
+from compas.geometry import Vector
+from compas.geometry import add_vectors
+from compas.geometry import bounding_box
+from compas.geometry import centroid_points
+from compas.geometry import distance_point_point
+from compas.geometry import midpoint_line
+from compas.geometry import normalize_vector
+from compas.geometry import oriented_bounding_box
+from compas.geometry import scale_vector
+from compas.geometry import subtract_vectors
+from compas.geometry import transform_points
+from compas.tolerance import TOL
+from compas.topology import astar_shortest_path
+from compas.topology import breadth_first_traverse
+from compas.topology import connected_components
+
+from .duality import graph_find_cycles
+from .operations.join import graph_join_edges
+from .operations.split import graph_split_edge
+from .planarity import graph_count_crossings
+from .planarity import graph_embed_in_plane
+from .planarity import graph_find_crossings
+from .planarity import graph_is_crossed
+from .planarity import graph_is_planar
+from .planarity import graph_is_planar_embedding
+from .planarity import graph_is_xy
+from .smoothing import graph_smooth_centroid
 
 
 class Graph(Datastructure):
-    """Base graph data structure for describing the topological relationships between nodes connected by edges.
+    """Data structure for describing the relationships between nodes connected by edges.
 
     Parameters
     ----------
-    name : str, optional
-        The name of the datastructure.
-    default_node_attributes : dict[str, Any], optional
+    default_node_attributes : dict, optional
         Default values for node attributes.
-    default_edge_attributes : dict[str, Any], optional
+    default_edge_attributes : dict, optional
         Default values for edge attributes.
+    name : str, optional
+        The name of the graph.
+    **kwargs : dict, optional
+        Additional keyword arguments, which are stored in the attributes dict.
 
     Attributes
     ----------
-    attributes : dict[str, Any]
-        General attributes of the data structure that are included in the data representation and serialization.
     default_node_attributes : dict[str, Any]
         dictionary containing default values for the attributes of nodes.
         It is recommended to add a default to this dictionary using :meth:`update_default_node_attributes`
@@ -35,18 +74,26 @@ class Graph(Datastructure):
         It is recommended to add a default to this dictionary using :meth:`update_default_edge_attributes`
         for every edge attribute used in the data structure.
 
-    See Also
-    --------
-    :class:`compas.datastructures.Network`
-
     """
+
+    split_edge = graph_split_edge
+    join_edges = graph_join_edges
+    smooth = graph_smooth_centroid
+    is_crossed = graph_is_crossed
+    is_planar = graph_is_planar
+    is_planar_embedding = graph_is_planar_embedding
+    is_xy = graph_is_xy
+    count_crossings = graph_count_crossings
+    find_crossings = graph_find_crossings
+    embed_in_plane = graph_embed_in_plane
+    find_cycles = graph_find_cycles
 
     DATASCHEMA = {
         "type": "object",
         "properties": {
             "attributes": {"type": "object"},
-            "dna": {"type": "object"},
-            "dea": {"type": "object"},
+            "default_node_attributes": {"type": "object"},
+            "default_edge_attributes": {"type": "object"},
             "node": {
                 "type": "object",
                 "additionalProperties": {"type": "object"},
@@ -62,21 +109,63 @@ class Graph(Datastructure):
         },
         "required": [
             "attributes",
-            "dna",
-            "dea",
+            "default_node_attributes",
+            "default_edge_attributes",
             "node",
             "edge",
             "max_node",
         ],
     }
 
-    def __init__(self, name=None, default_node_attributes=None, default_edge_attributes=None):
-        super(Graph, self).__init__(name=name)
+    @property
+    def __data__(self):
+        return self.__before_json_dump__(
+            {
+                "attributes": self.attributes,
+                "default_node_attributes": self.default_node_attributes,
+                "default_edge_attributes": self.default_edge_attributes,
+                "node": self.node,
+                "edge": self.edge,
+                "max_node": self._max_node,
+            }
+        )
+
+    def __before_json_dump__(self, data):
+        data["node"] = {repr(key): attr for key, attr in data["node"].items()}
+        data["edge"] = {repr(u): {repr(v): attr for v, attr in nbrs.items()} for u, nbrs in data["edge"].items()}
+        return data
+
+    def __after_json_load__(self, data):
+        l_e = literal_eval
+        nodes = data["node"] or {}
+        edges = data["edge"] or {}
+        data["node"] = {l_e(node): attr for node, attr in nodes.items()}
+        data["edge"] = {l_e(u): {l_e(v): attr for v, attr in nbrs.items()} for u, nbrs in edges.items()}
+        return data
+
+    @classmethod
+    def __from_data__(cls, data):
+        graph = cls(
+            default_node_attributes=data.get("default_node_attributes"),
+            default_edge_attributes=data.get("default_edge_attributes"),
+        )
+        graph.attributes.update(data["attributes"] or {})
+        data = graph.__after_json_load__(data)
+        for node, attr in iter(data["node"].items()):
+            graph.add_node(key=node, attr_dict=attr)
+        for u, nbrs in iter(data["edge"].items()):
+            for v, attr in iter(nbrs.items()):
+                graph.add_edge(u, v, attr_dict=attr)
+        graph._max_node = data.get("max_node", graph._max_node)
+        return graph
+
+    def __init__(self, default_node_attributes=None, default_edge_attributes=None, name=None, **kwargs):
+        super(Graph, self).__init__(kwargs, name=name)
         self._max_node = -1
         self.node = {}
         self.edge = {}
         self.adjacency = {}
-        self.default_node_attributes = {}
+        self.default_node_attributes = {"x": 0.0, "y": 0.0, "z": 0.0}
         self.default_edge_attributes = {}
         if default_node_attributes:
             self.default_node_attributes.update(default_node_attributes)
@@ -86,58 +175,6 @@ class Graph(Datastructure):
     def __str__(self):
         tpl = "<Graph with {} nodes, {} edges>"
         return tpl.format(self.number_of_nodes(), self.number_of_edges())
-
-    # --------------------------------------------------------------------------
-    # Data
-    # --------------------------------------------------------------------------
-
-    @property
-    def data(self):
-        data = {
-            "attributes": self.attributes,
-            "dna": self.default_node_attributes,
-            "dea": self.default_edge_attributes,
-            "node": {},
-            "edge": {},
-            "max_node": self._max_node,
-        }
-        for key in self.node:
-            data["node"][repr(key)] = self.node[key]
-        for u in self.edge:
-            ru = repr(u)
-            data["edge"][ru] = {}
-            for v in self.edge[u]:
-                rv = repr(v)
-                data["edge"][ru][rv] = self.edge[u][v]
-        return data
-
-    @classmethod
-    def from_data(cls, data):
-        dna = data.get("dna") or {}
-        dea = data.get("dea") or {}
-        node = data.get("node") or {}
-        edge = data.get("edge") or {}
-
-        graph = cls(default_node_attributes=dna, default_edge_attributes=dea)
-        graph.attributes.update(data.get("attributes") or {})
-
-        for node, attr in iter(node.items()):
-            node = literal_eval(node)
-            graph.add_node(key=node, attr_dict=attr)
-
-        for u, nbrs in iter(edge.items()):
-            u = literal_eval(u)
-            for v, attr in iter(nbrs.items()):
-                v = literal_eval(v)
-                graph.add_edge(u, v, attr_dict=attr)
-
-        graph._max_node = data.get("max_node", graph._max_node)
-
-        return graph
-
-    # --------------------------------------------------------------------------
-    # Properties
-    # --------------------------------------------------------------------------
 
     # --------------------------------------------------------------------------
     # Constructors
@@ -189,7 +226,7 @@ class Graph(Datastructure):
 
         """
         g = cls()
-        g.attributes.update(graph.graph)
+        g.name = graph.graph.get("name")
 
         for node in graph.nodes():
             g.add_node(node, **graph.nodes[node])
@@ -198,6 +235,226 @@ class Graph(Datastructure):
             g.add_edge(*edge, **graph.edges[edge])
 
         return g
+
+    @classmethod
+    def from_obj(cls, filepath, precision=None):
+        """Construct a graph from the data contained in an OBJ file.
+
+        Parameters
+        ----------
+        filepath : path string | file-like object | URL string
+            A path, a file-like object or a URL pointing to a file.
+        precision: str, optional
+            The precision of the geometric map that is used to connect the lines.
+
+        Returns
+        -------
+        :class:`compas.datastructures.Graph`
+            A graph object.
+
+        See Also
+        --------
+        :meth:`to_obj`
+        :meth:`from_lines`, :meth:`from_nodes_and_edges`, :meth:`from_pointcloud`
+        :class:`compas.files.OBJ`
+
+        """
+        graph = cls()
+        obj = OBJ(filepath, precision)
+        obj.read()
+        nodes = obj.vertices
+        edges = obj.lines
+        for i, (x, y, z) in enumerate(nodes):  # type: ignore
+            graph.add_node(i, x=x, y=y, z=z)
+        for edge in edges:  # type: ignore
+            graph.add_edge(*edge)
+        return graph
+
+    @classmethod
+    def from_lines(cls, lines, precision=None):
+        """Construct a graph from a set of lines represented by their start and end point coordinates.
+
+        Parameters
+        ----------
+        lines : list[tuple[list[float, list[float]]]]
+            A list of pairs of point coordinates.
+        precision : int, optional
+            Precision for converting numbers to strings.
+            Default is :attr:`TOL.precision`.
+
+        Returns
+        -------
+        :class:`compas.datastructures.Graph`
+            A graph object.
+
+        See Also
+        --------
+        :meth:`to_lines`
+        :meth:`from_obj`, :meth:`from_nodes_and_edges`, :meth:`from_pointcloud`
+
+        """
+        graph = cls()
+        edges = []
+        node = {}
+        for line in lines:
+            sp = line[0]
+            ep = line[1]
+            a = TOL.geometric_key(sp, precision)
+            b = TOL.geometric_key(ep, precision)
+            node[a] = sp
+            node[b] = ep
+            edges.append((a, b))
+        key_index = dict((k, i) for i, k in enumerate(iter(node)))
+        for key, xyz in iter(node.items()):
+            i = key_index[key]
+            graph.add_node(i, x=xyz[0], y=xyz[1], z=xyz[2])
+        for u, v in edges:
+            i = key_index[u]
+            j = key_index[v]
+            graph.add_edge(i, j)
+        return graph
+
+    @classmethod
+    def from_nodes_and_edges(cls, nodes, edges):
+        """Construct a graph from nodes and edges.
+
+        Parameters
+        ----------
+        nodes : list[list[float]] | dict[hashable, list[float]]
+            A list of node coordinates or a dictionary of keys pointing to node coordinates to specify keys.
+        edges : list[tuple[hashable, hshable]]
+
+        Returns
+        -------
+        :class:`compas.datastructures.Graph`
+            A graph object.
+
+        See Also
+        --------
+        :meth:`to_nodes_and_edges`
+        :meth:`from_obj`, :meth:`from_lines`, :meth:`from_pointcloud`
+
+        """
+        graph = cls()
+
+        if isinstance(nodes, Mapping):
+            for key, (x, y, z) in nodes.items():
+                graph.add_node(key, x=x, y=y, z=z)
+        else:
+            for i, (x, y, z) in enumerate(nodes):
+                graph.add_node(i, x=x, y=y, z=z)
+
+        for u, v in edges:
+            graph.add_edge(u, v)
+
+        return graph
+
+    @classmethod
+    def from_pointcloud(cls, cloud, degree=3):
+        """Construct a graph from random connections between the points of a pointcloud.
+
+        Parameters
+        ----------
+        cloud : :class:`compas.geometry.Pointcloud`
+            A pointcloud object.
+        degree : int, optional
+            The number of connections per node.
+
+        Returns
+        -------
+        :class:`compas.datastructures.Graph`
+            A graph object.
+
+        See Also
+        --------
+        :meth:`to_points`
+        :meth:`from_obj`, :meth:`from_lines`, :meth:`from_nodes_and_edges`
+
+        """
+        graph = cls()
+        for x, y, z in cloud:
+            graph.add_node(x=x, y=y, z=z)
+        for u in graph.nodes():
+            for v in graph.node_sample(size=degree):
+                graph.add_edge(u, v)
+        return graph
+
+    # --------------------------------------------------------------------------
+    # Converters
+    # --------------------------------------------------------------------------
+
+    def to_obj(self):
+        """Write the graph to an OBJ file.
+
+        Parameters
+        ----------
+        filepath : path string | file-like object
+            A path or a file-like object pointing to a file.
+
+        Returns
+        -------
+        None
+
+        See Also
+        --------
+        :meth:`from_obj`
+        :meth:`to_lines`, :meth:`to_nodes_and_edges`, :meth:`to_points`
+
+        """
+        raise NotImplementedError
+
+    def to_points(self):
+        """Return the coordinates of the graph.
+
+        Returns
+        -------
+        list[list[float]]
+            A list with the coordinates of the vertices of the graph.
+
+        See Also
+        --------
+        :meth:`from_pointcloud`
+        :meth:`to_lines`, :meth:`to_nodes_and_edges`, :meth:`to_obj`
+
+        """
+        return [self.node_coordinates(key) for key in self.nodes()]
+
+    def to_lines(self):
+        """Return the lines of the graph as pairs of start and end point coordinates.
+
+        Returns
+        -------
+        list[tuple[list[float], list[float]]]
+            A list of lines each defined by a pair of point coordinates.
+
+        See Also
+        --------
+        :meth:`from_lines`
+        :meth:`to_nodes_and_edges`, :meth:`to_obj`, :meth:`to_points`
+
+        """
+        return [self.edge_coordinates(edge) for edge in self.edges()]
+
+    def to_nodes_and_edges(self):
+        """Return the nodes and edges of a graph.
+
+        Returns
+        -------
+        list[list[float]]
+            A list of nodes, represented by their XYZ coordinates.
+        list[tuple[hashable, hashable]]
+            A list of edges, with each edge represented by a pair of indices in the node list.
+
+        See Also
+        --------
+        :meth:`from_nodes_and_edges`
+        :meth:`to_lines`, :meth:`to_obj`, :meth:`to_points`
+
+        """
+        key_index = dict((key, index) for index, key in enumerate(self.nodes()))
+        nodes = [self.node_coordinates(key) for key in self.nodes()]
+        edges = [(key_index[u], key_index[v]) for u, v in self.edges()]
+        return nodes, edges
 
     def to_networkx(self):
         """Create a new NetworkX graph instance from a graph.
@@ -215,7 +472,7 @@ class Graph(Datastructure):
         import networkx as nx
 
         G = nx.DiGraph()
-        G.graph.update(self.attributes)  # type: ignore
+        G.graph["name"] = self.name  # type: ignore
 
         for node, attr in self.nodes(data=True):
             G.add_node(node, **attr)  # type: ignore
@@ -230,7 +487,7 @@ class Graph(Datastructure):
     # --------------------------------------------------------------------------
 
     def clear(self):
-        """Clear all the network data.
+        """Clear all the graph data.
 
         Returns
         -------
@@ -349,6 +606,56 @@ class Graph(Datastructure):
 
         """
         return dict(enumerate(self.edges()))
+
+    def node_gkey(self, precision=None):
+        """Returns a dictionary that maps node identifiers to the corresponding
+        *geometric key* up to a certain precision.
+
+        Parameters
+        ----------
+        precision : int, optional
+            Precision for converting numbers to strings.
+            Default is :attr:`TOL.precision`.
+
+        Returns
+        -------
+        dict[hashable, str]
+            A dictionary of (node, geometric key) pairs.
+
+        See Also
+        --------
+        :meth:`gkey_node`
+        :meth:`compas.Tolerance.geometric_key`
+
+        """
+        gkey = TOL.geometric_key
+        xyz = self.node_coordinates
+        return {key: gkey(xyz(key), precision) for key in self.nodes()}
+
+    def gkey_node(self, precision=None):
+        """Returns a dictionary that maps *geometric keys* of a certain precision
+        to the identifiers of the corresponding nodes.
+
+        Parameters
+        ----------
+        precision : int, optional
+            Precision for converting numbers to strings.
+            Default is :attr:`TOL.precision`.
+
+        Returns
+        -------
+        dict[str, hashable]
+            A dictionary of (geometric key, node) pairs.
+
+        See Also
+        --------
+        :meth:`node_gkey`
+        :meth:`compas.Tolerance.geometric_key`
+
+        """
+        gkey = TOL.geometric_key
+        xyz = self.node_coordinates
+        return {gkey(xyz(key), precision): key for key in self.nodes()}
 
     # --------------------------------------------------------------------------
     # Builders
@@ -494,7 +801,7 @@ class Graph(Datastructure):
                     del self.adjacency[u][v]
 
     def delete_edge(self, edge):
-        """Delete an edge from the network.
+        """Delete an edge from the graph.
 
         Parameters
         ----------
@@ -580,12 +887,40 @@ class Graph(Datastructure):
         """
         return len(list(self.edges()))
 
+    def is_connected(self):
+        """Verify that the graph is connected.
+
+
+        Returns
+        -------
+        bool
+            True, if the graph is connected.
+            False, otherwise.
+
+        Notes
+        -----
+        A graph is connected if for every two vertices a path exists connecting them.
+
+        Examples
+        --------
+        >>> import compas
+        >>> from compas.datastructures import Graph
+        >>> graph = Graph.from_obj(compas.get('lines.obj'))
+        >>> graph.is_connected()
+        True
+
+        """
+        if self.number_of_nodes() == 0:
+            return False
+        nodes = breadth_first_traverse(self.adjacency, self.node_sample(size=1)[0])
+        return len(nodes) == self.number_of_nodes()
+
     # --------------------------------------------------------------------------
     # Accessors
     # --------------------------------------------------------------------------
 
     def nodes(self, data=False):
-        """Iterate over the nodes of the network.
+        """Iterate over the nodes of the graph.
 
         Parameters
         ----------
@@ -721,7 +1056,7 @@ class Graph(Datastructure):
                     yield key
 
     def edges(self, data=False):
-        """Iterate over the edges of the network.
+        """Iterate over the edges of the graph.
 
         Parameters
         ----------
@@ -848,8 +1183,30 @@ class Graph(Datastructure):
                 else:
                     yield key
 
+    def shortest_path(self, u, v):
+        """Find the shortest path between two nodes using the A* algorithm.
+
+        Parameters
+        ----------
+        u : hashable
+            The identifier of the start node.
+        v : hashable
+            The identifier of the end node.
+
+        Returns
+        -------
+        list[hashable] | None
+            The path from root to goal, or None, if no path exists between the vertices.
+
+        See Also
+        --------
+        :meth:`compas.topology.astar_shortest_path`
+
+        """
+        return astar_shortest_path(self.adjacency, u, v)
+
     # --------------------------------------------------------------------------
-    # default attributes
+    # Default attributes
     # --------------------------------------------------------------------------
 
     def update_default_node_attributes(self, attr_dict=None, **kwattr):
@@ -899,9 +1256,6 @@ class Graph(Datastructure):
             attr_dict = {}
         attr_dict.update(kwattr)
         self.default_edge_attributes.update(attr_dict)
-
-    update_dna = update_default_node_attributes
-    update_dea = update_default_edge_attributes
 
     # --------------------------------------------------------------------------
     # Node attributes
@@ -1318,7 +1672,7 @@ class Graph(Datastructure):
     # --------------------------------------------------------------------------
 
     def has_node(self, key):
-        """Verify if a specific node is present in the network.
+        """Verify if a specific node is present in the graph.
 
         Parameters
         ----------
@@ -1363,7 +1717,7 @@ class Graph(Datastructure):
         return self.degree(key) == 1
 
     def leaves(self):
-        """Return all leaves of the network.
+        """Return all leaves of the graph.
 
         Returns
         -------
@@ -1548,7 +1902,7 @@ class Graph(Datastructure):
         """
         return len(self.neighbors_in(key))
 
-    def connected_edges(self, key):
+    def node_edges(self, key):
         """Return the edges connected to a node.
 
         Parameters
@@ -1575,7 +1929,7 @@ class Graph(Datastructure):
     # --------------------------------------------------------------------------
 
     def has_edge(self, edge, directed=True):
-        """Verify if the network contains a specific edge.
+        """Verify if the graph contains a specific edge.
 
         Parameters
         ----------
@@ -1598,3 +1952,527 @@ class Graph(Datastructure):
         if directed:
             return u in self.edge and v in self.edge[u]
         return (u in self.edge and v in self.edge[u]) or (v in self.edge and u in self.edge[v])
+
+    # --------------------------------------------------------------------------
+    # Node geometry
+    # --------------------------------------------------------------------------
+
+    def node_coordinates(self, key, axes="xyz"):
+        """Return the coordinates of a node.
+
+        Parameters
+        ----------
+        key : hashable
+            The identifier of the node.
+        axes : str, optional
+            The components of the node coordinates to return.
+
+        Returns
+        -------
+        list[float]
+            The coordinates of the node.
+
+        See Also
+        --------
+        :meth:`node_point`, :meth:`node_laplacian`, :meth:`node_neighborhood_centroid`
+
+        """
+        return [self.node[key][axis] for axis in axes]
+
+    def node_point(self, node):
+        """Return the point of a node.
+
+        Parameters
+        ----------
+        node : hashable
+            The identifier of the node.
+
+        Returns
+        -------
+        :class:`compas.geometry.Point`
+            The point of the node.
+
+        See Also
+        --------
+        :meth:`node_coordinates`, :meth:`node_laplacian`, :meth:`node_neighborhood_centroid`
+
+        """
+        return Point(*self.node_coordinates(node))
+
+    def node_laplacian(self, key):
+        """Return the vector from the node to the centroid of its 1-ring neighborhood.
+
+        Parameters
+        ----------
+        key : hashable
+            The identifier of the node.
+
+        Returns
+        -------
+        :class:`compas.geometry.Vector`
+            The laplacian vector.
+
+        See Also
+        --------
+        :meth:`node_coordinates`, :meth:`node_point`, :meth:`node_neighborhood_centroid`
+
+        """
+        c = centroid_points([self.node_coordinates(nbr) for nbr in self.neighbors(key)])
+        p = self.node_coordinates(key)
+        return Vector(*subtract_vectors(c, p))
+
+    def node_neighborhood_centroid(self, key):
+        """Return the computed centroid of the neighboring nodes.
+
+        Parameters
+        ----------
+        key : hashable
+            The identifier of the node.
+
+        Returns
+        -------
+        :class:`compas.geometry.Point`
+            The point at the centroid.
+
+        See Also
+        --------
+        :meth:`node_coordinates`, :meth:`node_point`, :meth:`node_laplacian`
+
+        """
+        return Point(*centroid_points([self.node_coordinates(nbr) for nbr in self.neighbors(key)]))
+
+    # --------------------------------------------------------------------------
+    # Edge geometry
+    # --------------------------------------------------------------------------
+
+    def edge_coordinates(self, edge, axes="xyz"):
+        """Return the coordinates of the start and end point of an edge.
+
+        Parameters
+        ----------
+        edge : tuple[hashable, hashable]
+            The identifier of the edge.
+        axes : str, optional
+            The axes along which the coordinates should be included.
+
+        Returns
+        -------
+        tuple[list[float], list[float]]
+            The coordinates of the start point.
+            The coordinates of the end point.
+
+        See Also
+        --------
+        :meth:`edge_point`, :meth:`edge_start`, :meth:`edge_end`, :meth:`edge_midpoint`
+
+        """
+        u, v = edge
+        return self.node_coordinates(u, axes=axes), self.node_coordinates(v, axes=axes)
+
+    def edge_start(self, edge):
+        """Return the start point of an edge.
+
+        Parameters
+        ----------
+        edge : tuple[hashable, hashable]
+            The identifier of the edge.
+
+        Returns
+        -------
+        :class:`compas.geometry.Point`
+            The start point of the edge.
+
+        See Also
+        --------
+        :meth:`edge_point`, :meth:`edge_end`, :meth:`edge_midpoint`
+
+        """
+        return self.node_point(edge[0])
+
+    def edge_end(self, edge):
+        """Return the end point of an edge.
+
+        Parameters
+        ----------
+        edge : tuple[hashable, hashable]
+            The identifier of the edge.
+
+        Returns
+        -------
+        :class:`compas.geometry.Point`
+            The end point of the edge.
+
+        See Also
+        --------
+        :meth:`edge_point`, :meth:`edge_start`, :meth:`edge_midpoint`
+
+        """
+        return self.node_point(edge[1])
+
+    def edge_point(self, edge, t=0.5):
+        """Return the point at a parametric location along an edge.
+
+        Parameters
+        ----------
+        edge : tuple[hashable, hashable]
+            The identifier of the edge.
+        t : float, optional
+            The location of the point on the edge.
+            If the value of `t` is outside the range 0-1, the point will
+            lie in the direction of the edge, but not on the edge vector.
+
+        Returns
+        -------
+        :class:`compas.geometry.Point`
+            The point at the specified location.
+
+        See Also
+        --------
+        :meth:`edge_start`, :meth:`edge_end`, :meth:`edge_midpoint`
+
+        """
+        if t == 0.0:
+            return self.edge_start(edge)
+        if t == 1.0:
+            return self.edge_end(edge)
+        if t == 0.5:
+            return self.edge_midpoint(edge)
+
+        a, b = self.edge_coordinates(edge)
+        ab = subtract_vectors(b, a)
+        return Point(*add_vectors(a, scale_vector(ab, t)))
+
+    def edge_midpoint(self, edge):
+        """Return the location of the midpoint of an edge.
+
+        Parameters
+        ----------
+        edge : tuple[hashable, hashable]
+            The identifier of the edge.
+
+        Returns
+        -------
+        :class:`compas.geometry.Point`
+            The midpoint of the edge.
+
+        See Also
+        --------
+        :meth:`edge_start`, :meth:`edge_end`, :meth:`edge_point`
+
+        """
+        a, b = self.edge_coordinates(edge)
+        return Point(*midpoint_line((a, b)))
+
+    def edge_vector(self, edge):
+        """Return the vector of an edge.
+
+        Parameters
+        ----------
+        edge : tuple[hashable, hashable]
+            The identifier of the edge.
+
+        Returns
+        -------
+        :class:`compas.geometry.Vector`
+            The vector from start to end.
+
+        See Also
+        --------
+        :meth:`edge_direction`, :meth:`edge_line`, :meth:`edge_length`
+
+        """
+        a, b = self.edge_coordinates(edge)
+        return Vector.from_start_end(a, b)
+
+    def edge_direction(self, edge):
+        """Return the direction vector of an edge.
+
+        Parameters
+        ----------
+        edge : tuple[hashable, hashable]
+            The identifier of the edge.
+
+        Returns
+        -------
+        :class:`compas.geometry.Vector`
+            The direction vector of the edge.
+
+        See Also
+        --------
+        :meth:`edge_vector`, :meth:`edge_line`, :meth:`edge_length`
+
+        """
+        return Vector(*normalize_vector(self.edge_vector(edge)))
+
+    def edge_line(self, edge):
+        """Return the line of an edge.
+
+        Parameters
+        ----------
+        edge : tuple[hashable, hashable]
+            The identifier of the edge.
+
+        Returns
+        -------
+        :class:`compas.geometry.Line`
+            The line of the edge.
+
+        See Also
+        --------
+        :meth:`edge_vector`, :meth:`edge_direction`, :meth:`edge_length`
+
+        """
+        return Line(*self.edge_coordinates(edge))
+
+    def edge_length(self, edge):
+        """Return the length of an edge.
+
+        Parameters
+        ----------
+        edge : tuple[hashable, hashable]
+            The identifier of the edge.
+
+        Returns
+        -------
+        float
+            The length of the edge.
+
+        See Also
+        --------
+        :meth:`edge_vector`, :meth:`edge_direction`, :meth:`edge_line`
+
+        """
+        a, b = self.edge_coordinates(edge)
+        return distance_point_point(a, b)
+
+    # --------------------------------------------------------------------------
+    # Transformations and BBox
+    # --------------------------------------------------------------------------
+
+    def transform(self, transformation):
+        """Transform all nodes of the graph.
+
+        Parameters
+        ----------
+        transformation : :class:`Transformation`
+            The transformation used to transform the nodes.
+
+        Returns
+        -------
+        None
+
+        """
+        nodes = self.nodes_attributes("xyz")
+        points = transform_points(nodes, transformation)
+        for point, node in zip(points, self.nodes()):
+            self.node_attributes(node, "xyz", point)
+
+    def aabb(self):
+        """Calculate the axis aligned bounding box of the graph.
+
+        Returns
+        -------
+        :class:`compas.geometry.Box`
+
+        """
+        nodes = self.nodes_attributes("xyz")
+        return Box.from_bounding_box(bounding_box(nodes))
+
+    def obb(self):
+        """Calculate the oriented bounding box of the graph.
+
+        Returns
+        -------
+        :class:`compas.geometry.Box`
+
+        """
+        nodes = self.nodes_attributes("xyz")
+        return Box.from_bounding_box(oriented_bounding_box(nodes))
+
+    # --------------------------------------------------------------------------
+    # Other Methods
+    # --------------------------------------------------------------------------
+
+    def connected_nodes(self):
+        """Get groups of connected nodes.
+
+        Returns
+        -------
+        list[list[hashable]]
+
+        See Also
+        --------
+        :meth:`connected_edges`
+
+        """
+        return connected_components(self.adjacency)
+
+    def connected_edges(self):
+        """Get groups of connected edges.
+
+        Returns
+        -------
+        list[list[tuple[hashable, hashable]]]
+
+        See Also
+        --------
+        :meth:`connected_nodes`
+
+        """
+        return [[(u, v) for u in nodes for v in self.neighbors(u) if u < v] for nodes in self.connected_nodes()]
+
+    def exploded(self):
+        """Explode the graph into its connected components.
+
+        Returns
+        -------
+        list[:class:`compas.datastructures.Graph`]
+
+        """
+        cls = type(self)
+        graphs = []
+        for nodes in self.connected_nodes():
+            edges = [(u, v) for u in nodes for v in self.neighbors(u) if u < v]
+            graph = cls(
+                default_node_attributes=self.default_node_attributes,
+                default_edge_attributes=self.default_edge_attributes,
+            )
+            for node in nodes:
+                graph.add_node(node, attr_dict=self.node_attributes(node))
+            for u, v in edges:
+                graph.add_edge(u, v, attr_dict=self.edge_attributes((u, v)))
+            graphs.append(graph)
+        return graphs
+
+    def complement(self):
+        """Generate the complement of a graph.
+
+        The complement of a graph G is the graph H with the same vertices
+        but whose edges consists of the edges not present in the graph G [1]_.
+
+        Returns
+        -------
+        :class:`compas.datastructures.Graph`
+            The complement graph.
+
+        References
+        ----------
+        .. [1] Wolfram MathWorld. *Graph complement*.
+            Available at: http://mathworld.wolfram.com/GraphComplement.html.
+
+        Examples
+        --------
+        >>> import compas
+        >>> from compas.datastructures import Graph
+        >>> graph = Graph.from_obj(compas.get('lines.obj'))
+        >>> complement = graph.complement()
+        >>> any(complement.has_edge(u, v, directed=False) for u, v in graph.edges())
+        False
+
+        """
+        cls = type(self)
+
+        graph = cls(
+            default_node_attributes=self.default_node_attributes,
+            default_edge_attributes=self.default_edge_attributes,
+        )
+        for node in self.nodes():
+            graph.add_node(node, attr_dict=self.node_attributes(node))
+
+        for u, v in combinations(self.nodes(), 2):
+            if not self.has_edge((u, v), directed=False):
+                graph.add_edge(u, v, attr_dict=self.edge_attributes((u, v)))
+
+        return graph
+
+    # --------------------------------------------------------------------------
+    # Matrices
+    # --------------------------------------------------------------------------
+
+    def adjacency_matrix(self, rtype="array"):
+        """Creates a node adjacency matrix from a Graph datastructure.
+
+        Parameters
+        ----------
+        rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
+            Format of the result.
+
+        Returns
+        -------
+        array_like
+            Constructed adjacency matrix.
+
+        """
+        from compas.matrices import adjacency_matrix
+
+        node_index = self.node_index()
+        adjacency = [[node_index[nbr] for nbr in self.neighbors(key)] for key in self.nodes()]
+        return adjacency_matrix(adjacency, rtype=rtype)
+
+    def connectivity_matrix(self, rtype="array"):
+        """Creates a connectivity matrix from a Graph datastructure.
+
+        Parameters
+        ----------
+        rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
+            Format of the result.
+
+        Returns
+        -------
+        array_like
+            Constructed connectivity matrix.
+
+        """
+        from compas.matrices import connectivity_matrix
+
+        node_index = self.node_index()
+        edges = [(node_index[u], node_index[v]) for u, v in self.edges()]
+        return connectivity_matrix(edges, rtype=rtype)
+
+    def degree_matrix(self, rtype="array"):
+        """Creates a degree matrix from a Graph datastructure.
+
+        Parameters
+        ----------
+        rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
+            Format of the result.
+
+        Returns
+        -------
+        array_like
+            Constructed degree matrix.
+
+        """
+        from compas.matrices import degree_matrix
+
+        node_index = self.node_index()
+        adjacency = [[node_index[nbr] for nbr in self.neighbors(key)] for key in self.nodes()]
+        return degree_matrix(adjacency, rtype=rtype)
+
+    def laplacian_matrix(self, normalize=False, rtype="array"):
+        """Creates a Laplacian matrix from a Graph datastructure.
+
+        Parameters
+        ----------
+        normalize : bool, optional
+            If True, normalize the entries such that the value on the diagonal is 1.
+        rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
+            Format of the result.
+
+        Returns
+        -------
+        array_like
+            Constructed Laplacian matrix.
+
+        Notes
+        -----
+        ``d = L.dot(xyz)`` is currently a vector that points from the centroid to the node.
+        Therefore ``c = xyz - d``. By changing the signs in the laplacian, the dsiplacement
+        vectors could be used in a more natural way ``c = xyz + d``.
+
+        """
+        from compas.matrices import laplacian_matrix
+
+        node_index = self.node_index()
+        edges = [(node_index[u], node_index[v]) for u, v in self.edges()]
+        return laplacian_matrix(edges, normalize=normalize, rtype=rtype)

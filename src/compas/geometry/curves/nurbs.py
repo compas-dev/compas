@@ -1,13 +1,13 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 from math import sqrt
 
-from compas.plugins import pluggable
-from compas.plugins import PluginNotInstalledError
-from compas.geometry import Point
 from compas.geometry import Frame
+from compas.geometry import Point
+from compas.plugins import PluginNotInstalledError
+from compas.plugins import pluggable
 
 from .curve import Curve
 
@@ -73,6 +73,9 @@ class NurbsCurve(Curve):
 
     """
 
+    def __new__(cls, *args, **kwargs):
+        return new_nurbscurve(cls, *args, **kwargs)
+
     DATASCHEMA = {
         "type": "object",
         "properties": {
@@ -87,8 +90,31 @@ class NurbsCurve(Curve):
         "minProperties": 6,
     }
 
-    def __new__(cls, *args, **kwargs):
-        return new_nurbscurve(cls, *args, **kwargs)
+    @property
+    def __dtype__(self):
+        return "compas.geometry/NurbsCurve"
+
+    @property
+    def __data__(self):
+        return {
+            "points": [point.__data__ for point in self.points],
+            "weights": self.weights,
+            "knots": self.knots,
+            "multiplicities": self.multiplicities,
+            "degree": self.degree,
+            "is_periodic": self.is_periodic,
+        }
+
+    @classmethod
+    def __from_data__(cls, data):
+        return cls.from_parameters(
+            data["points"],
+            data["weights"],
+            data["knots"],
+            data["multiplicities"],
+            data["degree"],
+            data["is_periodic"],
+        )
 
     def __init__(self, name=None):
         super(NurbsCurve, self).__init__(name=name)
@@ -102,49 +128,6 @@ class NurbsCurve(Curve):
             self.multiplicities,
             self.degree,
             self.is_periodic,
-        )
-
-    # ==============================================================================
-    # Data
-    # ==============================================================================
-
-    @property
-    def dtype(self):
-        return "compas.geometry/NurbsCurve"
-
-    @property
-    def data(self):
-        return {
-            "points": [point.data for point in self.points],
-            "weights": self.weights,
-            "knots": self.knots,
-            "multiplicities": self.multiplicities,
-            "degree": self.degree,
-            "is_periodic": self.is_periodic,
-        }
-
-    @classmethod
-    def from_data(cls, data):
-        """Construct a NURBS curve from its data representation.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`compas.geometry.NurbsCurve`
-            The constructed curve.
-
-        """
-        return cls.from_parameters(
-            data["points"],
-            data["weights"],
-            data["knots"],
-            data["multiplicities"],
-            data["degree"],
-            data["is_periodic"],
         )
 
     # ==============================================================================

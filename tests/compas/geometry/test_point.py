@@ -70,15 +70,15 @@ def test_point_inplace_operators():
 
 def test_point_data():
     point = Point(random(), random(), random())
-    other = Point.from_data(json.loads(json.dumps(point.data)))
+    other = Point.__from_data__(json.loads(json.dumps(point.__data__)))
 
     assert point == other
-    assert point.data == other.data
+    assert point.__data__ == other.__data__
     assert point.guid != other.guid
 
     if not compas.IPY:
-        assert Point.validate_data(point.data)
-        assert Point.validate_data(other.data)
+        assert Point.validate_data(point.__data__)
+        assert Point.validate_data(other.__data__)
 
 
 def test_point_distance_to_point():

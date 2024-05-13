@@ -4,14 +4,6 @@ from __future__ import print_function
 
 from compas.datastructures._mutablemapping import MutableMapping
 
-__all__ = [
-    "NodeAttributeView",
-    "VertexAttributeView",
-    "FaceAttributeView",
-    "EdgeAttributeView",
-    "CellAttributeView",
-]
-
 
 class AttributeView(MutableMapping):
     """Base class for attribute dict views."""

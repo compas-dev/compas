@@ -1,6 +1,6 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 from compas.geometry import centroid_points
 from compas.geometry import centroid_polygon
@@ -42,15 +42,15 @@ def mesh_smooth_centroid(mesh, fixed=None, kmax=100, damping=0.5, callback=None,
     fixed = set(fixed)
 
     for k in range(kmax):
-        key_xyz = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
+        vertex_xyz = {vertex: mesh.vertex_coordinates(vertex) for vertex in mesh.vertices()}
 
-        for key, attr in mesh.vertices(True):
-            if key in fixed:
+        for vertex, attr in mesh.vertices(True):
+            if vertex in fixed:
                 continue
 
-            x, y, z = key_xyz[key]
+            x, y, z = vertex_xyz[vertex]
 
-            cx, cy, cz = centroid_points([key_xyz[nbr] for nbr in mesh.vertex_neighbors(key)])
+            cx, cy, cz = centroid_points([vertex_xyz[nbr] for nbr in mesh.vertex_neighbors(vertex)])
 
             attr["x"] += damping * (cx - x)
             attr["y"] += damping * (cy - y)
@@ -96,15 +96,15 @@ def mesh_smooth_centerofmass(mesh, fixed=None, kmax=100, damping=0.5, callback=N
     fixed = set(fixed)
 
     for k in range(kmax):
-        key_xyz = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
+        vertex_xyz = {vertex: mesh.vertex_coordinates(vertex) for vertex in mesh.vertices()}
 
-        for key, attr in mesh.vertices(True):
-            if key in fixed:
+        for vertex, attr in mesh.vertices(True):
+            if vertex in fixed:
                 continue
 
-            x, y, z = key_xyz[key]
+            x, y, z = vertex_xyz[vertex]
 
-            cx, cy, cz = centroid_polygon([key_xyz[nbr] for nbr in mesh.vertex_neighbors(key, ordered=True)])
+            cx, cy, cz = centroid_polygon([vertex_xyz[nbr] for nbr in mesh.vertex_neighbors(vertex, ordered=True)])
 
             attr["x"] += damping * (cx - x)
             attr["y"] += damping * (cy - y)
@@ -150,25 +150,25 @@ def mesh_smooth_area(mesh, fixed=None, kmax=100, damping=0.5, callback=None, cal
     fixed = set(fixed)
 
     for k in range(kmax):
-        key_xyz = {key: mesh.vertex_coordinates(key)[:] for key in mesh.vertices()}
-        fkey_centroid = {fkey: mesh.face_centroid(fkey) for fkey in mesh.faces()}
-        fkey_area = {fkey: mesh.face_area(fkey) for fkey in mesh.faces()}
+        vertex_xyz = {vertex: mesh.vertex_coordinates(vertex)[:] for vertex in mesh.vertices()}
+        face_centroid = {face: mesh.face_centroid(face) for face in mesh.faces()}
+        face_area = {face: mesh.face_area(face) for face in mesh.faces()}
 
-        for key, attr in mesh.vertices(True):
-            if key in fixed:
+        for vertex, attr in mesh.vertices(True):
+            if vertex in fixed:
                 continue
 
-            x, y, z = key_xyz[key]
+            x, y, z = vertex_xyz[vertex]
 
             A = 0
             ax, ay, az = 0, 0, 0
 
-            for fkey in mesh.vertex_faces(key, ordered=True):
-                if fkey is None:
+            for face in mesh.vertex_faces(vertex, ordered=True):
+                if face is None:
                     continue
 
-                a = fkey_area[fkey]
-                c = fkey_centroid[fkey]
+                a = face_area[face]
+                c = face_centroid[face]
                 ax += a * c[0]
                 ay += a * c[1]
                 az += a * c[2]

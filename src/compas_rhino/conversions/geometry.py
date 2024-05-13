@@ -1,17 +1,15 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from Rhino.Geometry import Point3d  # type: ignore
-from Rhino.Geometry import Vector3d  # type: ignore
-from Rhino.Geometry import Plane as RhinoPlane  # type: ignore
+import Rhino  # type: ignore
+from System import MissingMemberException  # type: ignore
 
-from compas.geometry import Point
-from compas.geometry import Vector
-from compas.geometry import Plane
 from compas.geometry import Frame
+from compas.geometry import Plane
+from compas.geometry import Point
 from compas.geometry import Polygon
-
+from compas.geometry import Vector
 
 # =============================================================================
 # To Rhino
@@ -30,7 +28,7 @@ def point_to_rhino(point):
     :rhino:`Rhino.Geometry.Point3d`
 
     """
-    return Point3d(point[0], point[1], point[2])
+    return Rhino.Geometry.Point3d(point[0], point[1], point[2])
 
 
 def vector_to_rhino(vector):
@@ -45,7 +43,7 @@ def vector_to_rhino(vector):
     :rhino:`Rhino.Geometry.Vector3d`
 
     """
-    return Vector3d(vector[0], vector[1], vector[2])
+    return Rhino.Geometry.Vector3d(vector[0], vector[1], vector[2])
 
 
 def plane_to_rhino(plane):
@@ -60,7 +58,7 @@ def plane_to_rhino(plane):
     :rhino:`Rhino.Geometry.Plane`
 
     """
-    return RhinoPlane(point_to_rhino(plane[0]), vector_to_rhino(plane[1]))
+    return Rhino.Geometry.Plane(point_to_rhino(plane[0]), vector_to_rhino(plane[1]))
 
 
 def frame_to_rhino_plane(frame):
@@ -75,7 +73,7 @@ def frame_to_rhino_plane(frame):
     :rhino:`Rhino.Geometry.Plane`
 
     """
-    return RhinoPlane(point_to_rhino(frame.point), vector_to_rhino(frame.xaxis), vector_to_rhino(frame.yaxis))
+    return Rhino.Geometry.Plane(point_to_rhino(frame.point), vector_to_rhino(frame.xaxis), vector_to_rhino(frame.yaxis))
 
 
 frame_to_rhino = frame_to_rhino_plane
@@ -106,14 +104,20 @@ def point_to_compas(point):
 
     Parameters
     ----------
-    point : :rhino:`Rhino.Geometry.Point3d`
+    point : :rhino:`Rhino.Geometry.Point3d` | :rhino:`Rhino.Geometry.Point`
 
     Returns
     -------
     :class:`compas.geometry.Point`
 
     """
-    return Point(point.X, point.Y, point.Z)
+    try:
+        return Point(point.X, point.Y, point.Z)
+    except MissingMemberException:
+        try:
+            return Point(point.Location.X, point.Location.Y, point.Location.Z)
+        except MissingMemberException:
+            raise TypeError("Unexpected point type, got: {}".format(type(point)))
 
 
 def vector_to_compas(vector):

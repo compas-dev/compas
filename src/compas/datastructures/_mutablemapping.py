@@ -9,6 +9,7 @@ See these issues for more details:
  - https://github.com/compas-dev/compas/issues/562
  - https://github.com/compas-dev/compas/issues/649
 """
+
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -66,7 +67,6 @@ class Mapping(object):
 
 
 class MutableMapping(Mapping):
-
     __slots__ = ()
 
     """A MutableMapping is a generic container for associating

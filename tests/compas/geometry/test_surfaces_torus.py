@@ -3,12 +3,12 @@ import json
 import compas
 from random import random
 
-from compas.utilities import linspace
+from compas.itertools import linspace
 from compas.geometry import Point  # noqa: F401
 from compas.geometry import Vector  # noqa: F401
 from compas.geometry import Frame
 from compas.geometry import ToroidalSurface
-from compas.geometry import close
+from compas.tolerance import TOL
 
 
 @pytest.mark.parametrize(
@@ -34,8 +34,8 @@ def test_torus(radius_axis, radius_pipe):
 
     other = eval(repr(torus))
 
-    assert close(torus.radius_axis, other.radius_axis, tol=1e-12)
-    assert close(torus.radius_pipe, other.radius_pipe, tol=1e-12)
+    assert TOL.is_close(torus.radius_axis, other.radius_axis)
+    assert TOL.is_close(torus.radius_pipe, other.radius_pipe)
     assert torus.frame == other.frame
 
 
@@ -60,8 +60,8 @@ def test_torus_with_frame(frame):
 
     other = eval(repr(torus))
 
-    assert close(torus.radius_axis, other.radius_axis, tol=1e-12)
-    assert close(torus.radius_pipe, other.radius_pipe, tol=1e-12)
+    assert TOL.is_close(torus.radius_axis, other.radius_axis)
+    assert TOL.is_close(torus.radius_pipe, other.radius_pipe)
     assert torus.frame == other.frame
 
 
@@ -76,15 +76,15 @@ def test_torus_data():
     frame = Frame.worldXY()
 
     torus = ToroidalSurface(radius_axis=radius_axis, radius_pipe=radius_pipe, frame=frame)
-    other = ToroidalSurface.from_data(json.loads(json.dumps(torus.data)))
+    other = ToroidalSurface.__from_data__(json.loads(json.dumps(torus.__data__)))
 
     assert torus.radius_axis == other.radius_axis
     assert torus.radius_pipe == other.radius_pipe
     assert torus.frame == frame
 
     if not compas.IPY:
-        assert ToroidalSurface.validate_data(torus.data)
-        assert ToroidalSurface.validate_data(other.data)
+        assert ToroidalSurface.validate_data(torus.__data__)
+        assert ToroidalSurface.validate_data(other.__data__)
 
 
 # =============================================================================

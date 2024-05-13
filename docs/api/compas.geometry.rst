@@ -16,6 +16,8 @@ shapes, general polygons and polyhedrons, boundary representations (B-reps), and
 Classes
 =======
 
+
+
 .. autosummary::
     :toctree: generated/
     :nosignatures:
@@ -81,13 +83,14 @@ Classes
 Functions
 =========
 
+
+
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
     add_vectors
     add_vectors_xy
-    allclose
     angle_planes
     angle_points
     angle_points_xy
@@ -98,7 +101,6 @@ Functions
     angles_points_xy
     angles_vectors
     angles_vectors_xy
-    archimedean_spiral_evaluate
     area_polygon
     area_polygon_xy
     area_triangle
@@ -123,10 +125,6 @@ Functions
     centroid_polygon_vertices_xy
     centroid_polygon_xy
     centroid_polyhedron
-    circle_evaluate
-    circle_from_points
-    circle_from_points_xy
-    close
     closest_line_to_point
     closest_point_in_cloud
     closest_point_in_cloud_xy
@@ -148,8 +146,6 @@ Functions
     cross_vectors_xy
     decompose_matrix
     dehomogenize_vectors
-    delaunay_from_points
-    delaunay_from_points
     discrete_coons_patch
     distance_line_line
     distance_point_line
@@ -167,11 +163,9 @@ Functions
     dot_vectors
     dot_vectors_xy
     earclip_polygon
-    ellipse_evaluate
     euler_angles_from_matrix
     euler_angles_from_quaternion
     find_span
-    helix_evaluate
     homogenize_vectors
     identity_matrix
     intersection_circle_circle_xy
@@ -230,7 +224,6 @@ Functions
     length_vector_xy
     local_axes
     local_to_world_coordinates
-    logarithmic_spiral_evaluate
     matrix_determinant
     matrix_from_axis_and_angle
     matrix_from_axis_angle_vector
@@ -352,18 +345,17 @@ In environments where numpy is not available, these functions can still be acces
     convex_hull_xy_numpy
     dehomogenize_and_unflatten_frames_numpy
     dehomogenize_numpy
-    delaunay_from_points_numpy
     homogenize_and_flatten_frames_numpy
     homogenize_numpy
     icp_numpy
     local_to_world_coordinates_numpy
     oriented_bounding_box_numpy
     oriented_bounding_box_xy_numpy
+    pca_numpy
     transform_points_numpy
     transform_vectors_numpy
     trimesh_descent_numpy
     trimesh_gradient_numpy
-    voronoi_from_points_numpy
     world_to_local_coordinates_numpy
 
 
@@ -402,3 +394,6 @@ Pluggables are functions that don't have an actual implementation, but receive a
     trimesh_remesh_along_isoline
     trimesh_remesh_constrained
     trimesh_slice
+
+
+

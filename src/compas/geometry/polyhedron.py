@@ -1,14 +1,15 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 from math import sqrt
 
-from compas.utilities import pairwise
-from compas.geometry import transform_points
-from compas.geometry import Polygon
-from compas.geometry import Point
 from compas.geometry import Line
+from compas.geometry import Point
+from compas.geometry import Polygon
+from compas.geometry import transform_points
+from compas.itertools import pairwise
+
 from .geometry import Geometry
 
 
@@ -157,6 +158,8 @@ class Polyhedron(Geometry):
         The point locations of the vertices of the polyhedron.
     faces : list[list[int]]
         The faces as a list of index lists.
+    name : str, optional
+        The name of the polyhedron.
 
     Attributes
     ----------
@@ -195,8 +198,12 @@ class Polyhedron(Geometry):
         "required": ["vertices", "faces"],
     }
 
-    def __init__(self, vertices, faces, **kwargs):
-        super(Polyhedron, self).__init__(**kwargs)
+    @property
+    def __data__(self):
+        return {"vertices": self.vertices, "faces": self.faces}
+
+    def __init__(self, vertices, faces, name=None):
+        super(Polyhedron, self).__init__(name=name)
         self._vertices = None
         self._faces = None
         self.vertices = vertices
@@ -257,14 +264,6 @@ class Polyhedron(Geometry):
 
     def __or__(self, other):
         return self.__add__(other)
-
-    # ==========================================================================
-    # Data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return {"vertices": self.vertices, "faces": self.faces}
 
     # ==========================================================================
     # Properties
@@ -416,10 +415,15 @@ class Polyhedron(Geometry):
 
         """
         from itertools import combinations
+
         from numpy import asarray
-        from scipy.spatial import HalfspaceIntersection, ConvexHull  # type: ignore
-        from compas.datastructures import Mesh, mesh_merge_faces
-        from compas.geometry import length_vector, dot_vectors, cross_vectors
+        from scipy.spatial import ConvexHull  # type: ignore
+        from scipy.spatial import HalfspaceIntersection  # type: ignore
+
+        from compas.datastructures import Mesh
+        from compas.geometry import cross_vectors
+        from compas.geometry import dot_vectors
+        from compas.geometry import length_vector
 
         halfspaces = asarray(halfspaces, dtype=float)
         interior_point = asarray(interior_point, dtype=float)
@@ -435,7 +439,7 @@ class Polyhedron(Geometry):
                 if length_vector(cross_vectors(na, nb)) < 1e-6:
                     to_merge.append([a, b])
         for faces in to_merge:
-            mesh_merge_faces(mesh, faces)
+            mesh.merge_faces(faces)
         vertices, faces = mesh.to_vertices_and_faces()
         return cls(vertices, faces)
 

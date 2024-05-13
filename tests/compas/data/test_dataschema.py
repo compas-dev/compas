@@ -21,7 +21,7 @@ from compas.geometry import Torus
 from compas.geometry import Pointcloud
 
 from compas.datastructures import Graph
-from compas.datastructures import HalfEdge
+from compas.datastructures import Mesh
 
 if not compas.IPY:
     import jsonschema.exceptions
@@ -597,24 +597,24 @@ if not compas.IPY:
         [
             {
                 "attributes": {},
-                "dna": {},
-                "dea": {},
+                "default_node_attributes": {},
+                "default_edge_attributes": {},
                 "node": {},
                 "edge": {},
                 "max_node": -1,
             },
             {
                 "attributes": {},
-                "dna": {},
-                "dea": {},
+                "default_node_attributes": {},
+                "default_edge_attributes": {},
                 "node": {},
                 "edge": {},
                 "max_node": 0,
             },
             {
                 "attributes": {},
-                "dna": {},
-                "dea": {},
+                "default_node_attributes": {},
+                "default_edge_attributes": {},
                 "node": {},
                 "edge": {},
                 "max_node": 1000,
@@ -628,52 +628,39 @@ if not compas.IPY:
         "graph",
         [
             {
-                "attributes": {},
-                "dna": {},
-                "dea": {},
+                "default_node_attributes": {},
+                "default_edge_attributes": {},
                 "node": {},
                 "edge": {},
                 "max_node": -2,
             },
             {
-                "dna": {},
-                "dea": {},
+                "default_edge_attributes": {},
                 "node": {},
                 "edge": {},
                 "max_node": -1,
             },
             {
-                "attributes": {},
-                "dea": {},
+                "default_node_attributes": {},
                 "node": {},
                 "edge": {},
                 "max_node": -1,
             },
             {
-                "attributes": {},
-                "dna": {},
-                "node": {},
+                "default_node_attributes": {},
+                "default_edge_attributes": {},
                 "edge": {},
                 "max_node": -1,
             },
             {
-                "attributes": {},
-                "dna": {},
-                "dea": {},
-                "edge": {},
-                "max_node": -1,
-            },
-            {
-                "attributes": {},
-                "dna": {},
-                "dea": {},
+                "default_node_attributes": {},
+                "default_edge_attributes": {},
                 "node": {},
                 "max_node": -1,
             },
             {
-                "attributes": {},
-                "dna": {},
-                "dea": {},
+                "default_node_attributes": {},
+                "default_edge_attributes": {},
                 "node": {},
                 "edge": {},
             },
@@ -684,13 +671,13 @@ if not compas.IPY:
             Graph.validate_data(graph)
 
     @pytest.mark.parametrize(
-        "halfedge",
+        "mesh",
         [
             {
                 "attributes": {},
-                "dva": {},
-                "dea": {},
-                "dfa": {},
+                "default_vertex_attributes": {},
+                "default_edge_attributes": {},
+                "default_face_attributes": {},
                 "vertex": {},
                 "face": {},
                 "facedata": {},
@@ -700,9 +687,9 @@ if not compas.IPY:
             },
             {
                 "attributes": {},
-                "dva": {},
-                "dea": {},
-                "dfa": {},
+                "default_vertex_attributes": {},
+                "default_edge_attributes": {},
+                "default_face_attributes": {},
                 "vertex": {},
                 "face": {},
                 "facedata": {},
@@ -712,9 +699,9 @@ if not compas.IPY:
             },
             {
                 "attributes": {},
-                "dva": {},
-                "dea": {},
-                "dfa": {},
+                "default_vertex_attributes": {},
+                "default_edge_attributes": {},
+                "default_face_attributes": {},
                 "vertex": {},
                 "face": {},
                 "facedata": {},
@@ -724,9 +711,9 @@ if not compas.IPY:
             },
             {
                 "attributes": {},
-                "dva": {},
-                "dea": {},
-                "dfa": {},
+                "default_vertex_attributes": {},
+                "default_edge_attributes": {},
+                "default_face_attributes": {},
                 "vertex": {},
                 "face": {},
                 "facedata": {},
@@ -736,9 +723,9 @@ if not compas.IPY:
             },
             {
                 "attributes": {},
-                "dva": {},
-                "dea": {},
-                "dfa": {},
+                "default_vertex_attributes": {},
+                "default_edge_attributes": {},
+                "default_face_attributes": {},
                 "vertex": {},
                 "face": {},
                 "facedata": {},
@@ -748,9 +735,9 @@ if not compas.IPY:
             },
             {
                 "attributes": {},
-                "dva": {},
-                "dea": {},
-                "dfa": {},
+                "default_vertex_attributes": {},
+                "default_edge_attributes": {},
+                "default_face_attributes": {},
                 "vertex": {"0": {}, "1": {}, "2": {}},
                 "face": {"0": [0, 1, 2]},
                 "facedata": {},
@@ -760,9 +747,9 @@ if not compas.IPY:
             },
             {
                 "attributes": {},
-                "dva": {},
-                "dea": {},
-                "dfa": {},
+                "default_vertex_attributes": {},
+                "default_edge_attributes": {},
+                "default_face_attributes": {},
                 "vertex": {"0": {}, "1": {}, "2": {}},
                 "face": {"0": [0, 1, 2]},
                 "facedata": {"0": {}},
@@ -772,17 +759,17 @@ if not compas.IPY:
             },
         ],
     )
-    def test_schema_halfedge_valid(halfedge):
-        HalfEdge.validate_data(halfedge)
+    def test_schema_mesh_valid(mesh):
+        Mesh.validate_data(mesh)
 
     @pytest.mark.parametrize(
-        "halfedge",
+        "mesh",
         [
             {
                 "attributes": {},
-                "dva": {},
-                "dea": {},
-                "dfa": {},
+                "default_vertex_attributes": {},
+                "default_edge_attributes": {},
+                "default_face_attributes": {},
                 "vertex": {},
                 "face": {},
                 "facedata": {},
@@ -792,9 +779,9 @@ if not compas.IPY:
             },
             {
                 "attributes": {},
-                "dva": {},
-                "dea": {},
-                "dfa": {},
+                "default_vertex_attributes": {},
+                "default_edge_attributes": {},
+                "default_face_attributes": {},
                 "vertex": {},
                 "face": {},
                 "facedata": {},
@@ -804,9 +791,9 @@ if not compas.IPY:
             },
             {
                 "attributes": {},
-                "dva": {},
-                "dea": {},
-                "dfa": {},
+                "default_vertex_attributes": {},
+                "default_edge_attributes": {},
+                "default_face_attributes": {},
                 "vertex": {"0": {}, "1": {}, "2": {}},
                 "face": {"0": [0, 1]},
                 "facedata": {},
@@ -816,9 +803,9 @@ if not compas.IPY:
             },
             {
                 "attributes": {},
-                "dva": {},
-                "dea": {},
-                "dfa": {},
+                "default_vertex_attributes": {},
+                "default_edge_attributes": {},
+                "default_face_attributes": {},
                 "vertex": {"0": {}, "1": {}, "2": {}},
                 "face": {"0": [0, 1, 2]},
                 "facedata": {"0": {}},
@@ -828,18 +815,18 @@ if not compas.IPY:
             },
         ],
     )
-    def test_schema_halfedge_invalid(halfedge):
+    def test_schema_mesh_invalid(mesh):
         with pytest.raises(jsonschema.exceptions.ValidationError):
-            HalfEdge.validate_data(halfedge)
+            Mesh.validate_data(mesh)
 
     @pytest.mark.parametrize(
-        "halfedge",
+        "mesh",
         [
             {
                 "attributes": {},
-                "dva": {},
-                "dea": {},
-                "dfa": {},
+                "default_vertex_attributes": {},
+                "default_edge_attributes": {},
+                "default_face_attributes": {},
                 "vertex": {0: {}, "1": {}, "2": {}},
                 "face": {"0": [0, 1, 2]},
                 "facedata": {},
@@ -849,9 +836,9 @@ if not compas.IPY:
             },
             {
                 "attributes": {},
-                "dva": {},
-                "dea": {},
-                "dfa": {},
+                "default_vertex_attributes": {},
+                "default_edge_attributes": {},
+                "default_face_attributes": {},
                 "vertex": {"0": {}, "1": {}, "2": {}},
                 "face": {0: [0, 1, 2]},
                 "facedata": {},
@@ -861,6 +848,6 @@ if not compas.IPY:
             },
         ],
     )
-    def test_schema_halfedge_failing(halfedge):
+    def test_schema_mesh_failing(mesh):
         with pytest.raises(TypeError):
-            HalfEdge.validate_data(halfedge)
+            Mesh.validate_data(mesh)

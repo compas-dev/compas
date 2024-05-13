@@ -1,11 +1,12 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from compas.geometry import add_vectors
+from compas.geometry import Frame
 from compas.geometry import Point
 from compas.geometry import Vector
-from compas.geometry import Frame
+from compas.geometry import add_vectors
+
 from .curve import Curve
 
 
@@ -28,6 +29,8 @@ class Line(Curve):
         The first point.
     end : [float, float, float] | :class:`compas.geometry.Point`
         The second point.
+    name : str, optional
+        The name of the line.
 
     Attributes
     ----------
@@ -65,6 +68,13 @@ class Line(Curve):
 
     """
 
+    # overwriting the __new__ method is necessary
+    # to avoid triggering the plugin mechanism of the base curve class
+    def __new__(cls, *args, **kwargs):
+        curve = object.__new__(cls)
+        curve.__init__(*args, **kwargs)
+        return curve
+
     DATASCHEMA = {
         "type": "object",
         "properties": {
@@ -74,15 +84,12 @@ class Line(Curve):
         "required": ["start", "end"],
     }
 
-    # overwriting the __new__ method is necessary
-    # to avoid triggering the plugin mechanism of the base curve class
-    def __new__(cls, *args, **kwargs):
-        curve = object.__new__(cls)
-        curve.__init__(*args, **kwargs)
-        return curve
+    @property
+    def __data__(self):
+        return {"start": self.start.__data__, "end": self.end.__data__}
 
-    def __init__(self, start, end, **kwargs):
-        super(Line, self).__init__(**kwargs)
+    def __init__(self, start, end, name=None):
+        super(Line, self).__init__(name=name)
         self._point = None
         self._vector = None
         self._direction = None
@@ -122,14 +129,6 @@ class Line(Curve):
             return self.start == other[0] and self.end == other[1]
         except Exception:
             return False
-
-    # ==========================================================================
-    # data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return {"start": self.start.data, "end": self.end.data}
 
     # ==========================================================================
     # properties
@@ -298,17 +297,19 @@ class Line(Curve):
     # ==========================================================================
 
     def point_at(self, t):
-        """Construct a point at a specific location along the line.
+        """Construct a point along the line at a fractional position.
 
         Parameters
         ----------
         t : float
-            The location along the line.
+            The relative position along the line as a fraction of the length of the line.
+            0.0 corresponds to the start point and 1.0 corresponds to the end point.
+            Numbers outside of this range are also valid and correspond to points beyond the start and end point.
 
         Returns
         -------
         :class:`compas.geometry.Point`
-            The point at the specified location.
+            The point at the specified position.
 
         See Also
         --------
@@ -322,6 +323,44 @@ class Line(Curve):
 
         """
         point = self.point + self.vector * t
+        return point
+
+    def point_from_start(self, distance):
+        """Construct a point along the line at a distance from the start point.
+
+        Parameters
+        ----------
+        distance : float
+            The distance along the line from the start point towards the end point.
+            If the distance is negative, the point is constructed in the opposite direction of the end point.
+            If the distance is larger than the length of the line, the point is constructed beyond the end point.
+
+        Returns
+        -------
+        :class:`compas.geometry.Point`
+            The point at the specified distance.
+
+        """
+        point = self.point + self.direction * distance
+        return point
+
+    def point_from_end(self, distance):
+        """Construct a point along the line at a distance from the end point.
+
+        Parameters
+        ----------
+        distance : float
+            The distance along the line from the end point towards the start point.
+            If the distance is negative, the point is constructed in the opposite direction of the start point.
+            If the distance is larger than the length of the line, the point is constructed beyond the start point.
+
+        Returns
+        -------
+        :class:`compas.geometry.Point`
+            The point at the specified distance.
+
+        """
+        point = self.end - self.direction * distance
         return point
 
     def closest_point(self, point, return_parameter=False):
@@ -350,3 +389,43 @@ class Line(Curve):
         if return_parameter:
             return closest, t
         return closest
+
+    def flip(self):
+        """Flip the direction of the line.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        >>> line = Line([0, 0, 0], [1, 2, 3])
+        >>> line
+        Line(Point(x=0.0, y=0.0, z=0.0), Point(x=1.0, y=2.0, z=3.0))
+        >>> line.flip()
+        >>> line
+        Line(Point(x=1.0, y=2.0, z=3.0), Point(x=0.0, y=0.0, z=0.0))
+
+        """
+        new_vector = self.vector.inverted()
+        self.start = self.end
+        self.vector = new_vector
+
+    def flipped(self):
+        """Return a new line with the direction flipped.
+
+        Returns
+        -------
+        :class:`Line`
+            A new line.
+
+        Examples
+        --------
+        >>> line = Line([0, 0, 0], [1, 2, 3])
+        >>> line
+        Line(Point(x=0.0, y=0.0, z=0.0), Point(x=1.0, y=2.0, z=3.0))
+        >>> line.flipped()
+        Line(Point(x=1.0, y=2.0, z=3.0), Point(x=0.0, y=0.0, z=0.0))
+
+        """
+        return Line(self.end, self.start)

@@ -27,15 +27,15 @@ def test_pointcloud(points):
 def test_pointcloud_data():
     points = [[random(), random(), random()] for i in range(10)]
     pointcloud = Pointcloud(points)
-    other = Pointcloud.from_data(json.loads(json.dumps(pointcloud.to_data())))
+    other = Pointcloud.__from_data__(json.loads(json.dumps(pointcloud.__data__)))
 
     assert pointcloud == other
     assert pointcloud.points == other.points
-    assert pointcloud.data == other.data
+    assert pointcloud.__data__ == other.__data__
 
     if not compas.IPY:
-        assert Pointcloud.validate_data(pointcloud.data)
-        assert Pointcloud.validate_data(other.data)
+        assert Pointcloud.validate_data(pointcloud.__data__)
+        assert Pointcloud.validate_data(other.__data__)
 
 
 def test_pointcloud__eq__():

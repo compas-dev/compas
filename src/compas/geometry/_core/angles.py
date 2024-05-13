@@ -1,20 +1,20 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from math import pi
-from math import degrees
 from math import acos
+from math import degrees
+from math import pi
 
 from compas.tolerance import TOL
 
-from ._algebra import subtract_vectors
-from ._algebra import subtract_vectors_xy
+from ._algebra import cross_vectors
 from ._algebra import dot_vectors
 from ._algebra import dot_vectors_xy
 from ._algebra import length_vector
 from ._algebra import length_vector_xy
-from ._algebra import cross_vectors
+from ._algebra import subtract_vectors
+from ._algebra import subtract_vectors_xy
 
 
 def angle_vectors(u, v, deg=False, tol=None):
@@ -384,9 +384,9 @@ def angle_planes(a, b, deg=False):
 
     Parameters
     ----------
-    a : [point, vector] | :class:`compas.geometry.Plane`
+    a : [point, vector]
         The first plane.
-    b : [point, vector] | :class:`compas.geometry.Plane`
+    b : [point, vector]
         The second plane.
     deg : bool, optional
         If True, returns the angle in degrees.

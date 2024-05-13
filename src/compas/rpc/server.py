@@ -1,6 +1,6 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 import threading
 
@@ -42,6 +42,11 @@ class Server(SimpleXMLRPCServer):
             server.serve_forever()
 
     """
+
+    def __init__(self, address, *args, **kwargs):
+        super(Server, self).__init__(address, *args, **kwargs)
+        self.register_function(self.ping)
+        self.register_function(self.remote_shutdown)
 
     def ping(self):
         """Simple function used to check if a remote server can be reached.

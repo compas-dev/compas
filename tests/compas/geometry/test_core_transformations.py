@@ -4,7 +4,7 @@ import pytest
 # from compas.geometry import dehomogenize
 from compas.geometry import Rotation
 from compas.geometry import Translation
-from compas.geometry import allclose
+from compas.tolerance import TOL
 from compas.geometry import intersection_segment_segment_xy
 from compas.geometry import mirror_points_line
 from compas.geometry import mirror_points_line_xy
@@ -49,10 +49,13 @@ def test_transform_points(T):
 
 
 def test_transform_vectors(R):
-    assert transform_vectors([[1, 2, 3], [5, 6, 7]], R) == [
+    known = [
         [1.0, -3.5781372230600135, 0.44377247881360526],
         [5.0, -8.946418341978926, 2.227464668699156],
     ]
+    result = transform_vectors([[1, 2, 3], [5, 6, 7]], R)
+    for a, b in zip(result, known):
+        assert TOL.is_allclose(a, b)
 
 
 # def test_homogenize():
@@ -84,11 +87,11 @@ def test_scale_points_xy():
 
 
 def test_rotate_points():
-    assert allclose(rotate_points([[0, 1, 2]], 1), [[-0.8414709848078965, 0.5403023058681398, 2.0]])
+    assert TOL.is_allclose(rotate_points([[0, 1, 2]], 1), [[-0.8414709848078965, 0.5403023058681398, 2.0]])
 
 
 def test_rotate_points_xy():
-    assert allclose(
+    assert TOL.is_allclose(
         rotate_points_xy([[0, 1, 2]], 1),
         [[-0.8414709848078965, 0.5403023058681398, 0.0]],
     )
@@ -108,42 +111,42 @@ def test_mirror_points_point_xy():
 
 
 def test_mirror_points_line():
-    assert allclose(
+    assert TOL.is_allclose(
         mirror_points_line([[1.0, 0.0, 0.0]], ([0.0, 0.0, 0.0], [0.0, 1.0, 0.0])),
         [[-1.0, 0.0, 0.0]],
     )
 
 
 def test_mirror_points_line_xy():
-    assert allclose(
+    assert TOL.is_allclose(
         mirror_points_line_xy([[1.0, 0.0, 0.0]], ([0.0, 0.0, 0.0], [0.0, 1.0, 0.0])),
         [[-1.0, 0.0, 0.0]],
     )
 
 
 def test_mirror_points_plane():
-    assert allclose(
+    assert TOL.is_allclose(
         mirror_points_plane([[0, 2.5, 2]], ([3, 4, 5], [6, 7, 8.8])),
         [[4.055651317409505, 7.231593203644422, 7.948288598867276]],
     )
 
 
 def test_project_point_plane():
-    assert allclose(
+    assert TOL.is_allclose(
         project_point_plane([0, 2.5, 2], ([3, 4, 5], [6, 7, 8.8])),
         [2.0278256587047525, 4.865796601822211, 4.974144299433638],
     )
 
 
 def test_project_points_plane():
-    assert allclose(
+    assert TOL.is_allclose(
         project_points_plane([[0, 2.5, 2]], ([3, 4, 5], [6, 7, 8.8])),
         [[2.0278256587047525, 4.865796601822211, 4.974144299433638]],
     )
 
 
 def test_project_point_line():
-    assert allclose(
+    assert TOL.is_allclose(
         project_point_line([0, 1, 2], ([3, 4, 5], [6, 7, 8.8])),
         [0.281134401972873, 1.281134401972873, 1.5561035758323052],
     )
@@ -155,7 +158,7 @@ def test_project_point_line_xy():
 
 
 def test_project_points_line():
-    assert allclose(
+    assert TOL.is_allclose(
         project_points_line([[0, 1, 2]], ([3, 4, 5], [6, 7, 8.8])),
         [[0.281134401972873, 1.281134401972873, 1.5561035758323052]],
     )
@@ -198,4 +201,4 @@ def test_orient_points():
 
     points = orient_points([point], tarplane, refplane)
 
-    assert allclose(points[0], [0.57735, 0.57735, 0.57735])
+    assert TOL.is_allclose(points[0], [0.57735, 0.57735, 0.57735])

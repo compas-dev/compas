@@ -10,12 +10,8 @@ following online resources:
 Many thanks to Christoph Gohlke, Martin John Baker, Sachin Joglekar and Andrew
 Ippoliti for providing code and documentation.
 """
+
 from compas.data import Data
-
-from compas.tolerance import TOL
-
-from compas.geometry import multiply_matrices
-from compas.geometry import transpose_matrix
 from compas.geometry import basis_vectors_from_matrix
 from compas.geometry import decompose_matrix
 from compas.geometry import identity_matrix
@@ -24,7 +20,10 @@ from compas.geometry import matrix_from_euler_angles
 from compas.geometry import matrix_from_frame
 from compas.geometry import matrix_from_translation
 from compas.geometry import matrix_inverse
+from compas.geometry import multiply_matrices
 from compas.geometry import translation_from_matrix
+from compas.geometry import transpose_matrix
+from compas.tolerance import TOL
 
 
 class Transformation(Data):
@@ -45,6 +44,8 @@ class Transformation(Data):
     ----------
     matrix : list[list[float]], optional
         The 4x4 transformation matrix.
+    name : str, optional
+        The name of the transformation.
 
     Attributes
     ----------
@@ -95,8 +96,12 @@ class Transformation(Data):
         "required": ["matrix"],
     }
 
-    def __init__(self, matrix=None):
-        super(Transformation, self).__init__()
+    @property
+    def __data__(self):
+        return {"matrix": self.matrix}
+
+    def __init__(self, matrix=None, name=None):
+        super(Transformation, self).__init__(name=name)
         if not matrix:
             matrix = identity_matrix(4)
         self.matrix = matrix
@@ -142,14 +147,6 @@ class Transformation(Data):
 
     def __len__(self):
         return len(self.matrix)
-
-    # ==========================================================================
-    # Data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return {"matrix": self.matrix}
 
     # ==========================================================================
     # Properties
@@ -499,11 +496,11 @@ class Transformation(Data):
         True
 
         """
+        from compas.geometry import Projection
+        from compas.geometry import Rotation  # noqa: F811
         from compas.geometry import Scale  # noqa: F811
         from compas.geometry import Shear
-        from compas.geometry import Rotation  # noqa: F811
         from compas.geometry import Translation  # noqa: F811
-        from compas.geometry import Projection
 
         s, h, a, t, p = decompose_matrix(self.matrix)
         S = Scale.from_factors(s)

@@ -3,7 +3,7 @@ import time
 from compas.rpc.services.default import start_service
 
 try:
-    from xmlrpclib import ServerProxy
+    from xmlrpclib import ServerProxy  # type: ignore
 except ImportError:
     from xmlrpc.client import ServerProxy
 

@@ -1,18 +1,17 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 from random import uniform
 
-from compas.tolerance import TOL
-
-from compas.geometry import KDTree
 from compas.geometry import Geometry
+from compas.geometry import KDTree
 from compas.geometry import Point
-from compas.geometry import transform_points
-from compas.geometry import centroid_points
 from compas.geometry import bounding_box
+from compas.geometry import centroid_points
 from compas.geometry import closest_point_in_cloud
+from compas.geometry import transform_points
+from compas.tolerance import TOL
 
 
 class Pointcloud(Geometry):
@@ -22,8 +21,8 @@ class Pointcloud(Geometry):
     ----------
     points : sequence[point]
         A sequence of points to add to the cloud.
-    **kwargs : dict[str, Any], optional
-        Additional keyword arguments collected in a dict.
+    name : str, optional
+        The name of the pointcloud.
 
     Attributes
     ----------
@@ -44,8 +43,12 @@ class Pointcloud(Geometry):
         "required": ["points"],
     }
 
-    def __init__(self, points, **kwargs):
-        super(Pointcloud, self).__init__(**kwargs)
+    @property
+    def __data__(self):
+        return {"points": [point.__data__ for point in self.points]}
+
+    def __init__(self, points, name=None):
+        super(Pointcloud, self).__init__(name=name)
         self._points = None
         self._tree = None
         self.points = points
@@ -75,14 +78,6 @@ class Pointcloud(Geometry):
         A = sorted(self, key=lambda point: (point[0], point[1], point[2]))
         B = sorted(other, key=lambda point: (point[0], point[1], point[2]))
         return all(a == b for a, b in zip(A, B))
-
-    # ==========================================================================
-    # Data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return {"points": [point.data for point in self.points]}
 
     # ==========================================================================
     # Properties

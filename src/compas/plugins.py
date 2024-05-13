@@ -2,6 +2,7 @@
 COMPAS has an extensible architecture based on plugins that allows to
 customize and extend the functionality of the core framework.
 """
+
 # The COMPAS plugin system owes a lot to pluggy, the pytest plugin framework
 # There are portions of code loosely based on pluggy's
 # and while it is not strictly derivative work, we include
@@ -149,11 +150,7 @@ class PluginManager(object):
         with self._discovery_lock:
             count = 0
 
-            modules = [
-                module_name
-                for _importer, module_name, is_pkg in pkgutil.iter_modules()
-                if is_pkg and module_name.startswith("compas")
-            ]
+            modules = [module_name for _importer, module_name, is_pkg in pkgutil.iter_modules() if is_pkg and module_name.startswith("compas")]
 
             modules_to_inspect = dict()
 
@@ -212,11 +209,7 @@ class PluginManager(object):
                 plugins_list.sort(key=lambda p: p.key)
 
                 if self.DEBUG:
-                    print(
-                        'Registered plugin with ID "{}" for extension point: {}'.format(
-                            plugin_impl.id, plugin_opts["extension_point_url"]
-                        )
-                    )
+                    print('Registered plugin with ID "{}" for extension point: {}'.format(plugin_impl.id, plugin_opts["extension_point_url"]))
                 count += 1
 
         return count
@@ -285,16 +278,10 @@ def pluggable(
                     try:
                         return func(*args, **kwargs)
                     except NotImplementedError:
-                        raise PluginNotInstalledError(
-                            "Plugin not found and no default implementation for extension point URL: {}".format(
-                                extension_point_url
-                            )
-                        )
+                        raise PluginNotInstalledError("Plugin not found and no default implementation for extension point URL: {}".format(extension_point_url))
                     except ImportError:
                         raise PluginDefaultNotAvailableError(
-                            "Plugin not found and the default implementation is not available in your environment for extension point URL: {}".format(
-                                extension_point_url
-                            )
+                            "Plugin not found and the default implementation is not available in your environment for extension point URL: {}".format(extension_point_url)
                         )
 
                 # Invoke plugin

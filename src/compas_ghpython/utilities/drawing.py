@@ -23,7 +23,7 @@ from System.Drawing import Color
 from System.Enum import ToObject
 
 from compas.geometry import centroid_points
-from compas.utilities import pairwise
+from compas.itertools import pairwise
 from compas_rhino.utilities.drawing import _face_to_max_quad
 
 try:
@@ -403,12 +403,12 @@ def draw_mesh(vertices, faces, color=None, vertex_normals=None, texture_coordina
     return mesh
 
 
-def draw_network(network):
-    """Draw a network in Grasshopper.
+def draw_graph(graph):
+    """Draw a graph in Grasshopper.
 
     Parameters
     ----------
-    network : :class:`compas.datastructures.Network`
+    graph : :class:`compas.datastructures.Graph`
 
     Returns
     -------
@@ -418,11 +418,11 @@ def draw_network(network):
 
     """
     points = []
-    for key in network.nodes():
-        points.append({"pos": network.node_coordinates(key)})
+    for key in graph.nodes():
+        points.append({"pos": graph.node_coordinates(key)})
     lines = []
-    for u, v in network.edges():
-        lines.append({"start": network.node_coordinates(u), "end": network.node_coordinates(v)})
+    for u, v in graph.edges():
+        lines.append({"start": graph.node_coordinates(u), "end": graph.node_coordinates(v)})
     points_rg = draw_points(points)
     lines_rg = draw_lines(lines)
 

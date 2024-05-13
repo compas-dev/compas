@@ -2,6 +2,7 @@
 This package provides scene object plugins for visualising COMPAS objects in Grasshopper.
 When working in GH Python components, :class:`compas.scene.SceneObject` will automatically use the corresponding GHPython scene object for each COMPAS object type.
 """
+
 from __future__ import absolute_import
 
 from compas.plugins import plugin
@@ -28,7 +29,7 @@ from compas.geometry import Vector
 from compas.geometry import Brep
 
 from compas.datastructures import Mesh
-from compas.datastructures import Network
+from compas.datastructures import Graph
 from compas.datastructures import VolMesh
 
 from .sceneobject import GHSceneObject
@@ -42,7 +43,7 @@ from .ellipseobject import EllipseObject
 from .frameobject import FrameObject
 from .lineobject import LineObject
 from .meshobject import MeshObject
-from .networkobject import NetworkObject
+from .graphobject import GraphObject
 from .planeobject import PlaneObject
 from .pointobject import PointObject
 from .polygonobject import PolygonObject
@@ -61,11 +62,6 @@ def clear_GH(guids=None):
     pass
 
 
-@plugin(category="drawing-utils", pluggable_name="redraw", requires=["Grasshopper"])
-def redraw_GH():
-    pass
-
-
 @plugin(category="factories", requires=["Rhino"])
 def register_scene_objects():
     register(Box, BoxObject, context="Grasshopper")
@@ -78,7 +74,7 @@ def register_scene_objects():
     register(Frame, FrameObject, context="Grasshopper")
     register(Line, LineObject, context="Grasshopper")
     register(Mesh, MeshObject, context="Grasshopper")
-    register(Network, NetworkObject, context="Grasshopper")
+    register(Graph, GraphObject, context="Grasshopper")
     register(Plane, PlaneObject, context="Grasshopper")
     register(Point, PointObject, context="Grasshopper")
     register(Polygon, PolygonObject, context="Grasshopper")
@@ -105,7 +101,7 @@ __all__ = [
     "FrameObject",
     "LineObject",
     "MeshObject",
-    "NetworkObject",
+    "GraphObject",
     "PlaneObject",
     "PointObject",
     "PolygonObject",

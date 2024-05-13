@@ -1,11 +1,10 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from compas.topology import adjacency_from_edges
+from compas.itertools import pairwise
 from compas.topology import connected_components
-
-from compas.utilities import pairwise
+from compas.topology import vertex_adjacency_from_edges
 
 from .substitute import mesh_substitute_vertex_in_faces
 
@@ -86,7 +85,7 @@ def mesh_unweld_edges(mesh, edges):
                     )
                 )
 
-        adjacency = adjacency_from_edges(network_edges)
+        adjacency = vertex_adjacency_from_edges(network_edges)
         for key, values in adjacency.items():
             adjacency[key] = {value: None for value in values}
         # include non connected vertices

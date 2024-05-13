@@ -2,12 +2,12 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from compas.geometry import Frame
+from compas.geometry import Line
+from compas.geometry import Transformation
+from compas.geometry import Vector
 from compas.geometry import centroid_points
 from compas.geometry import transform_points
-from compas.geometry import Transformation
-from compas.geometry import Frame
-from compas.geometry import Vector
-from compas.geometry import Line
 
 from .shape import Shape
 
@@ -35,6 +35,8 @@ class Box(Shape):
     frame : :class:`compas.geometry.Frame`, optional
         The frame of the box.
         Defaults to ``Frame.worldXY()``.
+    name : str, optional
+        The name of the shape.
 
     Attributes
     ----------
@@ -113,8 +115,26 @@ class Box(Shape):
         "minProperties": 4,
     }
 
-    def __init__(self, xsize=1.0, ysize=None, zsize=None, frame=None, **kwargs):
-        super(Box, self).__init__(frame=frame, **kwargs)
+    @property
+    def __data__(self):
+        return {
+            "xsize": self.xsize,
+            "ysize": self.ysize,
+            "zsize": self.zsize,
+            "frame": self.frame.__data__,
+        }
+
+    @classmethod
+    def __from_data__(cls, data):
+        return cls(
+            xsize=data["xsize"],
+            ysize=data["ysize"],
+            zsize=data["zsize"],
+            frame=Frame.__from_data__(data["frame"]),
+        )
+
+    def __init__(self, xsize=1.0, ysize=None, zsize=None, frame=None, name=None):
+        super(Box, self).__init__(frame=frame, name=name)
         self._xsize = None
         self._ysize = None
         self._zsize = None
@@ -129,58 +149,6 @@ class Box(Shape):
             self.ysize,
             self.zsize,
             self.frame,
-        )
-
-    def __len__(self):
-        return 4
-
-    def __getitem__(self, key):
-        if key == 0:
-            return self.xsize
-        elif key == 1:
-            return self.ysize
-        elif key == 2:
-            return self.zsize
-        elif key == 3:
-            return self.frame
-        else:
-            raise KeyError
-
-    def __setitem__(self, key, value):
-        if key == 0:
-            self.xsize = value
-        elif key == 1:
-            self.ysize = value
-        elif key == 2:
-            self.zsize = value
-        elif key == 3:
-            self.frame = value
-        else:
-            raise KeyError
-
-    def __iter__(self):
-        return iter([self.xsize, self.ysize, self.zsize, self.frame])
-
-    # ==========================================================================
-    # Data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return {
-            "xsize": self.xsize,
-            "ysize": self.ysize,
-            "zsize": self.zsize,
-            "frame": self.frame.data,
-        }
-
-    @classmethod
-    def from_data(cls, data):
-        return cls(
-            xsize=data["xsize"],
-            ysize=data["ysize"],
-            zsize=data["zsize"],
-            frame=Frame.from_data(data["frame"]),
         )
 
     # ==========================================================================
@@ -261,18 +229,8 @@ class Box(Shape):
 
     @property
     def diagonal(self):
-        a = (
-            self.frame.point
-            + self.frame.xaxis * -0.5 * self.xsize
-            + self.frame.yaxis * -0.5 * self.ysize
-            + self.frame.zaxis * -0.5 * self.zsize
-        )
-        b = (
-            self.frame.point
-            + self.frame.xaxis * 0.5 * self.xsize
-            + self.frame.yaxis * 0.5 * self.ysize
-            + self.frame.zaxis * 0.5 * self.zsize
-        )
+        a = self.frame.point + self.frame.xaxis * -0.5 * self.xsize + self.frame.yaxis * -0.5 * self.ysize + self.frame.zaxis * -0.5 * self.zsize
+        b = self.frame.point + self.frame.xaxis * 0.5 * self.xsize + self.frame.yaxis * 0.5 * self.ysize + self.frame.zaxis * 0.5 * self.zsize
         return Line(a, b)
 
     @property
@@ -542,6 +500,27 @@ class Box(Shape):
             faces = _faces
 
         return vertices, faces
+
+    def to_mesh(self, triangulated=False):
+        """Returns a mesh representation of the box.
+
+        Parameters
+        ----------
+        triangulated: bool, optional
+            If True, triangulate the faces.
+
+        Returns
+        -------
+        :class:`compas.datastructures.Mesh`
+
+        """
+        from compas.datastructures import Mesh
+
+        vertices, faces = self.to_vertices_and_faces(triangulated=triangulated)
+
+        mesh = Mesh.from_vertices_and_faces(vertices, faces)
+
+        return mesh
 
     def to_brep(self):
         """Returns a BREP representation of the box.

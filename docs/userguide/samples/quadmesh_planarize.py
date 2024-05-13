@@ -1,10 +1,13 @@
 # type: ignore
+from compas_viewer import Viewer
+
 import compas
+from compas.colors import Color
+from compas.colors import ColorMap
 from compas.datastructures import Mesh
+# ! mesh_flatness is not available in compas.geometry
 from compas.datastructures import mesh_flatness
 from compas.geometry import quadmesh_planarize
-from compas.colors import Color, ColorMap
-from compas_view2.app import App
 
 mesh = Mesh.from_obj(compas.get("tubemesh.obj"))
 
@@ -22,7 +25,7 @@ for face in mesh.faces():
     else:
         facecolor[face] = Color.red()
 
-viewer = App()
+viewer = Viewer()
 
-viewer.add(mesh, facecolor=facecolor)
-viewer.run()
+viewer.scene.add(mesh, facecolor=facecolor)
+viewer.show()

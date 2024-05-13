@@ -1,12 +1,16 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from math import sqrt, pi, cos, sin
+from math import cos
+from math import pi
+from math import sin
+from math import sqrt
 
+from compas.geometry import Frame
 from compas.geometry import Point
 from compas.geometry import Vector
-from compas.geometry import Frame
+
 from .conic import Conic
 from .line import Line
 
@@ -31,6 +35,8 @@ class Ellipse(Conic):
     frame : :class:`compas.geometry.Frame`, optional
         The local coordinate system of the ellipse.
         The default value is ``None``, in which case the ellipse is constructed in the XY plane of the world coordinate system.
+    name : str, optional
+        The name of the ellipse.
 
     Attributes
     ----------
@@ -97,12 +103,12 @@ class Ellipse(Conic):
 
     Visualise the line, ellipse, and frame of the ellipse with the COMPAS viewer.
 
-    >>> from compas_view2.app import App  # doctest: +SKIP
-    >>> viewer = App()                    # doctest: +SKIP
-    >>> viewer.add(line)                  # doctest: +SKIP
-    >>> viewer.add(ellipse)               # doctest: +SKIP
-    >>> viewer.add(ellipse.frame)         # doctest: +SKIP
-    >>> viewer.run()                      # doctest: +SKIP
+    >>> from compas_viewer import Viewer  # doctest: +SKIP
+    >>> viewer = Viewer()                    # doctest: +SKIP
+    >>> viewer.scene.add(line)                  # doctest: +SKIP
+    >>> viewer.scene.add(ellipse)               # doctest: +SKIP
+    >>> viewer.scene.add(ellipse.frame)         # doctest: +SKIP
+    >>> viewer.show()                      # doctest: +SKIP
 
     """
 
@@ -113,11 +119,27 @@ class Ellipse(Conic):
             "minor": {"type": "number", "minimum": 0},
             "frame": Frame.DATASCHEMA,
         },
-        "required": ["frame", "major", "minor"],
+        "required": ["major", "minor", "frame"],
     }
 
-    def __init__(self, major=1.0, minor=1.0, frame=None, **kwargs):
-        super(Ellipse, self).__init__(frame=frame, **kwargs)
+    @property
+    def __data__(self):
+        return {
+            "major": self.major,
+            "minor": self.minor,
+            "frame": self.frame.__data__,
+        }
+
+    @classmethod
+    def __from_data__(cls, data):
+        return cls(
+            major=data["major"],
+            minor=data["minor"],
+            frame=Frame.__from_data__(data["frame"]),
+        )
+
+    def __init__(self, major=1.0, minor=1.0, frame=None, name=None):
+        super(Ellipse, self).__init__(frame=frame, name=name)
         self._major = None
         self._minor = None
         self.major = major
@@ -139,26 +161,6 @@ class Ellipse(Conic):
         except Exception:
             return False
         return self.major == other_major and self.minor == other_minor, self.frame == other_frame
-
-    # ==========================================================================
-    # Data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return {
-            "major": self.major,
-            "minor": self.minor,
-            "frame": self.frame.data,
-        }
-
-    @classmethod
-    def from_data(cls, data):
-        return cls(
-            major=data["major"],
-            minor=data["minor"],
-            frame=Frame.from_data(data["frame"]),
-        )
 
     # ==========================================================================
     # Properties

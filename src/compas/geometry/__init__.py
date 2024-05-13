@@ -58,15 +58,41 @@ from ._core._algebra import (
     vector_component_xy,
     vector_standard_deviation,
     vector_variance,
+    axis_and_angle_from_matrix,
+    axis_angle_from_quaternion,
+    axis_angle_vector_from_matrix,
+    basis_vectors_from_matrix,
+    compose_matrix,
+    decompose_matrix,
+    euler_angles_from_matrix,
+    euler_angles_from_quaternion,
+    identity_matrix,
+    is_matrix_square,
+    matrix_determinant,
+    matrix_from_axis_and_angle,
+    matrix_from_axis_angle_vector,
+    matrix_from_basis_vectors,
+    matrix_from_change_of_basis,
+    matrix_from_euler_angles,
+    matrix_from_frame,
+    matrix_from_frame_to_frame,
+    matrix_from_orthogonal_projection,
+    matrix_from_parallel_projection,
+    matrix_from_perspective_entries,
+    matrix_from_perspective_projection,
+    matrix_from_quaternion,
+    matrix_from_scale_factors,
+    matrix_from_shear,
+    matrix_from_shear_entries,
+    matrix_from_translation,
+    matrix_inverse,
+    matrix_minor,
+    quaternion_from_axis_angle,
+    quaternion_from_euler_angles,
+    quaternion_from_matrix,
+    translation_from_matrix,
 )
 
-from ._core.analytical import (
-    archimedean_spiral_evaluate,
-    circle_evaluate,
-    ellipse_evaluate,
-    helix_evaluate,
-    logarithmic_spiral_evaluate,
-)
 from ._core.angles import (
     angle_planes,
     angle_points,
@@ -95,7 +121,6 @@ from ._core.centroids import (
     midpoint_point_point,
     midpoint_point_point_xy,
 )
-from ._core.constructors import circle_from_points, circle_from_points_xy
 from ._core.distance import (
     closest_line_to_point,
     closest_point_in_cloud,
@@ -144,41 +169,6 @@ from ._core.size import (
     volume_polyhedron,
 )
 from ._core.tangent import tangent_points_to_circle_xy
-from ._core.matrices import (
-    axis_and_angle_from_matrix,
-    axis_angle_from_quaternion,
-    axis_angle_vector_from_matrix,
-    basis_vectors_from_matrix,
-    compose_matrix,
-    decompose_matrix,
-    euler_angles_from_matrix,
-    euler_angles_from_quaternion,
-    identity_matrix,
-    is_matrix_square,
-    matrix_determinant,
-    matrix_from_axis_and_angle,
-    matrix_from_axis_angle_vector,
-    matrix_from_basis_vectors,
-    matrix_from_change_of_basis,
-    matrix_from_euler_angles,
-    matrix_from_frame,
-    matrix_from_frame_to_frame,
-    matrix_from_orthogonal_projection,
-    matrix_from_parallel_projection,
-    matrix_from_perspective_entries,
-    matrix_from_perspective_projection,
-    matrix_from_quaternion,
-    matrix_from_scale_factors,
-    matrix_from_shear,
-    matrix_from_shear_entries,
-    matrix_from_translation,
-    matrix_inverse,
-    matrix_minor,
-    quaternion_from_axis_angle,
-    quaternion_from_euler_angles,
-    quaternion_from_matrix,
-    translation_from_matrix,
-)
 from ._core.transformations import (
     local_axes,
     local_to_world_coordinates,
@@ -323,7 +313,6 @@ from .triangulation_delaunay import (
     constrained_delaunay_triangulation,
     delaunay_triangulation,
 )
-from .triangulation_delaunay_none import delaunay_from_points
 from .triangulation_earclip import earclip_polygon
 from .trimesh_curvature import (
     trimesh_mean_curvature,
@@ -345,6 +334,7 @@ from .trimesh_remeshing import (
 from .trimesh_slicing import trimesh_slice
 
 if not compas.IPY:
+    from .pca_numpy import pca_numpy
     from .bbox_numpy import (
         oriented_bounding_box_numpy,
         oriented_bounding_box_xy_numpy,
@@ -358,7 +348,6 @@ if not compas.IPY:
     )
     from .hull_numpy import convex_hull_numpy, convex_hull_xy_numpy
     from .icp_numpy import icp_numpy
-    from .triangulation_delaunay_numpy import delaunay_from_points_numpy, voronoi_from_points_numpy
     from .trimesh_gradient_numpy import trimesh_gradient_numpy
     from .trimesh_descent_numpy import trimesh_descent_numpy
 
@@ -504,7 +493,6 @@ __all__ = [
     "angles_points_xy",
     "angles_vectors",
     "angles_vectors_xy",
-    "archimedean_spiral_evaluate",
     "area_polygon",
     "area_polygon_xy",
     "area_triangle",
@@ -536,9 +524,6 @@ __all__ = [
     "centroid_polygon_vertices_xy",
     "centroid_polygon_xy",
     "centroid_polyhedron",
-    "circle_evaluate",
-    "circle_from_points",
-    "circle_from_points_xy",
     "close",
     "closest_line_to_point",
     "closest_point_in_cloud",
@@ -563,8 +548,6 @@ __all__ = [
     "cross_vectors_xy",
     "decompose_matrix",
     "dehomogenize_vectors",
-    "delaunay_from_points",
-    "delaunay_from_points",
     "delaunay_triangulation",
     "discrete_coons_patch",
     "distance_line_line",
@@ -583,11 +566,9 @@ __all__ = [
     "dot_vectors",
     "dot_vectors_xy",
     "earclip_polygon",
-    "ellipse_evaluate",
     "euler_angles_from_matrix",
     "euler_angles_from_quaternion",
     "find_span",
-    "helix_evaluate",
     "homogenize_vectors",
     "identity_matrix",
     "intersection_circle_circle_xy",
@@ -648,7 +629,6 @@ __all__ = [
     "length_vector_xy",
     "local_axes",
     "local_to_world_coordinates",
-    "logarithmic_spiral_evaluate",
     "matrix_determinant",
     "matrix_from_axis_and_angle",
     "matrix_from_axis_angle_vector",
@@ -699,6 +679,7 @@ __all__ = [
     "oriented_bounding_box",
     "orthonormalize_axes",
     "orthonormalize_vectors",
+    "pca_numpy",
     "power_vector",
     "power_vectors",
     "project_point_line",
@@ -777,7 +758,6 @@ if not compas.IPY:
         "convex_hull_xy_numpy",
         "dehomogenize_and_unflatten_frames_numpy",
         "dehomogenize_numpy",
-        "delaunay_from_points_numpy",
         "homogenize_and_flatten_frames_numpy",
         "homogenize_numpy",
         "icp_numpy",
@@ -788,6 +768,5 @@ if not compas.IPY:
         "transform_vectors_numpy",
         "trimesh_descent_numpy",
         "trimesh_gradient_numpy",
-        "voronoi_from_points_numpy",
         "world_to_local_coordinates_numpy",
     ]

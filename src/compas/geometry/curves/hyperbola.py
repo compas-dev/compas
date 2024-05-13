@@ -1,12 +1,15 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from math import cos, sin, sqrt
+from math import cos
 from math import pi
+from math import sin
+from math import sqrt
 
-from compas.geometry import Point
 from compas.geometry import Frame
+from compas.geometry import Point
+
 from .conic import Conic
 
 PI2 = 2 * pi
@@ -43,6 +46,8 @@ class Hyperbola(Conic):
     frame : :class:`compas.geometry.Frame`, optional
         The local coordinate system of the hyperbola.
         The default value is ``None``, in which case the hyperbola is constructed in the XY plane of the world coordinate system.
+    name : str, optional
+        The name of the hyperbola.
 
     Attributes
     ----------
@@ -101,12 +106,12 @@ class Hyperbola(Conic):
 
     Visualise the line, hyperbola, and frame of the hyperbola with the COMPAS viewer.
 
-    >>> from compas_view2.app import App  # doctest: +SKIP
-    >>> viewer = App()                    # doctest: +SKIP
-    >>> viewer.add(line)                  # doctest: +SKIP
-    >>> viewer.add(hyperbola)               # doctest: +SKIP
-    >>> viewer.add(hyperbola.frame)         # doctest: +SKIP
-    >>> viewer.run()                      # doctest: +SKIP
+    >>> from compas_viewer import Viewer  # doctest: +SKIP
+    >>> viewer = Viewer()                    # doctest: +SKIP
+    >>> viewer.scene.add(line)                  # doctest: +SKIP
+    >>> viewer.scene.add(hyperbola)               # doctest: +SKIP
+    >>> viewer.scene.add(hyperbola.frame)         # doctest: +SKIP
+    >>> viewer.show()                      # doctest: +SKIP
 
     """
 
@@ -117,11 +122,27 @@ class Hyperbola(Conic):
             "minor": {"type": "number", "minimum": 0},
             "frame": Frame.DATASCHEMA,
         },
-        "required": ["frame", "major", "minor"],
+        "required": ["major", "minor", "frame"],
     }
 
-    def __init__(self, major, minor, frame=None, **kwargs):
-        super(Hyperbola, self).__init__(frame=frame, **kwargs)
+    @property
+    def __data__(self):
+        return {
+            "major": self.major,
+            "minor": self.minor,
+            "frame": self.frame.__data__,
+        }
+
+    @classmethod
+    def __from_data__(cls, data):
+        return cls(
+            major=data["major"],
+            minor=data["minor"],
+            frame=Frame.__from_data__(data["frame"]),
+        )
+
+    def __init__(self, major, minor, frame=None, name=None):
+        super(Hyperbola, self).__init__(frame=frame, name=name)
         self._major = None
         self._minor = None
         self.major = major
@@ -140,26 +161,6 @@ class Hyperbola(Conic):
             return self.major == other.major and self.minor == other.minor, self.frame == other.frame
         except AttributeError:
             return False
-
-    # ==========================================================================
-    # Data
-    # ==========================================================================
-
-    @property
-    def data(self):
-        return {
-            "major": self.major,
-            "minor": self.minor,
-            "frame": self.frame.data,
-        }
-
-    @classmethod
-    def from_data(cls, data):
-        return cls(
-            major=data["major"],
-            minor=data["minor"],
-            frame=Frame.from_data(data["frame"]),
-        )
 
     # ==========================================================================
     # Properties

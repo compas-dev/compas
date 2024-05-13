@@ -1,20 +1,17 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 import scriptcontext as sc  # type: ignore
 
 from compas.scene import GeometryObject
-from compas.colors import Color
 from compas_rhino.conversions import circle_to_rhino
-
-# from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
+
 from .sceneobject import RhinoSceneObject
-from ._helpers import attributes
 
 
-class CircleObject(RhinoSceneObject, GeometryObject):
+class RhinoCircleObject(RhinoSceneObject, GeometryObject):
     """Scene object for drawing circles.
 
     Parameters
@@ -27,15 +24,10 @@ class CircleObject(RhinoSceneObject, GeometryObject):
     """
 
     def __init__(self, circle, **kwargs):
-        super(CircleObject, self).__init__(geometry=circle, **kwargs)
+        super(RhinoCircleObject, self).__init__(geometry=circle, **kwargs)
 
-    def draw(self, color=None):
+    def draw(self):
         """Draw the circle.
-
-        Parameters
-        ----------
-        color : rgb1 | rgb255 | :class:`compas.colors.Color`, optional
-            The RGB color of the circle.
 
         Returns
         -------
@@ -43,9 +35,7 @@ class CircleObject(RhinoSceneObject, GeometryObject):
             List of GUIDs of the objects created in Rhino.
 
         """
-        color = Color.coerce(color) or self.color
-        attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
-
+        attr = self.compile_attributes()
         geometry = circle_to_rhino(self.geometry)
         geometry.Transform(transformation_to_rhino(self.worldtransformation))
 

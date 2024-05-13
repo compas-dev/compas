@@ -19,29 +19,29 @@ Classes
     :toctree: generated/
     :nosignatures:
 
-    BoxObject
-    BrepObject
-    CapsuleObject
-    CircleObject
-    ConeObject
-    CurveObject
-    CylinderObject
-    EllipseObject
-    FrameObject
-    LineObject
-    MeshObject
-    NetworkObject
-    PlaneObject
-    PointObject
-    PolygonObject
-    PolyhedronObject
-    PolylineObject
+    RhinoBoxObject
+    RhinoBrepObject
+    RhinoCapsuleObject
+    RhinoCircleObject
+    RhinoConeObject
+    RhinoCurveObject
+    RhinoCylinderObject
+    RhinoEllipseObject
+    RhinoFrameObject
+    RhinoLineObject
+    RhinoMeshObject
+    RhinoGraphObject
+    RhinoPlaneObject
+    RhinoPointObject
+    RhinoPolygonObject
+    RhinoPolyhedronObject
+    RhinoPolylineObject
     RhinoSceneObject
-    SphereObject
-    SurfaceObject
-    TorusObject
-    VectorObject
-    VolMeshObject
+    RhinoSphereObject
+    RhinoSurfaceObject
+    RhinoTorusObject
+    RhinoVectorObject
+    RhinoVolMeshObject
 
 
 

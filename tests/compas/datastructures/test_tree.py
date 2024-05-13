@@ -157,7 +157,7 @@ def test_tree_remove_node(simple_tree):
 def test_tree_serialization(simple_tree):
     serialized = json_dumps(simple_tree)
     deserialized = json_loads(serialized)
-    assert simple_tree.data == deserialized.data
+    assert simple_tree.__data__ == deserialized.__data__
 
     test_tree_properties(deserialized)
     test_tree_traversal(deserialized)
@@ -167,3 +167,33 @@ def test_tree_serialization(simple_tree):
     if not compas.IPY:
         data = json.loads(serialized)["data"]
         assert Tree.validate_data(data)
+
+
+# =============================================================================
+# Tree Conversion
+# =============================================================================
+
+
+def test_tree_to_graph(simple_tree):
+    graph1 = simple_tree.to_graph()
+    assert len(list(graph1.nodes())) == 7
+    assert len(list(graph1.edges())) == 6
+    assert graph1.has_edge((0, 1))
+    assert graph1.has_edge((1, 2))
+    assert graph1.has_edge((1, 3))
+    assert graph1.has_edge((0, 4))
+    assert graph1.has_edge((4, 5))
+    assert graph1.has_edge((4, 6))
+
+    def key_mapper(node):
+        return node.name
+
+    graph2 = simple_tree.to_graph(key_mapper)
+    assert len(list(graph1.nodes())) == 7
+    assert len(list(graph1.edges())) == 6
+    assert graph2.has_edge(("root", "branch1"))
+    assert graph2.has_edge(("branch1", "leaf1_1"))
+    assert graph2.has_edge(("branch1", "leaf1_2"))
+    assert graph2.has_edge(("root", "branch2"))
+    assert graph2.has_edge(("branch2", "leaf2_1"))
+    assert graph2.has_edge(("branch2", "leaf2_2"))

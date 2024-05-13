@@ -113,8 +113,8 @@ def is_rhino():
 
 def is_grasshopper():
     try:
-        import Rhino
-        import scriptcontext
+        import Rhino  # noqa : F401
+        import scriptcontext  # noqa : F401
     except ImportError:
         return False
     return not isinstance(scriptcontext.doc, Rhino.RhinoDoc)
@@ -677,7 +677,8 @@ def _get_win_folder_from_registry(csidl_name):
 
 
 def _get_win_folder_with_pywin32(csidl_name):
-    from win32com.shell import shellcon, shell
+    from win32com.shell import shell
+    from win32com.shell import shellcon
 
     dir = shell.SHGetFolderPath(0, getattr(shellcon, csidl_name), 0, 0)
     # Try to make this a unicode path because SHGetFolderPath does

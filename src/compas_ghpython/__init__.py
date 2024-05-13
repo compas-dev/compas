@@ -6,7 +6,10 @@ import zipfile
 import compas
 import compas_rhino
 
-__version__ = "2.0.0-beta.1"
+from compas_rhino import unload_modules  # noqa: F401
+
+
+__version__ = "2.1.0"
 
 if compas.is_rhino():
     from .utilities import *  # noqa: F401 F403
@@ -34,6 +37,28 @@ def _get_grasshopper_special_folder(version, folder_name):
     return os.path.join(grasshopper, folder_name)
 
 
+def create_id(component, name):
+    """Creates an identifier string using `name` and the ID of the component passed to it.
+
+    The resulting string can be used to store data elements in the global sticky dictionary.
+    This can be useful when setting variable in a condition activated by a button.
+
+    Parameters
+    ----------
+    components : `ghpythonlib.componentbase.executingcomponent`
+        The components instance. Use `self` in advanced (SDK) mode and `ghenv.Components` otherwise.
+    name : str
+        A user chosen prefix for the identifier.
+
+    Returns
+    -------
+    str
+        For example: `somename55dd-c7cc-43c8-9d6a-65e4c8503abd`
+
+    """
+    return "{}_{}".format(name, component.InstanceGuid)
+
+
 # =============================================================================
 # Managed Plugin
 # =============================================================================
@@ -49,10 +74,11 @@ def get_grasshopper_managedplugin_path(version):
     elif compas.OSX:
         gh_managedplugin_path = os.path.join(managedplugins, "GrasshopperPlugin.rhp")
 
+    else:
+        raise NotImplementedError
+
     if not os.path.exists(gh_managedplugin_path):
-        raise Exception(
-            "The Grasshopper (managed) Plug-in folder does not exist in this location: {}".format(gh_managedplugin_path)
-        )
+        raise Exception("The Grasshopper (managed) Plug-in folder does not exist in this location: {}".format(gh_managedplugin_path))
 
     return gh_managedplugin_path
 
@@ -87,7 +113,7 @@ def fetch_ghio_lib(target_folder="temp"):
     ghio_dll = "GH_IO.dll"
     filename = "lib/net48/" + ghio_dll
 
-    response = urllib.request.urlopen("https://www.nuget.org/api/v2/package/Grasshopper/")
+    response = urllib.request.urlopen("https://www.nuget.org/api/v2/package/Grasshopper/")  # type: ignore
     dst_file = os.path.join(target_folder, ghio_dll)
     zip_file = zipfile.ZipFile(io.BytesIO(response.read()))
 

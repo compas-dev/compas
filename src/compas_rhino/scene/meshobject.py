@@ -1,32 +1,31 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from Rhino.Geometry import TextDot  # type: ignore
+import Rhino  # type: ignore
 import scriptcontext as sc  # type: ignore
 
-from compas.geometry import centroid_points
-from compas.geometry import Point
-from compas.geometry import Line
-from compas.geometry import Cylinder
-from compas.geometry import Sphere
-
-import compas_rhino
-from compas.scene import MeshObject as BaseMeshObject
+import compas_rhino.objects
 from compas.colors import Color
-from compas_rhino.conversions import vertices_and_faces_to_rhino
+from compas.geometry import Cylinder
+from compas.geometry import Line
+from compas.geometry import Point
+from compas.geometry import Sphere
+from compas.geometry import centroid_points
+from compas.scene import MeshObject
+from compas_rhino.conversions import cylinder_to_rhino_brep
+from compas_rhino.conversions import line_to_rhino
 from compas_rhino.conversions import mesh_to_rhino
 from compas_rhino.conversions import point_to_rhino
-from compas_rhino.conversions import line_to_rhino
-from compas_rhino.conversions import cylinder_to_rhino_brep
 from compas_rhino.conversions import sphere_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
+from compas_rhino.conversions import vertices_and_faces_to_rhino
+
+from .helpers import ngon
 from .sceneobject import RhinoSceneObject
-from ._helpers import attributes
-from ._helpers import ngon
 
 
-class MeshObject(RhinoSceneObject, BaseMeshObject):
+class RhinoMeshObject(RhinoSceneObject, MeshObject):
     """Scene object for drawing mesh data structures.
 
     Parameters
@@ -36,10 +35,28 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
     **kwargs : dict, optional
         Additional keyword arguments.
 
+    Attributes
+    ----------
+    disjoint : bool, optional
+        Draw the faces of the mesh disjointed.
+        Default is ``False``.
+
     """
 
-    def __init__(self, mesh, **kwargs):
-        super(MeshObject, self).__init__(mesh=mesh, **kwargs)
+    def __init__(self, mesh, disjoint=False, **kwargs):
+        super(RhinoMeshObject, self).__init__(mesh=mesh, **kwargs)
+        self.disjoint = disjoint
+        self._guid_mesh = None
+        self._guids_faces = None
+        self._guids_edges = None
+        self._guids_vertices = None
+        self._guids_vertexnormals = None
+        self._guids_facenormals = None
+        self._guids_vertexlabels = None
+        self._guids_edgelabels = None
+        self._guids_facelabels = None
+        self._guids_spheres = None
+        self._guids_pipes = None
 
     # ==========================================================================
     # clear
@@ -53,8 +70,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.*".format(self.mesh.name))  # type: ignore
-        compas_rhino.delete_objects(guids, purge=True)
+        compas_rhino.objects.delete_objects(self.guids, purge=True)
 
     def clear_vertices(self):
         """Delete all vertices drawn by this scene object.
@@ -64,8 +80,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.vertex.*".format(self.mesh.name))  # type: ignore
-        compas_rhino.delete_objects(guids, purge=True)
+        compas_rhino.objects.delete_objects(self._guids_vertices, purge=True)
 
     def clear_edges(self):
         """Delete all edges drawn by this scene object.
@@ -75,8 +90,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.edge.*".format(self.mesh.name))  # type: ignore
-        compas_rhino.delete_objects(guids, purge=True)
+        compas_rhino.objects.delete_objects(self._guids_edges, purge=True)
 
     def clear_faces(self):
         """Delete all faces drawn by this scene object.
@@ -86,8 +100,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.face.*".format(self.mesh.name))  # type: ignore
-        compas_rhino.delete_objects(guids, purge=True)
+        compas_rhino.objects.delete_objects(self._guids_faces, purge=True)
 
     def clear_vertexnormals(self):
         """Delete all vertex normals drawn by this scene object.
@@ -97,8 +110,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.vertex.*.normal".format(self.mesh.name))  # type: ignore
-        compas_rhino.delete_objects(guids, purge=True)
+        compas_rhino.objects.delete_objects(self._guids_vertexnormals, purge=True)
 
     def clear_facenormals(self):
         """Delete all face normals drawn by this scene object.
@@ -108,8 +120,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.face.*.normal".format(self.mesh.name))  # type: ignore
-        compas_rhino.delete_objects(guids, purge=True)
+        compas_rhino.objects.delete_objects(self._guids_facenormals, purge=True)
 
     def clear_vertexlabels(self):
         """Delete all vertex labels drawn by this scene object.
@@ -119,8 +130,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.vertex.*.label".format(self.mesh.name))  # type: ignore
-        compas_rhino.delete_objects(guids, purge=True)
+        compas_rhino.objects.delete_objects(self._guids_vertexlabels, purge=True)
 
     def clear_edgelabels(self):
         """Delete all edge labels drawn by this scene object.
@@ -130,8 +140,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.edge.*.label".format(self.mesh.name))  # type: ignore
-        compas_rhino.delete_objects(guids, purge=True)
+        compas_rhino.objects.delete_objects(self._guids_edgelabels, purge=True)
 
     def clear_facelabels(self):
         """Delete all face labels drawn by this scene object.
@@ -141,23 +150,14 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         None
 
         """
-        guids = compas_rhino.get_objects(name="{}.face.*.label".format(self.mesh.name))  # type: ignore
-        compas_rhino.delete_objects(guids, purge=True)
+        compas_rhino.objects.delete_objects(self._guids_facelabels, purge=True)
 
     # ==========================================================================
     # draw
     # ==========================================================================
 
-    def draw(self, color=None, vertexcolors=None, facecolors=None, disjoint=False):
-        """Draw the mesh as a consolidated RhinoMesh.
-
-        Parameters
-        ----------
-        color : tuple[int, int, int], optional
-            The color of the mesh.
-            Default is the value of :attr:`MeshObject.default_color`.
-        disjoint : bool, optional
-            If True, draw the faces of the mesh with disjoint vertices.
+    def draw(self):
+        """Draw the mesh or its components in Rhino.
 
         Returns
         -------
@@ -175,20 +175,44 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
         # when drawing the mesh as individual components (vertices, edges, faces)
         # colors have to be provided as dicts that map colors to specific components
 
-        color = Color.coerce(color) or self.color
-        attr = attributes(name=self.mesh.name, color=color, layer=self.layer)  # type: ignore
+        self._guids = []
 
-        geometry = mesh_to_rhino(
-            self.mesh,
-            color=color,
-            vertexcolors=vertexcolors,
-            facecolors=facecolors,
-            disjoint=disjoint,
-        )
+        if self.show_faces is True:
+            attr = self.compile_attributes()
 
-        geometry.Transform(transformation_to_rhino(self.worldtransformation))
+            vertexcolors = []
+            if len(self.vertexcolor):
+                vertexcolors = [self.vertexcolor[vertex] for vertex in self.mesh.vertices()]
 
-        self._guids = [sc.doc.Objects.AddMesh(geometry, attr)]
+            facecolors = []
+            if len(self.facecolor):
+                facecolors = [self.facecolor[face] for face in self.mesh.faces()]
+
+            geometry = mesh_to_rhino(
+                self.mesh,
+                color=self.color,
+                vertexcolors=vertexcolors,
+                facecolors=facecolors,
+                disjoint=self.disjoint,
+            )
+
+            geometry.Transform(transformation_to_rhino(self.worldtransformation))
+
+            self._guid_mesh = sc.doc.Objects.AddMesh(geometry, attr)
+            if self.group:
+                self.add_to_group(self.group, [self._guid_mesh])
+
+            self._guids.append(self._guid_mesh)
+
+        elif self.show_faces:
+            self._guids += self.draw_faces(faces=self.show_faces, color=self.facecolor, group=self.group)
+
+        if self.show_vertices:
+            self._guids += self.draw_vertices(vertices=self.show_vertices, color=self.vertexcolor, group=self.group)
+
+        if self.show_edges:
+            self._guids += self.draw_edges(edges=self.show_edges, color=self.edgecolor, group=self.group)
+
         return self.guids
 
     def draw_vertices(self, vertices=None, color=None, group=None):
@@ -214,10 +238,13 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
 
         self.vertexcolor = color
 
+        if vertices is True:
+            vertices = list(self.mesh.vertices())
+
         for vertex in vertices or self.mesh.vertices():  # type: ignore
             name = "{}.vertex.{}".format(self.mesh.name, vertex)  # type: ignore
-            color = self.vertexcolor[vertex]  # type: ignore
-            attr = attributes(name=name, color=color, layer=self.layer)
+            color = self.vertexcolor[vertex]
+            attr = self.compile_attributes(name=name, color=color)
 
             point = point_to_rhino(self.vertex_xyz[vertex])
 
@@ -226,6 +253,8 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
 
         if group:
             self.add_to_group(group, guids)
+
+        self._guids_vertices = guids
 
         return guids
 
@@ -256,10 +285,13 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
 
         self.edgecolor = color
 
+        if edges is True:
+            edges = list(self.mesh.edges())
+
         for edge in edges or self.mesh.edges():  # type: ignore
             name = "{}.edge.{}-{}".format(self.mesh.name, *edge)  # type: ignore
-            color = self.edgecolor[edge]  # type: ignore
-            attr = attributes(name=name, color=color, layer=self.layer)
+            color = self.edgecolor[edge]
+            attr = self.compile_attributes(name=name, color=color)
 
             line = Line(self.vertex_xyz[edge[0]], self.vertex_xyz[edge[1]])
 
@@ -268,6 +300,8 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
 
         if group:
             self.add_to_group(group, guids)
+
+        self._guids_edges = guids
 
         return guids
 
@@ -298,10 +332,13 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
 
         self.facecolor = color
 
+        if faces is True:
+            faces = list(self.mesh.faces())
+
         for face in faces or self.mesh.faces():  # type: ignore
             name = "{}.face.{}".format(self.mesh.name, face)  # type: ignore
-            color = self.facecolor[face]  # type: ignore
-            attr = attributes(name=name, color=color, layer=self.layer)
+            color = self.facecolor[face]
+            attr = self.compile_attributes(name=name, color=color)
 
             vertices = [self.vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)]  # type: ignore
             facet = ngon(len(vertices))
@@ -312,6 +349,8 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
 
         if group:
             self.add_to_group(group, guids)
+
+        self._guids_faces = guids
 
         return guids
 
@@ -347,12 +386,12 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
 
         for vertex in text:
             name = "{}.vertex.{}.label".format(self.mesh.name, vertex)  # type: ignore
-            color = self.vertexcolor[vertex]  # type: ignore
-            attr = attributes(name=name, color=color, layer=self.layer)
+            color = self.vertexcolor[vertex]
+            attr = self.compile_attributes(name=name, color=color)
 
             point = point_to_rhino(self.vertex_xyz[vertex])
 
-            dot = TextDot(str(text[vertex]), point)  # type: ignore
+            dot = Rhino.Geometry.TextDot(str(text[vertex]), point)  # type: ignore
             dot.FontHeight = fontheight
             dot.FontFace = fontface
 
@@ -361,6 +400,8 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
 
         if group:
             self.add_to_group(group, guids)
+
+        self._guids_vertexlabels = guids
 
         return guids
 
@@ -392,13 +433,13 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
 
         for edge in text:
             name = "{}.edge.{}-{}".format(self.mesh.name, *edge)  # type: ignore
-            color = self.edgecolor[edge]  # type: ignore
-            attr = attributes(name="{}.label".format(name), color=color, layer=self.layer)
+            color = self.edgecolor[edge]
+            attr = self.compile_attributes(name="{}.label".format(name), color=color)
 
             line = Line(self.vertex_xyz[edge[0]], self.vertex_xyz[edge[1]])
             point = point_to_rhino(line.midpoint)
 
-            dot = TextDot(str(text[edge]), point)  # type: ignore
+            dot = Rhino.Geometry.TextDot(str(text[edge]), point)  # type: ignore
             dot.FontHeight = fontheight
             dot.FontFace = fontface
 
@@ -407,6 +448,8 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
 
         if group:
             self.add_to_group(group, guids)
+
+        self._guids_edgelabels = guids
 
         return guids
 
@@ -436,13 +479,13 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
 
         for face in text:
             name = "{}.face.{}.label".format(self.mesh.name, face)  # type: ignore
-            color = self.facecolor[face]  # type: ignore
-            attr = attributes(name=name, color=color, layer=self.layer)
+            color = self.facecolor[face]
+            attr = self.compile_attributes(name=name, color=color)
 
             points = [self.vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)]  # type: ignore
-            point = point_to_rhino(centroid_points(points))  # type: ignore
+            point = point_to_rhino(centroid_points(points))
 
-            dot = TextDot(str(text[face]), point)  # type: ignore
+            dot = Rhino.Geometry.TextDot(str(text[face]), point)  # type: ignore
             dot.FontHeight = fontheight
             dot.FontFace = fontface
 
@@ -451,6 +494,8 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
 
         if group:
             self.add_to_group(group, guids)
+
+        self._guids_facelabels = guids
 
         return guids
 
@@ -485,7 +530,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
 
         for vertex in vertices or self.mesh.vertices():  # type: ignore
             name = "{}.vertex.{}.normal".format(self.mesh.name, vertex)  # type: ignore
-            attr = attributes(name=name, color=color, layer=self.layer)
+            attr = self.compile_attributes(name=name, color=color)
 
             point = Point(*self.vertex_xyz[vertex])
             normal = self.mesh.vertex_normal(vertex)  # type: ignore
@@ -495,6 +540,8 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
 
         if group:
             self.add_to_group(group, guids)
+
+        self._guids_vertexnormals = guids
 
         return guids
 
@@ -525,7 +572,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
 
         for face in faces or self.mesh.faces():  # type: ignore
             name = "{}.face.{}.normal".format(self.mesh.name, face)  # type: ignore
-            attr = attributes(name=name, color=color, layer=self.layer)
+            attr = self.compile_attributes(name=name, color=color)
 
             point = Point(*centroid_points([self.vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)]))  # type: ignore
             normal = self.mesh.face_normal(face)  # type: ignore
@@ -535,6 +582,8 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
 
         if group:
             self.add_to_group(group, guids)
+
+        self._guids_facenormals = guids
 
         return guids
 
@@ -566,8 +615,8 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
 
         for vertex in radius:
             name = "{}.vertex.{}.sphere".format(self.mesh.name, vertex)  # type: ignore
-            color = self.vertexcolor[vertex]  # type: ignore
-            attr = attributes(name=name, color=color, layer=self.layer)
+            color = self.vertexcolor[vertex]
+            attr = self.compile_attributes(name=name, color=color)
 
             sphere = Sphere.from_point_and_radius(self.vertex_xyz[vertex], radius[vertex])
             geometry = sphere_to_rhino(sphere)
@@ -577,6 +626,8 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
 
         if group:
             self.add_to_group(group, guids)
+
+        self._guids_spheres = guids
 
         return guids
 
@@ -604,8 +655,8 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
 
         for edge in radius:
             name = "{}.edge.{}-{}.pipe".format(self.mesh.name, *edge)  # type: ignore
-            color = self.edgecolor[edge]  # type: ignore
-            attr = attributes(name=name, color=color, layer=self.layer)
+            color = self.edgecolor[edge]
+            attr = self.compile_attributes(name=name, color=color)
 
             line = Line(self.vertex_xyz[edge[0]], self.vertex_xyz[edge[1]])
             cylinder = Cylinder.from_line_and_radius(line, radius[edge])
@@ -616,5 +667,7 @@ class MeshObject(RhinoSceneObject, BaseMeshObject):
 
         if group:
             self.add_to_group(group, guids)
+
+        self._guids_pipes = guids
 
         return guids
