@@ -72,6 +72,8 @@ class SceneObject(TreeNode):
         The settings including necessary attributes for reconstructing the scene object besides the Data item.
     context : str
         The context in which the scene object is created.
+    scene : :class:`compas.scene.Scene`
+        The scene to which the scene object belongs.
 
     """
 
@@ -119,6 +121,11 @@ class SceneObject(TreeNode):
     def __repr__(self):
         # type: () -> str
         return "<{}: {}>".format(self.__class__.__name__, self.name)
+
+    @property
+    def scene(self):
+        # type: () -> compas.scene.Scene
+        return self.tree
 
     @property
     def item(self):
