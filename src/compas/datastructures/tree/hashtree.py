@@ -35,8 +35,8 @@ class HashNode(TreeNode):
 
     """
 
-    def __init__(self, path, value=None):
-        super().__init__()
+    def __init__(self, path, value=None, **kwargs):
+        super(HashNode, self).__init__(**kwargs)
         self.path = path
         self.value = value
         self._signature = None
@@ -141,7 +141,7 @@ class HashTree(Tree):
     """
 
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+        super(HashTree, self).__init__(**kwargs)
         self.signatures = {}
 
     @classmethod
