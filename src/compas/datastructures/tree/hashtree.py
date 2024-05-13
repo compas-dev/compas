@@ -1,8 +1,9 @@
-from compas.datastructures import Tree
-from compas.datastructures import TreeNode
+import hashlib
+
 from compas.data import Data
 from compas.data import json_dumps
-import hashlib
+from compas.datastructures import Tree
+from compas.datastructures import TreeNode
 
 
 class HashNode(TreeNode):
@@ -99,8 +100,10 @@ class HashNode(TreeNode):
 
 
 class HashTree(Tree):
-    """A Hash tree (or Merkle tree) is a tree in which every leaf node is labelled with the cryptographic hash of a data block
-    and every non-leaf node is labelled with the hash of the labels of its child nodes.
+    """HashTree data structure to compare differences in hierarchical data.
+
+    A Hash tree (or Merkle tree) is a tree in which every leaf node is labelled with the cryptographic hash
+    of a data block and every non-leaf node is labelled with the hash of the labels of its child nodes.
     Hash trees allow efficient and secure verification of the contents of large data structures.
     They can also be used to compare different versions(states) of the same data structure for changes.
 
@@ -109,19 +112,18 @@ class HashTree(Tree):
     signatures : dict[str, str]
         The SHA256 signatures of the nodes in the tree. The keys are the absolute paths of the nodes, the values are the signatures.
 
-
     Examples
     --------
     >>> tree1 = HashTree.from_dict({"a": {"b": 1, "c": 3}, "d": [1, 2, 3], "e": 2})
     >>> tree2 = HashTree.from_dict({"a": {"b": 1, "c": 2}, "d": [1, 2, 3], "f": 2})
-    >>> tree1.print_hierarchy()
+    >>> print(tree1)
     +-- ROOT @ 4cd56
         +-- .a @ c16fd
         |   +-- .b:1 @ c9b55
         |   +-- .c:3 @ 518d4
         +-- .d:[1, 2, 3] @ 9be3a
         +-- .e:2 @ 68355
-    >>> tree2.print_hierarchy()
+    >>> print(tree2)
     +-- ROOT @ fbe39
         +-- .a @ c2022
         |   +-- .b:1 @ c9b55
@@ -136,11 +138,10 @@ class HashTree(Tree):
     Modified:
     {'path': '.a.c', 'old': 3, 'new': 2}
 
-
     """
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.signatures = {}
 
     @classmethod
@@ -233,15 +234,11 @@ class HashTree(Tree):
                     if path in node2.children_dict:
                         _diff(node1.children_dict[path], node2.children_dict[path])
                     else:
-                        added.append(
-                            {"path": node1.children_dict[path].absolute_path, "value": node1.children_dict[path].value}
-                        )
+                        added.append({"path": node1.children_dict[path].absolute_path, "value": node1.children_dict[path].value})
 
                 for path in node2.children_paths:
                     if path not in node1.children_dict:
-                        removed.append(
-                            {"path": node2.children_dict[path].absolute_path, "value": node2.children_dict[path].value}
-                        )
+                        removed.append({"path": node2.children_dict[path].absolute_path, "value": node2.children_dict[path].value})
 
         _diff(self.root, other.root)
 
