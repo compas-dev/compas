@@ -269,6 +269,28 @@ class Box(Shape):
     def top(self):
         return [4, 5, 6, 7]
 
+    @property
+    def points(self):
+        point = self.frame.point
+        xaxis = self.frame.xaxis
+        yaxis = self.frame.yaxis
+        zaxis = self.frame.zaxis
+
+        dx = 0.5 * self.xsize
+        dy = 0.5 * self.ysize
+        dz = 0.5 * self.zsize
+
+        a = point + xaxis * -dx + yaxis * -dy + zaxis * -dz
+        b = point + xaxis * -dx + yaxis * +dy + zaxis * -dz
+        c = point + xaxis * +dx + yaxis * +dy + zaxis * -dz
+        d = point + xaxis * +dx + yaxis * -dy + zaxis * -dz
+        e = a + zaxis * self.zsize
+        f = d + zaxis * self.zsize
+        g = c + zaxis * self.zsize
+        h = b + zaxis * self.zsize
+
+        return [a, b, c, d, e, f, g, h]
+
     # ==========================================================================
     # Constructors
     # ==========================================================================
