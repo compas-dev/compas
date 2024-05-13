@@ -10,6 +10,7 @@ import compas.colors  # noqa: F401
 import compas.datastructures  # noqa: F401
 import compas.geometry  # noqa: F401
 from compas.colors import Color
+from compas.data import Data
 from compas.datastructures import TreeNode
 from compas.geometry import Transformation
 
@@ -82,13 +83,14 @@ class SceneObject(TreeNode):
 
     color = ColorAttribute()
 
-    def __new__(cls, item, **kwargs):
+    def __new__(cls, item=None, **kwargs):
         sceneobject_cls = get_sceneobject_cls(item, **kwargs)
         return super(SceneObject, cls).__new__(sceneobject_cls)
 
-    def __init__(self, item, name=None, color=None, opacity=1.0, show=True, frame=None, transformation=None, context=None, **kwargs):  # fmt: skip
-        # type: (compas.geometry.Geometry | compas.datastructures.Datastructure, str | None, compas.colors.Color | None, float, bool, compas.geometry.Frame | None, compas.geometry.Transformation | None, str | None, dict) -> None
-        name = name or item.name
+    def __init__(self, item=None, name=None, color=None, opacity=1.0, show=True, frame=None, transformation=None, context=None, **kwargs):  # fmt: skip
+        # type: (compas.data.Data | None, str | None, compas.colors.Color | None, float, bool, compas.geometry.Frame | None, compas.geometry.Transformation | None, str | None, dict) -> None
+        if isinstance(item, Data) and name is None:
+            name = item.name
         super(SceneObject, self).__init__(name=name, **kwargs)
         # the scene object needs to store the context
         # because it has no access to the tree and/or the scene before it is added
