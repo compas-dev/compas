@@ -76,11 +76,13 @@ def test_vector_operators():
 
     with pytest.raises(TypeError) as exc_info:
         a / "wrong type"
-    assert str(exc_info.value) == "Cannot cast wrong type <class 'str'> to Vector"
+    if not compas.IPY:
+        assert str(exc_info.value) == "Cannot cast wrong type <class 'str'> to Vector"
 
     with pytest.raises(TypeError) as exc_info:
         a * "wrong type"
-    assert str(exc_info.value) == "Cannot cast wrong type <class 'str'> to Vector"
+    if not compas.IPY:
+        assert str(exc_info.value) == "Cannot cast wrong type <class 'str'> to Vector"
 
 
 def test_vector_equality():
