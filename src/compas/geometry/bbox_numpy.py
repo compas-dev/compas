@@ -14,6 +14,7 @@ from compas.geometry import local_axes
 from compas.geometry import local_to_world_coordinates_numpy
 from compas.geometry import pca_numpy
 from compas.geometry import world_to_local_coordinates_numpy
+from compas.geometry import length_vector
 from compas.tolerance import TOL
 
 from .bbox import bounding_box
@@ -73,7 +74,7 @@ def oriented_bounding_box_numpy(points, tol=None):
     >>> a = length_vector(subtract_vectors(bbox[1], bbox[0]))
     >>> b = length_vector(subtract_vectors(bbox[3], bbox[0]))
     >>> c = length_vector(subtract_vectors(bbox[4], bbox[0]))
-    >>> close(a * b * c, 30.)
+    >>> close(a * b * c, 30.0)
     True
 
     """
@@ -198,6 +199,8 @@ def minimum_volume_box(points, return_size=False):
     for simplex in hull.simplices:
         a, b, c = points[simplex]
         uvw = local_axes(a, b, c)
+        if not length_vector(uvw[0]) or not length_vector(uvw[1]):
+            continue
         frame = [a, uvw[0], uvw[1]]
         rst = world_to_local_coordinates_numpy(frame, xyz)
         rmin, smin, tmin = amin(rst, axis=0)
