@@ -2849,12 +2849,11 @@ class Mesh(Datastructure):
         --------
         >>> import compas
         >>> from compas.datastructures import Mesh
-        >>> mesh = Mesh.from_obj(compas.get('faces.obj'))
+        >>> mesh = Mesh.from_obj(compas.get("faces.obj"))
         >>> mesh.number_of_vertices()
         36
-        >>> for x, y, z in mesh.vertices_attributes('xyz', keys=list(mesh.vertices())[:5]):
+        >>> for x, y, z in mesh.vertices_attributes("xyz", keys=list(mesh.vertices())[:5]):
         ...     mesh.add_vertex(x=x, y=y, z=z)
-        ...
         38
         39
         40

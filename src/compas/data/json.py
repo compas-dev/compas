@@ -45,8 +45,8 @@ def json_dump(data, fp, pretty=False, compact=False, minimal=False):
     >>> import compas
     >>> from compas.geometry import Point, Vector
     >>> data1 = [Point(0, 0, 0), Vector(0, 0, 0)]
-    >>> compas.json_dump(data1, 'data.json')
-    >>> data2 = compas.json_load('data.json')
+    >>> compas.json_dump(data1, "data.json")
+    >>> data2 = compas.json_load("data.json")
     >>> data1 == data2
     True
 
@@ -197,8 +197,8 @@ def json_load(fp):  # type: (...) -> dict
     >>> import compas
     >>> from compas.geometry import Point, Vector
     >>> data1 = [Point(0, 0, 0), Vector(0, 0, 0)]
-    >>> compas.json_dump(data1, 'data.json')
-    >>> data2 = compas.json_load('data.json')
+    >>> compas.json_dump(data1, "data.json")
+    >>> data2 = compas.json_load("data.json")
     >>> data1 == data2
     True
 

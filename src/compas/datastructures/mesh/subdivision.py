@@ -179,7 +179,7 @@ def mesh_subdivide_quad(mesh, k=1):
     False
     >>> type(mesh) is type(subd)
     True
-    >>> subd.number_of_faces() == mesh.number_of_faces() * 4 ** k
+    >>> subd.number_of_faces() == mesh.number_of_faces() * 4**k
     True
 
     """
@@ -293,7 +293,7 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
     False
     >>> type(mesh) is type(subd)
     True
-    >>> subd.number_of_faces() == mesh.number_of_faces() * 4 ** k
+    >>> subd.number_of_faces() == mesh.number_of_faces() * 4**k
     True
 
     The algorithm supports "integer creasing" as described in
@@ -309,9 +309,9 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
     >>> from compas.datastructures import Mesh
 
     >>> cage = Mesh.from_shape(Box.from_width_height_depth(1, 1, 1))
-    >>> cage.update_default_edge_attributes({'crease': 0})
+    >>> cage.update_default_edge_attributes({"crease": 0})
     >>> top = sorted(cage.faces(), key=lambda face: dot_vectors(cage.face_normal(face), [0, 0, 1]))[-1]
-    >>> cage.edges_attribute('crease', 5, keys=list(cage.face_halfedges(top)))
+    >>> cage.edges_attribute("crease", 5, keys=list(cage.face_halfedges(top)))
 
     >>> subd = cage.subdivide(k=4)
 

@@ -70,7 +70,6 @@ def items():
 
 
 def assert_is_data_equal(obj1, obj2, path=""):
-
     if type(obj1) is not type(obj2):
         print("Type mismatch: {} != {} for {}:{} and {}:{}".format(type(obj1), type(obj2), path, obj1, path, obj2))
         return False
@@ -109,7 +108,6 @@ def assert_is_data_equal(obj1, obj2, path=""):
 
 
 def test_scene_serialisation(items, mocker):
-
     if compas.IPY:
         mocker.patch("compas.is_rhino", return_value=False)
 

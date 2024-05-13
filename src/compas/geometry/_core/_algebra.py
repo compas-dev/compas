@@ -2681,10 +2681,10 @@ def quaternion_from_axis_angle(axis, angle):
 
     Examples
     --------
-    >>> axis =  [1.0, 0.0, 0.0]
-    >>> angle = math.pi/2
+    >>> axis = [1.0, 0.0, 0.0]
+    >>> angle = math.pi / 2
     >>> q = quaternion_from_axis_angle(axis, angle)
-    >>> allclose(q, [math.sqrt(2)/2, math.sqrt(2)/2, 0, 0])
+    >>> allclose(q, [math.sqrt(2) / 2, math.sqrt(2) / 2, 0, 0])
     True
 
     """
@@ -2710,11 +2710,11 @@ def axis_angle_from_quaternion(q):
 
     Examples
     --------
-    >>> q = [1., 1., 0., 0.]
+    >>> q = [1.0, 1.0, 0.0, 0.0]
     >>> axis, angle = axis_angle_from_quaternion(q)
-    >>> allclose(axis, [1., 0., 0.])
+    >>> allclose(axis, [1.0, 0.0, 0.0])
     True
-    >>> allclose([angle], [math.pi/2], 1e-6)
+    >>> allclose([angle], [math.pi / 2], 1e-6)
     True
 
     """
@@ -2769,9 +2769,9 @@ def close(value1, value2, tol=1e-05):
 
     Examples
     --------
-    >>> close(1., 1.001)
+    >>> close(1.0, 1.001)
     False
-    >>> close(1., 1.001, tol=1e-2)
+    >>> close(1.0, 1.001, tol=1e-2)
     True
     """
     return TOL.is_close(value1, value2, rtol=0.0, atol=tol)

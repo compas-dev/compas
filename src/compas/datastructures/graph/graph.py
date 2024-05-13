@@ -905,7 +905,7 @@ class Graph(Datastructure):
         --------
         >>> import compas
         >>> from compas.datastructures import Graph
-        >>> graph = Graph.from_obj(compas.get('lines.obj'))
+        >>> graph = Graph.from_obj(compas.get("lines.obj"))
         >>> graph.is_connected()
         True
 
@@ -2364,7 +2364,7 @@ class Graph(Datastructure):
         --------
         >>> import compas
         >>> from compas.datastructures import Graph
-        >>> graph = Graph.from_obj(compas.get('lines.obj'))
+        >>> graph = Graph.from_obj(compas.get("lines.obj"))
         >>> complement = graph.complement()
         >>> any(complement.has_edge(u, v, directed=False) for u, v in graph.edges())
         False

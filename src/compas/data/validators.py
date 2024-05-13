@@ -161,7 +161,7 @@ def is_sequence_of_tuple(items):
 
     Examples
     --------
-    >>> is_sequence_of_tuple([(1, ), (1, ), (1, )])
+    >>> is_sequence_of_tuple([(1,), (1,), (1,)])
     True
 
     """
@@ -184,7 +184,7 @@ def is_sequence_of_dict(items):
 
     Examples
     --------
-    >>> is_sequence_of_dict([{'a': 1}, {'b': 2}, {'c': 3}])
+    >>> is_sequence_of_dict([{"a": 1}, {"b": 2}, {"c": 3}])
     True
 
     """
@@ -209,7 +209,7 @@ def is_item_iterable(item):
     --------
     >>> is_item_iterable(1.0)
     False
-    >>> is_item_iterable('abc')
+    >>> is_item_iterable("abc")
     True
 
     """
@@ -236,7 +236,7 @@ def is_sequence_of_iterable(items):
 
     Examples
     --------
-    >>> is_sequence_of_iterable(['abc', [1.0], (2, 'a', None)])
+    >>> is_sequence_of_iterable(["abc", [1.0], (2, "a", None)])
     True
 
     """

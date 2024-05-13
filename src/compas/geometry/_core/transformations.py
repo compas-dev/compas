@@ -176,7 +176,7 @@ def dehomogenize_and_unflatten_frames(points_and_vectors):
 
     Examples
     --------
-    >>> points_and_vectors = [(1., 1., 1., 1.), (0., 1., 0., 0.), (1., 0., 0., 0.)]
+    >>> points_and_vectors = [(1.0, 1.0, 1.0, 1.0), (0.0, 1.0, 0.0, 0.0), (1.0, 0.0, 0.0, 0.0)]
     >>> dehomogenize_and_unflatten_frames(points_and_vectors)
     [[[1.0, 1.0, 1.0], [0.0, 1.0, 0.0], [1.0, 0.0, 0.0]]]
 

@@ -172,7 +172,7 @@ def get(filename):
         import compas
         from compas.datastructures import Mesh
 
-        mesh = Mesh.from_obj(compas.get('faces.obj'))
+        mesh = Mesh.from_obj(compas.get("faces.obj"))
 
     """
     filename = filename.strip("/")

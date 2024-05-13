@@ -77,15 +77,17 @@ def await_callback(async_func, callback_name="callback", errback_name=None, *arg
 
         from compas.utilities import await_callback
 
+
         def do_async_stuff(callback):
             from threading import Thread
 
             def runner(cb):
-                print('doing async stuff')
+                print("doing async stuff")
                 # ..
-                cb('done')
+                cb("done")
 
-            Thread(target=runner, args=(callback, )).start()
+            Thread(target=runner, args=(callback,)).start()
+
 
         result = await_callback(do_async_stuff)
 

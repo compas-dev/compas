@@ -100,19 +100,19 @@ class Arc(Curve):
 
     Visualize the arc using the viewer.
 
-    >>> from compas_viewer import Viewer   # doctest: +SKIP
-    >>> viewer = Viewer()                     # doctest: +SKIP
+    >>> from compas_viewer import Viewer  # doctest: +SKIP
+    >>> viewer = Viewer()  # doctest: +SKIP
     >>> viewer.scene.add(arc.to_polyline(n=20))  # doctest: +SKIP
-    >>> viewer.scene.add(arc.frame)              # doctest: +SKIP
-    >>> viewer.show()                       # doctest: +SKIP
+    >>> viewer.scene.add(arc.frame)  # doctest: +SKIP
+    >>> viewer.show()  # doctest: +SKIP
 
     Visualize only part of the arc.
 
-    >>> from compas_viewer import Viewer                        # doctest: +SKIP
-    >>> viewer = Viewer()                                          # doctest: +SKIP
+    >>> from compas_viewer import Viewer  # doctest: +SKIP
+    >>> viewer = Viewer()  # doctest: +SKIP
     >>> viewer.scene.add(arc.to_polyline(n=20, domain=(0.25, 0.75)))  # doctest: +SKIP
-    >>> viewer.scene.add(arc.frame)                                   # doctest: +SKIP
-    >>> viewer.show()                                            # doctest: +SKIP
+    >>> viewer.scene.add(arc.frame)  # doctest: +SKIP
+    >>> viewer.show()  # doctest: +SKIP
 
     """
 

@@ -46,7 +46,7 @@ class LinesConduit(BaseConduit):
         from random import randint
 
         points = [(1.0 * randint(0, 30), 1.0 * randint(0, 30), 0.0) for _ in range(100)]
-        lines  = [(points[i], points[i + 1]) for i in range(99)]
+        lines = [(points[i], points[i + 1]) for i in range(99)]
         conduit = LinesConduit(lines)
 
         with conduit.enabled():

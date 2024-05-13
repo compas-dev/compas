@@ -52,7 +52,7 @@ class Scale(Transformation):
     >>> point = Point(2, 5, 0)
     >>> frame = Frame(point, (1, 0, 0), (0, 1, 0))
     >>> points = [point, Point(2, 10, 0)]
-    >>> S = Scale.from_factors([2.] * 3, frame)
+    >>> S = Scale.from_factors([2.0] * 3, frame)
     >>> [p.transformed(S) for p in points]
     [Point(2.000, 5.000, 0.000), Point(2.000, 15.000, 0.000)]
 
@@ -87,7 +87,7 @@ class Scale(Transformation):
         >>> point = Point(2, 5, 0)
         >>> frame = Frame(point, (1, 0, 0), (0, 1, 0))
         >>> points = [point, Point(2, 10, 0)]
-        >>> S = Scale.from_factors([2.] * 3, frame)
+        >>> S = Scale.from_factors([2.0] * 3, frame)
         >>> [p.transformed(S) for p in points]
         [Point(2.000, 5.000, 0.000), Point(2.000, 15.000, 0.000)]
 

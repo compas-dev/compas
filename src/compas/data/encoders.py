@@ -87,16 +87,15 @@ class DataEncoder(json.JSONEncoder):
     >>> from compas.data import DataEncoder
     >>> from compas.geometry import Point
     >>> point = Point(0, 0, 0)
-    >>> with open('point.json', 'w') as f:
+    >>> with open("point.json", "w") as f:
     ...     json.dump(point, f, cls=DataEncoder)
-    ...
 
     Implicit use case.
 
     >>> from compas.data import json_dump
     >>> from compas.geometry import Point
     >>> point = Point(0, 0, 0)
-    >>> json_dump(point, 'point.json')
+    >>> json_dump(point, "point.json")
 
     """
 
@@ -182,14 +181,13 @@ class DataDecoder(json.JSONDecoder):
 
     >>> import json
     >>> from compas.data import DataDecoder
-    >>> with open('point.json', 'r') as f:
+    >>> with open("point.json", "r") as f:
     ...     point = json.load(f, cls=DataDecoder)
-    ...
 
     Implicit use case.
 
     >>> from compas.data import json_load
-    >>> point = json_load('point.json')
+    >>> point = json_load("point.json")
 
     """
 
