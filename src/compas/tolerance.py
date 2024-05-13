@@ -73,6 +73,13 @@ class Tolerance(Data):
     _instance = None
     _is_inited = False
 
+    SUPPORTED_UNITS = ["M", "MM"]
+    """{"M", "MM"}: Default tolerances are defined in relation to length units.
+
+    Currently, only meters ("M") and millimeters ("MM") are supported.
+
+    """
+
     ABSOLUTE = 1e-9
     """float: Determines when a number is small enough to be considered zero.
     """
@@ -114,9 +121,9 @@ class Tolerance(Data):
     """
 
     def __new__(cls, *args, **kwargs):
-        if not isinstance(cls._instance, cls):
+        if not cls._instance:
             cls._instance = object.__new__(cls, *args, **kwargs)
-            cls._inited = False
+            cls._is_inited = False
         return cls._instance
 
     @property
