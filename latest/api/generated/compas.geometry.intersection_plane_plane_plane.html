@@ -1112,16 +1112,16 @@ document.write(`
 <h1>intersection_plane_plane_plane</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.intersection_plane_plane_plane">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">intersection_plane_plane_plane</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plane1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plane2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plane3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/4043c77/src/compas/geometry/intersections.py#L414"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">intersection_plane_plane_plane</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plane1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plane2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plane3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/aa9e749/src/compas/geometry/intersections.py#L412"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Computes the intersection of three planes</p>
-<dl class="field-list">
+<dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>plane1</strong><span class="classifier">[point, vector] | <a class="reference internal" href="compas.geometry.Plane.html#compas.geometry.Plane" title="compas.geometry.Plane"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Plane</span></code></a></span></dt><dd><p>The base point and normal (normalized) defining the 1st plane.</p>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>plane1</strong><span class="classifier">[point, vector]</span></dt><dd><p>The base point and normal (normalized) defining the 1st plane.</p>
 </dd>
-<dt><strong>plane2</strong><span class="classifier">[point, vector] | <a class="reference internal" href="compas.geometry.Plane.html#compas.geometry.Plane" title="compas.geometry.Plane"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Plane</span></code></a></span></dt><dd><p>The base point and normal (normalized) defining the 2nd plane.</p>
+<dt><strong>plane2</strong><span class="classifier">[point, vector]</span></dt><dd><p>The base point and normal (normalized) defining the 2nd plane.</p>
 </dd>
-<dt><strong>plane3</strong><span class="classifier">[point, vector] | <a class="reference internal" href="compas.geometry.Plane.html#compas.geometry.Plane" title="compas.geometry.Plane"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Plane</span></code></a></span></dt><dd><p>The base point and normal (normalized) defining the 3rd plane.</p>
+<dt><strong>plane3</strong><span class="classifier">[point, vector]</span></dt><dd><p>The base point and normal (normalized) defining the 3rd plane.</p>
 </dd>
 <dt><strong>tol</strong><span class="classifier">float, optional</span></dt><dd><p>Tolerance for computing the intersection line between the first two planes, and between the intersection line and the third plane.
 Default is <code class="xref py py-attr docutils literal notranslate"><span class="pre">TOL.absolute</span></code>.</p>

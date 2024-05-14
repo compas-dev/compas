@@ -60,7 +60,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Frame.to_transformation" href="compas.geometry.Frame.to_transformation.html" />
-    <link rel="prev" title="Frame.from_transformation" href="compas.geometry.Frame.from_transformation.html" />
+    <link rel="prev" title="Frame.interpolate_frames" href="compas.geometry.Frame.interpolate_frames.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -1117,7 +1117,7 @@ document.write(`
 <h1>Frame.to_local_coordinates</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.geometry.Frame.to_local_coordinates">
-<span class="sig-prename descclassname"><span class="pre">Frame.</span></span><span class="sig-name descname"><span class="pre">to_local_coordinates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj_in_wcf</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/4043c77/src/compas/geometry/frame.py#L623"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Frame.</span></span><span class="sig-name descname"><span class="pre">to_local_coordinates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj_in_wcf</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/aa9e749/src/compas/geometry/frame.py#L681"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Returns the object’s coordinates in the local coordinate system of the frame.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1138,8 +1138,8 @@ document.write(`
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Point</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">frame</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.68</span><span class="p">,</span> <span class="mf">0.68</span><span class="p">,</span> <span class="mf">0.27</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.67</span><span class="p">,</span> <span class="mf">0.73</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.15</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pw</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c1"># point in wcf</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pl</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">to_local_coordinates</span><span class="p">(</span><span class="n">pw</span><span class="p">)</span> <span class="c1"># point in frame</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pw</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># point in wcf</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pl</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">to_local_coordinates</span><span class="p">(</span><span class="n">pw</span><span class="p">)</span>  <span class="c1"># point in frame</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">frame</span><span class="o">.</span><span class="n">to_world_coordinates</span><span class="p">(</span><span class="n">pl</span><span class="p">)</span>
 <span class="go">Point(2.000, 2.000, 2.000)</span>
 </pre></div>

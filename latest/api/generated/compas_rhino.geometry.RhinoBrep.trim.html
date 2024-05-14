@@ -1117,14 +1117,14 @@ document.write(`
 <h1>RhinoBrep.trim</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_rhino.geometry.RhinoBrep.trim">
-<span class="sig-prename descclassname"><span class="pre">RhinoBrep.</span></span><span class="sig-name descname"><span class="pre">trim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plane</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolerance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/4043c77/src/compas/../compas_rhino/geometry/brep/brep.py#L368"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">RhinoBrep.</span></span><span class="sig-name descname"><span class="pre">trim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plane</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolerance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/aa9e749/src/compas/../compas_rhino/geometry/brep/brep.py#L366"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Trim this brep by the given trimming plane.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>plane</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code></a> or <a class="reference internal" href="compas.geometry.Plane.html#compas.geometry.Plane" title="compas.geometry.Plane"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Plane</span></code></a></span></dt><dd><p>The frame or plane to use when trimming. The discarded bit is in the direction of the frame’s normal.</p>
 </dd>
-<dt><strong>tolerance</strong><span class="classifier">float</span></dt><dd><p>The precision to use for the trimming operation.</p>
+<dt><strong>tolerance</strong><span class="classifier">float, optional</span></dt><dd><p>The precision to use for the trimming operation. Defaults to <cite>TOL.absolute</cite>.</p>
 </dd>
 </dl>
 </dd>
@@ -1133,7 +1133,22 @@ document.write(`
 <dt>None</dt><dd></dd>
 </dl>
 </dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>BrepTrimmingError</dt><dd><p>If the trimming operation ended with no result.</p>
+</dd>
 </dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.trimmed.html#compas_rhino.geometry.RhinoBrep.trimmed" title="compas_rhino.geometry.RhinoBrep.trimmed"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoBrep.trimmed()</span></code></a></dt><dd></dd>
+</dl>
+</div>
+<p class="rubric">Notes</p>
+<p>Trimming operation may result in multiple results (breps). When trimming, only one is used.
+The used bit is the one on the opposite side of the cutting plane’s normal.</p>
 </dd></dl>
 
 </section>

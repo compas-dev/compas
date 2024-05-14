@@ -480,7 +480,7 @@ document.write(`
 <h1>TOL</h1>
 <dl class="py data">
 <dt class="sig sig-object py" id="compas.tolerance.TOL">
-<span class="sig-prename descclassname"><span class="pre">compas.tolerance.</span></span><span class="sig-name descname"><span class="pre">TOL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Tolerance(unit='M',</span> <span class="pre">absolute=1e-09,</span> <span class="pre">relative=1e-06,</span> <span class="pre">angular=1e-06,</span> <span class="pre">approximation=0.001,</span> <span class="pre">precision=3,</span> <span class="pre">lineardeflection=0.001)</span></em><a class="reference external" href="https://github.com/compas-dev/compas/blob/4043c77/src/compas/tolerance.py#L"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.tolerance.</span></span><span class="sig-name descname"><span class="pre">TOL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Tolerance(unit='M',</span> <span class="pre">absolute=1e-09,</span> <span class="pre">relative=1e-06,</span> <span class="pre">angular=1e-06,</span> <span class="pre">approximation=0.001,</span> <span class="pre">precision=3,</span> <span class="pre">lineardeflection=0.001,</span> <span class="pre">angulardeflection=0.1)</span></em><a class="reference external" href="https://github.com/compas-dev/compas/blob/aa9e749/src/compas/tolerance.py#L"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Tolerance settings for geometric operations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -498,6 +498,8 @@ The relative tolerance determines the allowable deviation between two values for
 The relative tolerance is defined as a fraction of one of the two values.
 This value is called the “true value”.
 By convention, the second value is considered the “true value” by the comparison functions of this class.</p>
+<p>The <a class="reference internal" href="compas.tolerance.Tolerance.html#compas.tolerance.Tolerance" title="compas.tolerance.Tolerance"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.tolerance.Tolerance</span></code></a> class is implemented using a “singleton” pattern and can therefore have only 1 (one) instance per context.
+Usage of <a class="reference internal" href="#compas.tolerance.TOL" title="compas.tolerance.TOL"><code class="xref py py-attr docutils literal notranslate"><span class="pre">compas.tolerance.TOL</span></code></a> outside of <code class="xref py py-mod docutils literal notranslate"><span class="pre">compas</span></code> internals is therefore deprecated.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span> <span class="o">=</span> <span class="n">Tolerance</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">unit</span>

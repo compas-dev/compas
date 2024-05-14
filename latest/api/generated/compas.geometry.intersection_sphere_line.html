@@ -1112,12 +1112,12 @@ document.write(`
 <h1>intersection_sphere_line</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.intersection_sphere_line">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">intersection_sphere_line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sphere</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/4043c77/src/compas/geometry/intersections.py#L589"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">intersection_sphere_line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sphere</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/aa9e749/src/compas/geometry/intersections.py#L587"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Computes the intersection of a sphere and a line.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>sphere</strong><span class="classifier">[point, radius] | <a class="reference internal" href="compas.geometry.Sphere.html#compas.geometry.Sphere" title="compas.geometry.Sphere"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Sphere</span></code></a></span></dt><dd><p>A sphere defined by a point and a radius.</p>
+<dt><strong>sphere</strong><span class="classifier">[point, radius]</span></dt><dd><p>A sphere defined by a point and a radius.</p>
 </dd>
 <dt><strong>line</strong><span class="classifier">[point, point] | <a class="reference internal" href="compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Line</span></code></a></span></dt><dd><p>A line defined by two points.</p>
 </dd>
@@ -1138,7 +1138,7 @@ document.write(`
 <li><p>they do not intersect.</p></li>
 </ol>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">allclose</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.tolerance</span> <span class="kn">import</span> <span class="n">TOL</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sphere</span> <span class="o">=</span> <span class="p">(</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">7.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">),</span> <span class="mf">10.0</span>
@@ -1146,9 +1146,9 @@ document.write(`
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span> <span class="o">=</span> <span class="n">intersection_sphere_line</span><span class="p">(</span><span class="n">sphere</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">allclose</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="p">[</span><span class="mf">11.634</span><span class="p">,</span> <span class="mf">10.634</span><span class="p">,</span> <span class="mf">0.500</span><span class="p">],</span> <span class="mf">1e-3</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">TOL</span><span class="o">.</span><span class="n">is_allclose</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="p">[</span><span class="mf">11.634</span><span class="p">,</span> <span class="mf">10.634</span><span class="p">,</span> <span class="mf">0.500</span><span class="p">],</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">)</span>
 <span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">allclose</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.634</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.634</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">],</span> <span class="mf">1e-3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">TOL</span><span class="o">.</span><span class="n">is_allclose</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.634</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.634</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">],</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">)</span>
 <span class="go">True</span>
 </pre></div>
 </div>

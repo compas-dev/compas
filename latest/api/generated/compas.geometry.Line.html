@@ -1112,7 +1112,7 @@ document.write(`
 <h1>Line</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.Line">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Line</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/4043c77/src/compas/geometry/curves/line.py#L12"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Line</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/aa9e749/src/compas/geometry/curves/line.py#L13"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Curve.html#compas.geometry.Curve" title="compas.geometry.curves.curve.Curve"><code class="xref py py-class docutils literal notranslate"><span class="pre">Curve</span></code></a></p>
 <p>A line is a curve defined by two points.</p>
 <p>The first point is the start point of the line.
@@ -1143,7 +1143,7 @@ Transformation of a line is performed by transforming the start and end point.</
 <span class="go">Point(0.000, 0.000, 0.000)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">midpoint</span>
 <span class="go">Point(0.500, 0.500, 0.500)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">length</span> <span class="o">==</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">dx</span> <span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">line</span><span class="o">.</span><span class="n">dy</span> <span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">line</span><span class="o">.</span><span class="n">dz</span> <span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">length</span> <span class="o">==</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">dx</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">line</span><span class="o">.</span><span class="n">dy</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">line</span><span class="o">.</span><span class="n">dz</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">line</span><span class="o">.</span><span class="n">direction</span>
 <span class="go">Vector(0.577, 0.577, 0.577)</span>
@@ -1178,6 +1178,12 @@ This is alsways the world XY frame.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Line.closest_point.html#compas.geometry.Line.closest_point" title="compas.geometry.Line.closest_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">closest_point</span></code></a></p></td>
 <td><p>Compute the closest point on the line to a given point.</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Line.flip.html#compas.geometry.Line.flip" title="compas.geometry.Line.flip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flip</span></code></a></p></td>
+<td><p>Flip the direction of the line.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Line.flipped.html#compas.geometry.Line.flipped" title="compas.geometry.Line.flipped"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flipped</span></code></a></p></td>
+<td><p>Return a new line with the direction flipped.</p></td>
+</tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Line.from_point_and_vector.html#compas.geometry.Line.from_point_and_vector" title="compas.geometry.Line.from_point_and_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_point_and_vector</span></code></a></p></td>
 <td><p>Construct a line from a point and a vector.</p></td>
 </tr>
@@ -1185,7 +1191,13 @@ This is alsways the world XY frame.</p>
 <td><p>Construct a line from a point, a direction and a length.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Line.point_at.html#compas.geometry.Line.point_at" title="compas.geometry.Line.point_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point_at</span></code></a></p></td>
-<td><p>Construct a point at a specific location along the line.</p></td>
+<td><p>Construct a point along the line at a fractional position.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Line.point_from_end.html#compas.geometry.Line.point_from_end" title="compas.geometry.Line.point_from_end"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point_from_end</span></code></a></p></td>
+<td><p>Construct a point along the line at a distance from the end point.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Line.point_from_start.html#compas.geometry.Line.point_from_start" title="compas.geometry.Line.point_from_start"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point_from_start</span></code></a></p></td>
+<td><p>Construct a point along the line at a distance from the start point.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Line.transform.html#compas.geometry.Line.transform" title="compas.geometry.Line.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
 <td><p>Transform this line.</p></td>

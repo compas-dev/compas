@@ -60,7 +60,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="PointObject.draw" href="compas_ghpython.scene.PointObject.draw.html" />
-    <link rel="prev" title="GraphObject.clear_nodes" href="compas_ghpython.scene.GraphObject.clear_nodes.html" />
+    <link rel="prev" title="GraphObject.validate_data" href="compas_ghpython.scene.GraphObject.validate_data.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -1112,7 +1112,7 @@ document.write(`
 <h1>PointObject</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas_ghpython.scene.PointObject">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_ghpython.scene.</span></span><span class="sig-name descname"><span class="pre">PointObject</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/4043c77/src/compas/../compas_ghpython/scene/pointobject.py#L11"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_ghpython.scene.</span></span><span class="sig-name descname"><span class="pre">PointObject</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/aa9e749/src/compas/../compas_ghpython/scene/pointobject.py#L11"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas_ghpython.scene.GHSceneObject.html#compas_ghpython.scene.GHSceneObject" title="compas_ghpython.scene.sceneobject.GHSceneObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">GHSceneObject</span></code></a>, <a class="reference internal" href="compas.scene.GeometryObject.html#compas.scene.GeometryObject" title="compas.scene.geometryobject.GeometryObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeometryObject</span></code></a></p>
 <p>Scene object for drawing points.</p>
 <dl class="field-list">
@@ -1136,11 +1136,41 @@ document.write(`
 <p class="rubric">Inherited Methods</p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.scene.PointObject.add.html#compas_ghpython.scene.PointObject.add" title="compas_ghpython.scene.PointObject.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.scene.PointObject.ToString.html#compas_ghpython.scene.PointObject.ToString" title="compas_ghpython.scene.PointObject.ToString"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ToString</span></code></a></p></td>
+<td><p>Converts the instance to a string.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.scene.PointObject.add.html#compas_ghpython.scene.PointObject.add" title="compas_ghpython.scene.PointObject.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a></p></td>
 <td><p>Add a child item to the scene object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.scene.PointObject.clear.html#compas_ghpython.scene.PointObject.clear" title="compas_ghpython.scene.PointObject.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.scene.PointObject.clear.html#compas_ghpython.scene.PointObject.clear" title="compas_ghpython.scene.PointObject.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a></p></td>
 <td><p>The main clearing method.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.scene.PointObject.copy.html#compas_ghpython.scene.PointObject.copy" title="compas_ghpython.scene.PointObject.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
+<td><p>Make an independent copy of the data object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.scene.PointObject.from_json.html#compas_ghpython.scene.PointObject.from_json" title="compas_ghpython.scene.PointObject.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
+<td><p>Construct an object of this type from a JSON file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.scene.PointObject.from_jsonstring.html#compas_ghpython.scene.PointObject.from_jsonstring" title="compas_ghpython.scene.PointObject.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
+<td><p>Construct an object of this type from a JSON string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.scene.PointObject.remove.html#compas_ghpython.scene.PointObject.remove" title="compas_ghpython.scene.PointObject.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a></p></td>
+<td><p>Remove a child node from this node.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.scene.PointObject.sha256.html#compas_ghpython.scene.PointObject.sha256" title="compas_ghpython.scene.PointObject.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.scene.PointObject.to_json.html#compas_ghpython.scene.PointObject.to_json" title="compas_ghpython.scene.PointObject.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<td><p>Convert an object to its native data representation and save it to a JSON file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.scene.PointObject.to_jsonstring.html#compas_ghpython.scene.PointObject.to_jsonstring" title="compas_ghpython.scene.PointObject.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<td><p>Convert an object to its native data representation and save it to a JSON string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.scene.PointObject.traverse.html#compas_ghpython.scene.PointObject.traverse" title="compas_ghpython.scene.PointObject.traverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">traverse</span></code></a></p></td>
+<td><p>Traverse the tree from this node.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.scene.PointObject.validate_data.html#compas_ghpython.scene.PointObject.validate_data" title="compas_ghpython.scene.PointObject.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<td><p>Validate the data against the object's data schema.</p></td>
 </tr>
 </tbody>
 </table>

@@ -60,7 +60,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="GraphObject.clear_edges" href="compas_blender.scene.GraphObject.clear_edges.html" />
-    <link rel="prev" title="MeshObject.update_object" href="compas_blender.scene.MeshObject.update_object.html" />
+    <link rel="prev" title="MeshObject.validate_data" href="compas_blender.scene.MeshObject.validate_data.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -1112,7 +1112,7 @@ document.write(`
 <h1>GraphObject</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas_blender.scene.GraphObject">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_blender.scene.</span></span><span class="sig-name descname"><span class="pre">GraphObject</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/4043c77/src/compas/../compas_blender/scene/graphobject.py#L21"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_blender.scene.</span></span><span class="sig-name descname"><span class="pre">GraphObject</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/aa9e749/src/compas/../compas_blender/scene/graphobject.py#L20"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas_blender.scene.BlenderSceneObject.html#compas_blender.scene.BlenderSceneObject" title="compas_blender.scene.sceneobject.BlenderSceneObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">BlenderSceneObject</span></code></a>, <a class="reference internal" href="compas.scene.GraphObject.html#compas.scene.GraphObject" title="compas.scene.graphobject.GraphObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphObject</span></code></a></p>
 <p>Scene object for drawing graph data structures in Blender.</p>
 <dl class="field-list">
@@ -1146,17 +1146,23 @@ document.write(`
 <p class="rubric">Inherited Methods</p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.scene.GraphObject.add.html#compas_blender.scene.GraphObject.add" title="compas_blender.scene.GraphObject.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.scene.GraphObject.ToString.html#compas_blender.scene.GraphObject.ToString" title="compas_blender.scene.GraphObject.ToString"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ToString</span></code></a></p></td>
+<td><p>Converts the instance to a string.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.scene.GraphObject.add.html#compas_blender.scene.GraphObject.add" title="compas_blender.scene.GraphObject.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a></p></td>
 <td><p>Add a child item to the scene object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.scene.GraphObject.add_object_to_collection.html#compas_blender.scene.GraphObject.add_object_to_collection" title="compas_blender.scene.GraphObject.add_object_to_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_object_to_collection</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.scene.GraphObject.add_object_to_collection.html#compas_blender.scene.GraphObject.add_object_to_collection" title="compas_blender.scene.GraphObject.add_object_to_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_object_to_collection</span></code></a></p></td>
 <td><p>Add an object to a collection.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.scene.GraphObject.clear.html#compas_blender.scene.GraphObject.clear" title="compas_blender.scene.GraphObject.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.scene.GraphObject.clear.html#compas_blender.scene.GraphObject.clear" title="compas_blender.scene.GraphObject.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a></p></td>
 <td><p>Clear the nodes and the edges of the graph.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.scene.GraphObject.clear_collection.html#compas_blender.scene.GraphObject.clear_collection" title="compas_blender.scene.GraphObject.clear_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_collection</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.scene.GraphObject.clear_collection.html#compas_blender.scene.GraphObject.clear_collection" title="compas_blender.scene.GraphObject.clear_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_collection</span></code></a></p></td>
 <td><p>Clear the objects in a collection.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.scene.GraphObject.copy.html#compas_blender.scene.GraphObject.copy" title="compas_blender.scene.GraphObject.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
+<td><p>Make an independent copy of the data object.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.scene.GraphObject.create_collection.html#compas_blender.scene.GraphObject.create_collection" title="compas_blender.scene.GraphObject.create_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_collection</span></code></a></p></td>
 <td><p>Create a collection with the given name.</p></td>
@@ -1167,14 +1173,38 @@ document.write(`
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.scene.GraphObject.delete_collection.html#compas_blender.scene.GraphObject.delete_collection" title="compas_blender.scene.GraphObject.delete_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_collection</span></code></a></p></td>
 <td><p>Delete a collection.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.scene.GraphObject.set_object_color.html#compas_blender.scene.GraphObject.set_object_color" title="compas_blender.scene.GraphObject.set_object_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_object_color</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.scene.GraphObject.from_json.html#compas_blender.scene.GraphObject.from_json" title="compas_blender.scene.GraphObject.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
+<td><p>Construct an object of this type from a JSON file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.scene.GraphObject.from_jsonstring.html#compas_blender.scene.GraphObject.from_jsonstring" title="compas_blender.scene.GraphObject.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
+<td><p>Construct an object of this type from a JSON string.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.scene.GraphObject.remove.html#compas_blender.scene.GraphObject.remove" title="compas_blender.scene.GraphObject.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a></p></td>
+<td><p>Remove a child node from this node.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.scene.GraphObject.set_object_color.html#compas_blender.scene.GraphObject.set_object_color" title="compas_blender.scene.GraphObject.set_object_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_object_color</span></code></a></p></td>
 <td><p>Set the color of a Blender object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.scene.GraphObject.set_object_tranformation.html#compas_blender.scene.GraphObject.set_object_tranformation" title="compas_blender.scene.GraphObject.set_object_tranformation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_object_tranformation</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.scene.GraphObject.set_object_tranformation.html#compas_blender.scene.GraphObject.set_object_tranformation" title="compas_blender.scene.GraphObject.set_object_tranformation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_object_tranformation</span></code></a></p></td>
 <td><p>Set the transformation of a Blender object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.scene.GraphObject.update_object.html#compas_blender.scene.GraphObject.update_object" title="compas_blender.scene.GraphObject.update_object"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_object</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.scene.GraphObject.sha256.html#compas_blender.scene.GraphObject.sha256" title="compas_blender.scene.GraphObject.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.scene.GraphObject.to_json.html#compas_blender.scene.GraphObject.to_json" title="compas_blender.scene.GraphObject.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<td><p>Convert an object to its native data representation and save it to a JSON file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.scene.GraphObject.to_jsonstring.html#compas_blender.scene.GraphObject.to_jsonstring" title="compas_blender.scene.GraphObject.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<td><p>Convert an object to its native data representation and save it to a JSON string.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.scene.GraphObject.traverse.html#compas_blender.scene.GraphObject.traverse" title="compas_blender.scene.GraphObject.traverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">traverse</span></code></a></p></td>
+<td><p>Traverse the tree from this node.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.scene.GraphObject.update_object.html#compas_blender.scene.GraphObject.update_object" title="compas_blender.scene.GraphObject.update_object"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_object</span></code></a></p></td>
 <td><p>Update an object in the Blender scene.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.scene.GraphObject.validate_data.html#compas_blender.scene.GraphObject.validate_data" title="compas_blender.scene.GraphObject.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<td><p>Validate the data against the object's data schema.</p></td>
 </tr>
 </tbody>
 </table>

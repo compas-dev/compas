@@ -60,7 +60,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="GraphObject.clear" href="compas.scene.GraphObject.clear.html" />
-    <link rel="prev" title="MeshObject.add" href="compas.scene.MeshObject.add.html" />
+    <link rel="prev" title="MeshObject.validate_data" href="compas.scene.MeshObject.validate_data.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -1112,7 +1112,7 @@ document.write(`
 <h1>GraphObject</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.scene.GraphObject">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.scene.</span></span><span class="sig-name descname"><span class="pre">GraphObject</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/4043c77/src/compas/scene/graphobject.py#L10"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.scene.</span></span><span class="sig-name descname"><span class="pre">GraphObject</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/aa9e749/src/compas/scene/graphobject.py#L11"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.scene.SceneObject.html#compas.scene.SceneObject" title="compas.scene.sceneobject.SceneObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">SceneObject</span></code></a></p>
 <p>Scene object for drawing graph data structures.</p>
 <dl class="field-list">
@@ -1179,8 +1179,38 @@ The default view coordinates are the actual coordinates of the nodes of the grap
 <p class="rubric">Inherited Methods</p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.GraphObject.add.html#compas.scene.GraphObject.add" title="compas.scene.GraphObject.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.GraphObject.ToString.html#compas.scene.GraphObject.ToString" title="compas.scene.GraphObject.ToString"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ToString</span></code></a></p></td>
+<td><p>Converts the instance to a string.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.GraphObject.add.html#compas.scene.GraphObject.add" title="compas.scene.GraphObject.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a></p></td>
 <td><p>Add a child item to the scene object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.GraphObject.copy.html#compas.scene.GraphObject.copy" title="compas.scene.GraphObject.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
+<td><p>Make an independent copy of the data object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.GraphObject.from_json.html#compas.scene.GraphObject.from_json" title="compas.scene.GraphObject.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
+<td><p>Construct an object of this type from a JSON file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.GraphObject.from_jsonstring.html#compas.scene.GraphObject.from_jsonstring" title="compas.scene.GraphObject.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
+<td><p>Construct an object of this type from a JSON string.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.GraphObject.remove.html#compas.scene.GraphObject.remove" title="compas.scene.GraphObject.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a></p></td>
+<td><p>Remove a child node from this node.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.GraphObject.sha256.html#compas.scene.GraphObject.sha256" title="compas.scene.GraphObject.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.GraphObject.to_json.html#compas.scene.GraphObject.to_json" title="compas.scene.GraphObject.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<td><p>Convert an object to its native data representation and save it to a JSON file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.GraphObject.to_jsonstring.html#compas.scene.GraphObject.to_jsonstring" title="compas.scene.GraphObject.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<td><p>Convert an object to its native data representation and save it to a JSON string.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.GraphObject.traverse.html#compas.scene.GraphObject.traverse" title="compas.scene.GraphObject.traverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">traverse</span></code></a></p></td>
+<td><p>Traverse the tree from this node.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.GraphObject.validate_data.html#compas.scene.GraphObject.validate_data" title="compas.scene.GraphObject.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<td><p>Validate the data against the object's data schema.</p></td>
 </tr>
 </tbody>
 </table>

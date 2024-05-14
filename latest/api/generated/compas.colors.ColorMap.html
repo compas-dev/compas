@@ -1112,7 +1112,7 @@ document.write(`
 <h1>ColorMap</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.colors.ColorMap">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.colors.</span></span><span class="sig-name descname"><span class="pre">ColorMap</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/4043c77/src/compas/colors/colormap.py#L23"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.colors.</span></span><span class="sig-name descname"><span class="pre">ColorMap</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/aa9e749/src/compas/colors/colormap.py#L23"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Class providing a map for 256 distinct colors of a specific color palette.</p>
 <dl class="field-list simple">
@@ -1138,17 +1138,15 @@ The number of colors in the sequence should be 256.</p>
 </div>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">random</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cmap</span> <span class="o">=</span> <span class="n">ColorMap</span><span class="o">.</span><span class="n">from_palette</span><span class="p">(</span><span class="s1">&#39;bamako&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cmap</span> <span class="o">=</span> <span class="n">ColorMap</span><span class="o">.</span><span class="n">from_palette</span><span class="p">(</span><span class="s2">&quot;bamako&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="n">color</span> <span class="o">=</span> <span class="n">cmap</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">())</span>
-<span class="gp">...</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cmap</span> <span class="o">=</span> <span class="n">ColorMap</span><span class="o">.</span><span class="n">from_mpl</span><span class="p">(</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cmap</span> <span class="o">=</span> <span class="n">ColorMap</span><span class="o">.</span><span class="n">from_mpl</span><span class="p">(</span><span class="s2">&quot;viridis&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">n</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="n">color</span> <span class="o">=</span> <span class="n">cmap</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">minval</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">maxval</span><span class="o">=</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-<span class="gp">...</span>
 </pre></div>
 </div>
 <dl class="field-list">

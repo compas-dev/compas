@@ -1113,7 +1113,7 @@ document.write(`
 <h1>Quaternion</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.Quaternion">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Quaternion</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/4043c77/src/compas/geometry/quaternion.py#L17"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Quaternion</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/aa9e749/src/compas/geometry/quaternion.py#L20"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Geometry.html#compas.geometry.Geometry" title="compas.geometry.geometry.Geometry"><code class="xref py py-class docutils literal notranslate"><span class="pre">Geometry</span></code></a></p>
 <p>A quaternion is defined by 4 components, X, Y, Z, and W.</p>
 <dl class="field-list simple">
@@ -1227,14 +1227,20 @@ False otherwise.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.conjugated.html#compas.geometry.Quaternion.conjugated" title="compas.geometry.Quaternion.conjugated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">conjugated</span></code></a></p></td>
 <td><p>Returns a conjugate quaternion.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.from_frame.html#compas.geometry.Quaternion.from_frame" title="compas.geometry.Quaternion.from_frame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_frame</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.dot.html#compas.geometry.Quaternion.dot" title="compas.geometry.Quaternion.dot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dot</span></code></a></p></td>
+<td><p>Computes the cosine of the angle between the two quaternions</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.from_frame.html#compas.geometry.Quaternion.from_frame" title="compas.geometry.Quaternion.from_frame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_frame</span></code></a></p></td>
 <td><p>Creates a quaternion object from a frame.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.from_matrix.html#compas.geometry.Quaternion.from_matrix" title="compas.geometry.Quaternion.from_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_matrix</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.from_matrix.html#compas.geometry.Quaternion.from_matrix" title="compas.geometry.Quaternion.from_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_matrix</span></code></a></p></td>
 <td><p>Create a Quaternion from a transformation matrix.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.from_rotation.html#compas.geometry.Quaternion.from_rotation" title="compas.geometry.Quaternion.from_rotation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_rotation</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.from_rotation.html#compas.geometry.Quaternion.from_rotation" title="compas.geometry.Quaternion.from_rotation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_rotation</span></code></a></p></td>
 <td><p>Create a Quaternion from a Rotatation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.slerp.html#compas.geometry.Quaternion.slerp" title="compas.geometry.Quaternion.slerp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">slerp</span></code></a></p></td>
+<td><p>Slerp: spherical interpolation of two quaternions.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.unitize.html#compas.geometry.Quaternion.unitize" title="compas.geometry.Quaternion.unitize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unitize</span></code></a></p></td>
 <td><p>Scales the quaternion to make it unit-length.</p></td>

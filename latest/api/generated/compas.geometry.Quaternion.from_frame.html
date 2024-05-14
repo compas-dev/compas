@@ -60,7 +60,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Quaternion.from_matrix" href="compas.geometry.Quaternion.from_matrix.html" />
-    <link rel="prev" title="Quaternion.conjugated" href="compas.geometry.Quaternion.conjugated.html" />
+    <link rel="prev" title="Quaternion.dot" href="compas.geometry.Quaternion.dot.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -1117,7 +1117,7 @@ document.write(`
 <h1>Quaternion.from_frame</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.geometry.Quaternion.from_frame">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Quaternion.</span></span><span class="sig-name descname"><span class="pre">from_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/4043c77/src/compas/geometry/quaternion.py#L275"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Quaternion.</span></span><span class="sig-name descname"><span class="pre">from_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/aa9e749/src/compas/geometry/quaternion.py#L280"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Creates a quaternion object from a frame.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1133,12 +1133,12 @@ document.write(`
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">allclose</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.tolerance</span> <span class="kn">import</span> <span class="n">TOL</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Frame</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.0</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">F</span> <span class="o">=</span> <span class="n">Frame</span><span class="o">.</span><span class="n">from_quaternion</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Q</span> <span class="o">=</span> <span class="n">Quaternion</span><span class="o">.</span><span class="n">from_frame</span><span class="p">(</span><span class="n">F</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">allclose</span><span class="p">(</span><span class="n">Q</span><span class="o">.</span><span class="n">canonized</span><span class="p">(),</span> <span class="n">quaternion_canonize</span><span class="p">(</span><span class="n">quaternion_unitize</span><span class="p">(</span><span class="n">q</span><span class="p">)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">TOL</span><span class="o">.</span><span class="n">is_allclose</span><span class="p">(</span><span class="n">Q</span><span class="o">.</span><span class="n">canonized</span><span class="p">(),</span> <span class="n">quaternion_canonize</span><span class="p">(</span><span class="n">quaternion_unitize</span><span class="p">(</span><span class="n">q</span><span class="p">)))</span>
 <span class="go">True</span>
 </pre></div>
 </div>

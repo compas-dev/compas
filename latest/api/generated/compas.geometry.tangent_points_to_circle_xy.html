@@ -1112,12 +1112,12 @@ document.write(`
 <h1>tangent_points_to_circle_xy</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.tangent_points_to_circle_xy">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">tangent_points_to_circle_xy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">circle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/4043c77/src/compas/geometry/_core/tangent.py#L8"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">tangent_points_to_circle_xy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">circle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/aa9e749/src/compas/geometry/_core/tangent.py#L8"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Calculates the tangent points on a circle in the XY plane.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>circle</strong><span class="classifier">[plane, float] | <a class="reference internal" href="compas.geometry.Circle.html#compas.geometry.Circle" title="compas.geometry.Circle"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Circle</span></code></a></span></dt><dd><p>Plane and radius of the circle.</p>
+<dt><strong>circle</strong><span class="classifier">[plane, float]</span></dt><dd><p>Plane and radius of the circle.</p>
 </dd>
 <dt><strong>point</strong><span class="classifier">[float, float] or [float, float, float] | <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a></span></dt><dd><p>XY(Z) coordinates of a point in the xy plane.</p>
 </dd>
@@ -1131,13 +1131,13 @@ document.write(`
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">allclose</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.tolerance</span> <span class="kn">import</span> <span class="n">TOL</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">circle</span> <span class="o">=</span> <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="mf">1.0</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">point</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">t1</span><span class="p">,</span> <span class="n">t2</span> <span class="o">=</span> <span class="n">tangent_points_to_circle_xy</span><span class="p">(</span><span class="n">circle</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">allclose</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.772</span><span class="p">,</span> <span class="mf">0.636</span><span class="p">,</span> <span class="mf">0.000</span><span class="p">],</span> <span class="mf">1e-3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">TOL</span><span class="o">.</span><span class="n">is_allclose</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.772</span><span class="p">,</span> <span class="mf">0.636</span><span class="p">,</span> <span class="mf">0.000</span><span class="p">],</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">)</span>
 <span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">allclose</span><span class="p">(</span><span class="n">t2</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.972</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.236</span><span class="p">,</span> <span class="mf">0.000</span><span class="p">],</span> <span class="mf">1e-3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">TOL</span><span class="o">.</span><span class="n">is_allclose</span><span class="p">(</span><span class="n">t2</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.972</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.236</span><span class="p">,</span> <span class="mf">0.000</span><span class="p">],</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">)</span>
 <span class="go">True</span>
 </pre></div>
 </div>

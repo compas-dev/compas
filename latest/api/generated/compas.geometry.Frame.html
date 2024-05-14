@@ -1112,7 +1112,7 @@ document.write(`
 <h1>Frame</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.Frame">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Frame</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/4043c77/src/compas/geometry/frame.py#L28"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Frame</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/aa9e749/src/compas/geometry/frame.py#L27"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Geometry.html#compas.geometry.Geometry" title="compas.geometry.geometry.Geometry"><code class="xref py py-class docutils literal notranslate"><span class="pre">Geometry</span></code></a></p>
 <p>A frame is defined by a base point and two orthonormal base vectors.</p>
 <dl class="field-list">
@@ -1197,6 +1197,12 @@ vector as starting point.</p>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.from_transformation.html#compas.geometry.Frame.from_transformation" title="compas.geometry.Frame.from_transformation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_transformation</span></code></a></p></td>
 <td><p>Constructs a frame from a Transformation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.interpolate_frame.html#compas.geometry.Frame.interpolate_frame" title="compas.geometry.Frame.interpolate_frame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolate_frame</span></code></a></p></td>
+<td><p>Interpolates between two frames at a given parameter t in the range [0, 1]</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.interpolate_frames.html#compas.geometry.Frame.interpolate_frames" title="compas.geometry.Frame.interpolate_frames"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolate_frames</span></code></a></p></td>
+<td><p>Generates a specified number of interpolated frames between two given frames</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.to_local_coordinates.html#compas.geometry.Frame.to_local_coordinates" title="compas.geometry.Frame.to_local_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_local_coordinates</span></code></a></p></td>
 <td><p>Returns the object's coordinates in the local coordinate system of the frame.</p></td>

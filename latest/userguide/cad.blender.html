@@ -564,11 +564,18 @@ The default locations are:</p>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If you already have an installation of COMPAS on your system, you can try finding the Rhino 8 Python executable by running the following in a terminal or command prompt:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">print_python_path</span>
+<p>If you already have an installation of COMPAS on your system, you can try finding the Blender Python executable by running the following in a terminal or command prompt:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">compas_blender</span><span class="o">.</span><span class="n">print_python_path</span>
 </pre></div>
 </div>
 </div>
+<section id="update-pip">
+<h4>Update <cite>pip</cite></h4>
+<p>Before installing <cite>compas</cite> with <cite>pip</cite>, it is highly recommended that you update <cite>pip</cite> itself.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>/Applications/Blender.app/Contents/Resources/4.0/python/bin/python3.10<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip
+</pre></div>
+</div>
+</section>
 <section id="install-from-pypi">
 <h4>Install from PyPI</h4>
 <p>For example on Mac:</p>
@@ -676,6 +683,7 @@ For more information on visualisation scenes, see <a class="reference internal" 
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-pip-recommended">Using <code class="docutils literal notranslate"><span class="pre">pip</span></code> (recommended)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#update-pip">Update <cite>pip</cite></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#install-from-pypi">Install from PyPI</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#install-from-source">Install from Source</a></li>
 </ul>

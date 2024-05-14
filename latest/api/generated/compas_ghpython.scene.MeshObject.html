@@ -60,7 +60,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="MeshObject.draw" href="compas_ghpython.scene.MeshObject.draw.html" />
-    <link rel="prev" title="LineObject.clear" href="compas_ghpython.scene.LineObject.clear.html" />
+    <link rel="prev" title="LineObject.validate_data" href="compas_ghpython.scene.LineObject.validate_data.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -1112,7 +1112,7 @@ document.write(`
 <h1>MeshObject</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas_ghpython.scene.MeshObject">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_ghpython.scene.</span></span><span class="sig-name descname"><span class="pre">MeshObject</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/4043c77/src/compas/../compas_ghpython/scene/meshobject.py#L12"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_ghpython.scene.</span></span><span class="sig-name descname"><span class="pre">MeshObject</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/aa9e749/src/compas/../compas_ghpython/scene/meshobject.py#L13"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas_ghpython.scene.GHSceneObject.html#compas_ghpython.scene.GHSceneObject" title="compas_ghpython.scene.sceneobject.GHSceneObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">GHSceneObject</span></code></a>, <a class="reference internal" href="compas.scene.MeshObject.html#compas.scene.MeshObject" title="compas.scene.meshobject.MeshObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeshObject</span></code></a></p>
 <p>Scene object for drawing mesh data structures.</p>
 <dl class="field-list">
@@ -1145,23 +1145,53 @@ document.write(`
 <p class="rubric">Inherited Methods</p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.scene.MeshObject.add.html#compas_ghpython.scene.MeshObject.add" title="compas_ghpython.scene.MeshObject.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.scene.MeshObject.ToString.html#compas_ghpython.scene.MeshObject.ToString" title="compas_ghpython.scene.MeshObject.ToString"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ToString</span></code></a></p></td>
+<td><p>Converts the instance to a string.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.scene.MeshObject.add.html#compas_ghpython.scene.MeshObject.add" title="compas_ghpython.scene.MeshObject.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a></p></td>
 <td><p>Add a child item to the scene object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.scene.MeshObject.clear.html#compas_ghpython.scene.MeshObject.clear" title="compas_ghpython.scene.MeshObject.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.scene.MeshObject.clear.html#compas_ghpython.scene.MeshObject.clear" title="compas_ghpython.scene.MeshObject.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a></p></td>
 <td><p>Clear all components of the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.scene.MeshObject.clear_edges.html#compas_ghpython.scene.MeshObject.clear_edges" title="compas_ghpython.scene.MeshObject.clear_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_edges</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.scene.MeshObject.clear_edges.html#compas_ghpython.scene.MeshObject.clear_edges" title="compas_ghpython.scene.MeshObject.clear_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_edges</span></code></a></p></td>
 <td><p>Clear the edges of the mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.scene.MeshObject.clear_faces.html#compas_ghpython.scene.MeshObject.clear_faces" title="compas_ghpython.scene.MeshObject.clear_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_faces</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.scene.MeshObject.clear_faces.html#compas_ghpython.scene.MeshObject.clear_faces" title="compas_ghpython.scene.MeshObject.clear_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_faces</span></code></a></p></td>
 <td><p>Clear the faces of the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.scene.MeshObject.clear_vertices.html#compas_ghpython.scene.MeshObject.clear_vertices" title="compas_ghpython.scene.MeshObject.clear_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_vertices</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.scene.MeshObject.clear_vertices.html#compas_ghpython.scene.MeshObject.clear_vertices" title="compas_ghpython.scene.MeshObject.clear_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_vertices</span></code></a></p></td>
 <td><p>Clear the vertices of the mesh.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.scene.MeshObject.copy.html#compas_ghpython.scene.MeshObject.copy" title="compas_ghpython.scene.MeshObject.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
+<td><p>Make an independent copy of the data object.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.scene.MeshObject.draw_mesh.html#compas_ghpython.scene.MeshObject.draw_mesh" title="compas_ghpython.scene.MeshObject.draw_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_mesh</span></code></a></p></td>
 <td><p>Draw the mesh of the mesh.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.scene.MeshObject.from_json.html#compas_ghpython.scene.MeshObject.from_json" title="compas_ghpython.scene.MeshObject.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
+<td><p>Construct an object of this type from a JSON file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.scene.MeshObject.from_jsonstring.html#compas_ghpython.scene.MeshObject.from_jsonstring" title="compas_ghpython.scene.MeshObject.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
+<td><p>Construct an object of this type from a JSON string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.scene.MeshObject.remove.html#compas_ghpython.scene.MeshObject.remove" title="compas_ghpython.scene.MeshObject.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a></p></td>
+<td><p>Remove a child node from this node.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.scene.MeshObject.sha256.html#compas_ghpython.scene.MeshObject.sha256" title="compas_ghpython.scene.MeshObject.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.scene.MeshObject.to_json.html#compas_ghpython.scene.MeshObject.to_json" title="compas_ghpython.scene.MeshObject.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<td><p>Convert an object to its native data representation and save it to a JSON file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.scene.MeshObject.to_jsonstring.html#compas_ghpython.scene.MeshObject.to_jsonstring" title="compas_ghpython.scene.MeshObject.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<td><p>Convert an object to its native data representation and save it to a JSON string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.scene.MeshObject.traverse.html#compas_ghpython.scene.MeshObject.traverse" title="compas_ghpython.scene.MeshObject.traverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">traverse</span></code></a></p></td>
+<td><p>Traverse the tree from this node.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.scene.MeshObject.validate_data.html#compas_ghpython.scene.MeshObject.validate_data" title="compas_ghpython.scene.MeshObject.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<td><p>Validate the data against the object's data schema.</p></td>
 </tr>
 </tbody>
 </table>
