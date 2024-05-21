@@ -625,6 +625,7 @@ class Box(Shape):
     # Transformations
     # ==========================================================================
 
+    @reset_computed
     def scale(self, factor):
         """Scale the box.
 

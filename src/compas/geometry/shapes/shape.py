@@ -165,6 +165,7 @@ class Shape(Geometry):
     # Transformation
     # =============================================================================
 
+    @reset_computed
     def transform(self, transformation):
         """Transform the shape.
 
@@ -191,6 +192,7 @@ class Shape(Geometry):
         """
         self.frame.transform(transformation)
 
+    @reset_computed
     def translate(self, vector):
         """Translate the shape.
 
@@ -212,6 +214,7 @@ class Shape(Geometry):
         """
         self.frame.point += vector
 
+    @reset_computed
     def rotate(self, angle, axis=None, point=None):
         """Rotate the shape.
 
@@ -236,6 +239,7 @@ class Shape(Geometry):
         matrix = Rotation.from_axis_and_angle(axis=axis, angle=angle, point=point)
         self.transform(matrix)
 
+    @reset_computed
     def scale(self, scale):
         """Scale the shape.
 

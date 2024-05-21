@@ -75,6 +75,7 @@ class Geometry(Data):
         """
         raise NotImplementedError
 
+    @reset_computed
     def transform(self, transformation):
         """Transform the geometry.
 
@@ -122,6 +123,7 @@ class Geometry(Data):
         geometry.transform(transformation)
         return geometry  # type: ignore
 
+    @reset_computed
     def scale(self, x, y=None, z=None):
         """Scale the geometry.
 
@@ -195,6 +197,7 @@ class Geometry(Data):
 
         return self.transformed(Scale.from_factors([x, y, z]))
 
+    @reset_computed
     def translate(self, vector):
         """Translate the geometry.
 
@@ -244,6 +247,7 @@ class Geometry(Data):
 
         return self.transformed(Translation.from_vector(vector))
 
+    @reset_computed
     def rotate(self, angle, axis=None, point=None):
         """Rotate the geometry.
 
