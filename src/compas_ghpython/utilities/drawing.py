@@ -19,9 +19,6 @@ from Rhino.Geometry import Sphere
 from Rhino.Geometry import Vector3d
 from Rhino.Geometry import Vector3f
 
-# from System.Array import CreateInstance
-# from System.Drawing import Color
-# from System.Enum import ToObject
 from compas.geometry import centroid_points
 from compas.itertools import pairwise
 from compas_rhino.utilities.drawing import _face_to_max_quad
