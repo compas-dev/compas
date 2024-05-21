@@ -7,6 +7,8 @@ from compas.geometry import Geometry
 from compas.geometry import Rotation
 from compas.geometry import Transformation
 
+from ..geometry import reset_computed
+
 
 class Shape(Geometry):
     """Base class for geometric shapes.
@@ -50,10 +52,6 @@ class Shape(Geometry):
         self.frame = frame
 
     # =============================================================================
-    # Data
-    # =============================================================================
-
-    # =============================================================================
     # Properties
     # =============================================================================
 
@@ -64,6 +62,7 @@ class Shape(Geometry):
         return self._frame
 
     @frame.setter
+    @reset_computed
     def frame(self, frame):
         if not frame:
             self._frame = None

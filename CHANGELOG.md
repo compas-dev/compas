@@ -9,7 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `compas.geometry.geometry.reset_computed` as a decorator to mark object properties that should reset computed values when changed, by calling the corresponding `compas.geometry.Geometry._reset_computed`.
+* Added `@reset_computed` to `compas.geometry.Geometry.frame`.
+* Added `@reset_computed` to `compas.geometry.Box.xsize`, `compas.geometry.Box.ysize`, `compas.geometry.Box.zsize`.
+* Added `compas.geometry.Geometry._aabb` and `compas.geometry.Geometry._obb` to `compas.geometry.Geometry._reset_computed`
+* Added `compas.geometry.Box.points` and corresponding `compas.geometry.Box._points` and `compas.geometry.Box.compute_points`.
+* Added `compas.geometry.Box._points` to `compas.geometry.Box._reset_computed`.
+* Added implementations for `compute_aabb` and `compute_obb` for `compas.geometry.Box`.
+
 ### Changed
+
+* Changed `compas.geometry.Shape` to reset computed values when the frame has changed.
 
 ### Removed
 

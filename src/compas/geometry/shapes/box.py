@@ -8,7 +8,9 @@ from compas.geometry import Transformation
 from compas.geometry import Vector
 from compas.geometry import centroid_points
 from compas.geometry import transform_points
+from compas.tolerance import TOL
 
+from ..geometry import reset_computed
 from .shape import Shape
 
 
@@ -52,26 +54,28 @@ class Box(Shape):
         The box's frame.
     height : float, read-only
         The height of the box in Z direction.
+    points : list[:class:`compas.geometry.Point`]
+        The corner points of the box.
     volume : float, read-only
         The volume of the box.
     width : float, read-only
         The width of the box in X direction.
-    xmin : float, read-only
-        Minimum value along local X axis.
     xmax : float, read-only
         Maximum value along local X axis.
+    xmin : float, read-only
+        Minimum value along local X axis.
     xsize : float
         The size of the box in the box frame's x direction.
-    ymin : float, read-only
-        Minimum value along local Y axis.
     ymax : float, read-only
         Maximum value along local Y axis.
+    ymin : float, read-only
+        Minimum value along local Y axis.
     ysize : float
         The size of the box in the box frame's y direction.
-    zmin : float, read-only
-        Minimum value along local Z axis.
     zmax : float, read-only
         Maximum value along local Z axis.
+    zmin : float, read-only
+        Minimum value along local Z axis.
     zsize : float
         The size of the box in the box frame's z direction.
 
@@ -141,6 +145,7 @@ class Box(Shape):
         self.xsize = xsize
         self.ysize = xsize if ysize is None else ysize
         self.zsize = xsize if zsize is None else zsize
+        self._points = None
 
     def __repr__(self):
         return "{0}(xsize={1}, ysize={2}, zsize={3}, frame={4!r})".format(
@@ -150,6 +155,10 @@ class Box(Shape):
             self.zsize,
             self.frame,
         )
+
+    def _reset_computed(self):
+        super(Box, self)._reset_computed()
+        self._points = None
 
     # ==========================================================================
     # Properties
@@ -162,6 +171,7 @@ class Box(Shape):
         return self._xsize
 
     @xsize.setter
+    @reset_computed
     def xsize(self, xsize):
         if xsize < 0:
             raise ValueError("The minimum value of the size of the box along the local X axis is zero.")
@@ -174,6 +184,7 @@ class Box(Shape):
         return self._ysize
 
     @ysize.setter
+    @reset_computed
     def ysize(self, ysize):
         if ysize < 0:
             raise ValueError("The minimum value of the size of the box along the local Y axis is zero.")
@@ -186,6 +197,7 @@ class Box(Shape):
         return self._zsize
 
     @zsize.setter
+    @reset_computed
     def zsize(self, zsize):
         if zsize < 0:
             raise ValueError("The minimum value of the size of the box along the local Z axis is zero.")
@@ -271,6 +283,18 @@ class Box(Shape):
 
     @property
     def points(self):
+        if not self._points:
+            self._points = self.compute_points()
+        return self._points
+
+    def compute_points(self):
+        """Compute the points at the corners of the box.
+
+        Returns
+        -------
+        list[:class:`compas.geometry.Point`]
+
+        """
         point = self.frame.point
         xaxis = self.frame.xaxis
         yaxis = self.frame.yaxis
@@ -290,6 +314,39 @@ class Box(Shape):
         h = b + zaxis * self.zsize
 
         return [a, b, c, d, e, f, g, h]
+
+    def compute_aabb(self):
+        """Compute the axis-aligned bounding box of the box.
+
+        Returns
+        -------
+        :class:`compas.geometry.Box`
+
+        """
+        x, y, z = zip(*self.points)
+        xmin = min(x)
+        xmax = max(x)
+        ymin = min(y)
+        ymax = max(y)
+        zmin = min(z)
+        zmax = max(z)
+        xsize = xmax - xmin
+        ysize = ymax - ymin
+        zsize = zmax - zmin
+        x = xmin + 0.5 * xsize
+        y = ymin + 0.5 * ysize
+        z = zmin + 0.5 * zsize
+        return Box(xsize, ysize, zsize, point=[x, y, z])
+
+    def compute_obb(self):
+        """Compute the oriented bounding box of the box.
+
+        Returns
+        -------
+        :class:`compas.geometry.Box`
+
+        """
+        return self
 
     # ==========================================================================
     # Constructors
@@ -473,6 +530,32 @@ class Box(Shape):
         bbox = bounding_box(points)
         return cls.from_bounding_box(bbox)
 
+    @classmethod
+    def from_corner_and_sizes(cls, corner, xsize, ysize=None, zsize=None):
+        """Construct a box from the nearest, bottom left corner and the szes in X, Y, Z direction.
+
+        Parameters
+        ----------
+        corner : :class:`compas.geometry.Point`
+            The nearest, bottom left corner point.
+        xsize : float
+            The size in the X direction.
+        ysize : float, optional
+            The size in the Y direction.
+        zsize : float, optional
+            The size in the Z direction.
+
+        Returns
+        -------
+        :class:`compas.geometry.Box`
+
+        """
+        ysize = ysize if ysize is not None else xsize
+        zsize = zsize if zsize is not None else xsize
+        box = cls(xsize, ysize, zsize, point=corner)
+        box.frame.point += [0.5 * xsize, 0.5 * ysize, 0.5 * zsize]
+        return box
+
     # ==========================================================================
     # Conversions
     # ==========================================================================
@@ -492,25 +575,7 @@ class Box(Shape):
             with each face defined as a list of indices into the list of vertices.
 
         """
-        point = self.frame.point
-        xaxis = self.frame.xaxis
-        yaxis = self.frame.yaxis
-        zaxis = self.frame.zaxis
-
-        dx = 0.5 * self.xsize
-        dy = 0.5 * self.ysize
-        dz = 0.5 * self.zsize
-
-        a = point + xaxis * -dx + yaxis * -dy + zaxis * -dz
-        b = point + xaxis * -dx + yaxis * +dy + zaxis * -dz
-        c = point + xaxis * +dx + yaxis * +dy + zaxis * -dz
-        d = point + xaxis * +dx + yaxis * -dy + zaxis * -dz
-        e = a + zaxis * self.zsize
-        f = d + zaxis * self.zsize
-        g = c + zaxis * self.zsize
-        h = b + zaxis * self.zsize
-
-        vertices = [a, b, c, d, e, f, g, h]
+        vertices = self.points
         _faces = [self.bottom, self.front, self.right, self.back, self.left, self.top]
 
         if triangulated:
@@ -560,36 +625,6 @@ class Box(Shape):
     # Transformations
     # ==========================================================================
 
-    # def transform(self, transformation):
-    #     """Transform the box.
-
-    #     Parameters
-    #     ----------
-    #     transformation : :class:`Transformation`
-    #         The transformation used to transform the Box.
-
-    #     Returns
-    #     -------
-    #     None
-
-    #     Examples
-    #     --------
-    #     >>> box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
-    #     >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-    #     >>> T = Transformation.from_frame(frame)
-    #     >>> box.transform(T)
-
-    #     """
-    #     self.frame.transform(transformation)
-    #     # Always local scaling, non-uniform scaling based on frame not yet considered.
-    #     Sc, _, _, _, _ = transformation.decomposed()
-    #     scalex = Sc[0, 0]
-    #     scaley = Sc[1, 1]
-    #     scalez = Sc[2, 2]
-    #     self.xsize *= scalex
-    #     self.ysize *= scaley
-    #     self.zsize *= scalez
-
     def scale(self, factor):
         """Scale the box.
 
@@ -633,31 +668,9 @@ class Box(Shape):
         if index < 0 or index > 7:
             raise ValueError("Index should be between 0 and 7.")
 
-        point = self.frame.point
-        xaxis = self.frame.xaxis
-        yaxis = self.frame.yaxis
-        zaxis = self.frame.zaxis
-        dx = 0.5 * self.xsize
-        dy = 0.5 * self.ysize
-        dz = 0.5 * self.zsize
-        if index == 0:
-            return point + xaxis * -dx + yaxis * -dy + zaxis * -dz
-        if index == 1:
-            return point + xaxis * -dx + yaxis * +dy + zaxis * -dz
-        if index == 2:
-            return point + xaxis * +dx + yaxis * +dy + zaxis * -dz
-        if index == 3:
-            return point + xaxis * +dx + yaxis * -dy + zaxis * -dz
-        if index == 4:
-            return point + xaxis * -dx + yaxis * -dy + zaxis * +dz
-        if index == 5:
-            return point + xaxis * -dx + yaxis * +dy + zaxis * +dz
-        if index == 6:
-            return point + xaxis * +dx + yaxis * +dy + zaxis * +dz
-        if index == 7:
-            return point + xaxis * +dx + yaxis * -dy + zaxis * +dz
+        return self.points[index]
 
-    def contains_point(self, point, tol=1e-6):
+    def contains_point(self, point, tol=None):
         """Verify if the box contains a given point.
 
         Parameters
@@ -666,6 +679,7 @@ class Box(Shape):
             The point to test.
         tol : float, optional
             The tolerance for the point containment check.
+            Defaults to ``compas.tolerance.Tolerance.absolute``.
 
         Returns
         -------
@@ -679,24 +693,23 @@ class Box(Shape):
         T = Transformation.from_change_of_basis(Frame.worldXY(), self.frame)
         x, y, z = transform_points([point], T)[0]
 
-        dx = 0.5 * self.xsize + tol
+        tol = tol or TOL.absolute
 
+        dx = 0.5 * self.xsize + tol
         if x < -dx or x > +dx:
             return False
 
         dy = 0.5 * self.ysize + tol
-
         if y < -dy or y > +dy:
             return False
 
         dz = 0.5 * self.zsize + tol
-
         if z < -dz or z > +dz:
             return False
 
         return True
 
-    def contains_points(self, points, tol=1e-6):
+    def contains_points(self, points, tol=None):
         """Verify if the box contains the given points.
 
         Parameters
@@ -705,6 +718,7 @@ class Box(Shape):
             A list of points.
         tol : float, optional
             The tolerance for the point containment check.
+            Defaults to ``compas.tolerance.Tolerance.absolute``.
 
         Returns
         -------
@@ -724,6 +738,8 @@ class Box(Shape):
         True
 
         """
+        tol = tol or TOL.absolute
+
         dx = 0.5 * self.xsize + tol
         dy = 0.5 * self.ysize + tol
         dz = 0.5 * self.zsize + tol

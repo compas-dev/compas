@@ -2,6 +2,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from functools import wraps
+
 try:
     from typing import TypeVar  # noqa: F401
 except ImportError:
@@ -10,6 +12,16 @@ else:
     G = TypeVar("G", bound="Geometry")
 
 from compas.data import Data
+
+
+def reset_computed(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        self = args[0]
+        self._reset_computed()
+        return f(*args, **kwargs)
+
+    return wrapper
 
 
 class Geometry(Data):
@@ -26,6 +38,10 @@ class Geometry(Data):
     def __ne__(self, other):
         # this is not obvious to ironpython
         return not self.__eq__(other)
+
+    def _reset_computed(self):
+        self._aabb = None
+        self._obb = None
 
     @property
     def aabb(self):
