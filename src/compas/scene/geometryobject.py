@@ -56,10 +56,6 @@ class GeometryObject(SceneObject):
     def geometry(self):
         return self.item
 
-    @geometry.setter
-    def geometry(self, geometry):
-        self.item = geometry
-
     def draw(self):
         """Draw the geometry. Implemented by child classes."""
         raise NotImplementedError
