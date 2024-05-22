@@ -422,7 +422,7 @@ class Frame(Geometry):
 
         Examples
         --------
-        >>> l = [-1.0,  0.0,  0.0, 8110, 0.0,  0.0, -1.0, 7020, 0.0, -1.0,  0.0, 1810]
+        >>> l = [-1.0, 0.0, 0.0, 8110, 0.0, 0.0, -1.0, 7020, 0.0, -1.0, 0.0, 1810]
         >>> f = Frame.from_list(l)
 
         """
@@ -457,7 +457,7 @@ class Frame(Geometry):
         Examples
         --------
         >>> q1 = [0.945, -0.021, -0.125, 0.303]
-        >>> f = Frame.from_quaternion(q1, point=[1., 1., 1.])
+        >>> f = Frame.from_quaternion(q1, point=[1.0, 1.0, 1.0])
         >>> q2 = f.quaternion
         >>> allclose(q1, q2)
         True
@@ -521,8 +521,8 @@ class Frame(Geometry):
         Examples
         --------
         >>> ea1 = 1.4, 0.5, 2.3
-        >>> f = Frame.from_euler_angles(ea1, static=True, axes='xyz')
-        >>> ea2 = f.euler_angles(static=True, axes='xyz')
+        >>> f = Frame.from_euler_angles(ea1, static=True, axes="xyz")
+        >>> ea2 = f.euler_angles(static=True, axes="xyz")
         >>> allclose(ea1, ea2)
         True
 
@@ -550,7 +550,7 @@ class Frame(Geometry):
         Examples
         --------
         >>> from compas.geometry import Plane
-        >>> plane = Plane([0,0,0], [0,0,1])
+        >>> plane = Plane([0, 0, 0], [0, 0, 1])
         >>> frame = Frame.from_plane(plane)
         >>> allclose(frame.normal, plane.normal)
         True
@@ -669,8 +669,8 @@ class Frame(Geometry):
         Examples
         --------
         >>> ea1 = 1.4, 0.5, 2.3
-        >>> f = Frame.from_euler_angles(ea1, static=True, axes='xyz')
-        >>> ea2 = f.euler_angles(static=True, axes='xyz')
+        >>> f = Frame.from_euler_angles(ea1, static=True, axes="xyz")
+        >>> ea2 = f.euler_angles(static=True, axes="xyz")
         >>> allclose(ea1, ea2)
         True
 
@@ -699,8 +699,8 @@ class Frame(Geometry):
         --------
         >>> from compas.geometry import Point
         >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> pw = Point(2, 2, 2) # point in wcf
-        >>> pl = frame.to_local_coordinates(pw) # point in frame
+        >>> pw = Point(2, 2, 2)  # point in wcf
+        >>> pl = frame.to_local_coordinates(pw)  # point in frame
         >>> frame.to_world_coordinates(pl)
         Point(2.000, 2.000, 2.000)
 
@@ -731,8 +731,8 @@ class Frame(Geometry):
         --------
         >>> from compas.geometry import Point
         >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> pl = Point(1.632, -0.090, 0.573) # point in frame
-        >>> pw = frame.to_world_coordinates(pl) # point in wcf
+        >>> pl = Point(1.632, -0.090, 0.573)  # point in frame
+        >>> pw = frame.to_world_coordinates(pl)  # point in wcf
         >>> frame.to_local_coordinates(pw)
         Point(1.632, -0.090, 0.573)
 

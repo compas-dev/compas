@@ -77,12 +77,12 @@ def graph_polylines(graph, splits=None):
     This will result in the following polylines (a, b, c), (c, d) and (c, e, f).
 
     >>> from compas.datastructures import Graph
-    >>> a = [0., 0., 0.]
-    >>> b = [1., 0., 0.]
-    >>> c = [2., 0., 0.]
-    >>> d = [2., 1., 0.]
-    >>> e = [3., 0., 0.]
-    >>> f = [4., 0., 0.]
+    >>> a = [0.0, 0.0, 0.0]
+    >>> b = [1.0, 0.0, 0.0]
+    >>> c = [2.0, 0.0, 0.0]
+    >>> d = [2.0, 1.0, 0.0]
+    >>> e = [3.0, 0.0, 0.0]
+    >>> f = [4.0, 0.0, 0.0]
     >>> lines = [(a, b), (b, c), (c, d), (c, e), (e, f)]
     >>> graph = Graph.from_lines(lines)
     >>> len(graph_polylines(graph)) == 3

@@ -3,6 +3,7 @@
 These are internal functions of the framework.
 Not intended to be used outside compas* packages.
 """
+
 import os
 import platform
 import re

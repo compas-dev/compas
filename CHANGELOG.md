@@ -9,12 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+### Removed
+
+
+## [2.1.1] 2024-05-14
+
+### Added
+
 * Added `compas.geometry.Line.point_from_start` and `compas.geometry.Line.point_from_end`.
 * Added `compas.geometry.Line.flip` and `compas.geometry.Line.flipped`.
 * Added an `compas.geometry.Frame.interpolate_frame(s)` method
 * Added `compas.colors.Color.contrast`.
 * Added `compas.geometry.Brep.from_plane`.
 * Added `compas.tolerance.Tolerance.angulardeflection`.
+* Added `compas.tolerance.Tolerance.update_from_dict`.
 * Added `compas.scene.SceneObject.scene` attribute.
 
 ### Changed
@@ -35,9 +45,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed use of `compas.geometry.allclose` to `compas.tolerance.TOL.is_allclose`.
 * Changed use of `compas.geometry.close` to `compas.tolerance.TOL.is_close`.
 * Changed imports of itertools to `compas.itertools` instead of `compas.utilities`.
+* Changed `compas.tolerance.Tolerance` to a singleton, to ensure having only library-wide tolerance values.
 * Updated `compas_rhino.conversions.point_to_compas` to allow for `Rhino.Geometry.Point` as input.
 * Changed `compas.datastructures.Tree.print_hierarchy` to `compas.datastructures.Tree.__str__`.
 * Changed `compas.scene.SceneObject.__init__` to accept `item` as kwarg.
+* Fixed `compas.geometry.bbox_numpy.minimum_volume_box` to avoid `numpy.linalg.LinAlgError`.
 
 ### Removed
 

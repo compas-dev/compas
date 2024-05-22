@@ -52,12 +52,12 @@ class OBJ(object):
     Write mesh data to a file.
 
     >>> mesh = Mesh.from_polyhedron(12)
-    >>> obj = OBJ('mesh.obj')
+    >>> obj = OBJ("mesh.obj")
     >>> obj.write(mesh)
 
     Read mesh data from a file.
 
-    >>> obj = OBJ('mesh.obj')
+    >>> obj = OBJ("mesh.obj")
     >>> obj.read()
     >>> mesh = Mesh.from_vertices_and_faces(obj.vertices, obj.faces)
 
@@ -74,20 +74,18 @@ class OBJ(object):
     ...     mesh = Mesh.from_polyhedron(12)
     ...     mesh.transform(Translation.from_vector(point))
     ...     meshes.append(mesh)
-    ...
-    >>> obj = OBJ('meshes.obj')
+    >>> obj = OBJ("meshes.obj")
     >>> obj.write(meshes)
 
     Read mesh data from a file.
 
-    >>> obj = OBJ('meshes.obj')
+    >>> obj = OBJ("meshes.obj")
     >>> obj.read()
     >>> meshes = []
     >>> for name in obj.objects:
-    ...     mesh = Mesh.from_vertices_and_faces(* obj.objects[name])
+    ...     mesh = Mesh.from_vertices_and_faces(*obj.objects[name])
     ...     mesh.name = name
     ...     meshes.append(mesh)
-    ...
 
     """
 

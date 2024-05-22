@@ -264,8 +264,8 @@ class Quaternion(Geometry):
         Examples
         --------
         >>> Q = Quaternion(1.0, 1.0, 1.0, 1.0).unitized()
-        >>> R = Quaternion(0.0,-0.1, 0.2,-0.3).unitized()
-        >>> P = R*Q
+        >>> R = Quaternion(0.0, -0.1, 0.2, -0.3).unitized()
+        >>> P = R * Q
         >>> P.is_unit
         True
 
@@ -294,7 +294,7 @@ class Quaternion(Geometry):
         --------
         >>> from compas.tolerance import TOL
         >>> from compas.geometry import Frame
-        >>> q = [1., -2., 3., -4.]
+        >>> q = [1.0, -2.0, 3.0, -4.0]
         >>> F = Frame.from_quaternion(q)
         >>> Q = Quaternion.from_frame(F)
         >>> TOL.is_allclose(Q.canonized(), quaternion_canonize(quaternion_unitize(q)))

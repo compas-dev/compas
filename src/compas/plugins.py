@@ -260,9 +260,9 @@ def pluggable(
 
     Examples
     --------
-    >>> @pluggable(category='triangulation')
+    >>> @pluggable(category="triangulation")
     ... def triangulate_mesh(mesh):
-    ...    pass
+    ...     pass
 
     """
 

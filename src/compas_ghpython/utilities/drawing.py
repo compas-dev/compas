@@ -149,9 +149,7 @@ def draw_polylines(polylines):
     -----
     .. code-block:: python
 
-        Schema({
-            'points': lambda x: all(len(y) == 3 for y in x)
-        })
+        Schema({"points": lambda x: all(len(y) == 3 for y in x)})
 
     """
     rg_polylines = []
@@ -180,10 +178,7 @@ def draw_faces(faces):
     -----
     .. code-block:: python
 
-        Schema({
-            'points': lambda x: all(len(y) == 3 for y in x),
-            Optional('vertexcolors', default=None): lambda x: all(len(y) == 3 for y in x)
-        })
+        Schema({"points": lambda x: all(len(y) == 3 for y in x), Optional("vertexcolors", default=None): lambda x: all(len(y) == 3 for y in x)})
 
     """
     meshes = []
@@ -234,11 +229,7 @@ def draw_cylinders(cylinders, cap=False):
     -----
     .. code-block:: python
 
-        Schema({
-            'start': lambda x: len(x) == 3,
-            'end': lambda x: len(x) == 3,
-            'radius': And(Or(int, float), lambda x: x > 0)
-        })
+        Schema({"start": lambda x: len(x) == 3, "end": lambda x: len(x) == 3, "radius": And(Or(int, float), lambda x: x > 0)})
 
     """
     rg_cylinders = []
@@ -284,10 +275,7 @@ def draw_pipes(pipes, cap=2, fit=1.0):
     -----
     .. code-block:: python
 
-        Schema({
-            'points': lambda x: all(len(y) == 3 for y in x),
-            'radius': And(Or(int, float), lambda x: x > 0)
-        })
+        Schema({"points": lambda x: all(len(y) == 3 for y in x), "radius": And(Or(int, float), lambda x: x > 0)})
 
     """
     abs_tol = TOL
@@ -323,10 +311,7 @@ def draw_spheres(spheres):
     -----
     .. code-block:: python
 
-        Schema({
-            'pos': lambda x: len(x) == 3,
-            'radius': And(Or(int, float), lambda x: x > 0)
-        })
+        Schema({"pos": lambda x: len(x) == 3, "radius": And(Or(int, float), lambda x: x > 0)})
 
     """
     rg_sheres = []
@@ -445,10 +430,7 @@ def draw_circles(circles):
     -----
     .. code-block:: python
 
-        Schema({
-            'plane': lambda x: len(x[0]) == 3 and len(x[1]) == 3,
-            'radius': And(Or(int, float), lambda x: x > 0)
-        })
+        Schema({"plane": lambda x: len(x[0]) == 3 and len(x[1]) == 3, "radius": And(Or(int, float), lambda x: x > 0)})
 
     """
     rg_circles = []

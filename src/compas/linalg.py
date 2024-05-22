@@ -405,7 +405,7 @@ def uvw_lengths(C, X):
     Examples
     --------
     >>> from compas.matrices import connectivity_matrix
-    >>> C = connectivity_matrix([[0, 1], [1, 2]], 'csr')
+    >>> C = connectivity_matrix([[0, 1], [1, 2]], "csr")
     >>> X = array([[0, 0, 0], [1, 1, 0], [0, 0, 1]])
     >>> uvw_lengths(C, X)
     (array([[ 1.,  1.,  0.],
@@ -438,7 +438,19 @@ def normrow(A):
 
     Examples
     --------
-    >>> normrow(array([[2, -1, 3,], [1, 0, 1], [0, 2, -1]]))
+    >>> normrow(
+    ...     array(
+    ...         [
+    ...             [
+    ...                 2,
+    ...                 -1,
+    ...                 3,
+    ...             ],
+    ...             [1, 0, 1],
+    ...             [0, 2, -1],
+    ...         ]
+    ...     )
+    ... )
     array([[3.74165739],
            [1.41421356],
            [2.23606798]])
@@ -472,7 +484,19 @@ def normalizerow(A, do_nan_to_num=True):
 
     Examples
     --------
-    >>> normalizerow(array([[2, -1, 3,], [1, 0, 1], [0, 2, -1]]))
+    >>> normalizerow(
+    ...     array(
+    ...         [
+    ...             [
+    ...                 2,
+    ...                 -1,
+    ...                 3,
+    ...             ],
+    ...             [1, 0, 1],
+    ...             [0, 2, -1],
+    ...         ]
+    ...     )
+    ... )
     array([[ 0.53452248, -0.26726124,  0.80178373],
            [ 0.70710678,  0.        ,  0.70710678],
            [ 0.        ,  0.89442719, -0.4472136 ]])

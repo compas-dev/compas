@@ -1055,9 +1055,9 @@ def intersection_ellipse_line_xy(ellipse, line):
 
     Examples
     --------
-    >>> ellipse = 6., 2.5
-    >>> p1 = (4.1, 2.8, 0.)
-    >>> p2 = (3.4, -3.1, 0.)
+    >>> ellipse = 6.0, 2.5
+    >>> p1 = (4.1, 2.8, 0.0)
+    >>> p2 = (3.4, -3.1, 0.0)
     >>> i1, i2 = intersection_ellipse_line_xy(ellipse, [p1, p2])
 
     """

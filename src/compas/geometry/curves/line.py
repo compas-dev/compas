@@ -61,7 +61,7 @@ class Line(Curve):
     Point(0.000, 0.000, 0.000)
     >>> line.midpoint
     Point(0.500, 0.500, 0.500)
-    >>> line.length == math.sqrt(line.dx **2 + line.dy **2 + line.dz **2)
+    >>> line.length == math.sqrt(line.dx**2 + line.dy**2 + line.dz**2)
     True
     >>> line.direction
     Vector(0.577, 0.577, 0.577)
