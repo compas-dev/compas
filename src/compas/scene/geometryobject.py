@@ -41,21 +41,21 @@ class GeometryObject(SceneObject):
     linecolor = ColorAttribute()
     surfacecolor = ColorAttribute()
 
-    def __init__(self, **kwargs):
+    def __init__(self, pointcolor=None, linecolor=None, surfacecolor=None, pointsize=1.0, linewidth=1.0, show_points=False, show_lines=True, show_surfaces=True, **kwargs):
         super(GeometryObject, self).__init__(**kwargs)
-        self.pointcolor = kwargs.get("pointcolor", self.color)
-        self.linecolor = kwargs.get("linecolor", self.color)
-        self.surfacecolor = kwargs.get("surfacecolor", self.color)
-        self.pointsize = kwargs.get("pointsize", 1.0)
-        self.linewidth = kwargs.get("linewidth", 1.0)
-        self.show_points = kwargs.get("show_points", False)
-        self.show_lines = kwargs.get("show_lines", True)
-        self.show_surfaces = kwargs.get("show_surfaces", True)
+        self.pointcolor = pointcolor or self.color
+        self.linecolor = linecolor or self.color
+        self.surfacecolor = surfacecolor or self.color
+        self.pointsize = pointsize
+        self.linewidth = linewidth
+        self.show_points = show_points
+        self.show_lines = show_lines
+        self.show_surfaces = show_surfaces
 
     @property
     def geometry(self):
         return self.item
-    
+
     @geometry.setter
     def geometry(self, geometry):
         self.item = geometry
