@@ -56,11 +56,9 @@ class MeshObject(SceneObject):
     edgecolor = ColorDictAttribute()
     facecolor = ColorDictAttribute()
 
-    def __init__(self, mesh, **kwargs):
-        super(MeshObject, self).__init__(item=mesh, **kwargs)
-        self._mesh = None
+    def __init__(self, **kwargs):
+        super(MeshObject, self).__init__(**kwargs)
         self._vertex_xyz = None
-        self.mesh = mesh
         self.vertexcolor = kwargs.get("vertexcolor", self.contrastcolor)
         self.edgecolor = kwargs.get("edgecolor", self.contrastcolor)
         self.facecolor = kwargs.get("facecolor", self.color)
@@ -72,7 +70,7 @@ class MeshObject(SceneObject):
 
     @property
     def mesh(self):
-        return self._mesh
+        return self.item
 
     @mesh.setter
     def mesh(self, mesh):

@@ -106,7 +106,7 @@ class Scene(Tree):
                 if kwargs["context"] != self.context:
                     raise Exception("Object context should be the same as scene context: {} != {}".format(kwargs["context"], self.context))
                 del kwargs["context"]  # otherwist the SceneObject receives "context" twice, which results in an error
-            sceneobject = SceneObject(item, context=self.context, **kwargs)  # type: ignore
+            sceneobject = SceneObject(item=item, context=self.context, **kwargs)  # type: ignore
         super(Scene, self).add(sceneobject, parent=parent)
         return sceneobject
 

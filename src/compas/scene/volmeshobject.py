@@ -64,11 +64,9 @@ class VolMeshObject(SceneObject):
     facecolor = ColorDictAttribute()
     cellcolor = ColorDictAttribute()
 
-    def __init__(self, volmesh, **kwargs):
-        super(VolMeshObject, self).__init__(item=volmesh, **kwargs)
-        self._volmesh = None
+    def __init__(self, **kwargs):
+        super(VolMeshObject, self).__init__(**kwargs)
         self._vertex_xyz = None
-        self.volmesh = volmesh
         self.vertexcolor = kwargs.get("vertexcolor", self.color)
         self.edgecolor = kwargs.get("edgecolor", self.color)
         self.facecolor = kwargs.get("facecolor", self.color)
@@ -82,13 +80,7 @@ class VolMeshObject(SceneObject):
 
     @property
     def volmesh(self):
-        return self._volmesh
-
-    @volmesh.setter
-    def volmesh(self, volmesh):
-        self._volmesh = volmesh
-        self._transformation = None
-        self._vertex_xyz = None
+        return self.item
 
     @property
     def transformation(self):

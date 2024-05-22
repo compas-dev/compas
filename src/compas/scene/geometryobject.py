@@ -41,9 +41,8 @@ class GeometryObject(SceneObject):
     linecolor = ColorAttribute()
     surfacecolor = ColorAttribute()
 
-    def __init__(self, geometry, **kwargs):
-        super(GeometryObject, self).__init__(item=geometry, **kwargs)
-        self.geometry = geometry
+    def __init__(self, **kwargs):
+        super(GeometryObject, self).__init__(**kwargs)
         self.pointcolor = kwargs.get("pointcolor", self.color)
         self.linecolor = kwargs.get("linecolor", self.color)
         self.surfacecolor = kwargs.get("surfacecolor", self.color)
@@ -52,6 +51,14 @@ class GeometryObject(SceneObject):
         self.show_points = kwargs.get("show_points", False)
         self.show_lines = kwargs.get("show_lines", True)
         self.show_surfaces = kwargs.get("show_surfaces", True)
+
+    @property
+    def geometry(self):
+        return self.item
+    
+    @geometry.setter
+    def geometry(self, geometry):
+        self.item = geometry
 
     def draw(self):
         """Draw the geometry. Implemented by child classes."""

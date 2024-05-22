@@ -30,8 +30,8 @@ class RhinoMeshObject(RhinoSceneObject, MeshObject):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
-        A COMPAS mesh.
+    disjoint : bool, optional
+        Draw the faces of the mesh disjointed.
     **kwargs : dict, optional
         Additional keyword arguments.
 
@@ -43,8 +43,8 @@ class RhinoMeshObject(RhinoSceneObject, MeshObject):
 
     """
 
-    def __init__(self, mesh, disjoint=False, **kwargs):
-        super(RhinoMeshObject, self).__init__(mesh=mesh, **kwargs)
+    def __init__(self, disjoint=False, **kwargs):
+        super(RhinoMeshObject, self).__init__(**kwargs)
         self.disjoint = disjoint
         self._guid_mesh = None
         self._guids_faces = None

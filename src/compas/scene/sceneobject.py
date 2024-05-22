@@ -89,8 +89,7 @@ class SceneObject(TreeNode):
 
     def __init__(self, item=None, name=None, color=None, opacity=1.0, show=True, frame=None, transformation=None, context=None, **kwargs):  # fmt: skip
         # type: (compas.data.Data | None, str | None, compas.colors.Color | None, float, bool, compas.geometry.Frame | None, compas.geometry.Transformation | None, str | None, dict) -> None
-        if isinstance(item, Data) and name is None:
-            name = item.name
+        name = item.name if isinstance(item, Data) and name is None else name
         super(SceneObject, self).__init__(name=name, **kwargs)
         # the scene object needs to store the context
         # because it has no access to the tree and/or the scene before it is added
@@ -239,7 +238,7 @@ class SceneObject(TreeNode):
                 if kwargs["context"] != self.context:
                     raise Exception("Child context should be the same as parent context: {} != {}".format(kwargs["context"], self.context))
                 del kwargs["context"]  # otherwist the SceneObject receives "context" twice, which results in an error
-            sceneobject = SceneObject(item, context=self.context, **kwargs)  # type: ignore
+            sceneobject = SceneObject(item=item, context=self.context, **kwargs)  # type: ignore
 
         super(SceneObject, self).add(sceneobject)
         return sceneobject

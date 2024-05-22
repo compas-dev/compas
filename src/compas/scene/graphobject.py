@@ -46,11 +46,9 @@ class GraphObject(SceneObject):
     nodecolor = ColorDictAttribute()
     edgecolor = ColorDictAttribute()
 
-    def __init__(self, graph, **kwargs):
-        super(GraphObject, self).__init__(item=graph, **kwargs)
-        self._graph = None
+    def __init__(self, **kwargs):
+        super(GraphObject, self).__init__(**kwargs)
         self._node_xyz = None
-        self.graph = graph
         self.nodecolor = kwargs.get("nodecolor", self.color)
         self.edgecolor = kwargs.get("edgecolor", self.color)
         self.nodesize = kwargs.get("nodesize", 1.0)
@@ -60,13 +58,7 @@ class GraphObject(SceneObject):
 
     @property
     def graph(self):
-        return self._graph
-
-    @graph.setter
-    def graph(self, graph):
-        self._graph = graph
-        self._transformation = None
-        self._node_xyz = None
+        return self.item
 
     @property
     def transformation(self):
