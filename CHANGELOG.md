@@ -9,7 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `maxiter` parameter to `compas.geometry.icp_numpy`.
+
 ### Changed
+
+* Fixed bug in `compas.geometry.ic_numpy`, which was caused by returning only the last transformation of the iteration process.
 
 ### Removed
 

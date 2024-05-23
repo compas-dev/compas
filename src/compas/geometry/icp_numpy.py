@@ -2,6 +2,7 @@ import numpy as np
 from numpy import argmin
 from numpy import asarray
 from numpy.linalg import det
+from numpy.linalg import multi_dot
 from scipy.linalg import norm
 from scipy.linalg import svd
 from scipy.spatial.distance import cdist
@@ -36,7 +37,7 @@ def bestfit_transform(A, B):
     return X
 
 
-def icp_numpy(source, target, tol=None):
+def icp_numpy(source, target, tol=None, maxiter=100):
     """Align two point clouds using the Iterative Closest Point (ICP) method.
 
     Parameters
@@ -48,6 +49,8 @@ def icp_numpy(source, target, tol=None):
     tol : float, optional
         Tolerance for finding matches.
         Default is :attr:`TOL.approximation`.
+    maxiter : int, optional
+        The maximum number of iterations.
 
     Returns
     -------
@@ -90,7 +93,9 @@ def icp_numpy(source, target, tol=None):
     X = Transformation.from_frame_to_frame(A_frame, B_frame)
     A = transform_points_numpy(A, X)
 
-    for i in range(20):
+    stack = [X]
+
+    for i in range(maxiter):
         D = cdist(A, B, "euclidean")
         closest = argmin(D, axis=1)
         residual = norm(normrow(A - B[closest]))
@@ -101,4 +106,6 @@ def icp_numpy(source, target, tol=None):
         X = bestfit_transform(A, B[closest])
         A = transform_points_numpy(A, X)
 
-    return A, X
+        stack.append(X)
+
+    return A, multi_dot(stack[::-1])
