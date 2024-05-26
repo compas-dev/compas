@@ -9,6 +9,7 @@ from compas.geometry import Line, Polygon
 
 cell_network = CellNetwork.from_json(compas.get("cellnetwork_example.json"))
 
+
 viewer = Viewer(show_grid=False)
 no_cell = cell_network.faces_without_cell()
 for face in cell_network.faces():
@@ -22,4 +23,8 @@ for face in cell_network.faces():
 for edge in cell_network.edges_without_face():
     line = Line(*cell_network.edge_coordinates(edge))
     viewer.scene.add(line, linewidth=3)
+
+graph = cell_network.cells_to_graph()
+viewer.scene.add(graph)
+
 viewer.show()

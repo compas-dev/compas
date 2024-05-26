@@ -1,15 +1,39 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import, division, print_function
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 from ast import literal_eval
 from random import sample
 
-from compas.datastructures import Graph, Mesh
-from compas.datastructures.attributes import CellAttributeView, EdgeAttributeView, FaceAttributeView, VertexAttributeView
+from compas.datastructures import Graph
+from compas.datastructures import Mesh
+from compas.datastructures.attributes import CellAttributeView
+from compas.datastructures.attributes import EdgeAttributeView
+from compas.datastructures.attributes import FaceAttributeView
+from compas.datastructures.attributes import VertexAttributeView
 from compas.datastructures.datastructure import Datastructure
 from compas.files import OBJ
-from compas.geometry import (Line, Plane, Point, Polygon, Polyhedron, Vector, add_vectors, bestfit_plane, bounding_box, centroid_points, centroid_polygon, centroid_polyhedron,
-                             distance_point_point, length_vector, normal_polygon, normalize_vector, project_point_plane, scale_vector, subtract_vectors, volume_polyhedron)
+from compas.geometry import Line
+from compas.geometry import Plane
+from compas.geometry import Point
+from compas.geometry import Polygon
+from compas.geometry import Polyhedron
+from compas.geometry import Vector
+from compas.geometry import add_vectors
+from compas.geometry import bestfit_plane
+from compas.geometry import bounding_box
+from compas.geometry import centroid_points
+from compas.geometry import centroid_polygon
+from compas.geometry import centroid_polyhedron
+from compas.geometry import distance_point_point
+from compas.geometry import length_vector
+from compas.geometry import normal_polygon
+from compas.geometry import normalize_vector
+from compas.geometry import project_point_plane
+from compas.geometry import scale_vector
+from compas.geometry import subtract_vectors
+from compas.geometry import volume_polyhedron
 from compas.itertools import pairwise
 from compas.tolerance import TOL
 
@@ -1058,7 +1082,7 @@ class CellNetwork(Datastructure):
             graph.add_node(key=cell, x=x, y=y, z=z, attr_dict=attr)
         for cell in self.cells():
             for nbr in self.cell_neighbors(cell):
-                graph.add_edge(sorted(*[cell, nbr]))
+                graph.add_edge(*sorted([cell, nbr]))
         return graph
 
     def cell_to_vertices_and_faces(self, cell):
@@ -3998,30 +4022,29 @@ class CellNetwork(Datastructure):
                         nbrs.append(nbr)
         return nbrs
 
-    # def cell_neighbors(self, cell):
-    #     """Find the neighbors of a given cell.
+    def cell_neighbors(self, cell):
+        """Find the neighbors of a given cell.
 
-    #     Parameters
-    #     ----------
-    #     cell : int
-    #         The identifier of the cell.
+        Parameters
+        ----------
+        cell : int
+            The identifier of the cell.
 
-    #     Returns
-    #     -------
-    #     list[int]
-    #         The identifiers of the adjacent cells.
+        Returns
+        -------
+        list[int]
+            The identifiers of the adjacent cells.
 
-    #     See Also
-    #     --------
-    #     :meth:`cell_face_neighbors`
-
-    #     """
-    #     nbrs = []
-    #     for face in self.cell_faces(cell):
-    #         nbr = self.halfface_opposite_cell(face)
-    #         if nbr is not None:
-    #             nbrs.append(nbr)
-    #     return nbrs
+        See Also
+        --------
+        :meth:`cell_face_neighbors`
+        """
+        nbrs = []
+        for face in self.cell_faces(cell):
+            for nbr in self.face_cells(face):
+                if nbr != cell:
+                    nbrs.append(nbr)
+        return list(set(nbrs))
 
     def is_cell_on_boundary(self, cell):
         """Verify that a cell is on the boundary.
