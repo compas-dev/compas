@@ -3,6 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from ast import literal_eval
 from random import sample
 
 from compas.datastructures import Graph
@@ -182,7 +183,7 @@ class CellNetwork(Datastructure):
             "edge": self._edge,
             "face": self._face,
             "cell": cell,
-            "edge_data": self._edge_data,
+            "edge_data": {str(k) : v for k, v in self._edge_data.items()},
             "face_data": self._face_data,
             "cell_data": self._cell_data,
             "max_vertex": self._max_vertex,
@@ -208,12 +209,10 @@ class CellNetwork(Datastructure):
         for key, attr in iter(vertex.items()):
             cell_network.add_vertex(key=int(key), attr_dict=attr)
 
-        edge_data = data.get("edge_data", {})
-        print(edge_data)
+        edge_data = {literal_eval(k) : v for k, v in data.get("edge_data", {}).items()}
         for u in edge:
             for v in edge[u]:
-                print(">>", u, v)
-                attr = edge_data.get((u, v), {})
+                attr = edge_data.get(tuple(sorted((int(u), int(v)))), {})
                 cell_network.add_edge(int(u), int(v), attr_dict=attr)
 
         face_data = data.get("face_data") or {}
