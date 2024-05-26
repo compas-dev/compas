@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Fixed bug in `compas.geometry.ic_numpy`, which was caused by returning only the last transformation of the iteration process.
+* Changed `compas.geometry.Geometry.scaled` to use `compas.geometry.Geometry.scale` on a copy.
+* Changed `compas.geometry.Geometry.translated` to use `compas.geometry.Geometry.translate` on a copy.
+* Changed `compas.geometry.Geometry.rotated` to use `compas.geometry.Geometry.rotate` on a copy.
 
 ### Removed
 
