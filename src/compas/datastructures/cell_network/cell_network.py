@@ -1,39 +1,15 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+from __future__ import absolute_import, division, print_function
 
 from ast import literal_eval
 from random import sample
 
-from compas.datastructures import Graph
-from compas.datastructures import Mesh
-from compas.datastructures.attributes import CellAttributeView
-from compas.datastructures.attributes import EdgeAttributeView
-from compas.datastructures.attributes import FaceAttributeView
-from compas.datastructures.attributes import VertexAttributeView
+from compas.datastructures import Graph, Mesh
+from compas.datastructures.attributes import CellAttributeView, EdgeAttributeView, FaceAttributeView, VertexAttributeView
 from compas.datastructures.datastructure import Datastructure
 from compas.files import OBJ
-from compas.geometry import Line
-from compas.geometry import Plane
-from compas.geometry import Point
-from compas.geometry import Polygon
-from compas.geometry import Polyhedron
-from compas.geometry import Vector
-from compas.geometry import add_vectors
-from compas.geometry import bestfit_plane
-from compas.geometry import bounding_box
-from compas.geometry import centroid_points
-from compas.geometry import centroid_polygon
-from compas.geometry import centroid_polyhedron
-from compas.geometry import distance_point_point
-from compas.geometry import length_vector
-from compas.geometry import normal_polygon
-from compas.geometry import normalize_vector
-from compas.geometry import project_point_plane
-from compas.geometry import scale_vector
-from compas.geometry import subtract_vectors
-from compas.geometry import volume_polyhedron
+from compas.geometry import (Line, Plane, Point, Polygon, Polyhedron, Vector, add_vectors, bestfit_plane, bounding_box, centroid_points, centroid_polygon, centroid_polyhedron,
+                             distance_point_point, length_vector, normal_polygon, normalize_vector, project_point_plane, scale_vector, subtract_vectors, volume_polyhedron)
 from compas.itertools import pairwise
 from compas.tolerance import TOL
 
@@ -625,6 +601,27 @@ class CellNetwork(Datastructure):
 
         return fkey
 
+    def _faces_to_unified_mesh(self, faces):
+        faces = list(set(faces))
+        # 0. Check if all the faces have been added
+        for face in faces:
+            if face not in self._face:
+                raise ValueError("Face {} does not exist.".format(face))
+        # 2. Check if the faces can be unified
+        mesh = self.faces_to_mesh(faces, data=False)
+        try:
+            mesh.unify_cycles()
+        except Exception:
+            return None
+        return mesh
+
+    def do_faces_form_a_closed_cell(self, faces):
+        """Checks if the faces form a closed cell."""
+        mesh = self._faces_to_unified_mesh(faces)
+        if mesh:
+            return True
+        return False
+
     def add_cell(self, faces, ckey=None, attr_dict=None, **kwattr):
         """Add a cell to the cell network object.
 
@@ -664,19 +661,9 @@ class CellNetwork(Datastructure):
         highest integer key value, then the highest integer value is updated accordingly.
 
         """
-        faces = list(set(faces))
-
-        # 0. Check if all the faces have been added
-        for face in faces:
-            if face not in self._face:
-                raise ValueError("Face {} does not exist.".format(face))
-
-        # 2. Check if the faces can be unified
-        mesh = self.faces_to_mesh(faces, data=False)
-        try:
-            mesh.unify_cycles()
-        except Exception:
-            raise ValueError("Cannot add cell, faces {} can not be unified.".format(faces))
+        mesh = self._faces_to_unified_mesh(faces)
+        if mesh is None:
+            raise ValueError("Cannot add cell, faces {} do not form a closed cell.".format(faces))
 
         # 3. Check if the faces are oriented correctly
         # If the volume of the polyhedron is positive, we need to flip the faces to point inwards
@@ -4180,6 +4167,23 @@ class CellNetwork(Datastructure):
         """
         vertices, faces = self.cell_to_vertices_and_faces(cell)
         return Polyhedron(vertices, faces)
+
+    def cell_volume(self, cell):
+        """Compute the volume of a cell.
+
+        Parameters
+        ----------
+        cell : int
+            The identifier of the cell.
+
+        Returns
+        -------
+        float
+            The volume of the cell.
+
+        """
+        vertices, faces = self.cell_to_vertices_and_faces(cell)
+        return abs(volume_polyhedron((vertices, faces)))
 
     # # --------------------------------------------------------------------------
     # # Boundaries
