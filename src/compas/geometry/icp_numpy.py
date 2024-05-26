@@ -93,7 +93,7 @@ def icp_numpy(source, target, tol=None, maxiter=100):
     X = Transformation.from_frame_to_frame(A_frame, B_frame)
     A = transform_points_numpy(A, X)
 
-    stack = [X]
+    stack = [asarray(X.matrix)]
 
     for i in range(maxiter):
         D = cdist(A, B, "euclidean")
@@ -108,4 +108,6 @@ def icp_numpy(source, target, tol=None, maxiter=100):
 
         stack.append(X)
 
+    if len(stack) == 1:
+        return stack[0]
     return A, multi_dot(stack[::-1])
