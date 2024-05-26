@@ -183,7 +183,7 @@ class CellNetwork(Datastructure):
             "edge": self._edge,
             "face": self._face,
             "cell": cell,
-            "edge_data": {str(k) : v for k, v in self._edge_data.items()},
+            "edge_data": {str(k): v for k, v in self._edge_data.items()},
             "face_data": self._face_data,
             "cell_data": self._cell_data,
             "max_vertex": self._max_vertex,
@@ -209,7 +209,7 @@ class CellNetwork(Datastructure):
         for key, attr in iter(vertex.items()):
             cell_network.add_vertex(key=int(key), attr_dict=attr)
 
-        edge_data = {literal_eval(k) : v for k, v in data.get("edge_data", {}).items()}
+        edge_data = {literal_eval(k): v for k, v in data.get("edge_data", {}).items()}
         for u in edge:
             for v in edge[u]:
                 attr = edge_data.get(tuple(sorted((int(u), int(v)))), {})
@@ -263,98 +263,6 @@ class CellNetwork(Datastructure):
             self.number_of_cells(),
             self.number_of_edges(),
         )
-
-    # --------------------------------------------------------------------------
-    # Data
-    # --------------------------------------------------------------------------
-
-    @property
-    def data(self):
-        """Returns a dictionary of structured data representing the cell network data object.
-
-        Note that some of the data stored internally in the data structure object is not included in the dictionary representation of the object.
-        This is the case for data that is considered private and/or redundant.
-        Specifically, the plane dictionary are not included.
-        This is because the information in these dictionaries can be reconstructed from the other data.
-        Therefore, to keep the dictionary representation as compact as possible, these dictionaries are not included.
-
-        Returns
-        -------
-        dict
-            The structured data representing the cell network.
-
-        """
-        cell = {}
-        for c in self._cell:
-            faces = set()
-            for u in self._cell[c]:
-                for v in self._cell[c][u]:
-                    faces.add(self._cell[c][u][v])
-            cell[c] = sorted(list(faces))
-
-        return {
-            "attributes": self.attributes,
-            "dva": self.default_vertex_attributes,
-            "dea": self.default_edge_attributes,
-            "dfa": self.default_face_attributes,
-            "dca": self.default_cell_attributes,
-            "vertex": self._vertex,
-            "edge": self._edge,
-            "face": self._face,
-            "cell": cell,
-            "edge_data": self._edge_data,
-            "face_data": self._face_data,
-            "cell_data": self._cell_data,
-            "max_vertex": self._max_vertex,
-            "max_face": self._max_face,
-            "max_cell": self._max_cell,
-        }
-
-    @classmethod
-    def from_data(cls, data):
-        dva = data.get("dva") or {}
-        dea = data.get("dea") or {}
-        dfa = data.get("dfa") or {}
-        dca = data.get("dca") or {}
-
-        cell_network = cls(
-            default_vertex_attributes=dva,
-            default_edge_attributes=dea,
-            default_face_attributes=dfa,
-            default_cell_attributes=dca,
-        )
-
-        cell_network.attributes.update(data.get("attributes") or {})
-
-        vertex = data.get("vertex") or {}
-        edge = data.get("edge") or {}
-        face = data.get("face") or {}
-        cell = data.get("cell") or {}
-
-        for key, attr in iter(vertex.items()):
-            cell_network.add_vertex(key=key, attr_dict=attr)
-
-        edge_data = data.get("edge_data") or {}
-        for u in edge:
-            for v in edge[u]:
-                attr = edge_data.get(tuple(sorted((u, v))), {})
-                cell_network.add_edge(u, v, attr_dict=attr)
-
-        face_data = data.get("face_data") or {}
-        for key, vertices in iter(face.items()):
-            attr = face_data.get(key) or {}
-            cell_network.add_face(vertices, fkey=key, attr_dict=attr)
-
-        cell_data = data.get("cell_data") or {}
-        for ckey, faces in iter(cell.items()):
-            attr = cell_data.get(ckey) or {}
-            cell_network.add_cell(faces, ckey=ckey, attr_dict=attr)
-
-        cell_network._max_vertex = data.get("max_vertex", cell_network._max_vertex)
-        cell_network._max_face = data.get("max_face", cell_network._max_face)
-        cell_network._max_cell = data.get("max_cell", cell_network._max_cell)
-
-        return cell_network
 
     # --------------------------------------------------------------------------
     # Helpers
