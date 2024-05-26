@@ -54,13 +54,7 @@ def get_names_in_module(module_name):
     exceptions = ["absolute_import", "division", "print_function"]
     module = importlib.import_module(module_name)
     all_names = module.__all__ if hasattr(module, "__all__") else dir(module)
-    return sorted(
-        [
-            i
-            for i in all_names
-            if not i.startswith("_") and i not in exceptions and not inspect.ismodule(getattr(module, i))
-        ]
-    )
+    return sorted([i for i in all_names if not i.startswith("_") and i not in exceptions and not inspect.ismodule(getattr(module, i))])
 
 
 if __name__ == "__main__":

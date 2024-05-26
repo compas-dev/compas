@@ -1,10 +1,12 @@
 from math import radians
 
-from compas.geometry import Pointcloud, Box
+from compas_viewer import Viewer
+
+from compas.colors import Color
+from compas.geometry import Box
+from compas.geometry import Pointcloud
 from compas.geometry import Rotation
 from compas.geometry import oriented_bounding_box
-
-from compas_view2.app import App
 
 cloud = Pointcloud.from_bounds(10, 5, 3, 100)
 
@@ -17,7 +19,7 @@ cloud.transform(Rz * Ry * Rx)
 bbox = oriented_bounding_box(cloud)
 box = Box.from_bounding_box(bbox)
 
-viewer = App()
-viewer.add(cloud)
-viewer.add(box, show_faces=False, linecolor=(1, 0, 0), linewidth=3)
-viewer.run()
+viewer = Viewer()
+viewer.scene.add(cloud)
+viewer.scene.add(box, show_faces=False, linecolor=Color(1, 0, 0), linewidth=3)
+viewer.show()

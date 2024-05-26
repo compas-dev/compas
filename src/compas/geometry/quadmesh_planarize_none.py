@@ -1,16 +1,15 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from compas.geometry import project_points_plane
-from compas.geometry import centroid_points
-from compas.geometry import midpoint_point_point
-from compas.geometry import distance_point_point
-from compas.geometry import distance_line_line
 from compas.geometry import bestfit_plane
-
-from compas.utilities import window
-from compas.utilities import pairwise
+from compas.geometry import centroid_points
+from compas.geometry import distance_line_line
+from compas.geometry import distance_point_point
+from compas.geometry import midpoint_point_point
+from compas.geometry import project_points_plane
+from compas.itertools import pairwise
+from compas.itertools import window
 
 
 def mesh_flatness(mesh, maxdev=1.0):

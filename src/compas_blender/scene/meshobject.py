@@ -8,19 +8,18 @@ from typing import Union
 import bpy  # type: ignore
 
 import compas_blender
+from compas.colors import Color
 from compas.datastructures import Mesh
+from compas.geometry import Cylinder
 from compas.geometry import Line
 from compas.geometry import Sphere
-from compas.geometry import Cylinder
 from compas.geometry import add_vectors
 from compas.geometry import centroid_points
 from compas.geometry import scale_vector
-from compas.colors import Color
-
 from compas.scene import MeshObject as BaseMeshObject
-from .sceneobject import BlenderSceneObject
-
 from compas_blender import conversions
+
+from .sceneobject import BlenderSceneObject
 
 
 class MeshObject(BlenderSceneObject, BaseMeshObject):
@@ -80,9 +79,7 @@ class MeshObject(BlenderSceneObject, BaseMeshObject):
     # draw
     # ==========================================================================
 
-    def draw(
-        self, color: Optional[Color] = None, collection: Optional[str] = None, show_wire: bool = True
-    ) -> list[bpy.types.Object]:
+    def draw(self, color: Optional[Color] = None, collection: Optional[str] = None, show_wire: bool = True) -> list[bpy.types.Object]:
         """Draw the mesh.
 
         Parameters

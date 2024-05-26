@@ -1,7 +1,7 @@
 """For the time being, these functions are only for internal use."""
 
-from contextlib import contextmanager
 import io
+from contextlib import contextmanager
 
 try:
     from urllib.request import urlopen

@@ -1,5 +1,4 @@
 from compas.data import Data
-
 from compas.geometry import Polygon
 
 

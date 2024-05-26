@@ -4,9 +4,8 @@ import bpy  # type: ignore
 
 from compas.geometry import Circle
 from compas.geometry import Line
-from compas.geometry import Polyline
 from compas.geometry import NurbsCurve
-
+from compas.geometry import Polyline
 
 # =============================================================================
 # To Blender

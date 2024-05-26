@@ -4,17 +4,17 @@ from __future__ import print_function
 
 from math import fabs
 
-from compas.utilities import pairwise
+from compas.itertools import pairwise
 
 from ._algebra import add_vectors
-from ._algebra import subtract_vectors
-from ._algebra import subtract_vectors_xy
-from ._algebra import length_vector
-from ._algebra import length_vector_xy
-from ._algebra import dot_vectors
 from ._algebra import cross_vectors
 from ._algebra import cross_vectors_xy
+from ._algebra import dot_vectors
+from ._algebra import length_vector
+from ._algebra import length_vector_xy
 from ._algebra import scale_vector
+from ._algebra import subtract_vectors
+from ._algebra import subtract_vectors_xy
 from ._algebra import sum_vectors
 
 

@@ -1,18 +1,17 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 import scriptcontext as sc  # type: ignore
 
 from compas.scene import GeometryObject
-from compas.colors import Color
 from compas_rhino.conversions import line_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
+
 from .sceneobject import RhinoSceneObject
-from ._helpers import attributes
 
 
-class LineObject(RhinoSceneObject, GeometryObject):
+class RhinoLineObject(RhinoSceneObject, GeometryObject):
     """Scene object for drawing lines.
 
     Parameters
@@ -25,15 +24,10 @@ class LineObject(RhinoSceneObject, GeometryObject):
     """
 
     def __init__(self, line, **kwargs):
-        super(LineObject, self).__init__(geometry=line, **kwargs)
+        super(RhinoLineObject, self).__init__(geometry=line, **kwargs)
 
-    def draw(self, color=None):
+    def draw(self):
         """Draw the line.
-
-        Parameters
-        ----------
-        color : rgb1 | rgb255 | :class:`compas.colors.Color`, optional
-            The RGB color of the line.
 
         Returns
         -------
@@ -41,9 +35,7 @@ class LineObject(RhinoSceneObject, GeometryObject):
             The GUID of the created Rhino object.
 
         """
-        color = Color.coerce(color) or self.color
-        attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
-
+        attr = self.compile_attributes()
         geometry = line_to_rhino(self.geometry)
         geometry.Transform(transformation_to_rhino(self.worldtransformation))
 

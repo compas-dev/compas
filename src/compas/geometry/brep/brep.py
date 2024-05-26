@@ -1,29 +1,27 @@
 from compas.geometry import Geometry
 
-from . import new_brep
-from . import from_brepfaces
-from . import from_box
-from . import from_cylinder
-from . import from_sphere
-from . import from_mesh
-from . import from_cone
-from . import from_torus
-from . import from_extrusion
-from . import from_iges
-from . import from_loft
 from . import from_boolean_difference
 from . import from_boolean_intersection
 from . import from_boolean_union
+from . import from_box
+from . import from_brepfaces
+from . import from_cone
 from . import from_curves
+from . import from_cylinder
+from . import from_extrusion
+from . import from_iges
+from . import from_loft
+from . import from_mesh
+from . import from_native
 from . import from_pipe
+from . import from_plane
 from . import from_planes
 from . import from_polygons
+from . import from_sphere
 from . import from_step
 from . import from_sweep
-from . import from_native
-
-
-LINEAR_DEFLECTION = 1e-3
+from . import from_torus
+from . import new_brep
 
 
 class BrepType(object):
@@ -389,7 +387,7 @@ class Brep(Geometry):
         return from_cylinder(cylinder)
 
     @classmethod
-    def from_extrusion(cls, curve, vector):
+    def from_extrusion(cls, curve, vector, cap_ends=True):
         """Construct a Brep by extruding a closed curve along a direction vector.
 
         Parameters
@@ -398,13 +396,15 @@ class Brep(Geometry):
             The curve to extrude
         vector : :class:`compas.geometry.Vector`
             The vector to extrude the curve by
+        cap_ends : bool, optional
+            If True, the plannar ends of the extrusion will be capped, if possible.
 
         Returns
         -------
         :class:`compas.geometry.Brep`
 
         """
-        return from_extrusion(curve, vector)
+        return from_extrusion(curve, vector, cap_ends)
 
     @classmethod
     def from_iges(cls, filename):
@@ -486,6 +486,26 @@ class Brep(Geometry):
 
         """
         return from_pipe(curve, radius, thickness=thickness)
+
+    @classmethod
+    def from_plane(cls, plane, domain_u=(-1, +1), domain_v=(-1, +1)):
+        """Construct a Brep from one plane and its u and v domains.
+
+        Parameters
+        ----------
+        plane : :class:`~compas.geometry.Plane`
+            A plane.
+        domain_u : tuple[float, float], optional
+            The surface domain in the u direction.
+        domain_v : tuple[float, float], optional
+            The surface domain in the v direction.
+
+        Returns
+        -------
+        :class:`compas.geometry.Brep`
+
+        """
+        return from_plane(plane, domain_u=domain_u, domain_v=domain_v)
 
     @classmethod
     def from_planes(cls, planes):
@@ -766,7 +786,7 @@ class Brep(Geometry):
         """
         raise NotImplementedError
 
-    def to_tesselation(self, linear_deflection=LINEAR_DEFLECTION):
+    def to_tesselation(self, linear_deflection=None):
         """Create a tesselation of the shape for visualisation.
 
         Parameters
@@ -1091,7 +1111,7 @@ class Brep(Geometry):
         """
         raise NotImplementedError
 
-    def overlap(self, other, deflection=LINEAR_DEFLECTION, tolerance=0.0):
+    def overlap(self, other, deflection=None, tolerance=0.0):
         """Compute the overlap between this BRep and another.
 
         Parameters

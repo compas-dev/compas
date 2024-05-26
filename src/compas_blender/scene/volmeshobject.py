@@ -1,24 +1,22 @@
-from typing import Optional
-from typing import Union
 from typing import Any
-from typing import List
 from typing import Dict
+from typing import List
+from typing import Optional
 from typing import Tuple
+from typing import Union
 
 import bpy  # type: ignore
 
 import compas_blender
-
-from compas.geometry import add_vectors
-from compas.geometry import scale_vector
-from compas.geometry import centroid_points
-from compas.geometry import Line
 from compas.colors import Color
-
+from compas.geometry import Line
+from compas.geometry import add_vectors
+from compas.geometry import centroid_points
+from compas.geometry import scale_vector
 from compas.scene import VolMeshObject as BaseVolMeshObject
-from .sceneobject import BlenderSceneObject
-
 from compas_blender import conversions
+
+from .sceneobject import BlenderSceneObject
 
 
 class VolMeshObject(BlenderSceneObject, BaseVolMeshObject):
@@ -91,9 +89,7 @@ class VolMeshObject(BlenderSceneObject, BaseVolMeshObject):
     # draw
     # ==========================================================================
 
-    def draw(
-        self, cells: Optional[List[int]] = None, color: Optional[Color] = None, collection: Optional[str] = None
-    ) -> list[bpy.types.Object]:
+    def draw(self, cells: Optional[List[int]] = None, color: Optional[Color] = None, collection: Optional[str] = None) -> list[bpy.types.Object]:
         """Draw a selection of cells.
 
         Parameters
@@ -196,9 +192,7 @@ class VolMeshObject(BlenderSceneObject, BaseVolMeshObject):
         for u, v in edges or self.volmesh.edges():  # type: ignore
             name = f"{self.volmesh.name}.edge.{u}-{v}"  # type: ignore
             color = self.edgecolor[u, v]  # type: ignore
-            curve = conversions.line_to_blender_curve(
-                Line(self.volmesh.vertices_attributes("xyz")[u], self.volmesh.vertices_attributes("xyz")[v])
-            )
+            curve = conversions.line_to_blender_curve(Line(self.volmesh.vertices_attributes("xyz")[u], self.volmesh.vertices_attributes("xyz")[v]))
 
             obj = self.create_object(curve, name=name)
             self.update_object(obj, color=color, collection=collection)  # type: ignore

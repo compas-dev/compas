@@ -1,10 +1,9 @@
 import numpy as np
-
 from scipy.sparse import coo_matrix  # type: ignore
 
-from .linalg import normrow
-from .linalg import normalizerow
-from .linalg import rot90
+from compas.linalg import normalizerow
+from compas.linalg import normrow
+from compas.linalg import rot90
 
 
 def trimesh_gradient_numpy(M, rtype="array"):

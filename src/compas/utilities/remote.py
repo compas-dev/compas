@@ -1,27 +1,13 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 import os
 
-# import io
-
-# import compas
-
 try:
-    # from urllib.request import urlopen
     from urllib.request import urlretrieve
 except ImportError:
-    # from urllib2 import urlopen
     from urllib import urlretrieve
-
-# try:
-#     from PIL import Image
-# except ImportError:
-#     if compas.is_windows():
-#         compas.raise_if_not_ironpython()
-#     elif not compas.is_mono():
-#         raise
 
 
 def download_file_from_remote(source, target, overwrite=True):
@@ -66,41 +52,3 @@ def download_file_from_remote(source, target, overwrite=True):
     else:
         if overwrite:
             urlretrieve(source, target)
-
-
-# def download_image_from_remote(source, target, show=False):
-#     """Download an image from a remote source and save it to a local destination.
-
-#     Parameters
-#     ----------
-#     source : str
-#         The url of the source file.
-#     target : str
-#         The path of the local destination.
-#     show : bool, optional
-#         Show the downloaded image.
-#         Default is ``False``
-
-#     Examples
-#     --------
-#     .. code-block:: python
-
-#         import os
-#         import compas
-#         from compas.utilities.remote import download_image_from_remote
-
-#         source = 'http://block.arch.ethz.ch/brg/images/cache/dsc02360_ni-2_cropped_1528706473_624x351.jpg'
-#         target = os.path.join(compas.APPDATA, 'data', 'theblock.jpg')
-
-#         download_image_from_remote(source, target, show=True)
-
-#     """
-#     # response = requests.get(source)
-#     # response.raise_for_status()
-
-#     response = urlopen(source)
-#     image = Image.open(io.BytesIO(response.read()))
-
-#     if show:
-#         image.show()
-#     image.save(target)

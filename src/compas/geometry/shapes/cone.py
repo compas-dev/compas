@@ -7,12 +7,12 @@ from math import pi
 from math import sin
 from math import sqrt
 
-from compas.utilities import pairwise
-from compas.geometry import transform_points
 from compas.geometry import Circle
-from compas.geometry import Plane
-from compas.geometry import Line
 from compas.geometry import Frame
+from compas.geometry import Line
+from compas.geometry import Plane
+from compas.geometry import transform_points
+from compas.itertools import pairwise
 
 from .shape import Shape
 

@@ -1,5 +1,5 @@
-from compas.plugins import pluggable
 from compas.plugins import PluginNotInstalledError
+from compas.plugins import pluggable
 
 
 @pluggable(category="contours")

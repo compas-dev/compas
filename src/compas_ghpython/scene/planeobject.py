@@ -1,12 +1,12 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
+from compas.geometry import Frame
+from compas.scene import GeometryObject
 from compas_rhino import conversions
 
-from compas.scene import GeometryObject
 from .sceneobject import GHSceneObject
-from compas.geometry import Frame
 
 
 class PlaneObject(GHSceneObject, GeometryObject):
@@ -42,9 +42,7 @@ class PlaneObject(GHSceneObject, GeometryObject):
             List of created Rhino geometries.
         """
         frame = Frame.from_plane(self._item)
-        normal = conversions.line_to_rhino(
-            [frame.to_world_coordinates([0, 0, 0]), frame.to_world_coordinates([0, 0, self.scale])]
-        )
+        normal = conversions.line_to_rhino([frame.to_world_coordinates([0, 0, 0]), frame.to_world_coordinates([0, 0, self.scale])])
 
         vertices = [
             frame.to_world_coordinates([-self.scale, -self.scale, 0]),

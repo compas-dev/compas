@@ -1,10 +1,11 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 from compas.geometry import transform_points
-from .sceneobject import SceneObject
+
 from .descriptors.colordict import ColorDictAttribute
+from .sceneobject import SceneObject
 
 
 class GraphObject(SceneObject):
@@ -30,9 +31,9 @@ class GraphObject(SceneObject):
         The size of the nodes. Default is ``1.0``.
     edgewidth : float
         The width of the edges. Default is ``1.0``.
-    show_nodes : bool
+    show_nodes : Union[bool, sequence[float]]
         Flag for showing or hiding the nodes. Default is ``True``.
-    show_edges : bool
+    show_edges : Union[bool, sequence[tuple[hashable, hashable]]]
         Flag for showing or hiding the edges. Default is ``True``.
 
     See Also

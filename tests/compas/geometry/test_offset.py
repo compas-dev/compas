@@ -1,6 +1,6 @@
 import pytest
 
-from compas.geometry import allclose
+from compas.tolerance import TOL
 from compas.geometry import offset_line
 from compas.geometry import offset_polygon
 from compas.geometry import offset_polyline
@@ -23,7 +23,7 @@ from compas.geometry import offset_polyline
 )
 def test_offset_polygon(polygon, distance, tol, output_polygon):
     output_polygon = [v for v in output_polygon]
-    assert allclose(offset_polygon(polygon, distance, tol), output_polygon)
+    assert TOL.is_allclose(offset_polygon(polygon, distance, tol), output_polygon)
 
 
 @pytest.mark.parametrize(
@@ -50,7 +50,7 @@ def test_offset_polygon(polygon, distance, tol, output_polygon):
     ],
 )
 def test_offset_colinear_polygon(polygon, distance, tol, output_polygon):
-    assert allclose(offset_polygon(polygon, distance, tol), output_polygon)
+    assert TOL.is_allclose(offset_polygon(polygon, distance, tol), output_polygon)
 
 
 # ==============================================================================
@@ -64,7 +64,7 @@ def test_offset_colinear_polygon(polygon, distance, tol, output_polygon):
 )
 def test_offset_polyline_equals_offset_line(polyline, distance, normal, tol):
     output_line = [v for v in offset_line(polyline, distance, normal)]
-    assert allclose(offset_polyline(polyline, distance, normal, tol), output_line)
+    assert TOL.is_allclose(offset_polyline(polyline, distance, normal, tol), output_line)
 
 
 @pytest.mark.parametrize(
@@ -81,7 +81,7 @@ def test_offset_polyline_equals_offset_line(polyline, distance, normal, tol):
 )
 def test_variable_offset_on_colinear_polyline(polyline, distance, normal, tol, output_polyline):
     output_polyline = [v for v in output_polyline]
-    assert allclose(offset_polyline(polyline, distance, normal, tol), output_polyline)
+    assert TOL.is_allclose(offset_polyline(polyline, distance, normal, tol), output_polyline)
 
 
 # ==============================================================================
@@ -95,4 +95,4 @@ def test_variable_offset_on_colinear_polyline(polyline, distance, normal, tol, o
 )
 def test_offset_line_zero_length(line, distance, normal):
     output_line = offset_line(line, distance, normal)
-    assert allclose(line, output_line)
+    assert TOL.is_allclose(line, output_line)

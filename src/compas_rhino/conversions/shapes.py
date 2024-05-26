@@ -1,30 +1,29 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-import scriptcontext as sc  # type: ignore
 import Rhino  # type: ignore
+import scriptcontext as sc  # type: ignore
 
-from compas.geometry import Plane
-from compas.geometry import Circle
 from compas.geometry import Box
-from compas.geometry import Sphere
+from compas.geometry import Circle
 from compas.geometry import Cone
 from compas.geometry import Cylinder
-from compas.geometry import Torus
 from compas.geometry import Frame
+from compas.geometry import Plane
+from compas.geometry import Sphere
+from compas.geometry import Torus
+
+from .curves import circle_to_rhino
+from .curves import line_to_rhino_curve
 
 # from .geometry import plane_to_rhino
 from .geometry import frame_to_rhino
-from .geometry import point_to_rhino
-from .geometry import plane_to_compas_frame
 from .geometry import plane_to_compas
+from .geometry import plane_to_compas_frame
 from .geometry import point_to_compas
+from .geometry import point_to_rhino
 from .geometry import vector_to_compas
-from .curves import line_to_rhino_curve
-
-from .curves import circle_to_rhino
-
 
 # =============================================================================
 # To Rhino
@@ -167,9 +166,7 @@ def capsule_to_rhino_brep(capsule):
     line = capsule.axis
     curve = line_to_rhino_curve(line)
 
-    return Rhino.Geometry.Brep.CreatePipe(
-        curve, radius, False, Rhino.Geometry.PipeCapMode.Round, False, abs_tol, ang_tol
-    )
+    return Rhino.Geometry.Brep.CreatePipe(curve, radius, False, Rhino.Geometry.PipeCapMode.Round, False, abs_tol, ang_tol)
 
 
 def torus_to_rhino(torus):

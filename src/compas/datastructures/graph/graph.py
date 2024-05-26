@@ -1,10 +1,10 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from random import sample
 from ast import literal_eval
 from itertools import combinations
+from random import sample
 
 import compas
 
@@ -13,39 +13,40 @@ if compas.PY2:
 else:
     from collections.abc import Mapping
 
-from compas.tolerance import TOL
+from compas.datastructures.attributes import EdgeAttributeView
+from compas.datastructures.attributes import NodeAttributeView
+from compas.datastructures.datastructure import Datastructure
 from compas.files import OBJ
+from compas.geometry import Box
+from compas.geometry import Line
 from compas.geometry import Point
 from compas.geometry import Vector
-from compas.geometry import Line
+from compas.geometry import add_vectors
+from compas.geometry import bounding_box
 from compas.geometry import centroid_points
-from compas.geometry import subtract_vectors
 from compas.geometry import distance_point_point
 from compas.geometry import midpoint_line
 from compas.geometry import normalize_vector
-from compas.geometry import add_vectors
+from compas.geometry import oriented_bounding_box
 from compas.geometry import scale_vector
+from compas.geometry import subtract_vectors
 from compas.geometry import transform_points
+from compas.tolerance import TOL
 from compas.topology import astar_shortest_path
 from compas.topology import breadth_first_traverse
 from compas.topology import connected_components
 
-from compas.datastructures.datastructure import Datastructure
-from compas.datastructures.attributes import NodeAttributeView
-from compas.datastructures.attributes import EdgeAttributeView
-
-from .operations.split import graph_split_edge
+from .duality import graph_find_cycles
 from .operations.join import graph_join_edges
-
+from .operations.split import graph_split_edge
+from .planarity import graph_count_crossings
+from .planarity import graph_embed_in_plane
+from .planarity import graph_find_crossings
 from .planarity import graph_is_crossed
 from .planarity import graph_is_planar
 from .planarity import graph_is_planar_embedding
 from .planarity import graph_is_xy
-from .planarity import graph_count_crossings
-from .planarity import graph_find_crossings
-from .planarity import graph_embed_in_plane
 from .smoothing import graph_smooth_centroid
-from .duality import graph_find_cycles
 
 
 class Graph(Datastructure):
@@ -2245,7 +2246,7 @@ class Graph(Datastructure):
         return distance_point_point(a, b)
 
     # --------------------------------------------------------------------------
-    # Transformations
+    # Transformations and BBox
     # --------------------------------------------------------------------------
 
     def transform(self, transformation):
@@ -2265,6 +2266,28 @@ class Graph(Datastructure):
         points = transform_points(nodes, transformation)
         for point, node in zip(points, self.nodes()):
             self.node_attributes(node, "xyz", point)
+
+    def aabb(self):
+        """Calculate the axis aligned bounding box of the graph.
+
+        Returns
+        -------
+        :class:`compas.geometry.Box`
+
+        """
+        nodes = self.nodes_attributes("xyz")
+        return Box.from_bounding_box(bounding_box(nodes))
+
+    def obb(self):
+        """Calculate the oriented bounding box of the graph.
+
+        Returns
+        -------
+        :class:`compas.geometry.Box`
+
+        """
+        nodes = self.nodes_attributes("xyz")
+        return Box.from_bounding_box(oriented_bounding_box(nodes))
 
     # --------------------------------------------------------------------------
     # Other Methods
@@ -2380,7 +2403,7 @@ class Graph(Datastructure):
             Constructed adjacency matrix.
 
         """
-        from compas.topology import adjacency_matrix
+        from compas.matrices import adjacency_matrix
 
         node_index = self.node_index()
         adjacency = [[node_index[nbr] for nbr in self.neighbors(key)] for key in self.nodes()]
@@ -2400,7 +2423,7 @@ class Graph(Datastructure):
             Constructed connectivity matrix.
 
         """
-        from compas.topology import connectivity_matrix
+        from compas.matrices import connectivity_matrix
 
         node_index = self.node_index()
         edges = [(node_index[u], node_index[v]) for u, v in self.edges()]
@@ -2420,7 +2443,7 @@ class Graph(Datastructure):
             Constructed degree matrix.
 
         """
-        from compas.topology import degree_matrix
+        from compas.matrices import degree_matrix
 
         node_index = self.node_index()
         adjacency = [[node_index[nbr] for nbr in self.neighbors(key)] for key in self.nodes()]
@@ -2448,7 +2471,7 @@ class Graph(Datastructure):
         vectors could be used in a more natural way ``c = xyz + d``.
 
         """
-        from compas.topology import laplacian_matrix
+        from compas.matrices import laplacian_matrix
 
         node_index = self.node_index()
         edges = [(node_index[u], node_index[v]) for u, v in self.edges()]

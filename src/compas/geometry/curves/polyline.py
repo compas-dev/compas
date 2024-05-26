@@ -1,15 +1,16 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from compas.utilities import pairwise
-
-from compas.geometry import allclose
-from compas.geometry import transform_points
-from compas.geometry import is_point_on_line, is_point_on_polyline
-from compas.geometry import Point
-from compas.geometry import Line
 from compas.geometry import Frame
+from compas.geometry import Line
+from compas.geometry import Point
+from compas.geometry import is_point_on_line
+from compas.geometry import is_point_on_polyline
+from compas.geometry import transform_points
+from compas.itertools import pairwise
+from compas.tolerance import TOL
+
 from .curve import Curve
 
 
@@ -117,7 +118,7 @@ class Polyline(Curve):
     def __eq__(self, other):
         if not hasattr(other, "__iter__") or not hasattr(other, "__len__") or len(self) != len(other):
             return False
-        return allclose(self, other)
+        return TOL.is_allclose(self, other)
 
     # ==========================================================================
     # properties

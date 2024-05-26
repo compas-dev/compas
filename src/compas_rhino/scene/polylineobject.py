@@ -1,19 +1,17 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 import scriptcontext as sc  # type: ignore
 
 from compas.scene import GeometryObject
-from compas.colors import Color
-from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import polyline_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
+
 from .sceneobject import RhinoSceneObject
-from ._helpers import attributes
 
 
-class PolylineObject(RhinoSceneObject, GeometryObject):
+class RhinoPolylineObject(RhinoSceneObject, GeometryObject):
     """Scene object for drawing polylines.
 
     Parameters
@@ -26,15 +24,10 @@ class PolylineObject(RhinoSceneObject, GeometryObject):
     """
 
     def __init__(self, polyline, **kwargs):
-        super(PolylineObject, self).__init__(geometry=polyline, **kwargs)
+        super(RhinoPolylineObject, self).__init__(geometry=polyline, **kwargs)
 
-    def draw(self, color=None):
+    def draw(self):
         """Draw the polyline.
-
-        Parameters
-        ----------
-        color : rgb1 | rgb255 | :class:`compas.colors.Color`, optional
-            The RGB color of the polyline.
 
         Returns
         -------
@@ -42,35 +35,9 @@ class PolylineObject(RhinoSceneObject, GeometryObject):
             List of GUIDs of the objects created in Rhino.
 
         """
-        color = Color.coerce(color) or self.color
-        attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
+        attr = self.compile_attributes()
         geometry = polyline_to_rhino(self.geometry)
         geometry.Transform(transformation_to_rhino(self.worldtransformation))
 
         self._guids = [sc.doc.Objects.AddPolyline(geometry, attr)]
         return self.guids
-
-    def draw_points(self, color=None):
-        """Draw the polyline points.
-
-        Parameters
-        ----------
-        color : rgb1 | rgb255 | :class:`compas.colors.Color`, optional
-            The RGB color of the polyline points.
-
-        Returns
-        -------
-        list[System.Guid]
-            The GUIDs of the created Rhino objects.
-
-        """
-        color = Color.coerce(color) or self.color
-        attr = attributes(name=self.geometry.name, color=color, layer=self.layer)
-
-        guids = []
-
-        for point in self.geometry.points:
-            guid = sc.doc.Objects.AddPoint(point_to_rhino(point), attr)
-            guids.append(guid)
-
-        return guids

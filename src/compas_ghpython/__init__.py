@@ -9,7 +9,7 @@ import compas_rhino
 from compas_rhino import unload_modules  # noqa: F401
 
 
-__version__ = "2.0.0-beta.4"
+__version__ = "2.1.0"
 
 if compas.is_rhino():
     from .utilities import *  # noqa: F401 F403
@@ -78,9 +78,7 @@ def get_grasshopper_managedplugin_path(version):
         raise NotImplementedError
 
     if not os.path.exists(gh_managedplugin_path):
-        raise Exception(
-            "The Grasshopper (managed) Plug-in folder does not exist in this location: {}".format(gh_managedplugin_path)
-        )
+        raise Exception("The Grasshopper (managed) Plug-in folder does not exist in this location: {}".format(gh_managedplugin_path))
 
     return gh_managedplugin_path
 

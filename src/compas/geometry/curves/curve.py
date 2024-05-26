@@ -1,13 +1,13 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from compas.plugins import pluggable
-from compas.geometry import Geometry
-from compas.geometry import Transformation
-from compas.geometry import Plane
 from compas.geometry import Frame
-from compas.utilities import linspace
+from compas.geometry import Geometry
+from compas.geometry import Plane
+from compas.geometry import Transformation
+from compas.itertools import linspace
+from compas.plugins import pluggable
 
 
 @pluggable(category="factories")

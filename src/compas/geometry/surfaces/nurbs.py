@@ -1,18 +1,23 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from compas.plugins import pluggable
-from compas.plugins import PluginNotInstalledError
 from compas.geometry import Point
-from compas.utilities import linspace
-from compas.utilities import meshgrid
+from compas.itertools import linspace
+from compas.itertools import meshgrid
+from compas.plugins import PluginNotInstalledError
+from compas.plugins import pluggable
 
 from .surface import Surface
 
 
 @pluggable(category="factories")
 def new_nurbssurface(cls, *args, **kwargs):
+    raise PluginNotInstalledError
+
+
+@pluggable(category="factories")
+def new_nurbssurface_from_native(cls, *args, **kwargs):
     raise PluginNotInstalledError
 
 
@@ -185,6 +190,23 @@ class NurbsSurface(Surface):
     # ==============================================================================
     # Constructors
     # ==============================================================================
+
+    @classmethod
+    def from_native(cls, surface):
+        """Construct a NURBS surface from a surface object.
+
+        Parameters
+        ----------
+        surface : :class:`Rhino.Geometry.NurbsSurface`
+            A CAD native surface object.
+
+        Returns
+        -------
+        :class:`compas.geometry.NurbsSurface`
+            A COMPAS NURBS surface.
+
+        """
+        return new_nurbssurface_from_native(cls, surface)
 
     @classmethod
     def from_parameters(

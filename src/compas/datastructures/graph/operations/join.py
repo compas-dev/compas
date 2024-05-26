@@ -1,9 +1,9 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
+from compas.itertools import pairwise
 from compas.tolerance import TOL
-from compas.utilities import pairwise
 
 
 def graph_join_edges(graph, key):
@@ -104,15 +104,9 @@ def graph_polylines(graph, splits=None):
         # get adjacent edges until the polyline is closed...
         while polyline[0] != polyline[-1]:
             # ... or until both end are non-two-valent vertices
-            if (
-                len(graph.neighbors(polyline[-1])) != 2
-                or TOL.geometric_key(graph.node_coordinates(polyline[-1])) in stop_geom_keys
-            ):
+            if len(graph.neighbors(polyline[-1])) != 2 or TOL.geometric_key(graph.node_coordinates(polyline[-1])) in stop_geom_keys:
                 polyline = list(reversed(polyline))
-                if (
-                    len(graph.neighbors(polyline[-1])) != 2
-                    or TOL.geometric_key(graph.node_coordinates(polyline[-1])) in stop_geom_keys
-                ):
+                if len(graph.neighbors(polyline[-1])) != 2 or TOL.geometric_key(graph.node_coordinates(polyline[-1])) in stop_geom_keys:
                     break
 
             # add next edge

@@ -2,12 +2,12 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from compas.geometry import Frame
+from compas.geometry import Line
+from compas.geometry import Transformation
+from compas.geometry import Vector
 from compas.geometry import centroid_points
 from compas.geometry import transform_points
-from compas.geometry import Transformation
-from compas.geometry import Frame
-from compas.geometry import Vector
-from compas.geometry import Line
 
 from .shape import Shape
 
@@ -151,36 +151,6 @@ class Box(Shape):
             self.frame,
         )
 
-    def __len__(self):
-        return 4
-
-    def __getitem__(self, key):
-        if key == 0:
-            return self.xsize
-        elif key == 1:
-            return self.ysize
-        elif key == 2:
-            return self.zsize
-        elif key == 3:
-            return self.frame
-        else:
-            raise KeyError
-
-    def __setitem__(self, key, value):
-        if key == 0:
-            self.xsize = value
-        elif key == 1:
-            self.ysize = value
-        elif key == 2:
-            self.zsize = value
-        elif key == 3:
-            self.frame = value
-        else:
-            raise KeyError
-
-    def __iter__(self):
-        return iter([self.xsize, self.ysize, self.zsize, self.frame])
-
     # ==========================================================================
     # Properties
     # ==========================================================================
@@ -259,18 +229,8 @@ class Box(Shape):
 
     @property
     def diagonal(self):
-        a = (
-            self.frame.point
-            + self.frame.xaxis * -0.5 * self.xsize
-            + self.frame.yaxis * -0.5 * self.ysize
-            + self.frame.zaxis * -0.5 * self.zsize
-        )
-        b = (
-            self.frame.point
-            + self.frame.xaxis * 0.5 * self.xsize
-            + self.frame.yaxis * 0.5 * self.ysize
-            + self.frame.zaxis * 0.5 * self.zsize
-        )
+        a = self.frame.point + self.frame.xaxis * -0.5 * self.xsize + self.frame.yaxis * -0.5 * self.ysize + self.frame.zaxis * -0.5 * self.zsize
+        b = self.frame.point + self.frame.xaxis * 0.5 * self.xsize + self.frame.yaxis * 0.5 * self.ysize + self.frame.zaxis * 0.5 * self.zsize
         return Line(a, b)
 
     @property

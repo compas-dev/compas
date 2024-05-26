@@ -12,7 +12,6 @@ In addition, it provides a number of methods for storing arbitrary data on verti
 
     Please refer to the API for a complete overview of all functionality:
 
-    * :class:`compas.datastructures.HalfEdge`
     * :class:`compas.datastructures.Mesh`
 
 

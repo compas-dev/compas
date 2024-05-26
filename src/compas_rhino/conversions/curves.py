@@ -1,27 +1,24 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-import scriptcontext as sc  # type: ignore
 import Rhino  # type: ignore
+import scriptcontext as sc  # type: ignore
 
-from compas.geometry import Line
+from compas.geometry import Arc
 from compas.geometry import Circle
 from compas.geometry import Ellipse
-from compas.geometry import Polyline
-from compas.geometry import Arc
+from compas.geometry import Line
 from compas.geometry import NurbsCurve
+from compas.geometry import Polyline
 
 from .exceptions import ConversionError
-
-from .geometry import point_to_rhino
-from .geometry import plane_to_rhino
 from .geometry import frame_to_rhino_plane
-
-from .geometry import point_to_compas
 from .geometry import plane_to_compas
 from .geometry import plane_to_compas_frame
-
+from .geometry import plane_to_rhino
+from .geometry import point_to_compas
+from .geometry import point_to_rhino
 
 # =============================================================================
 # To Rhino

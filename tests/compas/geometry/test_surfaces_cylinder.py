@@ -7,8 +7,8 @@ from compas.geometry import Point  # noqa: F401
 from compas.geometry import Vector  # noqa: F401
 from compas.geometry import Frame
 from compas.geometry import CylindricalSurface
-from compas.geometry import close
-from compas.utilities import linspace
+from compas.tolerance import TOL
+from compas.itertools import linspace
 
 
 @pytest.mark.parametrize(
@@ -31,7 +31,7 @@ def test_cylinder(radius):
         for v in linspace(0.0, 1.0, num=100):
             assert cylinder.point_at(u, v) == cylinder.point_at(u, v, world=False)
 
-    assert close(cylinder.radius, other.radius, tol=1e-12)
+    assert TOL.is_close(cylinder.radius, other.radius)
     assert cylinder.frame == other.frame
 
 
@@ -56,7 +56,7 @@ def test_cylinder_frame(frame):
         for v in linspace(0.0, 1.0, num=100):
             assert cylinder.point_at(u, v) == cylinder.point_at(u, v, world=False).transformed(cylinder.transformation)
 
-    assert close(cylinder.radius, other.radius, tol=1e-12)
+    assert TOL.is_close(cylinder.radius, other.radius)
     assert cylinder.frame == other.frame
 
 

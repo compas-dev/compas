@@ -1,9 +1,8 @@
 from numpy import asarray
 from numpy import hstack
 from numpy import ones
-from numpy import vectorize
 from numpy import tile
-
+from numpy import vectorize
 from scipy.linalg import solve  # type: ignore
 
 from ._algebra import cross_vectors
@@ -70,7 +69,7 @@ def transform_frames_numpy(frames, T):
 
     Parameters
     ----------
-    frames : sequence[[point, vector, vector] | :class:`compas.geometry.Frame`]
+    frames : sequence[[point, vector, vector]]
         A list of frames to be transformed.
     T : :class:`compas.geometry.Transformation`
         The transformation to apply on the frames.
@@ -98,7 +97,7 @@ def world_to_local_coordinates_numpy(frame, xyz):
 
     Parameters
     ----------
-    frame : [point, vector, vector] | :class:`compas.geometry.Frame`
+    frame : [point, vector, vector]
         The local coordinate system.
     xyz : array-like[[float, float, float] | :class:`compas.geometry.Point`]
         The global coordinates of the points to convert.
@@ -131,7 +130,7 @@ def local_to_world_coordinates_numpy(frame, rst):
 
     Parameters
     ----------
-    frame : [point, vector, vector] | :class:`compas.geometry.Frame`
+    frame : [point, vector, vector]
         The local coordinate system.
     rst : array-like[[float, float, float] | :class:`compas.geometry.Point`]
         The coordinates of the points wrt the local coordinate system.
@@ -232,7 +231,7 @@ def homogenize_and_flatten_frames_numpy(frames):
 
     Parameters
     ----------
-    frames : array_like[[point, vector, vector] | :class:`compas.geometry.Frame`]
+    frames : array_like[[point, vector, vector]]
         The input frames.
 
     Returns

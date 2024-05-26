@@ -1,14 +1,15 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 from math import sqrt
 
-from compas.utilities import pairwise
-from compas.geometry import transform_points
-from compas.geometry import Polygon
-from compas.geometry import Point
 from compas.geometry import Line
+from compas.geometry import Point
+from compas.geometry import Polygon
+from compas.geometry import transform_points
+from compas.itertools import pairwise
+
 from .geometry import Geometry
 
 
@@ -414,10 +415,15 @@ class Polyhedron(Geometry):
 
         """
         from itertools import combinations
+
         from numpy import asarray
-        from scipy.spatial import HalfspaceIntersection, ConvexHull  # type: ignore
+        from scipy.spatial import ConvexHull  # type: ignore
+        from scipy.spatial import HalfspaceIntersection  # type: ignore
+
         from compas.datastructures import Mesh
-        from compas.geometry import length_vector, dot_vectors, cross_vectors
+        from compas.geometry import cross_vectors
+        from compas.geometry import dot_vectors
+        from compas.geometry import length_vector
 
         halfspaces = asarray(halfspaces, dtype=float)
         interior_point = asarray(interior_point, dtype=float)

@@ -1,24 +1,20 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from compas.tolerance import TOL
-
-from compas.utilities import window
-
-from compas.geometry import subtract_vectors
-from compas.geometry import cross_vectors
-from compas.geometry import dot_vectors
-from compas.geometry import centroid_points
-from compas.geometry import normal_polygon
 from compas.geometry import area_triangle
-from compas.geometry import length_vector
-
-from compas.geometry import distance_point_point
-from compas.geometry import distance_point_plane
-from compas.geometry import distance_point_line
+from compas.geometry import centroid_points
 from compas.geometry import closest_point_on_segment
-
+from compas.geometry import cross_vectors
+from compas.geometry import distance_point_line
+from compas.geometry import distance_point_plane
+from compas.geometry import distance_point_point
+from compas.geometry import dot_vectors
+from compas.geometry import length_vector
+from compas.geometry import normal_polygon
+from compas.geometry import subtract_vectors
+from compas.itertools import window
+from compas.tolerance import TOL
 
 # =============================================================================
 # =============================================================================
@@ -130,7 +126,7 @@ def is_coplanar(points, tol=None):
 
     temp = points[:]
 
-    while True:
+    while len(temp) >= 3:
         a = temp.pop(0)
         b = temp.pop(0)
         c = temp.pop(0)
@@ -241,9 +237,9 @@ def is_parallel_plane_plane(plane1, plane2, tol=None):
 
     Parameters
     ----------
-    plane1 : [point, vector] | :class:`compas.geometry.Plane`
+    plane1 : [point, vector]
         Plane 1.
-    plane2 : [point, vector] | :class:`compas.geometry.Plane`
+    plane2 : [point, vector]
         Plane 2.
     tol : float, optional
         A tolerance for verifying parallelity of the plane normals.
@@ -337,9 +333,9 @@ def is_perpendicular_plane_plane(plane1, plane2, tol=None):
 
     Parameters
     ----------
-    plane1 : [point, vector] | :class:`compas.geometry.Plane`
+    plane1 : [point, vector]
         Plane 1.
-    plane2 : [point, vector] | :class:`compas.geometry.Plane`
+    plane2 : [point, vector]
         Plane 2.
     tol : float, optional
         A tolerance for verifying perpendicularity of the plane normals.
@@ -429,7 +425,7 @@ def is_polyhedron_convex(polyhedron):
 
     Parameters
     ----------
-    polyhedron : [sequence[point], sequence[sequence[int]]] | :class:`compas.geometry.Polyhedron`
+    polyhedron : [sequence[point], sequence[sequence[int]]]
         A polyhedron defined by a sequence of points
         and a sequence of faces, with each face defined as a sequence of indices into the sequence of points.
 
@@ -484,7 +480,7 @@ def is_point_on_plane(point, plane, tol=None):
     ----------
     point : [float, float, float] | :class:`compas.geometry.Point`
         A point.
-    plane : [point, vector] | :class:`compas.geometry.Plane`
+    plane : [point, vector]
         A plane.
     tol : float, optional
         Tolerance for comparing the distance between the point and the plane to zero.
@@ -724,11 +720,7 @@ def is_point_in_triangle(point, triangle, tol=None):
     a, b, c = triangle
 
     if is_point_on_plane(point, (a, normal_polygon(triangle)), tol=tol):
-        if (
-            is_on_same_side(point, a, (b, c))
-            and is_on_same_side(point, b, (a, c))
-            and is_on_same_side(point, c, (a, b))
-        ):
+        if is_on_same_side(point, a, (b, c)) and is_on_same_side(point, b, (a, c)) and is_on_same_side(point, c, (a, b)):
             return True
 
     return False
@@ -820,7 +812,7 @@ def is_point_in_polyhedron(point, polyhedron, tol=None):
     ----------
     point : [float, float, float] | :class:`compas.geometry.Point`
         The test point.
-    polyhedron : [sequence[point], sequence[sequence[int]]] | :class:`compas.geometry.Polyhedron`.
+    polyhedron : [sequence[point], sequence[sequence[int]]]
         The polyhedron defined by a sequence of points
         and a sequence of faces, with each face defined as a sequence of indices into the sequence of points.
 
@@ -844,7 +836,7 @@ def is_point_infrontof_plane(point, plane, tol=None):
     ----------
     point : [float, float, float] | :class:`compas.geometry.Point`
         A point.
-    plane : [point, vector] | :class:`compas.geometry.Plane`
+    plane : [point, vector]
         A plane.
     tol : float, optional
         A tolerance for membership verification.
@@ -866,7 +858,7 @@ def is_point_behind_plane(point, plane, tol=None):
     ----------
     point : [float, float, float] | :class:`compas.geometry.Point`
         A point.
-    plane : [point,  normal] | :class:`compas.geometry.Plane`
+    plane : [point,  normal]
         A plane.
     tol : float, optional
         A tolerance for membership verification.
@@ -1033,7 +1025,7 @@ def is_point_behind_plane(point, plane, tol=None):
 #     ----------
 #     line : [point, point] | :class:`compas.geometry.Line`
 #         A line.
-#     plane : [point, vector] | :class:`compas.geometry.Plane`
+#     plane : [point, vector]
 #         A plane.
 #     tol : float, optional
 #         A tolerance for intersection verification.
@@ -1064,7 +1056,7 @@ def is_point_behind_plane(point, plane, tol=None):
 #     ----------
 #     segment : [point, point] | :class:`compas.geometry.Line`
 #         A line segment.
-#     plane : [point, vector] | :class:`compas.geometry.Plane`
+#     plane : [point, vector]
 #         A plane.
 #     tol : float, optional
 #         A tolerance for intersection verification.
@@ -1099,9 +1091,9 @@ def is_point_behind_plane(point, plane, tol=None):
 
 #     Parameters
 #     ----------
-#     plane1 : [point, vector] | :class:`compas.geometry.Plane`
+#     plane1 : [point, vector]
 #         A plane.
-#     plane2 : [point, vector] | :class:`compas.geometry.Plane`
+#     plane2 : [point, vector]
 #         A plane.
 #     tol : float, optional
 #         A tolerance for intersection verification.

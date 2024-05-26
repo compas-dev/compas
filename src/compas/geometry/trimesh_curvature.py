@@ -1,11 +1,12 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 from math import pi
-from compas.plugins import pluggable
+
 from compas.geometry import angle_points
-from compas.utilities import window
+from compas.itertools import window
+from compas.plugins import pluggable
 
 
 @pluggable(category="trimesh")
@@ -22,8 +23,8 @@ def trimesh_gaussian_curvature(M):
     list[float]
         The discrete gaussian curvature per vertex.
 
-    Warning
-    -------
+    Warnings
+    --------
     The default implementation willnot check if the mesh is a triangle mesh.
     It will simpliy compute the curvature at every vertex as if it were surrounded by triangles.
     This requires the faces of the mesh to be at least convex polygons.
