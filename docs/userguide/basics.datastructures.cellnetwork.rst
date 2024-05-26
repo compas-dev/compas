@@ -13,10 +13,11 @@ In addition, it provides a number of methods for storing arbitrary data on verti
     Please refer to the API for a complete overview of all functionality:
 
     * :class:`compas.datastructures.CellNetwork`
+    * :class:`compas.datastructures.HalfFace`
 
 
 CellNetwork Construction
-=================
+========================
 
 Meshes can be constructed in a number of ways:
 
@@ -61,14 +62,18 @@ For more information about visualisation with :class:`compas.scene.Scene`, see :
 
 >>> from compas.datastructures import CellNetwork
 >>> from compas.scene import Scene
->>> cell_network = CellNetwork.from_json(compas.get('tubemesh.obj'))
+>>> cell_network = CellNetwork.from_json(compas.get('cellnetwork_example.json'))
 >>> scene = Scene()
 >>> scene.add(mesh)
 >>> scene.show()
 
+.. figure:: /_images/userguide/basics.datastructures.cellnetworks.example_grey.png
 
+The cell network contains mixed topologic entities such as cells, faces, edges and vertices.
+A face can be at maximum assigned to two cells, to one or None.
+Faces have typically edges as boundaries, but an edge can also exist without being part of a face.
+In the following image, the faces belonging to 2 cells are showin in yellow, the faces to one cell are shown in grey, and the faces belonging to no cell are shown in blue.
+There is also one edge belonging to no face, shown with thicker linewidth.
 
-
-
-
+.. figure:: /_images/userguide/basics.datastructures.cellnetworks.example_color.png
 

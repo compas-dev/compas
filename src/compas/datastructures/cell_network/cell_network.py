@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -13,6 +14,7 @@ from compas.datastructures.attributes import VertexAttributeView
 from compas.datastructures.datastructure import Datastructure
 from compas.files import OBJ
 from compas.geometry import Line
+from compas.geometry import Plane
 from compas.geometry import Point
 from compas.geometry import Polygon
 from compas.geometry import Polyhedron
@@ -69,7 +71,7 @@ class CellNetwork(Datastructure):
     >>> from compas.datastructures import CellNetwork
     >>> cell_network = CellNetwork()
     >>> vertices = [(0, 0, 0), (0, 1, 0), (1, 1, 0), (1, 0, 0), (0, 0, 1), (1, 0, 1), (1, 1, 1), (0, 1, 1)]
-    >>> faces = [[0, 1, 2, 3], [0, 3, 5, 4],[3, 2, 6, 5], [2, 1, 7, 6],[1, 0, 4, 7],[4, 5, 6, 7]]
+    >>> faces = [[0, 1, 2, 3], [0, 3, 5, 4], [3, 2, 6, 5], [2, 1, 7, 6], [1, 0, 4, 7], [4, 5, 6, 7]]
     >>> cells = [[0, 1, 2, 3, 4, 5]]
     >>> [network.add_vertex(x=x, y=y, z=z) for x, y, z in vertices]
     >>> [cell_network.add_face(fverts) for fverts in faces]
@@ -180,6 +182,7 @@ class CellNetwork(Datastructure):
             "edge": self._edge,
             "face": self._face,
             "cell": cell,
+            "edge_data": self._edge_data,
             "face_data": self._face_data,
             "cell_data": self._cell_data,
             "max_vertex": self._max_vertex,
@@ -203,19 +206,23 @@ class CellNetwork(Datastructure):
         cell = data["cell"] or {}
 
         for key, attr in iter(vertex.items()):
-            cell_network.add_vertex(key=key, attr_dict=attr)
+            cell_network.add_vertex(key=int(key), attr_dict=attr)
 
+        edge_data = data.get("edge_data", {})
+        print(edge_data)
         for u in edge:
-            for v, attr in edge[u].items():
-                cell_network.add_edge(u, v, attr_dict=attr)
+            for v in edge[u]:
+                print(">>", u, v)
+                attr = edge_data.get((u, v), {})
+                cell_network.add_edge(int(u), int(v), attr_dict=attr)
 
         face_data = data.get("face_data") or {}
         for key, vertices in iter(face.items()):
-            cell_network.add_face(vertices, fkey=key, attr_dict=face_data.get(key))
+            cell_network.add_face(vertices, fkey=int(key), attr_dict=face_data.get(key))
 
         cell_data = data.get("cell_data") or {}
         for ckey, faces in iter(cell.items()):
-            cell_network.add_cell(faces, ckey=ckey, attr_dict=cell_data.get(ckey))
+            cell_network.add_cell(faces, ckey=int(ckey), attr_dict=cell_data.get(ckey))
 
         cell_network._max_vertex = data.get("max_vertex", cell_network._max_vertex)
         cell_network._max_face = data.get("max_face", cell_network._max_face)
@@ -817,49 +824,96 @@ class CellNetwork(Datastructure):
     #     for cell in self.vertex_cells(vertex):
     #         self.delete_cell(cell)
 
-    # def delete_cell(self, cell):
-    #     """Delete a cell from the cell network.
+    def delete_edge(self, edge):
+        """Delete an edge from the cell network.
 
-    #     Parameters
-    #     ----------
-    #     cell : int
-    #         The identifier of the cell.
+        Parameters
+        ----------
+        edge : tuple
+            The identifier of the edge.
 
-    #     Returns
-    #     -------
-    #     None
+        Returns
+        -------
+        None
 
-    #     See Also
-    #     --------
-    #     :meth:`delete_vertex`, :meth:`delete_halfface`
+        """
+        u, v = edge
+        if self._plane[u] and v in self._plane[u]:
+            faces = self._plane[u][v].keys()
+            if len(faces) > 0:
+                print("Cannot delete edge %s, delete faces %s first" % (edge, list(faces)))
+                return
+        if self._plane[v] and u in self._plane[v]:
+            faces = self._plane[v][u].keys()
+            if len(faces) > 0:
+                print("Cannot delete edge %s, delete faces %s first" % (edge, list(faces)))
+                return
+        if v in self._edge[u]:
+            del self._edge[u][v]
+        if u in self._edge[v]:
+            del self._edge[v][u]
+        if v in self._plane[u]:
+            del self._plane[u][v]
+        if u in self._plane[v]:
+            del self._plane[v][u]
 
-    #     """
-    #     cell_vertices = self.cell_vertices(cell)
-    #     cell_faces = self.cell_faces(cell)
-    #     for face in cell_faces:
-    #         for edge in self.halfface_halfedges(face):
-    #             u, v = edge
-    #             if (u, v) in self._edge_data:
-    #                 del self._edge_data[u, v]
-    #             if (v, u) in self._edge_data:
-    #                 del self._edge_data[v, u]
-    #     for vertex in cell_vertices:
-    #         if len(self.vertex_cells(vertex)) == 1:
-    #             del self._vertex[vertex]
-    #     for face in cell_faces:
-    #         vertices = self.halfface_vertices(face)
-    #         for u, v in iter_edges_from_vertices(vertices):
-    #             self._plane[u][v][face] = None
-    #             if self._plane[v][u][face] is None:
-    #                 del self._plane[u][v][face]
-    #                 del self._plane[v][u][face]
-    #         del self._halfface[face]
-    #         key = "-".join(map(str, sorted(vertices)))
-    #         if key in self._face_data:
-    #             del self._face_data[key]
-    #     del self._cell[cell]
-    #     if cell in self._cell_data:
-    #         del self._cell_data[cell]
+    def delete_face(self, face):
+        """Delete a face from the cell network.
+
+        Parameters
+        ----------
+        face : int
+            The identifier of the face.
+
+        Returns
+        -------
+        None
+        """
+        vertices = self.face_vertices(face)
+        # check first
+        for u, v in pairwise(vertices + vertices[:1]):
+            if self._plane[u][v][face] is not None:
+                print("Cannot delete face %d, delete cell %s first" % (face, self._plane[u][v][face]))
+                return
+            if self._plane[v][u][face] is not None:
+                print("Cannot delete face %d, delete cell %s first" % (face, self._plane[v][u][face]))
+                return
+        for u, v in pairwise(vertices + vertices[:1]):
+            del self._plane[u][v][face]
+            del self._plane[v][u][face]
+        del self._face[face]
+        if face in self._face_data:
+            del self._face_data[face]
+
+    def delete_cell(self, cell):
+        """Delete a cell from the cell network.
+
+        Parameters
+        ----------
+        cell : int
+            The identifier of the cell.
+
+        Returns
+        -------
+        None
+
+        See Also
+        --------
+        :meth:`delete_vertex`, :meth:`delete_halfface`
+
+        """
+        # remove the cell from the faces
+        cell_faces = self.cell_faces(cell)
+        for face in cell_faces:
+            vertices = self.face_vertices(face)
+            for u, v in pairwise(vertices + vertices[:1]):
+                if self._plane[u][v][face] == cell:
+                    self._plane[u][v][face] = None
+                if self._plane[v][u][face] == cell:
+                    self._plane[v][u][face] = None
+        del self._cell[cell]
+        if cell in self._cell_data:
+            del self._cell_data[cell]
 
     # def remove_unused_vertices(self):
     #     """Remove all unused vertices from the cell network object.
@@ -1093,6 +1147,24 @@ class CellNetwork(Datastructure):
             graph.add_node(key=vertex, x=x, y=y, z=z, attr_dict=attr)
         for (u, v), attr in self.edges(data=True):
             graph.add_edge(u, v, attr_dict=attr)
+        return graph
+
+    def cells_to_graph(self):
+        """Convert the cells the cell network to a graph.
+
+        Returns
+        -------
+        :class:`compas.datastructures.Graph`
+            A graph object.
+
+        """
+        graph = Graph()
+        for cell, attr in self.cells(data=True):
+            x, y, z = self.cell_centroid(cell)
+            graph.add_node(key=cell, x=x, y=y, z=z, attr_dict=attr)
+        for cell in self.cells():
+            for nbr in self.cell_neighbors(cell):
+                graph.add_edge(sorted(*[cell, nbr]))
         return graph
 
     def cell_to_vertices_and_faces(self, cell):
@@ -3227,6 +3299,26 @@ class CellNetwork(Datastructure):
 
         """
         return length_vector(self.face_normal(face, unitized=False))
+
+    def face_plane(self, face):
+        """Compute the plane of a face.
+
+        Parameters
+        ----------
+        face : int
+            The identifier of the face.
+
+        Returns
+        -------
+        :class:`compas.geometry.Plane`
+            The plane of the face.
+
+        See Also
+        --------
+        :meth:`face_points`, :meth:`face_polygon`, :meth:`face_normal`, :meth:`face_centroid`, :meth:`face_center`
+
+        """
+        return Plane(self.face_centroid(face), self.face_normal(face))
 
     def face_flatness(self, face, maxdev=0.02):
         """Compute the flatness of a face.

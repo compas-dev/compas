@@ -4,21 +4,22 @@ from __future__ import print_function
 
 from random import sample
 
-from compas.datastructures import Mesh
 from compas.datastructures import Graph
-from compas.datastructures.datastructure import Datastructure
-from compas.datastructures.attributes import VertexAttributeView
+from compas.datastructures import Mesh
+from compas.datastructures.attributes import CellAttributeView
 from compas.datastructures.attributes import EdgeAttributeView
 from compas.datastructures.attributes import FaceAttributeView
-from compas.datastructures.attributes import CellAttributeView
-
+from compas.datastructures.attributes import VertexAttributeView
+from compas.datastructures.datastructure import Datastructure
 from compas.files import OBJ
-
 from compas.geometry import Line
 from compas.geometry import Point
 from compas.geometry import Polygon
 from compas.geometry import Polyhedron
 from compas.geometry import Vector
+from compas.geometry import add_vectors
+from compas.geometry import bestfit_plane
+from compas.geometry import bounding_box
 from compas.geometry import centroid_points
 from compas.geometry import centroid_polygon
 from compas.geometry import centroid_polyhedron
@@ -26,17 +27,12 @@ from compas.geometry import distance_point_point
 from compas.geometry import length_vector
 from compas.geometry import normal_polygon
 from compas.geometry import normalize_vector
-from compas.geometry import volume_polyhedron
-from compas.geometry import add_vectors
-from compas.geometry import bestfit_plane
 from compas.geometry import project_point_plane
 from compas.geometry import scale_vector
 from compas.geometry import subtract_vectors
-from compas.geometry import bounding_box
-
-from compas.utilities import pairwise
-
+from compas.geometry import volume_polyhedron
 from compas.tolerance import TOL
+from compas.utilities import pairwise
 
 
 class CellNetwork(Datastructure):
@@ -73,7 +69,7 @@ class CellNetwork(Datastructure):
     >>> from compas.datastructures import CellNetwork
     >>> cell_network = CellNetwork()
     >>> vertices = [(0, 0, 0), (0, 1, 0), (1, 1, 0), (1, 0, 0), (0, 0, 1), (1, 0, 1), (1, 1, 1), (0, 1, 1)]
-    >>> faces = [[0, 1, 2, 3], [0, 3, 5, 4],[3, 2, 6, 5], [2, 1, 7, 6],[1, 0, 4, 7],[4, 5, 6, 7]]
+    >>> faces = [[0, 1, 2, 3], [0, 3, 5, 4], [3, 2, 6, 5], [2, 1, 7, 6], [1, 0, 4, 7], [4, 5, 6, 7]]
     >>> cells = [[0, 1, 2, 3, 4, 5]]
     >>> [network.add_vertex(x=x, y=y, z=z) for x, y, z in vertices]
     >>> [cell_network.add_face(fverts) for fverts in faces]
@@ -227,15 +223,7 @@ class CellNetwork(Datastructure):
 
         return cell_network
 
-    def __init__(
-        self,
-        default_vertex_attributes=None,
-        default_edge_attributes=None,
-        default_face_attributes=None,
-        default_cell_attributes=None,
-        name=None,
-        **kwargs
-    ):
+    def __init__(self, default_vertex_attributes=None, default_edge_attributes=None, default_face_attributes=None, default_cell_attributes=None, name=None, **kwargs):
         super(CellNetwork, self).__init__(kwargs, name=name)
         self._max_vertex = -1
         self._max_face = -1
@@ -844,7 +832,7 @@ class CellNetwork(Datastructure):
             del self._plane[v][u][face]
         del self._face[face]
         if face in self._face_data:
-            del self._face_data[key]
+            del self._face_data[face]
 
     def delete_cell(self, cell):
         # remove the cell from the faces
@@ -859,11 +847,6 @@ class CellNetwork(Datastructure):
         del self._cell[cell]
         if cell in self._cell_data:
             del self._cell_data[cell]
-
-
-
-
-
 
     # def delete_cell(self, cell):
     #     """Delete a cell from the cell network.
