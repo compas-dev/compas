@@ -131,6 +131,11 @@ class CellNetwork(Datastructure):
                 },
                 "additionalProperties": False,
             },
+            "edge_data": {
+                "type": "object",
+                "patternProperties": {"^\\([0-9]+(, [0-9]+){3, }\\)$": {"type": "object"}},
+                "additionalProperties": False,
+            },
             "face_data": {
                 "type": "object",
                 "patternProperties": {"^\\([0-9]+(, [0-9]+){3, }\\)$": {"type": "object"}},
@@ -155,6 +160,7 @@ class CellNetwork(Datastructure):
             "edge",
             "face",
             "cell",
+            "edge_data",
             "face_data",
             "cell_data",
             "max_vertex",
