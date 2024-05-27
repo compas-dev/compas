@@ -90,7 +90,7 @@ The cell network contains mixed topologic entities such as cells, faces, edges a
 >>> cell_network.number_of_cells()
 6
 
-An edge can be assigned to any number of faces, or to none.
+An edge can be assigned to any number of faces, or to none. If an edge is assigned to more than 2 faces, it is non-manifold.
 
 >>> cell_network.edge_faces((2, 6))
 [2, 3, 39]
@@ -100,6 +100,7 @@ An edge can be assigned to any number of faces, or to none.
 []
 >>> cell_network.edges_without_face()
 [(43, 34)]
+>>> nme = cell_network.nonmanifold_edges()
 
 A face can be at maximum assigned to two cells, to one or None. A face is on the boundary if is is exactly assigned to one cell.
 
