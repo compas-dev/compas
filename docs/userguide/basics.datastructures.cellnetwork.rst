@@ -31,7 +31,7 @@ From Scratch
 >>> from compas.datastructures import CellNetwork
 >>> cell_network = CellNetwork()
 >>> vertices = [(0, 0, 0), (0, 1, 0), (1, 1, 0), (1, 0, 0), (0, 0, 1), (1, 0, 1), (1, 1, 1), (0, 1, 1)]
->>> faces = [[0, 1, 2, 3], [0, 3, 5, 4],[3, 2, 6, 5], [2, 1, 7, 6],[1, 0, 4, 7],[4, 5, 6, 7]]
+>>> faces = [[0, 1, 2, 3], [0, 3, 5, 4], [3, 2, 6, 5], [2, 1, 7, 6], [1, 0, 4, 7], [4, 5, 6, 7]]
 >>> cells = [[0, 1, 2, 3, 4, 5]]
 >>> vertices = [cell_network.add_vertex(x=x, y=y, z=z) for x, y, z in vertices]
 >>> faces = [cell_network.add_face(fverts) for fverts in faces]
