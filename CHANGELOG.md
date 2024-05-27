@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.tolerance.Tolerance.angulardeflection`.
 * Added `compas.tolerance.Tolerance.update_from_dict`.
 * Added `compas.scene.SceneObject.scene` attribute.
+* Added `compas.datastructures.HashTree` and `compas.datastructures.HashNode`.
 
 ### Changed
 
