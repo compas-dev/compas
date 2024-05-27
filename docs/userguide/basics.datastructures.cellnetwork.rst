@@ -33,9 +33,9 @@ From Scratch
 >>> vertices = [(0, 0, 0), (0, 1, 0), (1, 1, 0), (1, 0, 0), (0, 0, 1), (1, 0, 1), (1, 1, 1), (0, 1, 1)]
 >>> faces = [[0, 1, 2, 3], [0, 3, 5, 4],[3, 2, 6, 5], [2, 1, 7, 6],[1, 0, 4, 7],[4, 5, 6, 7]]
 >>> cells = [[0, 1, 2, 3, 4, 5]]
->>> [cell_network.add_vertex(x=x, y=y, z=z) for x, y, z in vertices]
->>> [cell_network.add_face(fverts) for fverts in faces]
->>> [cell_network.add_cell(fkeys) for fkeys in cells]
+>>> vertices = [cell_network.add_vertex(x=x, y=y, z=z) for x, y, z in vertices]
+>>> faces = [cell_network.add_face(fverts) for fverts in faces]
+>>> cells = [cell_network.add_cell(fkeys) for fkeys in cells]
 >>> print(cell_network)
 <CellNetwork with 8 vertices, 6 faces, 1 cells, 12 edges>
 
@@ -96,6 +96,8 @@ An edge can be assigned to any number of faces, or to none.
 [2, 3, 39]
 >>> cell_network.edge_faces((1, 10))
 [8]
+>>> cell_network.edge_faces((43, 34))
+[]
 >>> cell_network.edges_without_face()
 [(43, 34)]
 
@@ -113,7 +115,7 @@ A face can be at maximum assigned to two cells, to one or None. A face is on the
 
 If all cells are connected, those faces form a closed cell as well:
 
->>> cell_network.do_faces_form_a_closed_cell(boundary)
+>>> cell_network.is_faces_closed(boundary)
 True
 
 This shows only the faces on the boundary displayed.

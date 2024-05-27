@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.geometry.Brep.from_plane`.
 * Added `compas.tolerance.Tolerance.angulardeflection`.
 * Added `compas.scene.SceneObject.scene` attribute.
-* Added `compas.datastructures.CellNetwork.do_faces_form_a_closed_cell`
+* Added `compas.datastructures.CellNetwork.is_faces_closed`
 * Added `compas.datastructures.CellNetwork.delete_edge`
 * Added `compas.datastructures.CellNetwork.delete_cell`
 * Added `compas.datastructures.CellNetwork.delete_face`

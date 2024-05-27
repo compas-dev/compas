@@ -639,7 +639,7 @@ class CellNetwork(Datastructure):
             return None
         return mesh
 
-    def do_faces_form_a_closed_cell(self, faces):
+    def is_faces_closed(self, faces):
         """Checks if the faces form a closed cell."""
         mesh = self._faces_to_unified_mesh(faces)
         if mesh:
