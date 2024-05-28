@@ -10,6 +10,7 @@ from compas.geometry import Circle
 from compas.geometry import Frame
 from compas.geometry import Line
 from compas.geometry import transform_points
+from compas.itertools import pairwise
 
 from .shape import Shape
 
@@ -173,6 +174,80 @@ class Sphere(Shape):
         return cls(frame=frame, radius=radius)
 
     # ==========================================================================
+    # Discretisation
+    # ==========================================================================
+
+    def compute_vertices(self):
+        """Compute the vertices of the discrete representation of the sphere."""
+        u = self.resolution_u
+        v = self.resolution_v
+
+        theta = pi / v
+        phi = pi * 2 / u
+        hpi = pi * 0.5
+
+        x, y, z = 0, 0, 0
+
+        vertices = []
+        for i in range(1, v):
+            for j in range(u):
+                tx = self.radius * cos(i * theta - hpi) * cos(j * phi) + x
+                ty = self.radius * cos(i * theta - hpi) * sin(j * phi) + y
+                tz = self.radius * sin(i * theta - hpi) + z
+                vertices.append([tx, ty, tz])
+
+        vertices.append([x, y, z + self.radius])
+        vertices.append([x, y, z - self.radius])
+
+        vertices = transform_points(vertices, self.transformation)
+        return vertices
+
+    def compute_faces(self):
+        """Compute the faces of the discrete representation of the sphere."""
+        u = self.resolution_u
+        v = self.resolution_v
+
+        vertices = self._vertices
+
+        faces = []
+
+        # south pole triangle fan
+        sp = len(vertices) - 1
+        for j in range(u):
+            faces.append([sp, (j + 1) % u, j])
+
+        for i in range(v - 2):
+            for j in range(u):
+                jj = (j + 1) % u
+                a = i * u + j
+                b = i * u + jj
+                c = (i + 1) * u + jj
+                d = (i + 1) * u + j
+                faces.append([a, b, c, d])
+
+        # north pole triangle fan
+        np = len(vertices) - 2
+        for j in range(u):
+            nc = len(vertices) - 3 - j
+            nn = len(vertices) - 3 - (j + 1) % u
+            faces.append([np, nn, nc])
+
+        return faces
+
+    def compute_edges(self):
+        """Compute the edges of the discrete representation of the sphere."""
+        edges = []
+        seen = set()
+        for face in self.faces:
+            for u, v in pairwise(face + face[:1]):
+                if (u, v) not in seen:
+                    seen.add((u, v))
+                    seen.add((v, u))
+                    edges.append((u, v))
+
+        return edges
+
+    # ==========================================================================
     # Conversions
     # ==========================================================================
 
@@ -199,65 +274,11 @@ class Sphere(Shape):
             with each face defined as a list of indices into the list of vertices.
 
         """
-        if u < 3:
-            raise ValueError("The value for u should be u > 3.")
-        if v < 3:
-            raise ValueError("The value for v should be v > 3.")
-
-        theta = pi / v
-        phi = pi * 2 / u
-        hpi = pi * 0.5
-
-        x, y, z = 0, 0, 0
-
-        vertices = []
-        for i in range(1, v):
-            for j in range(u):
-                tx = self.radius * cos(i * theta - hpi) * cos(j * phi) + x
-                ty = self.radius * cos(i * theta - hpi) * sin(j * phi) + y
-                tz = self.radius * sin(i * theta - hpi) + z
-                vertices.append([tx, ty, tz])
-
-        vertices.append([x, y, z + self.radius])
-        vertices.append([x, y, z - self.radius])
-
-        faces = []
-
-        # south pole triangle fan
-        sp = len(vertices) - 1
-        for j in range(u):
-            faces.append([sp, (j + 1) % u, j])
-
-        for i in range(v - 2):
-            for j in range(u):
-                jj = (j + 1) % u
-                a = i * u + j
-                b = i * u + jj
-                c = (i + 1) * u + jj
-                d = (i + 1) * u + j
-                faces.append([a, b, c, d])
-
-        # north pole triangle fan
-        np = len(vertices) - 2
-        for j in range(u):
-            nc = len(vertices) - 3 - j
-            nn = len(vertices) - 3 - (j + 1) % u
-            faces.append([np, nn, nc])
-
-        if triangulated:
-            triangles = []
-            for face in faces:
-                if len(face) == 4:
-                    triangles.append(face[0:3])
-                    triangles.append([face[0], face[2], face[3]])
-                else:
-                    triangles.append(face)
-            faces = triangles
-
-        # transform the vertices to world coordinates
-        vertices = transform_points(vertices, self.transformation)
-
-        return vertices, faces
+        self.resolution_u = u
+        self.resolution_v = v
+        self.compute_vertices()
+        self.compute_edges_and_faces(triangulated=triangulated)
+        return self._vertices, self._faces
 
     def to_brep(self):
         """Returns a BRep representation of the sphere.
