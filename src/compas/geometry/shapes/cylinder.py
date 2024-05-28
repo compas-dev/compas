@@ -232,7 +232,7 @@ class Cylinder(Shape):
     # Conversions
     # =============================================================================
 
-    def to_vertices_and_faces(self, u=16, triangulated=False):
+    def to_vertices_and_faces(self, u=16, triangulated=False, **kwargs):
         """Returns a list of vertices and faces.
 
         Parameters

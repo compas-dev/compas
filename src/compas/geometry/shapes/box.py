@@ -477,7 +477,7 @@ class Box(Shape):
     # Conversions
     # ==========================================================================
 
-    def to_vertices_and_faces(self, triangulated=False):
+    def to_vertices_and_faces(self, triangulated=False, **kwargs):
         """Returns a list of vertices and faces.
 
         Parameters
