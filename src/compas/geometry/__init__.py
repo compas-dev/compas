@@ -385,6 +385,9 @@ from .curves.arc import Arc
 from .curves.bezier import Bezier
 from .curves.nurbs import NurbsCurve
 
+from .polygon import Polygon
+from .polyhedron import Polyhedron
+
 from .surfaces.surface import Surface
 from .surfaces.spherical import SphericalSurface
 from .surfaces.cylindrical import CylindricalSurface
@@ -400,9 +403,6 @@ from .shapes.cone import Cone
 from .shapes.cylinder import Cylinder
 from .shapes.sphere import Sphere
 from .shapes.torus import Torus
-
-from .polygon import Polygon
-from .polyhedron import Polyhedron
 
 from .brep.errors import (
     BrepError,
