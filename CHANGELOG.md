@@ -30,6 +30,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.tolerance.Tolerance.angulardeflection`.
 * Added `compas.tolerance.Tolerance.update_from_dict`.
 * Added `compas.scene.SceneObject.scene` attribute.
+* Added `compas.datastructures.CellNetwork.is_faces_closed`
+* Added `compas.datastructures.CellNetwork.delete_edge`
+* Added `compas.datastructures.CellNetwork.delete_cell`
+* Added `compas.datastructures.CellNetwork.delete_face`
+* Added `compas.datastructures.CellNetwork.cells_to_graph`
+* Added `compas.datastructures.CellNetwork.face_plane`
+* Added `compas.datastructures.CellNetwork.cell_volume`
+* Added `compas.datastructures.CellNetwork.cell_neighbors`
 
 ### Changed
 
