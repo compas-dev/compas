@@ -337,16 +337,6 @@ class Capsule(Shape):
 
         return vertices, faces
 
-    def to_brep(self):
-        """Returns a BRep representation of the capsule.
-
-        Returns
-        -------
-        :class:`compas.brep.Brep`
-
-        """
-        raise NotImplementedError
-
     # =============================================================================
     # Transformations
     # =============================================================================
