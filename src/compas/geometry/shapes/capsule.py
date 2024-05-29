@@ -12,6 +12,7 @@ from compas.geometry import Line
 from compas.geometry import Plane
 from compas.geometry import Transformation
 from compas.geometry import transform_points
+from compas.itertools import pairwise
 
 from .shape import Shape
 
@@ -240,40 +241,20 @@ class Capsule(Shape):
         return cls(frame=circle.frame, radius=circle.radius, height=height)
 
     # =============================================================================
-    # Conversions
+    # Discretisation
     # =============================================================================
 
-    def to_vertices_and_faces(self, u=16, v=16, triangulated=False):
-        """Returns a list of vertices and faces.
-
-        Note that the vertex coordinates are defined with respect to the global coordinate system,
-        and not to the local coordinate system of the capsule.
-
-        Parameters
-        ----------
-        u : int, optional
-            Number of faces in the 'u' direction.
-        v : int, optional
-            Number of faces in the 'v' direction.
-        triangulated: bool, optional
-            If True, triangulate the faces.
+    def compute_vertices(self):  # type: () -> list[list[float]]
+        """Compute the vertices of the discrete representation of the capsule.
 
         Returns
         -------
-        list[list[float]], list[list[int]]
-            A list of vertex locations, and a list of faces,
-            with each face defined as a list of indices into the list of vertices.
-
-        Raises
-        ------
-        ValueError
-            If the value for ``u`` or ``v`` is smaller than 3.
+        list[list[float]]
 
         """
-        if u < 3:
-            raise ValueError("The value for u should be u > 3.")
-        if v < 3:
-            raise ValueError("The value for v should be v > 3.")
+        u = self.resolution_u
+        v = self.resolution_v
+
         if v % 2 == 1:
             v += 1
 
@@ -300,6 +281,25 @@ class Capsule(Shape):
         vertices.append([0, 0, halfheight + self.radius])
         vertices.append([0, 0, -halfheight - self.radius])
 
+        vertices = transform_points(vertices, self.transformation)
+        return vertices
+
+    def compute_faces(self):  # type: () -> list[list[int]]
+        """Compute the faces of the discrete representation of the capsule.
+
+        Returns
+        -------
+        list[list[int]]
+
+        """
+        u = self.resolution_u
+        v = self.resolution_v
+
+        if v % 2 == 1:
+            v += 1
+
+        vertices = self._vertices
+
         faces = []
 
         # south pole triangle fan
@@ -323,19 +323,11 @@ class Capsule(Shape):
             nn = len(vertices) - 3 - (j + 1) % u
             faces.append([np, nn, nc])
 
-        if triangulated:
-            triangles = []
-            for face in faces:
-                if len(face) == 4:
-                    triangles.append(face[0:3])
-                    triangles.append([face[0], face[2], face[3]])
-                else:
-                    triangles.append(face)
-            faces = triangles
+        return faces
 
-        vertices = transform_points(vertices, self.transformation)
-
-        return vertices, faces
+    # =============================================================================
+    # Conversions
+    # =============================================================================
 
     # =============================================================================
     # Transformations

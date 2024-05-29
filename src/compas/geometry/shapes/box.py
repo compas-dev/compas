@@ -269,28 +269,6 @@ class Box(Shape):
     def top(self):
         return [4, 5, 6, 7]
 
-    @property
-    def points(self):
-        point = self.frame.point
-        xaxis = self.frame.xaxis
-        yaxis = self.frame.yaxis
-        zaxis = self.frame.zaxis
-
-        dx = 0.5 * self.xsize
-        dy = 0.5 * self.ysize
-        dz = 0.5 * self.zsize
-
-        a = point + xaxis * -dx + yaxis * -dy + zaxis * -dz
-        b = point + xaxis * -dx + yaxis * +dy + zaxis * -dz
-        c = point + xaxis * +dx + yaxis * +dy + zaxis * -dz
-        d = point + xaxis * +dx + yaxis * -dy + zaxis * -dz
-        e = a + zaxis * self.zsize
-        f = d + zaxis * self.zsize
-        g = c + zaxis * self.zsize
-        h = b + zaxis * self.zsize
-
-        return [a, b, c, d, e, f, g, h]
-
     # ==========================================================================
     # Constructors
     # ==========================================================================
@@ -474,24 +452,11 @@ class Box(Shape):
         return cls.from_bounding_box(bbox)
 
     # ==========================================================================
-    # Conversions
+    # Discretisation
     # ==========================================================================
 
-    def to_vertices_and_faces(self, triangulated=False, **kwargs):
-        """Returns a list of vertices and faces.
-
-        Parameters
-        ----------
-        triangulated: bool, optional
-            If True, triangulate the faces.
-
-        Returns
-        -------
-        list[list[float]], list[list[int]]
-            A list of vertex locations, and a list of faces,
-            with each face defined as a list of indices into the list of vertices.
-
-        """
+    def compute_vertices(self):  # type: () -> list[list[float]]
+        """Compute the vertices of the discrete representation of the box."""
         point = self.frame.point
         xaxis = self.frame.xaxis
         yaxis = self.frame.yaxis
@@ -510,39 +475,19 @@ class Box(Shape):
         g = c + zaxis * self.zsize
         h = b + zaxis * self.zsize
 
-        vertices = [a, b, c, d, e, f, g, h]
-        _faces = [self.bottom, self.front, self.right, self.back, self.left, self.top]
+        return [a, b, c, d, e, f, g, h]
 
-        if triangulated:
-            faces = []
-            for a, b, c, d in _faces:
-                faces.append([a, b, c])
-                faces.append([a, c, d])
-        else:
-            faces = _faces
+    def compute_faces(self):  # type: () -> list[list[int]]
+        """Compute the faces of the discrete representation of the box."""
+        return [self.bottom, self.front, self.right, self.back, self.left, self.top]
 
-        return vertices, faces
+    def compute_edges(self):  # type: () -> list[tuple[int, int]]
+        """Compute the faces of the discrete representation of the box."""
+        return [(0, 1), (1, 2), (2, 3), (3, 0), (4, 5), (5, 6), (6, 7), (7, 4), (0, 4), (1, 5), (2, 6), (3, 7)]
 
-    def to_mesh(self, triangulated=False):
-        """Returns a mesh representation of the box.
-
-        Parameters
-        ----------
-        triangulated: bool, optional
-            If True, triangulate the faces.
-
-        Returns
-        -------
-        :class:`compas.datastructures.Mesh`
-
-        """
-        from compas.datastructures import Mesh
-
-        vertices, faces = self.to_vertices_and_faces(triangulated=triangulated)
-
-        mesh = Mesh.from_vertices_and_faces(vertices, faces)
-
-        return mesh
+    # ==========================================================================
+    # Conversions
+    # ==========================================================================
 
     def to_brep(self):
         """Returns a BREP representation of the box.

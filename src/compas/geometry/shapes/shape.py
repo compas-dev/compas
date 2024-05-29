@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import compas  # noqa: F401
 from compas.geometry import Frame
 from compas.geometry import Geometry
 from compas.geometry import Line
@@ -9,6 +10,7 @@ from compas.geometry import Point
 from compas.geometry import Polygon
 from compas.geometry import Rotation
 from compas.geometry import Transformation
+from compas.itertools import pairwise
 
 
 class Shape(Geometry):
@@ -46,7 +48,7 @@ class Shape(Geometry):
 
     """
 
-    def __init__(self, frame=None, name=None):
+    def __init__(self, frame=None, name=None):  # type: (Frame | None, str | None) -> None
         super(Shape, self).__init__(name=name)
         self._frame = None
         self._transformation = None
@@ -67,13 +69,13 @@ class Shape(Geometry):
     # =============================================================================
 
     @property
-    def frame(self):
+    def frame(self):  # type: () -> Frame
         if not self._frame:
             self._frame = Frame.worldXY()
         return self._frame
 
     @frame.setter
-    def frame(self, frame):
+    def frame(self, frame):  # type: (Frame) -> None
         if not frame:
             self._frame = None
         else:
@@ -81,25 +83,25 @@ class Shape(Geometry):
         self._transformation = None
 
     @property
-    def transformation(self):
+    def transformation(self):  # type: () -> Transformation
         if not self._transformation:
             self._transformation = Transformation.from_frame_to_frame(Frame.worldXY(), self.frame)
         return self._transformation
 
     @property
-    def area(self):
+    def area(self):  # type: () -> float
         raise NotImplementedError
 
     @property
-    def volume(self):
+    def volume(self):  # type: () -> float
         raise NotImplementedError
 
     @property
-    def resolution_u(self):
+    def resolution_u(self):  # type: () -> int
         return self._resolution_u
 
     @resolution_u.setter
-    def resolution_u(self, u):
+    def resolution_u(self, u):  # type: (int) -> None
         if u < 3:
             raise ValueError("The value for u should be u > 3.")
         self._resolution_u = u
@@ -109,11 +111,11 @@ class Shape(Geometry):
         self._triangles = None
 
     @property
-    def resolution_v(self):
+    def resolution_v(self):  # type: () -> int
         return self._resolution_v
 
     @resolution_v.setter
-    def resolution_v(self, v):
+    def resolution_v(self, v):  # type: (int) -> None
         if v < 3:
             raise ValueError("The value for v should be v > 3.")
         self._resolution_v = v
@@ -123,49 +125,46 @@ class Shape(Geometry):
         self._triangles = None
 
     @property
-    def vertices(self):
+    def vertices(self):  # type: () -> list[list[float]]
         self._vertices = self.compute_vertices()
         return self._vertices
 
     @property
-    def edges(self):
+    def edges(self):  # type: () -> list[tuple[int, int]]
         if not self._edges:
             self._edges = self.compute_edges()
         return self._edges
 
     @property
-    def faces(self):
+    def faces(self):  # type: () -> list[list[int]]
         if not self._faces:
             self._faces = self.compute_faces()
         return self._faces
 
     @property
-    def triangles(self):
+    def triangles(self):  # type: () -> list[tuple[int, int, int]]
         if not self._triangles:
-            self._triangles = []
-            for face in self.faces:
-                if len(face) == 4:
-                    a, b, c, d = face
-                    self._triangles.append((a, b, c))
-                    self._triangles.append((a, c, d))
-                else:
-                    self._triangles.append(face)
+            self._triangles = self.compute_triangles()
         return self._triangles
 
     @property
-    def points(self):
+    def points(self):  # type: () -> list[Point]
         vertices = self.compute_vertices()
         return [Point(x, y, z) for x, y, z in vertices]
 
     @property
-    def lines(self):
+    def lines(self):  # type: () -> list[Line]
         vertices = self.compute_vertices()
         return [Line(vertices[u], vertices[v]) for u, v in self.edges]
 
     @property
-    def polygons(self):
+    def polygons(self):  # type: () -> list[Polygon]
         vertices = self.compute_vertices()
         return [[Polygon([vertices[v] for v in face])] for face in self.faces]
+
+    # =============================================================================
+    # Constructors
+    # =============================================================================
 
     # =============================================================================
     # Discretisation
@@ -174,21 +173,52 @@ class Shape(Geometry):
     def compute_vertices(self):
         raise NotImplementedError
 
-    def compute_edges(self):
-        raise NotImplementedError
-
     def compute_faces(self):
         raise NotImplementedError
 
-    # =============================================================================
-    # Constructors
-    # =============================================================================
+    def compute_edges(self):  # type: () -> list[tuple[int, int]]
+        """Compute the edges of the discrete representation of the shape.
+
+        Returns
+        -------
+        list[tuple[int, int]]
+
+        """
+        edges = []
+        seen = set()
+        for face in self.faces:
+            for u, v in pairwise(face + face[:1]):
+                if (u, v) not in seen:
+                    seen.add((u, v))
+                    seen.add((v, u))
+                    edges.append((u, v))
+
+        return edges
+
+    def compute_triangles(self):  # type: () -> list[tuple[int, int, int]]
+        """Compute the triangles of the discrete representation of the shape.
+
+        Returns
+        -------
+        list[tuple[int, int, int]]
+
+        """
+        triangles = []
+        for face in self.faces:
+            if len(face) == 4:
+                a, b, c, d = face
+                triangles.append((a, b, c))
+                triangles.append((a, c, d))
+            else:
+                triangles.append(face)
+        return triangles
 
     # =============================================================================
     # Conversions
     # =============================================================================
 
     def to_vertices_and_faces(self, triangulated=True, u=None, v=None):
+        # type: (bool, int | None, int | None) -> tuple[list[list[float]], list[list[int]]]
         """Convert the shape to a list of vertices and faces.
 
         Parameters
@@ -222,6 +252,7 @@ class Shape(Geometry):
         return vertices, faces
 
     def to_polyhedron(self, triangulated=True, u=None, v=None):
+        # type: (bool, int | None, int | None) -> compas.geometry.Polyhedron
         """Convert the shape to a polyhedron.
 
         Parameters
@@ -256,6 +287,7 @@ class Shape(Geometry):
         return Polyhedron(vertices, faces)
 
     def to_mesh(self, triangulated=True, u=None, v=None):
+        # type: (bool, int | None, int | None) -> compas.datastructures.Mesh
         """Returns a mesh representation of the box.
 
         Parameters

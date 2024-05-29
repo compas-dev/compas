@@ -10,7 +10,6 @@ from compas.geometry import Circle
 from compas.geometry import Frame
 from compas.geometry import Line
 from compas.geometry import transform_points
-from compas.itertools import pairwise
 
 from .shape import Shape
 
@@ -177,8 +176,14 @@ class Sphere(Shape):
     # Discretisation
     # ==========================================================================
 
-    def compute_vertices(self):
-        """Compute the vertices of the discrete representation of the sphere."""
+    def compute_vertices(self):  # type: () -> list[float]
+        """Compute the vertices of the discrete representation of the sphere.
+
+        Returns
+        -------
+        list[list[float]]
+
+        """
         u = self.resolution_u
         v = self.resolution_v
 
@@ -202,8 +207,14 @@ class Sphere(Shape):
         vertices = transform_points(vertices, self.transformation)
         return vertices
 
-    def compute_faces(self):
-        """Compute the faces of the discrete representation of the sphere."""
+    def compute_faces(self):  # type: () -> list[list[int]]
+        """Compute the faces of the discrete representation of the sphere.
+
+        Returns
+        -------
+        list[list[int]]
+
+        """
         u = self.resolution_u
         v = self.resolution_v
 
@@ -234,51 +245,9 @@ class Sphere(Shape):
 
         return faces
 
-    def compute_edges(self):
-        """Compute the edges of the discrete representation of the sphere."""
-        edges = []
-        seen = set()
-        for face in self.faces:
-            for u, v in pairwise(face + face[:1]):
-                if (u, v) not in seen:
-                    seen.add((u, v))
-                    seen.add((v, u))
-                    edges.append((u, v))
-
-        return edges
-
     # ==========================================================================
     # Conversions
     # ==========================================================================
-
-    def to_vertices_and_faces(self, u=16, v=16, triangulated=False):
-        """Returns a list of vertices and faces
-
-        The vertex positions are in world coordinates.
-
-        Parameters
-        ----------
-        u : int, optional
-            Number of faces in the "u" direction.
-        v : int, optional
-            Number of faces in the "v" direction.
-        triangulated: bool, optional
-            If True, triangulate the faces.
-
-        Returns
-        -------
-        list[list[float]]
-            A list of vertex locations.
-        list[list[int]]
-            And a list of faces,
-            with each face defined as a list of indices into the list of vertices.
-
-        """
-        self.resolution_u = u
-        self.resolution_v = v
-        self.compute_vertices()
-        self.compute_edges_and_faces(triangulated=triangulated)
-        return self._vertices, self._faces
 
     def to_brep(self):
         """Returns a BRep representation of the sphere.
@@ -295,36 +264,6 @@ class Sphere(Shape):
     # =============================================================================
     # Transformations
     # =============================================================================
-
-    # def transform(self, transformation):
-    #     """Transform the sphere.
-
-    #     Parameters
-    #     ----------
-    #     transformation : :class:`compas.geometry.Transformation`
-    #         The transformation used to transform the Sphere.
-    #         Note that non-similarity preserving transformations will not change
-    #         the sphere into an ellipsoid. In such case, the radius of the sphere
-    #         will be scaled by the largest scale factor of the threee axis.
-
-    #     Returns
-    #     -------
-    #     None
-
-    #     Examples
-    #     --------
-    #     >>> from compas.geometry import Frame
-    #     >>> from compas.geometry import Transformation
-    #     >>> from compas.geometry import Sphere
-    #     >>> sphere = Sphere(Point(1, 1, 1), 5)
-    #     >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-    #     >>> T = Transformation.from_frame(frame)
-    #     >>> sphere.transform(T)
-
-    #     """
-    #     self.frame.transform(transformation)
-    #     Sc, _, _, _, _ = transformation.decomposed()
-    #     self.radius *= max([Sc[0, 0], Sc[1, 1], Sc[2, 2]])
 
     def scale(self, factor):
         """Scale the sphere.
