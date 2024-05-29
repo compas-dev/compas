@@ -12,11 +12,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `maxiter` parameter to `compas.geometry.icp_numpy`.
 
 ### Changed
-
+* Changed `compas_ghpython/utilities/drawing.py` to remove `System` dependency.
 * Fixed bug in `compas.geometry.ic_numpy`, which was caused by returning only the last transformation of the iteration process.
 
 ### Removed
-
+* Removed `System`dependency in `compas_ghpython/utilities/drawing.py`.
 
 ## [2.1.1] 2024-05-14
 
