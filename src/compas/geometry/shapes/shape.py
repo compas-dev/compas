@@ -12,6 +12,13 @@ from compas.geometry import Rotation
 from compas.geometry import Transformation
 from compas.itertools import pairwise
 
+if not compas.IPY:
+    from typing import TYPE_CHECKING
+
+    if TYPE_CHECKING:
+        import compas.datastructures  # noqa: F401
+        import compas.geometry  # noqa: F401
+
 
 class Shape(Geometry):
     """Base class for geometric shapes.
