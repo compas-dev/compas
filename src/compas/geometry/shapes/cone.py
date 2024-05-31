@@ -253,6 +253,7 @@ class Cone(Shape):
             x = radius * cos(i * a)
             y = radius * sin(i * a)
             vertices.append([x, y, 0])  # type: ignore
+        vertices.append([0, 0, self.height])
 
         vertices = transform_points(vertices, self.transformation)
         return vertices
