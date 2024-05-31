@@ -253,9 +253,9 @@ class Shape(Geometry):
             self.resolution_v = v
         vertices = self.vertices
         if triangulated:
-            faces = self.faces
-        else:
             faces = self.triangles
+        else:
+            faces = self.faces
         return vertices, faces
 
     def to_polyhedron(self, triangulated=True, u=None, v=None):
