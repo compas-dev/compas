@@ -483,7 +483,7 @@ class Box(Shape):
 
     def compute_edges(self):  # type: () -> list[tuple[int, int]]
         """Compute the faces of the discrete representation of the box."""
-        return [(0, 1), (1, 2), (2, 3), (3, 0), (4, 5), (5, 6), (6, 7), (7, 4), (0, 4), (1, 5), (2, 6), (3, 7)]
+        return [(0, 1), (1, 2), (2, 3), (3, 0), (4, 5), (5, 6), (6, 7), (7, 4), (0, 4), (1, 7), (2, 6), (3, 5)]
 
     # ==========================================================================
     # Conversions
