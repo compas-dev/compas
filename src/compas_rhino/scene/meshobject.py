@@ -205,13 +205,13 @@ class RhinoMeshObject(RhinoSceneObject, MeshObject):
             self._guids.append(self._guid_mesh)
 
         elif self.show_faces:
-            self._guids += self.draw_faces(faces=self.show_faces, color=self.facecolor, group=self.group)
+            self._guids += self.draw_faces(faces=self.show_faces, group=self.group)
 
         if self.show_vertices:
-            self._guids += self.draw_vertices(vertices=self.show_vertices, color=self.vertexcolor, group=self.group)
+            self._guids += self.draw_vertices(vertices=self.show_vertices, group=self.group)
 
         if self.show_edges:
-            self._guids += self.draw_edges(edges=self.show_edges, color=self.edgecolor, group=self.group)
+            self._guids += self.draw_edges(edges=self.show_edges, group=self.group)
 
         return self.guids
 
@@ -235,8 +235,6 @@ class RhinoMeshObject(RhinoSceneObject, MeshObject):
 
         """
         guids = []
-
-        self.vertexcolor = color
 
         if vertices is True:
             vertices = list(self.mesh.vertices())
@@ -283,8 +281,6 @@ class RhinoMeshObject(RhinoSceneObject, MeshObject):
         """
         guids = []
 
-        self.edgecolor = color
-
         if edges is True:
             edges = list(self.mesh.edges())
 
@@ -329,8 +325,6 @@ class RhinoMeshObject(RhinoSceneObject, MeshObject):
 
         """
         guids = []
-
-        self.facecolor = color
 
         if faces is True:
             faces = list(self.mesh.faces())
