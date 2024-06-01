@@ -7,6 +7,7 @@ from functools import reduce
 from operator import mul
 
 import compas.colors  # noqa: F401
+import compas.data  # noqa: F401
 import compas.datastructures  # noqa: F401
 import compas.geometry  # noqa: F401
 from compas.colors import Color
@@ -195,7 +196,6 @@ class SceneObject(TreeNode):
     @property
     def settings(self):
         # type: () -> dict
-        # The settings are all the nessessary attributes to reconstruct the scene object besides the Data item.
         settings = {
             "name": self.name,
             "color": self.color,
@@ -211,6 +211,7 @@ class SceneObject(TreeNode):
         return settings
 
     def add(self, item, **kwargs):
+        # type: (compas.data.Data, dict) -> SceneObject
         """Add a child item to the scene object.
 
         Parameters
