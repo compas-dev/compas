@@ -79,7 +79,7 @@ class MeshObject(BlenderSceneObject, BaseMeshObject):
     # draw
     # ==========================================================================
 
-    def draw(self, color: Optional[Color] = None, collection: Optional[str] = None, show_wire: bool = True) -> list[bpy.types.Object]:
+    def draw(self) -> list[bpy.types.Object]:
         """Draw the mesh.
 
         Parameters
@@ -97,14 +97,27 @@ class MeshObject(BlenderSceneObject, BaseMeshObject):
             The objects created in Blender.
 
         """
-        name = self.mesh.name  # type: ignore
-        color = Color.coerce(color) or self.color
-        mesh = conversions.mesh_to_blender(self.mesh)  # type: ignore
+        self._guids = []
 
-        obj = self.create_object(mesh, name=name)
-        self.update_object(obj, color=color, collection=collection, show_wire=show_wire)
+        if self.show_faces is True:
+            name = self.mesh.name  # type: ignore
+            color = self.color
+            mesh = conversions.mesh_to_blender(self.mesh)  # type: ignore
 
-        self._guids = [obj]
+            obj = self.create_object(mesh, name=name)
+            self.update_object(obj, color=color, collection=self.collection, show_wire=self.show_wire)
+
+            self._guids.append(obj)
+
+        elif self.show_faces:
+            self._guids += self.draw_faces(faces=self.show_faces, collection=self.collection)
+
+        if self.show_vertices:
+            self._guids += self.draw_vertices(vertices=self.show_vertices, collection=self.collection)
+
+        if self.show_edges:
+            self._guids += self.draw_edges(edges=self.show_edges, collection=self.collection)
+
         return self.guids
 
     def draw_vertices(
@@ -144,7 +157,7 @@ class MeshObject(BlenderSceneObject, BaseMeshObject):
         """
         objects = []
 
-        self.vertexcolor = color
+        # self.vertexcolor = color
 
         for vertex in vertices or self.mesh.vertices():  # type: ignore
             name = f"{self.mesh.name}.vertex.{vertex}"  # type: ignore
@@ -185,7 +198,7 @@ class MeshObject(BlenderSceneObject, BaseMeshObject):
         """
         objects = []
 
-        self.edgecolor = color
+        # self.edgecolor = color
 
         for u, v in edges or self.mesh.edges():  # type: ignore
             name = f"{self.mesh.name}.edge.{u}-{v}"  # type: ignore
@@ -226,7 +239,10 @@ class MeshObject(BlenderSceneObject, BaseMeshObject):
         """
         objects = []
 
-        self.facecolor = color
+        # self.facecolor = color
+
+        if collection:
+            collection = f"{collection}::Faces"
 
         for face in faces or self.mesh.faces():  # type: ignore
             name = f"{self.mesh.name}.face.{face}"  # type: ignore
