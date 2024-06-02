@@ -38,10 +38,14 @@ from compas.itertools import pairwise
 from compas.tolerance import TOL
 
 
-def iter_edges_from_vertices(vertices):
-    for i, u in enumerate(vertices):
-        j = (i + 1) % len(vertices)
-        yield u, vertices[j]
+def uv_from_vertices(vertices):
+    for i in range(-1, len(vertices) - 1):
+        yield vertices[i], vertices[i + 1]
+
+
+def uvw_from_vertices(vertices):
+    for i in range(-2, len(vertices) - 2):
+        yield vertices[i], vertices[i + 1], vertices[i + 2]
 
 
 class VolMesh(Datastructure):
@@ -140,6 +144,7 @@ class VolMesh(Datastructure):
 
     @property
     def __data__(self):
+        # type: () -> dict
         _cell = {}
         for c in self._cell:
             faces = []
@@ -166,6 +171,7 @@ class VolMesh(Datastructure):
 
     @classmethod
     def __from_data__(cls, data):
+        # type: (dict) -> VolMesh
         volmesh = cls(
             default_vertex_attributes=data.get("default_vertex_attributes"),
             default_edge_attributes=data.get("default_edge_attributes"),
@@ -199,6 +205,7 @@ class VolMesh(Datastructure):
         return volmesh
 
     def __init__(self, default_vertex_attributes=None, default_edge_attributes=None, default_face_attributes=None, default_cell_attributes=None, name=None, **kwargs):  # fmt: skip
+        # type: (dict | None, dict | None, dict | None, dict | None, str | None, dict) -> None
         super(VolMesh, self).__init__(kwargs, name=name)
         self._max_vertex = -1
         self._max_face = -1
@@ -224,6 +231,7 @@ class VolMesh(Datastructure):
             self.default_cell_attributes.update(default_cell_attributes)
 
     def __str__(self):
+        # type: () -> str
         tpl = "<VolMesh with {} vertices, {} faces, {} cells, {} edges>"
         return tpl.format(
             self.number_of_vertices(),
@@ -246,6 +254,7 @@ class VolMesh(Datastructure):
 
     @classmethod
     def from_meshgrid(cls, dx=10, dy=None, dz=None, nx=10, ny=None, nz=None):
+        # type: (float, float | None, float | None, int, int | None, int | None) -> VolMesh
         """Construct a volmesh from a 3D meshgrid.
 
         Parameters
@@ -311,6 +320,7 @@ class VolMesh(Datastructure):
 
     @classmethod
     def from_obj(cls, filepath, precision=None):
+        # type: (str, int | None) -> VolMesh
         """Construct a volmesh object from the data described in an OBJ file.
 
         Parameters
@@ -350,6 +360,7 @@ class VolMesh(Datastructure):
 
     @classmethod
     def from_vertices_and_cells(cls, vertices, cells):
+        # type: (list[list[float]], list[list[list[int]]]) -> VolMesh
         """Construct a volmesh object from vertices and cells.
 
         Parameters
@@ -382,6 +393,7 @@ class VolMesh(Datastructure):
     # --------------------------------------------------------------------------
 
     def to_obj(self, filepath, precision=None, **kwargs):
+        # type: (str, int | None, dict) -> None
         """Write the volmesh to an OBJ file.
 
         Parameters
@@ -413,6 +425,7 @@ class VolMesh(Datastructure):
         obj.write(self, **kwargs)
 
     def to_vertices_and_cells(self):
+        # type: () -> tuple[list[list[float]], list[list[list[int]]]]
         """Return the vertices and cells of a volmesh.
 
         Returns
@@ -436,6 +449,7 @@ class VolMesh(Datastructure):
         return vertices, cells
 
     def cell_to_mesh(self, cell):
+        # type: (int) -> Mesh
         """Construct a mesh object from from a cell of a volmesh.
 
         Parameters
@@ -457,6 +471,7 @@ class VolMesh(Datastructure):
         return Mesh.from_vertices_and_faces(vertices, faces)
 
     def cell_to_vertices_and_faces(self, cell):
+        # type: (int) -> tuple[list[list[float]], list[list[int]]]
         """Return the vertices and faces of a cell.
 
         Parameters
@@ -488,6 +503,7 @@ class VolMesh(Datastructure):
     # --------------------------------------------------------------------------
 
     def clear(self):
+        # type: () -> None
         """Clear all the volmesh data.
 
         Returns
@@ -514,6 +530,7 @@ class VolMesh(Datastructure):
         self._max_cell = -1
 
     def vertex_sample(self, size=1):
+        # type: (int) -> list[int]
         """Get the identifiers of a set of random vertices.
 
         Parameters
@@ -534,6 +551,7 @@ class VolMesh(Datastructure):
         return sample(list(self.vertices()), size)
 
     def edge_sample(self, size=1):
+        # type: (int) -> list[tuple[int, int]]
         """Get the identifiers of a set of random edges.
 
         Parameters
@@ -554,6 +572,7 @@ class VolMesh(Datastructure):
         return sample(list(self.edges()), size)
 
     def face_sample(self, size=1):
+        # type: (int) -> list[int]
         """Get the identifiers of a set of random faces.
 
         Parameters
@@ -574,6 +593,7 @@ class VolMesh(Datastructure):
         return sample(list(self.faces()), size)
 
     def cell_sample(self, size=1):
+        # type: (int) -> list[int]
         """Get the identifiers of a set of random cells.
 
         Parameters
@@ -594,6 +614,7 @@ class VolMesh(Datastructure):
         return sample(list(self.cells()), size)
 
     def vertex_index(self):
+        # type: () -> dict[int, int]
         """Returns a dictionary that maps vertex dictionary keys to the
         corresponding index in a vertex list or array.
 
@@ -610,6 +631,7 @@ class VolMesh(Datastructure):
         return {key: index for index, key in enumerate(self.vertices())}
 
     def index_vertex(self):
+        # type: () -> dict[int, int]
         """Returns a dictionary that maps the indices of a vertex list to
         keys in the vertex dictionary.
 
@@ -626,6 +648,7 @@ class VolMesh(Datastructure):
         return dict(enumerate(self.vertices()))
 
     def vertex_gkey(self, precision=None):
+        # type: (int | None) -> dict[int, str]
         """Returns a dictionary that maps vertex dictionary keys to the corresponding
         *geometric key* up to a certain precision.
 
@@ -650,6 +673,7 @@ class VolMesh(Datastructure):
         return {vertex: gkey(xyz(vertex), precision) for vertex in self.vertices()}
 
     def gkey_vertex(self, precision=None):
+        # type: (int | None) -> dict[str, int]
         """Returns a dictionary that maps *geometric keys* of a certain precision
         to the keys of the corresponding vertices.
 
@@ -678,6 +702,7 @@ class VolMesh(Datastructure):
     # --------------------------------------------------------------------------
 
     def add_vertex(self, key=None, attr_dict=None, **kwattr):
+        # type: (int | None, dict | None, dict) -> int
         """Add a vertex to the volmesh object.
 
         Parameters
@@ -722,6 +747,7 @@ class VolMesh(Datastructure):
         return key
 
     def add_halfface(self, vertices, fkey=None, attr_dict=None, **kwattr):
+        # type: (list[int], int | None, dict | None, dict) -> int
         """Add a face to the volmesh object.
 
         Parameters
@@ -757,26 +783,32 @@ class VolMesh(Datastructure):
         """
         if len(vertices) < 3:
             return
+
         if vertices[-1] == vertices[0]:
             vertices = vertices[:-1]
         vertices = [int(key) for key in vertices]
+
         if fkey is None:
             fkey = self._max_face = self._max_face + 1
         fkey = int(fkey)
         if fkey > self._max_face:
             self._max_face = fkey
+
         attr = attr_dict or {}
         attr.update(kwattr)
         self._halfface[fkey] = vertices
+
         for name, value in attr.items():
             self.face_attribute(fkey, name, value)
-        for u, v in pairwise(vertices + vertices[:1]):
+
+        for u, v, w in uvw_from_vertices(vertices):
             if v not in self._plane[u]:
                 self._plane[u][v] = {}
-            self._plane[u][v][fkey] = None
-            if u not in self._plane[v]:
-                self._plane[v][u] = {}
-            self._plane[v][u][fkey] = None
+            self._plane[u][v][w] = None
+            if v not in self._plane[w]:
+                self._plane[w][v] = {}
+            if u not in self._plane[w][v]:
+                self._plane[w][v][u] = None
 
         return fkey
 
@@ -823,19 +855,23 @@ class VolMesh(Datastructure):
         ckey = int(ckey)
         if ckey > self._max_cell:
             self._max_cell = ckey
+
         attr = attr_dict or {}
         attr.update(kwattr)
         self._cell[ckey] = {}
+
         for name, value in attr.items():
             self.cell_attribute(ckey, name, value)
+
         for vertices in faces:
             fkey = self.add_halfface(vertices)
             vertices = self.halfface_vertices(fkey)
-            for u, v in pairwise(vertices + vertices[:1]):
+
+            for u, v, w in uvw_from_vertices(vertices):
                 if u not in self._cell[ckey]:
                     self._cell[ckey][u] = {}
-                self._plane[u][v][fkey] = ckey
                 self._cell[ckey][u][v] = fkey
+                self._plane[u][v][w] = ckey
 
         return ckey
 
@@ -878,6 +914,7 @@ class VolMesh(Datastructure):
         """
         cell_vertices = self.cell_vertices(cell)
         cell_faces = self.cell_faces(cell)
+
         for face in cell_faces:
             for edge in self.halfface_halfedges(face):
                 u, v = edge
@@ -885,12 +922,14 @@ class VolMesh(Datastructure):
                     del self._edge_data[u, v]
                 if (v, u) in self._edge_data:
                     del self._edge_data[v, u]
+
         for vertex in cell_vertices:
             if len(self.vertex_cells(vertex)) == 1:
                 del self._vertex[vertex]
+
         for face in cell_faces:
             vertices = self.halfface_vertices(face)
-            for u, v in iter_edges_from_vertices(vertices):
+            for u, v in uv_from_vertices(vertices):
                 self._plane[u][v][face] = None
                 if self._plane[v][u][face] is None:
                     del self._plane[u][v][face]
@@ -899,6 +938,7 @@ class VolMesh(Datastructure):
             key = "-".join(map(str, sorted(vertices)))
             if key in self._face_data:
                 del self._face_data[key]
+
         del self._cell[cell]
         if cell in self._cell_data:
             del self._cell_data[cell]
@@ -1547,6 +1587,22 @@ class VolMesh(Datastructure):
             return 0
         return max(self.vertex_degree(vertex) for vertex in self.vertices())
 
+    def vertex_edges(self, vertex):
+        """Compute the edges connected to a given vertex.
+
+        Parameters
+        ----------
+        vertex : int
+            The vertex identifier.
+
+        Returns
+        -------
+        list[tuple[int, int]]
+            The connected edges.
+
+        """
+        return [(vertex, nbr) for nbr in self.vertex_neighbors(vertex)]
+
     def vertex_halffaces(self, vertex):
         """Return all halffaces connected to a vertex.
 
@@ -1565,15 +1621,13 @@ class VolMesh(Datastructure):
         :meth:`vertex_neighbors`, :meth:`vertex_faces`, :meth:`vertex_cells`
 
         """
-        cells = self.vertex_cells(vertex)
-        nbrs = self.vertex_neighbors(vertex)
-        halffaces = set()
-        for cell in cells:
-            for nbr in nbrs:
-                if nbr in self._cell[cell][vertex]:
-                    halffaces.add(self._cell[cell][vertex][nbr])
-                    halffaces.add(self._cell[cell][nbr][vertex])
-        return list(halffaces)
+        u = vertex
+        faces = []
+        for v in self._plane[u]:
+            for face in self._plane[u][v]:
+                if face is not None:
+                    faces.append(face)
+        return faces
 
     def vertex_cells(self, vertex):
         """Return all cells connected to a vertex.
@@ -1593,12 +1647,14 @@ class VolMesh(Datastructure):
         :meth:`vertex_neighbors`, :meth:`vertex_faces`, :meth:`vertex_halffaces`
 
         """
-        cells = set()
-        for nbr in self._plane[vertex]:
-            for cell in self._plane[vertex][nbr].values():
+        u = vertex
+        cells = []
+        for v in self._plane[u]:
+            for w in self._plane[u][v]:
+                cell = self._plane[u][v][w]
                 if cell is not None:
-                    cells.add(cell)
-        return list(cells)
+                    cells.append(cell)
+        return cells
 
     def is_vertex_on_boundary(self, vertex):
         """Verify that a vertex is on a boundary.
@@ -1740,7 +1796,7 @@ class VolMesh(Datastructure):
         seen = set()
         for face in self._halfface:
             vertices = self._halfface[face]
-            for u, v in pairwise(vertices + vertices[:1]):
+            for u, v in uv_from_vertices(vertices):
                 if (u, v) in seen or (v, u) in seen:
                     continue
                 seen.add((u, v))
@@ -2124,19 +2180,27 @@ class VolMesh(Datastructure):
         :meth:`edge_cells`
 
         """
+        # u, v = edge
+        # cells = [cell for cell in self._plane[u][v].values() if cell is not None]
+        # cell = cells[0]
+        # halffaces = []
+        # if self.is_edge_on_boundary(edge):
+        #     for cell in cells:
+        #         halfface = self._cell[cell][v][u]
+        #         if self.is_halfface_on_boundary(halfface):
+        #             break
+        # for _ in cells:
+        #     halfface = self._cell[cell][u][v]
+        #     cell = self._plane[v][u][halfface]
+        #     halffaces.append(halfface)
+        # return halffaces
         u, v = edge
-        cells = [cell for cell in self._plane[u][v].values() if cell is not None]
-        cell = cells[0]
         halffaces = []
-        if self.is_edge_on_boundary(edge):
-            for cell in cells:
-                halfface = self._cell[cell][v][u]
-                if self.is_halfface_on_boundary(halfface):
-                    break
-        for _ in cells:
-            halfface = self._cell[cell][u][v]
-            cell = self._plane[v][u][halfface]
-            halffaces.append(halfface)
+        for w in self._plane[u][v]:
+            cell = self._plane[u][v][w]
+            if cell is not None:
+                face = self._cell[cell][u][v]
+                halffaces.append(face)
         return halffaces
 
     def edge_cells(self, edge):
@@ -2871,8 +2935,8 @@ class VolMesh(Datastructure):
         :meth:`halfface_opposite_cell`
 
         """
-        u, v = self._halfface[halfface][:2]
-        return self._plane[u][v][halfface]
+        u, v, w = self._halfface[halfface][:3]
+        return self._plane[u][v][w]
 
     def halfface_opposite_cell(self, halfface):
         """The cell to which the opposite halfface belongs to.
@@ -2892,8 +2956,8 @@ class VolMesh(Datastructure):
         :meth:`halfface_cell`
 
         """
-        u, v = self._halfface[halfface][:2]
-        return self._plane[v][u][halfface]
+        u, v, w = self._halfface[halfface][:3]
+        return self._plane[w][v][u]
 
     def halfface_opposite_halfface(self, halfface):
         """The opposite face of a face.
@@ -2918,9 +2982,9 @@ class VolMesh(Datastructure):
         For a boundary face, the opposite face is None.
 
         """
-        u, v = self._halfface[halfface][:2]
-        nbr = self._plane[v][u][halfface]
-        return None if nbr is None else self._cell[nbr][v][u]
+        u, v, w = self._halfface[halfface][:3]
+        nbr = self._plane[w][v][u]
+        return None if nbr is None else self._cell[nbr][w][v]
 
     def halfface_adjacent_halfface(self, halfface, halfedge):
         """Return the halfface adjacent to the halfface across the halfedge.
@@ -3713,7 +3777,7 @@ class VolMesh(Datastructure):
 
         Notes
         -----
-        This method is similar to :meth:`~compas.datastructures.HalfEdge.vertices`,
+        This method is similar to :meth:`~compas.datastructures.Mesh.vertices`,
         but in the context of a cell of the `VolMesh`.
 
         """
@@ -3738,7 +3802,7 @@ class VolMesh(Datastructure):
 
         Notes
         -----
-        This method is similar to :meth:`~compas.datastructures.HalfEdge.halfedges`,
+        This method is similar to :meth:`~compas.datastructures.Mesh.halfedges`,
         but in the context of a cell of the `VolMesh`.
 
         """
@@ -3766,11 +3830,11 @@ class VolMesh(Datastructure):
 
         Notes
         -----
-        This method is similar to :meth:`~compas.datastructures.HalfEdge.edges`,
+        This method is similar to :meth:`~compas.datastructures.Mesh.edges`,
         but in the context of a cell of the `VolMesh`.
 
         """
-        raise NotImplementedError
+        return list(set(self.cell_halfedges(cell)))
 
     def cell_faces(self, cell):
         """The faces of a cell.
@@ -3791,7 +3855,7 @@ class VolMesh(Datastructure):
 
         Notes
         -----
-        This method is similar to :meth:`~compas.datastructures.HalfEdge.faces`,
+        This method is similar to :meth:`~compas.datastructures.Mesh.faces`,
         but in the context of a cell of the `VolMesh`.
 
         """
@@ -3823,7 +3887,7 @@ class VolMesh(Datastructure):
         -----
         All of the returned vertices are part of the cell.
 
-        This method is similar to :meth:`~compas.datastructures.HalfEdge.vertex_neighbors`,
+        This method is similar to :meth:`~compas.datastructures.Mesh.vertex_neighbors`,
         but in the context of a cell of the `VolMesh`.
 
         """
@@ -3861,7 +3925,7 @@ class VolMesh(Datastructure):
         -----
         All of the returned faces should are part of the same cell.
 
-        This method is similar to :meth:`~compas.datastructures.HalfEdge.vertex_faces`,
+        This method is similar to :meth:`~compas.datastructures.Mesh.vertex_faces`,
         but in the context of a cell of the `VolMesh`.
 
         """
@@ -3896,7 +3960,7 @@ class VolMesh(Datastructure):
 
         Notes
         -----
-        This method is similar to :meth:`~compas.datastructures.HalfEdge.halfedge_face`,
+        This method is similar to :meth:`~compas.datastructures.Mesh.halfedge_face`,
         but in the context of a cell of the `VolMesh`.
 
         """
@@ -3947,7 +4011,7 @@ class VolMesh(Datastructure):
 
         Notes
         -----
-        This method is similar to :meth:`~compas.datastructures.HalfEdge.face_neighbors`,
+        This method is similar to :meth:`~compas.datastructures.Mesh.face_neighbors`,
         but in the context of a cell of the `VolMesh`.
 
         """
@@ -3977,10 +4041,12 @@ class VolMesh(Datastructure):
 
         """
         nbrs = []
-        for face in self.cell_faces(cell):
-            nbr = self.halfface_opposite_cell(face)
-            if nbr is not None:
-                nbrs.append(nbr)
+        for u in self._cell[cell]:
+            for face in self._cell[cell][u].values():
+                a, b, c = self._halfface[face][:3]
+                nbr = self._plane[c][b][a]
+                if nbr is not None:
+                    nbrs.append(nbr)
         return nbrs
 
     def is_cell_on_boundary(self, cell):
@@ -4027,10 +4093,50 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`cell_polygon`, :meth:`cell_centroid`, :meth:`cell_center`
+        :meth:`cell_lines`, :meth:`cell_polygons`
 
         """
         return [self.vertex_point(vertex) for vertex in self.cell_vertices(cell)]
+
+    def cell_lines(self, cell):
+        """Compute the lines of the edges of a cell.
+
+        Parameters
+        ----------
+        cell : int
+            The identifier of the cell.
+
+        Returns
+        -------
+        list[:class:`compas.geometry.Line`]
+            The lines of the edges of the cell.
+
+        See Also
+        --------
+        :meth:`cell_points`, :meth:`cell_polygons`
+
+        """
+        return [self.edge_line(edge) for edge in self.cell_edges(cell)]
+
+    def cell_polygons(self, cell):
+        """Compute the polygons of the faces of a cell.
+
+        Parameters
+        ----------
+        cell : int
+            The identifier of the cell.
+
+        Returns
+        -------
+        list[:class:`compas.geometry.Polygon`]
+            The polygons of the faces of the cell.
+
+        See Also
+        --------
+        :meth:`cell_points`, :meth:`cell_lines`
+
+        """
+        return [self.face_polygon(face) for face in self.cell_faces(cell)]
 
     def cell_centroid(self, cell):
         """Compute the point at the centroid of a cell.
