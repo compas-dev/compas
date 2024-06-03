@@ -11,7 +11,6 @@ from compas.geometry import Frame
 from compas.geometry import Line
 from compas.geometry import Plane
 from compas.geometry import transform_points
-from compas.itertools import pairwise
 
 from .shape import Shape
 
