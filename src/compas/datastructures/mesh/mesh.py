@@ -29,7 +29,7 @@ from compas.geometry import Plane
 from compas.geometry import Point
 from compas.geometry import Polygon
 from compas.geometry import Polyhedron
-from compas.geometry import Shape
+from compas.geometry import Shape  # noqa: F401
 from compas.geometry import Vector
 from compas.geometry import add_vectors
 from compas.geometry import angle_points
