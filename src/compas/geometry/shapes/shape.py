@@ -224,7 +224,7 @@ class Shape(Geometry):
     # Conversions
     # =============================================================================
 
-    def to_vertices_and_faces(self, triangulated=True, u=None, v=None):
+    def to_vertices_and_faces(self, triangulated=False, u=None, v=None):
         # type: (bool, int | None, int | None) -> tuple[list[list[float]], list[list[int]]]
         """Convert the shape to a list of vertices and faces.
 
@@ -258,7 +258,7 @@ class Shape(Geometry):
             faces = self.faces
         return vertices, faces
 
-    def to_polyhedron(self, triangulated=True, u=None, v=None):
+    def to_polyhedron(self, triangulated=False, u=None, v=None):
         # type: (bool, int | None, int | None) -> compas.geometry.Polyhedron
         """Convert the shape to a polyhedron.
 
@@ -293,7 +293,7 @@ class Shape(Geometry):
 
         return Polyhedron(vertices, faces)
 
-    def to_mesh(self, triangulated=True, u=None, v=None):
+    def to_mesh(self, triangulated=False, u=None, v=None):
         # type: (bool, int | None, int | None) -> compas.datastructures.Mesh
         """Returns a mesh representation of the box.
 
