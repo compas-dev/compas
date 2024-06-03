@@ -10,12 +10,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Added `maxiter` parameter to `compas.geometry.icp_numpy`.
+* Added `resolution_u` and `resolution_v` to `compas.geometry.Shape` to control discretisation resolution.
+* Added `vertices`, `edges`, `faces`, `triangles` to `compas.geometry.Shape`.
+* Added `points`, `lines`, `polygons` to `compas.geometry.Shape`.
+* Added abstract `compute_vertices`, `compute_edges`, `compute_faces`, `compute_triangles` to `compas.geometry.Shape`.
+* Added implementation of `compute_vertices`, `compute_edges`, `compute_faces` to `compas.geometry.Box`.
+* Added implementation of `compute_vertices`, `compute_edges`, `compute_faces` to `compas.geometry.Capsule`.
+* Added implementation of `compute_vertices`, `compute_edges`, `compute_faces` to `compas.geometry.Cone`.
+* Added implementation of `compute_vertices`, `compute_edges`, `compute_faces` to `compas.geometry.Cylinder`.
+* Added implementation of `compute_vertices`, `compute_edges`, `compute_faces` to `compas.geometry.Sphere`.
+* Added implementation of `compute_vertices`, `compute_edges`, `compute_faces` to `compas.geometry.Torus`.
 
 ### Changed
+
 * Changed `compas_ghpython/utilities/drawing.py` to remove `System` dependency.
 * Fixed bug in `compas.geometry.ic_numpy`, which was caused by returning only the last transformation of the iteration process.
+* Changed check for empty vertices and faces to use `is None` to add support for `numpy` arrays.
+* Changed order of `u` and `v` of `compas.geometry.SphericalSurface` to the match the excpected parametrisation.
+* Changed `compas.geometry.Shape.to_vertices_and_faces` to use `Shape.vertices` and `Shape.faces` or `Shape.triangles`.
 
 ### Removed
+
 * Removed `System`dependency in `compas_ghpython/utilities/drawing.py`.
 
 ## [2.1.1] 2024-05-14
