@@ -1601,7 +1601,7 @@ class VolMesh(Datastructure):
             The connected edges.
 
         """
-        return [(vertex, nbr) for nbr in self.vertex_neighbors(vertex)]
+        return [(vertex, nbr) for nbr in sorted(self.vertex_neighbors(vertex))]
 
     def vertex_halffaces(self, vertex):
         """Return all halffaces connected to a vertex.
@@ -1794,17 +1794,16 @@ class VolMesh(Datastructure):
 
         """
         seen = set()
-        for face in self._halfface:
-            vertices = self._halfface[face]
-            for u, v in uv_from_vertices(vertices):
-                if (u, v) in seen or (v, u) in seen:
+        for vertex in self.vertices():
+            for nbr in sorted(self.vertex_neighbors(vertex)):
+                if (vertex, nbr) in seen or (nbr, vertex) in seen:
                     continue
-                seen.add((u, v))
-                seen.add((v, u))
+                seen.add((vertex, nbr))
+                seen.add((nbr, vertex))
                 if not data:
-                    yield u, v
+                    yield vertex, nbr
                 else:
-                    yield (u, v), self.edge_attributes((u, v))
+                    yield (vertex, nbr), self.edge_attributes((vertex, nbr))
 
     def edges_where(self, conditions=None, data=False, **kwargs):
         """Get edges for which a certain condition or set of conditions is true.
@@ -2180,20 +2179,6 @@ class VolMesh(Datastructure):
         :meth:`edge_cells`
 
         """
-        # u, v = edge
-        # cells = [cell for cell in self._plane[u][v].values() if cell is not None]
-        # cell = cells[0]
-        # halffaces = []
-        # if self.is_edge_on_boundary(edge):
-        #     for cell in cells:
-        #         halfface = self._cell[cell][v][u]
-        #         if self.is_halfface_on_boundary(halfface):
-        #             break
-        # for _ in cells:
-        #     halfface = self._cell[cell][u][v]
-        #     cell = self._plane[v][u][halfface]
-        #     halffaces.append(halfface)
-        # return halffaces
         u, v = edge
         halffaces = []
         for w in self._plane[u][v]:
