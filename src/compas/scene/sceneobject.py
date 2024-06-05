@@ -89,8 +89,7 @@ class SceneObject(TreeNode):
 
     def __init__(self, item, name=None, color=None, opacity=1.0, show=True, frame=None, transformation=None, context=None, **kwargs):  # fmt: skip
         # type: (compas.geometry.Geometry | compas.datastructures.Datastructure, str | None, compas.colors.Color | None, float, bool, compas.geometry.Frame | None, compas.geometry.Transformation | None, str | None, dict) -> None
-        name = name or item.name
-        super(SceneObject, self).__init__(name=name, **kwargs)
+        super(SceneObject, self).__init__(name=name or item.name, **kwargs)
         # the scene object needs to store the context
         # because it has no access to the tree and/or the scene before it is added
         # which means that adding child objects will be added in context "None"
@@ -182,10 +181,11 @@ class SceneObject(TreeNode):
     def contrastcolor(self):
         # type: () -> compas.colors.Color
         if not self._contrastcolor:
-            if self.color.is_light:
-                self._contrastcolor = self.color.darkened(50)
-            else:
-                self._contrastcolor = self.color.lightened(50)
+            if self.color:
+                if self.color.is_light:
+                    self._contrastcolor = self.color.darkened(50)
+                else:
+                    self._contrastcolor = self.color.lightened(50)
         return self._contrastcolor
 
     @contrastcolor.setter
