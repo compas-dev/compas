@@ -7,18 +7,14 @@ import scriptcontext as sc  # type: ignore
 
 import compas_rhino.objects
 from compas.colors import Color
-from compas.geometry import Cylinder
 from compas.geometry import Line
 from compas.geometry import Point
-from compas.geometry import Sphere
 from compas.geometry import centroid_points
 from compas.scene import MeshObject
-from compas_rhino.conversions import cylinder_to_rhino_brep
 from compas_rhino.conversions import line_to_rhino
-from compas_rhino.conversions import mesh_to_rhino
 from compas_rhino.conversions import point_to_rhino
-from compas_rhino.conversions import sphere_to_rhino
-from compas_rhino.conversions import transformation_to_rhino
+
+# from compas_rhino.conversions import transformation_to_rhino
 from compas_rhino.conversions import vertices_and_faces_to_rhino
 
 from .helpers import ngon
@@ -43,7 +39,7 @@ class RhinoMeshObject(RhinoSceneObject, MeshObject):
 
     """
 
-    def __init__(self, mesh, disjoint=False, **kwargs):
+    def __init__(self, mesh, disjoint=False, vertexgroup=None, edgegroup=None, facegroup=None, **kwargs):
         super(RhinoMeshObject, self).__init__(mesh=mesh, **kwargs)
         self.disjoint = disjoint
         self._guid_mesh = None
@@ -57,6 +53,9 @@ class RhinoMeshObject(RhinoSceneObject, MeshObject):
         self._guids_facelabels = None
         self._guids_spheres = None
         self._guids_pipes = None
+        self.vertexgroup = vertexgroup
+        self.edgegroup = edgegroup
+        self.facegroup = facegroup
 
     # ==========================================================================
     # clear
@@ -188,15 +187,22 @@ class RhinoMeshObject(RhinoSceneObject, MeshObject):
             if len(self.facecolor):
                 facecolors = [self.facecolor[face] for face in self.mesh.faces()]
 
-            geometry = mesh_to_rhino(
-                self.mesh,
+            vertex_index = self.mesh.vertex_index()
+            vertex_xyz = self.vertex_xyz
+
+            vertices = [vertex_xyz[vertex] for vertex in self.mesh.vertices()]
+            faces = [[vertex_index[vertex] for vertex in self.mesh.face_vertices(face)] for face in self.mesh.faces()]
+
+            geometry = vertices_and_faces_to_rhino(
+                vertices,
+                faces,
                 color=self.color,
                 vertexcolors=vertexcolors,
                 facecolors=facecolors,
                 disjoint=self.disjoint,
             )
 
-            geometry.Transform(transformation_to_rhino(self.worldtransformation))
+            # geometry.Transform(transformation_to_rhino(self.worldtransformation))
 
             self._guid_mesh = sc.doc.Objects.AddMesh(geometry, attr)
             if self.group:
@@ -205,28 +211,18 @@ class RhinoMeshObject(RhinoSceneObject, MeshObject):
             self._guids.append(self._guid_mesh)
 
         elif self.show_faces:
-            self._guids += self.draw_faces(faces=self.show_faces, group=self.group)
+            self._guids += self.draw_faces()
 
         if self.show_vertices:
-            self._guids += self.draw_vertices(vertices=self.show_vertices, group=self.group)
+            self._guids += self.draw_vertices()
 
         if self.show_edges:
-            self._guids += self.draw_edges(edges=self.show_edges, group=self.group)
+            self._guids += self.draw_edges()
 
         return self.guids
 
-    def draw_vertices(self, vertices=None, color=None, group=None):
+    def draw_vertices(self):
         """Draw a selection of vertices.
-
-        Parameters
-        ----------
-        vertices : list[int], optional
-            A selection of vertices to draw.
-            Default is None, in which case all vertices are drawn.
-        color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
-            The color of the vertices.
-        group : str, optional
-            The name of a group to join the created Rhino objects in.
 
         Returns
         -------
@@ -236,42 +232,30 @@ class RhinoMeshObject(RhinoSceneObject, MeshObject):
         """
         guids = []
 
-        if vertices is True:
-            vertices = list(self.mesh.vertices())
+        vertices = list(self.mesh.vertices()) if self.show_vertices is True else self.show_vertices or []
 
-        for vertex in vertices or self.mesh.vertices():  # type: ignore
-            name = "{}.vertex.{}".format(self.mesh.name, vertex)  # type: ignore
-            color = self.vertexcolor[vertex]
-            attr = self.compile_attributes(name=name, color=color)
+        if vertices:
+            for vertex in vertices:
+                name = "{}.vertex.{}".format(self.mesh.name, vertex)
+                color = self.vertexcolor[vertex]
+                attr = self.compile_attributes(name=name, color=color)
 
-            point = point_to_rhino(self.vertex_xyz[vertex])
+                point = point_to_rhino(self.vertex_xyz[vertex])
 
-            guid = sc.doc.Objects.AddPoint(point, attr)
-            guids.append(guid)
+                guid = sc.doc.Objects.AddPoint(point, attr)
+                guids.append(guid)
 
-        if group:
-            self.add_to_group(group, guids)
+        if guids:
+            if self.vertexgroup:
+                self.add_to_group(self.vertexgroup, guids)
+            elif self.group:
+                self.add_to_group(self.group, guids)
 
         self._guids_vertices = guids
-
         return guids
 
-    def draw_edges(self, edges=None, color=None, text=None, fontheight=10, fontface="Arial Regular", group=None):
+    def draw_edges(self):
         """Draw a selection of edges.
-
-        Parameters
-        ----------
-        edges : list[tuple[int, int]], optional
-            A selection of edges to draw.
-            The default is None, in which case all edges are drawn.
-        color : :class:`compas.colors.Color` | dict[tuple[int, int], :class:`compas.colors.Color`], optional
-            The color of the edges.
-        text : dict[tuple[int, int], str], optional
-            A dictionary of edge labels as edge-text pairs.
-        fontheight : int, optional
-            Font height of the edge labels.
-        fontface : str, optional
-            Font face of the edge labels.
 
         Returns
         -------
@@ -281,42 +265,30 @@ class RhinoMeshObject(RhinoSceneObject, MeshObject):
         """
         guids = []
 
-        if edges is True:
-            edges = list(self.mesh.edges())
+        edges = list(self.mesh.edges()) if self.show_edges is True else self.show_edges or []
 
-        for edge in edges or self.mesh.edges():  # type: ignore
-            name = "{}.edge.{}-{}".format(self.mesh.name, *edge)  # type: ignore
-            color = self.edgecolor[edge]
-            attr = self.compile_attributes(name=name, color=color)
+        if edges:
+            for edge in edges:
+                name = "{}.edge.{}-{}".format(self.mesh.name, *edge)
+                color = self.edgecolor[edge]
+                attr = self.compile_attributes(name=name, color=color)
 
-            line = Line(self.vertex_xyz[edge[0]], self.vertex_xyz[edge[1]])
+                line = Line(self.vertex_xyz[edge[0]], self.vertex_xyz[edge[1]])
 
-            guid = sc.doc.Objects.AddLine(line_to_rhino(line), attr)
-            guids.append(guid)
+                guid = sc.doc.Objects.AddLine(line_to_rhino(line), attr)
+                guids.append(guid)
 
-        if group:
-            self.add_to_group(group, guids)
+        if guids:
+            if self.edgegroup:
+                self.add_to_group(self.edgegroup, guids)
+            elif self.group:
+                self.add_to_group(self.group, guids)
 
         self._guids_edges = guids
-
         return guids
 
-    def draw_faces(self, faces=None, color=None, group=None):
+    def draw_faces(self):
         """Draw a selection of faces.
-
-        Parameters
-        ----------
-        faces : list[int], optional
-            A selection of faces to draw.
-            The default is None, in which case all faces are drawn.
-        color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
-            The color of the faces.
-        text : dict[int, str], optional
-            A dictionary of face labels as face-text pairs.
-        fontheight : int, optional
-            Font height of the face labels.
-        fontface : str, optional
-            Font face of the face labels.
 
         Returns
         -------
@@ -326,26 +298,28 @@ class RhinoMeshObject(RhinoSceneObject, MeshObject):
         """
         guids = []
 
-        if faces is True:
-            faces = list(self.mesh.faces())
+        faces = list(self.mesh.faces()) if self.show_faces is True else self.show_faces or []
 
-        for face in faces or self.mesh.faces():  # type: ignore
-            name = "{}.face.{}".format(self.mesh.name, face)  # type: ignore
-            color = self.facecolor[face]
-            attr = self.compile_attributes(name=name, color=color)
+        if faces:
+            for face in faces:
+                name = "{}.face.{}".format(self.mesh.name, face)
+                color = self.facecolor[face]
+                attr = self.compile_attributes(name=name, color=color)
 
-            vertices = [self.vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)]  # type: ignore
-            facet = ngon(len(vertices))
+                vertices = [self.vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)]  # type: ignore
+                facet = ngon(len(vertices))
 
-            if facet:
-                guid = sc.doc.Objects.AddMesh(vertices_and_faces_to_rhino(vertices, [facet]), attr)
-                guids.append(guid)
+                if facet:
+                    guid = sc.doc.Objects.AddMesh(vertices_and_faces_to_rhino(vertices, [facet]), attr)
+                    guids.append(guid)
 
-        if group:
-            self.add_to_group(group, guids)
+        if guids:
+            if self.facegroup:
+                self.add_to_group(self.facegroup, guids)
+            elif self.group:
+                self.add_to_group(self.group, guids)
 
         self._guids_faces = guids
-
         return guids
 
     # ==========================================================================
@@ -578,90 +552,5 @@ class RhinoMeshObject(RhinoSceneObject, MeshObject):
             self.add_to_group(group, guids)
 
         self._guids_facenormals = guids
-
-        return guids
-
-    # ==========================================================================
-    # draw miscellaneous
-    # ==========================================================================
-
-    def draw_spheres(self, radius, color=None, group=None):
-        """Draw spheres at the vertices of the mesh.
-
-        Parameters
-        ----------
-        radius : dict[int, float], optional
-            The radius of the spheres.
-        color : tuple[int, int, int] | tuple[float, float, float] | :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
-            The color of the spheres.
-        group : str, optional
-            The name of a group to join the created Rhino objects in.
-
-        Returns
-        -------
-        list[System.Guid]
-            The GUIDs of the created Rhino objects.
-
-        """
-        guids = []
-
-        self.vertexcolor = color
-
-        for vertex in radius:
-            name = "{}.vertex.{}.sphere".format(self.mesh.name, vertex)  # type: ignore
-            color = self.vertexcolor[vertex]
-            attr = self.compile_attributes(name=name, color=color)
-
-            sphere = Sphere.from_point_and_radius(self.vertex_xyz[vertex], radius[vertex])
-            geometry = sphere_to_rhino(sphere)
-
-            guid = sc.doc.Objects.AddSphere(geometry, attr)
-            guids.append(guid)
-
-        if group:
-            self.add_to_group(group, guids)
-
-        self._guids_spheres = guids
-
-        return guids
-
-    def draw_pipes(self, radius, color=None, group=None):
-        """Draw pipes around the edges of the mesh.
-
-        Parameters
-        ----------
-        radius : dict[tuple[int, int], float]
-            The radius per edge.
-        color : tuple[int, int, int] | tuple[float, float, float] | :class:`compas.colors.Color` | dict[tuple[int, int], :class:`compas.colors.Color`], optional
-            The color of the pipes.
-        group : str, optional
-            The name of a group to join the created Rhino objects in.
-
-        Returns
-        -------
-        list[System.Guid]
-            The GUIDs of the created Rhino objects.
-
-        """
-        guids = []
-
-        self.edgecolor = color
-
-        for edge in radius:
-            name = "{}.edge.{}-{}.pipe".format(self.mesh.name, *edge)  # type: ignore
-            color = self.edgecolor[edge]
-            attr = self.compile_attributes(name=name, color=color)
-
-            line = Line(self.vertex_xyz[edge[0]], self.vertex_xyz[edge[1]])
-            cylinder = Cylinder.from_line_and_radius(line, radius[edge])
-            brep = cylinder_to_rhino_brep(cylinder)
-
-            guid = sc.doc.Objects.AddBrep(brep, attr)
-            guids.append(guid)
-
-        if group:
-            self.add_to_group(group, guids)
-
-        self._guids_pipes = guids
 
         return guids

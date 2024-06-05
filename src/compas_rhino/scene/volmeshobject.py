@@ -32,7 +32,7 @@ class RhinoVolMeshObject(RhinoSceneObject, VolMeshObject):
 
     """
 
-    def __init__(self, volmesh, disjoint=True, **kwargs):
+    def __init__(self, volmesh, disjoint=True, vertexgroup=None, edgegroup=None, facegroup=None, cellgroup=None, **kwargs):
         super(RhinoVolMeshObject, self).__init__(volmesh=volmesh, **kwargs)
         self.disjoint = disjoint
         self._guids_vertices = None
@@ -43,6 +43,10 @@ class RhinoVolMeshObject(RhinoSceneObject, VolMeshObject):
         self._guids_edgelabels = None
         self._guids_facelabels = None
         self._guids_celllabels = None
+        self.vertexgroup = vertexgroup
+        self.edgegroup = edgegroup
+        self.facegroup = facegroup
+        self.cellgroup = cellgroup
 
     # ==========================================================================
     # clear
@@ -145,30 +149,20 @@ class RhinoVolMeshObject(RhinoSceneObject, VolMeshObject):
         guids = []
 
         if self.show_vertices:
-            guids += self.draw_vertices(vertices=self.show_vertices, color=self.vertexcolor, group=self.group)
+            guids += self.draw_vertices()
         if self.show_edges:
-            guids += self.draw_edges(edges=self.show_edges, color=self.edgecolor, group=self.group)
+            guids += self.draw_edges()
         if self.show_faces:
-            guids += self.draw_faces(faces=self.show_faces, color=self.facecolor, group=self.group)
+            guids += self.draw_faces()
         if self.show_cells:
-            guids += self.draw_cells(cells=self.show_cells, color=self.cellcolor, group=self.group)
+            guids += self.draw_cells()
 
         self._guids = guids
 
         return self.guids
 
-    def draw_vertices(self, vertices=None, color=None, group=None):
+    def draw_vertices(self):
         """Draw a selection of vertices.
-
-        Parameters
-        ----------
-        vertices : list[int], optional
-            A list of vertices to draw.
-            Default is None, in which case all vertices are drawn.
-        color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
-            The color of the vertices.
-        group : str, optional
-            The name of the group in which the vertices are combined.
 
         Returns
         -------
@@ -176,37 +170,32 @@ class RhinoVolMeshObject(RhinoSceneObject, VolMeshObject):
             The GUIDs of the created Rhino point objects.
 
         """
-        self.vertexcolor = color
-
         guids = []
 
-        if vertices is True:
-            vertices = list(self.volmesh.vertices())
+        vertices = list(self.volmesh.vertices()) if self.show_vertices is True else self.show_vertices or []
 
-        for vertex in vertices or self.volmesh.vertices():  # type: ignore
-            name = "{}.vertex.{}".format(self.volmesh.name, vertex)  # type: ignore
-            color = self.vertexcolor[vertex]
-            attr = self.compile_attributes(name=name, color=color)
+        if vertices:
+            for vertex in vertices:
+                name = "{}.vertex.{}".format(self.volmesh.name, vertex)
+                color = self.vertexcolor[vertex]
+                attr = self.compile_attributes(name=name, color=color)
 
-            point = self.vertex_xyz[vertex]
+                point = self.vertex_xyz[vertex]
 
-            guid = sc.doc.Objects.AddPoint(point_to_rhino(point), attr)
-            guids.append(guid)
+                guid = sc.doc.Objects.AddPoint(point_to_rhino(point), attr)
+                guids.append(guid)
 
+        if guids:
+            if self.vertexgroup:
+                self.add_to_group(self.vertexgroup, guids)
+            elif self.group:
+                self.add_to_group(self.group, guids)
+
+        self._guids_vertices = guids
         return guids
 
-    def draw_edges(self, edges=None, color=None, group=None):
+    def draw_edges(self):
         """Draw a selection of edges.
-
-        Parameters
-        ----------
-        edges : list[tuple[int, int]], optional
-            A list of edges to draw.
-            The default is None, in which case all edges are drawn.
-        color : :class:`compas.colors.Color` | dict[tuple[int, int], :class:`compas.colors.Color`], optional
-            The color of the edges.
-        group : str, optional
-            The name of the group in which the edges are combined.
 
         Returns
         -------
@@ -214,40 +203,32 @@ class RhinoVolMeshObject(RhinoSceneObject, VolMeshObject):
             The GUIDs of the created Rhino line objects.
 
         """
-        self.edgecolor = color
-
         guids = []
 
-        if edges is True:
-            edges = list(self.volmesh.edges())
+        edges = list(self.volmesh.edges()) if self.show_edges is True else self.show_edges or []
 
-        for edge in edges or self.volmesh.edges():  # type: ignore
-            name = "{}.edge.{}-{}".format(self.volmesh.name, *edge)  # type: ignore
-            color = self.edgecolor[edge]
-            attr = self.compile_attributes(name=name, color=color)
+        if edges:
+            for edge in edges:
+                name = "{}.edge.{}-{}".format(self.volmesh.name, *edge)
+                color = self.edgecolor[edge]
+                attr = self.compile_attributes(name=name, color=color)
 
-            line = Line(self.vertex_xyz[edge[0]], self.vertex_xyz[edge[1]])
+                line = Line(self.vertex_xyz[edge[0]], self.vertex_xyz[edge[1]])
 
-            guid = sc.doc.Objects.AddLine(line_to_rhino(line), attr)
-            guids.append(guid)
+                guid = sc.doc.Objects.AddLine(line_to_rhino(line), attr)
+                guids.append(guid)
 
-        if group:
-            self.add_to_group(group, guids)
+        if guids:
+            if self.edgegroup:
+                self.add_to_group(self.edgegroup, guids)
+            elif self.group:
+                self.add_to_group(self.group, guids)
 
+        self._guids_edges = guids
         return guids
 
-    def draw_faces(self, faces=None, color=None, group=None):
+    def draw_faces(self):
         """Draw a selection of faces.
-
-        Parameters
-        ----------
-        faces : list[int], optional
-            A list of faces to draw.
-            The default is None, in which case all faces are drawn.
-        color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
-            The color of the faces.
-        group : str, optional
-            The name of the group in which the faces are combined.
 
         Returns
         -------
@@ -255,42 +236,34 @@ class RhinoVolMeshObject(RhinoSceneObject, VolMeshObject):
             The GUIDs of the created Rhino objects.
 
         """
-        self.facecolor = color
-
         guids = []
 
-        if faces is True:
-            faces = list(self.volmesh.faces())
+        faces = list(self.volmesh.faces()) if self.show_faces is True else self.show_faces or []
 
-        for face in faces or self.volmesh.faces():  # type: ignore
-            name = "{}.face.{}".format(self.volmesh.name, face)  # type: ignore
-            color = self.facecolor[face]
-            attr = self.compile_attributes(name=name, color=color)
+        if faces:
+            for face in faces:
+                name = "{}.face.{}".format(self.volmesh.name, face)
+                color = self.facecolor[face]
+                attr = self.compile_attributes(name=name, color=color)
 
-            vertices = [self.vertex_xyz[vertex] for vertex in self.volmesh.face_vertices(face)]  # type: ignore
-            facet = ngon(len(vertices))
+                vertices = [self.vertex_xyz[vertex] for vertex in self.volmesh.face_vertices(face)]
+                facet = ngon(len(vertices))
 
-            if facet:
-                guid = sc.doc.Objects.AddMesh(vertices_and_faces_to_rhino(vertices, [facet]), attr)
-                guids.append(guid)
+                if facet:
+                    guid = sc.doc.Objects.AddMesh(vertices_and_faces_to_rhino(vertices, [facet]), attr)
+                    guids.append(guid)
 
-        if group:
-            self.add_to_group(group, guids)
+        if guids:
+            if self.facegroup:
+                self.add_to_group(self.facegroup, guids)
+            elif self.group:
+                self.add_to_group(self.group, guids)
 
+        self._guids_faces = guids
         return guids
 
-    def draw_cells(self, cells=None, color=None, group=None):
+    def draw_cells(self):
         """Draw a selection of cells.
-
-        Parameters
-        ----------
-        cells : list[int], optional
-            A list of cells to draw.
-            The default is None, in which case all cells are drawn.
-        color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
-            The color of the cells.
-        group : str, optional
-            The name of the group in which the cells are combined.
 
         Returns
         -------
@@ -299,27 +272,33 @@ class RhinoVolMeshObject(RhinoSceneObject, VolMeshObject):
             Every cell is drawn as an individual mesh.
 
         """
-        self.cellcolor = color
-
         guids = []
 
-        if cells is True:
-            cells = list(self.volmesh.cells())
+        cells = list(self.volmesh.cells()) if self.show_cells is True else self.show_cells or []
 
-        for cell in cells or self.volmesh.cells():  # type: ignore
-            name = "{}.cell.{}".format(self.volmesh.name, cell)  # type: ignore
-            color = self.cellcolor[cell]
-            attr = self.compile_attributes(name=name, color=color)
+        if cells:
+            for cell in cells:
+                name = "{}.cell.{}".format(self.volmesh.name, cell)
+                color = self.cellcolor[cell]
+                attr = self.compile_attributes(name=name, color=color)
 
-            vertices = self.volmesh.cell_vertices(cell)  # type: ignore
-            faces = self.volmesh.cell_faces(cell)  # type: ignore
-            vertex_index = dict((vertex, index) for index, vertex in enumerate(vertices))
-            vertices = [self.vertex_xyz[vertex] for vertex in vertices]
-            faces = [[vertex_index[vertex] for vertex in self.volmesh.halfface_vertices(face)] for face in faces]  # type: ignore
+                vertices = self.volmesh.cell_vertices(cell)
+                faces = self.volmesh.cell_faces(cell)
+                vertex_index = dict((vertex, index) for index, vertex in enumerate(vertices))
 
-            guid = sc.doc.Objects.AddMesh(vertices_and_faces_to_rhino(vertices, faces, disjoint=self.disjoint), attr)
-            guids.append(guid)
+                vertices = [self.vertex_xyz[vertex] for vertex in vertices]
+                faces = [[vertex_index[vertex] for vertex in self.volmesh.halfface_vertices(face)] for face in faces]
 
+                guid = sc.doc.Objects.AddMesh(vertices_and_faces_to_rhino(vertices, faces, disjoint=self.disjoint), attr)
+                guids.append(guid)
+
+        if guids:
+            if self.cellgroup:
+                self.add_to_group(self.cellgroup, guids)
+            elif self.group:
+                self.add_to_group(self.group, guids)
+
+        self._guids_cells = guids
         return guids
 
     # =============================================================================
@@ -508,11 +487,3 @@ class RhinoVolMeshObject(RhinoSceneObject, VolMeshObject):
             self.add_to_group(group, guids)
 
         return guids
-
-    # =============================================================================
-    # draw normals
-    # =============================================================================
-
-    # =============================================================================
-    # draw miscellaneous
-    # =============================================================================
