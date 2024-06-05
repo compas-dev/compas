@@ -28,7 +28,7 @@ class BlenderSceneObject(SceneObject):
 
     """
 
-    def __init__(self, collection=None, show_wire=True, **kwargs: Any):
+    def __init__(self, collection: Union[str, bpy.types.Collection] = None, show_wire: bool = True, **kwargs: Any):
         super().__init__(**kwargs)
         self.objects = []
         self.collection = collection
