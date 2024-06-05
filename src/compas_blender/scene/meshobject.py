@@ -1,18 +1,13 @@
 from typing import Any
 from typing import List
-from typing import Optional
 
 import bpy  # type: ignore
 
 import compas_blender
 import compas_blender.objects
-from compas.colors import Color
 from compas.datastructures import Mesh
 from compas.geometry import Line
 from compas.geometry import Sphere
-from compas.geometry import add_vectors
-from compas.geometry import centroid_points
-from compas.geometry import scale_vector
 from compas.scene import MeshObject as BaseMeshObject
 from compas_blender import conversions
 
