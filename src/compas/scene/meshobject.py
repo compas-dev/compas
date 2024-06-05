@@ -194,26 +194,6 @@ class MeshObject(SceneObject):
         """
         return self.draw(*args, **kwargs)
 
-    def draw(self):
-        """draw the mesh.
-
-        Returns
-        -------
-        None
-
-        """
-        raise NotImplementedError
-
-    def clear(self):
-        """Clear all components of the mesh.
-
-        Returns
-        -------
-        None
-
-        """
-        raise NotImplementedError
-
     def clear_vertices(self):
         """Clear the vertices of the mesh.
 
