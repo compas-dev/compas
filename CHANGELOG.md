@@ -42,6 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 * Removed `System` dependency in `compas_ghpython/utilities/drawing.py`.
+* Removed GH plugin for `compas.scene.clear` since it clashed with the Rhino version.
 
 ## [2.1.1] 2024-05-14
 
