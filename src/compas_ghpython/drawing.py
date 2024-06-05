@@ -21,7 +21,7 @@ from Rhino.Geometry import Vector3f
 
 from compas.geometry import centroid_points
 from compas.itertools import pairwise
-from compas_rhino.utilities.drawing import _face_to_max_quad
+from compas_rhino.drawing import _face_to_max_quad
 
 try:
     from Rhino.Geometry import MeshNgon
