@@ -243,7 +243,6 @@ class SceneObject(TreeNode):
         super(SceneObject, self).add(sceneobject)
         return sceneobject
 
-    @abstractmethod
     def draw(self):
         """The main drawing method."""
         raise NotImplementedError
