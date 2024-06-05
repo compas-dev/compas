@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import compas.colors  # noqa: F401
 import compas.datastructures  # noqa: F401
 import compas.geometry  # noqa: F401
 from compas.geometry import transform_points
@@ -48,18 +49,18 @@ class GraphObject(SceneObject):
     nodecolor = ColorDictAttribute()
     edgecolor = ColorDictAttribute()
 
-    def __init__(self, graph, **kwargs):
+    def __init__(self, graph, show_nodes=True, show_edges=True, nodecolor=None, edgecolor=None, nodesize=1.0, edgewidth=1.0, **kwargs):
+        # type: (compas.datastructures.Graph, bool | list, bool | list, compas.colors.Color | dict | None, compas.colors.Color | dict | None, float | dict, float | dict, dict) -> None
         super(GraphObject, self).__init__(item=graph, **kwargs)
         self._graph = None
         self._node_xyz = None
         self.graph = graph
-        self.nodecolor = kwargs.get("nodecolor", self.color)
-        self.edgecolor = kwargs.get("edgecolor", self.color)
-        self.nodesize = kwargs.get("nodesize", 1.0)
-        self.edgewidth = kwargs.get("edgewidth", 1.0)
-        # perhaps this should be renamed to "nodes", "edges"
-        self.show_nodes = kwargs.get("show_nodes", True)
-        self.show_edges = kwargs.get("show_edges", True)
+        self.show_nodes = show_nodes
+        self.show_edges = show_edges
+        self.nodecolor = nodecolor or self.color
+        self.edgecolor = edgecolor or self.color
+        self.nodesize = nodesize
+        self.edgewidth = edgewidth
 
     @property
     def settings(self):
@@ -69,6 +70,8 @@ class GraphObject(SceneObject):
         settings["show_edges"] = self.show_edges
         settings["nodecolor"] = self.nodecolor
         settings["edgecolor"] = self.edgecolor
+        settings["nodesize"] = self.nodesize
+        settings["edgewidth"] = self.edgewidth
         return settings
 
     @property
@@ -98,14 +101,14 @@ class GraphObject(SceneObject):
     def node_xyz(self):
         # type: () -> dict[int | str | tuple, list[float]]
         if self._node_xyz is None:
-            points = self.graph.nodes_attributes("xyz")  # type: ignore
+            points = self.graph.nodes_attributes("xyz")
             points = transform_points(points, self.worldtransformation)
-            self._node_xyz = dict(zip(self.graph.nodes(), points))  # type: ignore
+            self._node_xyz = dict(zip(self.graph.nodes(), points))
         return self._node_xyz
 
     @node_xyz.setter
     def node_xyz(self, node_xyz):
-        # type: (dict[int | str | tuple], list[float]) -> None
+        # type: (dict[int | str | tuple, list[float]]) -> None
         self._node_xyz = node_xyz
 
     def draw_nodes(self):
