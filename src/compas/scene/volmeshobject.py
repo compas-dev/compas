@@ -66,21 +66,36 @@ class VolMeshObject(SceneObject):
     facecolor = ColorDictAttribute()
     cellcolor = ColorDictAttribute()
 
-    def __init__(self, volmesh, **kwargs):
+    def __init__(
+        self,
+        volmesh,
+        show_vertices=False,
+        show_edges=True,
+        show_faces=False,
+        show_cells=True,
+        vertexcolor=None,
+        edgecolor=None,
+        facecolor=None,
+        cellcolor=None,
+        vertexsize=1.0,
+        edgewidth=1.0,
+        **kwargs,
+    ):
+        # type: (compas.datastructures.VolMesh, bool | list, bool | list, bool | list, bool | list, compas.colors.Color | dict, compas.colors.Color | dict, compas.colors.Color | dict, compas.colors.Color | dict, float | dict, float | dict, dict) -> None
         super(VolMeshObject, self).__init__(item=volmesh, **kwargs)
         self._volmesh = None
         self._vertex_xyz = None
         self.volmesh = volmesh
-        self.vertexcolor = kwargs.get("vertexcolor", self.color)
-        self.edgecolor = kwargs.get("edgecolor", self.color)
-        self.facecolor = kwargs.get("facecolor", self.color)
-        self.cellcolor = kwargs.get("cellcolor", self.color)
-        self.vertexsize = kwargs.get("vertexsize", 1.0)
-        self.edgewidth = kwargs.get("edgewidth", 1.0)
-        self.show_vertices = kwargs.get("show_vertices", False)
-        self.show_edges = kwargs.get("show_edges", True)
-        self.show_faces = kwargs.get("show_faces", False)
-        self.show_cells = kwargs.get("show_cells", True)
+        self.show_vertices = show_vertices
+        self.show_edges = show_edges
+        self.show_faces = show_faces
+        self.show_cells = show_cells
+        self.vertexcolor = vertexcolor or self.color
+        self.edgecolor = edgecolor or self.color
+        self.facecolor = facecolor or self.color
+        self.cellcolor = cellcolor or self.color
+        self.vertexsize = vertexsize
+        self.edgewidth = edgewidth
 
     @property
     def settings(self):
