@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import compas.colors  # noqa: F401
 import compas.datastructures  # noqa: F401
 import compas.geometry  # noqa: F401
 from compas.geometry import transform_points
@@ -58,20 +59,20 @@ class MeshObject(SceneObject):
     edgecolor = ColorDictAttribute()
     facecolor = ColorDictAttribute()
 
-    def __init__(self, mesh, **kwargs):
-        # type: (compas.datastructures.Mesh, dict) -> None
+    def __init__(self, mesh, show_vertices=False, show_edges=False, show_faces=True, vertexcolor=None, edgecolor=None, facecolor=None, vertexsize=1.0, edgewidth=1.0, **kwargs):
+        # type: (compas.datastructures.Mesh, bool | list, bool | list, bool | list, compas.colors.Color | dict, compas.colors.Color | dict, compas.colors.Color | dict, float | dict, float | dict, dict) -> None
         super(MeshObject, self).__init__(item=mesh, **kwargs)
         self._mesh = None
         self._vertex_xyz = None
         self.mesh = mesh
-        self.vertexcolor = kwargs.get("vertexcolor", self.contrastcolor)
-        self.edgecolor = kwargs.get("edgecolor", self.contrastcolor)
-        self.facecolor = kwargs.get("facecolor", self.color)
-        self.vertexsize = kwargs.get("vertexsize", 1.0)
-        self.edgewidth = kwargs.get("edgewidth", 1.0)
-        self.show_vertices = kwargs.get("show_vertices", False)
-        self.show_edges = kwargs.get("show_edges", False)
-        self.show_faces = kwargs.get("show_faces", True)
+        self.show_vertices = show_vertices
+        self.show_edges = show_edges
+        self.show_faces = show_faces
+        self.vertexcolor = vertexcolor or self.contrastcolor
+        self.edgecolor = edgecolor or self.contrastcolor
+        self.facecolor = facecolor or self.color
+        self.vertexsize = vertexsize
+        self.edgewidth = edgewidth
 
     @property
     def settings(self):
@@ -85,6 +86,8 @@ class MeshObject(SceneObject):
         settings["vertexcolor"] = self.vertexcolor
         settings["edgecolor"] = self.edgecolor
         settings["facecolor"] = self.facecolor
+        settings["vertexsize"] = self.vertexsize
+        settings["edgewidth"] = self.edgewidth
         return settings
 
     @property
@@ -114,9 +117,9 @@ class MeshObject(SceneObject):
     def vertex_xyz(self):
         # type: () -> dict[int, list[float]]
         if self._vertex_xyz is None:
-            points = self.mesh.vertices_attributes("xyz")  # type: ignore
+            points = self.mesh.vertices_attributes("xyz")
             points = transform_points(points, self.worldtransformation)
-            self._vertex_xyz = dict(zip(self.mesh.vertices(), points))  # type: ignore
+            self._vertex_xyz = dict(zip(self.mesh.vertices(), points))
         return self._vertex_xyz
 
     @vertex_xyz.setter
