@@ -34,14 +34,8 @@ class GraphObject(GHSceneObject, BaseGraphObject):
         self._guids = self.draw_edges() + self.draw_nodes()
         return self.guids
 
-    def draw_nodes(self, nodes=None):
+    def draw_nodes(self):
         """Draw a selection of nodes.
-
-        Parameters
-        ----------
-        nodes: list[hashable], optional
-            The selection of nodes that should be drawn.
-            Default is None, in which case all nodes are drawn.
 
         Returns
         -------
@@ -50,19 +44,15 @@ class GraphObject(GHSceneObject, BaseGraphObject):
         """
         points = []
 
-        for node in nodes or self.graph.nodes():  # type: ignore
+        nodes = list(self.graph.nodes()) if self.show_nodes is True else self.show_nodes or []
+
+        for node in nodes:
             points.append(conversions.point_to_rhino(self.node_xyz[node]))
 
         return points
 
     def draw_edges(self, edges=None):
         """Draw a selection of edges.
-
-        Parameters
-        ----------
-        edges : list[tuple[hashable, hashable]], optional
-            A list of edges to draw.
-            The default is None, in which case all edges are drawn.
 
         Returns
         -------
@@ -71,7 +61,9 @@ class GraphObject(GHSceneObject, BaseGraphObject):
         """
         lines = []
 
-        for edge in edges or self.graph.edges():  # type: ignore
+        edges = list(self.graph.edges()) if self.show_edges is True else self.show_edges or []
+
+        for edge in edges:
             lines.append(conversions.line_to_rhino((self.node_xyz[edge[0]], self.node_xyz[edge[1]])))
 
         return lines
