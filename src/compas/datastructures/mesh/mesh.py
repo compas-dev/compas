@@ -29,6 +29,7 @@ from compas.geometry import Plane
 from compas.geometry import Point
 from compas.geometry import Polygon
 from compas.geometry import Polyhedron
+from compas.geometry import Shape  # noqa: F401
 from compas.geometry import Vector
 from compas.geometry import add_vectors
 from compas.geometry import angle_points
@@ -529,7 +530,7 @@ class Mesh(Datastructure):
         return cls.from_vertices_and_faces(p.vertices, p.faces)
 
     @classmethod
-    def from_shape(cls, shape, **kwargs):  # type: (...) -> Mesh
+    def from_shape(cls, shape, **kwargs):  # type: (Shape, dict) -> Mesh
         """Construct a mesh from a primitive shape.
 
         Parameters

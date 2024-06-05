@@ -770,7 +770,7 @@ class VolMesh(Datastructure):
         self._halfface[fkey] = vertices
         for name, value in attr.items():
             self.face_attribute(fkey, name, value)
-        for u, v in iter_edges_from_vertices(vertices):
+        for u, v in pairwise(vertices + vertices[:1]):
             if v not in self._plane[u]:
                 self._plane[u][v] = {}
             self._plane[u][v][fkey] = None
@@ -831,7 +831,7 @@ class VolMesh(Datastructure):
         for vertices in faces:
             fkey = self.add_halfface(vertices)
             vertices = self.halfface_vertices(fkey)
-            for u, v in iter_edges_from_vertices(vertices):
+            for u, v in pairwise(vertices + vertices[:1]):
                 if u not in self._cell[ckey]:
                     self._cell[ckey][u] = {}
                 self._plane[u][v][fkey] = ckey
