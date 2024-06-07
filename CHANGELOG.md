@@ -20,6 +20,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added implementation of `compute_vertices`, `compute_edges`, `compute_faces` to `compas.geometry.Cylinder`.
 * Added implementation of `compute_vertices`, `compute_edges`, `compute_faces` to `compas.geometry.Sphere`.
 * Added implementation of `compute_vertices`, `compute_edges`, `compute_faces` to `compas.geometry.Torus`.
+* Added `compas.geometry.vector.__radd__`.
+* Added `compas.geometry.vector.__rsub__`.
+* Added `compas.geometry.vector.__rmul__`.
+* Added `compas.geometry.vector.__rtruediv__`.
 
 ### Changed
 
@@ -28,6 +32,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed check for empty vertices and faces to use `is None` to add support for `numpy` arrays.
 * Changed order of `u` and `v` of `compas.geometry.SphericalSurface` to the match the excpected parametrisation.
 * Changed `compas.geometry.Shape.to_vertices_and_faces` to use `Shape.vertices` and `Shape.faces` or `Shape.triangles`.
+* Updated `compas.geometry.vector.__mul__` to allow element-wise multiplication with another vector.
+* Updated `compas.geometry.vector.__truediv__` to allow element-wise division with another vector.
 
 ### Removed
 
