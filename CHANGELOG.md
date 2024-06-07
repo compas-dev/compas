@@ -27,6 +27,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.geometry.vector.__rtruediv__`.
 * Added `VolMesh.cell_lines`, `VolMesh.cell_polygons`.
 * Added `VolMesh.vertex_edges`.
+* Added `VolMesh.from_meshes`.
+* Added `VolMesh.from_polyhedrons`.
 
 ### Changed
 
