@@ -21,6 +21,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added implementation of `compute_vertices`, `compute_edges`, `compute_faces` to `compas.geometry.Sphere`.
 * Added implementation of `compute_vertices`, `compute_edges`, `compute_faces` to `compas.geometry.Torus`.
 * Added `compas_blender.scene.ShapeObject`.
+* Added `compas.geometry.vector.__radd__`.
+* Added `compas.geometry.vector.__rsub__`.
+* Added `compas.geometry.vector.__rmul__`.
+* Added `compas.geometry.vector.__rtruediv__`.
 
 ### Changed
 
@@ -38,6 +42,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `draw_vertices`, `draw_edges` and `draw_faces` of `compas_blender.scene.MeshObject`, `compas_ghpython.scene.MeshObject`, and `compas_rhino.scene.MeshObject` to use only attributes instead of parameters.
 * Changed `draw_vertices`, `draw_edges` and `draw_faces` of `compas_blender.scene.VolMeshObject`, `compas_ghpython.scene.VolMeshObject`, and `compas_rhino.scene.VolMeshObject` to use only attributes instead of parameters.
 * Changed registration of `Capsule`, `Cone`, `Cylinder`, `Sphere`, `Torus` to `ShapeObject` in `compas_blender.scene`.
+* Updated `compas.geometry.vector.__mul__` to allow element-wise multiplication with another vector.
+* Updated `compas.geometry.vector.__truediv__` to allow element-wise division with another vector.
 
 ### Removed
 
