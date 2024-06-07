@@ -12,19 +12,7 @@ from .sceneobject import RhinoSceneObject
 
 
 class RhinoPointObject(RhinoSceneObject, GeometryObject):
-    """Scene object for drawing points.
-
-    Parameters
-    ----------
-    point : :class:`compas.geometry.Point`
-        A COMPAS point.
-    **kwargs : dict, optional
-        Additional keyword arguments.
-
-    """
-
-    def __init__(self, point, **kwargs):
-        super(RhinoPointObject, self).__init__(geometry=point, **kwargs)
+    """Scene object for drawing points."""
 
     def draw(self):
         """Draw the point.

@@ -12,19 +12,7 @@ from .sceneobject import RhinoSceneObject
 
 
 class RhinoTorusObject(RhinoSceneObject, GeometryObject):
-    """Scene object for drawing torus shapes.
-
-    Parameters
-    ----------
-    torus : :class:`compas.geometry.Torus`
-        A COMPAS torus.
-    **kwargs : dict, optional
-        Additional keyword arguments.
-
-    """
-
-    def __init__(self, torus, **kwargs):
-        super(RhinoTorusObject, self).__init__(geometry=torus, **kwargs)
+    """Scene object for drawing torus shapes."""
 
     def draw(self):
         """Draw the torus associated with the scene object.

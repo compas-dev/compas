@@ -13,19 +13,7 @@ from .sceneobject import RhinoSceneObject
 
 
 class RhinoVectorObject(RhinoSceneObject, GeometryObject):
-    """Scene object for drawing vectors.
-
-    Parameters
-    ----------
-    vector : :class:`compas.geometry.Vector`
-        A COMPAS vector.
-    **kwargs : dict, optional
-        Additional keyword arguments.
-
-    """
-
-    def __init__(self, vector, **kwargs):
-        super(RhinoVectorObject, self).__init__(geometry=vector, **kwargs)
+    """Scene object for drawing vectors."""
 
     def draw(self):
         """Draw the vector.

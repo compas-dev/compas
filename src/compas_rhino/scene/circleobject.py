@@ -12,19 +12,7 @@ from .sceneobject import RhinoSceneObject
 
 
 class RhinoCircleObject(RhinoSceneObject, GeometryObject):
-    """Scene object for drawing circles.
-
-    Parameters
-    ----------
-    circle : :class:`compas.geometry.Circle`
-        A COMPAS circle.
-    **kwargs : dict, optional
-        Additional keyword arguments.
-
-    """
-
-    def __init__(self, circle, **kwargs):
-        super(RhinoCircleObject, self).__init__(geometry=circle, **kwargs)
+    """Scene object for drawing circles."""
 
     def draw(self):
         """Draw the circle.

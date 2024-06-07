@@ -19,19 +19,10 @@ from .sceneobject import RhinoSceneObject
 
 
 class RhinoGraphObject(RhinoSceneObject, GraphObject):
-    """Scene object for drawing graph data structures.
+    """Scene object for drawing graph data structures."""
 
-    Parameters
-    ----------
-    graph : :class:`compas.datastructures.Graph`
-        A COMPAS graph.
-    **kwargs : dict, optional
-        Additional keyword arguments.
-
-    """
-
-    def __init__(self, graph, **kwargs):
-        super(RhinoGraphObject, self).__init__(graph=graph, **kwargs)
+    def __init__(self, **kwargs):
+        super(RhinoGraphObject, self).__init__(**kwargs)
         self._guids_nodes = None
         self._guids_edges = None
         self._guids_nodelabels = None

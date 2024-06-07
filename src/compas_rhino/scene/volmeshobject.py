@@ -22,18 +22,22 @@ class RhinoVolMeshObject(RhinoSceneObject, VolMeshObject):
 
     Parameters
     ----------
-    volmesh : :class:`compas.datastructures.VolMesh`
-        A COMPAS volmesh.
     disjoint : bool, optional
         Draw the faces of the mesh disjointed.
         Default is ``True``.
     **kwargs : dict, optional
         Additional keyword arguments.
 
+    Attributes
+    ----------
+    disjoint : bool
+        Draw the faces of the mesh disjointed.
+        Default is ``True``.
+
     """
 
-    def __init__(self, volmesh, disjoint=True, **kwargs):
-        super(RhinoVolMeshObject, self).__init__(volmesh=volmesh, **kwargs)
+    def __init__(self, disjoint=True, **kwargs):
+        super(RhinoVolMeshObject, self).__init__(**kwargs)
         self.disjoint = disjoint
         self._guids_vertices = None
         self._guids_edges = None

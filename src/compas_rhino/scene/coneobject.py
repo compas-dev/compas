@@ -12,19 +12,7 @@ from .sceneobject import RhinoSceneObject
 
 
 class RhinoConeObject(RhinoSceneObject, GeometryObject):
-    """Scene object for drawing cone shapes.
-
-    Parameters
-    ----------
-    shape : :class:`compas.geometry.Cone`
-        A COMPAS cone.
-    **kwargs : dict, optional
-        Additional keyword arguments.
-
-    """
-
-    def __init__(self, cone, **kwargs):
-        super(RhinoConeObject, self).__init__(geometry=cone, **kwargs)
+    """Scene object for drawing cone shapes."""
 
     def draw(self):
         """Draw the cone associated with the scene object.
