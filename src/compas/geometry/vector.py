@@ -151,22 +151,22 @@ class Vector(Geometry):
     def __mul__(self, other):
         if isinstance(other, (int, float)):
             return Vector(self.x * other, self.y * other, self.z * other)
-        else:
-            try:
-                other = Vector(*other)
-                return Vector(self.x * other.x, self.y * other.y, self.z * other.z)
-            except TypeError:
-                raise TypeError("Cannot cast {} {} to Vector".format(other, type(other)))
+
+        try:
+            other = Vector(*other)
+            return Vector(self.x * other.x, self.y * other.y, self.z * other.z)
+        except TypeError:
+            raise TypeError("Cannot cast {} {} to Vector".format(other, type(other)))
 
     def __truediv__(self, other):
         if isinstance(other, (int, float)):
             return Vector(self.x / other, self.y / other, self.z / other)
-        else:
-            try:
-                other = Vector(*other)
-                return Vector(self.x / other.x, self.y / other.y, self.z / other.z)
-            except TypeError:
-                raise TypeError("Cannot cast {} {} to Vector".format(other, type(other)))
+
+        try:
+            other = Vector(*other)
+            return Vector(self.x / other.x, self.y / other.y, self.z / other.z)
+        except TypeError:
+            raise TypeError("Cannot cast {} {} to Vector".format(other, type(other)))
 
     def __pow__(self, n):
         return Vector(self.x**n, self.y**n, self.z**n)
