@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import compas.colors  # noqa: F401
 from compas.geometry import transform_points
 
 from .descriptors.colordict import ColorDictAttribute
@@ -56,17 +57,18 @@ class MeshObject(SceneObject):
     edgecolor = ColorDictAttribute()
     facecolor = ColorDictAttribute()
 
-    def __init__(self, **kwargs):
+    def __init__(self, vertexcolor=None, edgecolor=None, facecolor=None, vertexsize=1.0, edgewidth=1.0, show_vertices=False, show_edges=False, show_faces=True, **kwargs):
+        # type: (dict | compas.colors.Color | None, dict | compas.colors.Color | None, dict | compas.colors.Color | None, float, float, bool, bool, bool, dict) -> None
         super(MeshObject, self).__init__(**kwargs)
         self._vertex_xyz = None
-        self.vertexcolor = kwargs.get("vertexcolor", self.contrastcolor)
-        self.edgecolor = kwargs.get("edgecolor", self.contrastcolor)
-        self.facecolor = kwargs.get("facecolor", self.color)
-        self.vertexsize = kwargs.get("vertexsize", 1.0)
-        self.edgewidth = kwargs.get("edgewidth", 1.0)
-        self.show_vertices = kwargs.get("show_vertices", False)
-        self.show_edges = kwargs.get("show_edges", False)
-        self.show_faces = kwargs.get("show_faces", True)
+        self.vertexcolor = vertexcolor or self.contrastcolor
+        self.edgecolor = edgecolor or self.contrastcolor
+        self.facecolor = facecolor or self.color
+        self.vertexsize = vertexsize
+        self.edgewidth = edgewidth
+        self.show_vertices = show_vertices
+        self.show_edges = show_edges
+        self.show_faces = show_faces
 
     @property
     def mesh(self):

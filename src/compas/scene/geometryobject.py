@@ -2,6 +2,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import compas.colors  # noqa: F401
+
 from .descriptors.color import ColorAttribute
 from .sceneobject import SceneObject
 
@@ -42,6 +44,7 @@ class GeometryObject(SceneObject):
     surfacecolor = ColorAttribute()
 
     def __init__(self, pointcolor=None, linecolor=None, surfacecolor=None, pointsize=1.0, linewidth=1.0, show_points=False, show_lines=True, show_surfaces=True, **kwargs):
+        # type: (compas.colors.Color | None, compas.colors.Color | None, compas.colors.Color | None, float, float, bool, bool, bool, dict) -> None
         super(GeometryObject, self).__init__(**kwargs)
         self.pointcolor = pointcolor or self.color
         self.linecolor = linecolor or self.color

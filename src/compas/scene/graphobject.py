@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import compas.colors  # noqa: F401
 from compas.geometry import transform_points
 
 from .descriptors.colordict import ColorDictAttribute
@@ -46,15 +47,16 @@ class GraphObject(SceneObject):
     nodecolor = ColorDictAttribute()
     edgecolor = ColorDictAttribute()
 
-    def __init__(self, **kwargs):
+    def __init__(self, nodecolor=None, edgecolor=None, nodesize=1.0, edgewidth=1.0, show_nodes=True, show_edges=True, **kwargs):
+        # type: (dict | compas.colors.Color | None, dict | compas.colors.Color | None, float, float, bool, bool, dict) -> None
         super(GraphObject, self).__init__(**kwargs)
         self._node_xyz = None
-        self.nodecolor = kwargs.get("nodecolor", self.color)
-        self.edgecolor = kwargs.get("edgecolor", self.color)
-        self.nodesize = kwargs.get("nodesize", 1.0)
-        self.edgewidth = kwargs.get("edgewidth", 1.0)
-        self.show_nodes = kwargs.get("show_nodes", True)
-        self.show_edges = kwargs.get("show_edges", True)
+        self.nodecolor = nodecolor or self.color
+        self.edgecolor = edgecolor or self.color
+        self.nodesize = nodesize
+        self.edgewidth = edgewidth
+        self.show_nodes = show_nodes
+        self.show_edges = show_edges
 
     @property
     def graph(self):
