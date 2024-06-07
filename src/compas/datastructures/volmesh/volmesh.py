@@ -388,6 +388,87 @@ class VolMesh(Datastructure):
             volmesh.add_cell(cell)
         return volmesh
 
+    @classmethod
+    def from_meshes(cls, meshes):
+        # type: (list[Mesh]) -> VolMesh
+        """Construct a volmesh from a list of faces.
+
+        Parameters
+        ----------
+        meshes : list[:class:`Mesh`]
+            The input meshes.
+
+        Returns
+        -------
+        :class:`VolMesh`
+
+        Notes
+        -----
+        The cycle directions of the faces of the meshes are neither checked, nor changed.
+        This means that the cycle directions of the provided meshes have to be consistent.
+
+        """
+        gkey_xyz = {}
+        cells = []
+
+        for mesh in meshes:
+            for vertex in mesh.vertices():
+                xyz = mesh.vertex_attributes(vertex, "xyz")
+                gkey = TOL.geometric_key(xyz)
+                gkey_xyz[gkey] = xyz
+            cell = []
+            for face in mesh.faces():
+                temp = []
+                for vertex in mesh.face_vertices(face):
+                    xyz = mesh.vertex_attributes(vertex, "xyz")
+                    gkey = TOL.geometric_key(xyz)
+                    temp.append(gkey)
+                cell.append(temp)
+            cells.append(cell)
+
+        gkey_index = {gkey: index for index, gkey in enumerate(gkey_xyz)}
+        vertices = list(gkey_xyz.values())
+        cells = [[[gkey_index[gkey] for gkey in face] for face in cell] for cell in cells]
+
+        return cls.from_vertices_and_cells(vertices, cells)
+
+    @classmethod
+    def from_polyhedrons(cls, polyhedrons):
+        # type: (list[Polyhedron]) -> VolMesh
+        """Construct a VolMesh from a list of polyhedrons.
+
+        Parameters
+        ----------
+        polyhedrons : list[:class:`Polyhedron`]
+
+        Returns
+        -------
+        :class:`VolMesh`
+
+        """
+        gkey_xyz = {}
+        cells = []
+
+        for polyhedron in polyhedrons:
+            for vertex in polyhedron.vertices:
+                gkey = TOL.geometric_key(vertex)
+                gkey_xyz[gkey] = vertex
+            cell = []
+            for face in polyhedron.faces:
+                temp = []
+                for index in face:
+                    xyz = polyhedron.vertices[index]
+                    gkey = TOL.geometric_key(xyz)
+                    temp.append(gkey)
+                cell.append(temp)
+            cells.append(cell)
+
+        gkey_index = {gkey: index for index, gkey in enumerate(gkey_xyz)}
+        vertices = list(gkey_xyz.values())
+        cells = [[[gkey_index[gkey] for gkey in face] for face in cell] for cell in cells]
+
+        return cls.from_vertices_and_cells(vertices, cells)
+
     # --------------------------------------------------------------------------
     # Conversions
     # --------------------------------------------------------------------------
