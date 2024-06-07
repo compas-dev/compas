@@ -28,9 +28,11 @@ class BlenderSceneObject(SceneObject):
 
     """
 
-    def __init__(self, **kwargs: Any):
+    def __init__(self, collection: Union[str, bpy.types.Collection] = None, show_wire: bool = True, **kwargs: Any):
         super().__init__(**kwargs)
         self.objects = []
+        self.collection = collection
+        self.show_wire = show_wire
 
     # many of the methods below will be added to a general scene object in the future
     # to make them universaly accessible they are added here for now

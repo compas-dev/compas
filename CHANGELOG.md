@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added implementation of `compute_vertices`, `compute_edges`, `compute_faces` to `compas.geometry.Cylinder`.
 * Added implementation of `compute_vertices`, `compute_edges`, `compute_faces` to `compas.geometry.Sphere`.
 * Added implementation of `compute_vertices`, `compute_edges`, `compute_faces` to `compas.geometry.Torus`.
+* Added `compas_blender.scene.ShapeObject`.
 * Added `compas.geometry.vector.__radd__`.
 * Added `compas.geometry.vector.__rsub__`.
 * Added `compas.geometry.vector.__rmul__`.
@@ -32,12 +33,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed check for empty vertices and faces to use `is None` to add support for `numpy` arrays.
 * Changed order of `u` and `v` of `compas.geometry.SphericalSurface` to the match the excpected parametrisation.
 * Changed `compas.geometry.Shape.to_vertices_and_faces` to use `Shape.vertices` and `Shape.faces` or `Shape.triangles`.
+* Changed default of `compas.scene.descriptors.color.ColorAttribute` to `None` to support native coloring in CAD contexts.
+* Changed `compas.colors.ColorDict.__data__` and `compas.colors.ColorDict.__from_data__` to properly support serialisation.
+* Moved `compas_blender.utilities.drawing` to `compas_blender.drawing` with backward compatible imports and deprecation warning.
+* Moved `compas_ghpython.utilities.drawing` to `compas_ghpython.drawing` with backward compatible imports and deprecation warning.
+* Moved `compas_rhino.utilities.drawing` to `compas_rhino.drawing` with backward compatible imports and deprecation warning.
+* Changed `draw_nodes` and `draw_edges` of `compas_blender.scene.GraphObject`, `compas_ghpython.scene.GraphObject`, and `compas_rhino.scene.GraphObject` to use only attributes instead of parameters.
+* Changed `draw_vertices`, `draw_edges` and `draw_faces` of `compas_blender.scene.MeshObject`, `compas_ghpython.scene.MeshObject`, and `compas_rhino.scene.MeshObject` to use only attributes instead of parameters.
+* Changed `draw_vertices`, `draw_edges` and `draw_faces` of `compas_blender.scene.VolMeshObject`, `compas_ghpython.scene.VolMeshObject`, and `compas_rhino.scene.VolMeshObject` to use only attributes instead of parameters.
+* Changed registration of `Capsule`, `Cone`, `Cylinder`, `Sphere`, `Torus` to `ShapeObject` in `compas_blender.scene`.
 * Updated `compas.geometry.vector.__mul__` to allow element-wise multiplication with another vector.
 * Updated `compas.geometry.vector.__truediv__` to allow element-wise division with another vector.
 
 ### Removed
 
-* Removed `System`dependency in `compas_ghpython/utilities/drawing.py`.
+* Removed `System` dependency in `compas_ghpython/utilities/drawing.py`.
+* Removed GH plugin for `compas.scene.clear` since it clashed with the Rhino version.
 
 ## [2.1.1] 2024-05-14
 

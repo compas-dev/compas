@@ -2,6 +2,9 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import compas.colors  # noqa: F401
+import compas.datastructures  # noqa: F401
+import compas.geometry  # noqa: F401
 from compas.geometry import transform_points
 
 from .descriptors.colordict import ColorDictAttribute
@@ -31,7 +34,7 @@ class GraphObject(SceneObject):
         The size of the nodes. Default is ``1.0``.
     edgewidth : float
         The width of the edges. Default is ``1.0``.
-    show_nodes : Union[bool, sequence[float]]
+    show_nodes : Union[bool, sequence[hashable]]
         Flag for showing or hiding the nodes. Default is ``True``.
     show_edges : Union[bool, sequence[tuple[hashable, hashable]]]
         Flag for showing or hiding the edges. Default is ``True``.
@@ -46,64 +49,76 @@ class GraphObject(SceneObject):
     nodecolor = ColorDictAttribute()
     edgecolor = ColorDictAttribute()
 
-    def __init__(self, graph, **kwargs):
+    def __init__(self, graph, show_nodes=True, show_edges=True, nodecolor=None, edgecolor=None, nodesize=1.0, edgewidth=1.0, **kwargs):
+        # type: (compas.datastructures.Graph, bool | list, bool | list, compas.colors.Color | dict | None, compas.colors.Color | dict | None, float | dict, float | dict, dict) -> None
         super(GraphObject, self).__init__(item=graph, **kwargs)
         self._graph = None
         self._node_xyz = None
         self.graph = graph
-        self.nodecolor = kwargs.get("nodecolor", self.color)
-        self.edgecolor = kwargs.get("edgecolor", self.color)
-        self.nodesize = kwargs.get("nodesize", 1.0)
-        self.edgewidth = kwargs.get("edgewidth", 1.0)
-        self.show_nodes = kwargs.get("show_nodes", True)
-        self.show_edges = kwargs.get("show_edges", True)
+        self.show_nodes = show_nodes
+        self.show_edges = show_edges
+        self.nodecolor = nodecolor or self.color
+        self.edgecolor = edgecolor or self.color
+        self.nodesize = nodesize
+        self.edgewidth = edgewidth
+
+    @property
+    def settings(self):
+        # type: () -> dict
+        settings = super(GraphObject, self).settings
+        settings["show_nodes"] = self.show_nodes
+        settings["show_edges"] = self.show_edges
+        settings["nodecolor"] = self.nodecolor
+        settings["edgecolor"] = self.edgecolor
+        settings["nodesize"] = self.nodesize
+        settings["edgewidth"] = self.edgewidth
+        return settings
 
     @property
     def graph(self):
+        # type: () -> compas.datastructures.Graph
         return self._graph
 
     @graph.setter
     def graph(self, graph):
+        # type: (compas.datastructures.Graph) -> None
         self._graph = graph
         self._transformation = None
         self._node_xyz = None
 
     @property
     def transformation(self):
+        # type: () -> compas.geometry.Transformation | None
         return self._transformation
 
     @transformation.setter
     def transformation(self, transformation):
+        # type: (compas.geometry.Transformation) -> None
         self._node_xyz = None
         self._transformation = transformation
 
     @property
     def node_xyz(self):
+        # type: () -> dict[int | str | tuple, list[float]]
         if self._node_xyz is None:
-            points = self.graph.nodes_attributes("xyz")  # type: ignore
+            points = self.graph.nodes_attributes("xyz")
             points = transform_points(points, self.worldtransformation)
-            self._node_xyz = dict(zip(self.graph.nodes(), points))  # type: ignore
+            self._node_xyz = dict(zip(self.graph.nodes(), points))
         return self._node_xyz
 
     @node_xyz.setter
     def node_xyz(self, node_xyz):
+        # type: (dict[int | str | tuple, list[float]]) -> None
         self._node_xyz = node_xyz
 
-    def draw_nodes(self, nodes=None, color=None, text=None):
+    def draw_nodes(self):
         """Draw the nodes of the graph.
 
-        Parameters
-        ----------
-        nodes : list[int], optional
-            The nodes to include in the drawing.
-            Default is all nodes.
-        color : tuple[float, float, float] | :class:`compas.colors.Color` | dict[int, tuple[float, float, float] | :class:`compas.colors.Color`], optional
-            The color of the nodes,
-            as either a single color to be applied to all nodes,
-            or a color dict, mapping specific nodes to specific colors.
-        text : dict[int, str], optional
-            The text labels for the nodes
-            as a text dict, mapping specific nodes to specific text labels.
+        Nodes are drawn based on the values of
+
+        * `self.show_nodes`
+        * `self.nodecolor`
+        * `self.nodesize`
 
         Returns
         -------
@@ -113,21 +128,14 @@ class GraphObject(SceneObject):
         """
         raise NotImplementedError
 
-    def draw_edges(self, edges=None, color=None, text=None):
+    def draw_edges(self):
         """Draw the edges of the graph.
 
-        Parameters
-        ----------
-        edges : list[tuple[int, int]], optional
-            The edges to include in the drawing.
-            Default is all edges.
-        color : tuple[float, float, float] | :class:`compas.colors.Color` | dict[tuple[int, int], tuple[float, float, float] | :class:`compas.colors.Color`], optional
-            The color of the edges,
-            as either a single color to be applied to all edges,
-            or a color dict, mapping specific edges to specific colors.
-        text : dict[tuple[int, int]], optional
-            The text labels for the edges
-            as a text dict, mapping specific edges to specific text labels.
+        Edges are drawn based on the values of
+
+        * `self.show_edges`
+        * `self.edgecolor`
+        * `self.edgewidth`
 
         Returns
         -------
@@ -135,10 +143,6 @@ class GraphObject(SceneObject):
             The identifiers of the objects representing the edges in the visualization context.
 
         """
-        raise NotImplementedError
-
-    def draw(self):
-        """Draw the network."""
         raise NotImplementedError
 
     def clear_nodes(self):

@@ -52,7 +52,5 @@ class GeometryObject(SceneObject):
         self.show_points = kwargs.get("show_points", False)
         self.show_lines = kwargs.get("show_lines", True)
         self.show_surfaces = kwargs.get("show_surfaces", True)
-
-    def draw(self):
-        """Draw the geometry. Implemented by child classes."""
-        raise NotImplementedError
+        # note: either lines should be renamed to curves
+        # or surfaces should be renamed to faces?

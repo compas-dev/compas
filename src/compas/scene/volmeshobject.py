@@ -2,6 +2,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import compas.datastructures  # noqa: F401
+import compas.geometry  # noqa: F401
 from compas.geometry import transform_points
 
 from .descriptors.colordict import ColorDictAttribute
@@ -64,43 +66,77 @@ class VolMeshObject(SceneObject):
     facecolor = ColorDictAttribute()
     cellcolor = ColorDictAttribute()
 
-    def __init__(self, volmesh, **kwargs):
+    def __init__(
+        self,
+        volmesh,
+        show_vertices=False,
+        show_edges=True,
+        show_faces=False,
+        show_cells=True,
+        vertexcolor=None,
+        edgecolor=None,
+        facecolor=None,
+        cellcolor=None,
+        vertexsize=1.0,
+        edgewidth=1.0,
+        **kwargs,
+    ):
+        # type: (compas.datastructures.VolMesh, bool | list, bool | list, bool | list, bool | list, compas.colors.Color | dict, compas.colors.Color | dict, compas.colors.Color | dict, compas.colors.Color | dict, float | dict, float | dict, dict) -> None
         super(VolMeshObject, self).__init__(item=volmesh, **kwargs)
         self._volmesh = None
         self._vertex_xyz = None
         self.volmesh = volmesh
-        self.vertexcolor = kwargs.get("vertexcolor", self.color)
-        self.edgecolor = kwargs.get("edgecolor", self.color)
-        self.facecolor = kwargs.get("facecolor", self.color)
-        self.cellcolor = kwargs.get("cellcolor", self.color)
-        self.vertexsize = kwargs.get("vertexsize", 1.0)
-        self.edgewidth = kwargs.get("edgewidth", 1.0)
-        self.show_vertices = kwargs.get("show_vertices", False)
-        self.show_edges = kwargs.get("show_edges", True)
-        self.show_faces = kwargs.get("show_faces", False)
-        self.show_cells = kwargs.get("show_cells", True)
+        self.show_vertices = show_vertices
+        self.show_edges = show_edges
+        self.show_faces = show_faces
+        self.show_cells = show_cells
+        self.vertexcolor = vertexcolor or self.color
+        self.edgecolor = edgecolor or self.color
+        self.facecolor = facecolor or self.color
+        self.cellcolor = cellcolor or self.color
+        self.vertexsize = vertexsize
+        self.edgewidth = edgewidth
+
+    @property
+    def settings(self):
+        # type: () -> dict
+        settings = super(VolMeshObject, self).settings
+        settings["show_vertices"] = self.show_vertices
+        settings["show_edges"] = self.show_edges
+        settings["show_faces"] = self.show_faces
+        settings["show_cells"] = self.show_cells
+        settings["vertexcolor"] = self.vertexcolor
+        settings["edgecolor"] = self.edgecolor
+        settings["facecolor"] = self.facecolor
+        settings["cellcolor"] = self.cellcolor
+        return settings
 
     @property
     def volmesh(self):
+        # type: () -> compas.datastructures.VolMesh
         return self._volmesh
 
     @volmesh.setter
     def volmesh(self, volmesh):
+        # type: (compas.datastructures.VolMesh) -> None
         self._volmesh = volmesh
         self._transformation = None
         self._vertex_xyz = None
 
     @property
     def transformation(self):
+        # type: () -> compas.geometry.Transformation | None
         return self._transformation
 
     @transformation.setter
     def transformation(self, transformation):
+        # type: (compas.geometry.Transformation) -> None
         self._vertex_xyz = None
         self._transformation = transformation
 
     @property
     def vertex_xyz(self):
+        # type: () -> dict[int, list[float]]
         if self._vertex_xyz is None:
             points = self.volmesh.vertices_attributes("xyz")  # type: ignore
             points = transform_points(points, self.worldtransformation)
@@ -109,23 +145,17 @@ class VolMeshObject(SceneObject):
 
     @vertex_xyz.setter
     def vertex_xyz(self, vertex_xyz):
+        # type: (dict[int, list[float]]) -> None
         self._vertex_xyz = vertex_xyz
 
-    def draw_vertices(self, vertices=None, color=None, text=None):
+    def draw_vertices(self):
         """Draw the vertices of the mesh.
 
-        Parameters
-        ----------
-        vertices : list[int], optional
-            The vertices to include in the drawing.
-            Default is all vertices.
-        color : tuple[float, float, float] | :class:`compas.colors.Color` | dict[int, tuple[float, float, float] | :class:`compas.colors.Color`], optional
-            The color of the vertices,
-            as either a single color to be applied to all vertices,
-            or a color dict, mapping specific vertices to specific colors.
-        text : dict[int, str], optional
-            The text labels for the vertices as a text dict,
-            mapping specific vertices to specific text labels.
+        The vertices are drawn based on the values of
+
+        * `self.show_vertices`
+        * `self.vertexcolor`
+        * `self.vertexsize`
 
         Returns
         -------
@@ -135,21 +165,14 @@ class VolMeshObject(SceneObject):
         """
         raise NotImplementedError
 
-    def draw_edges(self, edges=None, color=None, text=None):
+    def draw_edges(self):
         """Draw the edges of the mesh.
 
-        Parameters
-        ----------
-        edges : list[tuple[int, int]], optional
-            The edges to include in the drawing.
-            Default is all edges.
-        color : tuple[float, float, float] | :class:`compas.colors.Color` | dict[tuple[int, int], tuple[float, float, float] | :class:`compas.colors.Color`], optional
-            The color of the edges,
-            as either a single color to be applied to all edges,
-            or a color dict, mapping specific edges to specific colors.
-        text : dict[tuple[int, int], str], optional
-            The text labels for the edges as a text dict,
-            mapping specific edges to specific text labels.
+        The edges are drawn based on the values of
+
+        * `self.show_edges`
+        * `self.edgecolor`
+        * `self.edgewidth`
 
         Returns
         -------
@@ -159,21 +182,13 @@ class VolMeshObject(SceneObject):
         """
         raise NotImplementedError
 
-    def draw_faces(self, faces=None, color=None, text=None):
+    def draw_faces(self):
         """Draw the faces of the mesh.
 
-        Parameters
-        ----------
-        faces : list[int], optional
-            The faces to include in the drawing.
-            Default is all faces.
-        color : tuple[float, float, float] | :class:`compas.colors.Color` | dict[int, tuple[float, float, float] | :class:`compas.colors.Color`], optional
-            The color of the faces,
-            as either a single color to be applied to all faces,
-            or a color dict, mapping specific faces to specific colors.
-        text : dict[int, str], optional
-            The text labels for the faces as a text dict,
-            mapping specific faces to specific text labels.
+        The faces are drawn based on the values of
+
+        * `self.show_faces`
+        * `self.facecolor`
 
         Returns
         -------
@@ -183,21 +198,13 @@ class VolMeshObject(SceneObject):
         """
         raise NotImplementedError
 
-    def draw_cells(self, cells=None, color=None, text=None):
+    def draw_cells(self):
         """Draw the cells of the mesh.
 
-        Parameters
-        ----------
-        cells : list[int], optional
-            The cells to include in the drawing.
-            Default is all cells.
-        color : tuple[float, float, float] | :class:`compas.colors.Color` | dict[int, tuple[float, float, float] | :class:`compas.colors.Color`], optional
-            The color of the cells,
-            as either a single color to be applied to all cells,
-            or a color dict, mapping specific cells to specific colors.
-        text : dict[int, str], optional
-            The text labels for the cells as a text dict,
-            mapping specific cells to specific text labels.
+        The cells are drawn based on the values of
+
+        * `self.show_cells`
+        * `self.cellcolor`
 
         Returns
         -------
@@ -205,10 +212,6 @@ class VolMeshObject(SceneObject):
             The identifiers of the objects representing the cells in the visualization context.
 
         """
-        raise NotImplementedError
-
-    def draw(self):
-        """Draw the volmesh."""
         raise NotImplementedError
 
     def clear_vertices(self):
