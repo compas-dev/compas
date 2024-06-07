@@ -50,7 +50,7 @@ def get_objects(name=None, color=None, layer=None, type=None):
         import compas_rhino
 
         guids_all = compas_rhino.get_objects()
-        guids_compas = compas_rhino.get_objects(name='COMPAS.*')
+        guids_compas = compas_rhino.get_objects(name="COMPAS.*")
         guids_red = compas_rhino.get_objects(color=(255, 0, 0))
         guids_points = compas_rhino.get_objects(type=compas_rhino.rs.filter.point)
         guids_redpoints = compas_rhino.get_objects(color=(255, 0, 0), type=compas_rhino.rs.filter.point)

@@ -723,6 +723,7 @@ def test_halfedge_before_on_boundary(grid):
 
 
 def test_loops_and_strips_closed(sphere):
+    # type: (Mesh) -> None
     poles = list(sphere.vertices_where({"vertex_degree": 16}))
 
     for nbr in sphere.vertex_neighbors(poles[0]):

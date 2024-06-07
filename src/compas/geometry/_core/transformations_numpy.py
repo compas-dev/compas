@@ -83,7 +83,7 @@ def transform_frames_numpy(frames, T):
     --------
     >>> from compas.geometry import Frame, matrix_from_axis_and_angle
     >>> frames = [Frame([1, 0, 0], [1, 2, 4], [4, 7, 1]), Frame([0, 2, 0], [5, 2, 1], [0, 2, 1])]
-    >>> T =  matrix_from_axis_and_angle([0, 2, 0], math.radians(45), point=[4, 5, 6])
+    >>> T = matrix_from_axis_and_angle([0, 2, 0], math.radians(45), point=[4, 5, 6])
     >>> transformed_frames = transform_frames_numpy(frames, T)
 
     """
@@ -269,7 +269,7 @@ def dehomogenize_and_unflatten_frames_numpy(points_and_vectors):
 
     Examples
     --------
-    >>> points_and_vectors = [(1., 1., 1., 1.), (0., 1., 0., 0.), (1., 0., 0., 0.)]
+    >>> points_and_vectors = [(1.0, 1.0, 1.0, 1.0), (0.0, 1.0, 0.0, 0.0), (1.0, 0.0, 0.0, 0.0)]
     >>> res = dehomogenize_and_unflatten_frames_numpy(points_and_vectors)
     >>> np.allclose(res, [[1.0, 1.0, 1.0], [0.0, 1.0, 0.0], [1.0, 0.0, 0.0]])
     True

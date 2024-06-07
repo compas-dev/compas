@@ -95,10 +95,10 @@ class Proxy(object):
     Minimal example showing connection to the proxy server, and ensuring the
     server is disposed after using it:
 
-    >>> from compas.rpc import Proxy                        # doctest: +SKIP
-    >>> with Proxy('compas.numerical') as numerical:        # doctest: +SKIP
-    ...     pass                                            # doctest: +SKIP
-    ...                                                     # doctest: +SKIP
+    >>> from compas.rpc import Proxy  # doctest: +SKIP
+    >>> with Proxy("compas.numerical") as numerical:  # doctest: +SKIP
+    ...     pass  # doctest: +SKIP
+    ...     # doctest: +SKIP
     Starting a new proxy server...                          # doctest: +SKIP
     New proxy server started.                               # doctest: +SKIP
     Stopping the server proxy.                              # doctest: +SKIP
@@ -396,9 +396,9 @@ class Proxy(object):
             The result dict has the following structure ::
 
                 {
-                    'error'   : ...,  # A traceback of the error raised on the server, if any.
-                    'profile' : ...,  # A profile of the code executed on the server, if there was no error.
-                    'data'    : ...,  # The result returned by the target function, if there was no error.
+                    "error": ...,  # A traceback of the error raised on the server, if any.
+                    "profile": ...,  # A profile of the code executed on the server, if there was no error.
+                    "data": ...,  # The result returned by the target function, if there was no error.
                 }
 
         Warnings

@@ -30,6 +30,7 @@ def uninstall(version=None, packages=None):
     .. code-block:: python
 
         import compas_rhino
+
         compas_rhino.uninstall()
 
     .. code-block:: bash
@@ -205,10 +206,10 @@ def after_rhino_uninstall(uninstalled_packages):
     Examples
     --------
     >>> import compas.plugins
-    >>> @compas.plugins.plugin(category='install')
+    >>> @compas.plugins.plugin(category="install")
     ... def after_rhino_uninstall(uninstalled_packages):
-    ...    # Do something cleanup, eg remove copied files.
-    ...    return [('compas_ghpython', 'GH Components uninstalled', True)]
+    ...     # Do something cleanup, eg remove copied files.
+    ...     return [("compas_ghpython", "GH Components uninstalled", True)]
 
     Returns
     -------

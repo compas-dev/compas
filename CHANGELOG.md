@@ -9,13 +9,50 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `maxiter` parameter to `compas.geometry.icp_numpy`.
+* Added `resolution_u` and `resolution_v` to `compas.geometry.Shape` to control discretisation resolution.
+* Added `vertices`, `edges`, `faces`, `triangles` to `compas.geometry.Shape`.
+* Added `points`, `lines`, `polygons` to `compas.geometry.Shape`.
+* Added abstract `compute_vertices`, `compute_edges`, `compute_faces`, `compute_triangles` to `compas.geometry.Shape`.
+* Added implementation of `compute_vertices`, `compute_edges`, `compute_faces` to `compas.geometry.Box`.
+* Added implementation of `compute_vertices`, `compute_edges`, `compute_faces` to `compas.geometry.Capsule`.
+* Added implementation of `compute_vertices`, `compute_edges`, `compute_faces` to `compas.geometry.Cone`.
+* Added implementation of `compute_vertices`, `compute_edges`, `compute_faces` to `compas.geometry.Cylinder`.
+* Added implementation of `compute_vertices`, `compute_edges`, `compute_faces` to `compas.geometry.Sphere`.
+* Added implementation of `compute_vertices`, `compute_edges`, `compute_faces` to `compas.geometry.Torus`.
+
+### Changed
+
+* Changed `compas_ghpython/utilities/drawing.py` to remove `System` dependency.
+* Fixed bug in `compas.geometry.ic_numpy`, which was caused by returning only the last transformation of the iteration process.
+* Changed check for empty vertices and faces to use `is None` to add support for `numpy` arrays.
+* Changed order of `u` and `v` of `compas.geometry.SphericalSurface` to the match the excpected parametrisation.
+* Changed `compas.geometry.Shape.to_vertices_and_faces` to use `Shape.vertices` and `Shape.faces` or `Shape.triangles`.
+
+### Removed
+
+* Removed `System`dependency in `compas_ghpython/utilities/drawing.py`.
+
+## [2.1.1] 2024-05-14
+
+### Added
+
 * Added `compas.geometry.Line.point_from_start` and `compas.geometry.Line.point_from_end`.
 * Added `compas.geometry.Line.flip` and `compas.geometry.Line.flipped`.
 * Added an `compas.geometry.Frame.interpolate_frame(s)` method
 * Added `compas.colors.Color.contrast`.
 * Added `compas.geometry.Brep.from_plane`.
 * Added `compas.tolerance.Tolerance.angulardeflection`.
+* Added `compas.tolerance.Tolerance.update_from_dict`.
 * Added `compas.scene.SceneObject.scene` attribute.
+* Added `compas.datastructures.CellNetwork.is_faces_closed`
+* Added `compas.datastructures.CellNetwork.delete_edge`
+* Added `compas.datastructures.CellNetwork.delete_cell`
+* Added `compas.datastructures.CellNetwork.delete_face`
+* Added `compas.datastructures.CellNetwork.cells_to_graph`
+* Added `compas.datastructures.CellNetwork.face_plane`
+* Added `compas.datastructures.CellNetwork.cell_volume`
+* Added `compas.datastructures.CellNetwork.cell_neighbors`
 
 ### Changed
 
@@ -35,9 +72,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed use of `compas.geometry.allclose` to `compas.tolerance.TOL.is_allclose`.
 * Changed use of `compas.geometry.close` to `compas.tolerance.TOL.is_close`.
 * Changed imports of itertools to `compas.itertools` instead of `compas.utilities`.
+* Changed `compas.tolerance.Tolerance` to a singleton, to ensure having only library-wide tolerance values.
 * Updated `compas_rhino.conversions.point_to_compas` to allow for `Rhino.Geometry.Point` as input.
 * Changed `compas.datastructures.Tree.print_hierarchy` to `compas.datastructures.Tree.__str__`.
-* Updated `compas.geometry.vector` with `__rmul__` and allow element-wise multiplication and division with another vector.
+* Fixed `compas.geometry.bbox_numpy.minimum_volume_box` to avoid `numpy.linalg.LinAlgError`.
 
 ### Removed
 

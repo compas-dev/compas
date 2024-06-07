@@ -55,7 +55,7 @@ class Polyline(Curve):
 
     Examples
     --------
-    >>> polyline = Polyline([[0,0,0], [1,0,0], [2,0,0], [3,0,0]])
+    >>> polyline = Polyline([[0, 0, 0], [1, 0, 0], [2, 0, 0], [3, 0, 0]])
     >>> polyline.length
     3.0
 

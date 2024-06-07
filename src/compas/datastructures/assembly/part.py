@@ -35,10 +35,10 @@ class GeometricFeature(Feature):
     Examples
     --------
     >>>    def trim_brep_plane(brep, plane):
-    >>>         # trim brep with plane, return trimmed brep
+    >>> # trim brep with plane, return trimmed brep
     >>>
     >>>    def trim_mesh_plane(mesh, plane):
-    >>>         # trim mesh with plane, return trimmed mesh
+    >>> # trim mesh with plane, return trimmed mesh
     >>>
     >>>    class TrimmingFeature(GeometricFeature):
     >>>        OPERATIONS = {Brep: trim_brep_plane, Mesh: trim_mesh_plane}

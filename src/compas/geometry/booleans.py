@@ -37,8 +37,8 @@ def boolean_union_mesh_mesh(A, B):
     Examples
     --------
     >>> from compas.geometry import Box, Sphere
-    >>> from compas.geometry import boolean_union_mesh_mesh     # doctest: +SKIP
-    >>> from compas.geometry import trimesh_remesh              # doctest: +SKIP
+    >>> from compas.geometry import boolean_union_mesh_mesh  # doctest: +SKIP
+    >>> from compas.geometry import trimesh_remesh  # doctest: +SKIP
     >>> from compas.datastructures import Mesh
 
     >>> box = Box.from_width_height_depth(2, 2, 2)
@@ -51,10 +51,10 @@ def boolean_union_mesh_mesh(A, B):
 
     >>> A = box.to_vertices_and_faces()
     >>> B = sphere.to_vertices_and_faces()
-    >>> B = trimesh_remesh(B, 0.3, 10)                          # doctest: +SKIP
+    >>> B = trimesh_remesh(B, 0.3, 10)  # doctest: +SKIP
 
-    >>> V, F = boolean_union_mesh_mesh(A, B)                    # doctest: +SKIP
-    >>> union = Mesh.from_vertices_and_faces(V, F)              # doctest: +SKIP
+    >>> V, F = boolean_union_mesh_mesh(A, B)  # doctest: +SKIP
+    >>> union = Mesh.from_vertices_and_faces(V, F)  # doctest: +SKIP
 
     """
     raise PluginNotInstalledError("No plugin was found for the boolean_union_mesh_mesh pluggable. A plugin is available in compas_cgal...")
