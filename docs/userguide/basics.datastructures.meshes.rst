@@ -207,7 +207,7 @@ Halfedge Data Structure
 The topology of a mesh is stored in a halfedge data structure.
 In this data structure, vertices are connected to other vertices, and faces to other faces, via edges.
 An edge has two connected vertices, and at most two connected faces.
-Each each is split into two halfedges, one for each of the connected faces.
+Each edge is split into two halfedges, one for each of the connected faces.
 If an edge has only one connected face, the edge is on the boundary.
 
 Note that in a mesh constructed using :meth:`compas.datastructures.Mesh.from_meshgrid`, the vertices are organised in a specific way.
