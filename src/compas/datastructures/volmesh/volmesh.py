@@ -5,6 +5,13 @@ from __future__ import print_function
 from itertools import product
 from random import sample
 
+import compas
+
+if compas.PY2:
+    from collections import Mapping  # type: ignore
+else:
+    from collections.abc import Mapping
+
 from compas.datastructures import Mesh
 from compas.datastructures.attributes import CellAttributeView
 from compas.datastructures.attributes import EdgeAttributeView
@@ -343,20 +350,23 @@ class VolMesh(Datastructure):
 
         """
         obj = OBJ(filepath, precision)
-        vertices = obj.parser.vertices or []  # type: ignore
-        faces = obj.parser.faces or []  # type: ignore
-        groups = obj.parser.groups or []  # type: ignore
-        cells = []
-        for name in groups:
-            group = groups[name]
-            cell = []
-            for item in group:
-                if item[0] != "f":
-                    continue
-                face = faces[item[1]]
-                cell.append(face)
-            cells.append(cell)
-        return cls.from_vertices_and_cells(vertices, cells)
+        objects = obj.parser.objects or []  # type: ignore
+
+        if not objects:
+            vertices = obj.parser.vertices or []  # type: ignore
+            faces = obj.parser.faces or []  # type: ignore
+            cell = [faces]
+            return cls.from_vertices_and_cells(vertices, cell)
+
+        polyhedrons = []
+        for name in objects:
+            vertex_xyz = objects[name][0]
+            vertex_index = {vertex: index for index, vertex in enumerate(vertex_xyz)}
+            vertices = list(vertex_xyz.values())
+            faces = [[vertex_index[vertex] for vertex in face] for face in objects[name][1]]
+            polyhedron = Polyhedron(vertices, faces)
+            polyhedrons.append(polyhedron)
+        return cls.from_polyhedrons(polyhedrons)
 
     @classmethod
     def from_vertices_and_cells(cls, vertices, cells):
@@ -382,8 +392,14 @@ class VolMesh(Datastructure):
 
         """
         volmesh = cls()
-        for x, y, z in vertices:
-            volmesh.add_vertex(x=x, y=y, z=z)
+
+        if isinstance(vertices, Mapping):
+            for key, xyz in vertices.items():
+                volmesh.add_vertex(key=key, attr_dict=dict(zip(("x", "y", "z"), xyz)))
+        else:
+            for x, y, z in iter(vertices):
+                volmesh.add_vertex(x=x, y=y, z=z)
+
         for cell in cells:
             volmesh.add_cell(cell)
         return volmesh
@@ -502,8 +518,9 @@ class VolMesh(Datastructure):
         the faces to the file.
 
         """
+        meshes = [self.cell_to_mesh(cell) for cell in self.cells()]
         obj = OBJ(filepath, precision=precision)
-        obj.write(self, **kwargs)
+        obj.write(meshes, **kwargs)
 
     def to_vertices_and_cells(self):
         # type: () -> tuple[list[list[float]], list[list[list[int]]]]
@@ -848,6 +865,11 @@ class VolMesh(Datastructure):
         int
             The key of the face.
 
+        Raises
+        ------
+        ValueError
+            If the number of vertices is less than 3.
+
         See Also
         --------
         :meth:`add_vertex`, :meth:`add_cell`
@@ -863,7 +885,7 @@ class VolMesh(Datastructure):
 
         """
         if len(vertices) < 3:
-            return
+            raise ValueError("A half-face should have at least 3 vertices: {}".format(vertices))
 
         if vertices[-1] == vertices[0]:
             vertices = vertices[:-1]
@@ -2579,9 +2601,10 @@ class VolMesh(Datastructure):
         faces = []
         for face in self._halfface:
             key = "-".join(map(str, sorted(self.halfface_vertices(face))))
-            if key not in seen:
-                seen.add(key)
-                faces.append(face)
+            if key in seen:
+                continue
+            seen.add(key)
+            faces.append(face)
         for face in faces:
             if not data:
                 yield face
