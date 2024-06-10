@@ -5,7 +5,6 @@ from __future__ import print_function
 import compas.colors  # noqa: F401
 import compas.datastructures  # noqa: F401
 import compas.geometry  # noqa: F401
-
 from compas.geometry import transform_points
 
 from .descriptors.colordict import ColorDictAttribute
@@ -50,7 +49,7 @@ class GraphObject(SceneObject):
     nodecolor = ColorDictAttribute()
     edgecolor = ColorDictAttribute()
 
-    def __init__(self, show_nodes=True, show_edges=True, nodecolor=None, edgecolor=None, nodesize=1.0, edgewidth=1.0,  **kwargs):
+    def __init__(self, show_nodes=True, show_edges=True, nodecolor=None, edgecolor=None, nodesize=1.0, edgewidth=1.0, **kwargs):
         # type: (bool | list, bool | list, dict | compas.colors.Color | None, dict | compas.colors.Color | None, float, float, dict) -> None
         super(GraphObject, self).__init__(**kwargs)
         self._node_xyz = None
