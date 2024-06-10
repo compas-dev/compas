@@ -1,29 +1,15 @@
-from typing import Any
 from typing import Optional
 
 import bpy  # type: ignore
 
 from compas.colors import Color
-from compas.geometry import Circle
 from compas.scene import GeometryObject
 
 from .sceneobject import BlenderSceneObject
 
 
 class CircleObject(BlenderSceneObject, GeometryObject):
-    """Scene object for drawing circles in Blender.
-
-    Parameters
-    ----------
-    circle : :class:`compas.geometry.Circle`
-        A COMPAS circle.
-    **kwargs : dict, optional
-        Additional keyword arguments.
-
-    """
-
-    def __init__(self, circle: Circle, **kwargs: Any):
-        super().__init__(geometry=circle, **kwargs)
+    """Scene object for drawing circles in Blender."""
 
     def draw(self, color: Optional[Color] = None, collection: Optional[str] = None) -> list[bpy.types.Object]:
         """Draw the circle.

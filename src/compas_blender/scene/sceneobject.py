@@ -18,6 +18,8 @@ class BlenderSceneObject(SceneObject):
     ----------
     collection : str | :blender:`bpy.types.Collection`, optional
         The Blender scene collection the object(s) created by the scene object belong to.
+    show_wire : bool, optional
+        Display the wireframe of the object.
     **kwargs : dict, optional
         Additional keyword arguments.
 
@@ -25,6 +27,10 @@ class BlenderSceneObject(SceneObject):
     ----------
     objects : list[:blender:`bpy.types.Object`]
         The Blender objects created by the scene object.
+    collection : str | :blender:`bpy.types.Collection`
+        The Blender scene collection the object(s) created by the scene object belong to.
+    show_wire : bool
+        Display the wireframe of the object.
 
     """
 

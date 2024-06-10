@@ -1,10 +1,8 @@
-from typing import Any
 from typing import Optional
 
 import bpy  # type: ignore
 
 from compas.colors import Color
-from compas.geometry import Polyhedron
 from compas.scene import GeometryObject
 from compas_blender import conversions
 
@@ -12,19 +10,7 @@ from .sceneobject import BlenderSceneObject
 
 
 class PolyhedronObject(BlenderSceneObject, GeometryObject):
-    """Scene object for drawing polyhedron shapes in Blender.
-
-    Parameters
-    ----------
-    polyhedron : :class:`compas.geometry.Polyhedron`
-        A COMPAS polyhedron.
-    **kwargs : dict, optional
-        Additional keyword arguments.
-
-    """
-
-    def __init__(self, polyhedron: Polyhedron, **kwargs: Any):
-        super().__init__(geometry=polyhedron, **kwargs)
+    """Scene object for drawing polyhedron shapes in Blender."""
 
     def draw(self, color: Optional[Color] = None, collection: Optional[str] = None, show_wire: bool = True) -> list[bpy.types.Object]:
         """Draw the polyhedron associated with the scene object.

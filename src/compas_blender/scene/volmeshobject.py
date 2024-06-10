@@ -18,15 +18,34 @@ class VolMeshObject(BlenderSceneObject, BaseVolMeshObject):
 
     Parameters
     ----------
-    volmesh : :class:`compas.datastructures.VolMesh`
-        The volmesh data structure.
+    vertex_u : int, optional
+        Number of segments in the U direction of the vertex spheres.
+        Default is ``16``.
+    vertex_v : int, optional
+        Number of segments in the V direction of the vertex spheres.
+        Default is ``16``.
     **kwargs : dict, optional
         Additional keyword arguments.
 
+    Attributes
+    ----------
+    vertex_u : int
+        Number of segments in the U direction of the vertex spheres.
+    vertex_v : int
+        Number of segments in the V direction of the vertex spheres.
+    vertexobjects : list[:class:`bpy.types.Object`]
+        The Blender objects representing the vertices.
+    edgeobjects : list[:class:`bpy.types.Object`]
+        The Blender objects representing the edges.
+    faceobjects : list[:class:`bpy.types.Object`]
+        The Blender objects representing the faces.
+    cellobjects : list[:class:`bpy.types.Object`]
+        The Blender objects representing the cells.
+
     """
 
-    def __init__(self, volmesh, vertex_u=16, vertex_v=16, **kwargs: Any):
-        super().__init__(volmesh=volmesh, **kwargs)
+    def __init__(self, vertex_u=16, vertex_v=16, **kwargs: Any):
+        super().__init__(**kwargs)
         self.vertexobjects = []
         self.edgeobjects = []
         self.faceobjects = []

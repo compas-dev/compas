@@ -5,7 +5,6 @@ import bpy  # type: ignore
 
 import compas_blender
 import compas_blender.objects
-from compas.datastructures import Mesh
 from compas.geometry import Line
 from compas.geometry import Sphere
 from compas.scene import MeshObject as BaseMeshObject
@@ -19,13 +18,34 @@ class MeshObject(BlenderSceneObject, BaseMeshObject):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
-        A COMPAS mesh.
+    vertex_u : int, optional
+        Number of segments in the U direction of the vertex spheres.
+        Default is ``16``.
+    vertex_v : int, optional
+        Number of segments in the V direction of the vertex spheres.
+        Default is ``16``.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        For more info,
+        see :class:`compas_blender.scene.BlenderSceneObject` and :class:`compas.scene.MeshObject`.
+
+    Attributes
+    ----------
+    vertex_u : int
+        Number of segments in the U direction of the vertex spheres.
+    vertex_v : int
+        Number of segments in the V direction of the vertex spheres.
+    vertexobjects : list[:blender:`bpy.types.Object`]
+        List of Blender objects representing the vertices.
+    edgeobjects : list[:blender:`bpy.types.Object`]
+        List of Blender objects representing the edges.
+    faceobjects : list[:blender:`bpy.types.Object`]
+        List of Blender objects representing the faces.
 
     """
 
-    def __init__(self, mesh: Mesh, vertex_u=16, vertex_v=16, **kwargs: Any):
-        super().__init__(mesh=mesh, **kwargs)
+    def __init__(self, vertex_u=16, vertex_v=16, **kwargs: Any):
+        super().__init__(**kwargs)
         self.vertexobjects = []
         self.edgeobjects = []
         self.faceobjects = []

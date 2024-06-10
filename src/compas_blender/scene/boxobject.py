@@ -1,8 +1,5 @@
-from typing import Any
-
 import bpy  # type: ignore
 
-from compas.geometry import Box
 from compas.scene import GeometryObject
 from compas_blender import conversions
 
@@ -10,20 +7,7 @@ from .sceneobject import BlenderSceneObject
 
 
 class BoxObject(BlenderSceneObject, GeometryObject):
-    """Scene object for drawing box shapes in Blender.
-
-    Parameters
-    ----------
-    box : :class:`compas.geometry.Box`
-        A COMPAS box.
-    **kwargs : dict, optional
-        Additional keyword arguments.
-
-    """
-
-    def __init__(self, box: Box, **kwargs: Any):
-        super().__init__(geometry=box, **kwargs)
-        self.geometry: Box
+    """Scene object for drawing box shapes in Blender."""
 
     def draw(self) -> list[bpy.types.Object]:
         """Draw the box associated with the scene object.
