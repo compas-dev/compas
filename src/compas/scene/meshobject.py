@@ -26,8 +26,15 @@ class MeshObject(SceneObject):
     vertex_xyz : dict[int, list[float]]
         View coordinates of the vertices.
         Defaults to the real coordinates.
-    color : :class:`compas.colors.Color`
-        The base RGB color of the mesh.
+    show_vertices : Union[bool, sequence[float]]
+        Flag for showing or hiding the vertices, or a list of keys for the vertices to show.
+        Default is ``False``.
+    show_edges : Union[bool, sequence[tuple[int, int]]]
+        Flag for showing or hiding the edges, or a list of keys for the edges to show.
+        Default is ``True``.
+    show_faces : Union[bool, sequence[int]]
+        Flag for showing or hiding the faces, or a list of keys for the faces to show.
+        Default is ``True``.
     vertexcolor : :class:`compas.colors.ColorDict`
         Vertex colors.
     edgecolor : :class:`compas.colors.ColorDict`
@@ -38,15 +45,6 @@ class MeshObject(SceneObject):
         The size of the vertices. Default is ``1.0``.
     edgewidth : float
         The width of the edges. Default is ``1.0``.
-    show_vertices : Union[bool, sequence[float]]
-        Flag for showing or hiding the vertices, or a list of keys for the vertices to show.
-        Default is ``False``.
-    show_edges : Union[bool, sequence[tuple[int, int]]]
-        Flag for showing or hiding the edges, or a list of keys for the edges to show.
-        Default is ``True``.
-    show_faces : Union[bool, sequence[int]]
-        Flag for showing or hiding the faces, or a list of keys for the faces to show.
-        Default is ``True``.
 
     See Also
     --------
@@ -59,18 +57,18 @@ class MeshObject(SceneObject):
     edgecolor = ColorDictAttribute()
     facecolor = ColorDictAttribute()
 
-    def __init__(self, vertexcolor=None, edgecolor=None, facecolor=None, vertexsize=1.0, edgewidth=1.0, show_vertices=False, show_edges=False, show_faces=True, **kwargs):
-        # type: (dict | compas.colors.Color | None, dict | compas.colors.Color | None, dict | compas.colors.Color | None, float, float, bool, bool, bool, dict) -> None
+    def __init__(self, show_vertices=False, show_edges=False, show_faces=True, vertexcolor=None, edgecolor=None, facecolor=None, vertexsize=1.0, edgewidth=1.0, **kwargs):
+        # type: (bool | list, bool | list, bool | list, dict | compas.colors.Color | None, dict | compas.colors.Color | None, dict | compas.colors.Color | None, float, float, dict) -> None
         super(MeshObject, self).__init__(**kwargs)
         self._vertex_xyz = None
+        self.show_vertices = show_vertices
+        self.show_edges = show_edges
+        self.show_faces = show_faces
         self.vertexcolor = vertexcolor or self.contrastcolor
         self.edgecolor = edgecolor or self.contrastcolor
         self.facecolor = facecolor or self.color
         self.vertexsize = vertexsize
         self.edgewidth = edgewidth
-        self.show_vertices = show_vertices
-        self.show_edges = show_edges
-        self.show_faces = show_faces
 
     @property
     def settings(self):
@@ -90,12 +88,13 @@ class MeshObject(SceneObject):
 
     @property
     def mesh(self):
+        # type: () -> compas.datastructures.Mesh
         return self.item
 
     @mesh.setter
     def mesh(self, mesh):
         # type: (compas.datastructures.Mesh) -> None
-        self._mesh = mesh
+        self._item = mesh
         self._transformation = None
         self._vertex_xyz = None
 

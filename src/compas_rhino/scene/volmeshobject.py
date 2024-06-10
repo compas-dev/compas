@@ -25,6 +25,14 @@ class RhinoVolMeshObject(RhinoSceneObject, VolMeshObject):
     disjoint : bool, optional
         Draw the faces of the mesh disjointed.
         Default is ``True``.
+    vertexgroup : str, optional
+        The name of the group for the vertices.
+    edgegroup : str, optional
+        The name of the group for the edges.
+    facegroup : str, optional
+        The name of the group for the faces.
+    cellgroup : str, optional
+        The name of the group for the cells.
     **kwargs : dict, optional
         Additional keyword arguments.
 
@@ -33,11 +41,19 @@ class RhinoVolMeshObject(RhinoSceneObject, VolMeshObject):
     disjoint : bool
         Draw the faces of the mesh disjointed.
         Default is ``True``.
+    vertexgroup : str
+        The name of the group for the vertices.
+    edgegroup : str
+        The name of the group for the edges.
+    facegroup : str
+        The name of the group for the faces.
+    cellgroup : str
+        The name of the group for the cells.
 
     """
 
-    def __init__(self, volmesh, disjoint=True, vertexgroup=None, edgegroup=None, facegroup=None, cellgroup=None, **kwargs):
-        super(RhinoVolMeshObject, self).__init__(volmesh=volmesh, **kwargs)
+    def __init__(self, disjoint=True, vertexgroup=None, edgegroup=None, facegroup=None, cellgroup=None, **kwargs):
+        super(RhinoVolMeshObject, self).__init__(**kwargs)
         self.disjoint = disjoint
         self._guids_vertices = None
         self._guids_edges = None

@@ -68,7 +68,6 @@ class VolMeshObject(SceneObject):
 
     def __init__(
         self,
-        volmesh,
         show_vertices=False,
         show_edges=True,
         show_faces=False,
@@ -81,7 +80,7 @@ class VolMeshObject(SceneObject):
         edgewidth=1.0,
         **kwargs,
     ):
-        # type: (compas.datastructures.VolMesh, bool | list, bool | list, bool | list, bool | list, compas.colors.Color | dict, compas.colors.Color | dict, compas.colors.Color | dict, compas.colors.Color | dict, float | dict, float | dict, dict) -> None
+        # type: (bool | list, bool | list, bool | list, bool | list, compas.colors.Color | dict, compas.colors.Color | dict, compas.colors.Color | dict, compas.colors.Color | dict, float | dict, float | dict, dict) -> None
         super(VolMeshObject, self).__init__(**kwargs)
         self._vertex_xyz = None
         self.show_vertices = show_vertices
@@ -116,7 +115,7 @@ class VolMeshObject(SceneObject):
     @volmesh.setter
     def volmesh(self, volmesh):
         # type: (compas.datastructures.VolMesh) -> None
-        self._volmesh = volmesh
+        self._item = volmesh
         self._transformation = None
         self._vertex_xyz = None
 
