@@ -13,8 +13,6 @@ class FrameObject(GHSceneObject, GeometryObject):
 
     Parameters
     ----------
-    frame : :class:`compas.geometry.Frame`
-        A COMPAS frame.
     scale : float, optional
         The scale of the vectors representing the axes of the frame.
     **kwargs : dict, optional
@@ -24,19 +22,11 @@ class FrameObject(GHSceneObject, GeometryObject):
     ----------
     scale : float
         Scale factor that controls the length of the axes.
-    color_origin : :class:`compas.colors.Color`
-        Default is ``Color.black()``.
-    color_xaxis : :class:`compas.colors.Color`
-        Default is ``Color.red()``.
-    color_yaxis : :class:`compas.colors.Color`
-        Default is ``Color.green()``.
-    color_zaxis : :class:`compas.colors.Color`
-        Default is ``Color.blue()``.
 
     """
 
-    def __init__(self, frame, scale=1.0, **kwargs):
-        super(FrameObject, self).__init__(geometry=frame, **kwargs)
+    def __init__(self, scale=1.0, **kwargs):
+        super(FrameObject, self).__init__(**kwargs)
         self.scale = scale
 
     def draw(self):
@@ -46,6 +36,7 @@ class FrameObject(GHSceneObject, GeometryObject):
         -------
         list[:rhino:`Rhino.Geometry.Point3d`, :rhino:`Rhino.Geometry.Line`]
             List of created Rhino geometries.
+
         """
         geometries = []
 

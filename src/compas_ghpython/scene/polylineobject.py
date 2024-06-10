@@ -9,19 +9,7 @@ from .sceneobject import GHSceneObject
 
 
 class PolylineObject(GHSceneObject, GeometryObject):
-    """Scene object for drawing polylines.
-
-    Parameters
-    ----------
-    polyline : :class:`compas.geometry.Polyline`
-        A COMPAS polyline.
-    **kwargs : dict, optional
-        Additional keyword arguments.
-
-    """
-
-    def __init__(self, polyline, **kwargs):
-        super(PolylineObject, self).__init__(geometry=polyline, **kwargs)
+    """Scene object for drawing polylines."""
 
     def draw(self):
         """Draw the polyline.

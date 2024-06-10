@@ -10,19 +10,7 @@ from .sceneobject import GHSceneObject
 
 
 class VolMeshObject(GHSceneObject, BaseVolMeshObject):
-    """Scene object for drawing volmesh data structures.
-
-    Parameters
-    ----------
-    volmesh : :class:`compas.datastructures.VolMesh`
-        A COMPAS volmesh.
-    **kwargs : dict, optional
-        Additional keyword arguments.
-
-    """
-
-    def __init__(self, volmesh, **kwargs):
-        super(VolMeshObject, self).__init__(volmesh=volmesh, **kwargs)
+    """Scene object for drawing volmesh data structures."""
 
     def draw(self):
         """Draw a selection of cells.

@@ -9,19 +9,7 @@ from .sceneobject import GHSceneObject
 
 
 class GraphObject(GHSceneObject, BaseGraphObject):
-    """Scene object for drawing graph data structures.
-
-    Parameters
-    ----------
-    graph : :class:`compas.datastructures.Graph`
-        A COMPAS graph.
-    **kwargs : dict, optional
-        Additional keyword arguments.
-
-    """
-
-    def __init__(self, graph, **kwargs):
-        super(GraphObject, self).__init__(graph=graph, **kwargs)
+    """Scene object for drawing graph data structures."""
 
     def draw(self):
         """Draw the entire graph with default color settings.

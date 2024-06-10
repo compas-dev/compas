@@ -9,19 +9,7 @@ from .sceneobject import GHSceneObject
 
 
 class LineObject(GHSceneObject, GeometryObject):
-    """Scene object for drawing lines.
-
-    Parameters
-    ----------
-    line : :class:`compas.geometry.Line`
-        A COMPAS line.
-    **kwargs : dict, optional
-        Additional keyword arguments.
-
-    """
-
-    def __init__(self, line, **kwargs):
-        super(LineObject, self).__init__(geometry=line, **kwargs)
+    """Scene object for drawing lines."""
 
     def draw(self):
         """Draw the line.
