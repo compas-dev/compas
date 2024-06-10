@@ -112,7 +112,7 @@ class Scene(Tree):
 
     def clear(self):
         # type: () -> None
-        """Clear the current context of the scene."""
+        """Clear everything from the current context of the scene."""
         clear()
 
     def clear_objects(self):
@@ -127,10 +127,10 @@ class Scene(Tree):
     def draw(self):
         """Draw the scene."""
 
-        before_draw()
-
         if not self.context:
             raise ValueError("No context detected.")
+
+        before_draw()
 
         self.clear_objects()
 

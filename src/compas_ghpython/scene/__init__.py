@@ -57,9 +57,9 @@ from .volmeshobject import VolMeshObject
 from .brepobject import BrepObject
 
 
-@plugin(category="drawing-utils", pluggable_name="clear", requires=["Grasshopper"])
-def clear_GH(guids=None):
-    pass
+# @plugin(category="drawing-utils", pluggable_name="clear", requires=["Grasshopper"])
+# def clear_GH(guids=None):
+#     pass
 
 
 @plugin(category="factories", requires=["Rhino"])

@@ -2,11 +2,11 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from abc import abstractmethod
 from functools import reduce
 from operator import mul
 
 import compas.colors  # noqa: F401
+import compas.data  # noqa: F401
 import compas.datastructures  # noqa: F401
 import compas.geometry  # noqa: F401
 from compas.colors import Color
@@ -182,10 +182,11 @@ class SceneObject(TreeNode):
     def contrastcolor(self):
         # type: () -> compas.colors.Color
         if not self._contrastcolor:
-            if self.color.is_light:
-                self._contrastcolor = self.color.darkened(50)
-            else:
-                self._contrastcolor = self.color.lightened(50)
+            if self.color:
+                if self.color.is_light:
+                    self._contrastcolor = self.color.darkened(50)
+                else:
+                    self._contrastcolor = self.color.lightened(50)
         return self._contrastcolor
 
     @contrastcolor.setter
@@ -196,7 +197,6 @@ class SceneObject(TreeNode):
     @property
     def settings(self):
         # type: () -> dict
-        # The settings are all the nessessary attributes to reconstruct the scene object besides the Data item.
         settings = {
             "name": self.name,
             "color": self.color,
@@ -212,6 +212,7 @@ class SceneObject(TreeNode):
         return settings
 
     def add(self, item, **kwargs):
+        # type: (compas.data.Data, dict) -> SceneObject
         """Add a child item to the scene object.
 
         Parameters
@@ -243,7 +244,6 @@ class SceneObject(TreeNode):
         super(SceneObject, self).add(sceneobject)
         return sceneobject
 
-    @abstractmethod
     def draw(self):
         """The main drawing method."""
         raise NotImplementedError

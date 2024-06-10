@@ -31,12 +31,10 @@ from compas.datastructures import Graph
 from compas.datastructures import VolMesh
 
 from .sceneobject import BlenderSceneObject
+from .shapeobject import ShapeObject
 from .boxobject import BoxObject
-from .capsuleobject import CapsuleObject
 from .circleobject import CircleObject
-from .coneobject import ConeObject
 from .curveobject import CurveObject
-from .cylinderobject import CylinderObject
 from .frameobject import FrameObject
 from .lineobject import LineObject
 from .meshobject import MeshObject
@@ -47,9 +45,7 @@ from .pointcloudobject import PointcloudObject
 from .polygonobject import PolygonObject
 from .polyhedronobject import PolyhedronObject
 from .polylineobject import PolylineObject
-from .sphereobject import SphereObject
 from .surfaceobject import SurfaceObject
-from .torusobject import TorusObject
 from .vectorobject import VectorObject
 from .volmeshobject import VolMeshObject
 
@@ -67,11 +63,11 @@ def after_draw_blender(drawn_objects):
 @plugin(category="factories", requires=["bpy"])
 def register_scene_objects():
     register(Box, BoxObject, context="Blender")
-    register(Capsule, CapsuleObject, context="Blender")
+    register(Capsule, ShapeObject, context="Blender")
     register(Circle, CircleObject, context="Blender")
-    register(Cone, ConeObject, context="Blender")
+    register(Cone, ShapeObject, context="Blender")
     register(Curve, CurveObject, context="Blender")
-    register(Cylinder, CylinderObject, context="Blender")
+    register(Cylinder, ShapeObject, context="Blender")
     register(Frame, FrameObject, context="Blender")
     register(Line, LineObject, context="Blender")
     register(Mesh, MeshObject, context="Blender")
@@ -82,9 +78,9 @@ def register_scene_objects():
     register(Polygon, PolygonObject, context="Blender")
     register(Polyhedron, PolyhedronObject, context="Blender")
     register(Polyline, PolylineObject, context="Blender")
-    register(Sphere, SphereObject, context="Blender")
+    register(Sphere, ShapeObject, context="Blender")
     register(Surface, SurfaceObject, context="Blender")
-    register(Torus, TorusObject, context="Blender")
+    register(Torus, ShapeObject, context="Blender")
     register(Vector, VectorObject, context="Blender")
     register(VolMesh, VolMeshObject, context="Blender")
     print("Blender Objects registered.")
@@ -92,10 +88,9 @@ def register_scene_objects():
 
 __all__ = [
     "BlenderSceneObject",
+    "shapeObject",
     "BoxObject",
-    "CapsuleObject",
     "CircleObject",
-    "ConeObject",
     "CurveObject",
     "CylinderObject",
     "FrameObject",
