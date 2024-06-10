@@ -140,7 +140,7 @@ class MeshObject(BlenderSceneObject, BaseMeshObject):
         for vertex in vertices:
             name = f"{self.mesh.name}.vertex.{vertex}"
             color = self.vertexcolor[vertex]
-            point = self.vertex_xyz[vertex]
+            point = self.mesh.vertex_coordinates(vertex)
 
             # # there is no such thing as a sphere data block
             # bpy.ops.mesh.primitive_uv_sphere_add(location=point, radius=radius, segments=u, ring_count=v)
@@ -173,7 +173,7 @@ class MeshObject(BlenderSceneObject, BaseMeshObject):
         for u, v in edges:
             name = f"{self.mesh.name}.edge.{u}-{v}"
             color = self.edgecolor[u, v]
-            curve = conversions.line_to_blender_curve(Line(self.vertex_xyz[u], self.vertex_xyz[v]))
+            curve = conversions.line_to_blender_curve(Line(self.mesh.vertex_coordinates(u), self.mesh.vertex_coordinates(v)))
 
             obj = self.create_object(curve, name=name)
             self.update_object(obj, color=color, collection=self.collection)
@@ -197,7 +197,7 @@ class MeshObject(BlenderSceneObject, BaseMeshObject):
         for face in faces:
             name = f"{self.mesh.name}.face.{face}"
             color = self.facecolor[face]
-            points = [self.vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)]
+            points = [self.mesh.vertex_coordinates(vertex) for vertex in self.mesh.face_vertices(face)]
             mesh = conversions.polygon_to_blender_mesh(points, name=name)
 
             obj = self.create_object(mesh, name=name)

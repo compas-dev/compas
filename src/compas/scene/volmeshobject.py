@@ -110,6 +110,7 @@ class VolMeshObject(SceneObject):
 
     @property
     def volmesh(self):
+        # type: () -> compas.datastructures.VolMesh
         return self.item
 
     @volmesh.setter

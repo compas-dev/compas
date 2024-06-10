@@ -143,7 +143,7 @@ class VolMeshObject(BlenderSceneObject, BaseVolMeshObject):
         for vertex in vertices:
             name = f"{self.volmesh.name}.vertex.{vertex}"
             color = self.vertexcolor[vertex]
-            point = self.vertex_xyz[vertex]
+            point = self.volmesh.vertex_coordinates(vertex)
 
             sphere = Sphere(radius=self.vertexsize, point=point)
             sphere.resolution_u = self.vertex_u
@@ -171,7 +171,7 @@ class VolMeshObject(BlenderSceneObject, BaseVolMeshObject):
         for u, v in edges:
             name = f"{self.volmesh.name}.edge.{u}-{v}"
             color = self.edgecolor[u, v]
-            curve = conversions.line_to_blender_curve(Line(self.vertex_xyz[u], self.vertex_xyz[v]))
+            curve = conversions.line_to_blender_curve(Line(self.volmesh.vertex_coordinates(u), self.volmesh.vertex_coordinates(v)))
 
             obj = self.create_object(curve, name=name)
             self.update_object(obj, color=color, collection=self.collection)
@@ -195,7 +195,7 @@ class VolMeshObject(BlenderSceneObject, BaseVolMeshObject):
         for face in faces:
             name = f"{self.volmesh.name}.face.{face}"
             color = self.facecolor[face]
-            points = [self.vertex_xyz[vertex] for vertex in self.volmesh.face_vertices(face)]
+            points = [self.volmesh.vertex_coordinates(vertex) for vertex in self.volmesh.face_vertices(face)]
             mesh = conversions.polygon_to_blender_mesh(points, name=name)
 
             obj = self.create_object(mesh, name=name)
@@ -225,7 +225,7 @@ class VolMeshObject(BlenderSceneObject, BaseVolMeshObject):
             faces = self.volmesh.cell_faces(cell)
             vertex_index = dict((vertex, index) for index, vertex in enumerate(vertices))
 
-            vertices = [self.vertex_xyz[vertex] for vertex in vertices]
+            vertices = [self.volmesh.vertex_coordinates(vertex) for vertex in vertices]
             faces = [[vertex_index[vertex] for vertex in self.volmesh.halfface_vertices(face)] for face in faces]
 
             mesh = conversions.vertices_and_faces_to_blender_mesh(vertices, faces, name=name)

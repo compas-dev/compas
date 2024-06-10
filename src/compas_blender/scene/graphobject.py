@@ -103,7 +103,7 @@ class GraphObject(BlenderSceneObject, BaseGraphObject):
         for node in nodes:
             name = f"{self.graph.name}.node.{node}"
             color = self.nodecolor[node]
-            point = self.node_xyz[node]
+            point = self.graph.node_coordinates(node)
 
             # # there is no such thing as a sphere data block
             # # this doesn't work with application of worl transformation matrix
@@ -137,7 +137,7 @@ class GraphObject(BlenderSceneObject, BaseGraphObject):
         for u, v in edges:
             name = f"{self.graph.name}.edge.{u}-{v}"
             color = self.edgecolor[u, v]
-            curve = conversions.line_to_blender_curve(Line(self.node_xyz[u], self.node_xyz[v]))
+            curve = conversions.line_to_blender_curve(Line(self.graph.node_coordinates(u), self.graph.node_coordinates(v)))
 
             obj = self.create_object(curve, name=name)
             self.update_object(obj, color=color, collection=self.collection)
