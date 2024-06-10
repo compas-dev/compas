@@ -2,7 +2,6 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from compas.colors import Color
 from compas.scene import GeometryObject
 from compas_rhino import conversions
 
