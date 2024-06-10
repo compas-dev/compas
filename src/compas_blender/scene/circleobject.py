@@ -33,7 +33,7 @@ class CircleObject(BlenderSceneObject, GeometryObject):
 
         obj = bpy.context.object
         self.objects.append(obj)
-        self.update_object(obj, color=color, collection=collection, transformation=self.geometry.transformation)
+        self.update_object(obj, color=color, collection=collection)
 
         self._guids = [obj]
         return self.guids
