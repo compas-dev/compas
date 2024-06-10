@@ -44,6 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed registration of `Capsule`, `Cone`, `Cylinder`, `Sphere`, `Torus` to `ShapeObject` in `compas_blender.scene`.
 * Updated `compas.geometry.vector.__mul__` to allow element-wise multiplication with another vector.
 * Updated `compas.geometry.vector.__truediv__` to allow element-wise division with another vector.
+* Fixed bug in registration `shapely` boolean plugins.
 
 ### Removed
 
