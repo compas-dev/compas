@@ -43,9 +43,20 @@ class GeometryObject(SceneObject):
     linecolor = ColorAttribute()
     surfacecolor = ColorAttribute()
 
-    def __init__(self, pointcolor=None, linecolor=None, surfacecolor=None, pointsize=1.0, linewidth=1.0, show_points=False, show_lines=True, show_surfaces=True, **kwargs):
-        # type: (compas.colors.Color | None, compas.colors.Color | None, compas.colors.Color | None, float, float, bool, bool, bool, dict) -> None
-        super(GeometryObject, self).__init__(**kwargs)
+    def __init__(
+        self,
+        pointcolor=None,  # type: compas.colors.Color | None
+        linecolor=None,  # type: compas.colors.Color | None
+        surfacecolor=None,  # type: compas.colors.Color | None
+        pointsize=1.0,  # type: float
+        linewidth=1.0,  # type: float
+        show_points=False,  # type: bool
+        show_lines=True,  # type: bool
+        show_surfaces=True,  # type: bool
+        **kwargs  # type: dict
+    ):  # fmt: skip
+        # type: (...) -> None
+        super(GeometryObject, self).__init__(**kwargs)  # type: ignore
         self.pointcolor = pointcolor or self.color
         self.linecolor = linecolor or self.color
         self.surfacecolor = surfacecolor or self.color
