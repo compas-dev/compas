@@ -74,8 +74,6 @@ class Scene(Tree):
     @property
     def objects(self):
         # type: () -> list[SceneObject]
-        # this is flagged by the type checker
-        # because the tree returns nodes of type TreeNode
         return [node for node in self.nodes if not node.is_root]  # type: ignore
 
     def add(self, item, parent=None, **kwargs):
@@ -114,9 +112,12 @@ class Scene(Tree):
         # type: () -> None
         """Clear everything from the current context of the scene."""
 
+        clear()
+
     def clear_objects(self):
         # type: () -> None
         """Clear all objects inside the scene."""
+
         guids = []
         for sceneobject in self.objects:
             guids += sceneobject.guids
