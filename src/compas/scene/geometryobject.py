@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 import compas.colors  # noqa: F401
+import compas.geometry  # noqa: F401
 
 from .descriptors.color import ColorAttribute
 from .sceneobject import SceneObject
@@ -68,5 +69,5 @@ class GeometryObject(SceneObject):
 
     @property
     def geometry(self):
-        """The geometry of the geometry object."""
-        return self.item
+        # type: () -> compas.geometry.Geometry
+        return self.item  # type: ignore
