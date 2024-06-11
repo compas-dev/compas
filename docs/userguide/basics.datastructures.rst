@@ -12,4 +12,3 @@ Datastructures
     basics.datastructures.cells
     basics.datastructures.cellnetwork
     basics.datastructures.trees
-    basics.datastructures.assemblies
