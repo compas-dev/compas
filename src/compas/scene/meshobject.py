@@ -57,9 +57,20 @@ class MeshObject(SceneObject):
     edgecolor = ColorDictAttribute()
     facecolor = ColorDictAttribute()
 
-    def __init__(self, show_vertices=False, show_edges=False, show_faces=True, vertexcolor=None, edgecolor=None, facecolor=None, vertexsize=1.0, edgewidth=1.0, **kwargs):
-        # type: (bool | list, bool | list, bool | list, dict | compas.colors.Color | None, dict | compas.colors.Color | None, dict | compas.colors.Color | None, float, float, dict) -> None
-        super(MeshObject, self).__init__(**kwargs)
+    def __init__(
+        self,
+        show_vertices=False,  # type: bool | list
+        show_edges=False,  # type: bool | list
+        show_faces=True,  # type: bool | list
+        vertexcolor=None,  # type: dict | compas.colors.Color | None
+        edgecolor=None,  # type: dict | compas.colors.Color | None
+        facecolor=None,  # type: dict | compas.colors.Color | None
+        vertexsize=1.0,  # type: float
+        edgewidth=1.0,  # type: float
+        **kwargs  # dict
+    ):  # fmt: skip
+        # type: (...) -> None
+        super(MeshObject, self).__init__(**kwargs)  # type: ignore
         self._vertex_xyz = None
         self.show_vertices = show_vertices
         self.show_edges = show_edges
@@ -89,7 +100,7 @@ class MeshObject(SceneObject):
     @property
     def mesh(self):
         # type: () -> compas.datastructures.Mesh
-        return self.item
+        return self.item  # type: ignore
 
     @mesh.setter
     def mesh(self, mesh):
@@ -112,11 +123,12 @@ class MeshObject(SceneObject):
     @property
     def vertex_xyz(self):
         # type: () -> dict[int, list[float]]
-        if self._vertex_xyz is None:
-            points = self.mesh.vertices_attributes("xyz")
-            points = transform_points(points, self.worldtransformation)
-            self._vertex_xyz = dict(zip(self.mesh.vertices(), points))
-        return self._vertex_xyz
+        if self.mesh:
+            if self._vertex_xyz is None:
+                points = self.mesh.vertices_attributes("xyz")
+                points = transform_points(points, self.worldtransformation)
+                self._vertex_xyz = dict(zip(self.mesh.vertices(), points))
+        return self._vertex_xyz  # type: ignore
 
     @vertex_xyz.setter
     def vertex_xyz(self, vertex_xyz):

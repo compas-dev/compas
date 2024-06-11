@@ -49,9 +49,18 @@ class GraphObject(SceneObject):
     nodecolor = ColorDictAttribute()
     edgecolor = ColorDictAttribute()
 
-    def __init__(self, show_nodes=True, show_edges=True, nodecolor=None, edgecolor=None, nodesize=1.0, edgewidth=1.0, **kwargs):
-        # type: (bool | list, bool | list, dict | compas.colors.Color | None, dict | compas.colors.Color | None, float, float, dict) -> None
-        super(GraphObject, self).__init__(**kwargs)
+    def __init__(
+        self,
+        show_nodes=True,  # type: bool | list
+        show_edges=True,  # type: bool | list
+        nodecolor=None,  # type: dict | compas.colors.Color | None
+        edgecolor=None,  # type: dict | compas.colors.Color | None
+        nodesize=1.0,  # type: float
+        edgewidth=1.0,  # type: float
+        **kwargs  # type: dict
+    ):  # fmt: skip
+        # type: (...) -> None
+        super(GraphObject, self).__init__(**kwargs)  # type: ignore
         self._node_xyz = None
         self.show_nodes = show_nodes
         self.show_edges = show_edges
@@ -75,7 +84,7 @@ class GraphObject(SceneObject):
     @property
     def graph(self):
         # type: () -> compas.datastructures.Graph
-        return self.item
+        return self.item  # type: ignore
 
     @graph.setter
     def graph(self, graph):
@@ -97,16 +106,17 @@ class GraphObject(SceneObject):
 
     @property
     def node_xyz(self):
-        # type: () -> dict[int | str | tuple, list[float]]
-        if self._node_xyz is None:
-            points = self.graph.nodes_attributes("xyz")
-            points = transform_points(points, self.worldtransformation)
-            self._node_xyz = dict(zip(self.graph.nodes(), points))
-        return self._node_xyz
+        # type: () -> dict[int | str, list[float]]
+        if self.graph:
+            if self._node_xyz is None:
+                points = self.graph.nodes_attributes("xyz")
+                points = transform_points(points, self.worldtransformation)
+                self._node_xyz = dict(zip(self.graph.nodes(), points))
+        return self._node_xyz  # type: ignore
 
     @node_xyz.setter
     def node_xyz(self, node_xyz):
-        # type: (dict[int | str | tuple, list[float]]) -> None
+        # type: (dict[int | str, list[float]]) -> None
         self._node_xyz = node_xyz
 
     def draw_nodes(self):

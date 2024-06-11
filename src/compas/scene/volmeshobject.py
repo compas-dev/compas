@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import compas.colors  # noqa: F401
 import compas.datastructures  # noqa: F401
 import compas.geometry  # noqa: F401
 from compas.geometry import transform_points
@@ -68,20 +69,20 @@ class VolMeshObject(SceneObject):
 
     def __init__(
         self,
-        show_vertices=False,
-        show_edges=True,
-        show_faces=False,
-        show_cells=True,
-        vertexcolor=None,
-        edgecolor=None,
-        facecolor=None,
-        cellcolor=None,
-        vertexsize=1.0,
-        edgewidth=1.0,
-        **kwargs,  # fmt: skip
-    ):
-        # type: (bool | list, bool | list, bool | list, bool | list, compas.colors.Color | dict, compas.colors.Color | dict, compas.colors.Color | dict, compas.colors.Color | dict, float | dict, float | dict, dict) -> None
-        super(VolMeshObject, self).__init__(**kwargs)
+        show_vertices=False,  # type: bool | list
+        show_edges=True,  # type: bool | list
+        show_faces=False,  # type: bool | list
+        show_cells=True,  # type: bool | list
+        vertexcolor=None,  # type: compas.colors.Color | dict | None
+        edgecolor=None,  # type: compas.colors.Color | dict | None
+        facecolor=None,  # type: compas.colors.Color | dict | None
+        cellcolor=None,  # type: compas.colors.Color | dict | None
+        vertexsize=1.0,  # type: float
+        edgewidth=1.0,  # type: float
+        **kwargs  # type: dict
+    ):  # fmt: skip
+        # type: (...) -> None
+        super(VolMeshObject, self).__init__(**kwargs)  # type: ignore
         self._vertex_xyz = None
         self.show_vertices = show_vertices
         self.show_edges = show_edges
@@ -111,7 +112,7 @@ class VolMeshObject(SceneObject):
     @property
     def volmesh(self):
         # type: () -> compas.datastructures.VolMesh
-        return self.item
+        return self.item  # type: ignore
 
     @volmesh.setter
     def volmesh(self, volmesh):
@@ -138,7 +139,7 @@ class VolMeshObject(SceneObject):
             points = self.volmesh.vertices_attributes("xyz")  # type: ignore
             points = transform_points(points, self.worldtransformation)
             self._vertex_xyz = dict(zip(self.volmesh.vertices(), points))  # type: ignore
-        return self._vertex_xyz
+        return self._vertex_xyz  # type: ignore
 
     @vertex_xyz.setter
     def vertex_xyz(self, vertex_xyz):

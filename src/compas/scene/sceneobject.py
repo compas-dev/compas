@@ -9,6 +9,7 @@ import compas.colors  # noqa: F401
 import compas.data  # noqa: F401
 import compas.datastructures  # noqa: F401
 import compas.geometry  # noqa: F401
+import compas.scene  # noqa: F401
 from compas.colors import Color
 from compas.data import Data
 from compas.datastructures import TreeNode
@@ -87,9 +88,23 @@ class SceneObject(TreeNode):
         sceneobject_cls = get_sceneobject_cls(item, **kwargs)
         return super(SceneObject, cls).__new__(sceneobject_cls)
 
-    def __init__(self, item=None, name=None, color=None, opacity=1.0, show=True, frame=None, transformation=None, context=None, **kwargs):  # fmt: skip
-        # type: (compas.data.Data | None, str | None, compas.colors.Color | None, float, bool, compas.geometry.Frame | None, compas.geometry.Transformation | None, str | None, dict) -> None
-        name = item.name if isinstance(item, Data) and name is None else name
+    def __init__(
+        self,
+        item=None,  # type: compas.data.Data | None
+        name=None,  # type: str | None
+        color=None,  # type: compas.colors.Color | None
+        opacity=1.0,  # type: float
+        show=True,  # type: bool
+        frame=None,  # type: compas.geometry.Frame | None
+        transformation=None,  # type: compas.geometry.Transformation | None
+        context=None,  # type: str | None
+        **kwargs  # type: dict
+    ):  # fmt: skip
+        # type: (...) -> None
+        if not isinstance(item, Data):
+            raise ValueError("The item assigned to this scene object should be a data object: {}".format(type(item)))
+
+        name = name or item.name
         super(SceneObject, self).__init__(name=name, **kwargs)
         # the scene object needs to store the context
         # because it has no access to the tree and/or the scene before it is added
@@ -125,12 +140,12 @@ class SceneObject(TreeNode):
 
     @property
     def scene(self):
-        # type: () -> compas.scene.Scene
+        # type: () -> compas.scene.Scene | None
         return self.tree
 
     @property
     def item(self):
-        # type: () -> compas.geometry.Geometry | compas.datastructures.Datastructure
+        # type: () -> compas.data.Data
         return self._item
 
     @property
@@ -180,7 +195,7 @@ class SceneObject(TreeNode):
 
     @property
     def contrastcolor(self):
-        # type: () -> compas.colors.Color
+        # type: () -> compas.colors.Color | None
         if not self._contrastcolor:
             if self.color:
                 if self.color.is_light:

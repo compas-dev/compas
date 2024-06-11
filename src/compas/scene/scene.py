@@ -66,7 +66,7 @@ class Scene(Tree):
         return scene
 
     def __init__(self, name="Scene", context=None):
-        # type: (str | "Scene", str | None) -> None
+        # type: (str, str | None) -> None
         super(Scene, self).__init__(name=name)
         super(Scene, self).add(TreeNode(name="ROOT"))
         self.context = context or detect_current_context()
@@ -113,7 +113,6 @@ class Scene(Tree):
     def clear(self):
         # type: () -> None
         """Clear everything from the current context of the scene."""
-        clear()
 
     def clear_objects(self):
         # type: () -> None
