@@ -450,7 +450,6 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="basics.datastructures.cells.html">Cellular Meshes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="basics.datastructures.cellnetwork.html">Cell Networks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="basics.datastructures.trees.html">Trees</a></li>
-<li class="toctree-l2"><a class="reference internal" href="basics.datastructures.assemblies.html">Assemblies</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="basics.visualisation.html">Visualisation</a></li>
@@ -742,7 +741,7 @@ The mechanism is exactly the same for edges and faces.</p>
 <p>The topology of a mesh is stored in a halfedge data structure.
 In this data structure, vertices are connected to other vertices, and faces to other faces, via edges.
 An edge has two connected vertices, and at most two connected faces.
-Each each is split into two halfedges, one for each of the connected faces.
+Each edge is split into two halfedges, one for each of the connected faces.
 If an edge has only one connected face, the edge is on the boundary.</p>
 <p>Note that in a mesh constructed using <a class="reference internal" href="../api/generated/compas.datastructures.Mesh.from_meshgrid.html" title="compas.datastructures.Mesh.from_meshgrid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.datastructures.Mesh.from_meshgrid()</span></code></a>, the vertices are organised in a specific way.
 We will use that structure to explain some of the topological concepts more easily.</p>
