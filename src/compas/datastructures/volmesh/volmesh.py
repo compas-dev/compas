@@ -350,23 +350,36 @@ class VolMesh(Datastructure):
 
         """
         obj = OBJ(filepath, precision)
-        objects = obj.parser.objects or []  # type: ignore
+        vertices = obj.parser.vertices or []  # type: ignore
+        faces = obj.parser.faces or []  # type: ignore
+        groups = obj.parser.groups or {}  # type: ignore
+        objects = obj.parser.objects or {}  # type: ignore
 
-        if not objects:
-            vertices = obj.parser.vertices or []  # type: ignore
-            faces = obj.parser.faces or []  # type: ignore
-            cell = [faces]
-            return cls.from_vertices_and_cells(vertices, cell)
+        if groups:
+            cells = []
+            for name, group in groups.items():
+                cell = []
+                for item in group:
+                    if item[0] != "f":
+                        continue
+                    face = faces[item[1]]
+                    cell.append(face)
+                cells.append(cell)
+            return cls.from_vertices_and_cells(vertices, cells)
 
-        polyhedrons = []
-        for name in objects:
-            vertex_xyz = objects[name][0]
-            vertex_index = {vertex: index for index, vertex in enumerate(vertex_xyz)}
-            vertices = list(vertex_xyz.values())
-            faces = [[vertex_index[vertex] for vertex in face] for face in objects[name][1]]
-            polyhedron = Polyhedron(vertices, faces)
-            polyhedrons.append(polyhedron)
-        return cls.from_polyhedrons(polyhedrons)
+        if objects:
+            polyhedrons = []
+            for name in objects:
+                vertex_xyz = objects[name][0]
+                vertex_index = {vertex: index for index, vertex in enumerate(vertex_xyz)}
+                vertices = list(vertex_xyz.values())
+                faces = [[vertex_index[vertex] for vertex in face] for face in objects[name][1]]
+                polyhedron = Polyhedron(vertices, faces)
+                polyhedrons.append(polyhedron)
+            return cls.from_polyhedrons(polyhedrons)
+
+        cell = [faces]
+        return cls.from_vertices_and_cells(vertices, cell)
 
     @classmethod
     def from_vertices_and_cells(cls, vertices, cells):
