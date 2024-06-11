@@ -78,7 +78,7 @@ class VolMeshObject(SceneObject):
         cellcolor=None,
         vertexsize=1.0,
         edgewidth=1.0,
-        **kwargs,
+        **kwargs, # fmt: skip
     ):
         # type: (bool | list, bool | list, bool | list, bool | list, compas.colors.Color | dict, compas.colors.Color | dict, compas.colors.Color | dict, compas.colors.Color | dict, float | dict, float | dict, dict) -> None
         super(VolMeshObject, self).__init__(**kwargs)

@@ -58,8 +58,4 @@ class GeometryObject(SceneObject):
     @property
     def geometry(self):
         """The geometry of the geometry object."""
-        return self._item
-
-    def draw(self):
-        """Draw the geometry. Implemented by child classes."""
-        raise NotImplementedError
+        return self.item
