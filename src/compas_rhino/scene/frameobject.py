@@ -17,8 +17,6 @@ class RhinoFrameObject(RhinoSceneObject, GeometryObject):
 
     Parameters
     ----------
-    frame: :class:`compas.geometry.Frame`
-        A COMPAS frame.
     scale: float, optional
         Scale factor that controls the length of the axes.
     **kwargs : dict, optional
@@ -40,8 +38,8 @@ class RhinoFrameObject(RhinoSceneObject, GeometryObject):
 
     """
 
-    def __init__(self, frame, scale=1.0, **kwargs):
-        super(RhinoFrameObject, self).__init__(geometry=frame, **kwargs)
+    def __init__(self, scale=1.0, **kwargs):
+        super(RhinoFrameObject, self).__init__(**kwargs)
         self.scale = scale or 1.0
         self.color_origin = Color.black()
         self.color_xaxis = Color.red()

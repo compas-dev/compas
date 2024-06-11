@@ -15,8 +15,6 @@ class ShapeObject(BlenderSceneObject, GeometryObject):
 
     Parameters
     ----------
-    shape : :class:`compas.geometry.shape`
-        A COMPAS shape.
     v : int, optional
         The number of vertices in the u-direction of non-OCC geometries.
     u : int, optional
@@ -28,13 +26,12 @@ class ShapeObject(BlenderSceneObject, GeometryObject):
 
     def __init__(
         self,
-        geometry: Shape,
         u: Optional[int] = 16,
         v: Optional[int] = 16,
         shade_smooth: bool = True,
         **kwargs: Any,
     ):
-        super().__init__(geometry=geometry, **kwargs)
+        super().__init__(**kwargs)
         self.geometry: Shape
         self.u = u
         self.v = v

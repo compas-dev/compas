@@ -26,6 +26,10 @@ class GraphObject(SceneObject):
     node_xyz : dict[hashable, list[float]]
         Mapping between nodes and their view coordinates.
         The default view coordinates are the actual coordinates of the nodes of the graph.
+    show_nodes : Union[bool, sequence[hashable]]
+        Flag for showing or hiding the nodes. Default is ``True``.
+    show_edges : Union[bool, sequence[tuple[hashable, hashable]]]
+        Flag for showing or hiding the edges. Default is ``True``.
     nodecolor : :class:`compas.colors.ColorDict`
         Mapping between nodes and RGB color values.
     edgecolor : :class:`compas.colors.ColorDict`
@@ -34,10 +38,6 @@ class GraphObject(SceneObject):
         The size of the nodes. Default is ``1.0``.
     edgewidth : float
         The width of the edges. Default is ``1.0``.
-    show_nodes : Union[bool, sequence[hashable]]
-        Flag for showing or hiding the nodes. Default is ``True``.
-    show_edges : Union[bool, sequence[tuple[hashable, hashable]]]
-        Flag for showing or hiding the edges. Default is ``True``.
 
     See Also
     --------
@@ -49,12 +49,10 @@ class GraphObject(SceneObject):
     nodecolor = ColorDictAttribute()
     edgecolor = ColorDictAttribute()
 
-    def __init__(self, graph, show_nodes=True, show_edges=True, nodecolor=None, edgecolor=None, nodesize=1.0, edgewidth=1.0, **kwargs):
-        # type: (compas.datastructures.Graph, bool | list, bool | list, compas.colors.Color | dict | None, compas.colors.Color | dict | None, float | dict, float | dict, dict) -> None
-        super(GraphObject, self).__init__(item=graph, **kwargs)
-        self._graph = None
+    def __init__(self, show_nodes=True, show_edges=True, nodecolor=None, edgecolor=None, nodesize=1.0, edgewidth=1.0, **kwargs):
+        # type: (bool | list, bool | list, dict | compas.colors.Color | None, dict | compas.colors.Color | None, float, float, dict) -> None
+        super(GraphObject, self).__init__(**kwargs)
         self._node_xyz = None
-        self.graph = graph
         self.show_nodes = show_nodes
         self.show_edges = show_edges
         self.nodecolor = nodecolor or self.color
@@ -77,12 +75,12 @@ class GraphObject(SceneObject):
     @property
     def graph(self):
         # type: () -> compas.datastructures.Graph
-        return self._graph
+        return self.item
 
     @graph.setter
     def graph(self, graph):
         # type: (compas.datastructures.Graph) -> None
-        self._graph = graph
+        self._item = graph
         self._transformation = None
         self._node_xyz = None
 

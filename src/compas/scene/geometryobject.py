@@ -2,6 +2,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import compas.colors  # noqa: F401
+
 from .descriptors.color import ColorAttribute
 from .sceneobject import SceneObject
 
@@ -41,16 +43,19 @@ class GeometryObject(SceneObject):
     linecolor = ColorAttribute()
     surfacecolor = ColorAttribute()
 
-    def __init__(self, geometry, **kwargs):
-        super(GeometryObject, self).__init__(item=geometry, **kwargs)
-        self.geometry = geometry
-        self.pointcolor = kwargs.get("pointcolor", self.color)
-        self.linecolor = kwargs.get("linecolor", self.color)
-        self.surfacecolor = kwargs.get("surfacecolor", self.color)
-        self.pointsize = kwargs.get("pointsize", 1.0)
-        self.linewidth = kwargs.get("linewidth", 1.0)
-        self.show_points = kwargs.get("show_points", False)
-        self.show_lines = kwargs.get("show_lines", True)
-        self.show_surfaces = kwargs.get("show_surfaces", True)
-        # note: either lines should be renamed to curves
-        # or surfaces should be renamed to faces?
+    def __init__(self, pointcolor=None, linecolor=None, surfacecolor=None, pointsize=1.0, linewidth=1.0, show_points=False, show_lines=True, show_surfaces=True, **kwargs):
+        # type: (compas.colors.Color | None, compas.colors.Color | None, compas.colors.Color | None, float, float, bool, bool, bool, dict) -> None
+        super(GeometryObject, self).__init__(**kwargs)
+        self.pointcolor = pointcolor or self.color
+        self.linecolor = linecolor or self.color
+        self.surfacecolor = surfacecolor or self.color
+        self.pointsize = pointsize
+        self.linewidth = linewidth
+        self.show_points = show_points
+        self.show_lines = show_lines
+        self.show_surfaces = show_surfaces
+
+    @property
+    def geometry(self):
+        """The geometry of the geometry object."""
+        return self.item

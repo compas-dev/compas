@@ -19,15 +19,19 @@ class RhinoGraphObject(RhinoSceneObject, GraphObject):
 
     Parameters
     ----------
-    graph : :class:`compas.datastructures.Graph`
-        A COMPAS graph.
+    nodegroup : str, optional
+        The name of the group for the nodes.
+    edgegroup : str, optional
+        The name of the group for the edges.
+    edgedirection : bool, optional
+        Flag for drawing the edges with an arrow indicating the direction.
     **kwargs : dict, optional
         Additional keyword arguments.
 
     """
 
-    def __init__(self, graph, nodegroup=None, edgegroup=None, edgedirection=False, **kwargs):
-        super(RhinoGraphObject, self).__init__(graph=graph, **kwargs)
+    def __init__(self, nodegroup=None, edgegroup=None, edgedirection=False, **kwargs):
+        super(RhinoGraphObject, self).__init__(**kwargs)
         self._guids_nodes = None
         self._guids_edges = None
         self._guids_nodelabels = None

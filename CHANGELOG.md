@@ -101,6 +101,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas.tolerance.Tolerance` to a singleton, to ensure having only library-wide tolerance values.
 * Updated `compas_rhino.conversions.point_to_compas` to allow for `Rhino.Geometry.Point` as input.
 * Changed `compas.datastructures.Tree.print_hierarchy` to `compas.datastructures.Tree.__str__`.
+* Changed `compas.scene.SceneObject.__init__` to accept `item` as kwarg.
 * Fixed `compas.geometry.bbox_numpy.minimum_volume_box` to avoid `numpy.linalg.LinAlgError`.
 
 ### Removed

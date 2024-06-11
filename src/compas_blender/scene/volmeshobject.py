@@ -18,15 +18,34 @@ class VolMeshObject(BlenderSceneObject, BaseVolMeshObject):
 
     Parameters
     ----------
-    volmesh : :class:`compas.datastructures.VolMesh`
-        The volmesh data structure.
+    vertex_u : int, optional
+        Number of segments in the U direction of the vertex spheres.
+        Default is ``16``.
+    vertex_v : int, optional
+        Number of segments in the V direction of the vertex spheres.
+        Default is ``16``.
     **kwargs : dict, optional
         Additional keyword arguments.
 
+    Attributes
+    ----------
+    vertex_u : int
+        Number of segments in the U direction of the vertex spheres.
+    vertex_v : int
+        Number of segments in the V direction of the vertex spheres.
+    vertexobjects : list[:class:`bpy.types.Object`]
+        The Blender objects representing the vertices.
+    edgeobjects : list[:class:`bpy.types.Object`]
+        The Blender objects representing the edges.
+    faceobjects : list[:class:`bpy.types.Object`]
+        The Blender objects representing the faces.
+    cellobjects : list[:class:`bpy.types.Object`]
+        The Blender objects representing the cells.
+
     """
 
-    def __init__(self, volmesh, vertex_u=16, vertex_v=16, **kwargs: Any):
-        super().__init__(volmesh=volmesh, **kwargs)
+    def __init__(self, vertex_u=16, vertex_v=16, **kwargs: Any):
+        super().__init__(**kwargs)
         self.vertexobjects = []
         self.edgeobjects = []
         self.faceobjects = []
@@ -124,7 +143,7 @@ class VolMeshObject(BlenderSceneObject, BaseVolMeshObject):
         for vertex in vertices:
             name = f"{self.volmesh.name}.vertex.{vertex}"
             color = self.vertexcolor[vertex]
-            point = self.vertex_xyz[vertex]
+            point = self.volmesh.vertex_coordinates(vertex)
 
             sphere = Sphere(radius=self.vertexsize, point=point)
             sphere.resolution_u = self.vertex_u
@@ -152,7 +171,7 @@ class VolMeshObject(BlenderSceneObject, BaseVolMeshObject):
         for u, v in edges:
             name = f"{self.volmesh.name}.edge.{u}-{v}"
             color = self.edgecolor[u, v]
-            curve = conversions.line_to_blender_curve(Line(self.vertex_xyz[u], self.vertex_xyz[v]))
+            curve = conversions.line_to_blender_curve(Line(self.volmesh.vertex_coordinates(u), self.volmesh.vertex_coordinates(v)))
 
             obj = self.create_object(curve, name=name)
             self.update_object(obj, color=color, collection=self.collection)
@@ -176,7 +195,7 @@ class VolMeshObject(BlenderSceneObject, BaseVolMeshObject):
         for face in faces:
             name = f"{self.volmesh.name}.face.{face}"
             color = self.facecolor[face]
-            points = [self.vertex_xyz[vertex] for vertex in self.volmesh.face_vertices(face)]
+            points = [self.volmesh.vertex_coordinates(vertex) for vertex in self.volmesh.face_vertices(face)]
             mesh = conversions.polygon_to_blender_mesh(points, name=name)
 
             obj = self.create_object(mesh, name=name)
@@ -206,7 +225,7 @@ class VolMeshObject(BlenderSceneObject, BaseVolMeshObject):
             faces = self.volmesh.cell_faces(cell)
             vertex_index = dict((vertex, index) for index, vertex in enumerate(vertices))
 
-            vertices = [self.vertex_xyz[vertex] for vertex in vertices]
+            vertices = [self.volmesh.vertex_coordinates(vertex) for vertex in vertices]
             faces = [[vertex_index[vertex] for vertex in self.volmesh.halfface_vertices(face)] for face in faces]
 
             mesh = conversions.vertices_and_faces_to_blender_mesh(vertices, faces, name=name)

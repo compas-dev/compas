@@ -10,21 +10,9 @@ from .sceneobject import GHSceneObject
 
 
 class VectorObject(GHSceneObject, GeometryObject):
-    """Scene object for drawing vectors.
+    """Scene object for drawing vectors."""
 
-    Parameters
-    ----------
-    vector : :class:`compas.geometry.Vector`
-        A COMPAS vector.
-    **kwargs : dict, optional
-        Additional keyword arguments.
-
-    """
-
-    def __init__(self, vector, **kwargs):
-        super(VectorObject, self).__init__(geometry=vector, **kwargs)
-
-    def draw(self, point=None, show_point=False):
+    def draw(self, point=None):
         """Draw the vector.
 
         Parameters

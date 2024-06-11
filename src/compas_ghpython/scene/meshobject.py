@@ -14,15 +14,20 @@ class MeshObject(GHSceneObject, BaseMeshObject):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
-        A COMPAS mesh.
+    disjoint : bool, optional
+        Draw the mesh as disjoint faces.
     **kwargs : dict, optional
         Additional keyword arguments.
 
+    Attributes
+    ----------
+    disjoint : bool
+        Draw the mesh as disjoint faces.
+
     """
 
-    def __init__(self, mesh, disjoint=False, **kwargs):
-        super(MeshObject, self).__init__(mesh=mesh, **kwargs)
+    def __init__(self, disjoint=False, **kwargs):
+        super(MeshObject, self).__init__(**kwargs)
         self.disjoint = disjoint
 
     def draw(self):

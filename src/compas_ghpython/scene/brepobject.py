@@ -9,19 +9,7 @@ from .sceneobject import GHSceneObject
 
 
 class BrepObject(GHSceneObject, GeometryObject):
-    """A Scene object for drawing a brep in Grasshopper.
-
-    Parameters
-    ----------
-    brep : :class:`compas_rhino.geometry.RhinoBrep`
-        The brep to draw.
-    **kwargs : dict, optional
-        Additional keyword arguments.
-
-    """
-
-    def __init__(self, brep, **kwargs):
-        super(BrepObject, self).__init__(geometry=brep, **kwargs)
+    """A Scene object for drawing a brep in Grasshopper."""
 
     def draw(self):
         """Draw the brep as a Grasshopper geometry.

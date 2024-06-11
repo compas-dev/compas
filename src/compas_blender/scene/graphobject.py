@@ -4,7 +4,6 @@ import bpy  # type: ignore
 
 import compas_blender
 import compas_blender.objects
-from compas.datastructures import Graph
 from compas.geometry import Line
 from compas.geometry import Sphere
 from compas.scene import GraphObject as BaseGraphObject
@@ -18,13 +17,32 @@ class GraphObject(BlenderSceneObject, BaseGraphObject):
 
     Parameters
     ----------
-    graph : :class:`compas.datastructures.Graph`
-        A COMPAS graph.
+    node_u : int, optional
+        Number of segments in the U direction of the node spheres.
+        Default is ``16``.
+    node_v : int, optional
+        Number of segments in the V direction of the node spheres.
+        Default is ``16``.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        For more info,
+        see :class:`compas_blender.scene.BlenderSceneObject` and :class:`compas.scene.GraphObject`.
+
+    Attributes
+    ----------
+    node_u : int
+        Number of segments in the U direction of the node spheres.
+    node_v : int
+        Number of segments in the V direction of the node spheres.
+    nodeobjects : list[:blender:`bpy.types.Object`]
+        List of Blender objects representing the nodes.
+    edgeobjects : list[:blender:`bpy.types.Object`]
+        List of Blender objects representing the edges.
 
     """
 
-    def __init__(self, graph: Graph, node_u=16, node_v=16, **kwargs: dict):
-        super().__init__(graph=graph, **kwargs)
+    def __init__(self, node_u=16, node_v=16, **kwargs: dict):
+        super().__init__(**kwargs)
         self.nodeobjects = []
         self.edgeobjects = []
         self.node_u = node_u
@@ -85,7 +103,7 @@ class GraphObject(BlenderSceneObject, BaseGraphObject):
         for node in nodes:
             name = f"{self.graph.name}.node.{node}"
             color = self.nodecolor[node]
-            point = self.node_xyz[node]
+            point = self.graph.node_coordinates(node)
 
             # # there is no such thing as a sphere data block
             # # this doesn't work with application of worl transformation matrix
@@ -119,7 +137,7 @@ class GraphObject(BlenderSceneObject, BaseGraphObject):
         for u, v in edges:
             name = f"{self.graph.name}.edge.{u}-{v}"
             color = self.edgecolor[u, v]
-            curve = conversions.line_to_blender_curve(Line(self.node_xyz[u], self.node_xyz[v]))
+            curve = conversions.line_to_blender_curve(Line(self.graph.node_coordinates(u), self.graph.node_coordinates(v)))
 
             obj = self.create_object(curve, name=name)
             self.update_object(obj, color=color, collection=self.collection)

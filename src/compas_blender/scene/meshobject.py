@@ -5,7 +5,6 @@ import bpy  # type: ignore
 
 import compas_blender
 import compas_blender.objects
-from compas.datastructures import Mesh
 from compas.geometry import Line
 from compas.geometry import Sphere
 from compas.scene import MeshObject as BaseMeshObject
@@ -19,13 +18,34 @@ class MeshObject(BlenderSceneObject, BaseMeshObject):
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
-        A COMPAS mesh.
+    vertex_u : int, optional
+        Number of segments in the U direction of the vertex spheres.
+        Default is ``16``.
+    vertex_v : int, optional
+        Number of segments in the V direction of the vertex spheres.
+        Default is ``16``.
+    **kwargs : dict, optional
+        Additional keyword arguments.
+        For more info,
+        see :class:`compas_blender.scene.BlenderSceneObject` and :class:`compas.scene.MeshObject`.
+
+    Attributes
+    ----------
+    vertex_u : int
+        Number of segments in the U direction of the vertex spheres.
+    vertex_v : int
+        Number of segments in the V direction of the vertex spheres.
+    vertexobjects : list[:blender:`bpy.types.Object`]
+        List of Blender objects representing the vertices.
+    edgeobjects : list[:blender:`bpy.types.Object`]
+        List of Blender objects representing the edges.
+    faceobjects : list[:blender:`bpy.types.Object`]
+        List of Blender objects representing the faces.
 
     """
 
-    def __init__(self, mesh: Mesh, vertex_u=16, vertex_v=16, **kwargs: Any):
-        super().__init__(mesh=mesh, **kwargs)
+    def __init__(self, vertex_u=16, vertex_v=16, **kwargs: Any):
+        super().__init__(**kwargs)
         self.vertexobjects = []
         self.edgeobjects = []
         self.faceobjects = []
@@ -120,7 +140,7 @@ class MeshObject(BlenderSceneObject, BaseMeshObject):
         for vertex in vertices:
             name = f"{self.mesh.name}.vertex.{vertex}"
             color = self.vertexcolor[vertex]
-            point = self.vertex_xyz[vertex]
+            point = self.mesh.vertex_coordinates(vertex)
 
             # # there is no such thing as a sphere data block
             # bpy.ops.mesh.primitive_uv_sphere_add(location=point, radius=radius, segments=u, ring_count=v)
@@ -153,7 +173,7 @@ class MeshObject(BlenderSceneObject, BaseMeshObject):
         for u, v in edges:
             name = f"{self.mesh.name}.edge.{u}-{v}"
             color = self.edgecolor[u, v]
-            curve = conversions.line_to_blender_curve(Line(self.vertex_xyz[u], self.vertex_xyz[v]))
+            curve = conversions.line_to_blender_curve(Line(self.mesh.vertex_coordinates(u), self.mesh.vertex_coordinates(v)))
 
             obj = self.create_object(curve, name=name)
             self.update_object(obj, color=color, collection=self.collection)
@@ -177,7 +197,7 @@ class MeshObject(BlenderSceneObject, BaseMeshObject):
         for face in faces:
             name = f"{self.mesh.name}.face.{face}"
             color = self.facecolor[face]
-            points = [self.vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)]
+            points = [self.mesh.vertex_coordinates(vertex) for vertex in self.mesh.face_vertices(face)]
             mesh = conversions.polygon_to_blender_mesh(points, name=name)
 
             obj = self.create_object(mesh, name=name)

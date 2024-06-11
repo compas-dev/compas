@@ -18,18 +18,22 @@ class RhinoPlaneObject(RhinoSceneObject, GeometryObject):
 
     Parameters
     ----------
-    plane : :class:`compas.geometry.Plane`
-        A COMPAS plane.
     scale : float, optional
         Scale factor.
         Default is ``1.0``.
     **kwargs : dict, optional
         Additional keyword arguments.
 
+    Attributes
+    ----------
+    scale : float
+        Scale factor.
+        Default is ``1.0``.
+
     """
 
-    def __init__(self, plane, scale=1.0, **kwargs):
-        super(RhinoPlaneObject, self).__init__(geometry=plane, **kwargs)
+    def __init__(self, scale=1.0, **kwargs):
+        super(RhinoPlaneObject, self).__init__(**kwargs)
         self.scale = scale
 
     def draw(self):
