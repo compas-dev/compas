@@ -220,8 +220,8 @@ class SphericalSurface(Surface):
             A point on the sphere.
 
         """
-        u = u * pi
-        v = v * PI2
+        u = u * PI2
+        v = v * pi
         x = self.radius * cos(u) * sin(v)
         y = self.radius * sin(u) * sin(v)
         z = self.radius * cos(v)
@@ -248,8 +248,8 @@ class SphericalSurface(Surface):
             The normal vector.
 
         """
-        u = u * pi
-        v = v * PI2
+        u = u * PI2
+        v = v * pi
         x = cos(u) * sin(v)
         y = sin(u) * sin(v)
         z = cos(v)

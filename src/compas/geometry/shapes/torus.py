@@ -8,7 +8,6 @@ from math import sin
 
 from compas.geometry import Frame
 from compas.geometry import Plane
-from compas.geometry import matrix_from_frame
 from compas.geometry import transform_points
 
 from .shape import Shape
@@ -183,37 +182,23 @@ class Torus(Shape):
         return cls(radius_axis=radius_axis, radius_pipe=radius_pipe, frame=frame)
 
     # ==========================================================================
-    # Conversions
+    # Discretisation
     # ==========================================================================
 
-    def to_vertices_and_faces(self, u=16, v=16, triangulated=False):
-        """Returns a list of vertices and faces.
-
-        The vertices are defined in global coordinates.
-
-        Parameters
-        ----------
-        u : int, optional
-            Number of faces in the "u" direction.
-        v : int, optional
-            Number of faces in the "v" direction.
-        triangulated: bool, optional
-            If True, triangulate the faces.
+    def compute_vertices(self):  # type: () -> list[float]
+        """Compute the vertices of the discrete representation of the sphere.
 
         Returns
         -------
-        list[list[float]], list[list[int]]
-            A list of vertex locations, and a list of faces,
-            with each face defined as a list of indices into the list of vertices.
+        list[list[float]]
 
         """
-        if u < 3:
-            raise ValueError("The value for u should be u > 3.")
-        if v < 3:
-            raise ValueError("The value for v should be v > 3.")
+        u = self.resolution_u
+        v = self.resolution_v
 
         theta = pi * 2 / u
         phi = pi * 2 / v
+
         vertices = []
         for i in range(u):
             for j in range(v):
@@ -222,10 +207,19 @@ class Torus(Shape):
                 z = self.radius_pipe * sin(j * phi)
                 vertices.append([x, y, z])
 
-        # transform vertices to torus' plane
-        frame = Frame.from_plane(self.plane)
-        M = matrix_from_frame(frame)
-        vertices = transform_points(vertices, M)
+        vertices = transform_points(vertices, self.transformation)
+        return vertices
+
+    def compute_faces(self):  # type: () -> list[list[int]]
+        """Compute the faces of the discrete representation of the sphere.
+
+        Returns
+        -------
+        list[list[int]]
+
+        """
+        u = self.resolution_u
+        v = self.resolution_v
 
         faces = []
         for i in range(u):
@@ -238,19 +232,11 @@ class Torus(Shape):
                 d = i * v + jj
                 faces.append([a, b, c, d])
 
-        if triangulated:
-            triangles = []
-            for face in faces:
-                if len(face) == 4:
-                    triangles.append(face[0:3])
-                    triangles.append([face[0], face[2], face[3]])
-                else:
-                    triangles.append(face)
-            faces = triangles
+        return faces
 
-        vertices = transform_points(vertices, self.transformation)
-
-        return vertices, faces
+    # ==========================================================================
+    # Conversions
+    # ==========================================================================
 
     def to_brep(self):
         """Returns a BRep representation of the torus.

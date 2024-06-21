@@ -16,7 +16,7 @@ def timestamp():
 
     Examples
     --------
-    >>> type(timestamp()) == type('')
+    >>> type(timestamp()) == type("")
     True
 
     """
@@ -33,7 +33,7 @@ def now():
 
     Examples
     --------
-    >>> type(now()) == type('')
+    >>> type(now()) == type("")
     True
 
     """

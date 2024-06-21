@@ -31,6 +31,7 @@ def install(version=None, packages=None, clean=False):
     .. code-block:: python
 
         import compas_blender.install
+
         compas_blender.install.install()
 
     .. code-block:: bash
@@ -243,9 +244,9 @@ def installable_blender_packages():
     Examples
     --------
     >>> import compas.plugins
-    >>> @compas.plugins.plugin(category='install')
+    >>> @compas.plugins.plugin(category="install")
     ... def installable_blender_packages():
-    ...    return ['compas_fab']
+    ...     return ["compas_fab"]
 
     Returns
     -------
@@ -272,10 +273,10 @@ def after_blender_install(installed_packages):
     Examples
     --------
     >>> import compas.plugins
-    >>> @compas.plugins.plugin(category='install')
+    >>> @compas.plugins.plugin(category="install")
     ... def after_blender_install(installed_packages):
-    ...    # Do something after package is installed to Blender, e.g. install the COMPAS UI, etc
-    ...    return [('compas_blender', 'COMPAS Blender UI installed', True)]
+    ...     # Do something after package is installed to Blender, e.g. install the COMPAS UI, etc
+    ...     return [("compas_blender", "COMPAS Blender UI installed", True)]
 
     Returns
     -------

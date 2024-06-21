@@ -12,19 +12,7 @@ from .sceneobject import RhinoSceneObject
 
 
 class RhinoCurveObject(RhinoSceneObject, GeometryObject):
-    """Scene object for drawing curves.
-
-    Parameters
-    ----------
-    curve : :class:`compas.geometry.Curve`
-        A COMPAS curve.
-    **kwargs : dict, optional
-        Additional keyword arguments.
-
-    """
-
-    def __init__(self, curve, **kwargs):
-        super(RhinoCurveObject, self).__init__(geometry=curve, **kwargs)
+    """Scene object for drawing curves."""
 
     def draw(self):
         """Draw the curve.

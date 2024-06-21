@@ -1,10 +1,8 @@
-from typing import Any
 from typing import Optional
 
 import bpy  # type: ignore
 
 from compas.colors import Color
-from compas.geometry import Line
 from compas.scene import GeometryObject
 from compas_blender import conversions
 
@@ -12,21 +10,7 @@ from .sceneobject import BlenderSceneObject
 
 
 class LineObject(BlenderSceneObject, GeometryObject):
-    """Scene object for drawing lines in Blender.
-
-    Parameters
-    ----------
-    line : :class:`compas.geometry.Line`
-        A COMPAS line.
-    **kwargs : dict, optional
-        Additional keyword arguments.
-        For more info,
-        see :class:`compas_blender.scene.BlenderSceneObject` and :class:`compas.scene.GeometryObject`.
-
-    """
-
-    def __init__(self, line: Line, **kwargs: Any):
-        super().__init__(geometry=line, **kwargs)
+    """Scene object for drawing lines in Blender."""
 
     def draw(
         self,

@@ -60,7 +60,6 @@ class TreeNode(Data):
 
     @classmethod
     def __from_data__(cls, data):
-
         name = data.get("name", None)
         attributes = data.get("attributes", {})
         children = data.get("children", [])
@@ -235,21 +234,20 @@ class Tree(Datastructure):
     --------
     >>> from compas.datastructures import Tree, TreeNode
     >>> tree = Tree()
-    >>> root = TreeNode('root')
-    >>> branch = TreeNode('branch')
-    >>> leaf1 = TreeNode('leaf1')
-    >>> leaf2 = TreeNode('leaf2')
+    >>> root = TreeNode("root")
+    >>> branch = TreeNode("branch")
+    >>> leaf1 = TreeNode("leaf1")
+    >>> leaf2 = TreeNode("leaf2")
     >>> tree.add(root)
     >>> root.add(branch)
     >>> branch.add(leaf1)
     >>> branch.add(leaf2)
     >>> print(tree)
-    <Tree with 4 nodes, 1 branches, and 2 leaves>
-    >>> tree.print()
-    <TreeNode root>
-        <TreeNode branch>
-            <TreeNode leaf2>
-            <TreeNode leaf1>
+    <Tree with 4 nodes>
+    |--<TreeNode: root>
+        |-- <TreeNode: branch>
+            |-- <TreeNode: leaf1>
+            |-- <TreeNode: leaf2>
 
     """
 
@@ -280,6 +278,9 @@ class Tree(Datastructure):
     def __init__(self, name=None, **kwargs):
         super(Tree, self).__init__(kwargs, name=name)
         self._root = None
+
+    def __str__(self):
+        return "<Tree with {} nodes>\n{}".format(len(list(self.nodes)), self.get_hierarchy_string(max_depth=3))
 
     @property
     def root(self):
@@ -435,12 +436,9 @@ class Tree(Datastructure):
                 nodes.append(node)
         return nodes
 
-    def __repr__(self):
-        return "<Tree with {} nodes>".format(len(list(self.nodes)))
-
-    def print_hierarchy(self, max_depth=None):
+    def get_hierarchy_string(self, max_depth=None):
         """
-        Print the spatial hierarchy of the tree.
+        Return string representation for the spatial hierarchy of the tree.
 
         Parameters
         ----------
@@ -450,22 +448,26 @@ class Tree(Datastructure):
 
         Returns
         -------
-        None
+        str
+            String representing the spatial hierarchy of the tree.
 
         """
 
-        def _print(node, prefix="", last=True, depth=0):
+        hierarchy = []
 
+        def traverse(node, hierarchy, prefix="", last=True, depth=0):
             if max_depth is not None and depth > max_depth:
                 return
 
             connector = "└── " if last else "├── "
-            print("{}{}{}".format(prefix, connector, node))
+            hierarchy.append("{}{}{}".format(prefix, connector, node))
             prefix += "    " if last else "│   "
             for i, child in enumerate(node.children):
-                _print(child, prefix, i == len(node.children) - 1, depth + 1)
+                traverse(child, hierarchy, prefix, i == len(node.children) - 1, depth + 1)
 
-        _print(self.root)
+        traverse(self.root, hierarchy)
+
+        return "\n".join(hierarchy)
 
     def to_graph(self, key_mapper=None):
         """Convert the tree to a graph.

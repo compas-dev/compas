@@ -14,7 +14,19 @@ from operator import mul
 try:
     from itertools import zip_longest
 except ImportError:
-    from itertools import izip_longest as zip_longest
+    from itertools import izip_longest as zip_longest  # type: ignore
+
+__all__ = [
+    "normalize_values",
+    "remap_values",
+    "meshgrid",
+    "linspace",
+    "flatten",
+    "reshape",
+    "pairwise",
+    "window",
+    "iterable_like",
+]
 
 
 def normalize_values(values, new_min=0.0, new_max=1.0):
@@ -133,7 +145,7 @@ def meshgrid(x, y, indexing="xy"):
     >>> Y
     [[0.0, 0.0, 0.0], [1.0, 1.0, 1.0]]
 
-    >>> X, Y = meshgrid(x, y, 'ij')
+    >>> X, Y = meshgrid(x, y, "ij")
     >>> X
     [[0.0, 0.0], [0.5, 0.5], [1.0, 1.0]]
     >>> Y
@@ -276,7 +288,6 @@ def pairwise(iterable):
     --------
     >>> for a, b in pairwise(range(5)):
     ...     print(a, b)
-    ...
     0 1
     1 2
     2 3
@@ -308,7 +319,6 @@ def window(seq, n=2):
     --------
     >>> for view in window(range(10), 3):
     ...     print(view)
-    ...
     (0, 1, 2)
     (1, 2, 3)
     (2, 3, 4)

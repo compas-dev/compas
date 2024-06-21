@@ -1,4 +1,6 @@
-from .drawing import (
+from warnings import warn
+
+from ..drawing import (
     draw_circles,
     draw_cylinders,
     draw_cubes,
@@ -36,3 +38,5 @@ __all__ = [
     "draw_surfaces",
     "RGBColor",
 ]
+
+warn("compas_blender.utilities will be removed in version 2.3. Please use compas_blender.drawing instead.", DeprecationWarning, stacklevel=2)

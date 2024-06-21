@@ -12,19 +12,7 @@ from .sceneobject import RhinoSceneObject
 
 
 class RhinoSurfaceObject(RhinoSceneObject, GeometryObject):
-    """Scene object for drawing surfaces.
-
-    Parameters
-    ----------
-    surface : :class:`compas.geometry.Geometry`
-        A COMPAS surface.
-    **kwargs : dict, optional
-        Additional keyword arguments.
-
-    """
-
-    def __init__(self, surface, **kwargs):
-        super(RhinoSurfaceObject, self).__init__(geometry=surface, **kwargs)
+    """Scene object for drawing surfaces."""
 
     def draw(self):
         """Draw the surface.

@@ -25,6 +25,13 @@ class RhinoSceneObject(SceneObject):
     **kwargs : dict, optional
         Additional keyword arguments.
 
+    Attributes
+    ----------
+    layer : str
+        The name of the layer.
+    group : str
+        The name of the group.
+
     """
 
     def __init__(self, layer=None, group=None, **kwargs):

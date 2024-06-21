@@ -26,7 +26,15 @@ class ColorDict(Data):
 
     @property
     def __data__(self):
-        return {"default": self.default.__data__, "dict": self._dict}
+        return {"default": self.default, "dict": self._dict}
+
+    @classmethod
+    def __from_data__(cls, data):
+        colordict = cls(data["default"])
+        # note: this is specific to color dicts for vertices of meshes
+        # perhaps the color dict needs to be subclassed per scene object type
+        colordict.update({int(key): value for key, value in data["dict"].items()})
+        return colordict
 
     def __init__(self, default, name=None):
         super(ColorDict, self).__init__(name=name)

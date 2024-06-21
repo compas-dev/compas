@@ -12,17 +12,7 @@ from .sceneobject import RhinoSceneObject
 
 
 class RhinoBrepObject(RhinoSceneObject, GeometryObject):
-    """A scene object for drawing a RhinoBrep.
-
-    Parameters
-    ----------
-    brep : :class:`compas_rhino.geometry.RhinoBrep`
-        The Brep to draw.
-
-    """
-
-    def __init__(self, brep, **kwargs):
-        super(RhinoBrepObject, self).__init__(geometry=brep, **kwargs)
+    """A scene object for drawing a RhinoBrep."""
 
     def draw(self):
         """Bakes the Brep into the current document

@@ -12,19 +12,7 @@ from .sceneobject import RhinoSceneObject
 
 
 class RhinoPolygonObject(RhinoSceneObject, GeometryObject):
-    """Scene object for drawing polygons.
-
-    Parameters
-    ----------
-    polygon : :class:`compas.geometry.Polygon`
-        A COMPAS polygon.
-    **kwargs : dict, optional
-        Additional keyword arguments.
-
-    """
-
-    def __init__(self, polygon, **kwargs):
-        super(RhinoPolygonObject, self).__init__(geometry=polygon, **kwargs)
+    """Scene object for drawing polygons."""
 
     def draw(self):
         """Draw the polygon.

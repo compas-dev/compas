@@ -12,19 +12,7 @@ from .sceneobject import RhinoSceneObject
 
 
 class RhinoPolyhedronObject(RhinoSceneObject, GeometryObject):
-    """Scene object for drawing polyhedron shapes.
-
-    Parameters
-    ----------
-    polyhedron : :class:`compas.geometry.Polyhedron`
-        A COMPAS polyhedron.
-    **kwargs : dict, optional
-        Additional keyword arguments.
-
-    """
-
-    def __init__(self, polyhedron, **kwargs):
-        super(RhinoPolyhedronObject, self).__init__(geometry=polyhedron, **kwargs)
+    """Scene object for drawing polyhedron shapes."""
 
     def draw(self):
         """Draw the polyhedron associated with the scene object.

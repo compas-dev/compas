@@ -140,7 +140,7 @@ def connectivity_matrix(edges, rtype="array"):
 
     Examples
     --------
-    >>> connectivity_matrix([[0, 1], [0, 2], [0, 3]], rtype='array')
+    >>> connectivity_matrix([[0, 1], [0, 2], [0, 3]], rtype="array")
     array([[-1.,  1.,  0.,  0.],
            [-1.,  0.,  1.,  0.],
            [-1.,  0.,  0.,  1.]])
@@ -188,7 +188,7 @@ def laplacian_matrix(edges, normalize=False, rtype="array"):
 
     Examples
     --------
-    >>> laplacian_matrix([[0, 1], [0, 2], [0, 3]], rtype='array')
+    >>> laplacian_matrix([[0, 1], [0, 2], [0, 3]], rtype="array")
     array([[ 3., -1., -1., -1.],
            [-1.,  1.,  0.,  0.],
            [-1.,  0.,  1.,  0.],
@@ -252,7 +252,7 @@ def equilibrium_matrix(C, xyz, free, rtype="array"):
     --------
     >>> C = connectivity_matrix([[0, 1], [0, 2], [0, 3]])
     >>> xyz = [[0, 0, 1], [0, 1, 0], [-1, -1, 0], [1, -1, 0]]
-    >>> equilibrium_matrix(C, xyz, [0], rtype='array')
+    >>> equilibrium_matrix(C, xyz, [0], rtype="array")
     array([[ 0.,  1., -1.],
            [-1.,  1.,  1.]])
 

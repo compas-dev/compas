@@ -6,7 +6,6 @@ import bpy  # type: ignore
 from compas.colors import Color
 from compas.geometry import Frame
 from compas.geometry import Line
-from compas.geometry import Plane
 from compas.scene import GeometryObject
 from compas_blender import conversions
 
@@ -18,8 +17,6 @@ class PlaneObject(BlenderSceneObject, GeometryObject):
 
     Parameters
     ----------
-    plane: :class:`compas.geometry.Plane`
-        A COMPAS plane.
     scale : float, optional
         Scale of the plane.
     **kwargs : dict, optional
@@ -34,8 +31,8 @@ class PlaneObject(BlenderSceneObject, GeometryObject):
 
     """
 
-    def __init__(self, plane: Plane, scale=1.0, **kwargs: Any):
-        super().__init__(geometry=plane, **kwargs)
+    def __init__(self, scale=1.0, **kwargs: Any):
+        super().__init__(**kwargs)
         self.scale = scale
 
     def draw(self, color: Optional[Color] = None, collection: Optional[str] = None) -> list[bpy.types.Object]:
