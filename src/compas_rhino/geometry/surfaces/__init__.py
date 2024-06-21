@@ -8,9 +8,7 @@ from compas.plugins import plugin
 
 @plugin(category="factories", requires=["Rhino"])
 def new_surface(cls, *args, **kwargs):
-    surface = super(Surface, cls).__new__(cls)
-    surface.__init__(*args, **kwargs)
-    return surface
+    return object.__new__(RhinoSurface)
 
 
 @plugin(category="factories", requires=["Rhino"])
