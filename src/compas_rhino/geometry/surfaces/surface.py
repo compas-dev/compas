@@ -4,7 +4,13 @@ from __future__ import print_function
 
 import Rhino.Geometry  # type: ignore
 
+import compas
+
+if not compas.IPY:
+    from typing import Tuple
+
 from compas.geometry import Surface
+from compas.geometry import Plane
 from compas_rhino.conversions import box_to_compas
 from compas_rhino.conversions import cylinder_to_rhino
 from compas_rhino.conversions import frame_to_rhino_plane
@@ -168,15 +174,24 @@ class RhinoSurface(Surface):
         return curve
 
     @classmethod
-    def from_plane(cls, plane, box=None):
+    def from_plane(cls, plane, u_domain, v_domain):
+        # type: (Plane, Tuple[float, float], Tuple[float, float]) -> RhinoSurface
         """Construct a surface from a plane.
 
         Parameters
         ----------
         plane : :class:`compas.geometry.Plane`
             The plane.
-        box : :class:`compas.geometry.Box`, optional
-            A box that bounds the surface.
+        u_domain : tuple(float, float)
+            The parametric domain of the U parameter. u_domain[0] => u_domain[1].
+        v_domain : tuple(float, float)
+            The parametric domain of the V parameter. v_domain[0] => v_domain[1].
+
+        Note
+        ----
+        While the plane's origin is its center, the surface's parametric origin is at the surface's corner.
+        For the plane to overlap with the surface, the plane's origin should be first shifted by half it's domain.
+        Alternatively, the surface's domain can be adjusted to match the plane's origin.
 
         Returns
         -------
@@ -184,11 +199,7 @@ class RhinoSurface(Surface):
 
         """
         plane = plane_to_rhino(plane)
-        if box:
-            box = Rhino.Geometry.BoundingBox(box.xmin, box.ymin, box.zmin, box.xmax, box.ymax, box.zmax)
-            rhino_surface = Rhino.Geometry.PlaneSurface.CreateThroughBox(plane, box)
-        else:
-            rhino_surface = Rhino.Geometry.PlaneSurface(plane, Rhino.Geometry.Interval(0, 1), Rhino.Geometry.Interval(0, 1))
+        rhino_surface = Rhino.Geometry.PlaneSurface(plane, Rhino.Geometry.Interval(*u_domain), Rhino.Geometry.Interval(*v_domain))
         return cls.from_rhino(rhino_surface)
 
     @classmethod
