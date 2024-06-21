@@ -29,6 +29,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `VolMesh.vertex_edges`.
 * Added `VolMesh.from_meshes`.
 * Added `VolMesh.from_polyhedrons`.
+* Added pluggable `Surface.from_native`.
+* Added deprecation warning on `RhinoSurface.from_rhino`.
+* Added `Surface.native_surface`.
+* Added `RhinoSurface.native_surface`.
+* Added plugin `RhinoSurface.from_native`.
 
 ### Changed
 
@@ -54,6 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Updated `compas.geometry.vector.__truediv__` to allow element-wise division with another vector.
 * Fixed bug in registration `shapely` boolean plugins.
 * Temporarily restrict `numpy` to versions lower than `2.x`.
+* Changed `RhinoSurface` plugin `new_surface` to create `RhinoSurface` object when `compas.geometry.Surface()` is called. 
 
 ### Removed
 
