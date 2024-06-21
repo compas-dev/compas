@@ -363,7 +363,7 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
         return surface
 
     @classmethod
-    def from_plane(cls, plane, u_degree=1, v_degree=1, u_domain=(0, 1), v_domain=(0, 1)):
+    def from_plane(cls, plane, u_degree=1, v_degree=1, u_domain=(0.0, 1.0), v_domain=(0.0, 1.0)):
         """Construct a NURBS surface from a plane.
 
         Parameters

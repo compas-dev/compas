@@ -174,7 +174,7 @@ class RhinoSurface(Surface):
         return curve
 
     @classmethod
-    def from_plane(cls, plane, u_domain, v_domain):
+    def from_plane(cls, plane, u_domain=(0.0, 1.0), v_domain=(0.0, 1.0)):
         # type: (Plane, Tuple[float, float], Tuple[float, float]) -> RhinoSurface
         """Construct a surface from a plane.
 
@@ -182,10 +182,12 @@ class RhinoSurface(Surface):
         ----------
         plane : :class:`compas.geometry.Plane`
             The plane.
-        u_domain : tuple(float, float)
+        u_domain : tuple(float, float), optional
             The parametric domain of the U parameter. u_domain[0] => u_domain[1].
-        v_domain : tuple(float, float)
+            Default is ``(0.0, 1.0)``.
+        v_domain : tuple(float, float), optional
             The parametric domain of the V parameter. v_domain[0] => v_domain[1].
+            Default is ``(0.0, 1.0)``.
 
         Note
         ----
