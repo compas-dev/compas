@@ -7,10 +7,10 @@ import Rhino.Geometry  # type: ignore
 import compas
 
 if not compas.IPY:
-    from typing import Tuple
+    from typing import Tuple  # noqa: F401
 
+from compas.geometry import Plane  # noqa: F401
 from compas.geometry import Surface
-from compas.geometry import Plane
 from compas_rhino.conversions import box_to_compas
 from compas_rhino.conversions import cylinder_to_rhino
 from compas_rhino.conversions import frame_to_rhino_plane
