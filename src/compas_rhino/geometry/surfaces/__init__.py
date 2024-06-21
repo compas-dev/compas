@@ -1,7 +1,6 @@
 from .surface import RhinoSurface  # noqa : F401
 from .nurbs import RhinoNurbsSurface
 
-from compas.geometry import Surface
 from compas.geometry import NurbsSurface
 from compas.plugins import plugin
 
