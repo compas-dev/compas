@@ -37,12 +37,19 @@ class RhinoSurface(Surface):
         True if the surface is periodic in the U direction.
     is_periodic_v: bool
         True if the surface is periodic in the V direction.
+    native_surface: :class:`Rhino.Geometry.Surface`
+        The underlying Rhino surface object.
 
     """
 
     def __init__(self, name=None):
         super(RhinoSurface, self).__init__(name=name)
-        self._rhino_surface = None
+        # empty surface is not really a valid RhinoSurface object.
+        self._rhino_surface = Rhino.Geometry.PlaneSurface(Rhino.Geometry.Plane.WorldXY, Rhino.Geometry.Interval(0, 1), Rhino.Geometry.Interval(0, 1))
+
+    @property
+    def native_surface(self):
+        return self._rhino_surface
 
     @property
     def rhino_surface(self):
@@ -101,7 +108,7 @@ class RhinoSurface(Surface):
 
         """
         rhino_points = [Rhino.Geometry.Point3d(corner.x, corner.y, corner.z) for corner in corners]
-        return cls.from_rhino(Rhino.Geometry.NurbsSurface.CreateFromCorners(*rhino_points))
+        return cls.from_native(Rhino.Geometry.NurbsSurface.CreateFromCorners(*rhino_points))
 
     @classmethod
     def from_sphere(cls, sphere):
@@ -119,7 +126,7 @@ class RhinoSurface(Surface):
         """
         sphere = sphere_to_rhino(sphere)
         surface = Rhino.Geometry.NurbsSurface.CreateFromSphere(sphere)
-        return cls.from_rhino(surface)
+        return cls.from_native(surface)
 
     @classmethod
     def from_cylinder(cls, cylinder):
@@ -137,7 +144,7 @@ class RhinoSurface(Surface):
         """
         cylinder = cylinder_to_rhino(cylinder)
         surface = Rhino.Geometry.NurbsSurface.CreateFromCylinder(cylinder)
-        return cls.from_rhino(surface)
+        return cls.from_native(surface)
 
     @classmethod
     def from_torus(cls, torus):
@@ -159,6 +166,9 @@ class RhinoSurface(Surface):
     def from_rhino(cls, rhino_surface):
         """Construct a NURBS surface from an existing Rhino surface.
 
+        .. deprecated:: 2.1.1
+                ``from_rhino`` will be removed in the future. Use ``from_native`` instead.
+
         Parameters
         ----------
         rhino_surface : :rhino:`Rhino.Geometry.Surface`
@@ -169,8 +179,27 @@ class RhinoSurface(Surface):
         :class:`compas_rhino.geometry.RhinoSurface`
 
         """
+        from warnings import warn
+
+        warn("RhinoSurface.from_rhino will be removed in the future. Use RhinoSurface.from_native instead.", DeprecationWarning)
+        return cls.from_native(rhino_surface)
+
+    @classmethod
+    def from_native(cls, native_surface):
+        """Construct a surface from an existing Rhino surface.
+
+        Parameters
+        ----------
+        native_surface : :rhino:`Rhino.Geometry.Surface`
+            A Rhino surface.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoSurface`
+
+        """
         curve = cls()
-        curve.rhino_surface = rhino_surface
+        curve.rhino_surface = native_surface
         return curve
 
     @classmethod
@@ -202,7 +231,7 @@ class RhinoSurface(Surface):
         """
         plane = plane_to_rhino(plane)
         rhino_surface = Rhino.Geometry.PlaneSurface(plane, Rhino.Geometry.Interval(*u_domain), Rhino.Geometry.Interval(*v_domain))
-        return cls.from_rhino(rhino_surface)
+        return cls.from_native(rhino_surface)
 
     @classmethod
     def from_frame(cls, frame, u_interval, v_interval):
@@ -231,7 +260,7 @@ class RhinoSurface(Surface):
         if not surface:
             msg = "Failed creating PlaneSurface from frame:{} u_interval:{} v_interval:{}"
             raise ValueError(msg.format(frame, u_interval, v_interval))
-        return cls.from_rhino(surface)
+        return cls.from_native(surface)
 
     # ==============================================================================
     # Conversions
@@ -282,7 +311,7 @@ class RhinoSurface(Surface):
 
         """
         curve = self.rhino_surface.IsoCurve(1, u)  # type: ignore
-        return RhinoCurve.from_rhino(curve)
+        return RhinoCurve.from_native(curve)
 
     def v_isocurve(self, v):
         """Compute the isoparametric curve at parameter v.
@@ -297,7 +326,7 @@ class RhinoSurface(Surface):
 
         """
         curve = self.rhino_surface.IsoCurve(0, v)  # type: ignore
-        return RhinoCurve.from_rhino(curve)
+        return RhinoCurve.from_native(curve)
 
     def point_at(self, u, v):
         """Compute a point on the surface.
