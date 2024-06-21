@@ -53,7 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Updated `compas.geometry.vector.__mul__` to allow element-wise multiplication with another vector.
 * Updated `compas.geometry.vector.__truediv__` to allow element-wise division with another vector.
 * Fixed bug in registration `shapely` boolean plugins.
-* Restrict `numpy` to versions lower than `2.x`.
+* Temporarily restrict `numpy` to versions lower than `2.x`.
 
 ### Removed
 
