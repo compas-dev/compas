@@ -1,10 +1,8 @@
-from typing import Any
 from typing import Optional
 
 import bpy  # type: ignore
 
 from compas.colors import Color
-from compas.geometry import Point
 from compas.scene import GeometryObject
 from compas_blender import conversions
 
@@ -12,19 +10,7 @@ from .sceneobject import BlenderSceneObject
 
 
 class PointcloudObject(BlenderSceneObject, GeometryObject):
-    """Scene object for drawing pointclouds in Blender.
-
-    Parameters
-    ----------
-    pointcloud : :class:`compas.geometry.Pointcloud`
-        A COMPAS point.
-    **kwargs : dict, optional
-        Additional keyword arguments.
-
-    """
-
-    def __init__(self, point: Point, **kwargs: Any):
-        super().__init__(geometry=point, **kwargs)
+    """Scene object for drawing pointclouds in Blender."""
 
     def draw(
         self,

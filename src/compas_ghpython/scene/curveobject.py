@@ -9,22 +9,7 @@ from .sceneobject import GHSceneObject
 
 
 class CurveObject(GHSceneObject, GeometryObject):
-    """Scene object for drawing curves.
-
-    Parameters
-    ----------
-    curve : :class:`compas.geometry.Curve`
-        A COMPAS curve.
-
-    Other Parameters
-    ----------------
-    **kwargs : dict, optional
-        Additional keyword arguments.
-
-    """
-
-    def __init__(self, curve, **kwargs):
-        super(CurveObject, self).__init__(geometry=curve, **kwargs)
+    """Scene object for drawing curves."""
 
     def draw(self):
         """Draw the curve.

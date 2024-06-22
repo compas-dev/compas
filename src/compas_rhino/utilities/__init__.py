@@ -1,6 +1,7 @@
 from __future__ import absolute_import
+from warnings import warn
 
-from .drawing import (
+from ..drawing import (
     draw_labels,
     draw_points,
     draw_lines,
@@ -35,3 +36,5 @@ __all__ = [
     "draw_surfaces",
     "draw_brep",
 ]
+
+warn("compas_rhino.utilities will be removed in version 2.3. Please use compas_rhino.drawing instead.", DeprecationWarning, stacklevel=2)

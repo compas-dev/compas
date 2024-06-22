@@ -10,16 +10,58 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Added `maxiter` parameter to `compas.geometry.icp_numpy`.
+* Added `resolution_u` and `resolution_v` to `compas.geometry.Shape` to control discretisation resolution.
+* Added `vertices`, `edges`, `faces`, `triangles` to `compas.geometry.Shape`.
+* Added `points`, `lines`, `polygons` to `compas.geometry.Shape`.
+* Added abstract `compute_vertices`, `compute_edges`, `compute_faces`, `compute_triangles` to `compas.geometry.Shape`.
+* Added implementation of `compute_vertices`, `compute_edges`, `compute_faces` to `compas.geometry.Box`.
+* Added implementation of `compute_vertices`, `compute_edges`, `compute_faces` to `compas.geometry.Capsule`.
+* Added implementation of `compute_vertices`, `compute_edges`, `compute_faces` to `compas.geometry.Cone`.
+* Added implementation of `compute_vertices`, `compute_edges`, `compute_faces` to `compas.geometry.Cylinder`.
+* Added implementation of `compute_vertices`, `compute_edges`, `compute_faces` to `compas.geometry.Sphere`.
+* Added implementation of `compute_vertices`, `compute_edges`, `compute_faces` to `compas.geometry.Torus`.
+* Added `compas_blender.scene.ShapeObject`.
+* Added `compas.geometry.vector.__radd__`.
+* Added `compas.geometry.vector.__rsub__`.
+* Added `compas.geometry.vector.__rmul__`.
+* Added `compas.geometry.vector.__rtruediv__`.
+* Added `VolMesh.cell_lines`, `VolMesh.cell_polygons`.
+* Added `VolMesh.vertex_edges`.
+* Added `VolMesh.from_meshes`.
+* Added `VolMesh.from_polyhedrons`.
 
 ### Changed
 
+* Changed `compas_ghpython/utilities/drawing.py` to remove `System` dependency.
 * Fixed bug in `compas.geometry.ic_numpy`, which was caused by returning only the last transformation of the iteration process.
 * Changed `compas.geometry.Geometry.scaled` to use `compas.geometry.Geometry.scale` on a copy.
 * Changed `compas.geometry.Geometry.translated` to use `compas.geometry.Geometry.translate` on a copy.
 * Changed `compas.geometry.Geometry.rotated` to use `compas.geometry.Geometry.rotate` on a copy.
+* Changed `VolMesh._plane` back to point to a cell for every triplet of vertices.
+* Fixed `VolMesh.add_halfface`, `VolMesh.add_cell`, `VolMesh.vertex_halffaces`, `VolMesh.vertex_cells`, `VolMesh.edge_halffaces`, `VolMesh.halfface_cell`, `VolMesh.halfface_opposite_cell`, `VolMesh.halfface_opposite_halfface`, `VolMesh.cell_neighbors`.
+* Changed ordering of `Volmesh.edges()` to be deterministic.
+* Changed ordering and direction of `Volmesh.vertex_edges()` to be deterministic.
+* Changed check for empty vertices and faces to use `is None` to add support for `numpy` arrays.
+* Changed order of `u` and `v` of `compas.geometry.SphericalSurface` to the match the excpected parametrisation.
+* Changed `compas.geometry.Shape.to_vertices_and_faces` to use `Shape.vertices` and `Shape.faces` or `Shape.triangles`.
+* Changed default of `compas.scene.descriptors.color.ColorAttribute` to `None` to support native coloring in CAD contexts.
+* Changed `compas.colors.ColorDict.__data__` and `compas.colors.ColorDict.__from_data__` to properly support serialisation.
+* Moved `compas_blender.utilities.drawing` to `compas_blender.drawing` with backward compatible imports and deprecation warning.
+* Moved `compas_ghpython.utilities.drawing` to `compas_ghpython.drawing` with backward compatible imports and deprecation warning.
+* Moved `compas_rhino.utilities.drawing` to `compas_rhino.drawing` with backward compatible imports and deprecation warning.
+* Changed `draw_nodes` and `draw_edges` of `compas_blender.scene.GraphObject`, `compas_ghpython.scene.GraphObject`, and `compas_rhino.scene.GraphObject` to use only attributes instead of parameters.
+* Changed `draw_vertices`, `draw_edges` and `draw_faces` of `compas_blender.scene.MeshObject`, `compas_ghpython.scene.MeshObject`, and `compas_rhino.scene.MeshObject` to use only attributes instead of parameters.
+* Changed `draw_vertices`, `draw_edges` and `draw_faces` of `compas_blender.scene.VolMeshObject`, `compas_ghpython.scene.VolMeshObject`, and `compas_rhino.scene.VolMeshObject` to use only attributes instead of parameters.
+* Changed registration of `Capsule`, `Cone`, `Cylinder`, `Sphere`, `Torus` to `ShapeObject` in `compas_blender.scene`.
+* Updated `compas.geometry.vector.__mul__` to allow element-wise multiplication with another vector.
+* Updated `compas.geometry.vector.__truediv__` to allow element-wise division with another vector.
+* Fixed bug in registration `shapely` boolean plugins.
+* Temporarily restrict `numpy` to versions lower than `2.x`.
 
 ### Removed
 
+* Removed `System` dependency in `compas_ghpython/utilities/drawing.py`.
+* Removed GH plugin for `compas.scene.clear` since it clashed with the Rhino version.
 
 ## [2.1.1] 2024-05-14
 
@@ -33,6 +75,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.tolerance.Tolerance.angulardeflection`.
 * Added `compas.tolerance.Tolerance.update_from_dict`.
 * Added `compas.scene.SceneObject.scene` attribute.
+* Added `compas.datastructures.CellNetwork.is_faces_closed`
+* Added `compas.datastructures.CellNetwork.delete_edge`
+* Added `compas.datastructures.CellNetwork.delete_cell`
+* Added `compas.datastructures.CellNetwork.delete_face`
+* Added `compas.datastructures.CellNetwork.cells_to_graph`
+* Added `compas.datastructures.CellNetwork.face_plane`
+* Added `compas.datastructures.CellNetwork.cell_volume`
+* Added `compas.datastructures.CellNetwork.cell_neighbors`
 
 ### Changed
 
@@ -55,6 +105,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas.tolerance.Tolerance` to a singleton, to ensure having only library-wide tolerance values.
 * Updated `compas_rhino.conversions.point_to_compas` to allow for `Rhino.Geometry.Point` as input.
 * Changed `compas.datastructures.Tree.print_hierarchy` to `compas.datastructures.Tree.__str__`.
+* Changed `compas.scene.SceneObject.__init__` to accept `item` as kwarg.
 * Fixed `compas.geometry.bbox_numpy.minimum_volume_box` to avoid `numpy.linalg.LinAlgError`.
 
 ### Removed

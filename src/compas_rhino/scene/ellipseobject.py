@@ -12,19 +12,7 @@ from .sceneobject import RhinoSceneObject
 
 
 class RhinoEllipseObject(RhinoSceneObject, GeometryObject):
-    """Scene object for drawing ellipses.
-
-    Parameters
-    ----------
-    ellipse : :class:`compas.geometry.Ellipse`
-        A COMPAS ellipse.
-    **kwargs : dict, optional
-        Additional keyword arguments.
-
-    """
-
-    def __init__(self, ellipse, **kwargs):
-        super(RhinoEllipseObject, self).__init__(geometry=ellipse, **kwargs)
+    """Scene object for drawing ellipses."""
 
     def draw(self):
         """Draw the ellipse.

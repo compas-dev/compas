@@ -282,7 +282,6 @@ class Surface(Geometry):
             The subset of the domain in the v direction.
             Default is ``None``, in which case the entire domain is used.
 
-
         Returns
         -------
         list[list[:class:`compas.geometry.Point`]]
@@ -312,7 +311,6 @@ class Surface(Geometry):
         dv : tuple, optional
             The subset of the domain in the v direction.
             Default is ``None``, in which case the entire domain is used.
-
 
         Returns
         -------
@@ -382,16 +380,6 @@ class Surface(Geometry):
 
         vertices, faces = self.to_vertices_and_faces(nu=nu, nv=nv, du=du, dv=dv)
         return Mesh.from_vertices_and_faces(vertices, faces)
-
-    def to_tesselation(self):
-        """Convert the surface to a triangle mesh.
-
-        Returns
-        -------
-        :class:`compas.datastructures.Mesh`
-
-        """
-        raise NotImplementedError
 
     def to_brep(self):
         """Convert the surface to a BREP representation.

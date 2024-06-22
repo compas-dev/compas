@@ -131,7 +131,7 @@ __all__ = [
 ]
 
 __all_plugins__ = [
-    "compas.geometry.booleans.booleans_shapely",
+    "compas.geometry.booleans_shapely",
     "compas.scene",
 ]
 

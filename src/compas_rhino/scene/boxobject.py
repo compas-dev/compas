@@ -12,20 +12,7 @@ from .sceneobject import RhinoSceneObject
 
 
 class RhinoBoxObject(RhinoSceneObject, GeometryObject):
-    """Scene object for drawing box shapes.
-
-    Parameters
-    ----------
-    box : :class:`compas.geometry.Box`
-        A COMPAS box.
-    **kwargs : dict, optional
-        Additional keyword arguments.
-
-    """
-
-    def __init__(self, box, **kwargs):
-        super(RhinoBoxObject, self).__init__(geometry=box, **kwargs)
-        self.box = box
+    """Scene object for drawing box shapes."""
 
     def draw(self):
         """Draw the box associated with the scene object.

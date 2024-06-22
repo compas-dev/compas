@@ -27,6 +27,7 @@ def halfface():
 
 
 def test_halfface_data(halfface):
+    # type: (VolMesh) -> None
     other = VolMesh.__from_data__(json.loads(json.dumps(halfface.__data__)))
 
     assert halfface.__data__ == other.__data__
@@ -160,7 +161,7 @@ def test_edges_where():
         hf.add_vertex(vkey)
     hf.add_halfface([0, 1, 2])
     hf.edge_attribute((0, 1), "a", 5)
-    assert list(hf.edges_where({"a": 1})) == [(1, 2), (2, 0)]
+    assert list(hf.edges_where({"a": 1})) == [(0, 2), (1, 2)]
 
 
 def test_edges_where_predicate():
