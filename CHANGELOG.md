@@ -34,6 +34,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Changed `compas_ghpython/utilities/drawing.py` to remove `System` dependency.
 * Fixed bug in `compas.geometry.ic_numpy`, which was caused by returning only the last transformation of the iteration process.
+* Changed `compas.geometry.Geometry.scaled` to use `compas.geometry.Geometry.scale` on a copy.
+* Changed `compas.geometry.Geometry.translated` to use `compas.geometry.Geometry.translate` on a copy.
+* Changed `compas.geometry.Geometry.rotated` to use `compas.geometry.Geometry.rotate` on a copy.
 * Changed `VolMesh._plane` back to point to a cell for every triplet of vertices.
 * Fixed `VolMesh.add_halfface`, `VolMesh.add_cell`, `VolMesh.vertex_halffaces`, `VolMesh.vertex_cells`, `VolMesh.edge_halffaces`, `VolMesh.halfface_cell`, `VolMesh.halfface_opposite_cell`, `VolMesh.halfface_opposite_halfface`, `VolMesh.cell_neighbors`.
 * Changed ordering of `Volmesh.edges()` to be deterministic.

@@ -1496,13 +1496,6 @@ def decompose_matrix(M):
         for j in range(4):
             Mt[i][j] /= Mt[3][3]
 
-    translation = [M[0][3], M[1][3], M[2][3]]
-
-    # scale, shear, angles
-    scale = [0.0, 0.0, 0.0]
-    shear = [0.0, 0.0, 0.0]
-    angles = [0.0, 0.0, 0.0]
-
     # copy Mt[:3, :3] into row
     row = [
         [0, 0, 0],
@@ -1512,6 +1505,14 @@ def decompose_matrix(M):
     for i in range(3):
         for j in range(3):
             row[i][j] = Mt[i][j]
+
+    # translation
+    translation = [M[0][3], M[1][3], M[2][3]]
+
+    # scale, shear, angles
+    scale = [0.0, 0.0, 0.0]
+    shear = [0.0, 0.0, 0.0]
+    angles = [0.0, 0.0, 0.0]
 
     scale[0] = norm_vector(row[0])
     for i in range(3):
