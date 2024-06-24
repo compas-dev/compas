@@ -57,6 +57,19 @@ class Surface(Geometry):
 
     """
 
+    @property
+    def __data__(self):
+        return {
+            "frame": self._frame.__data__,
+            "domain_u": list(self.domain_u),
+            "domain_v": list(self.domain_v),
+
+
+    @property
+    def __dtype__(self):
+        # make serialization CAD agnostic
+        return "compas.geometry/Surface"
+
     def __new__(cls, *args, **kwargs):
         return new_surface(cls, *args, **kwargs)
 

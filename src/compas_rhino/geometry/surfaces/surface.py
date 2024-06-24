@@ -9,6 +9,7 @@ import compas
 if not compas.IPY:
     from typing import Tuple  # noqa: F401
 
+from compas.geometry import Frame
 from compas.geometry import Plane  # noqa: F401
 from compas.geometry import Surface
 from compas_rhino.conversions import box_to_compas
@@ -42,10 +43,29 @@ class RhinoSurface(Surface):
 
     """
 
+    @classmethod
+    def __from_data__(cls, data):
+        frame = Frame.__from_data__(data["frame"])
+        u_interval = tuple(data["u_interval"])
+        v_interval = tuple(data["v_interval"])
+        return cls.from_frame(frame, u_interval, v_interval)
+
     def __init__(self, name=None):
         super(RhinoSurface, self).__init__(name=name)
         # empty surface is not really a valid RhinoSurface object.
-        self._rhino_surface = Rhino.Geometry.PlaneSurface(Rhino.Geometry.Plane.WorldXY, Rhino.Geometry.Interval(0, 1), Rhino.Geometry.Interval(0, 1))
+        # if not isinstance(native_surface, Rhino.Geometry.Surface):
+        #     raise ValueError("RhinoSurface cannot be directly instantiated without a native ``Rhino.Geometry.Surface`` object.")
+        # self._rhino_surface = native_surface
+        self._rhino_surface = None
+        self.frame = self._get_frame_from_planesurface()
+
+    def _get_frame_from_planesurface(self):
+        u_start = self.domain_u[0]
+        v_start = self.domain_v[0]
+        success, frame = self.native_surface.FrameAt(u_start, v_start)
+        if not success:
+            raise ValueError("Failed to get frame at u={} v={}".format(u_start, v_start))
+        return plane_to_compas_frame(frame)
 
     @property
     def native_surface(self):
@@ -198,9 +218,8 @@ class RhinoSurface(Surface):
         :class:`compas_rhino.geometry.RhinoSurface`
 
         """
-        curve = cls()
-        curve.rhino_surface = native_surface
-        return curve
+        print("RhinoSurface.from_native: cls={}".format(cls))
+        return cls(native_surface)
 
     @classmethod
     def from_plane(cls, plane, u_domain=(0.0, 1.0), v_domain=(0.0, 1.0)):
