@@ -60,7 +60,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="MeshObject.draw_faces" href="compas.scene.MeshObject.draw_faces.html" />
-    <link rel="prev" title="MeshObject.draw" href="compas.scene.MeshObject.draw.html" />
+    <link rel="prev" title="MeshObject.clear_vertices" href="compas.scene.MeshObject.clear_vertices.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -898,11 +898,8 @@ document.write(`
 <li class="toctree-l1 has-children"><a class="reference internal" href="../compas_blender.scene.html">compas_blender.scene</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.BlenderSceneObject.html">BlenderSceneObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.BoxObject.html">BoxObject</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.CapsuleObject.html">CapsuleObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.CircleObject.html">CircleObject</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.ConeObject.html">ConeObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.CurveObject.html">CurveObject</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.CylinderObject.html">CylinderObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.FrameObject.html">FrameObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.LineObject.html">LineObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.MeshObject.html">MeshObject</a></li>
@@ -912,9 +909,7 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.PolygonObject.html">PolygonObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.PolyhedronObject.html">PolyhedronObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.PolylineObject.html">PolylineObject</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.SphereObject.html">SphereObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.SurfaceObject.html">SurfaceObject</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.TorusObject.html">TorusObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.VectorObject.html">VectorObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.VolMeshObject.html">VolMeshObject</a></li>
 </ul>
@@ -1134,25 +1129,18 @@ document.write(`
 <h1>MeshObject.draw_edges</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.scene.MeshObject.draw_edges">
-<span class="sig-prename descclassname"><span class="pre">MeshObject.</span></span><span class="sig-name descname"><span class="pre">draw_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/7b4c795/src/compas/scene/meshobject.py#L128"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">MeshObject.</span></span><span class="sig-name descname"><span class="pre">draw_edges</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/58f68f8/src/compas/scene/meshobject.py#L156"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Draw the edges of the mesh.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>edges</strong><span class="classifier">list[tuple[int, int]], optional</span></dt><dd><p>The edges to include in the drawing.
-Default is all edges.</p>
-</dd>
-<dt><strong>color</strong><span class="classifier">tuple[float, float, float] | <a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.colors.Color</span></code></a> | dict[tuple[int, int], tuple[float, float, float] | <a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.colors.Color</span></code></a>], optional</span></dt><dd><p>The color of the edges,
-as either a single color to be applied to all edges,
-or a color dict, mapping specific edges to specific colors.</p>
-</dd>
-<dt><strong>text</strong><span class="classifier">dict[tuple[int, int], str], optional</span></dt><dd><p>The text labels for the edges
-as a text dict, mapping specific edges to specific text labels.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
+<p>Edges are drawn based on the values of</p>
+<ul class="simple">
+<li><p><cite>self.show_edges</cite></p></li>
+<li><p><cite>self.edgecolor</cite></p></li>
+<li><p><cite>self.edgetext</cite></p></li>
+<li><p><cite>self.edgewidth</cite></p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
 <dt>list</dt><dd><p>The identifiers of the objects representing the edges in the visualization context.</p>
 </dd>
 </dl>

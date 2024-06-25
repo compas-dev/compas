@@ -898,11 +898,8 @@ document.write(`
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../compas_blender.scene.html">compas_blender.scene</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.BlenderSceneObject.html">BlenderSceneObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.BoxObject.html">BoxObject</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.CapsuleObject.html">CapsuleObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.CircleObject.html">CircleObject</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.ConeObject.html">ConeObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.CurveObject.html">CurveObject</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.CylinderObject.html">CylinderObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.FrameObject.html">FrameObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.LineObject.html">LineObject</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">MeshObject</a></li>
@@ -912,9 +909,7 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.PolygonObject.html">PolygonObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.PolyhedronObject.html">PolyhedronObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.PolylineObject.html">PolylineObject</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.SphereObject.html">SphereObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.SurfaceObject.html">SurfaceObject</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.TorusObject.html">TorusObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.VectorObject.html">VectorObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.VolMeshObject.html">VolMeshObject</a></li>
 </ul>
@@ -1129,13 +1124,35 @@ document.write(`
 <h1>MeshObject</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas_blender.scene.MeshObject">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_blender.scene.</span></span><span class="sig-name descname"><span class="pre">MeshObject</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/7b4c795/src/compas/../compas_blender/scene/meshobject.py#L25"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_blender.scene.</span></span><span class="sig-name descname"><span class="pre">MeshObject</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/58f68f8/src/compas/../compas_blender/scene/meshobject.py#L16"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas_blender.scene.BlenderSceneObject.html#compas_blender.scene.BlenderSceneObject" title="compas_blender.scene.sceneobject.BlenderSceneObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">BlenderSceneObject</span></code></a>, <a class="reference internal" href="compas.scene.MeshObject.html#compas.scene.MeshObject" title="compas.scene.meshobject.MeshObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeshObject</span></code></a></p>
 <p>Scene object for drawing mesh data structures in Blender.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>mesh</strong><span class="classifier"><a class="reference internal" href="../compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a></span></dt><dd><p>A COMPAS mesh.</p>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>vertex_u</strong><span class="classifier">int, optional</span></dt><dd><p>Number of segments in the U direction of the vertex spheres.
+Default is <code class="docutils literal notranslate"><span class="pre">16</span></code>.</p>
+</dd>
+<dt><strong>vertex_v</strong><span class="classifier">int, optional</span></dt><dd><p>Number of segments in the V direction of the vertex spheres.
+Default is <code class="docutils literal notranslate"><span class="pre">16</span></code>.</p>
+</dd>
+<dt><strong>**kwargs</strong><span class="classifier">dict, optional</span></dt><dd><p>Additional keyword arguments.
+For more info,
+see <a class="reference internal" href="compas_blender.scene.BlenderSceneObject.html#compas_blender.scene.BlenderSceneObject" title="compas_blender.scene.BlenderSceneObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_blender.scene.BlenderSceneObject</span></code></a> and <a class="reference internal" href="compas.scene.MeshObject.html#compas.scene.MeshObject" title="compas.scene.MeshObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.scene.MeshObject</span></code></a>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>vertex_u</strong><span class="classifier">int</span></dt><dd><p>Number of segments in the U direction of the vertex spheres.</p>
+</dd>
+<dt><strong>vertex_v</strong><span class="classifier">int</span></dt><dd><p>Number of segments in the V direction of the vertex spheres.</p>
+</dd>
+<dt><strong>vertexobjects</strong><span class="classifier">list[<a class="reference external" href="https://docs.blender.org/api/2.93/bpy.types.Object.html">bpy.types.Object</a>]</span></dt><dd><p>List of Blender objects representing the vertices.</p>
+</dd>
+<dt><strong>edgeobjects</strong><span class="classifier">list[<a class="reference external" href="https://docs.blender.org/api/2.93/bpy.types.Object.html">bpy.types.Object</a>]</span></dt><dd><p>List of Blender objects representing the edges.</p>
+</dd>
+<dt><strong>faceobjects</strong><span class="classifier">list[<a class="reference external" href="https://docs.blender.org/api/2.93/bpy.types.Object.html">bpy.types.Object</a>]</span></dt><dd><p>List of Blender objects representing the faces.</p>
 </dd>
 </dl>
 </dd>
@@ -1161,20 +1178,8 @@ document.write(`
 <tr class="row-even"><td><p><a class="reference internal" href="compas_blender.scene.MeshObject.draw_edges.html#compas_blender.scene.MeshObject.draw_edges" title="compas_blender.scene.MeshObject.draw_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code></a></p></td>
 <td><p>Draw a selection of edges.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.scene.MeshObject.draw_facenormals.html#compas_blender.scene.MeshObject.draw_facenormals" title="compas_blender.scene.MeshObject.draw_facenormals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_facenormals</span></code></a></p></td>
-<td><p>Draw the normals of the faces.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.scene.MeshObject.draw_faces.html#compas_blender.scene.MeshObject.draw_faces" title="compas_blender.scene.MeshObject.draw_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_faces</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.scene.MeshObject.draw_faces.html#compas_blender.scene.MeshObject.draw_faces" title="compas_blender.scene.MeshObject.draw_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_faces</span></code></a></p></td>
 <td><p>Draw a selection of faces.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.scene.MeshObject.draw_pipes.html#compas_blender.scene.MeshObject.draw_pipes" title="compas_blender.scene.MeshObject.draw_pipes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_pipes</span></code></a></p></td>
-<td><p>Draw pipes around the edges of the mesh.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.scene.MeshObject.draw_spheres.html#compas_blender.scene.MeshObject.draw_spheres" title="compas_blender.scene.MeshObject.draw_spheres"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_spheres</span></code></a></p></td>
-<td><p>Draw spheres at the vertices of the mesh.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.scene.MeshObject.draw_vertexnormals.html#compas_blender.scene.MeshObject.draw_vertexnormals" title="compas_blender.scene.MeshObject.draw_vertexnormals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertexnormals</span></code></a></p></td>
-<td><p>Draw the normals at the vertices of the mesh.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_blender.scene.MeshObject.draw_vertices.html#compas_blender.scene.MeshObject.draw_vertices" title="compas_blender.scene.MeshObject.draw_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertices</span></code></a></p></td>
 <td><p>Draw a selection of vertices.</p></td>

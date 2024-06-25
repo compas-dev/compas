@@ -59,7 +59,7 @@
         </script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Cone.from_circle_and_height" href="compas.geometry.Cone.from_circle_and_height.html" />
+    <link rel="next" title="Cone.compute_faces" href="compas.geometry.Cone.compute_faces.html" />
     <link rel="prev" title="Circle.validate_data" href="compas.geometry.Circle.validate_data.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -898,11 +898,8 @@ document.write(`
 <li class="toctree-l1 has-children"><a class="reference internal" href="../compas_blender.scene.html">compas_blender.scene</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.BlenderSceneObject.html">BlenderSceneObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.BoxObject.html">BoxObject</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.CapsuleObject.html">CapsuleObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.CircleObject.html">CircleObject</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.ConeObject.html">ConeObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.CurveObject.html">CurveObject</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.CylinderObject.html">CylinderObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.FrameObject.html">FrameObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.LineObject.html">LineObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.MeshObject.html">MeshObject</a></li>
@@ -912,9 +909,7 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.PolygonObject.html">PolygonObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.PolyhedronObject.html">PolyhedronObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.PolylineObject.html">PolylineObject</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.SphereObject.html">SphereObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.SurfaceObject.html">SurfaceObject</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.TorusObject.html">TorusObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.VectorObject.html">VectorObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.VolMeshObject.html">VolMeshObject</a></li>
 </ul>
@@ -1129,7 +1124,7 @@ document.write(`
 <h1>Cone</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.Cone">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Cone</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/7b4c795/src/compas/geometry/shapes/cone.py#L20"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Cone</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/58f68f8/src/compas/geometry/shapes/cone.py#L20"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Shape.html#compas.geometry.Shape" title="compas.geometry.shapes.shape.Shape"><code class="xref py py-class docutils literal notranslate"><span class="pre">Shape</span></code></a></p>
 <p>A cone is defined by a frame, radius, and height.</p>
 <p>The cone is oriented along the z-axis of the frame.
@@ -1195,6 +1190,12 @@ The normal of the plane is in the direction of the z-axis of the local coordinat
 <p class="rubric">Methods</p>
 <table class="autosummary longtable table autosummary">
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.compute_faces.html#compas.geometry.Cone.compute_faces" title="compas.geometry.Cone.compute_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_faces</span></code></a></p></td>
+<td><p>Compute the faces of the discrete representation of the cone.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.compute_vertices.html#compas.geometry.Cone.compute_vertices" title="compas.geometry.Cone.compute_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_vertices</span></code></a></p></td>
+<td><p>Compute the vertices of the discrete representation of the cone.</p></td>
+</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.from_circle_and_height.html#compas.geometry.Cone.from_circle_and_height" title="compas.geometry.Cone.from_circle_and_height"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_circle_and_height</span></code></a></p></td>
 <td><p>Construct a cone from a circle and a height.</p></td>
 </tr>
@@ -1203,9 +1204,6 @@ The normal of the plane is in the direction of the z-axis of the local coordinat
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.to_brep.html#compas.geometry.Cone.to_brep" title="compas.geometry.Cone.to_brep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_brep</span></code></a></p></td>
 <td><p>Returns a BRep representation of the cone.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.to_vertices_and_faces.html#compas.geometry.Cone.to_vertices_and_faces" title="compas.geometry.Cone.to_vertices_and_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_vertices_and_faces</span></code></a></p></td>
-<td><p>Returns a list of vertices and faces.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1218,8 +1216,14 @@ The normal of the plane is in the direction of the z-axis of the local coordinat
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.compute_aabb.html#compas.geometry.Cone.compute_aabb" title="compas.geometry.Cone.compute_aabb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_aabb</span></code></a></p></td>
 <td><p>Compute the axis-aligned bounding box of the geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.compute_obb.html#compas.geometry.Cone.compute_obb" title="compas.geometry.Cone.compute_obb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_obb</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.compute_edges.html#compas.geometry.Cone.compute_edges" title="compas.geometry.Cone.compute_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_edges</span></code></a></p></td>
+<td><p>Compute the edges of the discrete representation of the shape.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.compute_obb.html#compas.geometry.Cone.compute_obb" title="compas.geometry.Cone.compute_obb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_obb</span></code></a></p></td>
 <td><p>Compute the oriented bounding box of the geometry.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.compute_triangles.html#compas.geometry.Cone.compute_triangles" title="compas.geometry.Cone.compute_triangles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_triangles</span></code></a></p></td>
+<td><p>Compute the triangles of the discrete representation of the shape.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.contains_point.html#compas.geometry.Cone.contains_point" title="compas.geometry.Cone.contains_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">contains_point</span></code></a></p></td>
 <td><p>Verify if a point is inside the shape.</p></td>
@@ -1257,8 +1261,14 @@ The normal of the plane is in the direction of the z-axis of the local coordinat
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.to_jsonstring.html#compas.geometry.Cone.to_jsonstring" title="compas.geometry.Cone.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
 <td><p>Convert an object to its native data representation and save it to a JSON string.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.to_polyhedron.html#compas.geometry.Cone.to_polyhedron" title="compas.geometry.Cone.to_polyhedron"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polyhedron</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.to_mesh.html#compas.geometry.Cone.to_mesh" title="compas.geometry.Cone.to_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_mesh</span></code></a></p></td>
+<td><p>Returns a mesh representation of the box.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.to_polyhedron.html#compas.geometry.Cone.to_polyhedron" title="compas.geometry.Cone.to_polyhedron"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polyhedron</span></code></a></p></td>
 <td><p>Convert the shape to a polyhedron.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.to_vertices_and_faces.html#compas.geometry.Cone.to_vertices_and_faces" title="compas.geometry.Cone.to_vertices_and_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_vertices_and_faces</span></code></a></p></td>
+<td><p>Convert the shape to a list of vertices and faces.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.transform.html#compas.geometry.Cone.transform" title="compas.geometry.Cone.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
 <td><p>Transform the shape.</p></td>

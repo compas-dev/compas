@@ -898,11 +898,8 @@ document.write(`
 <li class="toctree-l1 has-children"><a class="reference internal" href="../compas_blender.scene.html">compas_blender.scene</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.BlenderSceneObject.html">BlenderSceneObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.BoxObject.html">BoxObject</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.CapsuleObject.html">CapsuleObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.CircleObject.html">CircleObject</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.ConeObject.html">ConeObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.CurveObject.html">CurveObject</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.CylinderObject.html">CylinderObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.FrameObject.html">FrameObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.LineObject.html">LineObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.MeshObject.html">MeshObject</a></li>
@@ -912,9 +909,7 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.PolygonObject.html">PolygonObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.PolyhedronObject.html">PolyhedronObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.PolylineObject.html">PolylineObject</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.SphereObject.html">SphereObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.SurfaceObject.html">SurfaceObject</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.TorusObject.html">TorusObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.VectorObject.html">VectorObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.VolMeshObject.html">VolMeshObject</a></li>
 </ul>
@@ -1129,7 +1124,7 @@ document.write(`
 <h1>VolMeshObject</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.scene.VolMeshObject">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.scene.</span></span><span class="sig-name descname"><span class="pre">VolMeshObject</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/7b4c795/src/compas/scene/volmeshobject.py#L11"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.scene.</span></span><span class="sig-name descname"><span class="pre">VolMeshObject</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/58f68f8/src/compas/scene/volmeshobject.py#L14"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.scene.SceneObject.html#compas.scene.SceneObject" title="compas.scene.sceneobject.SceneObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">SceneObject</span></code></a></p>
 <p>Scene object for drawing volmesh data structures.</p>
 <dl class="field-list">
@@ -1201,19 +1196,16 @@ Default is <code class="docutils literal notranslate"><span class="pre">True</sp
 <tr class="row-even"><td><p><a class="reference internal" href="compas.scene.VolMeshObject.clear_vertices.html#compas.scene.VolMeshObject.clear_vertices" title="compas.scene.VolMeshObject.clear_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_vertices</span></code></a></p></td>
 <td><p>Clear the vertices of the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.VolMeshObject.draw.html#compas.scene.VolMeshObject.draw" title="compas.scene.VolMeshObject.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a></p></td>
-<td><p>Draw the volmesh.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.VolMeshObject.draw_cells.html#compas.scene.VolMeshObject.draw_cells" title="compas.scene.VolMeshObject.draw_cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_cells</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.VolMeshObject.draw_cells.html#compas.scene.VolMeshObject.draw_cells" title="compas.scene.VolMeshObject.draw_cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_cells</span></code></a></p></td>
 <td><p>Draw the cells of the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.VolMeshObject.draw_edges.html#compas.scene.VolMeshObject.draw_edges" title="compas.scene.VolMeshObject.draw_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.VolMeshObject.draw_edges.html#compas.scene.VolMeshObject.draw_edges" title="compas.scene.VolMeshObject.draw_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code></a></p></td>
 <td><p>Draw the edges of the mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.VolMeshObject.draw_faces.html#compas.scene.VolMeshObject.draw_faces" title="compas.scene.VolMeshObject.draw_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_faces</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.VolMeshObject.draw_faces.html#compas.scene.VolMeshObject.draw_faces" title="compas.scene.VolMeshObject.draw_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_faces</span></code></a></p></td>
 <td><p>Draw the faces of the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.VolMeshObject.draw_vertices.html#compas.scene.VolMeshObject.draw_vertices" title="compas.scene.VolMeshObject.draw_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertices</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.VolMeshObject.draw_vertices.html#compas.scene.VolMeshObject.draw_vertices" title="compas.scene.VolMeshObject.draw_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertices</span></code></a></p></td>
 <td><p>Draw the vertices of the mesh.</p></td>
 </tr>
 </tbody>
@@ -1233,28 +1225,31 @@ Default is <code class="docutils literal notranslate"><span class="pre">True</sp
 <tr class="row-even"><td><p><a class="reference internal" href="compas.scene.VolMeshObject.copy.html#compas.scene.VolMeshObject.copy" title="compas.scene.VolMeshObject.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
 <td><p>Make an independent copy of the data object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.VolMeshObject.from_json.html#compas.scene.VolMeshObject.from_json" title="compas.scene.VolMeshObject.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.VolMeshObject.draw.html#compas.scene.VolMeshObject.draw" title="compas.scene.VolMeshObject.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a></p></td>
+<td><p>The main drawing method.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.VolMeshObject.from_json.html#compas.scene.VolMeshObject.from_json" title="compas.scene.VolMeshObject.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a></p></td>
 <td><p>Construct an object of this type from a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.VolMeshObject.from_jsonstring.html#compas.scene.VolMeshObject.from_jsonstring" title="compas.scene.VolMeshObject.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.VolMeshObject.from_jsonstring.html#compas.scene.VolMeshObject.from_jsonstring" title="compas.scene.VolMeshObject.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
 <td><p>Construct an object of this type from a JSON string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.VolMeshObject.remove.html#compas.scene.VolMeshObject.remove" title="compas.scene.VolMeshObject.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.VolMeshObject.remove.html#compas.scene.VolMeshObject.remove" title="compas.scene.VolMeshObject.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a></p></td>
 <td><p>Remove a child node from this node.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.VolMeshObject.sha256.html#compas.scene.VolMeshObject.sha256" title="compas.scene.VolMeshObject.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.VolMeshObject.sha256.html#compas.scene.VolMeshObject.sha256" title="compas.scene.VolMeshObject.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.VolMeshObject.to_json.html#compas.scene.VolMeshObject.to_json" title="compas.scene.VolMeshObject.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.VolMeshObject.to_json.html#compas.scene.VolMeshObject.to_json" title="compas.scene.VolMeshObject.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Convert an object to its native data representation and save it to a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.VolMeshObject.to_jsonstring.html#compas.scene.VolMeshObject.to_jsonstring" title="compas.scene.VolMeshObject.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.VolMeshObject.to_jsonstring.html#compas.scene.VolMeshObject.to_jsonstring" title="compas.scene.VolMeshObject.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
 <td><p>Convert an object to its native data representation and save it to a JSON string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.VolMeshObject.traverse.html#compas.scene.VolMeshObject.traverse" title="compas.scene.VolMeshObject.traverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">traverse</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.VolMeshObject.traverse.html#compas.scene.VolMeshObject.traverse" title="compas.scene.VolMeshObject.traverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">traverse</span></code></a></p></td>
 <td><p>Traverse the tree from this node.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.scene.VolMeshObject.validate_data.html#compas.scene.VolMeshObject.validate_data" title="compas.scene.VolMeshObject.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.scene.VolMeshObject.validate_data.html#compas.scene.VolMeshObject.validate_data" title="compas.scene.VolMeshObject.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
 <td><p>Validate the data against the object's data schema.</p></td>
 </tr>
 </tbody>

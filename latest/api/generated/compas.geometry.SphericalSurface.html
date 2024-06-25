@@ -898,11 +898,8 @@ document.write(`
 <li class="toctree-l1 has-children"><a class="reference internal" href="../compas_blender.scene.html">compas_blender.scene</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.BlenderSceneObject.html">BlenderSceneObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.BoxObject.html">BoxObject</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.CapsuleObject.html">CapsuleObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.CircleObject.html">CircleObject</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.ConeObject.html">ConeObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.CurveObject.html">CurveObject</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.CylinderObject.html">CylinderObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.FrameObject.html">FrameObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.LineObject.html">LineObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.MeshObject.html">MeshObject</a></li>
@@ -912,9 +909,7 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.PolygonObject.html">PolygonObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.PolyhedronObject.html">PolyhedronObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.PolylineObject.html">PolylineObject</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.SphereObject.html">SphereObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.SurfaceObject.html">SurfaceObject</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.TorusObject.html">TorusObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.VectorObject.html">VectorObject</a></li>
 <li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.VolMeshObject.html">VolMeshObject</a></li>
 </ul>
@@ -1129,7 +1124,7 @@ document.write(`
 <h1>SphericalSurface</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.SphericalSurface">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">SphericalSurface</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/7b4c795/src/compas/geometry/surfaces/spherical.py#L19"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">SphericalSurface</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/58f68f8/src/compas/geometry/surfaces/spherical.py#L19"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Surface.html#compas.geometry.Surface" title="compas.geometry.surfaces.surface.Surface"><code class="xref py py-class docutils literal notranslate"><span class="pre">Surface</span></code></a></p>
 <p>A spherical surface is defined by a radius and a frame.</p>
 <dl class="field-list">
@@ -1279,28 +1274,25 @@ document.write(`
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.to_step.html#compas.geometry.SphericalSurface.to_step" title="compas.geometry.SphericalSurface.to_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_step</span></code></a></p></td>
 <td><p>Write the surface geometry to a STP file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.to_tesselation.html#compas.geometry.SphericalSurface.to_tesselation" title="compas.geometry.SphericalSurface.to_tesselation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_tesselation</span></code></a></p></td>
-<td><p>Convert the surface to a triangle mesh.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.to_triangles.html#compas.geometry.SphericalSurface.to_triangles" title="compas.geometry.SphericalSurface.to_triangles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_triangles</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.to_triangles.html#compas.geometry.SphericalSurface.to_triangles" title="compas.geometry.SphericalSurface.to_triangles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_triangles</span></code></a></p></td>
 <td><p>Convert the surface to a list of triangles.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.to_vertices_and_faces.html#compas.geometry.SphericalSurface.to_vertices_and_faces" title="compas.geometry.SphericalSurface.to_vertices_and_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_vertices_and_faces</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.to_vertices_and_faces.html#compas.geometry.SphericalSurface.to_vertices_and_faces" title="compas.geometry.SphericalSurface.to_vertices_and_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_vertices_and_faces</span></code></a></p></td>
 <td><p>Convert the surface to a list of vertices and faces.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.transform.html#compas.geometry.SphericalSurface.transform" title="compas.geometry.SphericalSurface.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.transform.html#compas.geometry.SphericalSurface.transform" title="compas.geometry.SphericalSurface.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
 <td><p>Transform the local coordinate system of the surface.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.transformed.html#compas.geometry.SphericalSurface.transformed" title="compas.geometry.SphericalSurface.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.transformed.html#compas.geometry.SphericalSurface.transformed" title="compas.geometry.SphericalSurface.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
 <td><p>Returns a transformed copy of this geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.translate.html#compas.geometry.SphericalSurface.translate" title="compas.geometry.SphericalSurface.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.translate.html#compas.geometry.SphericalSurface.translate" title="compas.geometry.SphericalSurface.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a></p></td>
 <td><p>Translate the geometry.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.translated.html#compas.geometry.SphericalSurface.translated" title="compas.geometry.SphericalSurface.translated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translated</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.translated.html#compas.geometry.SphericalSurface.translated" title="compas.geometry.SphericalSurface.translated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translated</span></code></a></p></td>
 <td><p>Returns a translated copy of this geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.validate_data.html#compas.geometry.SphericalSurface.validate_data" title="compas.geometry.SphericalSurface.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.SphericalSurface.validate_data.html#compas.geometry.SphericalSurface.validate_data" title="compas.geometry.SphericalSurface.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
 <td><p>Validate the data against the object's data schema.</p></td>
 </tr>
 </tbody>
