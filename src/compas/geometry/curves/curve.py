@@ -462,7 +462,7 @@ class Curve(Geometry):
 
         """
         copy = self.copy()
-        copy.reverse
+        copy.reverse()
         return copy
 
     # def space(self, n=10):
