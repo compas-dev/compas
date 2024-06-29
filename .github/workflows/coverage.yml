@@ -1,0 +1,31 @@
+name: coverage
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    if: "!contains(github.event.pull_request.labels.*.name, 'docs-only')"
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python: ["3.12"]
+
+    steps:
+      - uses: compas-dev/compas-actions.build@v4
+        with:
+          invoke_lint: false
+          invoke_test: false
+          python: ${{ matrix.python }}
+      - name: Run tests collecting coverage reports
+        run: pytest --cov src/compas --cov-report=html
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
