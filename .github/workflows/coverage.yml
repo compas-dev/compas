@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  build:
+  coverage:
     if: "!contains(github.event.pull_request.labels.*.name, 'docs-only')"
     runs-on: ${{ matrix.os }}
     strategy:
