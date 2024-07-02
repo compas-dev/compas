@@ -4,6 +4,13 @@ from __future__ import print_function
 
 import Rhino.Geometry  # type: ignore
 
+import compas
+
+if not compas.IPY:
+    from typing import Tuple  # noqa: F401
+
+from compas.geometry import Frame
+from compas.geometry import Plane  # noqa: F401
 from compas.geometry import Surface
 from compas_rhino.conversions import box_to_compas
 from compas_rhino.conversions import cylinder_to_rhino
@@ -27,16 +34,43 @@ class RhinoSurface(Surface):
         The parameter domain in the U direction.
     domain_v: tuple[float, float]
         The parameter domain in the V direction.
+    frame: :class:`compas.geometry.Frame`
+        The frame of the surface at the parametric origin.
     is_periodic_u: bool
         True if the surface is periodic in the U direction.
     is_periodic_v: bool
         True if the surface is periodic in the V direction.
+    native_surface: :class:`Rhino.Geometry.Surface`
+        The underlying Rhino surface object.
 
     """
+
+    @classmethod
+    def __from_data__(cls, data):
+        frame = Frame.__from_data__(data["frame"])
+        u_interval = tuple(data["u_interval"])
+        v_interval = tuple(data["v_interval"])
+        return cls.from_frame(frame, u_interval, v_interval)
+
+    def __new__(cls, *args, **kwargs):
+        # needed because the Surface.__new__ now enforces creation via alternative constructors only
+        return super(Surface, RhinoSurface).__new__(RhinoSurface, *args, **kwargs)
 
     def __init__(self, name=None):
         super(RhinoSurface, self).__init__(name=name)
         self._rhino_surface = None
+
+    def _get_frame_from_planesurface(self):
+        u_start = self.domain_u[0]
+        v_start = self.domain_v[0]
+        success, frame = self.native_surface.FrameAt(u_start, v_start)
+        if not success:
+            raise ValueError("Failed to get frame at u={} v={}".format(u_start, v_start))
+        return plane_to_compas_frame(frame)
+
+    @property
+    def native_surface(self):
+        return self._rhino_surface
 
     @property
     def rhino_surface(self):
@@ -45,10 +79,6 @@ class RhinoSurface(Surface):
     @rhino_surface.setter
     def rhino_surface(self, surface):
         self._rhino_surface = surface
-
-    # ==============================================================================
-    # Data
-    # ==============================================================================
 
     # ==============================================================================
     # Properties
@@ -63,6 +93,12 @@ class RhinoSurface(Surface):
     def domain_v(self):
         if self.rhino_surface:
             return self.rhino_surface.Domain(1)
+
+    @property
+    def frame(self):
+        if not self._frame:
+            self._frame = self._get_frame_from_planesurface()
+        return self._frame
 
     @property
     def is_periodic_u(self):
@@ -95,7 +131,7 @@ class RhinoSurface(Surface):
 
         """
         rhino_points = [Rhino.Geometry.Point3d(corner.x, corner.y, corner.z) for corner in corners]
-        return cls.from_rhino(Rhino.Geometry.NurbsSurface.CreateFromCorners(*rhino_points))
+        return cls.from_native(Rhino.Geometry.NurbsSurface.CreateFromCorners(*rhino_points))
 
     @classmethod
     def from_sphere(cls, sphere):
@@ -113,7 +149,7 @@ class RhinoSurface(Surface):
         """
         sphere = sphere_to_rhino(sphere)
         surface = Rhino.Geometry.NurbsSurface.CreateFromSphere(sphere)
-        return cls.from_rhino(surface)
+        return cls.from_native(surface)
 
     @classmethod
     def from_cylinder(cls, cylinder):
@@ -131,7 +167,7 @@ class RhinoSurface(Surface):
         """
         cylinder = cylinder_to_rhino(cylinder)
         surface = Rhino.Geometry.NurbsSurface.CreateFromCylinder(cylinder)
-        return cls.from_rhino(surface)
+        return cls.from_native(surface)
 
     @classmethod
     def from_torus(cls, torus):
@@ -153,6 +189,9 @@ class RhinoSurface(Surface):
     def from_rhino(cls, rhino_surface):
         """Construct a NURBS surface from an existing Rhino surface.
 
+        .. deprecated:: 2.1.1
+                ``from_rhino`` will be removed in the future. Use ``from_native`` instead.
+
         Parameters
         ----------
         rhino_surface : :rhino:`Rhino.Geometry.Surface`
@@ -163,18 +202,50 @@ class RhinoSurface(Surface):
         :class:`compas_rhino.geometry.RhinoSurface`
 
         """
-        curve = cls()
-        curve.rhino_surface = rhino_surface
-        return curve
+        from warnings import warn
+
+        warn("RhinoSurface.from_rhino will be removed in the future. Use RhinoSurface.from_native instead.", DeprecationWarning)
+        return cls.from_native(rhino_surface)
 
     @classmethod
-    def from_plane(cls, plane, box):
+    def from_native(cls, native_surface):
+        """Construct a surface from an existing Rhino surface.
+
+        Parameters
+        ----------
+        native_surface : :rhino:`Rhino.Geometry.Surface`
+            A Rhino surface.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoSurface`
+
+        """
+        instance = cls()
+        instance._rhino_surface = native_surface
+        return instance
+
+    @classmethod
+    def from_plane(cls, plane, u_domain=(0.0, 1.0), v_domain=(0.0, 1.0)):
+        # type: (Plane, Tuple[float, float], Tuple[float, float]) -> RhinoSurface
         """Construct a surface from a plane.
 
         Parameters
         ----------
         plane : :class:`compas.geometry.Plane`
             The plane.
+        u_domain : tuple(float, float), optional
+            The parametric domain of the U parameter. u_domain[0] => u_domain[1].
+            Default is ``(0.0, 1.0)``.
+        v_domain : tuple(float, float), optional
+            The parametric domain of the V parameter. v_domain[0] => v_domain[1].
+            Default is ``(0.0, 1.0)``.
+
+        Note
+        ----
+        While the plane's origin is its center, the surface's parametric origin is at the surface's corner.
+        For the plane to overlap with the surface, the plane's origin should be first shifted by half it's domain.
+        Alternatively, the surface's domain can be adjusted to match the plane's origin.
 
         Returns
         -------
@@ -182,9 +253,8 @@ class RhinoSurface(Surface):
 
         """
         plane = plane_to_rhino(plane)
-        box = Rhino.Geometry.BoundingBox(box.xmin, box.ymin, box.zmin, box.xmax, box.ymax, box.zmax)
-        rhino_surface = Rhino.Geometry.PlaneSurface.CreateThroughBox(plane, box)
-        return cls.from_rhino(rhino_surface)
+        rhino_surface = Rhino.Geometry.PlaneSurface(plane, Rhino.Geometry.Interval(*u_domain), Rhino.Geometry.Interval(*v_domain))
+        return cls.from_native(rhino_surface)
 
     @classmethod
     def from_frame(cls, frame, u_interval, v_interval):
@@ -213,7 +283,7 @@ class RhinoSurface(Surface):
         if not surface:
             msg = "Failed creating PlaneSurface from frame:{} u_interval:{} v_interval:{}"
             raise ValueError(msg.format(frame, u_interval, v_interval))
-        return cls.from_rhino(surface)
+        return cls.from_native(surface)
 
     # ==============================================================================
     # Conversions
@@ -264,7 +334,7 @@ class RhinoSurface(Surface):
 
         """
         curve = self.rhino_surface.IsoCurve(1, u)  # type: ignore
-        return RhinoCurve.from_rhino(curve)
+        return RhinoCurve.from_native(curve)
 
     def v_isocurve(self, v):
         """Compute the isoparametric curve at parameter v.
@@ -279,7 +349,7 @@ class RhinoSurface(Surface):
 
         """
         curve = self.rhino_surface.IsoCurve(0, v)  # type: ignore
-        return RhinoCurve.from_rhino(curve)
+        return RhinoCurve.from_native(curve)
 
     def point_at(self, u, v):
         """Compute a point on the surface.

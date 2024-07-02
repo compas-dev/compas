@@ -27,6 +27,11 @@ def new_nurbssurface_from_parameters(cls, *args, **kwargs):
 
 
 @pluggable(category="factories")
+def new_nurbssurface_from_plane(cls, *args, **kwargs):
+    raise PluginNotInstalledError
+
+
+@pluggable(category="factories")
 def new_nurbssurface_from_points(cls, *args, **kwargs):
     raise PluginNotInstalledError
 
@@ -349,6 +354,10 @@ class NurbsSurface(Surface):
 
         """
         return new_nurbssurface_from_fill(cls, curve1, curve2, curve3, curve4, style)
+
+    @classmethod
+    def from_plane(cls, plane, u_degree=1, v_degree=1):
+        return new_nurbssurface_from_plane(cls, plane, u_degree, v_degree)
 
     # ==============================================================================
     # Conversions

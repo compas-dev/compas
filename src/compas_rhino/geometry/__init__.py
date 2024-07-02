@@ -5,6 +5,7 @@ This package provides plugins for various geometry pluggables using Rhino as the
 from __future__ import absolute_import
 
 from .curves.nurbs import RhinoNurbsCurve
+from .surfaces import RhinoSurface
 from .surfaces.nurbs import RhinoNurbsSurface
 
 from .brep.brep import RhinoBrep
@@ -34,6 +35,7 @@ __all__ = [
     "trimesh_principal_curvature",
     "trimesh_slice",
     "RhinoNurbsCurve",
+    "RhinoSurface",
     "RhinoNurbsSurface",
     "RhinoBrep",
     "RhinoBrepVertex",

@@ -6,17 +6,22 @@ from itertools import product
 
 from compas.geometry import Frame
 from compas.geometry import Geometry
+from compas.geometry import Plane
 from compas.geometry import Point
 from compas.geometry import Transformation
 from compas.itertools import linspace
 from compas.plugins import pluggable
 
+# @pluggable(category="factories")
+# def new_surface(cls, *args, **kwargs):
+#     surface = object.__new__(cls)
+#     surface.__init__(*args, **kwargs)
+#     return surface
+
 
 @pluggable(category="factories")
-def new_surface(cls, *args, **kwargs):
-    surface = object.__new__(cls)
-    surface.__init__(*args, **kwargs)
-    return surface
+def new_surface_from_native(cls, *args, **kwargs):
+    raise NotImplementedError
 
 
 @pluggable(category="factories")
@@ -47,11 +52,31 @@ class Surface(Geometry):
         Flag indicating if the surface is periodic in the U direction.
     is_periodic_v : bool, read-only
         Flag indicating if the surface is periodic in the V direction.
+    native_surface : Any, read-only
+        The CAD native surface object.
 
     """
 
+    @property
+    def __data__(self):
+        return {
+            "frame": self._frame.__data__,
+            "domain_u": list(self.domain_u),
+            "domain_v": list(self.domain_v),
+        }
+
+    @classmethod
+    def __from_data__(cls, data):
+        plane = Plane.from_frame(Frame.__from_data__(data["frame"]))
+        return cls.from_plane(plane, data["domain_u"], data["domain_v"])
+
+    @property
+    def __dtype__(self):
+        # make serialization CAD agnostic
+        return "compas.geometry/Surface"
+
     def __new__(cls, *args, **kwargs):
-        return new_surface(cls, *args, **kwargs)
+        raise AssertionError("Surface() is protected. Use Surface.from_...() to construct a Surface object.")
 
     def __init__(self, frame=None, name=None):
         super(Surface, self).__init__(name=name)
@@ -94,6 +119,10 @@ class Surface(Geometry):
         if not self._transformation:
             self._transformation = Transformation.from_frame(self.frame)
         return self._transformation
+
+    @property
+    def native_surface(self):
+        raise NotImplementedError
 
     @property
     def point(self):
@@ -196,6 +225,22 @@ class Surface(Geometry):
 
         """
         return new_surface_from_plane(cls, plane, *args, **kwargs)
+
+    @classmethod
+    def from_native(cls, surface):
+        """Construct a surface from a CAD native surface object.
+
+        Parameters
+        ----------
+        surface : Any
+            A native surface object.
+
+        Returns
+        -------
+        :class:`compas.geometry.Surface`
+
+        """
+        return new_surface_from_native(cls, surface)
 
     # ==============================================================================
     # Conversions

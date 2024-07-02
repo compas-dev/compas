@@ -10,6 +10,7 @@ from compas.geometry import NurbsSurface
 from compas.geometry import Point
 from compas.geometry import knots_and_mults_to_knotvector
 from compas.itertools import flatten
+from compas_rhino.conversions import plane_to_rhino
 from compas_rhino.conversions import point_to_compas
 from compas_rhino.conversions import point_to_rhino
 
@@ -359,6 +360,45 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
         surface = cls()
         # these curves probably need to be processed first
         surface.rhino_surface = Rhino.Geometry.NurbsSurface.CreateRuledSurface(curve1, curve2)
+        return surface
+
+    @classmethod
+    def from_plane(cls, plane, u_degree=1, v_degree=1, u_domain=(0.0, 1.0), v_domain=(0.0, 1.0)):
+        """Construct a NURBS surface from a plane.
+
+        Parameters
+        ----------
+        plane : :class:`compas.geometry.Plane`
+            The plane from which to construct the surface.
+        u_degree : int, optional
+            The degree of the surface in the U direction.
+            Default is ``1``.
+        v_degree : int, optional
+            The degree of the surface in the V direction.
+            Default is ``1``.
+        u_domain : tuple(float), optional
+            The domain of the surface in the U direction.
+            Default is ``(0, 1)``.
+        v_domain : tuple(float), optional
+            The domain of the surface in the V direction.
+            Default is ``(0, 1)``.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoNurbsSurface`
+
+        """
+        plane = plane_to_rhino(plane)
+        surface = cls()
+        surface.rhino_surface = Rhino.Geometry.NurbsSurface.CreateFromPlane(
+            plane,
+            Rhino.Geometry.Interval(*u_domain),
+            Rhino.Geometry.Interval(*v_domain),
+            u_degree,
+            v_degree,
+            u_degree + 1,
+            v_degree + 1,
+        )
         return surface
 
     # ==============================================================================
