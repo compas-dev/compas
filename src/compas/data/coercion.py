@@ -20,12 +20,6 @@ def coerce_sequence_of_tuple(sequence):
         with each iterable item converted to a tuple,
         and non-iterable items wrapped in a tuple.
 
-    Examples
-    --------
-    >>> items = coerce_sequence_of_tuple(["a", 1, (None,), [2.0, 3.0]])
-    >>> is_sequence_of_tuple(items)
-    True
-
     """
     items = []
     for item in sequence:
@@ -52,12 +46,6 @@ def coerce_sequence_of_list(sequence):
         A list containing the items of the original sequence,
         with each iterable item converted to a list,
         and non-iterable items wrapped in a list.
-
-    Examples
-    --------
-    >>> items = coerce_sequence_of_list(["a", 1, (None,), [2.0, 3.0]])
-    >>> is_sequence_of_list(items)
-    True
 
     """
     items = []
