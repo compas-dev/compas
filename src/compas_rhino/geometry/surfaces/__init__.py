@@ -6,10 +6,15 @@ from compas.geometry import Surface
 from compas.plugins import plugin
 
 
+# @plugin(category="factories", requires=["Rhino"])
+# def new_surface(cls, *args, **kwargs):
+#     # to make instance of `subclass`: super(superclass, subclass).__new__(subclass, *args, **kwargs)
+#     return super(Surface, RhinoSurface).__new__(RhinoSurface, *args, **kwargs)
+
+
 @plugin(category="factories", requires=["Rhino"])
-def new_surface(cls, *args, **kwargs):
-    # to make instance of `subclass`: super(superclass, subclass).__new__(subclass, *args, **kwargs)
-    return super(Surface, RhinoSurface).__new__(RhinoSurface, *args, **kwargs)
+def new_surface_from_native(cls, *args, **kwargs):
+    return RhinoSurface.from_native(*args, **kwargs)
 
 
 @plugin(category="factories", requires=["Rhino"])

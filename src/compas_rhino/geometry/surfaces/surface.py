@@ -34,6 +34,8 @@ class RhinoSurface(Surface):
         The parameter domain in the U direction.
     domain_v: tuple[float, float]
         The parameter domain in the V direction.
+    frame: :class:`compas.geometry.Frame`
+        The frame of the surface at the parametric origin.
     is_periodic_u: bool
         True if the surface is periodic in the U direction.
     is_periodic_v: bool
@@ -50,14 +52,13 @@ class RhinoSurface(Surface):
         v_interval = tuple(data["v_interval"])
         return cls.from_frame(frame, u_interval, v_interval)
 
+    def __new__(cls, *args, **kwargs):
+        # needed because the Surface.__new__ now enforces creation via alternative constructors only
+        return super(Surface, RhinoSurface).__new__(RhinoSurface, *args, **kwargs)
+
     def __init__(self, name=None):
         super(RhinoSurface, self).__init__(name=name)
-        # empty surface is not really a valid RhinoSurface object.
-        # if not isinstance(native_surface, Rhino.Geometry.Surface):
-        #     raise ValueError("RhinoSurface cannot be directly instantiated without a native ``Rhino.Geometry.Surface`` object.")
-        # self._rhino_surface = native_surface
         self._rhino_surface = None
-        self.frame = self._get_frame_from_planesurface()
 
     def _get_frame_from_planesurface(self):
         u_start = self.domain_u[0]
@@ -80,10 +81,6 @@ class RhinoSurface(Surface):
         self._rhino_surface = surface
 
     # ==============================================================================
-    # Data
-    # ==============================================================================
-
-    # ==============================================================================
     # Properties
     # ==============================================================================
 
@@ -96,6 +93,12 @@ class RhinoSurface(Surface):
     def domain_v(self):
         if self.rhino_surface:
             return self.rhino_surface.Domain(1)
+
+    @property
+    def frame(self):
+        if not self._frame:
+            self._frame = self._get_frame_from_planesurface()
+        return self._frame
 
     @property
     def is_periodic_u(self):
@@ -218,8 +221,9 @@ class RhinoSurface(Surface):
         :class:`compas_rhino.geometry.RhinoSurface`
 
         """
-        print("RhinoSurface.from_native: cls={}".format(cls))
-        return cls(native_surface)
+        instance = cls()
+        instance._rhino_surface = native_surface
+        return instance
 
     @classmethod
     def from_plane(cls, plane, u_domain=(0.0, 1.0), v_domain=(0.0, 1.0)):
