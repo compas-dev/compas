@@ -37,7 +37,7 @@ def mesh_dual(mesh, cls=None, include_boundary=False):
     >>> mesh.delete_face(6)
     >>> mesh.delete_face(7)
     >>> mesh.quads_to_triangles()
-    >>> mesh = mesh.subdivide("corner")
+    >>> mesh = mesh.subdivided("corner")
     >>> dual = mesh.dual(include_boundary=True)
 
     """
