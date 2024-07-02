@@ -12,7 +12,6 @@ from compas.geometry import Transformation
 from compas.itertools import linspace
 from compas.plugins import pluggable
 
-
 # @pluggable(category="factories")
 # def new_surface(cls, *args, **kwargs):
 #     surface = object.__new__(cls)
