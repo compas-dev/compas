@@ -401,12 +401,6 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
         )
         return surface
 
-    @classmethod
-    def from_native(cls, native_surface):
-        surface = cls()
-        surface.rhino_surface = native_surface
-        return surface
-
     # ==============================================================================
     # Conversions
     # ==============================================================================
