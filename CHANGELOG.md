@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Fixed bug in `compas.geometry.curves.curve.Curve.reversed` by adding missing parenthesis.
+* Fixed all doctests so we can run `invoke test --doctest`.
 
 ### Removed
 
