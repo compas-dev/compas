@@ -98,7 +98,7 @@ class Color(Data):
     By default, this class will create a color with the RGB components in the range ``[0.0, 1.0]``.
 
     >>> Color(1, 0, 0)
-    Color(1.0, 0.0, 0.0, alpha=1.0)
+    Color(1, 0, 0, alpha=1.0)
 
     Attempting to create a color with components outside of the range ``[0.0, 1.0]`` will raise a ``ValueError``.
 

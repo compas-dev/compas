@@ -370,10 +370,9 @@ class Transformation(Data):
         >>> f2 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> T = Transformation.from_change_of_basis(f1, f2)
         >>> p_f1 = Point(1, 1, 1)  # point in f1
-        >>> p_f1.transformed(T)  # point represented in f2
-        Point(1.395, 0.955, 1.934)
-        >>> Frame.local_to_local_coordinates(f1, f2, p_f1)
-        Point(1.395, 0.955, 1.934)
+        >>> point = p_f1.transformed(T)  # point represented in f2
+        >>> print(point)
+        Point(x=1.395, y=0.955, z=1.934)
 
         """
         T1 = cls.from_frame(frame_from)

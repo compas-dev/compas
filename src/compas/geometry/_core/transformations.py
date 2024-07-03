@@ -287,8 +287,8 @@ def world_to_local_coordinates(frame, xyz):
     >>> from compas.geometry import Point, Frame
     >>> f = Frame([0, 1, 0], [3, 4, 1], [1, 5, 9])
     >>> xyz = [Point(2, 3, 5)]
-    >>> Point(*world_to_local_coordinates(f, xyz)[0])
-    Point(3.726, 4.088, 1.550)
+    >>> print(Point(*world_to_local_coordinates(f, xyz)[0]))
+    Point(x=3.726, y=4.088, z=1.550)
 
     """
     from compas.geometry import Frame  # noqa: F811
@@ -317,8 +317,8 @@ def local_to_world_coordinates(frame, xyz):
     >>> from compas.geometry import Point, Frame
     >>> f = Frame([0, 1, 0], [3, 4, 1], [1, 5, 9])
     >>> xyz = [Point(3.726, 4.088, 1.550)]
-    >>> Point(*local_to_world_coordinates(f, xyz)[0])
-    Point(2.000, 3.000, 5.000)
+    >>> print(Point(*local_to_world_coordinates(f, xyz)[0]))
+    Point(x=2.000, y=3.000, z=5.000)
 
     """
     from compas.geometry import Frame  # noqa: F811
@@ -347,10 +347,6 @@ def translate_points(points, vector):
     list[[float, float, float]]
         The translated points.
 
-    Examples
-    --------
-    >>>
-
     """
     return [add_vectors(point, vector) for point in points]
 
@@ -369,10 +365,6 @@ def translate_points_xy(points, vector):
     -------
     list[[float, float, float]]
         The translated points in the XY plane (Z=0).
-
-    Examples
-    --------
-    >>>
 
     """
     return [add_vectors_xy(point, vector) for point in points]
@@ -398,10 +390,6 @@ def scale_points(points, scale):
     list[[float, float, float]]
         The scaled points.
 
-    Examples
-    --------
-    >>>
-
     """
     T = matrix_from_scale_factors([scale, scale, scale])
     return transform_points(points, T)
@@ -421,10 +409,6 @@ def scale_points_xy(points, scale):
     -------
     list[[float, float, float]]
         The scaled points in the XY plane (Z=0).
-
-    Examples
-    --------
-    >>>
 
     """
     T = matrix_from_scale_factors([scale, scale, 0])
@@ -466,10 +450,6 @@ def rotate_points(points, angle, axis=None, origin=None):
     .. [1] Wikipedia. *Rotation matrix*.
            Available at: https://en.wikipedia.org/wiki/Rotation_matrix.
 
-    Examples
-    --------
-    >>>
-
     """
     if axis is None:
         axis = [0.0, 0.0, 1.0]
@@ -498,10 +478,6 @@ def rotate_points_xy(points, angle, origin=None):
     -------
     list[[float, float, 0.0]]
         The rotated points in the XY plane (Z=0).
-
-    Examples
-    --------
-    >>>
 
     """
     if not origin:
@@ -1104,8 +1080,8 @@ def orient_points(points, reference_plane, target_plane):
     >>> point = intersection_segment_segment_xy(ab, cd)
     >>> points = orient_points([point], tarplane, refplane)
 
-    >>> Point(*points[0])
-    Point(0.577, 0.577, 0.577)
+    >>> print(Point(*points[0]))
+    Point(x=0.577, y=0.577, z=0.577)
 
     """
     axis = cross_vectors(reference_plane[1], target_plane[1])

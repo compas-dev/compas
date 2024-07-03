@@ -82,7 +82,7 @@ class Shape(Geometry):
         return self._frame
 
     @frame.setter
-    def frame(self, frame):  # type: (Frame) -> None
+    def frame(self, frame):  # type: (Frame | None) -> None
         if not frame:
             self._frame = None
         else:
@@ -167,7 +167,7 @@ class Shape(Geometry):
     @property
     def polygons(self):  # type: () -> list[Polygon]
         vertices = self.compute_vertices()
-        return [[Polygon([vertices[v] for v in face])] for face in self.faces]
+        return [Polygon([vertices[v] for v in face]) for face in self.faces]
 
     # =============================================================================
     # Constructors
@@ -225,7 +225,7 @@ class Shape(Geometry):
     # =============================================================================
 
     def to_vertices_and_faces(self, triangulated=False, u=None, v=None):
-        # type: (bool, int | None, int | None) -> tuple[list[list[float]], list[list[int]]]
+        # type: (bool, int | None, int | None) -> tuple[list[list[float]], list[list[int]] | list[tuple[int, int, int]]]
         """Convert the shape to a list of vertices and faces.
 
         Parameters

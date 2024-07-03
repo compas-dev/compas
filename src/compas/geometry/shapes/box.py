@@ -52,6 +52,8 @@ class Box(Shape):
         The box's frame.
     height : float, read-only
         The height of the box in Z direction.
+    points : list[:class:`compas.geometry.Point`]
+        The corner points of the box.
     volume : float, read-only
         The volume of the box.
     width : float, read-only
@@ -268,6 +270,27 @@ class Box(Shape):
     @property
     def top(self):
         return [4, 5, 6, 7]
+
+    @property
+    def points(self):
+        point = self.frame.point
+        xaxis = self.frame.xaxis
+        yaxis = self.frame.yaxis
+        zaxis = self.frame.zaxis
+
+        dx = 0.5 * self.xsize
+        dy = 0.5 * self.ysize
+        dz = 0.5 * self.zsize
+
+        a = point + xaxis * -dx + yaxis * -dy + zaxis * -dz
+        b = point + xaxis * -dx + yaxis * +dy + zaxis * -dz
+        c = point + xaxis * +dx + yaxis * +dy + zaxis * -dz
+        d = point + xaxis * +dx + yaxis * -dy + zaxis * -dz
+        e = a + zaxis * self.zsize
+        f = d + zaxis * self.zsize
+        g = c + zaxis * self.zsize
+        h = b + zaxis * self.zsize
+        return [a, b, c, d, e, f, g, h]
 
     # ==========================================================================
     # Constructors
@@ -662,7 +685,7 @@ class Box(Shape):
         Examples
         --------
         >>> from compas.geometry import Point, Box
-        >>> box = Box(Frame.worldXY(), 2.0, 2.0, 2.0)
+        >>> box = Box(2.0, 2.0, 2.0)
         >>> points = [Point(0.0, 0.0, 0.0), Point(1.0, 1.0, 1.0)]
         >>> results = box.contains_points(points)
         >>> all(results)

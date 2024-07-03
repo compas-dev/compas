@@ -68,9 +68,9 @@ class Cylinder(Shape):
     Examples
     --------
     >>> frame = Frame.worldXY()
-    >>> cylinder = Cylinder(frame=frame, radius=0.3, heigth=1.0)
-    >>> cylinder = Cylinder(radius=0.3, heigth=1.0)
-    >>> cylinder = Cylinder()
+    >>> cylinder = Cylinder(frame=frame, radius=0.3, height=1.0)
+    >>> cylinder = Cylinder(radius=0.3, height=1.0)
+    >>> cylinder = Cylinder(0.3, 1.0)
 
     """
 

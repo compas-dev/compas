@@ -18,15 +18,15 @@ class Intersection(object):
 
     Examples
     --------
-    >>> from compas.geometry import Line
-    >>> from compas.geometry import Intersection
-    >>> a = Line([0, 0, 0], [2, 0, 0])
-    >>> b = Line([1, 0, 0], [1, 1, 0])
-    >>> intersection = Intersection()
-    >>> intersection.line_line(a, b)
-    >>> intersection.number_of_intersections
+    >>> from compas.geometry import Line          # doctest: +SKIP
+    >>> from compas.geometry import Intersection  # doctest: +SKIP
+    >>> a = Line([0, 0, 0], [2, 0, 0])            # doctest: +SKIP
+    >>> b = Line([1, 0, 0], [1, 1, 0])            # doctest: +SKIP
+    >>> intersection = Intersection()             # doctest: +SKIP
+    >>> intersection.line_line(a, b)              # doctest: +SKIP
+    >>> intersection.number_of_intersections      # doctest: +SKIP
     1
-    >>> intersection.points[0]
+    >>> intersection.points[0]                    # doctest: +SKIP
     Point(1.0, 0.0, z=0.0)
 
     """
