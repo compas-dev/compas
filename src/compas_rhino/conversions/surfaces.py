@@ -6,8 +6,8 @@ import Rhino  # type: ignore
 
 from compas.datastructures import Mesh
 from compas.geometry import NurbsSurface
-from compas.geometry import Surface
 from compas.geometry import Point
+from compas.geometry import Surface
 from compas.tolerance import TOL
 from compas.utilities import memoize
 
