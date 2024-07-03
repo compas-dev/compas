@@ -1,6 +1,7 @@
 # The COMPAS framework
 
 ![build](https://github.com/compas-dev/compas/workflows/build/badge.svg)
+[![codecov](https://codecov.io/github/compas-dev/compas/graph/badge.svg?token=wpkfew9szQ)](https://codecov.io/github/compas-dev/compas)
 [![GitHub - License](https://img.shields.io/github/license/compas-dev/compas.svg)](https://github.com/compas-dev/compas)
 [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/compas)](https://anaconda.org/conda-forge/compas)
 [![pip downloads](https://img.shields.io/pypi/dm/compas)](https://pypi.python.org/project/COMPAS)
