@@ -69,10 +69,6 @@ class RhinoSurface(Surface):
     def native_surface(self):
         return self._rhino_surface
 
-    @native_surface.setter
-    def native_surface(self, surface):
-        self._rhino_surface = surface
-
     @property
     def rhino_surface(self):
         # TODO: Deprecate. replace with native_surface
@@ -80,7 +76,7 @@ class RhinoSurface(Surface):
 
     @rhino_surface.setter
     def rhino_surface(self, surface):
-        # TODO: Deprecate. replace with native_surface
+        # TODO: Deprecate. should be read-only
         self._rhino_surface = surface
 
     @property
@@ -211,7 +207,7 @@ class RhinoSurface(Surface):
         """
         instance = cls()
         print("RhinoSurface.from_native: cls:{}".format(cls))
-        instance.native_surface = native_surface
+        instance._rhino_surface = native_surface
         instance.frame = instance._get_frame_from_planesurface()
         instance._domain_u = native_surface.Domain(0)[0], native_surface.Domain(0)[1]
         instance._domain_v = native_surface.Domain(1)[0], native_surface.Domain(1)[1]
