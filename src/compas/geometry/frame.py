@@ -1,9 +1,9 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from compas.tolerance import TOL
-
+from compas.geometry import Geometry
+from compas.geometry import Transformation
 from compas.geometry import argmax
 from compas.geometry import axis_angle_vector_from_matrix
 from compas.geometry import basis_vectors_from_matrix
@@ -16,13 +16,12 @@ from compas.geometry import matrix_from_euler_angles
 from compas.geometry import matrix_from_quaternion
 from compas.geometry import quaternion_from_matrix
 from compas.geometry import subtract_vectors
+from compas.itertools import linspace
+from compas.tolerance import TOL
 
-from compas.geometry import Geometry
-from compas.geometry import Transformation
-
-from .vector import Vector
 from .point import Point
 from .quaternion import Quaternion
+from .vector import Vector
 
 
 class Frame(Geometry):
@@ -431,7 +430,7 @@ class Frame(Geometry):
 
         Examples
         --------
-        >>> l = [-1.0,  0.0,  0.0, 8110, 0.0,  0.0, -1.0, 7020, 0.0, -1.0,  0.0, 1810]
+        >>> l = [-1.0, 0.0, 0.0, 8110, 0.0, 0.0, -1.0, 7020, 0.0, -1.0, 0.0, 1810]
         >>> f = Frame.from_list(l)
 
         """
@@ -466,7 +465,7 @@ class Frame(Geometry):
         Examples
         --------
         >>> q1 = [0.945, -0.021, -0.125, 0.303]
-        >>> f = Frame.from_quaternion(q1, point=[1., 1., 1.])
+        >>> f = Frame.from_quaternion(q1, point=[1.0, 1.0, 1.0])
         >>> q2 = f.quaternion
         >>> allclose(q1, q2)
         True
@@ -530,8 +529,8 @@ class Frame(Geometry):
         Examples
         --------
         >>> ea1 = 1.4, 0.5, 2.3
-        >>> f = Frame.from_euler_angles(ea1, static=True, axes='xyz')
-        >>> ea2 = f.euler_angles(static=True, axes='xyz')
+        >>> f = Frame.from_euler_angles(ea1, static=True, axes="xyz")
+        >>> ea2 = f.euler_angles(static=True, axes="xyz")
         >>> allclose(ea1, ea2)
         True
 
@@ -559,7 +558,7 @@ class Frame(Geometry):
         Examples
         --------
         >>> from compas.geometry import Plane
-        >>> plane = Plane([0,0,0], [0,0,1])
+        >>> plane = Plane([0, 0, 0], [0, 0, 1])
         >>> frame = Frame.from_plane(plane)
         >>> allclose(frame.normal, plane.normal)
         True
@@ -600,6 +599,65 @@ class Frame(Geometry):
     # Methods
     # ==========================================================================
 
+    def interpolate_frame(self, other, t):
+        """Interpolates between two frames at a given parameter t in the range [0, 1]
+
+        Parameters
+        ----------
+        other : :class:`compas.geometry.Frame`
+        t : float
+            A parameter in the range [0-1].
+
+        Returns
+        -------
+        :class:`compas.geometry.Frame`
+            A list of the interpolated :class:`compas.geometry.Frame` instances.
+
+        Examples
+        --------
+        >>> frame1 = Frame(Point(0, 0, 0), Vector(1, 0, 0), Vector(0, 1, 0))
+        >>> frame2 = Frame(Point(1, 1, 1), Vector(0, 0, 1), Vector(0, 1, 0))
+        >>> start_frame = frame1.interpolate_frame(frame2, 0)
+        >>> allclose(start_frame.point, frame1.point) and allclose(start_frame.quaternion, frame1.quaternion)
+        True
+        """
+        quat1 = Quaternion.from_frame(self)
+        quat2 = Quaternion.from_frame(other)
+
+        # Interpolate origin
+        origin_interpolated = (self.point * (1.0 - t)) + other.point * t
+
+        rot_interpolated = quat1.slerp(quat2, t)
+
+        # Create a new frame with the interpolated position and orientation
+        interpolated_frame = Frame.from_quaternion(rot_interpolated, point=origin_interpolated)
+
+        return interpolated_frame
+
+    def interpolate_frames(self, other, steps):
+        """Generates a specified number of interpolated frames between two given frames
+
+        Parameters
+        ----------
+        other : :class:`compas.geometry.Frame`
+        steps : int
+            The number of interpolated frames to return.
+
+        Returns
+        -------
+        list of :class:`compas.geometry.Frame`
+
+        Examples
+        --------
+        >>> frame1 = Frame(Point(0, 0, 0), Vector(1, 0, 0), Vector(0, 1, 0))
+        >>> frame2 = Frame(Point(1, 1, 1), Vector(0, 0, 1), Vector(0, 1, 0))
+        >>> steps = 5
+        >>> frames = frame1.interpolate_frames(frame2, steps)
+        >>> assert len(frames) == steps
+        True
+        """
+        return [self.interpolate_frame(other, t) for t in linspace(0, 1, steps)]
+
     def euler_angles(self, static=True, axes="xyz"):
         """The Euler angles from the rotation given by the frame.
 
@@ -619,8 +677,8 @@ class Frame(Geometry):
         Examples
         --------
         >>> ea1 = 1.4, 0.5, 2.3
-        >>> f = Frame.from_euler_angles(ea1, static=True, axes='xyz')
-        >>> ea2 = f.euler_angles(static=True, axes='xyz')
+        >>> f = Frame.from_euler_angles(ea1, static=True, axes="xyz")
+        >>> ea2 = f.euler_angles(static=True, axes="xyz")
         >>> allclose(ea1, ea2)
         True
 
@@ -649,8 +707,8 @@ class Frame(Geometry):
         --------
         >>> from compas.geometry import Point
         >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> pw = Point(2, 2, 2) # point in wcf
-        >>> pl = frame.to_local_coordinates(pw) # point in frame
+        >>> pw = Point(2, 2, 2)  # point in wcf
+        >>> pl = frame.to_local_coordinates(pw)  # point in frame
         >>> frame.to_world_coordinates(pl)
         Point(2.000, 2.000, 2.000)
 
@@ -681,8 +739,8 @@ class Frame(Geometry):
         --------
         >>> from compas.geometry import Point
         >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> pl = Point(1.632, -0.090, 0.573) # point in frame
-        >>> pw = frame.to_world_coordinates(pl) # point in wcf
+        >>> pl = Point(1.632, -0.090, 0.573)  # point in frame
+        >>> pw = frame.to_world_coordinates(pl)  # point in wcf
         >>> frame.to_local_coordinates(pw)
         Point(1.632, -0.090, 0.573)
 

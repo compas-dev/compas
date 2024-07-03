@@ -1,31 +1,16 @@
-from typing import Any
 from typing import Optional
 
 import bpy  # type: ignore
 
-from compas.geometry import Polyline
 from compas.colors import Color
-
 from compas.scene import GeometryObject
-from .sceneobject import BlenderSceneObject
-
 from compas_blender import conversions
+
+from .sceneobject import BlenderSceneObject
 
 
 class PolylineObject(BlenderSceneObject, GeometryObject):
-    """Scene object for drawing polylines in Blender.
-
-    Parameters
-    ----------
-    polyline : :class:`compas.geometry.Polyline`
-        A COMPAS polyline.
-    **kwargs : dict, optional
-        Additional keyword arguments.
-
-    """
-
-    def __init__(self, polyline: Polyline, **kwargs: Any):
-        super().__init__(geometry=polyline, **kwargs)
+    """Scene object for drawing polylines in Blender."""
 
     def draw(self, color: Optional[Color] = None, collection: Optional[str] = None) -> list[bpy.types.Object]:
         """Draw the line.

@@ -1,11 +1,23 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from compas.geometry import Geometry
+import compas  # noqa: F401
 from compas.geometry import Frame
-from compas.geometry import Transformation
+from compas.geometry import Geometry
+from compas.geometry import Line
+from compas.geometry import Point
+from compas.geometry import Polygon
 from compas.geometry import Rotation
+from compas.geometry import Transformation
+from compas.itertools import pairwise
+
+if not compas.IPY:
+    from typing import TYPE_CHECKING
+
+    if TYPE_CHECKING:
+        import compas.datastructures  # noqa: F401
+        import compas.geometry  # noqa: F401
 
 
 class Shape(Geometry):
@@ -43,11 +55,17 @@ class Shape(Geometry):
 
     """
 
-    def __init__(self, frame=None, name=None):
+    def __init__(self, frame=None, name=None):  # type: (Frame | None, str | None) -> None
         super(Shape, self).__init__(name=name)
         self._frame = None
         self._transformation = None
         self.frame = frame
+        self._resolution_u = 16
+        self._resolution_v = 16
+        self._vertices = None
+        self._edges = None
+        self._faces = None
+        self._triangles = None
 
     # =============================================================================
     # Data
@@ -58,13 +76,13 @@ class Shape(Geometry):
     # =============================================================================
 
     @property
-    def frame(self):
+    def frame(self):  # type: () -> Frame
         if not self._frame:
             self._frame = Frame.worldXY()
         return self._frame
 
     @frame.setter
-    def frame(self, frame):
+    def frame(self, frame):  # type: (Frame) -> None
         if not frame:
             self._frame = None
         else:
@@ -72,29 +90,154 @@ class Shape(Geometry):
         self._transformation = None
 
     @property
-    def transformation(self):
+    def transformation(self):  # type: () -> Transformation
         if not self._transformation:
             self._transformation = Transformation.from_frame_to_frame(Frame.worldXY(), self.frame)
         return self._transformation
 
     @property
-    def area(self):
+    def area(self):  # type: () -> float
         raise NotImplementedError
 
     @property
-    def volume(self):
+    def volume(self):  # type: () -> float
         raise NotImplementedError
+
+    @property
+    def resolution_u(self):  # type: () -> int
+        return self._resolution_u
+
+    @resolution_u.setter
+    def resolution_u(self, u):  # type: (int) -> None
+        if u < 3:
+            raise ValueError("The value for u should be u > 3.")
+        self._resolution_u = u
+        self._vertices = None
+        self._edges = None
+        self._faces = None
+        self._triangles = None
+
+    @property
+    def resolution_v(self):  # type: () -> int
+        return self._resolution_v
+
+    @resolution_v.setter
+    def resolution_v(self, v):  # type: (int) -> None
+        if v < 3:
+            raise ValueError("The value for v should be v > 3.")
+        self._resolution_v = v
+        self._vertices = None
+        self._edges = None
+        self._faces = None
+        self._triangles = None
+
+    @property
+    def vertices(self):  # type: () -> list[list[float]]
+        self._vertices = self.compute_vertices()
+        return self._vertices
+
+    @property
+    def edges(self):  # type: () -> list[tuple[int, int]]
+        if not self._edges:
+            self._edges = self.compute_edges()
+        return self._edges
+
+    @property
+    def faces(self):  # type: () -> list[list[int]]
+        if not self._faces:
+            self._faces = self.compute_faces()
+        return self._faces
+
+    @property
+    def triangles(self):  # type: () -> list[tuple[int, int, int]]
+        if not self._triangles:
+            self._triangles = self.compute_triangles()
+        return self._triangles
+
+    @property
+    def points(self):  # type: () -> list[Point]
+        vertices = self.compute_vertices()
+        return [Point(x, y, z) for x, y, z in vertices]
+
+    @property
+    def lines(self):  # type: () -> list[Line]
+        vertices = self.compute_vertices()
+        return [Line(vertices[u], vertices[v]) for u, v in self.edges]
+
+    @property
+    def polygons(self):  # type: () -> list[Polygon]
+        vertices = self.compute_vertices()
+        return [[Polygon([vertices[v] for v in face])] for face in self.faces]
 
     # =============================================================================
     # Constructors
     # =============================================================================
 
     # =============================================================================
+    # Discretisation
+    # =============================================================================
+
+    def compute_vertices(self):
+        raise NotImplementedError
+
+    def compute_faces(self):
+        raise NotImplementedError
+
+    def compute_edges(self):  # type: () -> list[tuple[int, int]]
+        """Compute the edges of the discrete representation of the shape.
+
+        Returns
+        -------
+        list[tuple[int, int]]
+
+        """
+        edges = []
+        seen = set()
+        for face in self.faces:
+            for u, v in pairwise(face + face[:1]):
+                if (u, v) not in seen:
+                    seen.add((u, v))
+                    seen.add((v, u))
+                    edges.append((u, v))
+
+        return edges
+
+    def compute_triangles(self):  # type: () -> list[tuple[int, int, int]]
+        """Compute the triangles of the discrete representation of the shape.
+
+        Returns
+        -------
+        list[tuple[int, int, int]]
+
+        """
+        triangles = []
+        for face in self.faces:
+            if len(face) == 4:
+                a, b, c, d = face
+                triangles.append((a, b, c))
+                triangles.append((a, c, d))
+            else:
+                triangles.append(face)
+        return triangles
+
+    # =============================================================================
     # Conversions
     # =============================================================================
 
-    def to_vertices_and_faces(self, **kwargs):
+    def to_vertices_and_faces(self, triangulated=False, u=None, v=None):
+        # type: (bool, int | None, int | None) -> tuple[list[list[float]], list[list[int]]]
         """Convert the shape to a list of vertices and faces.
+
+        Parameters
+        ----------
+        triangulated : bool, optional
+            If True, triangulate the faces.
+        u : int, optional
+            Number of faces in the "u" direction.
+            If no value is provided, the value of `self.resolution_u` will be used.
+        v : int, optional
+            Number of faces in the "v" direction.
+            If no value is provided, the value of `self.resolution_v` will be used.
 
         Returns
         -------
@@ -104,9 +247,19 @@ class Shape(Geometry):
             The faces of the shape.
 
         """
-        raise NotImplementedError
+        if u:
+            self.resolution_u = u
+        if v:
+            self.resolution_v = v
+        vertices = self.vertices
+        if triangulated:
+            faces = self.triangles
+        else:
+            faces = self.faces
+        return vertices, faces
 
-    def to_polyhedron(self, triangulated=True, u=16, v=None):
+    def to_polyhedron(self, triangulated=False, u=None, v=None):
+        # type: (bool, int | None, int | None) -> compas.geometry.Polyhedron
         """Convert the shape to a polyhedron.
 
         Parameters
@@ -115,9 +268,10 @@ class Shape(Geometry):
             If True, triangulate the faces.
         u : int, optional
             Number of faces in the "u" direction.
+            If no value is provided, the value of `self.resolution_u` will be used.
         v : int, optional
             Number of faces in the "v" direction.
-            If no value is provided, and the shape has two parameter directions, the value of ``u`` will be used.
+            If no value is provided, the value of `self.resolution_v` will be used.
 
         Returns
         -------
@@ -135,21 +289,45 @@ class Shape(Geometry):
         """
         from compas.geometry import Polyhedron
 
-        v = v or u
-
-        vertices, faces = self.to_vertices_and_faces(u=u, v=v)
-
-        if triangulated:
-            triangles = []
-            for face in faces:
-                if len(face) == 4:
-                    triangles.append(face[0:3])
-                    triangles.append([face[0], face[2], face[3]])
-                else:
-                    triangles.append(face)
-            faces = triangles
+        vertices, faces = self.to_vertices_and_faces(u=u, v=v, triangulated=triangulated)
 
         return Polyhedron(vertices, faces)
+
+    def to_mesh(self, triangulated=False, u=None, v=None):
+        # type: (bool, int | None, int | None) -> compas.datastructures.Mesh
+        """Returns a mesh representation of the box.
+
+        Parameters
+        ----------
+        triangulated: bool, optional
+            If True, triangulate the faces.
+        u : int, optional
+            Number of faces in the "u" direction.
+            If no value is provided, the value of `self.resolution_u` will be used.
+        v : int, optional
+            Number of faces in the "v" direction.
+            If no value is provided, the value of `self.resolution_v` will be used.
+
+        Returns
+        -------
+        :class:`compas.datastructures.Mesh`
+
+        Notes
+        -----
+        Parameters ``u`` and ``v`` define the resolution of the discretisation of curved geometry.
+        If the geometry is not curved in a particular direction, the corresponding parameter will be ignored.
+        For example, a cylinder has a resolution in the "u" direction, but not in the "v" direction.
+        A sphere has a resolution in both the "u" and the "v" direction.
+        A box has no resolution in either direction.
+
+        """
+        from compas.datastructures import Mesh
+
+        vertices, faces = self.to_vertices_and_faces(u=u, v=v, triangulated=triangulated)
+
+        mesh = Mesh.from_vertices_and_faces(vertices, faces)
+
+        return mesh
 
     def to_brep(self):
         """Convert the shape to a Brep.

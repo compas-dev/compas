@@ -1,26 +1,153 @@
-[tool.black]
-line-length = 120
+[build-system]
+requires = ["setuptools>=66.0"]
+build-backend = "setuptools.build_meta"
+
+# ============================================================================
+# project info
+# ============================================================================
+
+[project]
+name = "compas"
+description = "The main COMPAS framework library."
+keywords = ["architecture", "engineering", "fabrication", "construction"]
+authors = [{ name = "tom van mele", email = "tom.v.mele@gmail.com" }]
+license = { file = "LICENSE" }
+readme = "README.md"
+requires-python = ">=3.9"
+dynamic = ['dependencies', 'optional-dependencies', 'version']
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Topic :: Scientific/Engineering",
+    "Operating System :: Unix",
+    "Operating System :: POSIX",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+[project.urls]
+Homepage = "https://compas-dev.github.io/compas"
+Documentation = "https://compas-dev.github.io/compas"
+Repository = "https://github.com/compas-dev/compas.git"
+Changelog = "https://github.com/compas-dev/compas/blob/main/CHANGELOG.md"
+Issues = "https://github.com/compas-dev/compas/issues"
+Forum = "https://forum.compas-framework.org/"
+
+[project.scripts]
+compas_rpc = "compas.rpc.__main__:main"
+
+# ============================================================================
+# setuptools config
+# ============================================================================
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+include-package-data = true
+zip-safe = false
+
+[tool.setuptools.dynamic]
+version = { attr = "compas.__version__" }
+dependencies = { file = "requirements.txt" }
+optional-dependencies = { dev = { file = "requirements-dev.txt" } }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"compas.colors.cmcrameri" = ["*.txt"]
+"compas.data.samples" = ["*.obj", "*.stl", "*.off", "*.ply", "*.json"]
+
+# ============================================================================
+# replace pytest.ini
+# ============================================================================
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-testpaths = ["tests"]
-python_files = [
-    "test_*.py",
-    "tests.py"
+testpaths = ["tests", "src/compas"]
+python_files = ["test_*.py", "*_test.py", "test.py"]
+addopts = ["-ra", "--strict-markers", "--doctest-glob=*.rst", "--tb=short"]
+doctest_optionflags = [
+    "NORMALIZE_WHITESPACE",
+    "IGNORE_EXCEPTION_DETAIL",
+    "ALLOW_UNICODE",
+    "ALLOW_BYTES",
+    "NUMBER",
 ]
-addopts = "-ra --strict --doctest-modules --doctest-glob=*.rst --tb=short"
-doctest_optionflags= "NORMALIZE_WHITESPACE IGNORE_EXCEPTION_DETAIL ALLOW_UNICODE ALLOW_BYTES NUMBER"
-filterwarnings = "ignore::DeprecationWarning"
 
-[tool.isort]
-line_length = 120
-multi_line_output = 3
-include_trailing_comma = true
-force_grid_wrap = 0
-use_parentheses = true
-force_single_line = true
-ensure_newline_before_comments = true
-known_first_party = "compas"
-default_section = "THIRDPARTY"
-forced_separate = "test_compas"
-skip = ["__init__.py"]
+# ============================================================================
+# replace bumpversion.cfg
+# ============================================================================
+
+[tool.bumpversion]
+current_version = "2.2.1"
+message = "Bump version to {new_version}"
+commit = true
+tag = true
+
+[[tool.bumpversion.files]]
+filename = "src/compas/__init__.py"
+search = "{current_version}"
+replace = "{new_version}"
+
+[[tool.bumpversion.files]]
+filename = "src/compas_blender/__init__.py"
+search = "{current_version}"
+replace = "{new_version}"
+
+[[tool.bumpversion.files]]
+filename = "src/compas_ghpython/__init__.py"
+search = "{current_version}"
+replace = "{new_version}"
+
+[[tool.bumpversion.files]]
+filename = "src/compas_rhino/__init__.py"
+search = "{current_version}"
+replace = "{new_version}"
+
+[[tool.bumpversion.files]]
+filename = "CHANGELOG.md"
+search = "Unreleased"
+replace = "[{new_version}] {now:%Y-%m-%d}"
+
+# ============================================================================
+# replace setup.cfg
+# ============================================================================
+
+[tool.black]
+line-length = 179
+
+[tool.ruff]
+line-length = 179
+indent-width = 4
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["I001"]
+"tests/*" = ["I001"]
+"tasks.py" = ["I001"]
+
+[tool.ruff.lint.isort]
+force-single-line = true
+known-first-party = [
+    "compas",
+    "compas_blender",
+    "compas_ghpython",
+    "compas_rhino",
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.ruff.lint.pycodestyle]
+max-doc-length = 179
+
+[tool.ruff.format]
+docstring-code-format = true
+docstring-code-line-length = "dynamic"

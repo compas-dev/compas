@@ -6,11 +6,11 @@ from math import cos
 from math import pi
 from math import sin
 
-from compas.geometry import transform_points
 from compas.geometry import Circle
-from compas.geometry import Plane
 from compas.geometry import Frame
 from compas.geometry import Line
+from compas.geometry import Plane
+from compas.geometry import transform_points
 
 from .shape import Shape
 
@@ -229,30 +229,18 @@ class Cylinder(Shape):
         return cls(frame=circle.frame, height=height, radius=circle.radius)
 
     # =============================================================================
-    # Conversions
+    # Discretisation
     # =============================================================================
 
-    def to_vertices_and_faces(self, u=16, triangulated=False):
-        """Returns a list of vertices and faces.
-
-        Parameters
-        ----------
-        u : int, optional
-            Number of faces in the "u" direction.
-        triangulated: bool, optional
-            If True, triangulate the faces.
+    def compute_vertices(self):  # type: () -> list[list[float]]
+        """Compute the vertices of the discrete representation of the cylinder.
 
         Returns
         -------
         list[list[float]]
-            A list of vertex locations.
-        list[list[int]]
-            And a list of faces,
-            with each face defined as a list of indices into the list of vertices.
 
         """
-        if u < 3:
-            raise ValueError("The value for u should be u > 3.")
+        u = self.resolution_u
 
         vertices = []
         a = 2 * pi / u
@@ -266,6 +254,21 @@ class Cylinder(Shape):
         vertices.append([0, 0, z])
         vertices.append([0, 0, -z])
 
+        vertices = transform_points(vertices, self.transformation)
+        return vertices
+
+    def compute_faces(self):  # type: () -> list[list[int]]
+        """Compute the faces of the discrete representation of the cylinder.
+
+        Returns
+        -------
+        list[list[int]]
+
+        """
+        u = self.resolution_u
+
+        vertices = self._vertices
+
         faces = []
         # side faces
         for i in range(0, u * 2, 2):
@@ -277,19 +280,11 @@ class Cylinder(Shape):
             faces.append(top)
             faces.append(bottom[::-1])
 
-        if triangulated:
-            triangles = []
-            for face in faces:
-                if len(face) == 4:
-                    triangles.append(face[0:3])
-                    triangles.append([face[0], face[2], face[3]])
-                else:
-                    triangles.append(face)
-            faces = triangles
+        return faces
 
-        vertices = transform_points(vertices, self.transformation)
-
-        return vertices, faces
+    # =============================================================================
+    # Conversions
+    # =============================================================================
 
     def to_brep(self):
         """Returns a BRep representation of the cylinder.

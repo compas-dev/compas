@@ -1,33 +1,18 @@
-from typing import Any
 from typing import Optional
 
 import bpy  # type: ignore
 
-from compas.geometry import Point
-from compas.geometry import Vector
-from compas.geometry import Line
 from compas.colors import Color
-
+from compas.geometry import Line
+from compas.geometry import Point
 from compas.scene import GeometryObject
-from .sceneobject import BlenderSceneObject
-
 from compas_blender import conversions
+
+from .sceneobject import BlenderSceneObject
 
 
 class VectorObject(BlenderSceneObject, GeometryObject):
-    """Scene object for drawing vectors in Blender.
-
-    Parameters
-    ----------
-    primitive : :class:`compas.geometry.Vector`
-        A COMPAS vector.
-    **kwargs : dict, optional
-        Additional keyword arguments.
-
-    """
-
-    def __init__(self, vector: Vector, **kwargs: Any):
-        super().__init__(geometry=vector, **kwargs)
+    """Scene object for drawing vectors in Blender."""
 
     def draw(
         self,

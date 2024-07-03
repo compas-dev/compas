@@ -1,6 +1,6 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 try:
     from typing import TypeVar  # noqa: F401
@@ -10,12 +10,11 @@ except ImportError:
     pass
 
 import hashlib
-from uuid import uuid4
-from uuid import UUID
 from copy import deepcopy
+from uuid import UUID
+from uuid import uuid4
 
 import compas
-
 
 # ==============================================================================
 # If you ever feel tempted to use ABCMeta in your code: don't, just DON'T.
@@ -303,10 +302,10 @@ class Data(object):
         Examples
         --------
         >>> from compas.datastructures import Mesh
-        >>> mesh = Mesh.from_obj(compas.get('faces.obj'))
+        >>> mesh = Mesh.from_obj(compas.get("faces.obj"))
         >>> v1 = mesh.sha256()
         >>> v2 = mesh.sha256()
-        >>> mesh.vertex_attribute(mesh.vertex_sample(1)[0], 'z', 1)
+        >>> mesh.vertex_attribute(mesh.vertex_sample(1)[0], "z", 1)
         >>> v3 = mesh.sha256()
         >>> v1 == v2
         True

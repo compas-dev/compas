@@ -1,13 +1,11 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from compas.tolerance import TOL
-
-from compas.geometry import distance_point_point_xy
-from compas.geometry import distance_point_line_xy
 from compas.geometry import closest_point_on_segment_xy
-
+from compas.geometry import distance_point_line_xy
+from compas.geometry import distance_point_point_xy
+from compas.tolerance import TOL
 
 # =============================================================================
 # =============================================================================
@@ -60,16 +58,16 @@ def is_ccw_xy(a, b, c, colinear=False):
 
     Examples
     --------
-    >>> print(is_ccw_xy([0,0,0], [0,1,0], [-1, 0, 0]))
+    >>> print(is_ccw_xy([0, 0, 0], [0, 1, 0], [-1, 0, 0]))
     True
 
-    >>> print(is_ccw_xy([0,0,0], [0,1,0], [+1, 0, 0]))
+    >>> print(is_ccw_xy([0, 0, 0], [0, 1, 0], [+1, 0, 0]))
     False
 
-    >>> print(is_ccw_xy([0,0,0], [1,0,0], [2,0,0]))
+    >>> print(is_ccw_xy([0, 0, 0], [1, 0, 0], [2, 0, 0]))
     False
 
-    >>> print(is_ccw_xy([0,0,0], [1,0,0], [2,0,0], True))
+    >>> print(is_ccw_xy([0, 0, 0], [1, 0, 0], [2, 0, 0], True))
     True
 
     """
@@ -453,7 +451,7 @@ def is_point_in_circle_xy(point, circle):
     ----------
     point : [float, float, float] | :class:`compas.geometry.Point`
         XY(Z) coordinates of a point (Z will be ignored).
-    circle : [[point, vector], float] | :class:`compas.geometry.Circle`
+    circle : [[point, vector], float]
         Center and radius of the circle on the XY plane.
 
     Returns

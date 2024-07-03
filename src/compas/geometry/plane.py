@@ -4,13 +4,13 @@ from __future__ import print_function
 
 from math import sqrt
 
+from compas.geometry import Geometry
+from compas.geometry import bestfit_plane
+from compas.geometry import cross_vectors
 from compas.tolerance import TOL
 
-from compas.geometry import cross_vectors
-from compas.geometry import bestfit_plane
-from compas.geometry import Geometry
-from .vector import Vector
 from .point import Point
+from .vector import Vector
 
 
 class Plane(Geometry):

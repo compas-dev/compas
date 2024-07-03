@@ -1,6 +1,6 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 import threading
 
@@ -32,8 +32,7 @@ class Server(SimpleXMLRPCServer):
             pass
 
 
-        if __name__ == '__main__':
-
+        if __name__ == "__main__":
             server = Server(("localhost", 8888))
 
             server.register_function(server.ping)

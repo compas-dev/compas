@@ -1,15 +1,15 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 import Rhino  # type: ignore
+from System import MissingMemberException  # type: ignore
 
-from compas.geometry import Point
-from compas.geometry import Vector
-from compas.geometry import Plane
 from compas.geometry import Frame
+from compas.geometry import Plane
+from compas.geometry import Point
 from compas.geometry import Polygon
-
+from compas.geometry import Vector
 
 # =============================================================================
 # To Rhino
@@ -104,14 +104,20 @@ def point_to_compas(point):
 
     Parameters
     ----------
-    point : :rhino:`Rhino.Geometry.Point3d`
+    point : :rhino:`Rhino.Geometry.Point3d` | :rhino:`Rhino.Geometry.Point`
 
     Returns
     -------
     :class:`compas.geometry.Point`
 
     """
-    return Point(point.X, point.Y, point.Z)
+    try:
+        return Point(point.X, point.Y, point.Z)
+    except MissingMemberException:
+        try:
+            return Point(point.Location.X, point.Location.Y, point.Location.Z)
+        except MissingMemberException:
+            raise TypeError("Unexpected point type, got: {}".format(type(point)))
 
 
 def vector_to_compas(vector):

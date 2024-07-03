@@ -84,9 +84,7 @@ class Ear(object):
 
         """
 
-        not_ear_points = [
-            points[i] for i in indexes if points[i] != self.coords and points[i] not in self.neighbour_coords
-        ]
+        not_ear_points = [points[i] for i in indexes if points[i] != self.coords and points[i] not in self.neighbour_coords]
         insides = [self.is_inside(p) for p in not_ear_points]
         if self.is_convex() and True not in insides:
             for e in ears:
@@ -256,13 +254,13 @@ def earclip_polygon(polygon):
 
     Parameters
     ----------
-    polygon : :class:`compas.geometry.Polygon` | list[:class:`compas.geometry.Point`]
+    polygon : :class:`compas.geometry.Polygon`
         A polygon defined by a sequence of points.
 
     Returns
     -------
-    list[[point, point, point]]
-        A list of triangles.
+    list[[int, int, int]]
+        A list of triangles referencing the points of the original polygon.
 
     Raises
     ------
@@ -274,7 +272,9 @@ def earclip_polygon(polygon):
     """
 
     # Orient the copy of polygon points to XY plane.
-    from compas.geometry import Plane, Frame, Transformation  # Avoid circular import.
+    from compas.geometry import Frame  # Avoid circular import.
+    from compas.geometry import Plane  # Avoid circular import.
+    from compas.geometry import Transformation  # Avoid circular import.
 
     frame = Frame.from_plane(Plane(polygon.points[0], polygon.normal))
     xform = Transformation.from_frame_to_frame(frame, Frame.worldXY())

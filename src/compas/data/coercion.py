@@ -1,6 +1,6 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 from .validators import is_item_iterable
 
@@ -22,7 +22,7 @@ def coerce_sequence_of_tuple(sequence):
 
     Examples
     --------
-    >>> items = coerce_sequence_of_tuple(['a', 1, (None, ), [2.0, 3.0]])
+    >>> items = coerce_sequence_of_tuple(["a", 1, (None,), [2.0, 3.0]])
     >>> is_sequence_of_tuple(items)
     True
 
@@ -55,7 +55,7 @@ def coerce_sequence_of_list(sequence):
 
     Examples
     --------
-    >>> items = coerce_sequence_of_list(['a', 1, (None, ), [2.0, 3.0]])
+    >>> items = coerce_sequence_of_list(["a", 1, (None,), [2.0, 3.0]])
     >>> is_sequence_of_list(items)
     True
 

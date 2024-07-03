@@ -3,14 +3,12 @@ from typing import Optional
 
 import bpy  # type: ignore
 
-from compas.geometry import Frame
-from compas.geometry import Line
 from compas.colors import Color
-
+from compas.geometry import Line
 from compas.scene import GeometryObject
-from .sceneobject import BlenderSceneObject
-
 from compas_blender import conversions
+
+from .sceneobject import BlenderSceneObject
 
 
 class FrameObject(BlenderSceneObject, GeometryObject):
@@ -18,8 +16,6 @@ class FrameObject(BlenderSceneObject, GeometryObject):
 
     Parameters
     ----------
-    frame: :class:`compas.geometry.Frame`
-        A COMPAS frame.
     scale : float, optional
         Scale of the frame axes.
     **kwargs : dict, optional
@@ -41,8 +37,8 @@ class FrameObject(BlenderSceneObject, GeometryObject):
 
     """
 
-    def __init__(self, frame: Frame, scale=1.0, **kwargs: Any):
-        super().__init__(geometry=frame, **kwargs)
+    def __init__(self, scale=1.0, **kwargs: Any):
+        super().__init__(**kwargs)
         self.scale = scale
         self.color_origin = Color.black()
         self.color_xaxis = Color.red()

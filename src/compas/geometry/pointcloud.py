@@ -1,18 +1,17 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 from random import uniform
 
-from compas.tolerance import TOL
-
-from compas.geometry import KDTree
 from compas.geometry import Geometry
+from compas.geometry import KDTree
 from compas.geometry import Point
-from compas.geometry import transform_points
-from compas.geometry import centroid_points
 from compas.geometry import bounding_box
+from compas.geometry import centroid_points
 from compas.geometry import closest_point_in_cloud
+from compas.geometry import transform_points
+from compas.tolerance import TOL
 
 
 class Pointcloud(Geometry):

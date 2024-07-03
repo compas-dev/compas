@@ -18,13 +18,10 @@ from Rhino.Geometry import PolylineCurve
 from Rhino.Geometry import Sphere
 from Rhino.Geometry import Vector3d
 from Rhino.Geometry import Vector3f
-from System.Array import CreateInstance
-from System.Drawing import Color
-from System.Enum import ToObject
 
 from compas.geometry import centroid_points
-from compas.utilities import pairwise
-from compas_rhino.utilities.drawing import _face_to_max_quad
+from compas.itertools import pairwise
+from compas_rhino.drawing import _face_to_max_quad
 
 try:
     from Rhino.Geometry import MeshNgon
@@ -149,9 +146,7 @@ def draw_polylines(polylines):
     -----
     .. code-block:: python
 
-        Schema({
-            'points': lambda x: all(len(y) == 3 for y in x)
-        })
+        Schema({"points": lambda x: all(len(y) == 3 for y in x)})
 
     """
     rg_polylines = []
@@ -180,10 +175,7 @@ def draw_faces(faces):
     -----
     .. code-block:: python
 
-        Schema({
-            'points': lambda x: all(len(y) == 3 for y in x),
-            Optional('vertexcolors', default=None): lambda x: all(len(y) == 3 for y in x)
-        })
+        Schema({"points": lambda x: all(len(y) == 3 for y in x), Optional("vertexcolors", default=None): lambda x: all(len(y) == 3 for y in x)})
 
     """
     meshes = []
@@ -234,11 +226,7 @@ def draw_cylinders(cylinders, cap=False):
     -----
     .. code-block:: python
 
-        Schema({
-            'start': lambda x: len(x) == 3,
-            'end': lambda x: len(x) == 3,
-            'radius': And(Or(int, float), lambda x: x > 0)
-        })
+        Schema({"start": lambda x: len(x) == 3, "end": lambda x: len(x) == 3, "radius": And(Or(int, float), lambda x: x > 0)})
 
     """
     rg_cylinders = []
@@ -284,10 +272,7 @@ def draw_pipes(pipes, cap=2, fit=1.0):
     -----
     .. code-block:: python
 
-        Schema({
-            'points': lambda x: all(len(y) == 3 for y in x),
-            'radius': And(Or(int, float), lambda x: x > 0)
-        })
+        Schema({"points": lambda x: all(len(y) == 3 for y in x), "radius": And(Or(int, float), lambda x: x > 0)})
 
     """
     abs_tol = TOL
@@ -296,7 +281,7 @@ def draw_pipes(pipes, cap=2, fit=1.0):
         points = p["points"]
         radius = p["radius"]
         params = [0.0, 1.0]
-        cap = ToObject(PipeCapMode, cap)
+        cap = PipeCapMode(cap)
         if type(radius) in (int, float):
             radius = [radius] * 2
         radius = [float(r) for r in radius]
@@ -323,10 +308,7 @@ def draw_spheres(spheres):
     -----
     .. code-block:: python
 
-        Schema({
-            'pos': lambda x: len(x) == 3,
-            'radius': And(Or(int, float), lambda x: x > 0)
-        })
+        Schema({"pos": lambda x: len(x) == 3, "radius": And(Or(int, float), lambda x: x > 0)})
 
     """
     rg_sheres = []
@@ -381,23 +363,17 @@ def draw_mesh(vertices, faces, color=None, vertex_normals=None, texture_coordina
 
     if vertex_normals:
         count = len(vertex_normals)
-        normals = CreateInstance(Vector3f, count)
-        for i, normal in enumerate(vertex_normals):
-            normals[i] = Vector3f(normal[0], normal[1], normal[2])
+        normals = [Vector3f(normal[0], normal[1], normal[2]) for normal in vertex_normals]
         mesh.Normals.SetNormals(normals)
 
     if texture_coordinates:
         count = len(texture_coordinates)
-        tcs = CreateInstance(Point2f, count)
-        for i, tc in enumerate(texture_coordinates):
-            tcs[i] = Point2f(tc[0], tc[1])
+        tcs = [Point2f(tc[0], tc[1]) for tc in texture_coordinates]
         mesh.TextureCoordinates.SetTextureCoordinates(tcs)
 
     if color:
         count = len(mesh.Vertices)
-        colors = CreateInstance(Color, count)
-        for i in range(count):
-            colors[i] = rs.coercecolor(color)
+        colors = [rs.coercecolor(color) for i in range(count)]
         mesh.VertexColors.SetColors(colors)
 
     return mesh
@@ -445,10 +421,7 @@ def draw_circles(circles):
     -----
     .. code-block:: python
 
-        Schema({
-            'plane': lambda x: len(x[0]) == 3 and len(x[1]) == 3,
-            'radius': And(Or(int, float), lambda x: x > 0)
-        })
+        Schema({"plane": lambda x: len(x[0]) == 3 and len(x[1]) == 3, "radius": And(Or(int, float), lambda x: x > 0)})
 
     """
     rg_circles = []

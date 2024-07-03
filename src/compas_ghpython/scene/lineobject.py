@@ -1,27 +1,15 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
-
-from compas_rhino import conversions
+from __future__ import print_function
 
 from compas.scene import GeometryObject
+from compas_rhino import conversions
+
 from .sceneobject import GHSceneObject
 
 
 class LineObject(GHSceneObject, GeometryObject):
-    """Scene object for drawing lines.
-
-    Parameters
-    ----------
-    line : :class:`compas.geometry.Line`
-        A COMPAS line.
-    **kwargs : dict, optional
-        Additional keyword arguments.
-
-    """
-
-    def __init__(self, line, **kwargs):
-        super(LineObject, self).__init__(geometry=line, **kwargs)
+    """Scene object for drawing lines."""
 
     def draw(self):
         """Draw the line.

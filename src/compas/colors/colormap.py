@@ -4,11 +4,11 @@ from __future__ import print_function
 
 import os
 
-from compas.utilities import linspace
+from compas.itertools import linspace
 
 from .color import Color
-from .mpl_colormap import _magma_data
 from .mpl_colormap import _inferno_data
+from .mpl_colormap import _magma_data
 from .mpl_colormap import _plasma_data
 from .mpl_colormap import _viridis_data
 
@@ -42,16 +42,14 @@ class ColorMap(object):
     Examples
     --------
     >>> import random
-    >>> cmap = ColorMap.from_palette('bamako')
+    >>> cmap = ColorMap.from_palette("bamako")
     >>> for i in range(100):
     ...     color = cmap(random.random())
-    ...
 
-    >>> cmap = ColorMap.from_mpl('viridis')
+    >>> cmap = ColorMap.from_mpl("viridis")
     >>> n = 100
     >>> for i in range(n):
     ...     color = cmap(i, minval=0, maxval=n - 1)
-    ...
 
     See Also
     --------

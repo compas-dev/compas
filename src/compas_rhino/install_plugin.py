@@ -1,10 +1,10 @@
-import os
 import imp
+import os
 
 import compas_rhino
-
 from compas._os import create_symlinks
 from compas._os import remove_symlinks
+
 from .install import install as install_packages
 
 
@@ -151,7 +151,6 @@ def install_plugin(plugin, version=None):
 # ==============================================================================
 
 if __name__ == "__main__":
-
     import argparse
 
     parser = argparse.ArgumentParser(description="COMPAS Rhino Plugin Installation command-line utility.")

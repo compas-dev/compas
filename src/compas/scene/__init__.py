@@ -23,8 +23,6 @@ from .context import get_sceneobject_cls
 from .context import register
 
 from .scene import Scene
-from .scene import SceneObjectNode
-from .scene import SceneTree
 
 from compas.plugins import plugin
 from compas.geometry import Geometry
@@ -49,8 +47,6 @@ __all__ = [
     "GeometryObject",
     "VolMeshObject",
     "Scene",
-    "SceneObjectNode",
-    "SceneTree",
     "clear",
     "before_draw",
     "after_draw",

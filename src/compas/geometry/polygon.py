@@ -1,24 +1,24 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 import math
 
-from compas.utilities import pairwise
-from compas.geometry import allclose
+from compas.geometry import Frame
+from compas.geometry import Geometry
+from compas.geometry import Line
+from compas.geometry import Plane
+from compas.geometry import Point
+from compas.geometry import Transformation
 from compas.geometry import area_polygon
+from compas.geometry import bounding_box
 from compas.geometry import centroid_polygon
+from compas.geometry import earclip_polygon
 from compas.geometry import is_coplanar
 from compas.geometry import is_polygon_convex
 from compas.geometry import transform_points
-from compas.geometry import earclip_polygon
-from compas.geometry import bounding_box
-from compas.geometry import Geometry
-from compas.geometry import Transformation
-from compas.geometry import Point
-from compas.geometry import Plane
-from compas.geometry import Frame
-from compas.geometry import Line
+from compas.itertools import pairwise
+from compas.tolerance import TOL
 
 
 class Polygon(Geometry):
@@ -122,7 +122,7 @@ class Polygon(Geometry):
     def __eq__(self, other):
         if not hasattr(other, "__iter__") or not hasattr(other, "__len__") or len(self) != len(other):
             return False
-        return allclose(self, other)
+        return TOL.is_allclose(self, other)
 
     # ==========================================================================
     # Properties

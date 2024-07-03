@@ -1,38 +1,72 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from Rhino.Geometry import TextDot  # type: ignore
 import scriptcontext as sc  # type: ignore
-
-from compas.geometry import centroid_points
-from compas.geometry import Line
-from compas.scene import VolMeshObject as BaseVolMeshObject
+from Rhino.Geometry import TextDot  # type: ignore
 
 import compas_rhino.objects
-from compas_rhino.conversions import point_to_rhino
+from compas.geometry import Line
+from compas.geometry import centroid_points
+from compas.scene import VolMeshObject
 from compas_rhino.conversions import line_to_rhino
+from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import vertices_and_faces_to_rhino
 
+from .helpers import ngon
 from .sceneobject import RhinoSceneObject
-from ._helpers import attributes
-from ._helpers import ngon
 
 
-class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
+class RhinoVolMeshObject(RhinoSceneObject, VolMeshObject):
     """Scene object for drawing volmesh data structures.
 
     Parameters
     ----------
-    volmesh : :class:`compas.datastructures.VolMesh`
-        A COMPAS volmesh.
+    disjoint : bool, optional
+        Draw the faces of the mesh disjointed.
+        Default is ``True``.
+    vertexgroup : str, optional
+        The name of the group for the vertices.
+    edgegroup : str, optional
+        The name of the group for the edges.
+    facegroup : str, optional
+        The name of the group for the faces.
+    cellgroup : str, optional
+        The name of the group for the cells.
     **kwargs : dict, optional
         Additional keyword arguments.
 
+    Attributes
+    ----------
+    disjoint : bool
+        Draw the faces of the mesh disjointed.
+        Default is ``True``.
+    vertexgroup : str
+        The name of the group for the vertices.
+    edgegroup : str
+        The name of the group for the edges.
+    facegroup : str
+        The name of the group for the faces.
+    cellgroup : str
+        The name of the group for the cells.
+
     """
 
-    def __init__(self, volmesh, **kwargs):
-        super(VolMeshObject, self).__init__(volmesh=volmesh, **kwargs)
+    def __init__(self, disjoint=True, vertexgroup=None, edgegroup=None, facegroup=None, cellgroup=None, **kwargs):
+        super(RhinoVolMeshObject, self).__init__(**kwargs)
+        self.disjoint = disjoint
+        self._guids_vertices = None
+        self._guids_edges = None
+        self._guids_faces = None
+        self._guids_cells = None
+        self._guids_vertexlabels = None
+        self._guids_edgelabels = None
+        self._guids_facelabels = None
+        self._guids_celllabels = None
+        self.vertexgroup = vertexgroup
+        self.edgegroup = edgegroup
+        self.facegroup = facegroup
+        self.cellgroup = cellgroup
 
     # ==========================================================================
     # clear
@@ -46,8 +80,7 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
         None
 
         """
-        guids = compas_rhino.objects.get_objects(name="{}.*".format(self.volmesh.name))  # type: ignore
-        compas_rhino.objects.delete_objects(guids, purge=True)
+        compas_rhino.objects.delete_objects(self.guids, purge=True)
 
     def clear_vertices(self):
         """Delete all vertices drawn by this scene object.
@@ -57,8 +90,7 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
         None
 
         """
-        guids = compas_rhino.objects.get_objects(name="{}.vertex.*".format(self.volmesh.name))  # type: ignore
-        compas_rhino.objects.delete_objects(guids, purge=True)
+        compas_rhino.objects.delete_objects(self._guids_vertices, purge=True)
 
     def clear_edges(self):
         """Delete all edges drawn by this scene object.
@@ -68,8 +100,7 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
         None
 
         """
-        guids = compas_rhino.objects.get_objects(name="{}.edge.*".format(self.volmesh.name))  # type: ignore
-        compas_rhino.objects.delete_objects(guids, purge=True)
+        compas_rhino.objects.delete_objects(self._guids_edges, purge=True)
 
     def clear_faces(self):
         """Delete all faces drawn by this scene object.
@@ -79,8 +110,7 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
         None
 
         """
-        guids = compas_rhino.objects.get_objects(name="{}.face.*".format(self.volmesh.name))  # type: ignore
-        compas_rhino.objects.delete_objects(guids, purge=True)
+        compas_rhino.objects.delete_objects(self._guids_faces, purge=True)
 
     def clear_cells(self):
         """Delete all cells drawn by this scene object.
@@ -90,8 +120,7 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
         None
 
         """
-        guids = compas_rhino.objects.get_objects(name="{}.cell.*".format(self.volmesh.name))  # type: ignore
-        compas_rhino.objects.delete_objects(guids, purge=True)
+        compas_rhino.objects.delete_objects(self._guids_cells, purge=True)
 
     def clear_vertexlabels(self):
         """Delete all vertex labels drawn by this scene object.
@@ -101,8 +130,7 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
         None
 
         """
-        guids = compas_rhino.objects.get_objects(name="{}.vertex.*.label".format(self.volmesh.name))  # type: ignore
-        compas_rhino.objects.delete_objects(guids, purge=True)
+        compas_rhino.objects.delete_objects(self._guids_vertexlabels, purge=True)
 
     def clear_edgelabels(self):
         """Delete all edge labels drawn by this scene object.
@@ -112,8 +140,7 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
         None
 
         """
-        guids = compas_rhino.objects.get_objects(name="{}.edge.*.label".format(self.volmesh.name))  # type: ignore
-        compas_rhino.objects.delete_objects(guids, purge=True)
+        compas_rhino.objects.delete_objects(self._guids_edgelabels, purge=True)
 
     def clear_facelabels(self):
         """Delete all face labels drawn by this scene object.
@@ -123,24 +150,14 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
         None
 
         """
-        guids = compas_rhino.objects.get_objects(name="{}.face.*.label".format(self.volmesh.name))  # type: ignore
-        compas_rhino.objects.delete_objects(guids, purge=True)
+        compas_rhino.objects.delete_objects(self._guids_facelabels, purge=True)
 
     # ==========================================================================
     # draw
     # ==========================================================================
 
-    def draw(self, cells=None, color=None):
+    def draw(self):
         """Draw a selection of cells.
-
-        Parameters
-        ----------
-        cells : list[int], optional
-            A list of cells to draw.
-            The default is None, in which case all cells are drawn.
-        color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
-            The color of the cells.
-            The default color is :attr:`VolMeshObject.default_cellcolor`.
 
         Returns
         -------
@@ -149,21 +166,23 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
             Every cell is drawn as an individual mesh.
 
         """
-        self._guids = self.draw_cells(cells=cells, color=color)
+        guids = []
+
+        if self.show_vertices:
+            guids += self.draw_vertices()
+        if self.show_edges:
+            guids += self.draw_edges()
+        if self.show_faces:
+            guids += self.draw_faces()
+        if self.show_cells:
+            guids += self.draw_cells()
+
+        self._guids = guids
+
         return self.guids
 
-    def draw_vertices(self, vertices=None, color=None, group=None):
+    def draw_vertices(self):
         """Draw a selection of vertices.
-
-        Parameters
-        ----------
-        vertices : list[int], optional
-            A list of vertices to draw.
-            Default is None, in which case all vertices are drawn.
-        color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
-            The color of the vertices.
-        group : str, optional
-            The name of the group in which the vertices are combined.
 
         Returns
         -------
@@ -171,34 +190,32 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
             The GUIDs of the created Rhino point objects.
 
         """
-        self.vertexcolor = color
-
         guids = []
 
-        for vertex in vertices or self.volmesh.vertices():  # type: ignore
-            name = "{}.vertex.{}".format(self.volmesh.name, vertex)  # type: ignore
-            color = self.vertexcolor[vertex]  # type: ignore
-            attr = attributes(name=name, color=color, layer=self.layer)
+        vertices = list(self.volmesh.vertices()) if self.show_vertices is True else self.show_vertices or []
 
-            point = self.vertex_xyz[vertex]
+        if vertices:
+            for vertex in vertices:
+                name = "{}.vertex.{}".format(self.volmesh.name, vertex)
+                color = self.vertexcolor[vertex]
+                attr = self.compile_attributes(name=name, color=color)
 
-            guid = sc.doc.Objects.AddPoint(point_to_rhino(point), attr)
-            guids.append(guid)
+                point = self.vertex_xyz[vertex]
 
+                guid = sc.doc.Objects.AddPoint(point_to_rhino(point), attr)
+                guids.append(guid)
+
+        if guids:
+            if self.vertexgroup:
+                self.add_to_group(self.vertexgroup, guids)
+            elif self.group:
+                self.add_to_group(self.group, guids)
+
+        self._guids_vertices = guids
         return guids
 
-    def draw_edges(self, edges=None, color=None, group=None):
+    def draw_edges(self):
         """Draw a selection of edges.
-
-        Parameters
-        ----------
-        edges : list[tuple[int, int]], optional
-            A list of edges to draw.
-            The default is None, in which case all edges are drawn.
-        color : :class:`compas.colors.Color` | dict[tuple[int, int], :class:`compas.colors.Color`], optional
-            The color of the edges.
-        group : str, optional
-            The name of the group in which the edges are combined.
 
         Returns
         -------
@@ -206,37 +223,32 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
             The GUIDs of the created Rhino line objects.
 
         """
-        self.edgecolor = color
-
         guids = []
 
-        for edge in edges or self.volmesh.edges():  # type: ignore
-            name = "{}.edge.{}-{}".format(self.volmesh.name, *edge)  # type: ignore
-            color = self.edgecolor[edge]  # type: ignore
-            attr = attributes(name=name, color=color, layer=self.layer)
+        edges = list(self.volmesh.edges()) if self.show_edges is True else self.show_edges or []
 
-            line = Line(self.vertex_xyz[edge[0]], self.vertex_xyz[edge[1]])
+        if edges:
+            for edge in edges:
+                name = "{}.edge.{}-{}".format(self.volmesh.name, *edge)
+                color = self.edgecolor[edge]
+                attr = self.compile_attributes(name=name, color=color)
 
-            guid = sc.doc.Objects.AddLine(line_to_rhino(line), attr)
-            guids.append(guid)
+                line = Line(self.vertex_xyz[edge[0]], self.vertex_xyz[edge[1]])
 
-        if group:
-            self.add_to_group(group, guids)
+                guid = sc.doc.Objects.AddLine(line_to_rhino(line), attr)
+                guids.append(guid)
 
+        if guids:
+            if self.edgegroup:
+                self.add_to_group(self.edgegroup, guids)
+            elif self.group:
+                self.add_to_group(self.group, guids)
+
+        self._guids_edges = guids
         return guids
 
-    def draw_faces(self, faces=None, color=None, group=None):
+    def draw_faces(self):
         """Draw a selection of faces.
-
-        Parameters
-        ----------
-        faces : list[int], optional
-            A list of faces to draw.
-            The default is None, in which case all faces are drawn.
-        color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
-            The color of the faces.
-        group : str, optional
-            The name of the group in which the faces are combined.
 
         Returns
         -------
@@ -244,39 +256,34 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
             The GUIDs of the created Rhino objects.
 
         """
-        self.facecolor = color
-
         guids = []
 
-        for face in faces or self.volmesh.faces():  # type: ignore
-            name = "{}.face.{}".format(self.volmesh.name, face)  # type: ignore
-            color = self.facecolor[face]  # type: ignore
-            attr = attributes(name=name, color=color, layer=self.layer)
+        faces = list(self.volmesh.faces()) if self.show_faces is True else self.show_faces or []
 
-            vertices = [self.vertex_xyz[vertex] for vertex in self.volmesh.face_vertices(face)]  # type: ignore
-            facet = ngon(vertices)
+        if faces:
+            for face in faces:
+                name = "{}.face.{}".format(self.volmesh.name, face)
+                color = self.facecolor[face]
+                attr = self.compile_attributes(name=name, color=color)
 
-            if facet:
-                guid = sc.doc.Objects.AddMesh(vertices_and_faces_to_rhino(vertices, [facet]), attr)
-                guids.append(guid)
+                vertices = [self.vertex_xyz[vertex] for vertex in self.volmesh.face_vertices(face)]
+                facet = ngon(len(vertices))
 
-        if group:
-            self.add_to_group(group, guids)
+                if facet:
+                    guid = sc.doc.Objects.AddMesh(vertices_and_faces_to_rhino(vertices, [facet]), attr)
+                    guids.append(guid)
 
+        if guids:
+            if self.facegroup:
+                self.add_to_group(self.facegroup, guids)
+            elif self.group:
+                self.add_to_group(self.group, guids)
+
+        self._guids_faces = guids
         return guids
 
-    def draw_cells(self, cells=None, color=None, group=None):
+    def draw_cells(self):
         """Draw a selection of cells.
-
-        Parameters
-        ----------
-        cells : list[int], optional
-            A list of cells to draw.
-            The default is None, in which case all cells are drawn.
-        color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
-            The color of the cells.
-        group : str, optional
-            The name of the group in which the cells are combined.
 
         Returns
         -------
@@ -285,24 +292,33 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
             Every cell is drawn as an individual mesh.
 
         """
-        self.cellcolor = color
-
         guids = []
 
-        for cell in cells or self.volmesh.cells():  # type: ignore
-            name = "{}.cell.{}".format(self.volmesh.name, cell)  # type: ignore
-            color = self.cellcolor[cell]  # type: ignore
-            attr = attributes(name=name, color=color, layer=self.layer)
+        cells = list(self.volmesh.cells()) if self.show_cells is True else self.show_cells or []
 
-            vertices = self.volmesh.cell_vertices(cell)  # type: ignore
-            faces = self.volmesh.cell_faces(cell)  # type: ignore
-            vertex_index = dict((vertex, index) for index, vertex in enumerate(vertices))
-            vertices = [self.vertex_xyz[vertex] for vertex in vertices]
-            faces = [[vertex_index[vertex] for vertex in self.volmesh.halfface_vertices(face)] for face in faces]  # type: ignore
+        if cells:
+            for cell in cells:
+                name = "{}.cell.{}".format(self.volmesh.name, cell)
+                color = self.cellcolor[cell]
+                attr = self.compile_attributes(name=name, color=color)
 
-            guid = sc.doc.Objects.AddMesh(vertices_and_faces_to_rhino(vertices, faces, disjoint=True), attr)
-            guids.append(guid)
+                vertices = self.volmesh.cell_vertices(cell)
+                faces = self.volmesh.cell_faces(cell)
+                vertex_index = dict((vertex, index) for index, vertex in enumerate(vertices))
 
+                vertices = [self.vertex_xyz[vertex] for vertex in vertices]
+                faces = [[vertex_index[vertex] for vertex in self.volmesh.halfface_vertices(face)] for face in faces]
+
+                guid = sc.doc.Objects.AddMesh(vertices_and_faces_to_rhino(vertices, faces, disjoint=self.disjoint), attr)
+                guids.append(guid)
+
+        if guids:
+            if self.cellgroup:
+                self.add_to_group(self.cellgroup, guids)
+            elif self.group:
+                self.add_to_group(self.group, guids)
+
+        self._guids_cells = guids
         return guids
 
     # =============================================================================
@@ -337,8 +353,8 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
 
         for vertex in text:
             name = "{}.vertex.{}.label".format(self.volmesh.name, vertex)  # type: ignore
-            color = self.vertexcolor[vertex]  # type: ignore
-            attr = attributes(name=name, color=color, layer=self.layer)
+            color = self.vertexcolor[vertex]
+            attr = self.compile_attributes(name=name, color=color)
 
             point = self.vertex_xyz[vertex]
 
@@ -382,8 +398,8 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
 
         for edge in text:
             name = "{}.edge.{}-{}.label".format(self.volmesh.name, *edge)  # type: ignore
-            color = self.edgecolor[edge]  # type: ignore
-            attr = attributes(name="{}.label".format(name), color=color, layer=self.layer)
+            color = self.edgecolor[edge]
+            attr = self.compile_attributes(name="{}.label".format(name), color=color)
 
             line = Line(self.vertex_xyz[edge[0]], self.vertex_xyz[edge[1]])
             point = point_to_rhino(line.midpoint)
@@ -428,11 +444,11 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
 
         for face in text:
             name = "{}.face.{}.label".format(self.volmesh.name, face)  # type: ignore
-            color = self.facecolor[face]  # type: ignore
-            attr = attributes(name="{}.label".format(name), color=color, layer=self.layer)
+            color = self.facecolor[face]
+            attr = self.compile_attributes(name="{}.label".format(name), color=color)
 
             vertices = [self.vertex_xyz[vertex] for vertex in self.volmesh.face_vertices(face)]  # type: ignore
-            point = point_to_rhino(centroid_points(vertices))  # type: ignore
+            point = point_to_rhino(centroid_points(vertices))
 
             dot = TextDot(str(text[face]), point)  # type: ignore
             dot.FontHeight = fontheight
@@ -474,11 +490,11 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
 
         for cell in text:
             name = "{}.cell.{}.label".format(self.volmesh.name, cell)  # type: ignore
-            color = self.cellcolor[cell]  # type: ignore
-            attr = attributes(name="{}.label".format(name), color=color, layer=self.layer)
+            color = self.cellcolor[cell]
+            attr = self.compile_attributes(name="{}.label".format(name), color=color)
 
             vertices = [self.vertex_xyz[vertex] for vertex in self.volmesh.cell_vertices(cell)]  # type: ignore
-            point = point_to_rhino(centroid_points(vertices))  # type: ignore
+            point = point_to_rhino(centroid_points(vertices))
 
             dot = TextDot(str(text[cell]), point)  # type: ignore
             dot.FontHeight = fontheight
@@ -491,11 +507,3 @@ class VolMeshObject(RhinoSceneObject, BaseVolMeshObject):
             self.add_to_group(group, guids)
 
         return guids
-
-    # =============================================================================
-    # draw normals
-    # =============================================================================
-
-    # =============================================================================
-    # draw miscellaneous
-    # =============================================================================

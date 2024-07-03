@@ -1,9 +1,8 @@
 from numpy import asarray
 from numpy import hstack
 from numpy import ones
-from numpy import vectorize
 from numpy import tile
-
+from numpy import vectorize
 from scipy.linalg import solve  # type: ignore
 
 from ._algebra import cross_vectors
@@ -70,7 +69,7 @@ def transform_frames_numpy(frames, T):
 
     Parameters
     ----------
-    frames : sequence[[point, vector, vector] | :class:`compas.geometry.Frame`]
+    frames : sequence[[point, vector, vector]]
         A list of frames to be transformed.
     T : :class:`compas.geometry.Transformation`
         The transformation to apply on the frames.
@@ -84,7 +83,7 @@ def transform_frames_numpy(frames, T):
     --------
     >>> from compas.geometry import Frame, matrix_from_axis_and_angle
     >>> frames = [Frame([1, 0, 0], [1, 2, 4], [4, 7, 1]), Frame([0, 2, 0], [5, 2, 1], [0, 2, 1])]
-    >>> T =  matrix_from_axis_and_angle([0, 2, 0], math.radians(45), point=[4, 5, 6])
+    >>> T = matrix_from_axis_and_angle([0, 2, 0], math.radians(45), point=[4, 5, 6])
     >>> transformed_frames = transform_frames_numpy(frames, T)
 
     """
@@ -98,7 +97,7 @@ def world_to_local_coordinates_numpy(frame, xyz):
 
     Parameters
     ----------
-    frame : [point, vector, vector] | :class:`compas.geometry.Frame`
+    frame : [point, vector, vector]
         The local coordinate system.
     xyz : array-like[[float, float, float] | :class:`compas.geometry.Point`]
         The global coordinates of the points to convert.
@@ -131,7 +130,7 @@ def local_to_world_coordinates_numpy(frame, rst):
 
     Parameters
     ----------
-    frame : [point, vector, vector] | :class:`compas.geometry.Frame`
+    frame : [point, vector, vector]
         The local coordinate system.
     rst : array-like[[float, float, float] | :class:`compas.geometry.Point`]
         The coordinates of the points wrt the local coordinate system.
@@ -232,7 +231,7 @@ def homogenize_and_flatten_frames_numpy(frames):
 
     Parameters
     ----------
-    frames : array_like[[point, vector, vector] | :class:`compas.geometry.Frame`]
+    frames : array_like[[point, vector, vector]]
         The input frames.
 
     Returns
@@ -270,7 +269,7 @@ def dehomogenize_and_unflatten_frames_numpy(points_and_vectors):
 
     Examples
     --------
-    >>> points_and_vectors = [(1., 1., 1., 1.), (0., 1., 0., 0.), (1., 0., 0., 0.)]
+    >>> points_and_vectors = [(1.0, 1.0, 1.0, 1.0), (0.0, 1.0, 0.0, 0.0), (1.0, 0.0, 0.0, 0.0)]
     >>> res = dehomogenize_and_unflatten_frames_numpy(points_and_vectors)
     >>> np.allclose(res, [[1.0, 1.0, 1.0], [0.0, 1.0, 0.0], [1.0, 0.0, 0.0]])
     True

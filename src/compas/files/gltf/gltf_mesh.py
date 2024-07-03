@@ -1,14 +1,14 @@
-from __future__ import print_function
-from __future__ import division
 from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 import itertools
 
 from compas.files.gltf.constants import VERTEX_COUNT_BY_MODE
 from compas.files.gltf.data_classes import PrimitiveData
-from compas.files.gltf.helpers import get_weighted_mesh_vertices
-from compas.files.gltf.helpers import get_unweighted_primitive_vertices
 from compas.files.gltf.helpers import get_mode
+from compas.files.gltf.helpers import get_unweighted_primitive_vertices
+from compas.files.gltf.helpers import get_weighted_mesh_vertices
 
 
 class GLTFMesh(object):

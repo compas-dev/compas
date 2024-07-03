@@ -1,35 +1,39 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 import scriptcontext as sc  # type: ignore
 
-
+from compas.geometry import Frame
 from compas.scene import GeometryObject
-from .sceneobject import RhinoSceneObject
 from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
 from compas_rhino.conversions import vertices_and_faces_to_rhino
-from compas.geometry import Frame
+
+from .sceneobject import RhinoSceneObject
 
 
-class PlaneObject(RhinoSceneObject, GeometryObject):
+class RhinoPlaneObject(RhinoSceneObject, GeometryObject):
     """Scene object for drawing planes.
 
     Parameters
     ----------
-    plane : :class:`compas.geometry.Plane`
-        A COMPAS plane.
     scale : float, optional
         Scale factor.
         Default is ``1.0``.
     **kwargs : dict, optional
         Additional keyword arguments.
 
+    Attributes
+    ----------
+    scale : float
+        Scale factor.
+        Default is ``1.0``.
+
     """
 
-    def __init__(self, plane, scale=1.0, **kwargs):
-        super(PlaneObject, self).__init__(geometry=plane, **kwargs)
+    def __init__(self, scale=1.0, **kwargs):
+        super(RhinoPlaneObject, self).__init__(**kwargs)
         self.scale = scale
 
     def draw(self):
@@ -41,7 +45,6 @@ class PlaneObject(RhinoSceneObject, GeometryObject):
             The GUIDs of the created Rhino objects.
 
         """
-
         frame = Frame.from_plane(self._item)
 
         guids = [

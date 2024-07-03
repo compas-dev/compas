@@ -1,10 +1,13 @@
 # type: ignore
 
-from compas.geometry import Point, Polygon
-from compas.utilities import linspace, pairwise
-from compas.datastructures import Mesh
+from compas_viewer import Viewer
+
 from compas.colors import ColorMap
-from compas_view2.app import App
+from compas.datastructures import Mesh
+from compas.geometry import Point
+from compas.geometry import Polygon
+from compas.itertools import linspace
+from compas.itertools import pairwise
 
 n = 256
 t = 0.3
@@ -25,7 +28,6 @@ cmap = ColorMap.from_rgb()
 mesh = Mesh.from_polygons(polygons)
 facecolors = {i: cmap(i, minval=0, maxval=n - 1) for i in range(n)}
 
-viewer = App()
-viewer.view.show_grid = False
-viewer.add(mesh, facecolor=facecolors, show_lines=False)
+viewer = Viewer(show_grid=False)
+viewer.scene.add(mesh, facecolor=facecolors, show_lines=False, show_points=False)
 viewer.show()

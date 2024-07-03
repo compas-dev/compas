@@ -7,9 +7,9 @@ import time
 
 import compas
 import compas._os
-from compas.rpc import RPCServerError
 from compas.data import DataDecoder
 from compas.data import DataEncoder
+from compas.rpc import RPCServerError
 
 try:
     from xmlrpclib import ServerProxy
@@ -17,8 +17,8 @@ except ImportError:
     from xmlrpc.client import ServerProxy
 
 try:
-    from subprocess import Popen
     from subprocess import PIPE
+    from subprocess import Popen
 except ImportError:
     from System.Diagnostics import Process
 
@@ -95,10 +95,10 @@ class Proxy(object):
     Minimal example showing connection to the proxy server, and ensuring the
     server is disposed after using it:
 
-    >>> from compas.rpc import Proxy                        # doctest: +SKIP
-    >>> with Proxy('compas.numerical') as numerical:        # doctest: +SKIP
-    ...     pass                                            # doctest: +SKIP
-    ...                                                     # doctest: +SKIP
+    >>> from compas.rpc import Proxy  # doctest: +SKIP
+    >>> with Proxy("compas.numerical") as numerical:  # doctest: +SKIP
+    ...     pass  # doctest: +SKIP
+    ...     # doctest: +SKIP
     Starting a new proxy server...                          # doctest: +SKIP
     New proxy server started.                               # doctest: +SKIP
     Stopping the server proxy.                              # doctest: +SKIP
@@ -284,9 +284,7 @@ class Proxy(object):
             self._process.StartInfo.RedirectStandardOutput = self.capture_output
             self._process.StartInfo.RedirectStandardError = self.capture_output
             self._process.StartInfo.FileName = self.python
-            self._process.StartInfo.Arguments = "-m {0} --port {1} --{2}autoreload".format(
-                self.service, self._port, "" if self.autoreload else "no-"
-            )
+            self._process.StartInfo.Arguments = "-m {0} --port {1} --{2}autoreload".format(self.service, self._port, "" if self.autoreload else "no-")
             self._process.Start()
         else:
             args = [
@@ -398,9 +396,9 @@ class Proxy(object):
             The result dict has the following structure ::
 
                 {
-                    'error'   : ...,  # A traceback of the error raised on the server, if any.
-                    'profile' : ...,  # A profile of the code executed on the server, if there was no error.
-                    'data'    : ...,  # The result returned by the target function, if there was no error.
+                    "error": ...,  # A traceback of the error raised on the server, if any.
+                    "profile": ...,  # A profile of the code executed on the server, if there was no error.
+                    "data": ...,  # The result returned by the target function, if there was no error.
                 }
 
         Warnings

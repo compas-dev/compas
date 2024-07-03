@@ -7,10 +7,9 @@ import itertools
 import os
 import sys
 
-import compas_rhino
-
 import compas._os
 import compas.plugins
+import compas_rhino
 
 
 def install(version=None, packages=None, clean=False):
@@ -34,6 +33,7 @@ def install(version=None, packages=None, clean=False):
     .. code-block:: python
 
         import compas_rhino.install
+
         compas_rhino.install.install()
 
     .. code-block:: bash
@@ -242,9 +242,7 @@ def _run_post_execution_steps(steps_generator):
                     all_steps_succeeded = False
                 print("   {} {}: {}".format(package.ljust(20), status, message))
             except ValueError:
-                post_execution_errors.append(
-                    ValueError("Step ran without errors but result is wrongly formatted: {}".format(str(item)))
-                )
+                post_execution_errors.append(ValueError("Step ran without errors but result is wrongly formatted: {}".format(str(item))))
 
     if post_execution_errors:
         print("\nOne or more errors occurred:\n")
@@ -276,9 +274,9 @@ def installable_rhino_packages():
     Examples
     --------
     >>> import compas.plugins
-    >>> @compas.plugins.plugin(category='install')
+    >>> @compas.plugins.plugin(category="install")
     ... def installable_rhino_packages():
-    ...    return ['compas_fab']
+    ...     return ["compas_fab"]
 
     Returns
     -------
@@ -305,10 +303,10 @@ def after_rhino_install(installed_packages):
     Examples
     --------
     >>> import compas.plugins
-    >>> @compas.plugins.plugin(category='install')
+    >>> @compas.plugins.plugin(category="install")
     ... def after_rhino_install(installed_packages):
-    ...    # Do something after package is installed to Rhino, eg, copy components, etc
-    ...    return [('compas_ghpython', 'GH Components installed', True)]
+    ...     # Do something after package is installed to Rhino, eg, copy components, etc
+    ...     return [("compas_ghpython", "GH Components installed", True)]
 
     Returns
     -------

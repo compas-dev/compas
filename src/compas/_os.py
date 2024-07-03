@@ -3,6 +3,7 @@
 These are internal functions of the framework.
 Not intended to be used outside compas* packages.
 """
+
 import os
 import platform
 import re
@@ -677,7 +678,8 @@ def _get_win_folder_from_registry(csidl_name):
 
 
 def _get_win_folder_with_pywin32(csidl_name):
-    from win32com.shell import shellcon, shell
+    from win32com.shell import shell
+    from win32com.shell import shellcon
 
     dir = shell.SHGetFolderPath(0, getattr(shellcon, csidl_name), 0, 0)
     # Try to make this a unicode path because SHGetFolderPath does

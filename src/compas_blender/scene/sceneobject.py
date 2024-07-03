@@ -1,14 +1,13 @@
 from typing import Any
-from typing import Union
 from typing import Optional
+from typing import Union
 
 import bpy  # type: ignore
+
 import compas_blender
-
 from compas.colors import Color
-from compas.scene import SceneObject
 from compas.geometry import Transformation
-
+from compas.scene import SceneObject
 from compas_blender import conversions
 
 
@@ -19,6 +18,8 @@ class BlenderSceneObject(SceneObject):
     ----------
     collection : str | :blender:`bpy.types.Collection`, optional
         The Blender scene collection the object(s) created by the scene object belong to.
+    show_wire : bool, optional
+        Display the wireframe of the object.
     **kwargs : dict, optional
         Additional keyword arguments.
 
@@ -26,12 +27,18 @@ class BlenderSceneObject(SceneObject):
     ----------
     objects : list[:blender:`bpy.types.Object`]
         The Blender objects created by the scene object.
+    collection : str | :blender:`bpy.types.Collection`
+        The Blender scene collection the object(s) created by the scene object belong to.
+    show_wire : bool
+        Display the wireframe of the object.
 
     """
 
-    def __init__(self, **kwargs: Any):
+    def __init__(self, collection: Union[str, bpy.types.Collection] = None, show_wire: bool = True, **kwargs: Any):
         super().__init__(**kwargs)
         self.objects = []
+        self.collection = collection
+        self.show_wire = show_wire
 
     # many of the methods below will be added to a general scene object in the future
     # to make them universaly accessible they are added here for now
@@ -40,9 +47,7 @@ class BlenderSceneObject(SceneObject):
     # Objects
     # =============================================================================
 
-    def create_object(
-        self, geometry: Union[bpy.types.Mesh, bpy.types.Curve], name: Optional[str] = None
-    ) -> bpy.types.Object:
+    def create_object(self, geometry: Union[bpy.types.Mesh, bpy.types.Curve], name: Optional[str] = None) -> bpy.types.Object:
         """Add an object to the Blender scene.
 
         Parameters
@@ -105,9 +110,7 @@ class BlenderSceneObject(SceneObject):
         self.set_object_tranformation(obj, transformation)
         self.add_object_to_collection(obj, collection)
 
-    def add_object_to_collection(
-        self, obj: bpy.types.Object, name: Optional[str] = None, do_unlink: Optional[bool] = True
-    ) -> bpy.types.Collection:
+    def add_object_to_collection(self, obj: bpy.types.Object, name: Optional[str] = None, do_unlink: Optional[bool] = True) -> bpy.types.Collection:
         """Add an object to a collection.
 
         Parameters

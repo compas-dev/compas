@@ -1,8 +1,9 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 from collections import deque
+
 from compas.topology.traversal import breadth_first_traverse
 
 
@@ -44,7 +45,7 @@ def vertex_coloring(adjacency):
     --------
     >>> import compas
     >>> from compas.datastructures import Graph
-    >>> graph = Graph.from_obj(compas.get('lines.obj'))
+    >>> graph = Graph.from_obj(compas.get("lines.obj"))
     >>> key_color = vertex_coloring(graph.adjacency)
     >>> key = graph.get_any_node()
     >>> color = key_color[key]

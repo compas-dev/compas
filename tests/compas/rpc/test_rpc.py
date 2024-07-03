@@ -1,6 +1,6 @@
 # import os
 
-from compas.geometry import allclose
+from compas.tolerance import TOL
 from compas.rpc import Proxy
 
 
@@ -11,10 +11,9 @@ def test_basic_rpc_call():
 
 def test_switch_package():
     with Proxy("numpy", python="python") as proxy:
-
         A = proxy.array([[1, 2], [3, 4]])
 
         proxy.package = "scipy.linalg"
         r = proxy.inv(A)
 
-    assert allclose(r, [[-2, 1], [1.5, -0.5]])
+    assert TOL.is_allclose(r, [[-2, 1], [1.5, -0.5]])

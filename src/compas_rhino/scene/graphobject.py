@@ -1,37 +1,46 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from Rhino.Geometry import TextDot  # type: ignore
+import Rhino  # type: ignore
 import scriptcontext as sc  # type: ignore
 
 import compas_rhino
 from compas.geometry import Line
-from compas.geometry import Cylinder
-from compas.geometry import Sphere
-from compas.scene import GraphObject as BaseGraphObject
-from compas_rhino.conversions import point_to_rhino
+from compas.scene import GraphObject
 from compas_rhino.conversions import line_to_rhino
-from compas_rhino.conversions import sphere_to_rhino
-from compas_rhino.conversions import cylinder_to_rhino_brep
+from compas_rhino.conversions import point_to_rhino
+
 from .sceneobject import RhinoSceneObject
-from ._helpers import attributes
 
 
-class GraphObject(RhinoSceneObject, BaseGraphObject):
+class RhinoGraphObject(RhinoSceneObject, GraphObject):
     """Scene object for drawing graph data structures.
 
     Parameters
     ----------
-    graph : :class:`compas.datastructures.Graph`
-        A COMPAS graph.
+    nodegroup : str, optional
+        The name of the group for the nodes.
+    edgegroup : str, optional
+        The name of the group for the edges.
+    edgedirection : bool, optional
+        Flag for drawing the edges with an arrow indicating the direction.
     **kwargs : dict, optional
         Additional keyword arguments.
 
     """
 
-    def __init__(self, graph, **kwargs):
-        super(GraphObject, self).__init__(graph=graph, **kwargs)
+    def __init__(self, nodegroup=None, edgegroup=None, edgedirection=False, **kwargs):
+        super(RhinoGraphObject, self).__init__(**kwargs)
+        self._guids_nodes = None
+        self._guids_edges = None
+        self._guids_nodelabels = None
+        self._guids_edgelabels = None
+        self._guids_spheres = None
+        self._guids_pipes = None
+        self.nodegroup = nodegroup
+        self.edgegroup = edgegroup
+        self.edgedirection = edgedirection
 
     # ==========================================================================
     # clear
@@ -45,8 +54,7 @@ class GraphObject(RhinoSceneObject, BaseGraphObject):
         None
 
         """
-        guids = compas_rhino.objects.get_objects(name="{}.*".format(self.graph.name))  # type: ignore
-        compas_rhino.objects.delete_objects(guids, purge=True)
+        compas_rhino.objects.delete_objects(self.guids, purge=True)
 
     def clear_nodes(self):
         """Delete all nodes drawn by this scene object.
@@ -56,8 +64,7 @@ class GraphObject(RhinoSceneObject, BaseGraphObject):
         None
 
         """
-        guids = compas_rhino.objects.get_objects(name="{}.node.*".format(self.graph.name))  # type: ignore
-        compas_rhino.objects.delete_objects(guids, purge=True)
+        compas_rhino.objects.delete_objects(self._guids_nodes, purge=True)
 
     def clear_edges(self):
         """Delete all edges drawn by this scene object.
@@ -67,34 +74,14 @@ class GraphObject(RhinoSceneObject, BaseGraphObject):
         None
 
         """
-        guids = compas_rhino.objects.get_objects(name="{}.edge.*".format(self.graph.name))  # type: ignore
-        compas_rhino.objects.delete_objects(guids, purge=True)
+        compas_rhino.objects.delete_objects(self._guids_edges, purge=True)
 
     # ==========================================================================
     # draw
     # ==========================================================================
 
-    def draw(
-        self,
-        nodes=None,
-        edges=None,
-        nodecolor=None,
-        edgecolor=None,
-    ):
+    def draw(self):
         """Draw the graph using the chosen visualisation settings.
-
-        Parameters
-        ----------
-        nodes : list[int], optional
-            A list of nodes to draw.
-            Default is None, in which case all nodes are drawn.
-        edges : list[tuple[int, int]], optional
-            A list of edges to draw.
-            The default is None, in which case all edges are drawn.
-        nodecolor : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
-            The color of the nodes.
-        edgecolor : :class:`compas.colors.Color` | dict[tuple[int, int], :class:`compas.colors.Color`], optional
-            The color of the edges.
 
         Returns
         -------
@@ -102,22 +89,14 @@ class GraphObject(RhinoSceneObject, BaseGraphObject):
             The GUIDs of the created Rhino objects.
 
         """
-        self.clear()
-        guids = self.draw_nodes(nodes=nodes, color=nodecolor)
-        guids += self.draw_edges(edges=edges, color=edgecolor)
+        guids = self.draw_nodes()
+        guids += self.draw_edges()
+
         self._guids = guids
         return self.guids
 
-    def draw_nodes(self, nodes=None, color=None, group=None):
+    def draw_nodes(self):
         """Draw a selection of nodes.
-
-        Parameters
-        ----------
-        nodes : list[int], optional
-            A list of nodes to draw.
-            Default is None, in which case all nodes are drawn.
-        color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
-            Color of the nodes.
 
         Returns
         -------
@@ -127,36 +106,28 @@ class GraphObject(RhinoSceneObject, BaseGraphObject):
         """
         guids = []
 
-        self.nodecolor = color
+        nodes = list(self.graph.nodes()) if self.show_nodes is True else self.show_nodes or []
 
-        for node in nodes or self.graph.nodes():  # type: ignore
-            name = "{}.node.{}".format(self.graph.name, node)  # type: ignore
-            attr = attributes(name=name, color=self.nodecolor[node], layer=self.layer)  # type: ignore
+        if nodes:
+            for node in nodes:
+                name = "{}.node.{}".format(self.graph.name, node)
+                attr = self.compile_attributes(name=name, color=self.nodecolor[node])
+                geometry = point_to_rhino(self.node_xyz[node])
 
-            point = point_to_rhino(self.node_xyz[node])
+                guid = sc.doc.Objects.AddPoint(geometry, attr)
+                guids.append(guid)
 
-            guid = sc.doc.Objects.AddPoint(point, attr)
-            guids.append(guid)
+        if guids:
+            if self.nodegroup:
+                self.add_to_group(self.nodegroup, guids)
+            elif self.group:
+                self.add_to_group(self.group, guids)
 
-        if group:
-            self.add_to_group(group, guids)
-
+        self._guids_nodes = guids
         return guids
 
-    def draw_edges(self, edges=None, color=None, group=None, show_direction=False):
+    def draw_edges(self):
         """Draw a selection of edges.
-
-        Parameters
-        ----------
-        edges : list[tuple[int, int]], optional
-            A list of edges to draw.
-            The default is None, in which case all edges are drawn.
-        color : :class:`compas.colors.Color` | dict[tuple[int, int], :class:`compas.colors.Color`], optional
-            Color of the edges.
-        group : str, optional
-            The name of a group to add the edges to.
-        show_direction : bool, optional
-            Show the direction of the edges.
 
         Returns
         -------
@@ -166,24 +137,28 @@ class GraphObject(RhinoSceneObject, BaseGraphObject):
         """
         guids = []
 
-        arrow = "end" if show_direction else None
-        self.edgecolor = color
+        edges = list(self.graph.edges()) if self.show_edges is True else self.show_edges or []
+        edgedirection = "end" if self.edgedirection else False
 
-        for edge in edges or self.graph.edges():  # type: ignore
-            u, v = edge
+        if edges:
+            for edge in edges:
+                u, v = edge
 
-            color = self.edgecolor[edge]  # type: ignore
-            name = "{}.edge.{}-{}".format(self.graph.name, u, v)  # type: ignore
-            attr = attributes(name=name, color=color, layer=self.layer, arrow=arrow)  # type: ignore
+                color = self.edgecolor[edge]
+                name = "{}.edge.{}-{}".format(self.graph.name, u, v)
+                attr = self.compile_attributes(name=name, color=color, arrow=edgedirection)
+                geometry = line_to_rhino((self.node_xyz[u], self.node_xyz[v]))
 
-            line = Line(self.node_xyz[u], self.node_xyz[v])
+                guid = sc.doc.Objects.AddLine(geometry, attr)
+                guids.append(guid)
 
-            guid = sc.doc.Objects.AddLine(line_to_rhino(line), attr)
-            guids.append(guid)
+        if guids:
+            if self.edgegroup:
+                self.add_to_group(self.edgegroup, guids)
+            elif self.group:
+                self.add_to_group(self.group, guids)
 
-        if group:
-            self.add_to_group(group, guids)
-
+        self._guids_edges = guids
         return guids
 
     # =============================================================================
@@ -218,11 +193,11 @@ class GraphObject(RhinoSceneObject, BaseGraphObject):
 
         for node in text:
             name = "{}.node.{}.label".format(self.graph.name, node)  # type: ignore
-            attr = attributes(name=name, color=self.nodecolor[node], layer=self.layer)  # type: ignore
+            attr = self.compile_attributes(name=name, color=self.nodecolor[node])
 
             point = point_to_rhino(self.node_xyz[node])
 
-            dot = TextDot(str(text[node]), point)  # type: ignore
+            dot = Rhino.Geometry.TextDot(str(text[node]), point)
             dot.FontHeight = fontheight
             dot.FontFace = fontface
 
@@ -231,6 +206,8 @@ class GraphObject(RhinoSceneObject, BaseGraphObject):
 
         if group:
             self.add_to_group(group, guids)
+
+        self._guids_nodelabels = guids
 
         return guids
 
@@ -263,14 +240,14 @@ class GraphObject(RhinoSceneObject, BaseGraphObject):
         for edge in text:
             u, v = edge
 
-            color = self.edgecolor[edge]  # type: ignore
+            color = self.edgecolor[edge]
             name = "{}.edge.{}-{}.label".format(self.graph.name, u, v)  # type: ignore
-            attr = attributes(name=name, color=color, layer=self.layer)
+            attr = self.compile_attributes(name=name, color=color)
 
             line = Line(self.node_xyz[u], self.node_xyz[v])
             point = point_to_rhino(line.midpoint)
 
-            dot = TextDot(str(text[edge]), point)
+            dot = Rhino.Geometry.TextDot(str(text[edge]), point)
             dot.FontHeight = fontheight
             dot.FontFace = fontface
 
@@ -280,85 +257,6 @@ class GraphObject(RhinoSceneObject, BaseGraphObject):
         if group:
             self.add_to_group(group, guids)
 
-        return guids
-
-    # =============================================================================
-    # draw miscellaneous
-    # =============================================================================
-
-    def draw_spheres(self, radius, color=None, group=None):
-        """Draw spheres at the vertices of the graph.
-
-        Parameters
-        ----------
-        radius : dict[int, float], optional
-            The radius of the spheres.
-        color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
-            The color of the spheres.
-        group : str, optional
-            The name of a group to join the created Rhino objects in.
-
-        Returns
-        -------
-        list[System.Guid]
-            The GUIDs of the created Rhino objects.
-
-        """
-        guids = []
-
-        self.nodecolor = color
-
-        for node in radius:
-            name = "{}.node.{}.sphere".format(self.graph.name, node)  # type: ignore
-            color = self.nodecolor[node]  # type: ignore
-            attr = attributes(name=name, color=color, layer=self.layer)
-
-            sphere = Sphere.from_point_and_radius(self.node_xyz[node], radius[node])
-            geometry = sphere_to_rhino(sphere)
-
-            guid = sc.doc.Objects.AddSphere(geometry, attr)
-            guids.append(guid)
-
-        if group:
-            self.add_to_group(group, guids)
-
-        return guids
-
-    def draw_pipes(self, radius, color=None, group=None):
-        """Draw pipes around the edges of the graph.
-
-        Parameters
-        ----------
-        radius : dict[tuple[int, int], float]
-            The radius per edge.
-        color : :class:`compas.colors.Color` | dict[tuple[int, int], :class:`compas.colors.Color`], optional
-            The color of the pipes.
-        group : str, optional
-            The name of a group to join the created Rhino objects in.
-
-        Returns
-        -------
-        list[System.Guid]
-            The GUIDs of the created Rhino objects.
-
-        """
-        guids = []
-
-        self.edgecolor = color
-
-        for edge in radius:
-            name = "{}.edge.{}-{}.pipe".format(self.graph.name, *edge)  # type: ignore
-            color = self.edgecolor[edge]  # type: ignore
-            attr = attributes(name=name, color=color, layer=self.layer)
-
-            line = Line(self.node_xyz[edge[0]], self.node_xyz[edge[1]])
-            cylinder = Cylinder.from_line_and_radius(line, radius[edge])
-            geometry = cylinder_to_rhino_brep(cylinder)
-
-            guid = sc.doc.Objects.AddBrep(geometry, attr)
-            guids.append(guid)
-
-        if group:
-            self.add_to_group(group, guids)
+        self._guids_edgelabels = guids
 
         return guids

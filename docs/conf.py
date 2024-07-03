@@ -139,7 +139,7 @@ html_theme_options = {
         "image_dark": "_static/compas_icon_white.png",
         "text": "COMPAS docs",
     },
-    "announcement": "This is the documentation for the pre-release of COMPAS 2.0. The documentation of the stable release of COMPAS 1.x is available <a href='https://compas.dev/compas/stable/'>here</a>.",
+    "announcement": "This is the documentation of the first stable release of COMPAS 2. If you have feedback, please give it here: <a href='https://compas.dev/compas/issues'>COMPAS issue tracker</a>.",
     "navigation_depth": 2,
 }
 

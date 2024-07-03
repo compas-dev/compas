@@ -1,17 +1,16 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 from itertools import groupby
 
 import Rhino.Geometry  # type: ignore
 
-from compas.geometry import Point
 from compas.geometry import NurbsCurve
-
-from compas_rhino.conversions import point_to_rhino
-from compas_rhino.conversions import point_to_compas
+from compas.geometry import Point
 from compas_rhino.conversions import line_to_rhino
+from compas_rhino.conversions import point_to_compas
+from compas_rhino.conversions import point_to_rhino
 
 from .curve import RhinoCurve
 
@@ -187,6 +186,7 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
 
         """
         curve = cls()
+        degree = min(degree, len(points) - 1)
         curve.rhino_curve = rhino_curve_from_parameters(points, weights, knots, multiplicities, degree)
         return curve
 
@@ -208,9 +208,10 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
         :class:`compas_rhino.geometry.RhinoNurbsCurve`
 
         """
-        points[:] = [point_to_rhino(point) for point in points]
         curve = cls()
-        curve.rhino_curve = Rhino.Geometry.NurbsCurve.Create(is_periodic, degree, points)
+        degree = min(degree, len(points) - 1)
+        rhino_curve = Rhino.Geometry.NurbsCurve.Create(is_periodic, degree, [point_to_rhino(point) for point in points])
+        curve.rhino_curve = rhino_curve
         return curve
 
     @classmethod

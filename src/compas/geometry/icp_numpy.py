@@ -1,17 +1,16 @@
 import numpy as np
-from numpy import asarray
 from numpy import argmin
+from numpy import asarray
 from numpy.linalg import det
-from scipy.spatial.distance import cdist
-from scipy.linalg import svd
+from numpy.linalg import multi_dot
 from scipy.linalg import norm
-
-from compas.tolerance import TOL
+from scipy.linalg import svd
+from scipy.spatial.distance import cdist
 
 from compas.geometry import pca_numpy
 from compas.geometry import transform_points_numpy
-
-from .linalg import normrow
+from compas.linalg import normrow
+from compas.tolerance import TOL
 
 
 def bestfit_transform(A, B):
@@ -38,7 +37,7 @@ def bestfit_transform(A, B):
     return X
 
 
-def icp_numpy(source, target, tol=None):
+def icp_numpy(source, target, tol=None, maxiter=100):
     """Align two point clouds using the Iterative Closest Point (ICP) method.
 
     Parameters
@@ -50,6 +49,8 @@ def icp_numpy(source, target, tol=None):
     tol : float, optional
         Tolerance for finding matches.
         Default is :attr:`TOL.approximation`.
+    maxiter : int, optional
+        The maximum number of iterations.
 
     Returns
     -------
@@ -75,8 +76,8 @@ def icp_numpy(source, target, tol=None):
     The algorithm terminates when the alignment error is below a specified tolerance.
 
     """
-    from compas.geometry import Transformation
     from compas.geometry import Frame
+    from compas.geometry import Transformation
 
     tol = tol or TOL.approximation
 
@@ -92,7 +93,9 @@ def icp_numpy(source, target, tol=None):
     X = Transformation.from_frame_to_frame(A_frame, B_frame)
     A = transform_points_numpy(A, X)
 
-    for i in range(20):
+    stack = [asarray(X.matrix)]
+
+    for i in range(maxiter):
         D = cdist(A, B, "euclidean")
         closest = argmin(D, axis=1)
         residual = norm(normrow(A - B[closest]))
@@ -103,4 +106,8 @@ def icp_numpy(source, target, tol=None):
         X = bestfit_transform(A, B[closest])
         A = transform_points_numpy(A, X)
 
-    return A, X
+        stack.append(X)
+
+    if len(stack) == 1:
+        return stack[0]
+    return A, multi_dot(stack[::-1])

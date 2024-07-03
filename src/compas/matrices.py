@@ -1,14 +1,11 @@
-# from numpy import abs
+from numpy import abs
 from numpy import array
-
-# from numpy import asarray
-# from numpy import tile
-
+from numpy import asarray
+from numpy import tile
 from scipy.sparse import coo_matrix  # type: ignore
 from scipy.sparse import csr_matrix  # type: ignore
-
-# from scipy.sparse import diags  # type: ignore
-# from scipy.sparse import vstack as svstack  # type: ignore
+from scipy.sparse import diags  # type: ignore
+from scipy.sparse import vstack as svstack  # type: ignore
 
 
 def _return_matrix(M, rtype):
@@ -143,7 +140,7 @@ def connectivity_matrix(edges, rtype="array"):
 
     Examples
     --------
-    >>> connectivity_matrix([[0, 1], [0, 2], [0, 3]], rtype='array')
+    >>> connectivity_matrix([[0, 1], [0, 2], [0, 3]], rtype="array")
     array([[-1.,  1.,  0.,  0.],
            [-1.,  0.,  1.,  0.],
            [-1.,  0.,  0.,  1.]])
@@ -191,7 +188,7 @@ def laplacian_matrix(edges, normalize=False, rtype="array"):
 
     Examples
     --------
-    >>> laplacian_matrix([[0, 1], [0, 2], [0, 3]], rtype='array')
+    >>> laplacian_matrix([[0, 1], [0, 2], [0, 3]], rtype="array")
     array([[ 3., -1., -1., -1.],
            [-1.,  1.,  0.,  0.],
            [-1.,  0.,  1.,  0.],
@@ -211,107 +208,107 @@ def laplacian_matrix(edges, normalize=False, rtype="array"):
 # ==============================================================================
 
 
-# def equilibrium_matrix(C, xyz, free, rtype="array"):
-#     r"""Construct the equilibrium matrix of a structural system.
+def equilibrium_matrix(C, xyz, free, rtype="array"):
+    r"""Construct the equilibrium matrix of a structural system.
 
-#     Parameters
-#     ----------
-#     C : array-like
-#         Connectivity matrix (m x n).
-#     xyz : array-like
-#         Array of vertex coordinates (n x 3).
-#     free : list
-#         The index values of the free vertices.
-#     rtype : {'array', 'csc', 'csr', 'coo', 'list'}
-#         Format of the result.
+    Parameters
+    ----------
+    C : array-like
+        Connectivity matrix (m x n).
+    xyz : array-like
+        Array of vertex coordinates (n x 3).
+    free : list
+        The index values of the free vertices.
+    rtype : {'array', 'csc', 'csr', 'coo', 'list'}
+        Format of the result.
 
-#     Returns
-#     -------
-#     array-like
-#         Constructed equilibrium matrix.
+    Returns
+    -------
+    array-like
+        Constructed equilibrium matrix.
 
-#     Notes
-#     -----
-#     Analysis of the equilibrium matrix reveals some of the properties of the
-#     structural system, its size is (2ni x m) where ni is the number of free or
-#     internal nodes. It is calculated by
+    Notes
+    -----
+    Analysis of the equilibrium matrix reveals some of the properties of the
+    structural system, its size is (2ni x m) where ni is the number of free or
+    internal nodes. It is calculated by
 
-#     .. math::
+    .. math::
 
-#         \mathbf{E}
-#         =
-#         \left[
-#             \begin{array}{c}
-#                 \mathbf{C}^{\mathrm{T}}_{\mathrm{i}}\mathbf{U} \\[0.3em]
-#                 \hline \\[-0.7em]
-#                 \mathbf{C}^{\mathrm{T}}_{\mathrm{i}}\mathbf{V}
-#             \end{array}
-#         \right].
+        \mathbf{E}
+        =
+        \left[
+            \begin{array}{c}
+                \mathbf{C}^{\mathrm{T}}_{\mathrm{i}}\mathbf{U} \\[0.3em]
+                \hline \\[-0.7em]
+                \mathbf{C}^{\mathrm{T}}_{\mathrm{i}}\mathbf{V}
+            \end{array}
+        \right].
 
-#     The matrix of vertex coordinates is vectorised to speed up the
-#     calculations.
+    The matrix of vertex coordinates is vectorised to speed up the
+    calculations.
 
-#     Examples
-#     --------
-#     >>> C = connectivity_matrix([[0, 1], [0, 2], [0, 3]])
-#     >>> xyz = [[0, 0, 1], [0, 1, 0], [-1, -1, 0], [1, -1, 0]]
-#     >>> equilibrium_matrix(C, xyz, [0], rtype='array')
-#     array([[ 0.,  1., -1.],
-#            [-1.,  1.,  1.]])
+    Examples
+    --------
+    >>> C = connectivity_matrix([[0, 1], [0, 2], [0, 3]])
+    >>> xyz = [[0, 0, 1], [0, 1, 0], [-1, -1, 0], [1, -1, 0]]
+    >>> equilibrium_matrix(C, xyz, [0], rtype="array")
+    array([[ 0.,  1., -1.],
+           [-1.,  1.,  1.]])
 
-#     """
-#     xyz = asarray(xyz, dtype=float)
-#     C = csr_matrix(C)
-#     xy = xyz[:, :2]
-#     uv = C.dot(xy)
-#     U = diags([uv[:, 0].flatten()], [0])
-#     V = diags([uv[:, 1].flatten()], [0])
-#     Ct = C.transpose()
-#     Cti = Ct[free, :]
-#     E = svstack((Cti.dot(U), Cti.dot(V)))
-#     return _return_matrix(E, rtype)
-
-
-# def mass_matrix(Ct, ks, q=0, c=1, tiled=True):
-#     r"""Creates a graph's nodal mass matrix.
-
-#     Parameters
-#     ----------
-#     Ct : sparse
-#         Sparse transpose of the connectivity matrix (n x m).
-#     ks : array
-#         Vector of member EA / L (m x 1).
-#     q : array
-#         Vector of member force densities (m x 1).
-#     c : float
-#         Convergence factor.
-#     tiled : bool
-#         Whether to tile horizontally by 3 for x, y, z.
-
-#     Returns
-#     -------
-#     array
-#         Mass matrix, either (m x 1) or (m x 3).
-
-#     Notes
-#     -----
-#     The mass matrix is defined as the sum of the member axial stiffnesses
-#     (inline) of the elements connected to each node, plus the force density.
-#     The force density ensures a non-zero value in form-finding/pre-stress
-#     modelling where E=0.
-
-#     .. math::
-
-#         \mathbf{m} =
-#         |\mathbf{C}^\mathrm{T}|
-#         (\mathbf{E} \circ \mathbf{A} \oslash \mathbf{l} + \mathbf{f} \oslash \mathbf{l})
-
-#     """
-#     m = c * abs(Ct).dot(ks + q)
-#     if tiled:
-#         return tile(m.reshape((-1, 1)), (1, 3))
-#     return m
+    """
+    xyz = asarray(xyz, dtype=float)
+    C = csr_matrix(C)
+    xy = xyz[:, :2]
+    uv = C.dot(xy)
+    U = diags([uv[:, 0].flatten()], [0])
+    V = diags([uv[:, 1].flatten()], [0])
+    Ct = C.transpose()
+    Cti = Ct[free, :]
+    E = svstack((Cti.dot(U), Cti.dot(V)))
+    return _return_matrix(E, rtype)
 
 
-# def stiffness_matrix():
-#     raise NotImplementedError
+def mass_matrix(Ct, ks, q=0, c=1, tiled=True):
+    r"""Creates a graph's nodal mass matrix.
+
+    Parameters
+    ----------
+    Ct : sparse
+        Sparse transpose of the connectivity matrix (n x m).
+    ks : array
+        Vector of member EA / L (m x 1).
+    q : array
+        Vector of member force densities (m x 1).
+    c : float
+        Convergence factor.
+    tiled : bool
+        Whether to tile horizontally by 3 for x, y, z.
+
+    Returns
+    -------
+    array
+        Mass matrix, either (m x 1) or (m x 3).
+
+    Notes
+    -----
+    The mass matrix is defined as the sum of the member axial stiffnesses
+    (inline) of the elements connected to each node, plus the force density.
+    The force density ensures a non-zero value in form-finding/pre-stress
+    modelling where E=0.
+
+    .. math::
+
+        \mathbf{m} =
+        |\mathbf{C}^\mathrm{T}|
+        (\mathbf{E} \circ \mathbf{A} \oslash \mathbf{l} + \mathbf{f} \oslash \mathbf{l})
+
+    """
+    m = c * abs(Ct).dot(ks + q)
+    if tiled:
+        return tile(m.reshape((-1, 1)), (1, 3))
+    return m
+
+
+def stiffness_matrix():
+    raise NotImplementedError

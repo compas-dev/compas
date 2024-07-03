@@ -1,15 +1,15 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 import json
 
-import compas_rhino
-
-import System  # type: ignore
 import Rhino  # type: ignore
 import rhinoscriptsyntax as rs  # type: ignore
 import scriptcontext as sc  # type: ignore
+import System  # type: ignore
+
+import compas_rhino
 
 find_object = sc.doc.Objects.Find
 
@@ -50,7 +50,7 @@ def get_objects(name=None, color=None, layer=None, type=None):
         import compas_rhino
 
         guids_all = compas_rhino.get_objects()
-        guids_compas = compas_rhino.get_objects(name='COMPAS.*')
+        guids_compas = compas_rhino.get_objects(name="COMPAS.*")
         guids_red = compas_rhino.get_objects(color=(255, 0, 0))
         guids_points = compas_rhino.get_objects(type=compas_rhino.rs.filter.point)
         guids_redpoints = compas_rhino.get_objects(color=(255, 0, 0), type=compas_rhino.rs.filter.point)
@@ -298,11 +298,7 @@ def set_object_attributes(guid, attr):
         try:
             u.Set(name, value)
         except Exception:
-            print(
-                "The following item cannot be stored in the user dictionary of this object: {0} => {1}".format(
-                    name, value
-                )
-            )
+            print("The following item cannot be stored in the user dictionary of this object: {0} => {1}".format(name, value))
 
 
 def get_object_attributes_from_name(guids, prefix=None):

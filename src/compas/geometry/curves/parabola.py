@@ -1,12 +1,13 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from compas.geometry import Vector
-from compas.geometry import Point
 from compas.geometry import Frame
-from .line import Line
+from compas.geometry import Point
+from compas.geometry import Vector
+
 from .conic import Conic
+from .line import Line
 
 
 class Parabola(Conic):
@@ -72,12 +73,12 @@ class Parabola(Conic):
 
     Visualize the parabola with the COMPAS viewer.
 
-    >>> from compas_view2.app import App  # doctest: +SKIP
-    >>> viewer = App()                    # doctest: +SKIP
-    >>> viewer.add(line)                  # doctest: +SKIP
-    >>> viewer.add(parabola)              # doctest: +SKIP
-    >>> viewer.add(parabola.frame)        # doctest: +SKIP
-    >>> viewer.run()                      # doctest: +SKIP
+    >>> from compas_viewer import Viewer  # doctest: +SKIP
+    >>> viewer = Viewer()  # doctest: +SKIP
+    >>> viewer.scene.add(line)  # doctest: +SKIP
+    >>> viewer.scene.add(parabola)  # doctest: +SKIP
+    >>> viewer.scene.add(parabola.frame)  # doctest: +SKIP
+    >>> viewer.show()  # doctest: +SKIP
 
     """
 

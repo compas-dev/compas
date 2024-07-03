@@ -1,29 +1,15 @@
-from typing import Any
 from typing import Optional
 
 import bpy  # type: ignore
 
-from compas.geometry import Point
 from compas.colors import Color
-
 from compas.scene import GeometryObject
+
 from .sceneobject import BlenderSceneObject
 
 
 class PointObject(BlenderSceneObject, GeometryObject):
-    """Scene object for drawing points in Blender.
-
-    Parameters
-    ----------
-    point : :class:`compas.geometry.Point`
-        A COMPAS point.
-    **kwargs : dict, optional
-        Additional keyword arguments.
-
-    """
-
-    def __init__(self, point: Point, **kwargs: Any):
-        super().__init__(geometry=point, **kwargs)
+    """Scene object for drawing points in Blender."""
 
     def draw(
         self,

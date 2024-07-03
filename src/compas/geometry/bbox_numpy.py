@@ -1,22 +1,21 @@
-from numpy import array
-from numpy import asarray
-from numpy import argmax
-from numpy import argmin
 from numpy import amax
 from numpy import amin
+from numpy import argmax
+from numpy import argmin
+from numpy import array
+from numpy import asarray
 from numpy import dot
 from numpy import sum
-from numpy import zeros
 from numpy import vstack
-
+from numpy import zeros
 from scipy.spatial import ConvexHull
 
-from compas.tolerance import TOL
-
-from compas.geometry import pca_numpy
+from compas.geometry import length_vector
 from compas.geometry import local_axes
-from compas.geometry import world_to_local_coordinates_numpy
 from compas.geometry import local_to_world_coordinates_numpy
+from compas.geometry import pca_numpy
+from compas.geometry import world_to_local_coordinates_numpy
+from compas.tolerance import TOL
 
 from .bbox import bounding_box
 
@@ -75,7 +74,7 @@ def oriented_bounding_box_numpy(points, tol=None):
     >>> a = length_vector(subtract_vectors(bbox[1], bbox[0]))
     >>> b = length_vector(subtract_vectors(bbox[3], bbox[0]))
     >>> c = length_vector(subtract_vectors(bbox[4], bbox[0]))
-    >>> close(a * b * c, 30.)
+    >>> close(a * b * c, 30.0)
     True
 
     """
@@ -103,10 +102,10 @@ def oriented_bounding_box_numpy(points, tol=None):
         area2 = (rect2[1][0] - rect2[0][0]) * (rect2[3][1] - rect2[0][1])
 
         if area1 < area2:
-            rect = [[x, y, 0.0] for x, y in rect1]
+            rect = [[pt[0], pt[1], 0.0] for pt in rect1]
             bbox = rect + rect
         else:
-            rect = [[x, y, 0.0] for x, y in rect2]
+            rect = [[pt[0], pt[1], 0.0] for pt in rect2]
             bbox = local_to_world_coordinates_numpy(frame, rect)
             bbox = vstack((bbox, bbox)).tolist()
 
@@ -200,6 +199,8 @@ def minimum_volume_box(points, return_size=False):
     for simplex in hull.simplices:
         a, b, c = points[simplex]
         uvw = local_axes(a, b, c)
+        if not length_vector(uvw[0]) or not length_vector(uvw[1]):
+            continue
         frame = [a, uvw[0], uvw[1]]
         rst = world_to_local_coordinates_numpy(frame, xyz)
         rmin, smin, tmin = amin(rst, axis=0)

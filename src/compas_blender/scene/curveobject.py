@@ -1,30 +1,16 @@
-from typing import Any
 from typing import Optional
 
 import bpy  # type: ignore
 
-from compas.geometry import Curve
 from compas.colors import Color
+from compas.scene import GeometryObject
 from compas_blender import conversions
 
-from compas.scene import GeometryObject
 from .sceneobject import BlenderSceneObject
 
 
 class CurveObject(BlenderSceneObject, GeometryObject):
-    """Scene object for drawing curves in Blender.
-
-    Parameters
-    ----------
-    curve : :class:`compas.geometry.Curve`
-        A COMPAS curve.
-    **kwargs : dict, optional
-        Additional keyword arguments.
-
-    """
-
-    def __init__(self, curve: Curve, **kwargs: Any):
-        super().__init__(geometry=curve, **kwargs)
+    """Scene object for drawing curves in Blender."""
 
     def draw(
         self,

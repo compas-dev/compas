@@ -1,10 +1,10 @@
 from typing import Optional
 
-import bpy  # type: ignore
 import bmesh  # type: ignore
+import bpy  # type: ignore
 
-from compas.geometry import Translation
 from compas.datastructures import Mesh
+from compas.geometry import Translation
 
 # To Do
 # -----

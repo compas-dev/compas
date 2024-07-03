@@ -1,13 +1,13 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
-
-from System.Drawing.Color import FromArgb
+from __future__ import print_function
 
 from Rhino.Geometry import Point3d
+from System.Drawing.Color import FromArgb
 
+from compas.itertools import iterable_like
 from compas.utilities import is_sequence_of_iterable
-from compas.utilities import iterable_like
+
 from .base import BaseConduit
 
 
@@ -46,7 +46,7 @@ class LinesConduit(BaseConduit):
         from random import randint
 
         points = [(1.0 * randint(0, 30), 1.0 * randint(0, 30), 0.0) for _ in range(100)]
-        lines  = [(points[i], points[i + 1]) for i in range(99)]
+        lines = [(points[i], points[i + 1]) for i in range(99)]
         conduit = LinesConduit(lines)
 
         with conduit.enabled():

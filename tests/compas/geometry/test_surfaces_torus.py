@@ -3,12 +3,12 @@ import json
 import compas
 from random import random
 
-from compas.utilities import linspace
+from compas.itertools import linspace
 from compas.geometry import Point  # noqa: F401
 from compas.geometry import Vector  # noqa: F401
 from compas.geometry import Frame
 from compas.geometry import ToroidalSurface
-from compas.geometry import close
+from compas.tolerance import TOL
 
 
 @pytest.mark.parametrize(
@@ -34,8 +34,8 @@ def test_torus(radius_axis, radius_pipe):
 
     other = eval(repr(torus))
 
-    assert close(torus.radius_axis, other.radius_axis, tol=1e-12)
-    assert close(torus.radius_pipe, other.radius_pipe, tol=1e-12)
+    assert TOL.is_close(torus.radius_axis, other.radius_axis)
+    assert TOL.is_close(torus.radius_pipe, other.radius_pipe)
     assert torus.frame == other.frame
 
 
@@ -60,8 +60,8 @@ def test_torus_with_frame(frame):
 
     other = eval(repr(torus))
 
-    assert close(torus.radius_axis, other.radius_axis, tol=1e-12)
-    assert close(torus.radius_pipe, other.radius_pipe, tol=1e-12)
+    assert TOL.is_close(torus.radius_axis, other.radius_axis)
+    assert TOL.is_close(torus.radius_pipe, other.radius_pipe)
     assert torus.frame == other.frame
 
 

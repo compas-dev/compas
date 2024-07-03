@@ -92,19 +92,6 @@ def register(item_type, sceneobject_type, context=None):
     ITEM_SCENEOBJECT[context][item_type] = sceneobject_type
 
 
-def is_viewer_open():
-    """Returns True if an instance of the compas_view2 App is available.
-
-    Returns
-    -------
-    bool
-
-    """
-    from compas.scene import Scene
-
-    return Scene.viewerinstance is not None
-
-
 def detect_current_context():
     """Chooses an appropriate context depending on available contexts and open instances. with the following priority:
     1. Viewer
@@ -119,8 +106,6 @@ def detect_current_context():
 
     """
 
-    if is_viewer_open():
-        return "Viewer"
     if compas.is_grasshopper():
         return "Grasshopper"
     if compas.is_rhino():
@@ -152,9 +137,7 @@ def _get_sceneobject_cls(data, **kwargs):
                 break
 
     if cls is None:
-        raise SceneObjectNotRegisteredError(
-            "No scene object is registered for this data type: {} in this context: {}".format(dtype, context_name)
-        )
+        raise SceneObjectNotRegisteredError("No scene object is registered for this data type: {} in this context: {}".format(dtype, context_name))
 
     return cls
 
@@ -164,9 +147,7 @@ def get_sceneobject_cls(item, **kwargs):
         register_scene_objects()
 
     if item is None:
-        raise ValueError(
-            "Cannot create a scene object for None. Please ensure you pass a instance of a supported class."
-        )
+        raise ValueError("Cannot create a scene object for None. Please ensure you pass a instance of a supported class.")
 
     cls = _get_sceneobject_cls(item, **kwargs)
     PluginValidator.ensure_implementations(cls)

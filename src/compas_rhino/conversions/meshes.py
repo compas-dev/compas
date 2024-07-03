@@ -13,7 +13,8 @@ import System  # type: ignore
 from compas.colors import Color
 from compas.datastructures import Mesh
 from compas.geometry import centroid_polygon
-from compas.utilities import pairwise
+from compas.itertools import pairwise
+
 from .geometry import vector_to_compas
 
 
@@ -23,7 +24,7 @@ def average_color(colors):
     r = sum(r) / c
     g = sum(g) / c
     b = sum(b) / c
-    return int(r), int(g), int(b)
+    return Color(int(r), int(g), int(b))
 
 
 def connected_ngon(face, vertices, rmesh):
@@ -204,19 +205,18 @@ def vertices_and_faces_to_rhino(
 
             face_callback(face)
 
-    # if color:
-    #     mesh.VertexColors.CreateMonotoneMesh(SystemColor.FromArgb(*color.rgb255))
-    # else:
-    if not color:
-        if vertexcolors:
-            if len(mesh.Vertices) != len(vertexcolors):
-                raise ValueError("The number of vertex colors does not match the number of vertices.")
+    if vertexcolors:
+        if len(mesh.Vertices) != len(vertexcolors):
+            raise ValueError("The number of vertex colors does not match the number of vertices.")
 
-            colors = System.Array.CreateInstance(System.Drawing.Color, len(vertexcolors))
-            for index, color in enumerate(vertexcolors):
-                colors[index] = System.Drawing.Color.FromArgb(*color.rgb255)
+        colors = System.Array.CreateInstance(System.Drawing.Color, len(vertexcolors))
+        for index, color in enumerate(vertexcolors):
+            colors[index] = System.Drawing.Color.FromArgb(*color.rgb255)
 
-            mesh.VertexColors.SetColors(colors)
+        mesh.VertexColors.SetColors(colors)
+    else:
+        if color:
+            mesh.VertexColors.CreateMonotoneMesh(System.Drawing.Color.FromArgb(*color.rgb255))
 
     # mesh.UnifyNormals()
     mesh.Normals.ComputeNormals()

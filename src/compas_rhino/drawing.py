@@ -1,21 +1,20 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 from functools import wraps
 
+import Rhino  # type: ignore
 import rhinoscriptsyntax as rs  # type: ignore
 import scriptcontext as sc  # type: ignore
 import System  # type: ignore
-import Rhino  # type: ignore
 
 import compas_rhino.objects
-from compas_rhino.layers import create_layers_from_path
-from compas_rhino.layers import clear_layer
-from compas_rhino.layers import clear_current_layer
-from compas_rhino.conversions import vertices_and_faces_to_rhino
-
 from compas.geometry import centroid_polygon
+from compas_rhino.conversions import vertices_and_faces_to_rhino
+from compas_rhino.layers import clear_current_layer
+from compas_rhino.layers import clear_layer
+from compas_rhino.layers import create_layers_from_path
 
 find_object = sc.doc.Objects.Find
 add_point = sc.doc.Objects.AddPoint
@@ -85,15 +84,17 @@ def draw_labels(labels, **kwargs):
 
     .. code-block:: python
 
-        Schema({
-            'pos': And(list, lambda x: len(x) == 3),
-            'text': And(str, len),
-            Optional('name', default=''): str,
-            Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
-            Optional('layer', default=None): str,
-            Optional('fontsize', default=10): Or(int, float),
-            Optional('font', default="Arial Regular"): str
-        })
+        Schema(
+            {
+                "pos": And(list, lambda x: len(x) == 3),
+                "text": And(str, len),
+                Optional("name", default=""): str,
+                Optional("color", default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
+                Optional("layer", default=None): str,
+                Optional("fontsize", default=10): Or(int, float),
+                Optional("font", default="Arial Regular"): str,
+            }
+        )
 
     """
     guids = []
@@ -150,12 +151,14 @@ def draw_points(points, **kwargs):
 
     .. code-block:: python
 
-        Schema({
-            'pos': And(list, lambda x: len(x) == 3),
-            Optional('name', default=''): str,
-            Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
-            Optional('layer', default=None): str
-        })
+        Schema(
+            {
+                "pos": And(list, lambda x: len(x) == 3),
+                Optional("name", default=""): str,
+                Optional("color", default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
+                Optional("layer", default=None): str,
+            }
+        )
 
     """
     guids = []
@@ -207,15 +210,17 @@ def draw_lines(lines, **kwargs):
 
     .. code-block:: python
 
-        Schema({
-            'start': And(list, lambda x: len(x) == 3),
-            'end': And(list, lambda x: len(x) == 3),
-            Optional('name', default=''): str,
-            Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
-            Optional('layer', default=None): str,
-            Optional('arrow', default=None): str,
-            Optional('width', default=None): Or(int, float),
-        })
+        Schema(
+            {
+                "start": And(list, lambda x: len(x) == 3),
+                "end": And(list, lambda x: len(x) == 3),
+                Optional("name", default=""): str,
+                Optional("color", default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
+                Optional("layer", default=None): str,
+                Optional("arrow", default=None): str,
+                Optional("width", default=None): Or(int, float),
+            }
+        )
 
     """
     guids = []
@@ -277,15 +282,17 @@ def draw_geodesics(geodesics, **kwargs):
 
     .. code-block:: python
 
-        Schema({
-            'start': And(list, lambda x: len(x) == 3),
-            'end': And(list, lambda x: len(x) == 3),
-            'srf': Or(str, System.Guid),
-            Optional('name', default=''): str,
-            Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
-            Optional('layer', default=None): str,
-            Optional('arrow', default=None): str,
-        })
+        Schema(
+            {
+                "start": And(list, lambda x: len(x) == 3),
+                "end": And(list, lambda x: len(x) == 3),
+                "srf": Or(str, System.Guid),
+                Optional("name", default=""): str,
+                Optional("color", default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
+                Optional("layer", default=None): str,
+                Optional("arrow", default=None): str,
+            }
+        )
 
     """
     guids = []
@@ -435,8 +442,8 @@ def draw_breps(faces, u=10, v=10, join=False, **kwargs):
 
     Draw convert each mesh face to brep dict schema:
 
-    >>> vertices = mesh.vertices_attributes('xyz')
-    >>> breps = [{'points': mesh.face_coordinates(face)} for face in mesh.faces()]
+    >>> vertices = mesh.vertices_attributes("xyz")
+    >>> breps = [{"points": mesh.face_coordinates(face)} for face in mesh.faces()]
 
     Draw brep faces as one joined brep.
 
@@ -524,14 +531,16 @@ def draw_cylinders(cylinders, cap=False, **kwargs):
 
     .. code-block:: python
 
-        Schema({
-            'start': And(list, lambda x: len(x) == 3),
-            'end': And(list, lambda x: len(x) == 3),
-            'radius': And(Or(int, float), lambda x: x > 0.0),
-            Optional('name', default=''): str,
-            Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
-            Optional('layer', default=None): str,
-        })
+        Schema(
+            {
+                "start": And(list, lambda x: len(x) == 3),
+                "end": And(list, lambda x: len(x) == 3),
+                "radius": And(Or(int, float), lambda x: x > 0.0),
+                Optional("name", default=""): str,
+                Optional("color", default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
+                Optional("layer", default=None): str,
+            }
+        )
 
     """
     guids = []
@@ -603,13 +612,15 @@ def draw_pipes(pipes, cap=2, fit=1.0, **kwargs):
 
     .. code-block:: python
 
-        Schema({
-            'points': And(list, lambda x: all(len(y) == 3 for y in x)),
-            'radius': And(Or(int, float), lambda x: x > 0.0),
-            Optional('name', default=''): str,
-            Optional('color', default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
-            Optional('layer', default=None): str,
-        })
+        Schema(
+            {
+                "points": And(list, lambda x: all(len(y) == 3 for y in x)),
+                "radius": And(Or(int, float), lambda x: x > 0.0),
+                Optional("name", default=""): str,
+                Optional("color", default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
+                Optional("layer", default=None): str,
+            }
+        )
 
     """
     guids = []
@@ -626,9 +637,7 @@ def draw_pipes(pipes, cap=2, fit=1.0, **kwargs):
         if type(radius) in (int, float):
             radius = [radius] * 2
         radius = [float(r) for r in radius]
-        rail = Rhino.Geometry.Curve.CreateControlPointRhino.Geometry.Curve(
-            [Rhino.Geometry.Point3d(*xyz) for xyz in points]
-        )
+        rail = Rhino.Geometry.Curve.CreateControlPointRhino.Geometry.Curve([Rhino.Geometry.Point3d(*xyz) for xyz in points])
         breps = Rhino.Geometry.Brep.CreatePipe(rail, params, radius, 1, cap, fit, abs_tol, ang_tol)
         temp = [add_brep(brep) for brep in breps]
         for guid in temp:
@@ -674,13 +683,15 @@ def draw_spheres(spheres, **kwargs):
 
     .. code-block:: python
 
-        Schema({
-            'pos': And(list, lambda x: len(x) == 3),
-            'radius': And(Or(int, float), lambda x: x > 0.0),
-            Optional('name', default=''): str,
-            Optional('color', default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
-            Optional('layer', default=None): str,
-        })
+        Schema(
+            {
+                "pos": And(list, lambda x: len(x) == 3),
+                "radius": And(Or(int, float), lambda x: x > 0.0),
+                Optional("name", default=""): str,
+                Optional("color", default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
+                Optional("layer", default=None): str,
+            }
+        )
 
     """
     guids = []
@@ -808,12 +819,14 @@ def draw_faces(faces, **kwargs):
 
     .. code-block:: python
 
-        Schema({
-            'points': And(len, lambda x: all(len(y) == 3 for y in x)),
-            Optional('name', default=''): str,
-            Optional('color', default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
-            Optional('vertexcolors', default=None): And(len, lambda x: all(0 <= y <= 255 for y in x)),
-        })
+        Schema(
+            {
+                "points": And(len, lambda x: all(len(y) == 3 for y in x)),
+                Optional("name", default=""): str,
+                Optional("color", default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
+                Optional("vertexcolors", default=None): And(len, lambda x: all(0 <= y <= 255 for y in x)),
+            }
+        )
 
     """
     guids = []
@@ -886,13 +899,15 @@ def draw_circles(circles, **kwargs):
 
     .. code-block:: python
 
-        Schema({
-            'plane': lambda x: len(x[0]) == 3 and len(x[1]) == 3,
-            'radius': And(Or(int, float), lambda x: x > 0),
-            Optional('name', default=''): str,
-            Optional('color', default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
-            Optional('layer', default=None): str
-        })
+        Schema(
+            {
+                "plane": lambda x: len(x[0]) == 3 and len(x[1]) == 3,
+                "radius": And(Or(int, float), lambda x: x > 0),
+                Optional("name", default=""): str,
+                Optional("color", default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
+                Optional("layer", default=None): str,
+            }
+        )
 
     """
     guids = []
@@ -902,9 +917,7 @@ def draw_circles(circles, **kwargs):
         name = data.get("name", "")
         color = data.get("color")
         layer = data.get("layer")
-        circle = Rhino.Geometry.Circle(
-            Rhino.Geometry.Plane(Rhino.Geometry.Point3d(*point), Rhino.Geometry.Vector3d(*normal)), radius
-        )
+        circle = Rhino.Geometry.Circle(Rhino.Geometry.Plane(Rhino.Geometry.Point3d(*point), Rhino.Geometry.Vector3d(*normal)), radius)
         guid = add_circle(circle)
         if not guid:
             continue
@@ -948,12 +961,14 @@ def draw_curves(curves, **kwargs):
 
     .. code-block:: python
 
-        Schema({
-            'curve': compas.geometry.Rhino.Geometry.Curve,
-            Optional('name', default=''): str,
-            Optional('color', default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
-            Optional('layer', default=None): str
-        })
+        Schema(
+            {
+                "curve": compas.geometry.Rhino.Geometry.Curve,
+                Optional("name", default=""): str,
+                Optional("color", default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
+                Optional("layer", default=None): str,
+            }
+        )
 
     """
     guids = []
@@ -1004,12 +1019,14 @@ def draw_surfaces(surfaces, **kwargs):
 
     .. code-block:: python
 
-        Schema({
-            'surface': compas.geometry.Surface,
-            Optional('name', default=''): str,
-            Optional('color', default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
-            Optional('layer', default=None): str
-        })
+        Schema(
+            {
+                "surface": compas.geometry.Surface,
+                Optional("name", default=""): str,
+                Optional("color", default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
+                Optional("layer", default=None): str,
+            }
+        )
 
     """
     guids = []

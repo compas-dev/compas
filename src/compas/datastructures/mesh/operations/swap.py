@@ -1,6 +1,6 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 
 def trimesh_swap_edge(mesh, edge, allow_boundary=True):

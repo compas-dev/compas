@@ -47,11 +47,42 @@ def test_vector2(x, y):
 def test_vector_operators():
     a = Vector(random(), random(), random())
     b = Vector(random(), random(), random())
-    assert a + b == [a.x + b.x, a.y + b.y, a.z + b.z]
-    assert a - b == [a.x - b.x, a.y - b.y, a.z - b.z]
+    c = [random(), random(), random()]
+
     assert a * 2 == [a.x * 2, a.y * 2, a.z * 2]
     assert a / 2 == [a.x / 2, a.y / 2, a.z / 2]
     assert a**3 == [a.x**3, a.y**3, a.z**3]
+    assert 2 * a == [2 * a.x, 2 * a.y, 2 * a.z]
+
+    assert a + b == [a.x + b.x, a.y + b.y, a.z + b.z]
+    assert a - b == [a.x - b.x, a.y - b.y, a.z - b.z]
+    assert a * b == [a.x * b.x, a.y * b.y, a.z * b.z]
+    assert a / b == [a.x / b.x, a.y / b.y, a.z / b.z]
+
+    assert b + a == [a.x + b.x, a.y + b.y, a.z + b.z]
+    assert b - a == [b.x - a.x, b.y - a.y, b.z - a.z]
+    assert b * a == [a.x * b.x, a.y * b.y, a.z * b.z]
+    assert b / a == [b.x / a.x, b.y / a.y, b.z / a.z]
+
+    assert a * c == [a.x * c[0], a.y * c[1], a.z * c[2]]
+    assert c * a == [a.x * c[0], a.y * c[1], a.z * c[2]]
+    assert a + c == [a.x + c[0], a.y + c[1], a.z + c[2]]
+    assert a - c == [a.x - c[0], a.y - c[1], a.z - c[2]]
+
+    assert c * a == [a.x * c[0], a.y * c[1], a.z * c[2]]
+    assert c / a == [c[0] / a.x, c[1] / a.y, c[2] / a.z]
+    assert c + a == [a.x + c[0], a.y + c[1], a.z + c[2]]
+    assert c - a == [c[0] - a.x, c[1] - a.y, c[2] - a.z]
+
+    with pytest.raises(TypeError) as exc_info:
+        a / "wrong type"
+    if not compas.IPY:
+        assert str(exc_info.value) == "Cannot cast wrong type <class 'str'> to Vector"
+
+    with pytest.raises(TypeError) as exc_info:
+        a * "wrong type"
+    if not compas.IPY:
+        assert str(exc_info.value) == "Cannot cast wrong type <class 'str'> to Vector"
 
 
 def test_vector_equality():

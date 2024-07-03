@@ -11,20 +11,20 @@ Many thanks to Christoph Gohlke, Martin John Baker, Sachin Joglekar and Andrew
 Ippoliti for providing code and documentation.
 """
 
-from compas.utilities import flatten
-from compas.geometry import normalize_vector
-from compas.geometry import cross_vectors
-from compas.geometry import length_vector
-from compas.geometry import allclose
-from compas.geometry import decompose_matrix
-from compas.geometry import matrix_from_euler_angles
-from compas.geometry import euler_angles_from_matrix
-from compas.geometry import matrix_from_axis_and_angle
-from compas.geometry import axis_and_angle_from_matrix
-from compas.geometry import matrix_from_quaternion
-from compas.geometry import matrix_from_frame
-from compas.geometry import basis_vectors_from_matrix
 from compas.geometry import Transformation
+from compas.geometry import axis_and_angle_from_matrix
+from compas.geometry import basis_vectors_from_matrix
+from compas.geometry import cross_vectors
+from compas.geometry import decompose_matrix
+from compas.geometry import euler_angles_from_matrix
+from compas.geometry import length_vector
+from compas.geometry import matrix_from_axis_and_angle
+from compas.geometry import matrix_from_euler_angles
+from compas.geometry import matrix_from_frame
+from compas.geometry import matrix_from_quaternion
+from compas.geometry import normalize_vector
+from compas.itertools import flatten
+from compas.tolerance import TOL
 
 
 class Rotation(Transformation):
@@ -63,7 +63,7 @@ class Rotation(Transformation):
     >>> from compas.geometry import Frame
     >>> f1 = Frame([0, 0, 0], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
     >>> R = Rotation.from_frame(f1)
-    >>> args = False, 'xyz'
+    >>> args = False, "xyz"
     >>> alpha, beta, gamma = R.euler_angles(*args)
     >>> xaxis, yaxis, zaxis = [1, 0, 0], [0, 1, 0], [0, 0, 1]
     >>> Rx = Rotation.from_axis_and_angle(xaxis, alpha)
@@ -78,7 +78,7 @@ class Rotation(Transformation):
     def __init__(self, matrix=None, check=False, name=None):
         if matrix and check:
             _, _, angles, _, _ = decompose_matrix(matrix)
-            if not allclose(flatten(matrix), flatten(matrix_from_euler_angles(angles))):
+            if not TOL.is_allclose(flatten(matrix), flatten(matrix_from_euler_angles(angles))):
                 raise ValueError("This is not a proper rotation matrix.")
         super(Rotation, self).__init__(matrix=matrix, name=name)
 
@@ -230,11 +230,11 @@ class Rotation(Transformation):
 
         Examples
         --------
-        >>> from compas.geometry import allclose
+        >>> from compas.tolerance import TOL
         >>> q1 = [0.945, -0.021, -0.125, 0.303]
         >>> R = Rotation.from_quaternion(q1)
         >>> q2 = R.quaternion
-        >>> allclose(q1, q2)
+        >>> TOL.is_allclose(q1, q2)
         True
 
         """
@@ -258,11 +258,11 @@ class Rotation(Transformation):
 
         Examples
         --------
-        >>> from compas.geometry import allclose
+        >>> from compas.tolerance import TOL
         >>> aav1 = [-0.043, -0.254, 0.617]
         >>> R = Rotation.from_axis_angle_vector(aav1)
         >>> aav2 = R.axis_angle_vector
-        >>> allclose(aav1, aav2)
+        >>> TOL.is_allclose(aav1, aav2)
         True
 
         """
@@ -297,12 +297,12 @@ class Rotation(Transformation):
 
         Examples
         --------
-        >>> from compas.geometry import allclose
+        >>> from compas.tolerance import TOL
         >>> ea1 = 1.4, 0.5, 2.3
-        >>> args = False, 'xyz'
+        >>> args = False, "xyz"
         >>> R1 = Rotation.from_euler_angles(ea1, *args)
         >>> ea2 = R1.euler_angles(*args)
-        >>> allclose(ea1, ea2)
+        >>> TOL.is_allclose(ea1, ea2)
         True
 
         >>> alpha, beta, gamma = ea1
@@ -342,12 +342,12 @@ class Rotation(Transformation):
 
         Examples
         --------
-        >>> from compas.geometry import allclose
+        >>> from compas.tolerance import TOL
         >>> ea1 = 1.4, 0.5, 2.3
-        >>> args = False, 'xyz'
+        >>> args = False, "xyz"
         >>> R1 = Rotation.from_euler_angles(ea1, *args)
         >>> ea2 = R1.euler_angles(*args)
-        >>> allclose(ea1, ea2)
+        >>> TOL.is_allclose(ea1, ea2)
         True
 
         """

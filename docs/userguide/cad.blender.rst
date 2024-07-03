@@ -26,23 +26,62 @@ The installation of COMPAS in Blender can be done in two ways:
 * by installing COMPAS in Blender's Python environment using ``pip``, or
 * by using the ``compas_blender.install`` command.
 
-Using ``pip``
--------------
+Using ``pip`` (recommended)
+---------------------------
 
 Blender comes with its own Python installation.
 This procedure simply uses that Python installation and associated ``pip`` to install COMPAS.
-It doesn't require an existing COMPAS installation on your system.
+The location of the executable is different on different platforms.
+The default locations are:
 
-You need to know the path to the Python executable that comes with Blender.
-On macOS, this is typically something like ``/Applications/Blender.app/Contents/Resources/4.0/python/bin/python3.10``.
+* Windows: ``C:\Program Files\Blender Foundation\Blender 4.0\4.0\python\bin\python.exe``
+* macOS: ``/Applications/Blender.app/Contents/Resources/4.0/python/bin/python3.10``
+* Linux: ``/usr/share/blender/4.0/python/bin/python3.10`` (i think :)
+
+.. note::
+
+    If you already have an installation of COMPAS on your system, you can try finding the Blender Python executable by running the following in a terminal or command prompt:
+
+    .. code-block:: python
+
+        python -m compas_blender.print_python_path
+
+Update `pip`
+~~~~~~~~~~~~
+
+Before installing `compas` with `pip`, it is highly recommended that you update `pip` itself.
+
+.. code-block:: bash
+
+    $ /Applications/Blender.app/Contents/Resources/4.0/python/bin/python3.10 -m pip install --upgrade pip
+
+
+Install from PyPI
+~~~~~~~~~~~~~~~~~
+
+For example on Mac:
 
 .. code-block:: bash
 
     $ /Applications/Blender.app/Contents/Resources/4.0/python/bin/python3.10 -m pip install compas
 
 
+Install from Source
+~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: bash
+
+    $ cd path/to/compas
+    $ /Applications/Blender.app/Contents/Resources/4.0/python/bin/python3.10 -m pip install -e .
+
+
 Using ``compas_blender.install``
 --------------------------------
+
+.. warning::
+
+    This procedure will not install any of the dependencies required by COMPAS.
+    They have to already be present in the Blender Python environment.
 
 The ``compas_blender.install`` command installs COMPAS in Blender's Python ``site-packages`` folder
 by creating symlinks to COMPAS packages installed in an existing (``conda``) environment.
@@ -113,16 +152,3 @@ More info coming soon...
     blender_mesh = conversions.mesh_to_blender(mesh)
 
     mesh = conversions.mesh_to_compas(blender_mesh)
-
-
-Data Exchange
-=============
-
-
-Remote Procedure Calls
-======================
-
-
-Known Issues
-============
-

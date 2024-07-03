@@ -1,31 +1,16 @@
-from typing import Any
 from typing import Optional
 
 import bpy  # type: ignore
 
-from compas.geometry import Polygon
 from compas.colors import Color
-
+from compas.scene import GeometryObject
 from compas_blender import conversions
 
-from compas.scene import GeometryObject
 from .sceneobject import BlenderSceneObject
 
 
 class PolygonObject(BlenderSceneObject, GeometryObject):
-    """Scene object for drawing polygons in Blender.
-
-    Parameters
-    ----------
-    polygon : :class:`compas.geometry.Polygon`
-        A COMPAS polygon.
-    **kwargs : dict, optional
-        Additional keyword arguments.
-
-    """
-
-    def __init__(self, polygon: Polygon, **kwargs: Any):
-        super().__init__(geometry=polygon, **kwargs)
+    """Scene object for drawing polygons in Blender."""
 
     def draw(
         self,

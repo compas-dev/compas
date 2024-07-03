@@ -1,9 +1,12 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from .sceneobject import SceneObject
+import compas.colors  # noqa: F401
+import compas.geometry  # noqa: F401
+
 from .descriptors.color import ColorAttribute
+from .sceneobject import SceneObject
 
 
 class GeometryObject(SceneObject):
@@ -41,18 +44,30 @@ class GeometryObject(SceneObject):
     linecolor = ColorAttribute()
     surfacecolor = ColorAttribute()
 
-    def __init__(self, geometry, **kwargs):
-        super(GeometryObject, self).__init__(item=geometry, **kwargs)
-        self.geometry = geometry
-        self.pointcolor = kwargs.get("pointcolor", self.color)
-        self.linecolor = kwargs.get("linecolor", self.color)
-        self.surfacecolor = kwargs.get("surfacecolor", self.color)
-        self.pointsize = kwargs.get("pointsize", 1.0)
-        self.linewidth = kwargs.get("linewidth", 1.0)
-        self.show_points = kwargs.get("show_points", False)
-        self.show_lines = kwargs.get("show_lines", True)
-        self.show_surfaces = kwargs.get("show_surfaces", True)
+    def __init__(
+        self,
+        pointcolor=None,  # type: compas.colors.Color | None
+        linecolor=None,  # type: compas.colors.Color | None
+        surfacecolor=None,  # type: compas.colors.Color | None
+        pointsize=1.0,  # type: float
+        linewidth=1.0,  # type: float
+        show_points=False,  # type: bool
+        show_lines=True,  # type: bool
+        show_surfaces=True,  # type: bool
+        **kwargs  # type: dict
+    ):  # fmt: skip
+        # type: (...) -> None
+        super(GeometryObject, self).__init__(**kwargs)  # type: ignore
+        self.pointcolor = pointcolor or self.color
+        self.linecolor = linecolor or self.color
+        self.surfacecolor = surfacecolor or self.color
+        self.pointsize = pointsize
+        self.linewidth = linewidth
+        self.show_points = show_points
+        self.show_lines = show_lines
+        self.show_surfaces = show_surfaces
 
-    def draw(self):
-        """Draw the geometry. Implemented by child classes."""
-        raise NotImplementedError
+    @property
+    def geometry(self):
+        # type: () -> compas.geometry.Geometry
+        return self.item  # type: ignore

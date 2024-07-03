@@ -1,12 +1,16 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from math import sqrt, pi, cos, sin
+from math import cos
+from math import pi
+from math import sin
+from math import sqrt
 
+from compas.geometry import Frame
 from compas.geometry import Point
 from compas.geometry import Vector
-from compas.geometry import Frame
+
 from .conic import Conic
 from .line import Line
 
@@ -99,12 +103,12 @@ class Ellipse(Conic):
 
     Visualise the line, ellipse, and frame of the ellipse with the COMPAS viewer.
 
-    >>> from compas_view2.app import App  # doctest: +SKIP
-    >>> viewer = App()                    # doctest: +SKIP
-    >>> viewer.add(line)                  # doctest: +SKIP
-    >>> viewer.add(ellipse)               # doctest: +SKIP
-    >>> viewer.add(ellipse.frame)         # doctest: +SKIP
-    >>> viewer.run()                      # doctest: +SKIP
+    >>> from compas_viewer import Viewer  # doctest: +SKIP
+    >>> viewer = Viewer()  # doctest: +SKIP
+    >>> viewer.scene.add(line)  # doctest: +SKIP
+    >>> viewer.scene.add(ellipse)  # doctest: +SKIP
+    >>> viewer.scene.add(ellipse.frame)  # doctest: +SKIP
+    >>> viewer.show()  # doctest: +SKIP
 
     """
 

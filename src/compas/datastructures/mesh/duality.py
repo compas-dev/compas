@@ -1,10 +1,10 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 from math import pi
-from compas.utilities import flatten
 
+from compas.itertools import flatten
 
 PI2 = 2.0 * pi
 
@@ -32,12 +32,12 @@ def mesh_dual(mesh, cls=None, include_boundary=False):
     --------
     >>> import compas
     >>> from compas.datastructures import Mesh
-    >>> mesh = Mesh.from_obj(compas.get('faces.obj'))
+    >>> mesh = Mesh.from_obj(compas.get("faces.obj"))
     >>> mesh.delete_face(11)
     >>> mesh.delete_face(6)
     >>> mesh.delete_face(7)
     >>> mesh.quads_to_triangles()
-    >>> mesh = mesh.subdivide('corner')
+    >>> mesh = mesh.subdivide("corner")
     >>> dual = mesh.dual(include_boundary=True)
 
     """

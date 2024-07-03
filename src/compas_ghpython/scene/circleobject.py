@@ -1,27 +1,15 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
-
-from compas_rhino import conversions
+from __future__ import print_function
 
 from compas.scene import GeometryObject
+from compas_rhino import conversions
+
 from .sceneobject import GHSceneObject
 
 
 class CircleObject(GHSceneObject, GeometryObject):
-    """Scene object for drawing circles.
-
-    Parameters
-    ----------
-    circle : :class:`compas.geometry.Circle`
-        A COMPAS circle.
-    **kwargs : dict, optional
-        Additional keyword arguments.
-
-    """
-
-    def __init__(self, circle, **kwargs):
-        super(CircleObject, self).__init__(geometry=circle, **kwargs)
+    """Scene object for drawing circles."""
 
     def draw(self):
         """Draw the circle.

@@ -1,27 +1,15 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
-
-from compas_rhino import conversions
+from __future__ import print_function
 
 from compas.scene import GeometryObject
+from compas_rhino import conversions
+
 from .sceneobject import GHSceneObject
 
 
 class CapsuleObject(GHSceneObject, GeometryObject):
-    """Scene object for drawing capsule shapes.
-
-    Parameters
-    ----------
-    capsule : :class:`compas.geometry.Capsule`
-        A COMPAS capsule.
-    **kwargs : dict, optional
-        Additional keyword arguments.
-
-    """
-
-    def __init__(self, capsule, **kwargs):
-        super(CapsuleObject, self).__init__(geometry=capsule, **kwargs)
+    """Scene object for drawing capsule shapes."""
 
     def draw(self):
         """Draw the capsule associated with the scene object.

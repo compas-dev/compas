@@ -1,9 +1,9 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
+from compas.itertools import pairwise
 from compas.tolerance import TOL
-from compas.utilities import pairwise
 
 
 def graph_join_edges(graph, key):
@@ -77,12 +77,12 @@ def graph_polylines(graph, splits=None):
     This will result in the following polylines (a, b, c), (c, d) and (c, e, f).
 
     >>> from compas.datastructures import Graph
-    >>> a = [0., 0., 0.]
-    >>> b = [1., 0., 0.]
-    >>> c = [2., 0., 0.]
-    >>> d = [2., 1., 0.]
-    >>> e = [3., 0., 0.]
-    >>> f = [4., 0., 0.]
+    >>> a = [0.0, 0.0, 0.0]
+    >>> b = [1.0, 0.0, 0.0]
+    >>> c = [2.0, 0.0, 0.0]
+    >>> d = [2.0, 1.0, 0.0]
+    >>> e = [3.0, 0.0, 0.0]
+    >>> f = [4.0, 0.0, 0.0]
     >>> lines = [(a, b), (b, c), (c, d), (c, e), (e, f)]
     >>> graph = Graph.from_lines(lines)
     >>> len(graph_polylines(graph)) == 3
@@ -104,15 +104,9 @@ def graph_polylines(graph, splits=None):
         # get adjacent edges until the polyline is closed...
         while polyline[0] != polyline[-1]:
             # ... or until both end are non-two-valent vertices
-            if (
-                len(graph.neighbors(polyline[-1])) != 2
-                or TOL.geometric_key(graph.node_coordinates(polyline[-1])) in stop_geom_keys
-            ):
+            if len(graph.neighbors(polyline[-1])) != 2 or TOL.geometric_key(graph.node_coordinates(polyline[-1])) in stop_geom_keys:
                 polyline = list(reversed(polyline))
-                if (
-                    len(graph.neighbors(polyline[-1])) != 2
-                    or TOL.geometric_key(graph.node_coordinates(polyline[-1])) in stop_geom_keys
-                ):
+                if len(graph.neighbors(polyline[-1])) != 2 or TOL.geometric_key(graph.node_coordinates(polyline[-1])) in stop_geom_keys:
                     break
 
             # add next edge

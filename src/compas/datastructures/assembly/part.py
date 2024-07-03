@@ -1,12 +1,12 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
+from compas.data import Data
+from compas.datastructures import Datastructure
+from compas.geometry import Brep
 from compas.geometry import Frame
 from compas.geometry import Polyhedron
-from compas.geometry import Brep
-from compas.datastructures import Datastructure
-from compas.data import Data
 
 
 class Feature(Data):
@@ -35,10 +35,10 @@ class GeometricFeature(Feature):
     Examples
     --------
     >>>    def trim_brep_plane(brep, plane):
-    >>>         # trim brep with plane, return trimmed brep
+    >>> # trim brep with plane, return trimmed brep
     >>>
     >>>    def trim_mesh_plane(mesh, plane):
-    >>>         # trim mesh with plane, return trimmed mesh
+    >>> # trim mesh with plane, return trimmed mesh
     >>>
     >>>    class TrimmingFeature(GeometricFeature):
     >>>        OPERATIONS = {Brep: trim_brep_plane, Mesh: trim_mesh_plane}
