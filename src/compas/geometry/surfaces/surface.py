@@ -9,19 +9,13 @@ from compas.geometry import Geometry
 from compas.geometry import Point
 from compas.geometry import Transformation
 from compas.itertools import linspace
+from compas.plugins import PluginNotInstalledError
 from compas.plugins import pluggable
 
 
 @pluggable(category="factories")
-def new_surface(cls, *args, **kwargs):
-    surface = object.__new__(cls)
-    surface.__init__(*args, **kwargs)
-    return surface
-
-
-@pluggable(category="factories")
-def new_surface_from_plane(cls, *args, **kwargs):
-    raise NotImplementedError
+def surface_from_native(cls, *args, **kwargs):
+    raise PluginNotInstalledError
 
 
 class Surface(Geometry):
@@ -51,7 +45,9 @@ class Surface(Geometry):
     """
 
     def __new__(cls, *args, **kwargs):
-        return new_surface(cls, *args, **kwargs)
+        if cls is Surface:
+            raise TypeError("Instantiating the base Surface class directly is not allowed.")
+        return object.__new__(cls)
 
     def __init__(self, frame=None, name=None):
         super(Surface, self).__init__(name=name)
@@ -149,21 +145,25 @@ class Surface(Geometry):
     # Constructors
     # ==============================================================================
 
+    # these probably need to be moved to Nurbs
+    # i don't think you can store a "general" parametric surface in a file
+
     @classmethod
-    def from_step(cls, filepath):
-        """Load a surface from a STP file.
+    def from_native(cls, surface):
+        """Construct a parametric surface from a native surface geometry.
 
         Parameters
         ----------
-        filepath : str
-            The path to the file.
+        surface
+            A CAD native surface object.
 
         Returns
         -------
         :class:`compas.geometry.Surface`
+            A COMPAS surface.
 
         """
-        raise NotImplementedError
+        return surface_from_native(cls, surface)
 
     @classmethod
     def from_obj(cls, filepath):
@@ -182,20 +182,20 @@ class Surface(Geometry):
         raise NotImplementedError
 
     @classmethod
-    def from_plane(cls, plane, *args, **kwargs):
-        """Construct a surface from a plane.
+    def from_step(cls, filepath):
+        """Load a surface from a STP file.
 
         Parameters
         ----------
-        plane : :class:`compas.geometry.Plane`
-            The plane.
+        filepath : str
+            The path to the file.
 
         Returns
         -------
         :class:`compas.geometry.Surface`
 
         """
-        return new_surface_from_plane(cls, plane, *args, **kwargs)
+        raise NotImplementedError
 
     # ==============================================================================
     # Conversions
@@ -658,20 +658,3 @@ class Surface(Geometry):
 
         """
         raise NotImplementedError
-
-    # def patch(self, u, v, du=1, dv=1):
-    #     """Construct a NURBS surface patch from the surface at the given UV parameters.
-
-    #     Parameters
-    #     ----------
-    #     u : float
-    #     v : float
-    #     du : int, optional
-    #     dv : int, optional
-
-    #     Returns
-    #     -------
-    #     :class:`compas.geometry.NurbsSurface`
-
-    #     """
-    #     raise NotImplementedError
