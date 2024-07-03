@@ -12,11 +12,6 @@ from .surface import Surface
 
 
 @pluggable(category="factories")
-def new_nurbssurface(cls, *args, **kwargs):
-    raise PluginNotInstalledError
-
-
-@pluggable(category="factories")
 def new_nurbssurface_from_native(cls, *args, **kwargs):
     raise PluginNotInstalledError
 
@@ -128,7 +123,7 @@ class NurbsSurface(Surface):
         )
 
     def __new__(cls, *args, **kwargs):
-        return new_nurbssurface(cls, *args, **kwargs)
+        raise AssertionError("NurbsSurface() is protected. Use NurbsSurface.from_...() to construct a NurbsSurface object.")
 
     def __init__(self, name=None):
         super(NurbsSurface, self).__init__(name=name)

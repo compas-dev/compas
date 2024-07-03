@@ -45,16 +45,10 @@ class RhinoSurface(Surface):
 
     """
 
-    @classmethod
-    def __from_data__(cls, data):
-        frame = Frame.__from_data__(data["frame"])
-        u_interval = tuple(data["u_interval"])
-        v_interval = tuple(data["v_interval"])
-        return cls.from_frame(frame, u_interval, v_interval)
-
     def __new__(cls, *args, **kwargs):
         # needed because the Surface.__new__ now enforces creation via alternative constructors only
-        return super(Surface, RhinoSurface).__new__(RhinoSurface, *args, **kwargs)
+        # cls is the class that is being instantiated
+        return super(Surface, cls).__new__(cls, *args, **kwargs)
 
     def __init__(self, name=None):
         super(RhinoSurface, self).__init__(name=name)
@@ -217,6 +211,7 @@ class RhinoSurface(Surface):
 
         """
         instance = cls()
+        print("RhinoSurface.from_native: cls:{}".format(cls))
         instance.native_surface = native_surface
         instance.frame = instance._get_frame_from_planesurface()
         instance._domain_u = native_surface.Domain(0)[0], native_surface.Domain(0)[1]

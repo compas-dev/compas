@@ -22,11 +22,6 @@ def new_surface_from_plane(cls, *args, **kwargs):
 
 
 @plugin(category="factories", requires=["Rhino"])
-def new_nurbssurface(cls, *args, **kwargs):
-    return super(NurbsSurface, cls).__new__(cls)
-
-
-@plugin(category="factories", requires=["Rhino"])
 def new_nurbssurface_from_native(cls, *args, **kwargs):
     return RhinoNurbsSurface.from_native(*args, **kwargs)
 
