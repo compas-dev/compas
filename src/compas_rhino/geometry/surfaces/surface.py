@@ -68,37 +68,32 @@ class RhinoSurface(Surface):
             raise ValueError("Failed to get frame at u={} v={}".format(u_start, v_start))
         return plane_to_compas_frame(frame)
 
+    # ==============================================================================
+    # Implementation of abstract properties
+    # ==============================================================================
+
     @property
     def native_surface(self):
         return self._rhino_surface
 
+    @native_surface.setter
+    def native_surface(self, surface):
+        self._rhino_surface = surface
+
     @property
     def rhino_surface(self):
+        # TODO: Deprecate. replace with native_surface
         return self._rhino_surface
 
     @rhino_surface.setter
     def rhino_surface(self, surface):
+        # TODO: Deprecate. replace with native_surface
         self._rhino_surface = surface
 
-    # ==============================================================================
-    # Properties
-    # ==============================================================================
-
     @property
-    def domain_u(self):
-        if self.rhino_surface:
-            return self.rhino_surface.Domain(0)
-
-    @property
-    def domain_v(self):
-        if self.rhino_surface:
-            return self.rhino_surface.Domain(1)
-
-    @property
-    def frame(self):
-        if not self._frame:
-            self._frame = self._get_frame_from_planesurface()
-        return self._frame
+    def is_closed(self):
+        # TODO: implement this properly
+        raise NotImplementedError
 
     @property
     def is_periodic_u(self):
@@ -222,7 +217,10 @@ class RhinoSurface(Surface):
 
         """
         instance = cls()
-        instance._rhino_surface = native_surface
+        instance.native_surface = native_surface
+        instance.frame = instance._get_frame_from_planesurface()
+        instance._domain_u = native_surface.Domain(0)[0], native_surface.Domain(0)[1]
+        instance._domain_v = native_surface.Domain(1)[0], native_surface.Domain(1)[1]
         return instance
 
     @classmethod
@@ -232,8 +230,8 @@ class RhinoSurface(Surface):
 
         Parameters
         ----------
-        plane : :class:`compas.geometry.Plane`
-            The plane.
+        plane : :class:`compas.geometry.Plane` or :class:`compas.geometry.Frame`
+            The plane or frame to use as origin and orientation of the surface.
         u_domain : tuple(float, float), optional
             The parametric domain of the U parameter. u_domain[0] => u_domain[1].
             Default is ``(0.0, 1.0)``.
@@ -252,38 +250,11 @@ class RhinoSurface(Surface):
         :class:`compas_rhino.geometry.RhinoSurface`
 
         """
+        if isinstance(plane, Frame):
+            plane = Plane.from_frame(plane)
         plane = plane_to_rhino(plane)
         rhino_surface = Rhino.Geometry.PlaneSurface(plane, Rhino.Geometry.Interval(*u_domain), Rhino.Geometry.Interval(*v_domain))
         return cls.from_native(rhino_surface)
-
-    @classmethod
-    def from_frame(cls, frame, u_interval, v_interval):
-        """Creates a planar surface from a frame and parametric domain information.
-
-        Parameters
-        ----------
-        frame : :class:`compas.geometry.Frame`
-            A frame with point at the center of the wanted plannar surface and
-            x and y axes the direction of u and v respectively.
-        u_interval : tuple(float, float)
-            The parametric domain of the U parameter. u_interval[0] => u_interval[1].
-        v_interval : tuple(float, float)
-            The parametric domain of the V parameter. v_interval[0] => v_interval[1].
-
-        Returns
-        -------
-        :class:`compas_rhino.geometry.surface.RhinoSurface`
-
-        """
-        surface = Rhino.Geometry.PlaneSurface(
-            frame_to_rhino_plane(frame),
-            Rhino.Geometry.Interval(*u_interval),
-            Rhino.Geometry.Interval(*v_interval),
-        )
-        if not surface:
-            msg = "Failed creating PlaneSurface from frame:{} u_interval:{} v_interval:{}"
-            raise ValueError(msg.format(frame, u_interval, v_interval))
-        return cls.from_native(surface)
 
     # ==============================================================================
     # Conversions
