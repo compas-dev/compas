@@ -43,6 +43,7 @@ from .curves import (
 )
 from .surfaces import (
     surface_to_rhino,
+    nurbssurface_to_compas,
     data_to_rhino_surface,
     surface_to_compas_data,
     surface_to_compas,
@@ -127,6 +128,7 @@ __all__ = [
     "curve_to_compas",
     # surfaces
     "surface_to_rhino",
+    "nurbssurface_to_compas",
     "surface_to_compas_data",
     "data_to_rhino_surface",
     "surface_to_compas",

@@ -6,6 +6,7 @@ import Rhino  # type: ignore
 
 from compas.datastructures import Mesh
 from compas.geometry import NurbsSurface
+from compas.geometry import Surface
 from compas.geometry import Point
 from compas.tolerance import TOL
 from compas.utilities import memoize
@@ -32,11 +33,13 @@ def surface_to_rhino(surface):
     Rhino.Geometry.Surface
 
     """
-    return surface.rhino_surface
+    return surface.native_surface
 
 
 def data_to_rhino_surface(data):
     """Convert a COMPAS surface to a Rhino surface.
+
+    TODO: still needed? this is basically RhinoSurface.from_parameters()
 
     Parameters
     ----------
@@ -84,6 +87,8 @@ def data_to_rhino_surface(data):
 
 def surface_to_compas_data(surface):
     """Convert a Rhino surface to a COMPAS surface.
+
+    TODO: still needed? this is basically RhinoSurface.__data__
 
     Parameters
     ----------
@@ -147,24 +152,37 @@ def surface_to_compas(surface):
     Parameters
     ----------
     surface: :rhino:`Rhino.Geometry.Surface`
+        A Rhino surface object.
 
     Returns
     -------
-    :class:`compas.geometry.Surface`
+    :class:`compas_rhino.geometry.RhinoSurface`
 
     """
-    if isinstance(surface, Rhino.DocObjects.RhinoObject):
-        surface = surface.Geometry
+    if not isinstance(surface, Rhino.Geometry.Surface):
+        raise ConversionError("Expected a Rhino Surface object but got: {}".format(type(surface)))
 
-    if not isinstance(surface, Rhino.Geometry.Brep):
-        brep = Rhino.Geometry.Brep.TryConvertBrep(surface)
-    else:
-        brep = surface
+    return Surface.from_native(surface)
 
-    if brep.Surfaces.Count > 1:  # type: ignore
-        raise ConversionError("Conversion of a Brep with multiple underlying surface is currently not supported.")
 
-    return NurbsSurface.from_native(brep.Surfaces[0])
+def nurbssurface_to_compas(nurbssurface):
+    """Convert a Rhino NurbsSurface to a COMPAS NurbsSurface.
+
+    Parameters
+    ----------
+    nurbssurface : :class:`Rhino.Geometry.NurbsSurface`
+        A Rhino NurbsSurface object.
+
+    Returns
+    -------
+    :class:`compas_rhino.geometry.RhinoNurbsSurface`
+        A COMPAS NurbsSurface object.
+
+    """
+    if not isinstance(nurbssurface, Rhino.Geometry.NurbsSurface):
+        raise ConversionError("Expected a Rhino NurbsSurface object but got: {}".format(type(nurbssurface)))
+
+    return NurbsSurface.from_native(nurbssurface)
 
 
 def surface_to_compas_mesh(surface, facefilter=None, cleanup=False, cls=None):
