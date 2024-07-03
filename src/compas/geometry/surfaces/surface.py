@@ -65,11 +65,6 @@ class Surface(Geometry):
             "domain_v": list(self.domain_v),
         }
 
-    @classmethod
-    def __from_data__(cls, data):
-        plane = Plane.from_frame(Frame.__from_data__(data["frame"]))
-        return cls.from_plane(plane, data["domain_u"], data["domain_v"])
-
     @property
     def __dtype__(self):
         # make serialization CAD agnostic
