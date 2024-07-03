@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from compas.geometry import Frame
 from compas.geometry import Point
 from compas.itertools import linspace
 from compas.itertools import meshgrid
@@ -94,32 +95,62 @@ class NurbsSurface(Surface):
 
     @property
     def __data__(self):
-        return {
-            "points": [point.__data__ for point in self.points],
-            "weights": self.weights,
-            "knots_u": self.knots_u,
-            "knots_v": self.knots_v,
-            "mults_u": self.mults_u,
-            "mults_v": self.mults_v,
-            "degree_u": self.degree_u,
-            "degree_v": self.degree_v,
-            "is_periodic_u": self.is_periodic_u,
-            "is_periodic_v": self.is_periodic_v,
-        }
+        data = super(NurbsSurface, self).__data__
+        data["points"] = [[point.__data__ for point in row] for row in self.points]  # type: ignore
+        data["weights"] = self.weights
+        data["knots_u"] = self.knots_u
+        data["knots_v"] = self.knots_v
+        data["mults_u"] = self.mults_u
+        data["mults_v"] = self.mults_v
+        data["degree_u"] = self.degree_u
+        data["degree_v"] = self.degree_v
+        data["is_periodic_u"] = self.is_periodic_u
+        data["is_periodic_v"] = self.is_periodic_v
+        return data
 
     @classmethod
     def __from_data__(cls, data):
+        """Construct a BSpline surface from its data representation.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoNurbsSurface`
+            The constructed surface.
+
+        """
+        frame = Frame.__from_data__(data["frame"])
+        domain_u = data["domain_u"]
+        domain_v = data["domain_v"]
+        points = [[Point.__from_data__(point) for point in row] for row in data["points"]]
+        weights = data["weights"]
+        knots_u = data["knots_u"]
+        knots_v = data["knots_v"]
+        mults_u = data["mults_u"]
+        mults_v = data["mults_v"]
+        degree_u = data["degree_u"]
+        degree_v = data["degree_v"]
+        is_periodic_u = data["is_periodic_u"]
+        is_periodic_v = data["is_periodic_v"]
+
         return cls.from_parameters(
-            data["points"],
-            data["weights"],
-            data["knots_u"],
-            data["knots_v"],
-            data["mults_u"],
-            data["mults_v"],
-            data["degree_u"],
-            data["degree_v"],
-            data["is_periodic_u"],
-            data["is_periodic_v"],
+            frame,
+            domain_u,
+            domain_v,
+            points,
+            weights,
+            knots_u,
+            knots_v,
+            mults_u,
+            mults_v,
+            degree_u,
+            degree_v,
+            is_periodic_u,
+            is_periodic_v,
         )
 
     def __new__(cls, *args, **kwargs):
@@ -211,6 +242,9 @@ class NurbsSurface(Surface):
     @classmethod
     def from_parameters(
         cls,
+        frame,
+        domain_u,
+        domain_v,
         points,
         weights,
         knots_u,
@@ -250,6 +284,9 @@ class NurbsSurface(Surface):
         """
         return new_nurbssurface_from_parameters(
             cls,
+            frame,
+            domain_u,
+            domain_v,
             points,
             weights,
             knots_u,

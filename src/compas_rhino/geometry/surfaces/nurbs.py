@@ -52,6 +52,8 @@ class ControlPoints(object):
 
 
 def rhino_surface_from_parameters(
+    domain_u,
+    domain_v,
     points,
     weights,
     knots_u,
@@ -89,6 +91,9 @@ def rhino_surface_from_parameters(
             pointcount_v,
         )
         raise ValueError("Failed to create NurbsSurface with params:\n{}".format(message))
+
+    rhino_surface.SetDomain(0, Rhino.Geometry.Interval(domain_u[0], domain_u[1]))
+    rhino_surface.SetDomain(1, Rhino.Geometry.Interval(domain_v[0], domain_v[1]))
 
     knotvector_u = knots_and_mults_to_knotvector(knots_u, mults_u)
     knotvector_v = knots_and_mults_to_knotvector(knots_v, mults_v)
@@ -153,56 +158,19 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
         mults_u[-1] += 1
         mults_v[0] += 1
         mults_v[-1] += 1
-        return {
-            "points": [[point.__data__ for point in row] for row in self.points],  # type: ignore
-            "weights": self.weights,
-            "knots_u": self.knots_u,
-            "knots_v": self.knots_v,
-            "mults_u": mults_u,
-            "mults_v": mults_v,
-            "degree_u": self.degree_u,
-            "degree_v": self.degree_v,
-            "is_periodic_u": self.is_periodic_u,
-            "is_periodic_v": self.is_periodic_v,
-        }
 
-    @classmethod
-    def __from_data__(cls, data):
-        """Construct a BSpline surface from its data representation.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`compas_rhino.geometry.RhinoNurbsSurface`
-            The constructed surface.
-
-        """
-        points = [[Point.__from_data__(point) for point in row] for row in data["points"]]
-        weights = data["weights"]
-        knots_u = data["knots_u"]
-        knots_v = data["knots_v"]
-        mults_u = data["mults_u"]
-        mults_v = data["mults_v"]
-        degree_u = data["degree_u"]
-        degree_v = data["degree_v"]
-        is_periodic_u = data["is_periodic_u"]
-        is_periodic_v = data["is_periodic_v"]
-        return cls.from_parameters(
-            points,
-            weights,
-            knots_u,
-            knots_v,
-            mults_u,
-            mults_v,
-            degree_u,
-            degree_v,
-            is_periodic_u,
-            is_periodic_v,
-        )
+        data = super(NurbsSurface, self).__data__
+        data["points"] = [[point.__data__ for point in row] for row in self.points]  # type: ignore
+        data["weights"] = self.weights
+        data["knots_u"] = self.knots_u
+        data["knots_v"] = self.knots_v
+        data["mults_u"] = mults_u
+        data["mults_v"] = mults_v
+        data["degree_u"] = self.degree_u
+        data["degree_v"] = self.degree_v
+        data["is_periodic_u"] = self.is_periodic_u
+        data["is_periodic_v"] = self.is_periodic_v
+        return data
 
     # ==============================================================================
     # Properties
@@ -273,6 +241,9 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
     @classmethod
     def from_parameters(
         cls,
+        frame,
+        domain_u,
+        domain_v,
         points,
         weights,
         knots_u,
@@ -288,6 +259,12 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
 
         Parameters
         ----------
+        frame : :class:`compas.geometry.Frame`
+            The frame of the surface.
+        domain_u : tuple(float)
+            The domain of the surface in the U direction.
+        domain_v : tuple(float)
+            The domain of the surface in the V direction.
         points : list[list[:class:`compas.geometry.Point`]]
             The control points.
         weights : list[list[float]]
@@ -311,7 +288,10 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
 
         """
         surface = cls()
-        surface.rhino_surface = rhino_surface_from_parameters(points, weights, knots_u, knots_v, mults_u, mults_v, degree_u, degree_v)
+        surface.rhino_surface = rhino_surface_from_parameters(domain_u, domain_v, points, weights, knots_u, knots_v, mults_u, mults_v, degree_u, degree_v)
+        surface.frame = frame
+        surface._domain_u = domain_u
+        surface._domain_v = domain_v
         return surface
 
     @classmethod
