@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added code coverage report uploads to codecov.io.
 * Added `compas.geometry.surfaces.surface.Surface.from_native`.
 * Added `compas.geometry.surfaces.nurbs.NurbsSurface.from_plane`.
 * Added `compas.geometry.surfaces.nurbs.NurbsSurface.from_cylinder`.
