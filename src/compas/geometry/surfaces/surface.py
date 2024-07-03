@@ -6,7 +6,6 @@ from itertools import product
 
 from compas.geometry import Frame
 from compas.geometry import Geometry
-from compas.geometry import Plane
 from compas.geometry import Point
 from compas.geometry import Transformation
 from compas.itertools import linspace

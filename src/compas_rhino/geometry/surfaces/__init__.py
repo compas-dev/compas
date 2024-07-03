@@ -1,14 +1,7 @@
 from .surface import RhinoSurface  # noqa : F401
 from .nurbs import RhinoNurbsSurface
 
-from compas.geometry import NurbsSurface
 from compas.plugins import plugin
-
-
-# @plugin(category="factories", requires=["Rhino"])
-# def new_surface(cls, *args, **kwargs):
-#     # to make instance of `subclass`: super(superclass, subclass).__new__(subclass, *args, **kwargs)
-#     return super(Surface, RhinoSurface).__new__(RhinoSurface, *args, **kwargs)
 
 
 @plugin(category="factories", requires=["Rhino"])

@@ -7,7 +7,6 @@ from itertools import groupby
 import Rhino.Geometry  # type: ignore
 
 from compas.geometry import NurbsSurface
-from compas.geometry import Point
 from compas.geometry import knots_and_mults_to_knotvector
 from compas.itertools import flatten
 from compas_rhino.conversions import plane_to_rhino
