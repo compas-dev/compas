@@ -206,7 +206,6 @@ class RhinoSurface(Surface):
 
         """
         instance = cls()
-        print("RhinoSurface.from_native: cls:{}".format(cls))
         instance._rhino_surface = native_surface
         instance.frame = instance._get_frame_from_planesurface()
         instance._domain_u = native_surface.Domain(0)[0], native_surface.Domain(0)[1]
