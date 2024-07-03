@@ -305,7 +305,7 @@ class RhinoSurface(Surface):
 
         """
         curve = self.rhino_surface.IsoCurve(1, u)  # type: ignore
-        return RhinoCurve.from_native(curve)
+        return RhinoCurve.from_rhino(curve)
 
     def v_isocurve(self, v):
         """Compute the isoparametric curve at parameter v.
@@ -320,7 +320,7 @@ class RhinoSurface(Surface):
 
         """
         curve = self.rhino_surface.IsoCurve(0, v)  # type: ignore
-        return RhinoCurve.from_native(curve)
+        return RhinoCurve.from_rhino(curve)
 
     def point_at(self, u, v):
         """Compute a point on the surface.
