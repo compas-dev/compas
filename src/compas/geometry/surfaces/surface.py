@@ -11,12 +11,6 @@ from compas.geometry import Transformation
 from compas.itertools import linspace
 from compas.plugins import pluggable
 
-# @pluggable(category="factories")
-# def new_surface(cls, *args, **kwargs):
-#     surface = object.__new__(cls)
-#     surface.__init__(*args, **kwargs)
-#     return surface
-
 
 @pluggable(category="factories")
 def new_surface_from_native(cls, *args, **kwargs):
@@ -47,6 +41,10 @@ class Surface(Geometry):
         The parameter domain of the surface in the U direction.
     domain_v : tuple[float, float], read-only
         The parameter domain of the surface in the V direction.
+    is_closed_u : bool, read-only
+        Flag indicating if the surface is closed in the U direction.
+    is_closed_v : bool, read-only
+        Flag indicating if the surface is closed in the V direction.
     is_periodic_u : bool, read-only
         Flag indicating if the surface is periodic in the U direction.
     is_periodic_v : bool, read-only
@@ -164,7 +162,11 @@ class Surface(Geometry):
         return self._domain_v
 
     @property
-    def is_closed(self):
+    def is_closed_u(self):
+        raise NotImplementedError
+
+    @property
+    def is_closed_v(self):
         raise NotImplementedError
 
     @property
