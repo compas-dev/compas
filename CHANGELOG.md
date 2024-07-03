@@ -34,6 +34,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `Surface.native_surface`.
 * Added `RhinoSurface.native_surface`.
 * Added plugin `RhinoSurface.from_native`.
+* Added parameters `frame`, `domain_u` and `domain_v` to `RhinoNurbs.from_parameters`.
+* Added `nurbssurface_to_compas` to `compas_rhino.conversions`.
+* Added `is_closed_u` and `is_closed_v` to `compas.geometry.Surface`.
 
 ### Changed
 
@@ -59,12 +62,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Updated `compas.geometry.vector.__truediv__` to allow element-wise division with another vector.
 * Fixed bug in registration `shapely` boolean plugins.
 * Temporarily restrict `numpy` to versions lower than `2.x`.
-* Changed `RhinoSurface` plugin `new_surface` to create `RhinoSurface` object when `compas.geometry.Surface()` is called. 
+* Protected call to `compas.geometry.Surface()`. `Surface` should be instantiated using one of the alternative constructors.
+* Protected call to `compas.geometry.NurbsSurface()`. `NurbsSurface` should be instantiated using one of the alternative constructors.
 
 ### Removed
 
 * Removed `System` dependency in `compas_ghpython/utilities/drawing.py`.
 * Removed GH plugin for `compas.scene.clear` since it clashed with the Rhino version.
+* Removed pluggable `new_nurbssurface`.
+* Removed pluggable `new_surface`.
+* Removed `compas.geometry.Surface.is_closed`.
 
 ## [2.1.1] 2024-05-14
 
