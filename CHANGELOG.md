@@ -10,14 +10,54 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Added code coverage report uploads to codecov.io.
+* Added `compas.geometry.surfaces.surface.Surface.from_native`.
+* Added `compas.geometry.surfaces.nurbs.NurbsSurface.from_plane`.
+* Added `compas.geometry.surfaces.nurbs.NurbsSurface.from_cylinder`.
+* Added `compas.geometry.surfaces.nurbs.NurbsSurface.from_extrusion`.
+* Added `compas.geometry.surfaces.nurbs.NurbsSurface.from_frame`.
+* Added `compas.geometry.surfaces.nurbs.NurbsSurface.from_interpolation`.
+* Added `compas.geometry.surfaces.nurbs.NurbsSurface.from_revolution`.
+* Added `compas.geometry.surfaces.nurbs.NurbsSurface.from_sphere`.
+* Added `compas.geometry.surfaces.nurbs.NurbsSurface.from_torus`.
+* Added `compas_rhino.geometry.surfaces.surface_from_native`.
+* Added `compas_rhino.geometry.surfaces.nurbssurface_from_native`.
+* Added `compas_rhino.geometry.surfaces.nurbssurface_from_cylinder`.
+* Added `compas_rhino.geometry.surfaces.nurbssurface_from_fill`.
+* Added `compas_rhino.geometry.surfaces.nurbssurface_from_torus`.
+* Added `compas_rhino.geometry.surfaces.nurbs.NurbsSurface.from_corners`.
+* Added `compas_rhino.geometry.surfaces.nurbs.NurbsSurface.from_cylinder`.
+* Added `compas_rhino.geometry.surfaces.nurbs.NurbsSurface.from_frame`.
+* Added `compas_rhino.geometry.surfaces.nurbs.NurbsSurface.from_sphere`.
+* Added `compas_rhino.geometry.surfaces.nurbs.NurbsSurface.from_torus`.
 
 ### Changed
 
 * Fixed bug in `compas.geometry.curves.curve.Curve.reversed` by adding missing parenthesis.
 * Fixed all doctests so we can run `invoke test --doctest`.
+* Changed `compas.geometry.surfaces.surface.Surface.__new__` to prevent instantiation of `compas.geometry.surfaces.surface.Surface` directly.
+* Changed `compas.geometry.surfaces.nurbs.NurbsSurface.__new__` to prevent instantiation of `compas.geometry.surfaces.nurbs.NurbsSurface` directly.
+* Fixed bug in `compas.geometry.surfaces.nurbs.NurbsSurface.__data__`.
+* Changed `compas.geometry.surfaces.nurbs.new_nurbssurface_from_...` to `compas.geometry.surfaces.nurbs.nurbssurface_from_...`.
 
 ### Removed
 
+* Removed pluggable `compas.geometry.surfaces.surface.new_surface`.
+* Removed pluggable `compas.geometry.surfaces.surface.new_surface_from_plane`.
+* Removed `compas.geometry.surfaces.surface.Surface.from_plane`.
+* Removed `compas.geometry.surfaces.surface.ConicalSurface.__new__`.
+* Removed `compas.geometry.surfaces.surface.CylindricalSurface.__new__`.
+* Removed `compas.geometry.surfaces.surface.PlanarSurface.__new__`.
+* Removed `compas.geometry.surfaces.surface.SphericalSurface.__new__`.
+* Removed `compas.geometry.surfaces.surface.ToroidalSurface.__new__`.
+* Removed `compas.geometry.surfaces.nurbs.NurbsSurface.__init__`.
+* Removed `compas_rhino.geometry.surfaces.new_surface`.
+* Removed `compas_rhino.geometry.surfaces.new_nurbssurface`.
+* Removed `compas_rhino.geometry.surfaces.nurbs.NurbsSurface.__from_data__`.
+* Removed `compas_rhino.geometry.surfaces.surface.Surface.from_corners`.
+* Removed `compas_rhino.geometry.surfaces.surface.Surface.from_cylinder`.
+* Removed `compas_rhino.geometry.surfaces.surface.Surface.from_frame`.
+* Removed `compas_rhino.geometry.surfaces.surface.Surface.from_sphere`.
+* Removed `compas_rhino.geometry.surfaces.surface.Surface.from_torus`.
 
 ## [2.2.1] 2024-06-25
 
