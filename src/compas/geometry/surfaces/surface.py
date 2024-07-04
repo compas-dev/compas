@@ -145,9 +145,6 @@ class Surface(Geometry):
     # Constructors
     # ==============================================================================
 
-    # these probably need to be moved to Nurbs
-    # i don't think you can store a "general" parametric surface in a file
-
     @classmethod
     def from_native(cls, surface):
         """Construct a parametric surface from a native surface geometry.
@@ -163,7 +160,7 @@ class Surface(Geometry):
             A COMPAS surface.
 
         """
-        return surface_from_native(cls, surface)
+        raise NotImplementedError
 
     @classmethod
     def from_obj(cls, filepath):

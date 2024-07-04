@@ -17,6 +17,13 @@ from compas_rhino.geometry.curves import RhinoCurve
 class RhinoSurface(Surface):
     """Class representing a general surface object.
 
+    Parameters
+    ----------
+    native_surface : :rhino:`Surface`
+        A Rhino surface.
+    name : str, optional
+        The name of the surface.
+
     Attributes
     ----------
     domain_u: tuple[float, float]
@@ -30,17 +37,13 @@ class RhinoSurface(Surface):
 
     """
 
-    def __init__(self, rhino_surface, name=None):
+    def __init__(self, native_surface, name=None):
         super(RhinoSurface, self).__init__(name=name)
-        self._native_surface = rhino_surface
+        self._native_surface = native_surface
 
     @property
     def rhino_surface(self):
         return self._native_surface
-
-    @rhino_surface.setter
-    def rhino_surface(self, surface):
-        self._native_surface = surface
 
     @property
     def native_surface(self):
@@ -79,12 +82,12 @@ class RhinoSurface(Surface):
     # ==============================================================================
 
     @classmethod
-    def from_native(cls, rhino_surface):
-        """Construct a NURBS surface from an existing Rhino surface.
+    def from_native(cls, native_surface):
+        """Construct a surface from an existing Rhino surface.
 
         Parameters
         ----------
-        rhino_surface : :rhino:`Rhino.Geometry.Surface`
+        native_surface : :rhino:`Rhino.Geometry.Surface`
             A Rhino surface.
 
         Returns
@@ -92,15 +95,15 @@ class RhinoSurface(Surface):
         :class:`compas_rhino.geometry.RhinoSurface`
 
         """
-        return cls(rhino_surface)
+        return cls(native_surface)
 
     @classmethod
-    def from_rhino(cls, rhino_surface):
-        """Construct a NURBS surface from an existing Rhino surface.
+    def from_rhino(cls, native_surface):
+        """Construct a surface from an existing Rhino surface.
 
         Parameters
         ----------
-        rhino_surface : :rhino:`Rhino.Geometry.Surface`
+        native_surface : :rhino:`Rhino.Geometry.Surface`
             A Rhino surface.
 
         Returns
@@ -113,7 +116,7 @@ class RhinoSurface(Surface):
             Use `from_native` instead.
 
         """
-        return cls(rhino_surface)
+        return cls(native_surface)
 
     # ==============================================================================
     # Conversions

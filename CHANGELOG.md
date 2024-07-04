@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.geometry.surfaces.nurbs.NurbsSurface.from_sphere`.
 * Added `compas.geometry.surfaces.nurbs.NurbsSurface.from_torus`.
 * Added `compas_rhino.geometry.surfaces.surface_from_native`.
+* Added `compas_rhino.geometry.surfaces.nurbssurface_from_native`.
 * Added `compas_rhino.geometry.surfaces.nurbssurface_from_cylinder`.
 * Added `compas_rhino.geometry.surfaces.nurbssurface_from_fill`.
 * Added `compas_rhino.geometry.surfaces.nurbssurface_from_torus`.
@@ -33,7 +34,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Fixed bug in `compas.geometry.curves.curve.Curve.reversed` by adding missing parenthesis.
 * Fixed all doctests so we can run `invoke test --doctest`.
-* Changed `compas.geometry.surfaces.surface.Surface.__new__` to prevent instantiation of `compas.geometry.surfaces.surface.Surface` only.
+* Changed `compas.geometry.surfaces.surface.Surface.__new__` to prevent instantiation of `compas.geometry.surfaces.surface.Surface` directly.
+* Changed `compas.geometry.surfaces.nurbs.NurbsSurface.__new__` to prevent instantiation of `compas.geometry.surfaces.nurbs.NurbsSurface` directly.
 * Fixed bug in `compas.geometry.surfaces.nurbs.NurbsSurface.__data__`.
 * Changed `compas.geometry.surfaces.nurbs.new_nurbssurface_from_...` to `compas.geometry.surfaces.nurbs.nurbssurface_from_...`.
 
@@ -49,6 +51,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed `compas.geometry.surfaces.surface.ToroidalSurface.__new__`.
 * Removed `compas.geometry.surfaces.nurbs.NurbsSurface.__init__`.
 * Removed `compas_rhino.geometry.surfaces.new_surface`.
+* Removed `compas_rhino.geometry.surfaces.new_nurbssurface`.
 * Removed `compas_rhino.geometry.surfaces.nurbs.NurbsSurface.__from_data__`.
 * Removed `compas_rhino.geometry.surfaces.surface.Surface.from_corners`.
 * Removed `compas_rhino.geometry.surfaces.surface.Surface.from_cylinder`.

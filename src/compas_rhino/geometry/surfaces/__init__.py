@@ -1,19 +1,12 @@
 from .surface import RhinoSurface  # noqa : F401
 from .nurbs import RhinoNurbsSurface
 
-from compas.geometry import NurbsSurface
 from compas.plugins import plugin
 
 
 @plugin(category="factories", requires=["Rhino"])
 def surface_from_native(cls, *args, **kwargs):
     return RhinoSurface.from_native(*args, **kwargs)
-
-
-# this may not really be necessary
-@plugin(category="factories", requires=["Rhino"])
-def new_nurbssurface(cls, *args, **kwargs):
-    return super(NurbsSurface, cls).__new__(cls)
 
 
 @plugin(category="factories", requires=["Rhino"])
@@ -29,6 +22,11 @@ def nurbssurface_from_fill(cls, *args, **kwargs):
 @plugin(category="factories", requires=["Rhino"])
 def nurbssurface_from_frame(cls, *args, **kwargs):
     return RhinoNurbsSurface.from_frame(*args, **kwargs)
+
+
+@plugin(category="factories", requires=["Rhino"])
+def nurbssurface_from_native(cls, *args, **kwargs):
+    return RhinoNurbsSurface.from_native(*args, **kwargs)
 
 
 @plugin(category="factories", requires=["Rhino"])

@@ -21,15 +21,15 @@ from .surface import RhinoSurface
 
 class ControlPoints(object):
     def __init__(self, surface):
-        self.rhino_surface = surface
+        self.native_surface = surface
 
     @property
     def points(self):
         points = []
-        for i in range(self.rhino_surface.Points.CountU):
+        for i in range(self.native_surface.Points.CountU):
             row = []
-            for j in range(self.rhino_surface.Points.CountV):
-                row.append(point_to_compas(self.rhino_surface.Points.GetControlPoint(i, j).Location))
+            for j in range(self.native_surface.Points.CountV):
+                row.append(point_to_compas(self.native_surface.Points.GetControlPoint(i, j).Location))
             points.append(row)
         return points
 
@@ -39,21 +39,21 @@ class ControlPoints(object):
         except TypeError:
             return self.points[index]
         else:
-            point = self.rhino_surface.Points.GetControlPoint(u, v).Location
+            point = self.native_surface.Points.GetControlPoint(u, v).Location
             return point_to_compas(point)
 
     def __setitem__(self, index, point):
         u, v = index
-        self.rhino_surface.Points.SetControlPoint(u, v, Rhino.Geometry.ControlPoint(point_to_rhino(point)))
+        self.native_surface.Points.SetControlPoint(u, v, Rhino.Geometry.ControlPoint(point_to_rhino(point)))
 
     def __len__(self):
-        return self.rhino_surface.Points.CountU
+        return self.native_surface.Points.CountU
 
     def __iter__(self):
         return iter(self.points)
 
 
-def rhino_surface_from_parameters(
+def native_surface_from_parameters(
     points,
     weights,
     knots_u,
@@ -72,7 +72,7 @@ def rhino_surface_from_parameters(
     is_rational = any(weight != 1.0 for weight in flatten(weights))
     dimensions = 3
 
-    rhino_surface = Rhino.Geometry.NurbsSurface.Create(
+    native_surface = Rhino.Geometry.NurbsSurface.Create(
         dimensions,
         is_rational,
         order_u,
@@ -81,7 +81,7 @@ def rhino_surface_from_parameters(
         pointcount_v,
     )
 
-    if not rhino_surface:
+    if not native_surface:
         message = "dimensions: {} is_rational: {} order_u: {} order_v: {} u_points: {} v_points: {}".format(
             dimensions,
             is_rational,
@@ -102,14 +102,14 @@ def rhino_surface_from_parameters(
         knotvector_v[:] = knotvector_v[1:-1]
     # add knots
     for index, knot in enumerate(knotvector_u):
-        rhino_surface.KnotsU[index] = knot
+        native_surface.KnotsU[index] = knot
     for index, knot in enumerate(knotvector_v):
-        rhino_surface.KnotsV[index] = knot
+        native_surface.KnotsV[index] = knot
     # add control points
     for i in range(pointcount_u):
         for j in range(pointcount_v):
-            rhino_surface.Points.SetPoint(i, j, point_to_rhino(points[i][j]), weights[i][j])
-    return rhino_surface
+            native_surface.Points.SetPoint(i, j, point_to_rhino(points[i][j]), weights[i][j])
+    return native_surface
 
 
 class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
@@ -170,61 +170,61 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
 
     @property
     def points(self):
-        if self.rhino_surface:
+        if self.native_surface:
             if not hasattr(self, "_points"):
-                self._points = ControlPoints(self.rhino_surface)
+                self._points = ControlPoints(self.native_surface)
             return self._points
 
     @property
     def weights(self):
-        if self.rhino_surface:
+        if self.native_surface:
             weights = []
-            for i in range(self.rhino_surface.Points.CountU):
+            for i in range(self.native_surface.Points.CountU):
                 row = []
-                for j in range(self.rhino_surface.Points.CountV):
-                    row.append(self.rhino_surface.Points.GetWeight(i, j))
+                for j in range(self.native_surface.Points.CountV):
+                    row.append(self.native_surface.Points.GetWeight(i, j))
                 weights.append(row)
             return weights
 
     @property
     def knots_u(self):
-        if self.rhino_surface:
-            return [key for key, _ in groupby(self.rhino_surface.KnotsU)]
+        if self.native_surface:
+            return [key for key, _ in groupby(self.native_surface.KnotsU)]
 
     @property
     def mults_u(self):
-        if self.rhino_surface:
-            return [len(list(group)) for _, group in groupby(self.rhino_surface.KnotsU)]
+        if self.native_surface:
+            return [len(list(group)) for _, group in groupby(self.native_surface.KnotsU)]
 
     @property
     def knotvector_u(self):
-        if self.rhino_surface:
-            return list(self.rhino_surface.KnotsU)
+        if self.native_surface:
+            return list(self.native_surface.KnotsU)
 
     @property
     def knots_v(self):
-        if self.rhino_surface:
-            return [key for key, _ in groupby(self.rhino_surface.KnotsV)]
+        if self.native_surface:
+            return [key for key, _ in groupby(self.native_surface.KnotsV)]
 
     @property
     def mults_v(self):
-        if self.rhino_surface:
-            return [len(list(group)) for _, group in groupby(self.rhino_surface.KnotsV)]
+        if self.native_surface:
+            return [len(list(group)) for _, group in groupby(self.native_surface.KnotsV)]
 
     @property
     def knotvector_v(self):
-        if self.rhino_surface:
-            return list(self.rhino_surface.KnotsV)
+        if self.native_surface:
+            return list(self.native_surface.KnotsV)
 
     @property
     def degree_u(self):
-        if self.rhino_surface:
-            return self.rhino_surface.Degree(0)
+        if self.native_surface:
+            return self.native_surface.Degree(0)
 
     @property
     def degree_v(self):
-        if self.rhino_surface:
-            return self.rhino_surface.Degree(1)
+        if self.native_surface:
+            return self.native_surface.Degree(1)
 
     # ==============================================================================
     # Constructors
@@ -281,10 +281,8 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
         :class:`compas_rhino.geometry.RhinoNurbsSurface`
 
         """
-        surface = cls()
-        # these curves probably need to be processed first
-        surface.rhino_surface = Rhino.Geometry.NurbsSurface.CreateRuledSurface(curve1, curve2)
-        return surface
+        native_surface = Rhino.Geometry.NurbsSurface.CreateRuledSurface(curve1, curve2)
+        return cls.from_native(native_surface)
 
     @classmethod
     def from_frame(cls, frame, domain_u=(0, 1), domain_v=(0, 1), degree_u=1, degree_v=1, pointcount_u=2, pointcount_v=2):
@@ -316,8 +314,24 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
         plane = frame_to_rhino_plane(frame)
         du = Rhino.Geometry.Interval(*domain_u)
         dv = Rhino.Geometry.Interval(*domain_v)
-        rhino_surface = Rhino.Geometry.NurbsSurface.CreateFromPlane(plane, du, dv, degree_u, degree_v, pointcount_u, pointcount_v)
-        return cls.from_native(rhino_surface)
+        native_surface = Rhino.Geometry.NurbsSurface.CreateFromPlane(plane, du, dv, degree_u, degree_v, pointcount_u, pointcount_v)
+        return cls.from_native(native_surface)
+
+    @classmethod
+    def from_native(cls, native_surface):
+        """Construct a NURBS surface from an existing Rhino surface.
+
+        Parameters
+        ----------
+        native_surface : :rhino:`Rhino.Geometry.Surface`
+            A Rhino surface.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoNurbsSurface`
+
+        """
+        return cls(native_surface)
 
     @classmethod
     def from_parameters(
@@ -359,9 +373,8 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
         :class:`compas_rhino.geometry.RhinoNurbsSurface`
 
         """
-        surface = cls()
-        surface.rhino_surface = rhino_surface_from_parameters(points, weights, knots_u, knots_v, mults_u, mults_v, degree_u, degree_v)
-        return surface
+        native_surface = native_surface_from_parameters(points, weights, knots_u, knots_v, mults_u, mults_v, degree_u, degree_v)
+        return cls.from_native(native_surface)
 
     @classmethod
     def from_plane(cls, plane, domain_u=(0, 1), domain_v=(0, 1), degree_u=1, degree_v=1, pointcount_u=2, pointcount_v=2):
@@ -392,8 +405,8 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
         plane = plane_to_rhino(plane)
         du = Rhino.Geometry.Interval(*domain_u)
         dv = Rhino.Geometry.Interval(*domain_v)
-        rhino_surface = Rhino.Geometry.NurbsSurface.CreateFromPlane(plane, du, dv, degree_u, degree_v, pointcount_u, pointcount_v)
-        return cls.from_native(rhino_surface)
+        native_surface = Rhino.Geometry.NurbsSurface.CreateFromPlane(plane, du, dv, degree_u, degree_v, pointcount_u, pointcount_v)
+        return cls.from_native(native_surface)
 
     @classmethod
     def from_points(cls, points, degree_u=3, degree_v=3):
@@ -420,9 +433,8 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
         pointcount_u = len(points)
         pointcount_v = len(points[0])
         points[:] = [point_to_rhino(point) for row in points for point in row]
-        surface = cls()
-        surface.rhino_surface = Rhino.Geometry.NurbsSurface.CreateFromPoints(points, pointcount_u, pointcount_v, degree_u, degree_v)
-        return surface
+        native_surface = Rhino.Geometry.NurbsSurface.CreateFromPoints(points, pointcount_u, pointcount_v, degree_u, degree_v)
+        return cls.from_native(native_surface)
 
     @classmethod
     def from_sphere(cls, sphere):

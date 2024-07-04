@@ -12,11 +12,6 @@ from .surface import Surface
 
 
 @pluggable(category="factories")
-def new_nurbssurface(cls, *args, **kwargs):
-    raise PluginNotInstalledError
-
-
-@pluggable(category="factories")
 def nurbssurface_from_cylinder(cls, *args, **kwargs):
     raise PluginNotInstalledError
 
@@ -38,6 +33,11 @@ def nurbssurface_from_frame(cls, *args, **kwargs):
 
 @pluggable(category="factories")
 def nurbssurface_from_interpolation(cls, *args, **kwargs):
+    raise PluginNotInstalledError
+
+
+@pluggable(category="factories")
+def nurbssurface_from_native(cls, *args, **kwargs):
     raise PluginNotInstalledError
 
 
@@ -157,7 +157,7 @@ class NurbsSurface(Surface):
             The constructed surface.
 
         """
-        points = [[Point.__from_data__(point) for point in row] for row in data["points"]]
+        points = data["points"]  # conversion is not needed because point data can be provided in their raw form as well
         weights = data["weights"]
         knots_u = data["knots_u"]
         knots_v = data["knots_v"]
@@ -180,9 +180,10 @@ class NurbsSurface(Surface):
             is_periodic_v,
         )
 
-    # this may not really be necessary
     def __new__(cls, *args, **kwargs):
-        return new_nurbssurface(cls, *args, **kwargs)
+        if cls is NurbsSurface:
+            raise TypeError("Instantiating the base NURBS Surface class directly is not allowed.")
+        return object.__new__(cls)
 
     def __repr__(self):
         return "{0}(points={1!r}, weigths={2}, knots_u={3}, knots_v={4}, mults_u={5}, mults_v={6}, degree_u={7}, degree_v={8}, is_periodic_u={9}, is_periodic_v={10})".format(
@@ -376,6 +377,22 @@ class NurbsSurface(Surface):
                 row.append(Point(u, v, 0.0))
             points.append(row)
         return cls.from_points(points=points)
+
+    @classmethod
+    def from_native(cls, surface):
+        """Construct a NURBS surface from a native surface geometry.
+
+        Parameters
+        ----------
+        surface
+            A CAD native surface object.
+
+        Returns
+        -------
+        :class:`compas.geometry.NurbsSurface`
+
+        """
+        raise NotImplementedError
 
     @classmethod
     def from_parameters(
