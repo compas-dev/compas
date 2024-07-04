@@ -13,34 +13,27 @@ from .curve import Curve
 
 
 @pluggable(category="factories")
-def new_nurbscurve(cls, *args, **kwargs):
-    curve = object.__new__(NurbsCurve)
-    curve.__init__(*args, **kwargs)
-    return curve
-
-
-@pluggable(category="factories")
-def new_nurbscurve_from_native(cls, *args, **kwargs):
+def nurbscurve_from_interpolation(cls, *args, **kwargs):
     raise PluginNotInstalledError
 
 
 @pluggable(category="factories")
-def new_nurbscurve_from_parameters(cls, *args, **kwargs):
+def nurbscurve_from_native(cls, *args, **kwargs):
     raise PluginNotInstalledError
 
 
 @pluggable(category="factories")
-def new_nurbscurve_from_points(cls, *args, **kwargs):
+def nurbscurve_from_parameters(cls, *args, **kwargs):
     raise PluginNotInstalledError
 
 
 @pluggable(category="factories")
-def new_nurbscurve_from_interpolation(cls, *args, **kwargs):
+def nurbscurve_from_points(cls, *args, **kwargs):
     raise PluginNotInstalledError
 
 
 @pluggable(category="factories")
-def new_nurbscurve_from_step(cls, *args, **kwargs):
+def nurbscurve_from_step(cls, *args, **kwargs):
     raise PluginNotInstalledError
 
 
@@ -72,9 +65,6 @@ class NurbsCurve(Curve):
         The order of the curve (degree + 1).
 
     """
-
-    def __new__(cls, *args, **kwargs):
-        return new_nurbscurve(cls, *args, **kwargs)
 
     DATASCHEMA = {
         "type": "object",
@@ -108,7 +98,7 @@ class NurbsCurve(Curve):
     @classmethod
     def __from_data__(cls, data):
         return cls.from_parameters(
-            data["points"],
+            data["points"],  # conversion is not needed because point data can be provided in raw form as well
             data["weights"],
             data["knots"],
             data["multiplicities"],
@@ -116,8 +106,10 @@ class NurbsCurve(Curve):
             data["is_periodic"],
         )
 
-    def __init__(self, name=None):
-        super(NurbsCurve, self).__init__(name=name)
+    def __new__(cls, *args, **kwargs):
+        if cls is Curve:
+            raise TypeError("Making an instance of `NurbsCurve` using `NurbsCurve()` is not allowed. Please use one of the factory methods instead (`NurbsCurve.from_...`)")
+        return object.__new__(cls)
 
     def __repr__(self):
         return "{0}(points={1!r}, weigths={2}, knots={3}, multiplicities={4}, degree={5}, is_periodic={6})".format(
@@ -173,100 +165,6 @@ class NurbsCurve(Curve):
     # ==============================================================================
     # Constructors
     # ==============================================================================
-
-    @classmethod
-    def from_native(cls, curve):
-        """Construct a NURBS curve from a curve object.
-
-        Parameters
-        ----------
-        curve : :class:`Rhino.Geometry.NurbsCurve`
-            A *Rhino* curve object.
-
-        Returns
-        -------
-        :class:`compas.geometry.NurbsCurve`
-            A COMPAS NURBS curve.
-
-        """
-        return new_nurbscurve_from_native(cls, curve)
-
-    @classmethod
-    def from_step(cls, filepath):
-        """Load a NURBS curve from an STP file.
-
-        Parameters
-        ----------
-        filepath : str
-            The path to the file.
-
-        Returns
-        -------
-        :class:`compas.geometry.NurbsCurve`
-        """
-        return new_nurbscurve_from_step(cls, filepath)
-
-    @classmethod
-    def from_parameters(cls, points, weights, knots, multiplicities, degree, is_periodic=False):
-        """Construct a NURBS curve from explicit curve parameters.
-
-        Parameters
-        ----------
-        points : list[[float, float, float] | :class:`compas.geometry.Point`]
-            The control points.
-        weights : list[float]
-            The weights of the control points.
-        knots : list[float]
-            The curve knots, without multiplicity.
-        multiplicities : list[int]
-            Multiplicity of the knots.
-        degree : int
-            Degree of the curve.
-        is_periodic : bool, optional
-            Flag indicating that the curve is periodic.
-
-        Returns
-        -------
-        :class:`compas.geometry.NurbsCurve`
-
-        """
-        return new_nurbscurve_from_parameters(cls, points, weights, knots, multiplicities, degree, is_periodic=False)
-
-    @classmethod
-    def from_points(cls, points, degree=3):
-        """Construct a NURBS curve from control points.
-
-        Parameters
-        ----------
-        points : list[[float, float, float] | :class:`compas.geometry.Point`]
-            The control points.
-        degree : int, optional
-            The degree of the curve.
-
-        Returns
-        -------
-        :class:`compas.geometry.NurbsCurve`
-
-        """
-        return new_nurbscurve_from_points(cls, points, degree=degree)
-
-    @classmethod
-    def from_interpolation(cls, points, precision=1e-3):
-        """Construct a NURBS curve by interpolating a set of points.
-
-        Parameters
-        ----------
-        points : list[[float, float, float] | :class:`compas.geometry.Point`]
-            A list of interpolation points.
-        precision : int, optional
-            The desired precision of the interpolation.
-
-        Returns
-        -------
-        :class:`compas.geometry.NurbsCurve`
-
-        """
-        return new_nurbscurve_from_interpolation(cls, points, precision=1e-3)
 
     @classmethod
     def from_arc(cls, arc):
@@ -351,6 +249,24 @@ class NurbsCurve(Curve):
         return cls.from_parameters(points=points, weights=weights, knots=knots, multiplicities=mults, degree=2)
 
     @classmethod
+    def from_interpolation(cls, points, precision=1e-3):
+        """Construct a NURBS curve by interpolating a set of points.
+
+        Parameters
+        ----------
+        points : list[[float, float, float] | :class:`compas.geometry.Point`]
+            A list of interpolation points.
+        precision : int, optional
+            The desired precision of the interpolation.
+
+        Returns
+        -------
+        :class:`compas.geometry.NurbsCurve`
+
+        """
+        return nurbscurve_from_interpolation(cls, points, precision=1e-3)
+
+    @classmethod
     def from_line(cls, line):
         """Construct a NURBS curve from a line.
 
@@ -370,6 +286,82 @@ class NurbsCurve(Curve):
             multiplicities=[2, 2],
             degree=1,
         )
+
+    @classmethod
+    def from_native(cls, curve):
+        """Construct a NURBS curve from a CAD-native curve geometry.
+
+        Parameters
+        ----------
+        curve
+            A CAD-native curve geometry.
+
+        Returns
+        -------
+        :class:`compas.geometry.NurbsCurve`
+            A COMPAS NURBS curve.
+
+        """
+        return nurbscurve_from_native(cls, curve)
+
+    @classmethod
+    def from_parameters(cls, points, weights, knots, multiplicities, degree, is_periodic=False):
+        """Construct a NURBS curve from explicit curve parameters.
+
+        Parameters
+        ----------
+        points : list[[float, float, float] | :class:`compas.geometry.Point`]
+            The control points.
+        weights : list[float]
+            The weights of the control points.
+        knots : list[float]
+            The curve knots, without multiplicity.
+        multiplicities : list[int]
+            Multiplicity of the knots.
+        degree : int
+            Degree of the curve.
+        is_periodic : bool, optional
+            Flag indicating that the curve is periodic.
+
+        Returns
+        -------
+        :class:`compas.geometry.NurbsCurve`
+
+        """
+        return nurbscurve_from_parameters(cls, points, weights, knots, multiplicities, degree, is_periodic=False)
+
+    @classmethod
+    def from_points(cls, points, degree=3):
+        """Construct a NURBS curve from control points.
+
+        Parameters
+        ----------
+        points : list[[float, float, float] | :class:`compas.geometry.Point`]
+            The control points.
+        degree : int, optional
+            The degree of the curve.
+
+        Returns
+        -------
+        :class:`compas.geometry.NurbsCurve`
+
+        """
+        return nurbscurve_from_points(cls, points, degree=degree)
+
+    @classmethod
+    def from_step(cls, filepath):
+        """Load a NURBS curve from an STP file.
+
+        Parameters
+        ----------
+        filepath : str
+            The path to the file.
+
+        Returns
+        -------
+        :class:`compas.geometry.NurbsCurve`
+        """
+        return nurbscurve_from_step(cls, filepath)
 
     # ==============================================================================
     # Conversions
