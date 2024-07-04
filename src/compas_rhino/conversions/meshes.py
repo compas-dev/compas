@@ -120,7 +120,7 @@ def vertices_and_faces_to_rhino(
     vertexcolors=None,
     facecolors=None,
     disjoint=True,
-    face_callback=None,
+    face_callback=None,  # type: ignore
 ):
     """Convert COMPAS vertices and faces to a Rhino mesh object.
 
