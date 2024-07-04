@@ -60,6 +60,7 @@ where = ["src"]
 [tool.setuptools.package-data]
 "compas.colors.cmcrameri" = ["*.txt"]
 "compas.data.samples" = ["*.obj", "*.stl", "*.off", "*.ply", "*.json"]
+"compas_ghpython.components.ghuser" = ["*.ghuser"]
 
 # ============================================================================
 # replace pytest.ini
