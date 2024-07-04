@@ -116,13 +116,6 @@ class Arc(Curve):
 
     """
 
-    # overwriting the __new__ method is necessary
-    # to avoid triggering the plugin mechanism of the base curve class
-    def __new__(cls, *args, **kwargs):
-        curve = object.__new__(cls)
-        curve.__init__(*args, **kwargs)
-        return curve
-
     DATASCHEMA = {
         "value": {
             "type": "object",
