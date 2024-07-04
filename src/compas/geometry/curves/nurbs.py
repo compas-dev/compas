@@ -107,7 +107,7 @@ class NurbsCurve(Curve):
         )
 
     def __new__(cls, *args, **kwargs):
-        if cls is Curve:
+        if cls is NurbsCurve:
             raise TypeError("Making an instance of `NurbsCurve` using `NurbsCurve()` is not allowed. Please use one of the factory methods instead (`NurbsCurve.from_...`)")
         return object.__new__(cls)
 
