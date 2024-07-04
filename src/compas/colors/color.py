@@ -582,6 +582,8 @@ class Color(Data):
         """
         if not color:
             return
+        if isinstance(color, Color):
+            return color
         if Color._is_rgb255(color):
             return Color.from_rgb255(*list(color))
         if Color._is_hex(color):
