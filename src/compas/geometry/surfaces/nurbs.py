@@ -182,7 +182,7 @@ class NurbsSurface(Surface):
 
     def __new__(cls, *args, **kwargs):
         if cls is NurbsSurface:
-            raise TypeError("Instantiating the base NURBS Surface class directly is not allowed.")
+            raise TypeError("Making an instance of `NurbsSurface` using `NurbsSurface()` is not allowed. Please use one of the factory methods instead (`NurbsSurface.from_...`)")
         return object.__new__(cls)
 
     def __repr__(self):
