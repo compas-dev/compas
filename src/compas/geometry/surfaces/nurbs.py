@@ -258,7 +258,7 @@ class NurbsSurface(Surface):
 
     @classmethod
     def from_cylinder(cls, cylinder, *args, **kwargs):
-        """Construct a surface from a sphere.
+        """Construct a surface from a cylinder.
 
         Parameters
         ----------
