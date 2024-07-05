@@ -58,6 +58,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas_rhino.conversions.curves.curve_to_compas_circle` to work only with geometry.
 * Changed `compas_rhino.conversions.curves.curve_to_compas_ellipse` to work only with geometry.
 * Changed `compas_rhino.conversions.curves.curve_to_compas_polyline` to work only with geometry.
+* Changed `compas_rhino.objects.get_point_coordinates` to deprecated (removed in v2.3).
+* Changed `compas_rhino.objects.get_line_coordinates` to deprecated (removed in v2.3).
+* Changed `compas_rhino.objects.get_polyline_coordinates` to deprecated (removed in v2.3).
+* Changed `compas_rhino.objects.get_polygon_coordinates` to deprecated (removed in v2.3).
 
 ### Removed
 

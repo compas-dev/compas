@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 import json
+import warnings
 
 import Rhino  # type: ignore
 import rhinoscriptsyntax as rs  # type: ignore
@@ -454,12 +455,19 @@ def get_point_coordinates(guids):
     list[[float, float, float]]
         The location coordinates of the points.
 
+    Warnings
+    --------
+    .. deprecated:: 2.3
+        Use `compas_rhino.conversions` instead.
+
     """
+    warnings.warn("This function will be removed in v2.3. Please use `compas_rhino.conversions` instead.", DeprecationWarning, stacklevel=2)
+
     points = []
     for guid in guids:
         point = rs.PointCoordinates(guid)
         if point:
-            points.append(map(float, point))
+            points.append(point)
     return points
 
 
@@ -796,16 +804,23 @@ def get_line_coordinates(guids):
     list[tuple[[float, float, float], [float, float, float]]]
         A start and end point per line.
 
+    Warnings
+    --------
+    .. deprecated:: 2.3
+        Use `compas_rhino.conversions` instead.
+
     """
+    warnings.warn("This function will be removed in v2.3. Please use `compas_rhino.conversions` instead.", DeprecationWarning, stacklevel=2)
+
     if isinstance(guids, System.Guid):
-        sp = map(float, rs.CurveStartPoint(guids))
-        ep = map(float, rs.CurveEndPoint(guids))
-        return sp, ep
+        sp = rs.CurveStartPoint(guids)
+        ep = rs.CurveEndPoint(guids)
+        return [sp.X, sp.Y, sp.Z], [ep.X, ep.Y, ep.Z]
     lines = []
     for guid in guids:
-        sp = map(float, rs.CurveStartPoint(guid))
-        ep = map(float, rs.CurveEndPoint(guid))
-        lines.append((sp, ep))
+        sp = rs.CurveStartPoint(guid)
+        ep = rs.CurveEndPoint(guid)
+        lines.append(([sp.X, sp.Y, sp.Z], [ep.X, ep.Y, ep.Z]))
     return lines
 
 
@@ -822,7 +837,14 @@ def get_polyline_coordinates(guids):
     list[list[[float, float, float]]]
         A list of point coordinates per polyline.
 
+    Warnings
+    --------
+    .. deprecated:: 2.3
+        Use `compas_rhino.conversions` instead.
+
     """
+    warnings.warn("This function will be removed in v2.3. Please use `compas_rhino.conversions` instead.", DeprecationWarning, stacklevel=2)
+
     if isinstance(guids, System.Guid):
         points = rs.PolylineVertices(guids)
         coords = []
@@ -852,7 +874,14 @@ def get_polygon_coordinates(guids):
     list[list[[float, float, float]]]
         A list of point coordinates per polygon.
 
+    Warnings
+    --------
+    .. deprecated:: 2.3
+        Use `compas_rhino.conversions` instead.
+
     """
+    warnings.warn("This function will be removed in v2.3. Please use `compas_rhino.conversions` instead.", DeprecationWarning, stacklevel=2)
+
     if isinstance(guids, System.Guid):
         points = rs.CurvePoints(guids)
         coords = []
@@ -967,175 +996,175 @@ def select_meshes(message="Select multiple meshes."):
     return guids
 
 
-def get_meshes(layer=None):
-    if layer:
-        rs.EnableRedraw(False)
-        # Argument names for LayerVisible command are not the same for Rhino5 and Rhino6
-        # that is why we use positional instead of named arguments
-        visible = rs.LayerVisible(layer, True, True)
-        guids = rs.ObjectsByType(rs.filter.mesh)
-        guids = list(set(guids) & set(rs.ObjectsByLayer(layer)))
-        rs.LayerVisible(layer, visible, True)
-        rs.EnableRedraw(True)
-    else:
-        guids = rs.ObjectsByType(rs.filter.mesh)
-    return guids
+# def get_meshes(layer=None):
+#     if layer:
+#         rs.EnableRedraw(False)
+#         # Argument names for LayerVisible command are not the same for Rhino5 and Rhino6
+#         # that is why we use positional instead of named arguments
+#         visible = rs.LayerVisible(layer, True, True)
+#         guids = rs.ObjectsByType(rs.filter.mesh)
+#         guids = list(set(guids) & set(rs.ObjectsByLayer(layer)))
+#         rs.LayerVisible(layer, visible, True)
+#         rs.EnableRedraw(True)
+#     else:
+#         guids = rs.ObjectsByType(rs.filter.mesh)
+#     return guids
 
 
-def get_mesh_border(guid):
-    return rs.DuplicateMeshBorder(guid)
+# def get_mesh_border(guid):
+#     return rs.DuplicateMeshBorder(guid)
 
 
-def get_mesh_face_vertices(guid):
-    faces = []
-    if guid:
-        temp = rs.MeshFaceVertices(guid)
-        faces = map(list, temp)
-    return faces
+# def get_mesh_face_vertices(guid):
+#     faces = []
+#     if guid:
+#         temp = rs.MeshFaceVertices(guid)
+#         faces = map(list, temp)
+#     return faces
 
 
-def get_mesh_vertex_coordinates(guid):
-    vertices = []
-    if guid:
-        vertices = [map(float, vertex) for vertex in rs.MeshVertices(guid)]
-    return vertices
+# def get_mesh_vertex_coordinates(guid):
+#     vertices = []
+#     if guid:
+#         vertices = [map(float, vertex) for vertex in rs.MeshVertices(guid)]
+#     return vertices
 
 
-def get_mesh_vertex_colors(guid):
-    colors = []
-    if guid:
-        temp = rs.MeshVertexColors(guid)
-        if temp:
-            colors = map(list, temp)
-    return colors
+# def get_mesh_vertex_colors(guid):
+#     colors = []
+#     if guid:
+#         temp = rs.MeshVertexColors(guid)
+#         if temp:
+#             colors = map(list, temp)
+#     return colors
 
 
-def set_mesh_vertex_colors(guid, colors):
-    if not guid:
-        return
-    return rs.MeshVertexColors(guid, colors)
+# def set_mesh_vertex_colors(guid, colors):
+#     if not guid:
+#         return
+#     return rs.MeshVertexColors(guid, colors)
 
 
-def get_mesh_vertices_and_faces(guid):
-    if not guid:
-        return
-    vertices = [map(float, vertex) for vertex in rs.MeshVertices(guid)]
-    faces = map(list, rs.MeshFaceVertices(guid))
-    return vertices, faces
+# def get_mesh_vertices_and_faces(guid):
+#     if not guid:
+#         return
+#     vertices = [map(float, vertex) for vertex in rs.MeshVertices(guid)]
+#     faces = map(list, rs.MeshFaceVertices(guid))
+#     return vertices, faces
 
 
-def get_mesh_vertex_index(guid):
-    class CustomGetObject(Rhino.Input.Custom.GetObject):
-        def CustomGeometryFilter(self, rhino_object, geometry, component_index):
-            return guid == rhino_object.Id
+# def get_mesh_vertex_index(guid):
+#     class CustomGetObject(Rhino.Input.Custom.GetObject):
+#         def CustomGeometryFilter(self, rhino_object, geometry, component_index):
+#             return guid == rhino_object.Id
 
-    go = CustomGetObject()
-    go.SetCommandPrompt("Select one vertex of the mesh.")
-    go.GeometryFilter = Rhino.DocObjects.ObjectType.MeshVertex
-    go.AcceptNothing(True)
-    if go.Get() != Rhino.Input.GetResult.Object:
-        return None
-    objref = go.Object(0)
-    if not objref:
-        return None
-    tvindex = objref.GeometryComponentIndex.Index
-    mobj = sc.doc.Objects.Find(guid)
-    mgeo = mobj.Geometry
-    temp = mgeo.TopologyVertices.MeshVertexIndices(tvindex)
-    vindex = temp[0]
-    go.Dispose()
-    return vindex
-
-
-def get_mesh_face_index(guid):
-    class CustomGetObject(Rhino.Input.Custom.GetObject):
-        def CustomGeometryFilter(self, rhino_object, geometry, component_index):
-            return guid == rhino_object.Id
-
-    go = CustomGetObject()
-    go.SetCommandPrompt("Select one face of the mesh.")
-    go.GeometryFilter = Rhino.DocObjects.ObjectType.MeshFace
-    go.AcceptNothing(True)
-    if go.Get() != Rhino.Input.GetResult.Object:
-        return None
-    objref = go.Object(0)
-    if not objref:
-        return None
-    findex = objref.GeometryComponentIndex.Index
-    go.Dispose()
-    return findex
+#     go = CustomGetObject()
+#     go.SetCommandPrompt("Select one vertex of the mesh.")
+#     go.GeometryFilter = Rhino.DocObjects.ObjectType.MeshVertex
+#     go.AcceptNothing(True)
+#     if go.Get() != Rhino.Input.GetResult.Object:
+#         return None
+#     objref = go.Object(0)
+#     if not objref:
+#         return None
+#     tvindex = objref.GeometryComponentIndex.Index
+#     mobj = sc.doc.Objects.Find(guid)
+#     mgeo = mobj.Geometry
+#     temp = mgeo.TopologyVertices.MeshVertexIndices(tvindex)
+#     vindex = temp[0]
+#     go.Dispose()
+#     return vindex
 
 
-def get_mesh_edge_index(guid):
-    class CustomGetObject(Rhino.Input.Custom.GetObject):
-        def CustomGeometryFilter(self, rhino_object, geometry, component_index):
-            return guid == rhino_object.Id
+# def get_mesh_face_index(guid):
+#     class CustomGetObject(Rhino.Input.Custom.GetObject):
+#         def CustomGeometryFilter(self, rhino_object, geometry, component_index):
+#             return guid == rhino_object.Id
 
-    go = CustomGetObject()
-    go.SetCommandPrompt("Select an edge of the mesh.")
-    go.GeometryFilter = Rhino.DocObjects.ObjectType.MeshEdge
-    go.AcceptNothing(True)
-    if go.Get() != Rhino.Input.GetResult.Object:
-        return None
-    objref = go.Object(0)
-    if not objref:
-        return None
-    eindex = objref.GeometryComponentIndex.Index
-    go.Dispose()
-    return eindex
-
-
-def get_mesh_vertex_indices(guid):
-    tvindices = rs.GetMeshVertices(guid, "Select mesh vertices.")
-    if not tvindices:
-        return
-    mobj = sc.doc.Objects.Find(guid)
-    mgeo = mobj.Geometry
-    vindices = []
-    for tvindex in tvindices:
-        temp = mgeo.TopologyVertices.MeshVertexIndices(tvindex)
-        vindices.append(temp[0])
-    return vindices
+#     go = CustomGetObject()
+#     go.SetCommandPrompt("Select one face of the mesh.")
+#     go.GeometryFilter = Rhino.DocObjects.ObjectType.MeshFace
+#     go.AcceptNothing(True)
+#     if go.Get() != Rhino.Input.GetResult.Object:
+#         return None
+#     objref = go.Object(0)
+#     if not objref:
+#         return None
+#     findex = objref.GeometryComponentIndex.Index
+#     go.Dispose()
+#     return findex
 
 
-def get_mesh_face_indices(guid):
-    return rs.GetMeshFaces(guid, "Select mesh faces.")
+# def get_mesh_edge_index(guid):
+#     class CustomGetObject(Rhino.Input.Custom.GetObject):
+#         def CustomGeometryFilter(self, rhino_object, geometry, component_index):
+#             return guid == rhino_object.Id
+
+#     go = CustomGetObject()
+#     go.SetCommandPrompt("Select an edge of the mesh.")
+#     go.GeometryFilter = Rhino.DocObjects.ObjectType.MeshEdge
+#     go.AcceptNothing(True)
+#     if go.Get() != Rhino.Input.GetResult.Object:
+#         return None
+#     objref = go.Object(0)
+#     if not objref:
+#         return None
+#     eindex = objref.GeometryComponentIndex.Index
+#     go.Dispose()
+#     return eindex
 
 
-def get_mesh_vertex_face_indices(guid):
-    vindex = get_mesh_vertex_index(guid)
-    if vindex is None:
-        return
-    mobj = sc.doc.Objects.Find(guid)
-    mgeo = mobj.Geometry
-    findices = mgeo.TopologyVertices.ConnectedFaces(vindex)
-    return findices
+# def get_mesh_vertex_indices(guid):
+#     tvindices = rs.GetMeshVertices(guid, "Select mesh vertices.")
+#     if not tvindices:
+#         return
+#     mobj = sc.doc.Objects.Find(guid)
+#     mgeo = mobj.Geometry
+#     vindices = []
+#     for tvindex in tvindices:
+#         temp = mgeo.TopologyVertices.MeshVertexIndices(tvindex)
+#         vindices.append(temp[0])
+#     return vindices
 
 
-def get_mesh_face_vertex_indices(guid):
-    findex = get_mesh_face_index(guid)
-    if findex is None:
-        return
-    mobj = sc.doc.Objects.Find(guid)
-    mgeo = mobj.Geometry
-    tvertices = mgeo.Faces.GetTopologicalVertices(findex)
-    vindices = []
-    for tvertex in tvertices:
-        temp = mgeo.TopologyVertices.MeshVertexIndices(tvertex)
-        vindices.append(temp[0])
-    return vindices
+# def get_mesh_face_indices(guid):
+#     return rs.GetMeshFaces(guid, "Select mesh faces.")
 
 
-def get_mesh_edge_vertex_indices(guid):
-    eindex = get_mesh_edge_index(guid)
-    if eindex is None:
-        return
-    mobj = sc.doc.Objects.Find(guid)
-    mgeo = mobj.Geometry
-    temp = mgeo.TopologyEdges.GetTopologyVertices(eindex)
-    tvindices = temp.I, temp.J
-    vindices = []
-    for tvindex in tvindices:
-        temp = mgeo.TopologyVertices.MeshVertexIndices(tvindex)
-        vindices.append(temp[0])
-    return vindices
+# def get_mesh_vertex_face_indices(guid):
+#     vindex = get_mesh_vertex_index(guid)
+#     if vindex is None:
+#         return
+#     mobj = sc.doc.Objects.Find(guid)
+#     mgeo = mobj.Geometry
+#     findices = mgeo.TopologyVertices.ConnectedFaces(vindex)
+#     return findices
+
+
+# def get_mesh_face_vertex_indices(guid):
+#     findex = get_mesh_face_index(guid)
+#     if findex is None:
+#         return
+#     mobj = sc.doc.Objects.Find(guid)
+#     mgeo = mobj.Geometry
+#     tvertices = mgeo.Faces.GetTopologicalVertices(findex)
+#     vindices = []
+#     for tvertex in tvertices:
+#         temp = mgeo.TopologyVertices.MeshVertexIndices(tvertex)
+#         vindices.append(temp[0])
+#     return vindices
+
+
+# def get_mesh_edge_vertex_indices(guid):
+#     eindex = get_mesh_edge_index(guid)
+#     if eindex is None:
+#         return
+#     mobj = sc.doc.Objects.Find(guid)
+#     mgeo = mobj.Geometry
+#     temp = mgeo.TopologyEdges.GetTopologyVertices(eindex)
+#     tvindices = temp.I, temp.J
+#     vindices = []
+#     for tvindex in tvindices:
+#         temp = mgeo.TopologyVertices.MeshVertexIndices(tvindex)
+#         vindices.append(temp[0])
+#     return vindices
