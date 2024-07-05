@@ -15,10 +15,10 @@ def test_hashtree_from_dict():
 
 def test_hashtree_from_mesh():
     mesh = Mesh.from_polyhedron(4)
-    tree1 = HashTree.from_dict(mesh.__data__)
+    tree1 = HashTree.from_object(mesh)
     mesh.vertex_attribute(0, "x", 1.0)
     mesh.delete_face(3)
-    tree2 = HashTree.from_dict(mesh.__data__)
+    tree2 = HashTree.from_object(mesh)
     diff = tree2.diff(tree1)
 
     assert diff["added"] == []

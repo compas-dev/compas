@@ -170,7 +170,7 @@ class HashTree(Tree):
         """Construct a HashTree from a COMPAS data object."""
         if not isinstance(obj, Data):
             raise TypeError("The object must be a COMPAS data object.")
-        return cls.from_dict(obj.data)
+        return cls.from_dict(obj.__data__)
 
     def node_signature(self, node, parent_path=""):
         """Compute the SHA256 signature of a node. The computed nodes are cached in `self.signatures` dictionary.
