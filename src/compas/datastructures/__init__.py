@@ -55,6 +55,7 @@ from .assembly.assembly import Assembly
 from .assembly.part import Feature, GeometricFeature, ParametricFeature, Part
 from .cell_network.cell_network import CellNetwork
 from .tree.tree import Tree, TreeNode
+from .tree.hashtree import HashTree, HashNode
 
 Network = Graph
 
@@ -72,4 +73,6 @@ __all__ = [
     "ParametricFeature",
     "Tree",
     "TreeNode",
+    "HashTree",
+    "HashNode",
 ]
