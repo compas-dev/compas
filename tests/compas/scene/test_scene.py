@@ -4,9 +4,13 @@ if not compas.IPY:
     import pytest  # noqa: F401
     from compas.scene import context
     from compas.scene import register
+    from compas.scene import Scene
     from compas.scene import SceneObject
     from compas.scene import SceneObjectNotRegisteredError
     from compas.data import Data
+    from compas.geometry import Box
+    from compas.geometry import Frame
+    from compas.geometry import Translation
 
     @pytest.fixture(autouse=True)
     def reset_sceneobjects_registration():
@@ -75,3 +79,23 @@ if not compas.IPY:
             with pytest.raises(SceneObjectNotRegisteredError):
                 item = FakeSubItem()
                 _ = SceneObject(item)
+
+    def test_sceneobject_transform():
+        scene = Scene()
+        sceneobj1 = scene.add(Box())
+        sceneobj1.frame = Frame([1.0, 0.0, 0.0], xaxis=[1.0, 0.0, 0.0], yaxis=[0.0, 1.0, 0.0])
+        sceneobj1.transformation = Translation.from_vector([10.0, 0.0, 0.0])
+        assert sceneobj1.worldtransformation == sceneobj1.frame.to_transformation() * sceneobj1.transformation
+
+        sceneobj2 = scene.add(Box(), parent=sceneobj1)
+        sceneobj2.frame = Frame([1.0, 1.0, 0.0], xaxis=[1.0, 0.0, 0.0], yaxis=[0.0, 1.0, 0.0])
+        sceneobj2.transformation = Translation.from_vector([10.0, 10.0, 0.0])
+        assert sceneobj2.worldtransformation == sceneobj1.frame.to_transformation() * sceneobj2.frame.to_transformation() * sceneobj2.transformation
+
+        sceneobj3 = scene.add(Box(), parent=sceneobj2)
+        sceneobj3.frame = Frame([1.0, 1.0, 1.0], xaxis=[0.0, 1.0, 0.0], yaxis=[1.0, 0.0, 0.0])
+        sceneobj3.transformation = Translation.from_vector([10.0, 10.0, 10.0])
+        assert (
+            sceneobj3.worldtransformation
+            == sceneobj1.frame.to_transformation() * sceneobj2.frame.to_transformation() * sceneobj3.frame.to_transformation() * sceneobj3.transformation
+        )
