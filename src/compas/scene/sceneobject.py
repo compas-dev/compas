@@ -176,7 +176,7 @@ class SceneObject(TreeNode):
     @property
     def worldtransformation(self):
         # type: () -> compas.geometry.Transformation
-        frame_stack = []
+        frame_stack = [self.frame] if self.frame else []
         parent = self.parent
         while parent and not parent.is_root:
             if parent.frame:
