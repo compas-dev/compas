@@ -460,6 +460,7 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="advanced.tolerance.html">Dealing with Tolerances</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.serialisation.html">Serialising Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.rpc.html">Remote Procedure Calls (RPC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.hashtree.html">Hash Tree</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorial: Working in CAD</span></p>
 <ul class="nav bd-sidenav">
@@ -590,28 +591,6 @@ For example, meshes can have different colors for the vertices, the edges, and t
 And the colors of vertices, edges, and faces can be specified individually, per element.
 See the section about mesh visualisation for more information.</p>
 </section>
-<section id="object-transformation">
-<h2>Object Transformation</h2>
-<p>All scene objects have a transformation matrix that can be used to transform the object in the visualisation,
-independently of the geometry of the underlying data object.
-The default transformation matrix is the identity matrix, which means that the visualised geometry is the same as the geometry represented by the data.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sceneobj</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sceneobj</span><span class="o">.</span><span class="n">transformation</span>
-<span class="go">Transformation([[1.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 1.0, 0.0], [0.0, 0.0, 0.0, 1.0]])</span>
-</pre></div>
-</div>
-<p>The transformation matrix can be set using a COMPAS Transformation object, or a 4x4 nested list of floats.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Translation</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sceneobj</span><span class="o">.</span><span class="n">transformation</span> <span class="o">=</span> <span class="n">Translation</span><span class="o">.</span><span class="n">from_vector</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sceneobj</span><span class="o">.</span><span class="n">transformation</span>
-<span class="go">Transformation([[1.0, 0.0, 0.0, 1.0], [0.0, 1.0, 0.0, 2.0], [0.0, 0.0, 1.0, 3.0], [0.0, 0.0, 0.0, 1.0]])</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>For more information about working with transformations in COMPAS, see <a class="reference internal" href="basics.geometry.transformations.html"><span class="doc">Transformations</span></a>.</p>
-</div>
-</section>
 <section id="scene-hierarchy">
 <h2>Scene Hierarchy</h2>
 <p>Scene objects are organised in a hierarchy, with the scene as the root node.
@@ -640,6 +619,33 @@ The scene tree has an implicit root node, which is the scene itself.</p>
 <span class="go">PointObject</span>
 </pre></div>
 </div>
+</section>
+<section id="object-frame-and-transformation">
+<h2>Object Frame And Transformation</h2>
+<p>Every scene objects can have a reference “frame” that represents its local coordinate system relative to the frame of its hierarchical parent.
+In addition, an object can also have a local “transformation” which orientates this object from its frame.
+The final transformation of an object relative to the world coordinate system is the aggregated multiplication of all its hierarchical ancesters’ frames,
+together with its own local frame and transformation. This prorperty can be accessed through the read-only attribute “worldtransformation”.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Translation</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Box</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Frame</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sceneobj1</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Box</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sceneobj1</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">(</span><span class="n">point</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">xaxis</span><span class="o">=</span><span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span><span class="n">yaxis</span><span class="o">=</span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sceneobj1</span><span class="o">.</span><span class="n">transformation</span> <span class="o">=</span> <span class="n">Translation</span><span class="o">.</span><span class="n">from_vector</span><span class="p">([</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sceneobj1</span><span class="o">.</span><span class="n">worldtransformation</span>
+<span class="go">Transformation([[1.0, 0.0, 0.0, 11.0], [0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 1.0, 0.0], [0.0, 0.0, 0.0, 1.0]], check=False)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sceneobj1</span><span class="o">.</span><span class="n">worldtransformation</span> <span class="o">==</span> <span class="n">sceneobj1</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">to_transfromation</span><span class="p">()</span> <span class="o">*</span> <span class="n">sceneobj1</span><span class="o">.</span><span class="n">transformation</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>The worldtransformation of a nestd “sceneobj2” will be calculated as: Frame of “sceneobj1” * Frame of “sceneobj2” * Transformation of “sceneobj2”
+&gt;&gt;&gt; sceneobj2 = scene.add(Box(), parent=sceneobj1)
+&gt;&gt;&gt; sceneobj2.frame = Frame([1.0, 1.0, 0.0], xaxis=[1.0, 0.0, 0.0],yaxis=[0.0, 1.0, 0.0])
+&gt;&gt;&gt; sceneobj2.transformation = Translation.from_vector([10.0, 10.0, 0.0])
+&gt;&gt;&gt; sceneobj.worldtransformation
+Transformation([[1.0, 0.0, 0.0, 12.0], [0.0, 1.0, 0.0, 11.0], [0.0, 0.0, 1.0, 0.0], [0.0, 0.0, 0.0, 1.0]], check=False)
+&gt;&gt;&gt; sceneobj2.worldtransformation == sceneobj1.frame.to_transfromation() * sceneobj2.frame.to_transfrom() * sceneobj2.transformation
+True</p>
 </section>
 <section id="scene-context">
 <h2>Scene Context</h2>
@@ -692,8 +698,8 @@ For working with different contexts please refer to the next section “Tutorial
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scene-objects">Scene Objects</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualiation-settings">Visualiation Settings</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#object-transformation">Object Transformation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scene-hierarchy">Scene Hierarchy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#object-frame-and-transformation">Object Frame And Transformation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scene-context">Scene Context</a></li>
 </ul>
   </nav></div>
