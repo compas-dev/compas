@@ -32,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.geometry.curves.curve.Curve.from_native`.
 * Added `compas_rhino.geometry.curves.curve.Curve.from_native`.
 * Added `compas_rhino.geometry.curves.nurbs.NurbsCurve.from_native`.
+* Added `compas.datastructures.HashTree` and `compas.datastructures.HashNode`.
 
 ### Changed
 

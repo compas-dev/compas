@@ -32,6 +32,7 @@ User Guide
     advanced.tolerance
     advanced.serialisation
     advanced.rpc
+    advanced.hashtree
 
 
 .. toctree::
