@@ -169,15 +169,9 @@ class Geometry(Data):
         transformed
 
         """
-        from compas.geometry import Scale
-
-        if y is None:
-            y = x
-
-        if z is None:
-            z = x
-
-        return self.transformed(Scale.from_factors([x, y, z]))
+        geometry = self.copy()  # type: Geometry
+        geometry.scale(x=x, y=y, z=z)
+        return geometry  # type: ignore
 
     def translate(self, vector):
         """Translate the geometry.
@@ -224,9 +218,9 @@ class Geometry(Data):
         transformed
 
         """
-        from compas.geometry import Translation
-
-        return self.transformed(Translation.from_vector(vector))
+        geometry = self.copy()  # type: Geometry
+        geometry.translate(vector)
+        return geometry  # type: ignore
 
     def rotate(self, angle, axis=None, point=None):
         """Rotate the geometry.
@@ -288,9 +282,6 @@ class Geometry(Data):
         transformed
 
         """
-        from compas.geometry import Rotation
-
-        if axis is None:
-            axis = [0.0, 0.0, 1.0]
-
-        return self.transformed(Rotation.from_axis_and_angle(axis, angle, point))
+        geometry = self.copy()  # type: Geometry
+        geometry.rotate(angle=angle, axis=axis, point=point)
+        return geometry  # type: ignore

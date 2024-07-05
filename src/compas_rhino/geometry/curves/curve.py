@@ -18,6 +18,8 @@ class RhinoCurve(Curve):
 
     Parameters
     ----------
+    native_curve : :rhino:`Curve`
+        A Rhino curve.
     name : str, optional
         Name of the curve.
 
@@ -38,17 +40,17 @@ class RhinoCurve(Curve):
 
     Other Attributes
     ----------------
-    rhino_curve : :rhino:`Curve`
+    native_curve : :rhino:`Curve`
         The underlying Rhino curve.
 
     """
 
-    def __init__(self, name=None):
+    def __init__(self, native_curve, name=None):
         super(RhinoCurve, self).__init__(name=name)
-        self._rhino_curve = None
+        self._native_curve = native_curve
 
     def __eq__(self, other):
-        return self.rhino_curve.IsEqual(other.rhino_curve)  # type: ignore
+        return self.native_curve.IsEqual(other.native_curve)  # type: ignore
 
     # ==============================================================================
     # Data
@@ -60,62 +62,84 @@ class RhinoCurve(Curve):
 
     @property
     def rhino_curve(self):
-        return self._rhino_curve
+        return self._native_curve
 
-    @rhino_curve.setter
-    def rhino_curve(self, curve):
-        self._rhino_curve = curve
+    @property
+    def native_curve(self):
+        return self._native_curve
+
+    @native_curve.setter
+    def native_curve(self, curve):
+        self._native_curve = curve
 
     @property
     def dimension(self):
-        if self.rhino_curve:
-            return self.rhino_curve.Dimension
+        if self.native_curve:
+            return self.native_curve.Dimension
 
     @property
     def domain(self):
-        if self.rhino_curve:
-            return self.rhino_curve.Domain.T0, self.rhino_curve.Domain.T1
+        if self.native_curve:
+            return self.native_curve.Domain.T0, self.native_curve.Domain.T1
 
     @property
     def start(self):
-        if self.rhino_curve:
-            return point_to_compas(self.rhino_curve.PointAtStart)
+        if self.native_curve:
+            return point_to_compas(self.native_curve.PointAtStart)
 
     @property
     def end(self):
-        if self.rhino_curve:
-            return point_to_compas(self.rhino_curve.PointAtEnd)
+        if self.native_curve:
+            return point_to_compas(self.native_curve.PointAtEnd)
 
     @property
     def is_closed(self):
-        if self.rhino_curve:
-            return self.rhino_curve.IsClosed
+        if self.native_curve:
+            return self.native_curve.IsClosed
 
     @property
     def is_periodic(self):
-        if self.rhino_curve:
-            return self.rhino_curve.IsPeriodic
+        if self.native_curve:
+            return self.native_curve.IsPeriodic
 
     # ==============================================================================
     # Constructors
     # ==============================================================================
 
     @classmethod
-    def from_rhino(cls, rhino_curve):
+    def from_native(cls, native_curve):
         """Construct a curve from an existing Rhino curve.
 
         Parameters
         ----------
-        rhino_curve : Rhino.Geometry.Curve
+        native_curve : Rhino.Geometry.Curve
 
         Returns
         -------
         :class:`compas_rhino.geometry.RhinoCurve`
 
         """
-        curve = cls()
-        curve.rhino_curve = rhino_curve
-        return curve
+        return cls(native_curve)
+
+    @classmethod
+    def from_rhino(cls, native_curve):
+        """Construct a curve from an existing Rhino curve.
+
+        Parameters
+        ----------
+        native_curve : Rhino.Geometry.Curve
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoCurve`
+
+        Warnings
+        --------
+        .. deprecated:: 2.3
+            Use `from_native` instead.
+
+        """
+        return cls(native_curve)
 
     # ==============================================================================
     # Conversions
@@ -134,9 +158,8 @@ class RhinoCurve(Curve):
 
         """
         cls = type(self)
-        curve = cls()
-        curve.rhino_curve = self.rhino_curve.Duplicate()  # type: ignore
-        return curve
+        native_curve = self.native_curve.Duplicate()
+        return cls.from_native(native_curve)
 
     def transform(self, T):
         """Transform this curve.
@@ -151,7 +174,7 @@ class RhinoCurve(Curve):
         None
 
         """
-        self.rhino_curve.Transform(transformation_to_rhino(T))  # type: ignore
+        self.native_curve.Transform(transformation_to_rhino(T))  # type: ignore
 
     def reverse(self):
         """Reverse the parametrisation of the curve.
@@ -161,7 +184,7 @@ class RhinoCurve(Curve):
         None
 
         """
-        self.rhino_curve.Reverse()  # type: ignore
+        self.native_curve.Reverse()  # type: ignore
 
     def point_at(self, t):
         """Compute a point on the curve.
@@ -177,7 +200,7 @@ class RhinoCurve(Curve):
             the corresponding point on the curve.
 
         """
-        point = self.rhino_curve.PointAt(t)  # type: ignore
+        point = self.native_curve.PointAt(t)  # type: ignore
         return point_to_compas(point)
 
     def tangent_at(self, t):
@@ -194,7 +217,7 @@ class RhinoCurve(Curve):
             The corresponding tangent vector.
 
         """
-        vector = self.rhino_curve.TangentAt(t)  # type: ignore
+        vector = self.native_curve.TangentAt(t)  # type: ignore
         return vector_to_compas(vector)
 
     def curvature_at(self, t):
@@ -211,7 +234,7 @@ class RhinoCurve(Curve):
             The corresponding curvature vector.
 
         """
-        vector = self.rhino_curve.CurvatureAt(t)  # type: ignore
+        vector = self.native_curve.CurvatureAt(t)  # type: ignore
         return vector_to_compas(vector)
 
     def frame_at(self, t):
@@ -228,7 +251,7 @@ class RhinoCurve(Curve):
             The corresponding local frame.
 
         """
-        t, plane = self.rhino_curve.FrameAt(t)  # type: ignore
+        t, plane = self.native_curve.FrameAt(t)  # type: ignore
         return plane_to_compas_frame(plane)
 
     def torsion_at(self, t):
@@ -245,7 +268,7 @@ class RhinoCurve(Curve):
             The torsion value.
 
         """
-        return self.rhino_curve.TorsionAt(t)  # type: ignore
+        return self.native_curve.TorsionAt(t)  # type: ignore
 
     # ==============================================================================
     # Methods continued
@@ -268,7 +291,7 @@ class RhinoCurve(Curve):
             If `return_parameter` is True, the closest point and the corresponding parameter are returned.
 
         """
-        result, t = self.rhino_curve.ClosestPoint(point_to_rhino(point))  # type: ignore
+        result, t = self.native_curve.ClosestPoint(point_to_rhino(point))  # type: ignore
         if not result:
             return
         point = self.point_at(t)
@@ -295,7 +318,7 @@ class RhinoCurve(Curve):
             If `return_points` is True, a list of points in addition to the parameters of the discretisation.
 
         """
-        params = self.rhino_curve.DivideByCount(count, True)  # type: ignore
+        params = self.native_curve.DivideByCount(count, True)  # type: ignore
         if return_points:
             points = [self.point_at(t) for t in params]
             return params, points
@@ -320,7 +343,7 @@ class RhinoCurve(Curve):
             If `return_points` is True, a list of points in addition to the parameters of the discretisation.
 
         """
-        params = self.rhino_curve.DivideByLength(length, True)  # type: ignore
+        params = self.native_curve.DivideByLength(length, True)  # type: ignore
         if return_points:
             points = [self.point_at(t) for t in params]
             return params, points
@@ -334,7 +357,7 @@ class RhinoCurve(Curve):
         :class:`compas.geometry.Box`
 
         """
-        box = self.rhino_curve.getBoundingBox(True)  # type: ignore
+        box = self.native_curve.getBoundingBox(True)  # type: ignore
         return box_to_compas(box)
 
     def length(self, precision=1e-8):
@@ -346,7 +369,7 @@ class RhinoCurve(Curve):
             Required precision of the calculated length.
 
         """
-        return self.rhino_curve.GetLength(precision)  # type: ignore
+        return self.native_curve.GetLength(precision)  # type: ignore
 
     def fair(self, tol=1e-3):
         raise NotImplementedError
@@ -370,7 +393,7 @@ class RhinoCurve(Curve):
         point = self.point_at(self.domain[0])  # type: ignore
         plane = Plane(point, direction)
         plane = plane_to_rhino(plane)
-        self.rhino_curve = self.rhino_curve.Offset(plane, distance, tolerance, 0)[0]  # type: ignore
+        self.native_curve = self.native_curve.Offset(plane, distance, tolerance, 0)[0]  # type: ignore
 
     def smooth(self):
         raise NotImplementedError

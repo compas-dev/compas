@@ -65,7 +65,7 @@ class Parabola(Conic):
 
     Construct a parabola such that the Z axis of its frame aligns with a given line.
 
-    >>> from compas.geometry import Frame, Line, Parabola
+    >>> from compas.geometry import Frame, Line, Plane, Parabola
     >>> line = Line([0, 0, 0], [1, 1, 1])
     >>> plane = Plane(line.end, line.direction)
     >>> frame = Frame.from_plane(plane)
@@ -73,12 +73,12 @@ class Parabola(Conic):
 
     Visualize the parabola with the COMPAS viewer.
 
-    >>> from compas_viewer import Viewer  # doctest: +SKIP
-    >>> viewer = Viewer()                    # doctest: +SKIP
+    >>> from compas_viewer import Viewer        # doctest: +SKIP
+    >>> viewer = Viewer()                       # doctest: +SKIP
     >>> viewer.scene.add(line)                  # doctest: +SKIP
     >>> viewer.scene.add(parabola)              # doctest: +SKIP
     >>> viewer.scene.add(parabola.frame)        # doctest: +SKIP
-    >>> viewer.show()                      # doctest: +SKIP
+    >>> viewer.show()                           # doctest: +SKIP
 
     """
 

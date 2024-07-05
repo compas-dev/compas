@@ -1,10 +1,8 @@
-from typing import Any
 from typing import Optional
 
 import bpy  # type: ignore
 
 from compas.colors import Color
-from compas.geometry import Surface
 from compas.scene import GeometryObject
 from compas_blender import conversions
 
@@ -12,19 +10,7 @@ from .sceneobject import BlenderSceneObject
 
 
 class SurfaceObject(BlenderSceneObject, GeometryObject):
-    """Scene object for drawing surfaces in Blender.
-
-    Parameters
-    ----------
-    surface : :class:`compas.geometry.Surface`
-        A COMPAS surface.
-    **kwargs : dict, optional
-        Additional keyword arguments.
-
-    """
-
-    def __init__(self, surface: Surface, **kwargs: Any):
-        super().__init__(geometry=surface, **kwargs)
+    """Scene object for drawing surfaces in Blender."""
 
     def draw(self, color: Optional[Color] = None, collection: Optional[str] = None) -> list[bpy.types.Object]:
         """Draw the surface.

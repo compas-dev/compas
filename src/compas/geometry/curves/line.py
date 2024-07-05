@@ -55,16 +55,14 @@ class Line(Curve):
     Examples
     --------
     >>> line = Line([0, 0, 0], [1, 1, 1])
-    >>> line
-    Line(Point(0.000, 0.000, 0.000), Point(1.000, 1.000, 1.000))
-    >>> line.start
-    Point(0.000, 0.000, 0.000)
-    >>> line.midpoint
-    Point(0.500, 0.500, 0.500)
-    >>> line.length == math.sqrt(line.dx **2 + line.dy **2 + line.dz **2)
+    >>> print(line.start)
+    Point(x=0.000, y=0.000, z=0.000)
+    >>> print(line.midpoint)
+    Point(x=0.500, y=0.500, z=0.500)
+    >>> line.length == line.vector.length
     True
-    >>> line.direction
-    Vector(0.577, 0.577, 0.577)
+    >>> print(line.direction)
+    Vector(x=0.577, y=0.577, z=0.577)
 
     """
 
@@ -222,8 +220,10 @@ class Line(Curve):
         --------
         >>> from compas.geometry import Point, Vector
         >>> line = Line.from_point_and_vector(Point(0, 0, 0), Vector(1, 1, 1))
-        >>> line
-        Line(Point(0.000, 0.000, 0.000), Point(1.000, 1.000, 1.000))
+        >>> print(line.start)
+        Point(x=0.000, y=0.000, z=0.000)
+        >>> print(line.end)
+        Point(x=1.000, y=1.000, z=1.000)
 
         """
         return cls(point, add_vectors(point, vector))
@@ -254,8 +254,10 @@ class Line(Curve):
         --------
         >>> from compas.geometry import Point, Vector
         >>> line = Line.from_point_direction_length(Point(0, 0, 0), Vector(1, 1, 1), 1)
-        >>> line
-        Line(Point(0.000, 0.000, 0.000), Point(0.577, 0.577, 0.577))
+        >>> print(line.start)
+        Point(x=0.000, y=0.000, z=0.000)
+        >>> print(line.end)
+        Point(x=0.577, y=0.577, z=0.577)
 
         """
         direction = Vector(*direction)
@@ -285,8 +287,8 @@ class Line(Curve):
         >>> line = Line([0.0, 0.0, 0.0], [1.0, 0.0, 0.0])
         >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], radians(90))
         >>> line.transform(R)
-        >>> line.end
-        Point(0.000, 1.000, 0.000)
+        >>> print(line.end)
+        Point(x=0.000, y=1.000, z=0.000)
 
         """
         self.point.transform(T)
@@ -318,8 +320,8 @@ class Line(Curve):
         Examples
         --------
         >>> line = Line([0, 0, 0], [1, 1, 1])
-        >>> line.point_at(0.5)
-        Point(0.500, 0.500, 0.500)
+        >>> print(line.point_at(0.5))
+        Point(x=0.500, y=0.500, z=0.500)
 
         """
         point = self.point + self.vector * t

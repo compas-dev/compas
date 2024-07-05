@@ -60,7 +60,6 @@ class TreeNode(Data):
 
     @classmethod
     def __from_data__(cls, data):
-
         name = data.get("name", None)
         attributes = data.get("attributes", {})
         children = data.get("children", [])
@@ -235,20 +234,20 @@ class Tree(Datastructure):
     --------
     >>> from compas.datastructures import Tree, TreeNode
     >>> tree = Tree()
-    >>> root = TreeNode('root')
-    >>> branch = TreeNode('branch')
-    >>> leaf1 = TreeNode('leaf1')
-    >>> leaf2 = TreeNode('leaf2')
+    >>> root = TreeNode("root")
+    >>> branch = TreeNode("branch")
+    >>> leaf1 = TreeNode("leaf1")
+    >>> leaf2 = TreeNode("leaf2")
     >>> tree.add(root)
     >>> root.add(branch)
     >>> branch.add(leaf1)
     >>> branch.add(leaf2)
     >>> print(tree)
     <Tree with 4 nodes>
-    |--<TreeNode: root>
-        |-- <TreeNode: branch>
-            |-- <TreeNode: leaf1>
-            |-- <TreeNode: leaf2>
+        └── <TreeNode: root>
+            └── <TreeNode: branch>
+                ├── <TreeNode: leaf1>
+                └── <TreeNode: leaf2>
 
     """
 
@@ -457,7 +456,6 @@ class Tree(Datastructure):
         hierarchy = []
 
         def traverse(node, hierarchy, prefix="", last=True, depth=0):
-
             if max_depth is not None and depth > max_depth:
                 return
 

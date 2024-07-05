@@ -302,10 +302,10 @@ class Data(object):
         Examples
         --------
         >>> from compas.datastructures import Mesh
-        >>> mesh = Mesh.from_obj(compas.get('faces.obj'))
+        >>> mesh = Mesh.from_obj(compas.get("faces.obj"))
         >>> v1 = mesh.sha256()
         >>> v2 = mesh.sha256()
-        >>> mesh.vertex_attribute(mesh.vertex_sample(1)[0], 'z', 1)
+        >>> mesh.vertex_attribute(mesh.vertex_sample(1)[0], "z", 1)
         >>> v3 = mesh.sha256()
         >>> v1 == v2
         True

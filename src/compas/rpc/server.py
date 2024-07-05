@@ -32,8 +32,7 @@ class Server(SimpleXMLRPCServer):
             pass
 
 
-        if __name__ == '__main__':
-
+        if __name__ == "__main__":
             server = Server(("localhost", 8888))
 
             server.register_function(server.ping)

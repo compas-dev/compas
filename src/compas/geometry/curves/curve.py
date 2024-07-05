@@ -7,14 +7,13 @@ from compas.geometry import Geometry
 from compas.geometry import Plane
 from compas.geometry import Transformation
 from compas.itertools import linspace
+from compas.plugins import PluginNotInstalledError
 from compas.plugins import pluggable
 
 
 @pluggable(category="factories")
-def new_curve(cls, *args, **kwargs):
-    curve = object.__new__(cls)
-    curve.__init__(*args, **kwargs)
-    return curve
+def curve_from_native(cls, *args, **kwargs):
+    raise PluginNotInstalledError
 
 
 class Curve(Geometry):
@@ -66,7 +65,9 @@ class Curve(Geometry):
     """
 
     def __new__(cls, *args, **kwargs):
-        return new_curve(cls, *args, **kwargs)
+        if cls is Curve:
+            raise TypeError("Making an instance of `Curve` using `Curve()` is not allowed. Please use one of the factory methods instead (`Curve.from_...`)")
+        return object.__new__(cls)
 
     def __init__(self, frame=None, name=None):
         super(Curve, self).__init__(name=name)
@@ -132,8 +133,25 @@ class Curve(Geometry):
     # ==============================================================================
 
     @classmethod
-    def from_step(cls, filepath):
-        """Load a curve from a STP file.
+    def from_native(cls, curve):
+        """Construct a parametric curve from a native curve geometry.
+
+        Parameters
+        ----------
+        curve
+            A native curve object.
+
+        Returns
+        -------
+        :class:`compas.geometry.Curve`
+            A COMPAS curve.
+
+        """
+        return curve_from_native(cls, curve)
+
+    @classmethod
+    def from_obj(cls, filepath):
+        """Load a curve from an OBJ file.
 
         Parameters
         ----------
@@ -148,8 +166,8 @@ class Curve(Geometry):
         raise NotImplementedError
 
     @classmethod
-    def from_obj(cls, filepath):
-        """Load a curve from an OBJ file.
+    def from_step(cls, filepath):
+        """Load a curve from a STP file.
 
         Parameters
         ----------
@@ -462,49 +480,8 @@ class Curve(Geometry):
 
         """
         copy = self.copy()
-        copy.reverse
+        copy.reverse()
         return copy
-
-    # def space(self, n=10):
-    #     """Compute evenly spaced parameters over the curve domain.
-
-    #     Parameters
-    #     ----------
-    #     n : int, optional
-    #         The number of values in the parameter space.
-
-    #     Returns
-    #     -------
-    #     list[float]
-
-    #     See Also
-    #     --------
-    #     :meth:`locus`
-
-    #     """
-    #     start, end = self.domain
-    #     return linspace(start, end, n)
-
-    # def locus(self, resolution=100):
-    #     """Compute the locus of points on the curve.
-
-    #     Parameters
-    #     ----------
-    #     resolution : int
-    #         The number of intervals at which a point on the
-    #         curve should be computed.
-
-    #     Returns
-    #     -------
-    #     list[:class:`compas.geometry.Point`]
-    #         Points along the curve.
-
-    #     See Also
-    #     --------
-    #     :meth:`space`
-
-    #     """
-    #     return [self.point_at(t) for t in self.space(resolution)]
 
     def closest_point(self, point, return_parameter=False):
         """Compute the closest point on the curve to a given point.

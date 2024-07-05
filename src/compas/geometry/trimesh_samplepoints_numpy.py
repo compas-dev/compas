@@ -37,7 +37,7 @@ def trimesh_samplepoints_numpy(M, num_points=1000, return_normals=False):
     Make a triangle mesh.
 
     >>> from compas.datastructures import Mesh
-    >>> hypar = Mesh.from_obj(compas.get('hypar.obj'))
+    >>> hypar = Mesh.from_obj(compas.get("hypar.obj"))
     >>> hypar.is_trimesh()
     False
     >>> hypar.quads_to_triangles()
@@ -46,9 +46,9 @@ def trimesh_samplepoints_numpy(M, num_points=1000, return_normals=False):
 
     >>> samples_pts, pts_normals = trimesh_samplepoints_numpy(hypar.to_vertices_and_faces(), 1000, True)
     >>> # the x,y,z of sample points would be the following
-    >>> x, y, z = samples_pts[:,0], samples_pts[:,1], samples_pts[:,2]
+    >>> x, y, z = samples_pts[:, 0], samples_pts[:, 1], samples_pts[:, 2]
     >>> # the sample points added normal vector would be the following
-    >>> X, Y, Z = x + pts_normals[:,0] , y + pts_normals[:,1] , z + pts_normals[:,2]
+    >>> X, Y, Z = x + pts_normals[:, 0], y + pts_normals[:, 1], z + pts_normals[:, 2]
 
     """
     # if mesh.is_empty():

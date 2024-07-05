@@ -9,19 +9,13 @@ from compas.geometry import Geometry
 from compas.geometry import Point
 from compas.geometry import Transformation
 from compas.itertools import linspace
+from compas.plugins import PluginNotInstalledError
 from compas.plugins import pluggable
 
 
 @pluggable(category="factories")
-def new_surface(cls, *args, **kwargs):
-    surface = object.__new__(cls)
-    surface.__init__(*args, **kwargs)
-    return surface
-
-
-@pluggable(category="factories")
-def new_surface_from_plane(cls, *args, **kwargs):
-    raise NotImplementedError
+def surface_from_native(cls, *args, **kwargs):
+    raise PluginNotInstalledError
 
 
 class Surface(Geometry):
@@ -51,7 +45,9 @@ class Surface(Geometry):
     """
 
     def __new__(cls, *args, **kwargs):
-        return new_surface(cls, *args, **kwargs)
+        if cls is Surface:
+            raise TypeError("Making an instance of `Surface` using `Surface()` is not allowed. Please use one of the factory methods instead (`Surface.from_...`)")
+        return object.__new__(cls)
 
     def __init__(self, frame=None, name=None):
         super(Surface, self).__init__(name=name)
@@ -150,17 +146,18 @@ class Surface(Geometry):
     # ==============================================================================
 
     @classmethod
-    def from_step(cls, filepath):
-        """Load a surface from a STP file.
+    def from_native(cls, surface):
+        """Construct a parametric surface from a native surface geometry.
 
         Parameters
         ----------
-        filepath : str
-            The path to the file.
+        surface
+            A CAD native surface object.
 
         Returns
         -------
         :class:`compas.geometry.Surface`
+            A COMPAS surface.
 
         """
         raise NotImplementedError
@@ -182,20 +179,20 @@ class Surface(Geometry):
         raise NotImplementedError
 
     @classmethod
-    def from_plane(cls, plane, *args, **kwargs):
-        """Construct a surface from a plane.
+    def from_step(cls, filepath):
+        """Load a surface from a STP file.
 
         Parameters
         ----------
-        plane : :class:`compas.geometry.Plane`
-            The plane.
+        filepath : str
+            The path to the file.
 
         Returns
         -------
         :class:`compas.geometry.Surface`
 
         """
-        return new_surface_from_plane(cls, plane, *args, **kwargs)
+        raise NotImplementedError
 
     # ==============================================================================
     # Conversions
@@ -282,7 +279,6 @@ class Surface(Geometry):
             The subset of the domain in the v direction.
             Default is ``None``, in which case the entire domain is used.
 
-
         Returns
         -------
         list[list[:class:`compas.geometry.Point`]]
@@ -312,7 +308,6 @@ class Surface(Geometry):
         dv : tuple, optional
             The subset of the domain in the v direction.
             Default is ``None``, in which case the entire domain is used.
-
 
         Returns
         -------
@@ -382,16 +377,6 @@ class Surface(Geometry):
 
         vertices, faces = self.to_vertices_and_faces(nu=nu, nv=nv, du=du, dv=dv)
         return Mesh.from_vertices_and_faces(vertices, faces)
-
-    def to_tesselation(self):
-        """Convert the surface to a triangle mesh.
-
-        Returns
-        -------
-        :class:`compas.datastructures.Mesh`
-
-        """
-        raise NotImplementedError
 
     def to_brep(self):
         """Convert the surface to a BREP representation.
@@ -670,20 +655,3 @@ class Surface(Geometry):
 
         """
         raise NotImplementedError
-
-    # def patch(self, u, v, du=1, dv=1):
-    #     """Construct a NURBS surface patch from the surface at the given UV parameters.
-
-    #     Parameters
-    #     ----------
-    #     u : float
-    #     v : float
-    #     du : int, optional
-    #     dv : int, optional
-
-    #     Returns
-    #     -------
-    #     :class:`compas.geometry.NurbsSurface`
-
-    #     """
-    #     raise NotImplementedError

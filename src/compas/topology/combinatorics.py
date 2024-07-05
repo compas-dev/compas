@@ -45,9 +45,9 @@ def vertex_coloring(adjacency):
     --------
     >>> import compas
     >>> from compas.datastructures import Graph
-    >>> graph = Graph.from_obj(compas.get('lines.obj'))
+    >>> graph = Graph.from_obj(compas.get("lines.obj"))
     >>> key_color = vertex_coloring(graph.adjacency)
-    >>> key = graph.get_any_node()
+    >>> key = graph.node_sample(size=1)[0]
     >>> color = key_color[key]
     >>> any(key_color[nbr] == color for nbr in graph.neighbors(key))
     False

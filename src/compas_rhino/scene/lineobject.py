@@ -12,19 +12,7 @@ from .sceneobject import RhinoSceneObject
 
 
 class RhinoLineObject(RhinoSceneObject, GeometryObject):
-    """Scene object for drawing lines.
-
-    Parameters
-    ----------
-    line : :class:`compas.geometry.Line`
-        A COMPAS line.
-    **kwargs : dict, optional
-        Additional keyword arguments.
-
-    """
-
-    def __init__(self, line, **kwargs):
-        super(RhinoLineObject, self).__init__(geometry=line, **kwargs)
+    """Scene object for drawing lines."""
 
     def draw(self):
         """Draw the line.

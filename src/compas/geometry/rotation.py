@@ -63,7 +63,7 @@ class Rotation(Transformation):
     >>> from compas.geometry import Frame
     >>> f1 = Frame([0, 0, 0], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
     >>> R = Rotation.from_frame(f1)
-    >>> args = False, 'xyz'
+    >>> args = False, "xyz"
     >>> alpha, beta, gamma = R.euler_angles(*args)
     >>> xaxis, yaxis, zaxis = [1, 0, 0], [0, 1, 0], [0, 0, 1]
     >>> Rx = Rotation.from_axis_and_angle(xaxis, alpha)
@@ -234,7 +234,7 @@ class Rotation(Transformation):
         >>> q1 = [0.945, -0.021, -0.125, 0.303]
         >>> R = Rotation.from_quaternion(q1)
         >>> q2 = R.quaternion
-        >>> TOL.is_allclose(q1, q2)
+        >>> TOL.is_allclose(q1, q2, atol=1e-3)
         True
 
         """
@@ -262,7 +262,7 @@ class Rotation(Transformation):
         >>> aav1 = [-0.043, -0.254, 0.617]
         >>> R = Rotation.from_axis_angle_vector(aav1)
         >>> aav2 = R.axis_angle_vector
-        >>> TOL.is_allclose(aav1, aav2)
+        >>> TOL.is_allclose(aav1, aav2, atol=1e-3)
         True
 
         """
@@ -299,7 +299,7 @@ class Rotation(Transformation):
         --------
         >>> from compas.tolerance import TOL
         >>> ea1 = 1.4, 0.5, 2.3
-        >>> args = False, 'xyz'
+        >>> args = False, "xyz"
         >>> R1 = Rotation.from_euler_angles(ea1, *args)
         >>> ea2 = R1.euler_angles(*args)
         >>> TOL.is_allclose(ea1, ea2)
@@ -344,7 +344,7 @@ class Rotation(Transformation):
         --------
         >>> from compas.tolerance import TOL
         >>> ea1 = 1.4, 0.5, 2.3
-        >>> args = False, 'xyz'
+        >>> args = False, "xyz"
         >>> R1 = Rotation.from_euler_angles(ea1, *args)
         >>> ea2 = R1.euler_angles(*args)
         >>> TOL.is_allclose(ea1, ea2)

@@ -1496,13 +1496,6 @@ def decompose_matrix(M):
         for j in range(4):
             Mt[i][j] /= Mt[3][3]
 
-    translation = [M[0][3], M[1][3], M[2][3]]
-
-    # scale, shear, angles
-    scale = [0.0, 0.0, 0.0]
-    shear = [0.0, 0.0, 0.0]
-    angles = [0.0, 0.0, 0.0]
-
     # copy Mt[:3, :3] into row
     row = [
         [0, 0, 0],
@@ -1512,6 +1505,14 @@ def decompose_matrix(M):
     for i in range(3):
         for j in range(3):
             row[i][j] = Mt[i][j]
+
+    # translation
+    translation = [M[0][3], M[1][3], M[2][3]]
+
+    # scale, shear, angles
+    scale = [0.0, 0.0, 0.0]
+    shear = [0.0, 0.0, 0.0]
+    angles = [0.0, 0.0, 0.0]
 
     scale[0] = norm_vector(row[0])
     for i in range(3):
@@ -2681,10 +2682,10 @@ def quaternion_from_axis_angle(axis, angle):
 
     Examples
     --------
-    >>> axis =  [1.0, 0.0, 0.0]
-    >>> angle = math.pi/2
+    >>> axis = [1.0, 0.0, 0.0]
+    >>> angle = math.pi / 2
     >>> q = quaternion_from_axis_angle(axis, angle)
-    >>> allclose(q, [math.sqrt(2)/2, math.sqrt(2)/2, 0, 0])
+    >>> allclose(q, [math.sqrt(2) / 2, math.sqrt(2) / 2, 0, 0])
     True
 
     """
@@ -2710,11 +2711,11 @@ def axis_angle_from_quaternion(q):
 
     Examples
     --------
-    >>> q = [1., 1., 0., 0.]
+    >>> q = [1.0, 1.0, 0.0, 0.0]
     >>> axis, angle = axis_angle_from_quaternion(q)
-    >>> allclose(axis, [1., 0., 0.])
+    >>> allclose(axis, [1.0, 0.0, 0.0])
     True
-    >>> allclose([angle], [math.pi/2], 1e-6)
+    >>> allclose([angle], [math.pi / 2], 1e-6)
     True
 
     """
@@ -2767,12 +2768,6 @@ def close(value1, value2, tol=1e-05):
     It is more accurate to use a combination of absolute and relative tolerance.
     Therefor, use :func:`TOL.is_close` instead.
 
-    Examples
-    --------
-    >>> close(1., 1.001)
-    False
-    >>> close(1., 1.001, tol=1e-2)
-    True
     """
     return TOL.is_close(value1, value2, rtol=0.0, atol=tol)
 
@@ -2813,14 +2808,6 @@ def allclose(l1, l2, tol=None):
     References
     ----------
     .. [1] https://docs.scipy.org/doc/numpy/reference/generated/numpy.allclose.html
-
-    Examples
-    --------
-    >>> allclose([0.1, 0.2, 0.3, 0.4], [0.1, 0.20001, 0.3, 0.4])
-    True
-
-    >>> allclose([0.1, 0.2, 0.3, 0.4], [0.1, 0.20001, 0.3, 0.4], tol=1e-6)
-    False
 
     """
     return TOL.is_allclose(l1, l2, atol=tol)

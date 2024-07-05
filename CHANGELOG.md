@@ -9,13 +9,162 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added code coverage report uploads to codecov.io.
+* Added `compas.geometry.surfaces.surface.Surface.from_native`.
+* Added `compas.geometry.surfaces.nurbs.NurbsSurface.from_plane`.
+* Added `compas.geometry.surfaces.nurbs.NurbsSurface.from_cylinder`.
+* Added `compas.geometry.surfaces.nurbs.NurbsSurface.from_extrusion`.
+* Added `compas.geometry.surfaces.nurbs.NurbsSurface.from_frame`.
+* Added `compas.geometry.surfaces.nurbs.NurbsSurface.from_interpolation`.
+* Added `compas.geometry.surfaces.nurbs.NurbsSurface.from_revolution`.
+* Added `compas.geometry.surfaces.nurbs.NurbsSurface.from_sphere`.
+* Added `compas.geometry.surfaces.nurbs.NurbsSurface.from_torus`.
+* Added `compas_rhino.geometry.surfaces.surface_from_native`.
+* Added `compas_rhino.geometry.surfaces.nurbssurface_from_native`.
+* Added `compas_rhino.geometry.surfaces.nurbssurface_from_cylinder`.
+* Added `compas_rhino.geometry.surfaces.nurbssurface_from_fill`.
+* Added `compas_rhino.geometry.surfaces.nurbssurface_from_torus`.
+* Added `compas_rhino.geometry.surfaces.nurbs.NurbsSurface.from_corners`.
+* Added `compas_rhino.geometry.surfaces.nurbs.NurbsSurface.from_cylinder`.
+* Added `compas_rhino.geometry.surfaces.nurbs.NurbsSurface.from_frame`.
+* Added `compas_rhino.geometry.surfaces.nurbs.NurbsSurface.from_sphere`.
+* Added `compas_rhino.geometry.surfaces.nurbs.NurbsSurface.from_torus`.
+* Added `compas.geometry.curves.curve.Curve.from_native`.
+* Added `compas_rhino.geometry.curves.curve.Curve.from_native`.
+* Added `compas_rhino.geometry.curves.nurbs.NurbsCurve.from_native`.
+
+### Changed
+
+* Fixed bug in `compas.geometry.curves.curve.Curve.reversed` by adding missing parenthesis.
+* Fixed all doctests so we can run `invoke test --doctest`.
+* Changed `compas.geometry.surfaces.surface.Surface.__new__` to prevent instantiation of `Surface` directly.
+* Changed `compas.geometry.surfaces.nurbs.NurbsSurface.__new__` to prevent instantiation of `NurbsSurface` directly.
+* Fixed bug in `compas.geometry.surfaces.nurbs.NurbsSurface.__data__`.
+* Changed `compas.geometry.surfaces.nurbs.new_nurbssurface_from_...` to `nurbssurface_from_...`.
+* Changed `compas.geometry.curves.curve.Curve.__new__` to prevent instantiation of `Curve` directly.
+* Changed `compas.geometry.curves.nurbs.new_nurbscurve_from_...` to `nurbscurve_from_...`.
+* Changed `compas.geometry.curves.nurbs.NurbsCurve.__new__` to prevent instantiation of `NurbsCurve` directly.
+* Changed `compas_rhino.geometry.curves.new_nurbscurve_from_...` to `nurbscurve_from_...`.
+* Fixed `compas_ghpython` Grasshopper components not included in published pakcage.
+* Chnaged `compas.colors.Color.coerce` to take color as is, if it is already aninstance of `compas.colors.Color`.
+
+### Removed
+
+* Removed pluggable `compas.geometry.surfaces.surface.new_surface`.
+* Removed pluggable `compas.geometry.surfaces.surface.new_surface_from_plane`.
+* Removed `compas.geometry.surfaces.surface.Surface.from_plane`.
+* Removed `compas.geometry.surfaces.surface.ConicalSurface.__new__`.
+* Removed `compas.geometry.surfaces.surface.CylindricalSurface.__new__`.
+* Removed `compas.geometry.surfaces.surface.PlanarSurface.__new__`.
+* Removed `compas.geometry.surfaces.surface.SphericalSurface.__new__`.
+* Removed `compas.geometry.surfaces.surface.ToroidalSurface.__new__`.
+* Removed `compas.geometry.surfaces.nurbs.NurbsSurface.__init__`.
+* Removed `compas_rhino.geometry.surfaces.new_surface`.
+* Removed `compas_rhino.geometry.surfaces.new_nurbssurface`.
+* Removed `compas_rhino.geometry.surfaces.nurbs.NurbsSurface.__from_data__`.
+* Removed `compas_rhino.geometry.surfaces.surface.Surface.from_corners`.
+* Removed `compas_rhino.geometry.surfaces.surface.Surface.from_cylinder`.
+* Removed `compas_rhino.geometry.surfaces.surface.Surface.from_frame`.
+* Removed `compas_rhino.geometry.surfaces.surface.Surface.from_sphere`.
+* Removed `compas_rhino.geometry.surfaces.surface.Surface.from_torus`.
+* Removed `compas.geometry.curves.arc.Arc.__new__`.
+* Removed `compas.geometry.curves.bezier.Bezier.__new__`.
+* Removed `compas.geometry.curves.conic.Conic.__new__`.
+* Removed `compas.geometry.curves.polyline.Polyline.__new__`.
+* Removed `compas.geometry.curves.curve.new_curve`.
+* Removed `compas.geometry.curves.curve.new_nurbscurve`.
+* Removed `compas_rhino.geometry.curves.new_curve`.
+* Removed `compas_rhino.geometry.curves.new_nurbscurve`.
+
+## [2.2.1] 2024-06-25
+
+### Added
+
+### Changed
+
+* Fixed error in `compas_ghpython` causing `Scene` to fail in Grasshopper.
+
+### Removed
+
+
+## [2.2.0] 2024-06-24
+
+### Added
+
+* Added `maxiter` parameter to `compas.geometry.icp_numpy`.
+* Added `resolution_u` and `resolution_v` to `compas.geometry.Shape` to control discretisation resolution.
+* Added `vertices`, `edges`, `faces`, `triangles` to `compas.geometry.Shape`.
+* Added `points`, `lines`, `polygons` to `compas.geometry.Shape`.
+* Added abstract `compute_vertices`, `compute_edges`, `compute_faces`, `compute_triangles` to `compas.geometry.Shape`.
+* Added implementation of `compute_vertices`, `compute_edges`, `compute_faces` to `compas.geometry.Box`.
+* Added implementation of `compute_vertices`, `compute_edges`, `compute_faces` to `compas.geometry.Capsule`.
+* Added implementation of `compute_vertices`, `compute_edges`, `compute_faces` to `compas.geometry.Cone`.
+* Added implementation of `compute_vertices`, `compute_edges`, `compute_faces` to `compas.geometry.Cylinder`.
+* Added implementation of `compute_vertices`, `compute_edges`, `compute_faces` to `compas.geometry.Sphere`.
+* Added implementation of `compute_vertices`, `compute_edges`, `compute_faces` to `compas.geometry.Torus`.
+* Added `compas_blender.scene.ShapeObject`.
+* Added `compas.geometry.vector.__radd__`.
+* Added `compas.geometry.vector.__rsub__`.
+* Added `compas.geometry.vector.__rmul__`.
+* Added `compas.geometry.vector.__rtruediv__`.
+* Added `VolMesh.cell_lines`, `VolMesh.cell_polygons`.
+* Added `VolMesh.vertex_edges`.
+* Added `VolMesh.from_meshes`.
+* Added `VolMesh.from_polyhedrons`.
+
+### Changed
+
+* Changed `compas_ghpython/utilities/drawing.py` to remove `System` dependency.
+* Fixed bug in `compas.geometry.ic_numpy`, which was caused by returning only the last transformation of the iteration process.
+* Changed `compas.geometry.Geometry.scaled` to use `compas.geometry.Geometry.scale` on a copy.
+* Changed `compas.geometry.Geometry.translated` to use `compas.geometry.Geometry.translate` on a copy.
+* Changed `compas.geometry.Geometry.rotated` to use `compas.geometry.Geometry.rotate` on a copy.
+* Changed `VolMesh._plane` back to point to a cell for every triplet of vertices.
+* Fixed `VolMesh.add_halfface`, `VolMesh.add_cell`, `VolMesh.vertex_halffaces`, `VolMesh.vertex_cells`, `VolMesh.edge_halffaces`, `VolMesh.halfface_cell`, `VolMesh.halfface_opposite_cell`, `VolMesh.halfface_opposite_halfface`, `VolMesh.cell_neighbors`.
+* Changed ordering of `Volmesh.edges()` to be deterministic.
+* Changed ordering and direction of `Volmesh.vertex_edges()` to be deterministic.
+* Changed check for empty vertices and faces to use `is None` to add support for `numpy` arrays.
+* Changed order of `u` and `v` of `compas.geometry.SphericalSurface` to the match the excpected parametrisation.
+* Changed `compas.geometry.Shape.to_vertices_and_faces` to use `Shape.vertices` and `Shape.faces` or `Shape.triangles`.
+* Changed default of `compas.scene.descriptors.color.ColorAttribute` to `None` to support native coloring in CAD contexts.
+* Changed `compas.colors.ColorDict.__data__` and `compas.colors.ColorDict.__from_data__` to properly support serialisation.
+* Moved `compas_blender.utilities.drawing` to `compas_blender.drawing` with backward compatible imports and deprecation warning.
+* Moved `compas_ghpython.utilities.drawing` to `compas_ghpython.drawing` with backward compatible imports and deprecation warning.
+* Moved `compas_rhino.utilities.drawing` to `compas_rhino.drawing` with backward compatible imports and deprecation warning.
+* Changed `draw_nodes` and `draw_edges` of `compas_blender.scene.GraphObject`, `compas_ghpython.scene.GraphObject`, and `compas_rhino.scene.GraphObject` to use only attributes instead of parameters.
+* Changed `draw_vertices`, `draw_edges` and `draw_faces` of `compas_blender.scene.MeshObject`, `compas_ghpython.scene.MeshObject`, and `compas_rhino.scene.MeshObject` to use only attributes instead of parameters.
+* Changed `draw_vertices`, `draw_edges` and `draw_faces` of `compas_blender.scene.VolMeshObject`, `compas_ghpython.scene.VolMeshObject`, and `compas_rhino.scene.VolMeshObject` to use only attributes instead of parameters.
+* Changed registration of `Capsule`, `Cone`, `Cylinder`, `Sphere`, `Torus` to `ShapeObject` in `compas_blender.scene`.
+* Updated `compas.geometry.vector.__mul__` to allow element-wise multiplication with another vector.
+* Updated `compas.geometry.vector.__truediv__` to allow element-wise division with another vector.
+* Fixed bug in registration `shapely` boolean plugins.
+* Temporarily restrict `numpy` to versions lower than `2.x`.
+
+### Removed
+
+* Removed `System` dependency in `compas_ghpython/utilities/drawing.py`.
+* Removed GH plugin for `compas.scene.clear` since it clashed with the Rhino version.
+
+## [2.1.1] 2024-05-14
+
+### Added
+
 * Added `compas.geometry.Line.point_from_start` and `compas.geometry.Line.point_from_end`.
 * Added `compas.geometry.Line.flip` and `compas.geometry.Line.flipped`.
 * Added an `compas.geometry.Frame.interpolate_frame(s)` method
 * Added `compas.colors.Color.contrast`.
 * Added `compas.geometry.Brep.from_plane`.
 * Added `compas.tolerance.Tolerance.angulardeflection`.
+* Added `compas.tolerance.Tolerance.update_from_dict`.
 * Added `compas.scene.SceneObject.scene` attribute.
+* Added `compas.datastructures.CellNetwork.is_faces_closed`
+* Added `compas.datastructures.CellNetwork.delete_edge`
+* Added `compas.datastructures.CellNetwork.delete_cell`
+* Added `compas.datastructures.CellNetwork.delete_face`
+* Added `compas.datastructures.CellNetwork.cells_to_graph`
+* Added `compas.datastructures.CellNetwork.face_plane`
+* Added `compas.datastructures.CellNetwork.cell_volume`
+* Added `compas.datastructures.CellNetwork.cell_neighbors`
 * Added `compas.datastructures.HashTree` and `compas.datastructures.HashNode`.
 
 ### Changed
@@ -36,8 +185,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed use of `compas.geometry.allclose` to `compas.tolerance.TOL.is_allclose`.
 * Changed use of `compas.geometry.close` to `compas.tolerance.TOL.is_close`.
 * Changed imports of itertools to `compas.itertools` instead of `compas.utilities`.
+* Changed `compas.tolerance.Tolerance` to a singleton, to ensure having only library-wide tolerance values.
 * Updated `compas_rhino.conversions.point_to_compas` to allow for `Rhino.Geometry.Point` as input.
 * Changed `compas.datastructures.Tree.print_hierarchy` to `compas.datastructures.Tree.__str__`.
+* Changed `compas.scene.SceneObject.__init__` to accept `item` as kwarg.
+* Fixed `compas.geometry.bbox_numpy.minimum_volume_box` to avoid `numpy.linalg.LinAlgError`.
 
 ### Removed
 

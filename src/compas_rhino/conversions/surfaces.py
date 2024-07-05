@@ -203,7 +203,6 @@ def surface_to_compas_mesh(surface, facefilter=None, cleanup=False, cls=None):
     ...         if w > 10 and h > 10:
     ...             return True
     ...     return False
-    ...
 
     >>> guid = compas_rhino.select_surface()
     >>> surf = Rhino.Geometry.Surface.from_guid(guid)

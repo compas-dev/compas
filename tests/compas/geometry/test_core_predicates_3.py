@@ -3,7 +3,6 @@ import pytest
 
 
 def test_is_coplanar():
-
     # 4 points that are colinear:
     points = [[0, 0, 0], [0, 1, 0], [0, 2, 0], [0, 4, 0]]
 

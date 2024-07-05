@@ -8,17 +8,16 @@ import Rhino.Geometry  # type: ignore
 
 from compas.geometry import NurbsCurve
 from compas.geometry import Point
-from compas_rhino.conversions import line_to_rhino
 from compas_rhino.conversions import point_to_compas
 from compas_rhino.conversions import point_to_rhino
 
 from .curve import RhinoCurve
 
 
-def rhino_curve_from_parameters(points, weights, knots, multiplicities, degree):
-    rhino_curve = Rhino.Geometry.NurbsCurve(3, True, degree + 1, len(points))
+def native_curve_from_parameters(points, weights, knots, multiplicities, degree):
+    native_curve = Rhino.Geometry.NurbsCurve(3, True, degree + 1, len(points))
     for index, (point, weight) in enumerate(zip(points, weights)):
-        rhino_curve.Points.SetPoint(index, point_to_rhino(point), weight)
+        native_curve.Points.SetPoint(index, point_to_rhino(point), weight)
     knotvector = [knot for knot, mult in zip(knots, multiplicities) for _ in range(mult)]
     # account for superfluous knots
     # https://developer.rhino3d.com/guides/opennurbs/superfluous-knots/
@@ -28,11 +27,11 @@ def rhino_curve_from_parameters(points, weights, knots, multiplicities, degree):
     if len(knotvector) == k:
         knotvector[:] = knotvector[1:-1]
     for index, knot in enumerate(knotvector):
-        rhino_curve.Knots[index] = knot
-    return rhino_curve
+        native_curve.Knots[index] = knot
+    return native_curve
 
 
-class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
+class RhinoNurbsCurve(RhinoCurve, NurbsCurve):
     """Class representing a NURBS curve based on the NurbsCurve of Rhino.Geometry.
 
     Parameters
@@ -69,10 +68,6 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
 
     """
 
-    # def __init__(self, name=None):
-    #     super(RhinoNurbsCurve, self).__init__(name=name)
-    #     self.rhino_curve = None
-
     # ==============================================================================
     # Data
     # ==============================================================================
@@ -104,9 +99,8 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
         # is_periodic = data['is_periodic']
         # have not found a way to actually set this
         # not sure if that is actually possible...
-        curve = cls()
-        curve.rhino_curve = rhino_curve_from_parameters(points, weights, knots, multiplicities, degree)
-        return curve
+        native_curve = native_curve_from_parameters(points, weights, knots, multiplicities, degree)
+        return cls.from_native(native_curve)
 
     # ==============================================================================
     # Rhino Properties
@@ -118,47 +112,82 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
 
     @property
     def points(self):
-        if self.rhino_curve:
-            return [point_to_compas(point.Location) for point in self.rhino_curve.Points]
+        if self.native_curve:
+            return [point_to_compas(point.Location) for point in self.native_curve.Points]
 
     @property
     def weights(self):
-        if self.rhino_curve:
-            return [point.Weight for point in self.rhino_curve.Points]
+        if self.native_curve:
+            return [point.Weight for point in self.native_curve.Points]
 
     @property
     def knots(self):
-        if self.rhino_curve:
-            return [key for key, _ in groupby(self.rhino_curve.Knots)]
+        if self.native_curve:
+            return [key for key, _ in groupby(self.native_curve.Knots)]
 
     @property
     def knotsequence(self):
-        if self.rhino_curve:
-            return list(self.rhino_curve.Knots)
+        if self.native_curve:
+            return list(self.native_curve.Knots)
 
     @property
     def multiplicities(self):
-        if self.rhino_curve:
-            return [len(list(group)) for _, group in groupby(self.rhino_curve.Knots)]
+        if self.native_curve:
+            return [len(list(group)) for _, group in groupby(self.native_curve.Knots)]
 
     @property
     def degree(self):
-        if self.rhino_curve:
-            return self.rhino_curve.Degree
+        if self.native_curve:
+            return self.native_curve.Degree
 
     @property
     def order(self):
-        if self.rhino_curve:
-            return self.rhino_curve.Order
+        if self.native_curve:
+            return self.native_curve.Order
 
     @property
     def is_rational(self):
-        if self.rhino_curve:
-            return self.rhino_curve.IsRational
+        if self.native_curve:
+            return self.native_curve.IsRational
 
     # ==============================================================================
     # Constructors
     # ==============================================================================
+
+    @classmethod
+    def from_interpolation(cls, points, precision=1e-3):
+        """Construct a NURBS curve by interpolating a set of points.
+
+        Parameters
+        ----------
+        points : list[:class:`compas.geometry.Point`]
+            The control points.
+        precision : float, optional
+            The required precision of the interpolation.
+            This parameter is currently not supported.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoNurbsCurve`
+
+        """
+        native_curve = Rhino.Geometry.NurbsCurve.CreateHSpline([point_to_rhino(point) for point in points])
+        return cls.from_native(native_curve)
+
+    @classmethod
+    def from_native(cls, native_curve):
+        """Construct a NURBS curve from an existing Rhino curve.
+
+        Parameters
+        ----------
+        native_curve : Rhino.Geometry.Curve
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoNurbsCurve`
+
+        """
+        return cls(native_curve)
 
     @classmethod
     def from_parameters(cls, points, weights, knots, multiplicities, degree, is_periodic=False):
@@ -185,10 +214,9 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
         :class:`compas_rhino.geometry.RhinoNurbsCurve`
 
         """
-        curve = cls()
         degree = min(degree, len(points) - 1)
-        curve.rhino_curve = rhino_curve_from_parameters(points, weights, knots, multiplicities, degree)
-        return curve
+        native_curve = native_curve_from_parameters(points, weights, knots, multiplicities, degree)
+        return cls.from_native(native_curve)
 
     @classmethod
     def from_points(cls, points, degree=3, is_periodic=False):
@@ -208,86 +236,9 @@ class RhinoNurbsCurve(NurbsCurve, RhinoCurve):
         :class:`compas_rhino.geometry.RhinoNurbsCurve`
 
         """
-        curve = cls()
         degree = min(degree, len(points) - 1)
-        rhino_curve = Rhino.Geometry.NurbsCurve.Create(is_periodic, degree, [point_to_rhino(point) for point in points])
-        curve.rhino_curve = rhino_curve
-        return curve
-
-    @classmethod
-    def from_interpolation(cls, points, precision=1e-3):
-        """Construct a NURBS curve by interpolating a set of points.
-
-        Parameters
-        ----------
-        points : list[:class:`compas.geometry.Point`]
-            The control points.
-        precision : float, optional
-            The required precision of the interpolation.
-            This parameter is currently not supported.
-
-        Returns
-        -------
-        :class:`compas_rhino.geometry.RhinoNurbsCurve`
-
-        """
-        curve = cls()
-        curve.rhino_curve = Rhino.Geometry.NurbsCurve.CreateHSpline([point_to_rhino(point) for point in points])
-        return curve
-
-    # @classmethod
-    # def from_circle(cls, circle):
-    #     """Construct a NURBS curve from a circle.
-
-    #     Parameters
-    #     ----------
-    #     circle : :class:`compas.geometry.Circle`
-    #         A circle geometry.
-
-    #     Returns
-    #     -------
-    #     :class:`compas_rhino.geometry.RhinoNurbsCurve`
-
-    #     """
-    #     curve = cls()
-    #     curve.rhino_curve = Rhino.Geometry.NurbsCurve.CreateFromCircle(circle_to_rhino(circle))
-    #     return curve
-
-    # @classmethod
-    # def from_ellipse(cls, ellipse):
-    #     """Construct a NURBS curve from an ellipse.
-
-    #     Parameters
-    #     ----------
-    #     ellipse : :class:`compas.geometry.Ellipse`
-    #         An ellipse geometry.
-
-    #     Returns
-    #     -------
-    #     :class:`compas_rhino.geometry.RhinoNurbsCurve`
-
-    #     """
-    #     curve = cls()
-    #     curve.rhino_curve = Rhino.Geometry.NurbsCurve.CreateFromEllipse(ellipse_to_rhino(ellipse))
-    #     return curve
-
-    @classmethod
-    def from_line(cls, line):
-        """Construct a NURBS curve from a line.
-
-        Parameters
-        ----------
-        line : :class:`compas.geometry.Line`
-            A line geometry.
-
-        Returns
-        -------
-        :class:`compas_rhino.geometry.RhinoNurbsCurve`
-
-        """
-        curve = cls()
-        curve.rhino_curve = Rhino.Geometry.NurbsCurve.CreateFromLine(line_to_rhino(line))
-        return curve
+        native_curve = Rhino.Geometry.NurbsCurve.Create(is_periodic, degree, [point_to_rhino(point) for point in points])
+        return cls.from_native(native_curve)
 
     # ==============================================================================
     # Conversions

@@ -18,6 +18,8 @@ class BlenderSceneObject(SceneObject):
     ----------
     collection : str | :blender:`bpy.types.Collection`, optional
         The Blender scene collection the object(s) created by the scene object belong to.
+    show_wire : bool, optional
+        Display the wireframe of the object.
     **kwargs : dict, optional
         Additional keyword arguments.
 
@@ -25,12 +27,18 @@ class BlenderSceneObject(SceneObject):
     ----------
     objects : list[:blender:`bpy.types.Object`]
         The Blender objects created by the scene object.
+    collection : str | :blender:`bpy.types.Collection`
+        The Blender scene collection the object(s) created by the scene object belong to.
+    show_wire : bool
+        Display the wireframe of the object.
 
     """
 
-    def __init__(self, **kwargs: Any):
+    def __init__(self, collection: Union[str, bpy.types.Collection] = None, show_wire: bool = True, **kwargs: Any):
         super().__init__(**kwargs)
         self.objects = []
+        self.collection = collection
+        self.show_wire = show_wire
 
     # many of the methods below will be added to a general scene object in the future
     # to make them universaly accessible they are added here for now

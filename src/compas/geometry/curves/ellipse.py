@@ -104,11 +104,11 @@ class Ellipse(Conic):
     Visualise the line, ellipse, and frame of the ellipse with the COMPAS viewer.
 
     >>> from compas_viewer import Viewer  # doctest: +SKIP
-    >>> viewer = Viewer()                    # doctest: +SKIP
-    >>> viewer.scene.add(line)                  # doctest: +SKIP
-    >>> viewer.scene.add(ellipse)               # doctest: +SKIP
-    >>> viewer.scene.add(ellipse.frame)         # doctest: +SKIP
-    >>> viewer.show()                      # doctest: +SKIP
+    >>> viewer = Viewer()  # doctest: +SKIP
+    >>> viewer.scene.add(line)  # doctest: +SKIP
+    >>> viewer.scene.add(ellipse)  # doctest: +SKIP
+    >>> viewer.scene.add(ellipse.frame)  # doctest: +SKIP
+    >>> viewer.show()  # doctest: +SKIP
 
     """
 

@@ -73,7 +73,7 @@ class Cone(Shape):
     >>> frame = Frame.worldXY()
     >>> cone = Cone(frame=frame, radius=0.3, height=1.0)
     >>> cone = Cone(radius=0.3, height=1.0)
-    >>> cone = Cone()
+    >>> cone = Cone(0.3, 1.0)
 
     """
 
@@ -196,7 +196,8 @@ class Cone(Shape):
 
         Examples
         --------
-        >>> line = Line(Point(0, 0, 0), Point(0, 0, 1))
+        >>> from compas.geometry import Line
+        >>> line = Line([0, 0, 0], [0, 0, 1])
         >>> cone = Cone.from_line_and_radius(line, 0.3)
 
         """
@@ -225,36 +226,26 @@ class Cone(Shape):
 
         Examples
         --------
-        >>> circle = Circle(Frame.worldXY(), 0.3)
+        >>> circle = Circle(0.3)
         >>> cone = Cone.from_circle_and_height(circle, 1.0)
 
         """
         frame = circle.frame
         return cls(frame=frame, radius=circle.radius, height=height)
 
-    # ==========================================================================
-    # Conversions
-    # ==========================================================================
+    # =============================================================================
+    # Discretisation
+    # =============================================================================
 
-    def to_vertices_and_faces(self, u=16, triangulated=False):
-        """Returns a list of vertices and faces.
-
-        Parameters
-        ----------
-        u : int, optional
-            Number of faces in the "u" direction.
-        triangulated: bool, optional
-            If True, triangulate the faces.
+    def compute_vertices(self):  # type: () -> list[list[float]]
+        """Compute the vertices of the discrete representation of the cone.
 
         Returns
         -------
-        list[list[float]], list[list[int]]
-            A list of vertex locations, and a list of faces,
-            with each face defined as a list of indices into the list of vertices.
+        list[list[float]]
 
         """
-        if u < 3:
-            raise ValueError("The value for u should be u > 3.")
+        u = self.resolution_u
 
         vertices = [[0, 0, 0]]
         a = 2 * pi / u
@@ -263,7 +254,20 @@ class Cone(Shape):
             x = radius * cos(i * a)
             y = radius * sin(i * a)
             vertices.append([x, y, 0])  # type: ignore
-        vertices.append([0, 0, self.height])  # type: ignore
+        vertices.append([0, 0, self.height])
+
+        vertices = transform_points(vertices, self.transformation)
+        return vertices
+
+    def compute_faces(self):  # type: () -> list[list[int]]
+        """Compute the faces of the discrete representation of the cone.
+
+        Returns
+        -------
+        list[list[int]]
+
+        """
+        vertices = self._vertices
 
         faces = []
         first = 0
@@ -274,19 +278,11 @@ class Cone(Shape):
         faces.append([last - 1, 1, last])
         faces.append([1, last - 1, first])
 
-        if triangulated:
-            triangles = []
-            for face in faces:
-                if len(face) == 4:
-                    triangles.append(face[0:3])
-                    triangles.append([face[0], face[2], face[3]])
-                else:
-                    triangles.append(face)
-            faces = triangles
+        return faces
 
-        vertices = transform_points(vertices, self.transformation)
-
-        return vertices, faces
+    # ==========================================================================
+    # Conversions
+    # ==========================================================================
 
     def to_brep(self):
         """Returns a BRep representation of the cone.

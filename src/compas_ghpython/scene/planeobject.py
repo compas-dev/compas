@@ -14,8 +14,6 @@ class PlaneObject(GHSceneObject, GeometryObject):
 
     Parameters
     ----------
-    plane : :class:`compas.geometry.Plane`
-        A COMPAS plane.
     scale : float, optional
         Scale factor that controls the visualisation size of the plane.
         Default is ``1.0``.
@@ -29,8 +27,8 @@ class PlaneObject(GHSceneObject, GeometryObject):
 
     """
 
-    def __init__(self, plane, scale=1.0, **kwargs):
-        super(PlaneObject, self).__init__(geometry=plane, **kwargs)
+    def __init__(self, scale=1.0, **kwargs):
+        super(PlaneObject, self).__init__(**kwargs)
         self.scale = scale
 
     def draw(self):

@@ -37,13 +37,6 @@ class SphericalSurface(Surface):
 
     """
 
-    # overwriting the __new__ method is necessary
-    # to avoid triggering the plugin mechanism of the base surface class
-    def __new__(cls, *args, **kwargs):
-        surface = object.__new__(cls)
-        surface.__init__(*args, **kwargs)
-        return surface
-
     DATASCHEMA = {
         "type": "object",
         "properties": {
@@ -220,8 +213,8 @@ class SphericalSurface(Surface):
             A point on the sphere.
 
         """
-        u = u * pi
-        v = v * PI2
+        u = u * PI2
+        v = v * pi
         x = self.radius * cos(u) * sin(v)
         y = self.radius * sin(u) * sin(v)
         z = self.radius * cos(v)
@@ -248,8 +241,8 @@ class SphericalSurface(Surface):
             The normal vector.
 
         """
-        u = u * pi
-        v = v * PI2
+        u = u * PI2
+        v = v * pi
         x = cos(u) * sin(v)
         y = sin(u) * sin(v)
         z = cos(v)

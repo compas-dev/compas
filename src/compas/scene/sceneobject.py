@@ -2,14 +2,16 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from abc import abstractmethod
 from functools import reduce
 from operator import mul
 
 import compas.colors  # noqa: F401
+import compas.data  # noqa: F401
 import compas.datastructures  # noqa: F401
 import compas.geometry  # noqa: F401
+import compas.scene  # noqa: F401
 from compas.colors import Color
+from compas.data import Data
 from compas.datastructures import TreeNode
 from compas.geometry import Transformation
 
@@ -82,12 +84,26 @@ class SceneObject(TreeNode):
 
     color = ColorAttribute()
 
-    def __new__(cls, item, **kwargs):
+    def __new__(cls, item=None, **kwargs):
         sceneobject_cls = get_sceneobject_cls(item, **kwargs)
         return super(SceneObject, cls).__new__(sceneobject_cls)
 
-    def __init__(self, item, name=None, color=None, opacity=1.0, show=True, frame=None, transformation=None, context=None, **kwargs):  # fmt: skip
-        # type: (compas.geometry.Geometry | compas.datastructures.Datastructure, str | None, compas.colors.Color | None, float, bool, compas.geometry.Frame | None, compas.geometry.Transformation | None, str | None, dict) -> None
+    def __init__(
+        self,
+        item=None,  # type: compas.data.Data | None
+        name=None,  # type: str | None
+        color=None,  # type: compas.colors.Color | None
+        opacity=1.0,  # type: float
+        show=True,  # type: bool
+        frame=None,  # type: compas.geometry.Frame | None
+        transformation=None,  # type: compas.geometry.Transformation | None
+        context=None,  # type: str | None
+        **kwargs  # type: dict
+    ):  # fmt: skip
+        # type: (...) -> None
+        if not isinstance(item, Data):
+            raise ValueError("The item assigned to this scene object should be a data object: {}".format(type(item)))
+
         name = name or item.name
         super(SceneObject, self).__init__(name=name, **kwargs)
         # the scene object needs to store the context
@@ -124,12 +140,12 @@ class SceneObject(TreeNode):
 
     @property
     def scene(self):
-        # type: () -> compas.scene.Scene
+        # type: () -> compas.scene.Scene | None
         return self.tree
 
     @property
     def item(self):
-        # type: () -> compas.geometry.Geometry | compas.datastructures.Datastructure
+        # type: () -> compas.data.Data
         return self._item
 
     @property
@@ -179,12 +195,13 @@ class SceneObject(TreeNode):
 
     @property
     def contrastcolor(self):
-        # type: () -> compas.colors.Color
+        # type: () -> compas.colors.Color | None
         if not self._contrastcolor:
-            if self.color.is_light:
-                self._contrastcolor = self.color.darkened(50)
-            else:
-                self._contrastcolor = self.color.lightened(50)
+            if self.color:
+                if self.color.is_light:
+                    self._contrastcolor = self.color.darkened(50)
+                else:
+                    self._contrastcolor = self.color.lightened(50)
         return self._contrastcolor
 
     @contrastcolor.setter
@@ -195,7 +212,6 @@ class SceneObject(TreeNode):
     @property
     def settings(self):
         # type: () -> dict
-        # The settings are all the nessessary attributes to reconstruct the scene object besides the Data item.
         settings = {
             "name": self.name,
             "color": self.color,
@@ -211,6 +227,7 @@ class SceneObject(TreeNode):
         return settings
 
     def add(self, item, **kwargs):
+        # type: (compas.data.Data, dict) -> SceneObject
         """Add a child item to the scene object.
 
         Parameters
@@ -237,12 +254,11 @@ class SceneObject(TreeNode):
                 if kwargs["context"] != self.context:
                     raise Exception("Child context should be the same as parent context: {} != {}".format(kwargs["context"], self.context))
                 del kwargs["context"]  # otherwist the SceneObject receives "context" twice, which results in an error
-            sceneobject = SceneObject(item, context=self.context, **kwargs)  # type: ignore
+            sceneobject = SceneObject(item=item, context=self.context, **kwargs)  # type: ignore
 
         super(SceneObject, self).add(sceneobject)
         return sceneobject
 
-    @abstractmethod
     def draw(self):
         """The main drawing method."""
         raise NotImplementedError

@@ -33,6 +33,7 @@ def install(version=None, packages=None, clean=False):
     .. code-block:: python
 
         import compas_rhino.install
+
         compas_rhino.install.install()
 
     .. code-block:: bash
@@ -273,9 +274,9 @@ def installable_rhino_packages():
     Examples
     --------
     >>> import compas.plugins
-    >>> @compas.plugins.plugin(category='install')
+    >>> @compas.plugins.plugin(category="install")
     ... def installable_rhino_packages():
-    ...    return ['compas_fab']
+    ...     return ["compas_fab"]
 
     Returns
     -------
@@ -302,10 +303,10 @@ def after_rhino_install(installed_packages):
     Examples
     --------
     >>> import compas.plugins
-    >>> @compas.plugins.plugin(category='install')
+    >>> @compas.plugins.plugin(category="install")
     ... def after_rhino_install(installed_packages):
-    ...    # Do something after package is installed to Rhino, eg, copy components, etc
-    ...    return [('compas_ghpython', 'GH Components installed', True)]
+    ...     # Do something after package is installed to Rhino, eg, copy components, etc
+    ...     return [("compas_ghpython", "GH Components installed", True)]
 
     Returns
     -------

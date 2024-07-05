@@ -28,13 +28,6 @@ class ConicalSurface(Surface):
 
     """
 
-    # overwriting the __new__ method is necessary
-    # to avoid triggering the plugin mechanism of the base surface class
-    def __new__(cls, *args, **kwargs):
-        surface = object.__new__(cls)
-        surface.__init__(*args, **kwargs)
-        return surface
-
     DATASCHEMA = {
         "type": "object",
         "properties": {

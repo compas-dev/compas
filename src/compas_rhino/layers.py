@@ -125,12 +125,14 @@ def create_layers_from_paths(names, separator="::"):
 
     .. code-block:: python
 
-        create_layers_from_paths([
-            "COMPAS::Datastructures::Mesh",
-            "COMPAS::Datastructures::Graph",
-            "COMPAS::Geometry::Point",
-            "COMPAS::Geometry::Vector",
-        ])
+        create_layers_from_paths(
+            [
+                "COMPAS::Datastructures::Mesh",
+                "COMPAS::Datastructures::Graph",
+                "COMPAS::Geometry::Point",
+                "COMPAS::Geometry::Vector",
+            ]
+        )
 
     """
     for name in names:
@@ -155,16 +157,15 @@ def create_layers_from_dict(layers):
     --------
     .. code-block:: python
 
-        layers = {'COMPAS', {'layers': {
-            'Datastructures': {'color': (255, 0, 0), 'layers': {
-                'Mesh': {},
-                'Graph': {}
-            }},
-            'Geometry': {'color': (0, 0, 255),'layers': {
-                'Point': {},
-                'Vector': {}
-            }},
-        }}}
+        layers = {
+            "COMPAS",
+            {
+                "layers": {
+                    "Datastructures": {"color": (255, 0, 0), "layers": {"Mesh": {}, "Graph": {}}},
+                    "Geometry": {"color": (0, 0, 255), "layers": {"Point": {}, "Vector": {}}},
+                }
+            },
+        }
 
         create_layers_from_dict(layers)
 
@@ -307,12 +308,12 @@ def delete_layers(layers):
     --------
     .. code-block:: python
 
-        layers = {'COMPAS': {'layers': {'Datastructures': {'layers': {'Mesh': {}, 'Graph': {}}}}}}
+        layers = {"COMPAS": {"layers": {"Datastructures": {"layers": {"Mesh": {}, "Graph": {}}}}}}
 
         create_layers(layers)
 
-        delete_layers(['COMPAS::Datastructures::Graph'])
-        delete_layers({'COMPAS': {'layers': {'Datastructures': {'layers': {'Mesh': {}}}}}})
+        delete_layers(["COMPAS::Datastructures::Graph"])
+        delete_layers({"COMPAS": {"layers": {"Datastructures": {"layers": {"Mesh": {}}}}}})
 
     """
     to_delete = []

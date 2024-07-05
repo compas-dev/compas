@@ -9,19 +9,7 @@ from .sceneobject import GHSceneObject
 
 
 class PointObject(GHSceneObject, GeometryObject):
-    """Scene object for drawing points.
-
-    Parameters
-    ----------
-    point : :class:`compas.geometry.Point`
-        A COMPAS point.
-    **kwargs : dict, optional
-        Additional keyword arguments.
-
-    """
-
-    def __init__(self, point, **kwargs):
-        super(PointObject, self).__init__(geometry=point, **kwargs)
+    """Scene object for drawing points."""
 
     def draw(self):
         """Draw the point.

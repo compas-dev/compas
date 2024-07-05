@@ -53,8 +53,9 @@ class Scale(Transformation):
     >>> frame = Frame(point, (1, 0, 0), (0, 1, 0))
     >>> points = [point, Point(2, 10, 0)]
     >>> S = Scale.from_factors([2.] * 3, frame)
-    >>> [p.transformed(S) for p in points]
-    [Point(2.000, 5.000, 0.000), Point(2.000, 15.000, 0.000)]
+    >>> points = [p.transformed(S) for p in points]
+    >>> print(points)
+    [Point(x=2.000, y=5.000, z=0.000), Point(x=2.000, y=15.000, z=0.000)]
 
     """
 
@@ -88,8 +89,9 @@ class Scale(Transformation):
         >>> frame = Frame(point, (1, 0, 0), (0, 1, 0))
         >>> points = [point, Point(2, 10, 0)]
         >>> S = Scale.from_factors([2.] * 3, frame)
-        >>> [p.transformed(S) for p in points]
-        [Point(2.000, 5.000, 0.000), Point(2.000, 15.000, 0.000)]
+        >>> points = [p.transformed(S) for p in points]
+        >>> print(points)
+        [Point(x=2.000, y=5.000, z=0.000), Point(x=2.000, y=15.000, z=0.000)]
 
         """
         matrix = matrix_from_scale_factors(factors)

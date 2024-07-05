@@ -21,7 +21,7 @@ def mesh_merge_faces(mesh, faces):
     --------
     >>> from compas.datastructures import Mesh
     >>> mesh = Mesh.from_vertices_and_faces([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]], [[0, 1, 2, 3]])
-    >>> mesh = mesh.subdivide(scheme='quad')
+    >>> mesh = mesh.subdivided(scheme='quad')
     >>> mesh_merge_faces(mesh, [1, 2])
     5
     >>> mesh_merge_faces(mesh, [3, 5])

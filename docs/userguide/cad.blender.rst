@@ -40,11 +40,20 @@ The default locations are:
 
 .. note::
 
-    If you already have an installation of COMPAS on your system, you can try finding the Rhino 8 Python executable by running the following in a terminal or command prompt:
+    If you already have an installation of COMPAS on your system, you can try finding the Blender Python executable by running the following in a terminal or command prompt:
 
     .. code-block:: python
 
-        python -m compas_rhino.print_python_path
+        python -m compas_blender.print_python_path
+
+Update `pip`
+~~~~~~~~~~~~
+
+Before installing `compas` with `pip`, it is highly recommended that you update `pip` itself.
+
+.. code-block:: bash
+
+    $ /Applications/Blender.app/Contents/Resources/4.0/python/bin/python3.10 -m pip install --upgrade pip
 
 
 Install from PyPI

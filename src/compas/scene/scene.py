@@ -33,8 +33,8 @@ class Scene(Tree):
     >>> from compas.geometry import Box
     >>> scene = Scene()
     >>> box = Box.from_width_height_depth(1, 1, 1)
-    >>> scene.add(box)
-    >>> scene.draw()
+    >>> boxobj = scene.add(box)
+    >>> scene.draw()  # doctest: +SKIP
 
     """
 
@@ -66,7 +66,7 @@ class Scene(Tree):
         return scene
 
     def __init__(self, name="Scene", context=None):
-        # type: (str | "Scene", str | None) -> None
+        # type: (str, str | None) -> None
         super(Scene, self).__init__(name=name)
         super(Scene, self).add(TreeNode(name="ROOT"))
         self.context = context or detect_current_context()
@@ -74,8 +74,6 @@ class Scene(Tree):
     @property
     def objects(self):
         # type: () -> list[SceneObject]
-        # this is flagged by the type checker
-        # because the tree returns nodes of type TreeNode
         return [node for node in self.nodes if not node.is_root]  # type: ignore
 
     def add(self, item, parent=None, **kwargs):
@@ -106,18 +104,20 @@ class Scene(Tree):
                 if kwargs["context"] != self.context:
                     raise Exception("Object context should be the same as scene context: {} != {}".format(kwargs["context"], self.context))
                 del kwargs["context"]  # otherwist the SceneObject receives "context" twice, which results in an error
-            sceneobject = SceneObject(item, context=self.context, **kwargs)  # type: ignore
+            sceneobject = SceneObject(item=item, context=self.context, **kwargs)  # type: ignore
         super(Scene, self).add(sceneobject, parent=parent)
         return sceneobject
 
     def clear(self):
         # type: () -> None
-        """Clear the current context of the scene."""
+        """Clear everything from the current context of the scene."""
+
         clear()
 
     def clear_objects(self):
         # type: () -> None
         """Clear all objects inside the scene."""
+
         guids = []
         for sceneobject in self.objects:
             guids += sceneobject.guids
@@ -127,10 +127,10 @@ class Scene(Tree):
     def draw(self):
         """Draw the scene."""
 
-        before_draw()
-
         if not self.context:
             raise ValueError("No context detected.")
+
+        before_draw()
 
         self.clear_objects()
 

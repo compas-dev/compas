@@ -11,7 +11,6 @@ def test_basic_rpc_call():
 
 def test_switch_package():
     with Proxy("numpy", python="python") as proxy:
-
         A = proxy.array([[1, 2], [3, 4]])
 
         proxy.package = "scipy.linalg"

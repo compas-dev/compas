@@ -12,19 +12,7 @@ from .sceneobject import RhinoSceneObject
 
 
 class RhinoCylinderObject(RhinoSceneObject, GeometryObject):
-    """Scene object for drawing cylinder shapes.
-
-    Parameters
-    ----------
-    cylinder : :class:`compas.geometry.Cylinder`
-        A COMPAS cylinder.
-    **kwargs : dict, optional
-        Additional keyword arguments.
-
-    """
-
-    def __init__(self, cylinder, **kwargs):
-        super(RhinoCylinderObject, self).__init__(geometry=cylinder, **kwargs)
+    """Scene object for drawing cylinder shapes."""
 
     def draw(self):
         """Draw the cylinder associated with the scene object.

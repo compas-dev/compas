@@ -30,6 +30,15 @@ The location of the executable is different on different platforms.
 
         python -m compas_rhino.print_python_path
 
+Update `pip`
+~~~~~~~~~~~~
+
+Before installing `compas` with `pip`, it is highly recommended that you update `pip` itself.
+
+.. code-block:: bash
+
+    $ ~/.rhinocode/py39-rh8/python3.9 -m pip install --upgrade pip
+
 
 Install from PyPI
 ~~~~~~~~~~~~~~~~~
