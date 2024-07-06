@@ -53,7 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas.geometry.curves.nurbs.NurbsCurve.__new__` to prevent instantiation of `NurbsCurve` directly.
 * Changed `compas_rhino.geometry.curves.new_nurbscurve_from_...` to `nurbscurve_from_...`.
 * Fixed `compas_ghpython` Grasshopper components not included in published pakcage.
-* Changed `compas.colors.Color.coerce` to take color as is, if it is already aninstance of `compas.colors.Color`.
+* Changed `compas.colors.Color.coerce` to take color as is, if it is already an instance of `compas.colors.Color`.
 * Changed `compas_rhino.conversions.surfaces.surface_to_compas` to work only with surface geometry.
 * Changed `compas_rhino.conversions.curves.curve_to_compas_line` to work only with geometry.
 * Changed `compas_rhino.conversions.curves.curve_to_compas_circle` to work only with geometry.
