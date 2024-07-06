@@ -7,6 +7,7 @@ import scriptcontext as sc  # type: ignore
 
 from compas.geometry import Arc
 from compas.geometry import Circle
+from compas.geometry import Curve
 from compas.geometry import Ellipse
 from compas.geometry import Line
 from compas.geometry import NurbsCurve
@@ -23,33 +24,6 @@ from .geometry import point_to_rhino
 # =============================================================================
 # To Rhino
 # =============================================================================
-
-
-def data_to_rhino_curve(data):
-    """Convert a COMPAS curve to a Rhino curve.
-
-    Parameters
-    ----------
-    data : dict
-
-    Returns
-    -------
-    :rhino:`Rhino.Geometry.NurbsCurve`
-
-    """
-    nurbs = Rhino.Geometry.NurbsCurve(data["degree"], len(data["points"]))
-
-    for index, xyz in enumerate(data["points"]):
-        nurbs.Points.SetPoint(index, *xyz)
-
-    knotvector = []
-    for knot, mult in zip(data["knots"], data["multiplicities"]):
-        for i in range(mult):
-            knotvector.append(knot)
-
-    for index, knot in enumerate(knotvector):
-        nurbs.Knots.Item[index] = knot
-    return nurbs
 
 
 def line_to_rhino(line):
@@ -308,8 +282,6 @@ def curve_to_compas_line(curve):
     :class:`compas.geometry.Line`
 
     """
-    if isinstance(curve, Rhino.DocObjects.RhinoObject):
-        curve = curve.Geometry
     return Line(point_to_compas(curve.PointAtStart), point_to_compas(curve.PointAtEnd))
 
 
@@ -330,8 +302,6 @@ def curve_to_compas_circle(curve):
         If the curve cannot be converted to a circle.
 
     """
-    if isinstance(curve, Rhino.DocObjects.RhinoObject):
-        curve = curve.Geometry
     result, circle = curve.TryGetCircle()
     if not result:
         raise ConversionError("The curve cannot be converted to a circle.")
@@ -355,8 +325,6 @@ def curve_to_compas_ellipse(curve):
         If the curve cannot be converted to an ellipse.
 
     """
-    if isinstance(curve, Rhino.DocObjects.RhinoObject):
-        curve = curve.Geometry
     result, ellipse = curve.TryGetEllipse()
     if not result:
         raise ConversionError("The curve cannot be converted to an ellipse.")
@@ -380,74 +348,29 @@ def curve_to_compas_polyline(curve):
         If the curve cannot be converted to a polyline.
 
     """
-    if isinstance(curve, Rhino.DocObjects.RhinoObject):
-        curve = curve.Geometry
     result, polyline = curve.TryGetPolyline()
     if not result:
         raise ConversionError("The curve cannot be converted to a polyline.")
     return polyline_to_compas(polyline)
 
 
-def curve_to_compas_data(curve):
-    """Convert a Rhino curve to a COMPAS data dict.
+def curve_to_compas(curve, try_nurbs=True):
+    """Convert a Rhino curve to a COMPAS curve.
 
     Parameters
     ----------
     curve : :rhino:`Rhino.Geometry.Curve`
+        A Rhino curve.
+    try_nurbs : bool, optional
+        Try to convert the curve to a NURBS curve.
 
     Returns
     -------
-    dict
+    :class:`compas.geometry.Curve` | :class:`compas.geometry.NurbsCurve`
+        If `try_nurbs` is `True`, and the geometry has a NURBS representation, return a NURBS curve.
+        Otherwise return a general curve.
 
     """
-    if isinstance(curve, Rhino.DocObjects.RhinoObject):
-        curve = curve.Geometry
-
-    nurbs = curve.ToNurbsCurve()
-    points = []
-    weights = []
-    knots = []
-    multiplicities = []
-    degree = nurbs.Degree
-    is_periodic = nurbs.IsPeriodic
-
-    for index in range(nurbs.Points.Count):
-        point = nurbs.Points.Item[index]
-        points.append(point_to_compas(point.Location))
-        weights.append(point.Weight)
-
-    for index in range(nurbs.Knots.Count):
-        knots.append(nurbs.Knots.Item[index])
-        multiplicities.append(nurbs.Knots.KnotMultiplicity(index))
-
-    return {
-        "points": [point.data for point in points],
-        "weights": weights,
-        "knots": knots,
-        "multiplicities": multiplicities,
-        "degree": degree,
-        "is_periodic": is_periodic,
-    }
-
-
-def curve_to_compas(curve):
-    """Convert a Rhino (Nurbs) curve to a COMPAS curve.
-
-    Parameters
-    ----------
-    curve : :rhino:`Rhino.Geometry.Curve`
-
-    Returns
-    -------
-    :class:`compas.geometry.NurbsCurve`
-
-    Raises
-    ------
-    ConversionError
-        If the curve cannot be converted to a COMPAS curve.
-
-    """
-    if isinstance(curve, Rhino.DocObjects.RhinoObject):
-        curve = curve.Geometry
-    nurbs = curve.ToNurbsCurve()
-    return NurbsCurve.from_native(nurbs)
+    if try_nurbs and curve.HasNurbsForm():
+        return NurbsCurve.from_native(curve.ToNurbsCurve())
+    return Curve.from_native(curve)

@@ -32,6 +32,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.geometry.curves.curve.Curve.from_native`.
 * Added `compas_rhino.geometry.curves.curve.Curve.from_native`.
 * Added `compas_rhino.geometry.curves.nurbs.NurbsCurve.from_native`.
+* Added `compas_rhino.conversions.breps.brep_to_compas_mesh`.
+* Added `compas_rhino.conversions.docobjects.brepobject_to_compas`.
+* Added `compas_rhino.conversions.docobjects.curveobject_to_compas`.
+* Added `compas_rhino.conversions.docobjects.meshobject_to_compas`.
+* Added `compas_rhino.conversions.docobjects.pointobject_to_compas`.
 * Added `compas.datastructures.HashTree` and `compas.datastructures.HashNode`.
 
 ### Changed
@@ -47,7 +52,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas.geometry.curves.nurbs.NurbsCurve.__new__` to prevent instantiation of `NurbsCurve` directly.
 * Changed `compas_rhino.geometry.curves.new_nurbscurve_from_...` to `nurbscurve_from_...`.
 * Fixed `compas_ghpython` Grasshopper components not included in published pakcage.
-* Chnaged `compas.colors.Color.coerce` to take color as is, if it is already aninstance of `compas.colors.Color`.
+* Changed `compas.colors.Color.coerce` to take color as is, if it is already an instance of `compas.colors.Color`.
+* Changed `compas_rhino.conversions.surfaces.surface_to_compas` to work only with surface geometry.
+* Changed `compas_rhino.conversions.curves.curve_to_compas_line` to work only with geometry.
+* Changed `compas_rhino.conversions.curves.curve_to_compas_circle` to work only with geometry.
+* Changed `compas_rhino.conversions.curves.curve_to_compas_ellipse` to work only with geometry.
+* Changed `compas_rhino.conversions.curves.curve_to_compas_polyline` to work only with geometry.
+* Changed `compas_rhino.objects.get_point_coordinates` to deprecated (removed in v2.3).
+* Changed `compas_rhino.objects.get_line_coordinates` to deprecated (removed in v2.3).
+* Changed `compas_rhino.objects.get_polyline_coordinates` to deprecated (removed in v2.3).
+* Changed `compas_rhino.objects.get_polygon_coordinates` to deprecated (removed in v2.3).
 * Fixed a bug in `worldtransformation` of `compas.scene.SceneObject` to include the object's own frame.
 
 ### Removed
@@ -77,6 +91,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed `compas.geometry.curves.curve.new_nurbscurve`.
 * Removed `compas_rhino.geometry.curves.new_curve`.
 * Removed `compas_rhino.geometry.curves.new_nurbscurve`.
+* Removed `compas_rhino.conversions.surfaces.data_to_rhino_surface`.
+* Removed `compas_rhino.conversions.surfaces.surface_to_compas_data`.
+* Removed `compas_rhino.conversions.surfaces.surface_to_compas_quadmesh`.
+* Removed `compas_rhino.conversions.curves.curve_to_compas_data`.
 
 ## [2.2.1] 2024-06-25
 
@@ -87,7 +105,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed error in `compas_ghpython` causing `Scene` to fail in Grasshopper.
 
 ### Removed
-
 
 ## [2.2.0] 2024-06-24
 

@@ -781,7 +781,7 @@ def draw_mesh(vertices, faces, name=None, color=None, vertex_color=None, disjoin
     if guid != System.Guid.Empty:
         if vertexcolors:
             try:
-                compas_rhino.objects.set_mesh_vertex_colors(guid, vertexcolors)
+                rs.MeshVertexColors(guid, vertexcolors)
             except Exception:
                 pass
 
@@ -859,7 +859,7 @@ def draw_faces(faces, **kwargs):
 
         if vertexcolors:
             try:
-                compas_rhino.objects.set_mesh_vertex_colors(guid, vertexcolors)
+                rs.MeshVertexColors(guid, vertexcolors)
             except Exception:
                 pass
 
