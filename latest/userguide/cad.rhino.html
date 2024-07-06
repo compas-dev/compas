@@ -600,9 +600,156 @@ For more information on visualisation scenes, see <a class="reference internal" 
 </section>
 <section id="conversions">
 <h2>Conversions</h2>
+<p>For conversion between Rhino objects and COMPAS objects, different scenarios exist.</p>
+<section id="rhino-geometry-to-compas">
+<h3>Rhino Geometry to COMPAS</h3>
+<p>Conversions of geometry is straightforward and explicit.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">Rhino.Geometry</span>
+<span class="kn">import</span> <span class="nn">compas_rhino.conversions</span>
+
+<span class="n">point</span> <span class="o">=</span> <span class="n">Rhino</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">Point3d</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">point</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">conversions</span><span class="o">.</span><span class="n">point_to_compas</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+
+<span class="n">line</span> <span class="o">=</span> <span class="n">Rhino</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">Line</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">line</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">conversions</span><span class="o">.</span><span class="n">line_to_compas</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+<span class="n">plane</span> <span class="o">=</span> <span class="n">Rhino</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">Plane</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">plane</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">conversions</span><span class="o">.</span><span class="n">plane_to_compas</span><span class="p">(</span><span class="n">plane</span><span class="p">)</span>
+
+<span class="n">box</span> <span class="o">=</span> <span class="n">Rhino</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">box</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">conversions</span><span class="o">.</span><span class="n">box_to_compas</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Rhino</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">Mesh</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">conversions</span><span class="o">.</span><span class="n">mesh_to_compas</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+
+<span class="n">curve</span> <span class="o">=</span> <span class="n">Rhino</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">Curve</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">curve</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">conversions</span><span class="o">.</span><span class="n">curve_to_compas</span><span class="p">(</span><span class="n">curve</span><span class="p">)</span>
+
+<span class="n">surface</span> <span class="o">=</span> <span class="n">Rhino</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">Surface</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">surface</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">conversions</span><span class="o">.</span><span class="n">surface_to_compas</span><span class="p">(</span><span class="n">surface</span><span class="p">)</span>
+
+<span class="n">brep</span> <span class="o">=</span> <span class="n">Rhino</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">Brep</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">brep</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">conversions</span><span class="o">.</span><span class="n">brep_to_compas</span><span class="p">(</span><span class="n">brep</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that Rhino doen’t distinguish between a frame and a plane.
+Therefore, to convert <cite>Rhino.Geometry.Plane</cite> to <a class="reference internal" href="../api/generated/compas.geometry.Frame.html" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code></a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plane</span> <span class="o">=</span> <span class="n">Rhino</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">Plane</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">frame</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">conversions</span><span class="o">.</span><span class="n">plane_to_compas_frame</span><span class="p">(</span><span class="n">plane</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="rhino-object-to-compas">
+<h3>Rhino Object to COMPAS</h3>
+<p>A Rhino Document contains Rhino Object instead of Rhino Geometry.
+The geometry of a Rhino Object is stored in the corresponding attribute (<cite>obj.Geometry</cite>).</p>
+<p>Converting point, curve, and mesh objects is straightforward.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">compas_rhino.objects</span>
+<span class="kn">import</span> <span class="nn">compas_rhino.conversions</span>
+
+<span class="n">guid</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">select_point</span><span class="p">()</span>
+<span class="n">point</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">conversions</span><span class="o">.</span><span class="n">pointobject_to_compas</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span>
+
+<span class="n">guid</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">select_curve</span><span class="p">()</span>
+<span class="n">curve</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">conversions</span><span class="o">.</span><span class="n">curveobject_to_compas</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span>
+
+<span class="n">guid</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">select_mesh</span><span class="p">()</span>
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">conversions</span><span class="o">.</span><span class="n">meshobject_to_compas</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In the case of curve objects, note that the conversion function will return a NurbsCurve in almost all cases.
+If the curve has a specific geometry, it can be converted explicitly using the corresponding geomtry conversion function.
+For example, if the curve is a circle.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">compas_rhino.objects</span>
+<span class="kn">import</span> <span class="nn">compas_rhino.conversions</span>
+
+<span class="n">guid</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">select_curve</span><span class="p">()</span>
+<span class="n">obj</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">find_object</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span>
+
+<span class="n">circle</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">conversions</span><span class="o">.</span><span class="n">curve_to_compas_circle</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">Geometry</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In the case of all other objects, conversions are a bit trickier.
+This is because in a Rhino Document, almost all other geometries are represented by a BrepObject regardless of the actual geometry type.
+For example, when you add a sphere to a model, the DocObject is a BrepObject, and the geometry of the object is a Brep.
+Therefore, conversions of other objects have to be done more carefully.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">compas_rhino.objects</span>
+<span class="kn">import</span> <span class="nn">compas_rhino.conversions</span>
+
+<span class="n">guid</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">select_object</span><span class="p">()</span>
+<span class="n">brep</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">conversions</span><span class="o">.</span><span class="n">brepobject_to_compas</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Also here, if the object is (supposed to be) a specific type of geometry,
+conversion can be done more explicitly using the geometry conversion functions instead.
+For example, if the geometry of the object is a Rhino Cylinder.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">compas_rhino.objects</span>
+<span class="kn">import</span> <span class="nn">compas_rhino.conversions</span>
+
+<span class="n">guid</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">select_object</span><span class="p">()</span>
+<span class="n">obj</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">find_object</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span>
+
+<span class="n">cylinder</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">conversions</span><span class="o">.</span><span class="n">brep_to_compas_cylinder</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">Geometry</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="compas-to-rhino-geometry">
+<h3>COMPAS to Rhino Geometry</h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">compas.geometry</span>
+<span class="kn">import</span> <span class="nn">compas_rhino.conversions</span>
+
+<span class="n">point</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">point</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">conversions</span><span class="o">.</span><span class="n">point_to_rhino</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+
+<span class="n">line</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">Line</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">line</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">conversions</span><span class="o">.</span><span class="n">line_to_rhino</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+<span class="n">plane</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">Plane</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">plane</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">conversions</span><span class="o">.</span><span class="n">plane_to_rhino</span><span class="p">(</span><span class="n">plane</span><span class="p">)</span>
+
+<span class="n">box</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">box</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">conversions</span><span class="o">.</span><span class="n">box_to_rhino</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+
+<span class="n">curve</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">Curve</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">curve</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">conversions</span><span class="o">.</span><span class="n">curve_to_rhino</span><span class="p">(</span><span class="n">curve</span><span class="p">)</span>
+
+<span class="n">surface</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">Surface</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">surface</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">conversions</span><span class="o">.</span><span class="n">surface_to_rhino</span><span class="p">(</span><span class="n">surface</span><span class="p">)</span>
+
+<span class="n">brep</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">Brep</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">brep</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">conversions</span><span class="o">.</span><span class="n">brep_to_rhino</span><span class="p">(</span><span class="n">brep</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To convert a <a class="reference internal" href="../api/generated/compas.geometry.Frame.html" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code></a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">frame</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">plane</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">conversions</span><span class="o">.</span><span class="n">frame_to_rhino_plane</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="compas-to-rhino-object">
+<h3>COMPAS to Rhino Object</h3>
+<p>COMPAS objects are converted to Rhino Objects implicitly, by placing them into a visualisation scene.
+However, you can create a Rhino Object in a Rhino Dcocument explicitly from a COMPAS object.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">scriptcontext</span> <span class="k">as</span> <span class="nn">sc</span>
+<span class="kn">import</span> <span class="nn">compas.geometry</span>
+<span class="kn">import</span> <span class="nn">compas_rhino_conversions</span>
+
+<span class="n">point</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">geometry</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">conversions</span><span class="o">.</span><span class="n">point_to_rhino</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+
+<span class="n">guid</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Objects</span><span class="o">.</span><span class="n">AddPoint</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
 </section>
 <section id="data-exchange">
 <h2>Data Exchange</h2>
+<section id="json">
+<h3>JSON</h3>
+</section>
+<section id="rhino3dm">
+<h3>rhino3dm</h3>
+</section>
 </section>
 <section id="remote-procedure-calls">
 <h2>Remote Procedure Calls</h2>
@@ -636,8 +783,18 @@ For more information on visualisation scenes, see <a class="reference internal" 
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verification">Verification</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisation">Visualisation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conversions">Conversions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-exchange">Data Exchange</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conversions">Conversions</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rhino-geometry-to-compas">Rhino Geometry to COMPAS</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rhino-object-to-compas">Rhino Object to COMPAS</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compas-to-rhino-geometry">COMPAS to Rhino Geometry</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compas-to-rhino-object">COMPAS to Rhino Object</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-exchange">Data Exchange</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#json">JSON</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rhino3dm">rhino3dm</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#remote-procedure-calls">Remote Procedure Calls</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#known-issues">Known Issues</a></li>
 </ul>
