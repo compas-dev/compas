@@ -70,6 +70,7 @@ from .meshes import (
 )
 from .breps import (
     brep_to_rhino,
+    brep_to_compas,
     brep_to_compas_box,
     brep_to_compas_cone,
     brep_to_compas_cylinder,
@@ -92,7 +93,6 @@ from .docobjects import (
     curveobject_to_compas,
     meshobject_to_compas,
     pointobject_to_compas,
-    surfaceobject_to_compas,
 )
 
 
@@ -157,6 +157,7 @@ __all__ = [
     "mesh_to_compas",
     # breps
     "brep_to_rhino",
+    "brep_to_compas",
     "brep_to_compas_box",
     "brep_to_compas_cone",
     "brep_to_compas_cylinder",
@@ -174,5 +175,4 @@ __all__ = [
     "curveobject_to_compas",
     "meshobject_to_compas",
     "pointobject_to_compas",
-    "surfaceobject_to_compas",
 ]

@@ -3,6 +3,9 @@ from __future__ import division
 from __future__ import print_function
 
 import Rhino.Geometry  # type: ignore  # noqa: F401
+import System  # type: ignore
+
+import compas_rhino.objects
 
 from .exceptions import ConversionError
 
@@ -10,7 +13,6 @@ from .breps import brep_to_compas
 from .curves import curve_to_compas
 from .geometry import point_to_compas
 from .meshes import mesh_to_compas
-from .surfaces import surface_to_compas
 
 
 def brepobject_to_compas(obj):
@@ -18,7 +20,7 @@ def brepobject_to_compas(obj):
 
     Parameters
     ----------
-    obj : Rhino.DocObjects.BrepObject
+    obj : Rhino.DocObjects.BrepObject | System.Guid
 
     Returns
     -------
@@ -29,8 +31,11 @@ def brepobject_to_compas(obj):
     ConversionError
 
     """
+    if isinstance(obj, System.Guid):
+        obj = compas_rhino.objects.find_object(obj)
+
     try:
-        geometry = obj.BrepGeometry
+        geometry = Rhino.Geometry.Brep.TryConvertBrep(obj.Geometry)
         brep = brep_to_compas(geometry)
     except Exception:
         raise ConversionError("Rhino Object of type {} cannot be converted to a COMPAS Brep.".format(type(obj)))
@@ -43,7 +48,7 @@ def curveobject_to_compas(obj, try_nurbs=True):
 
     Parameters
     ----------
-    obj : Rhino.DocObjects.CurveObject
+    obj : Rhino.DocObjects.CurveObject | System.Guid
         The Rhino Object.
     try_nurbs : bool, optional
         Try to convert the curve to a NURBS curve.
@@ -59,6 +64,9 @@ def curveobject_to_compas(obj, try_nurbs=True):
     ConversionError
 
     """
+    if isinstance(obj, System.Guid):
+        obj = compas_rhino.objects.find_object(obj)
+
     try:
         geometry = obj.CurveGeometry
         curve = curve_to_compas(geometry, try_nurbs=try_nurbs)
@@ -73,7 +81,7 @@ def meshobject_to_compas(obj):
 
     Parameters
     ----------
-    obj : Rhino.DocObjects.MeshObject
+    obj : Rhino.DocObjects.MeshObject | System.Guid
 
     Returns
     -------
@@ -84,6 +92,9 @@ def meshobject_to_compas(obj):
     ConversionError
 
     """
+    if isinstance(obj, System.Guid):
+        obj = compas_rhino.objects.find_object(obj)
+
     try:
         geometry = obj.MeshGeometry
         mesh = mesh_to_compas(geometry)
@@ -98,7 +109,7 @@ def pointobject_to_compas(obj):
 
     Parameters
     ----------
-    obj : Rhino.DocObjects.PointObject
+    obj : Rhino.DocObjects.PointObject | System.Guid
 
     Returns
     -------
@@ -109,6 +120,9 @@ def pointobject_to_compas(obj):
     ConversionError
 
     """
+    if isinstance(obj, System.Guid):
+        obj = compas_rhino.objects.find_object(obj)
+
     try:
         geometry = obj.PointGeometry
         point = point_to_compas(geometry)
@@ -116,33 +130,3 @@ def pointobject_to_compas(obj):
         raise ConversionError("Rhino Object of type {} cannot be converted to a COMPAS Point.".format(type(obj)))
 
     return point
-
-
-def surfaceobject_to_compas(obj, try_nurbs=True):
-    """Convert a Rhino SurfaceObject to a COMPAS Surface.
-
-    Parameters
-    ----------
-    obj : Rhino.DocObjects.SurfaceObject
-        The surface object.
-    try_nurbs : bool, optional
-        Try to convert the surface to a NURBS surface.
-
-    Returns
-    -------
-    :class:`compas.geometry.Surface` | :class:`compas.geometry.NurbsSurface`
-        If `try_nurbs` is `True`, and the geometry of the object has a NURBS representation, return a NURBS surface.
-        Otherwise return a general surface.
-
-    Raises
-    ------
-    ConversionError
-
-    """
-    try:
-        geometry = obj.SurfaceGeometry
-        surface = surface_to_compas(geometry, try_nurbs=try_nurbs)
-    except Exception:
-        raise ConversionError("Rhino Object of type {} cannot be converted to a COMPAS Surface.".format(type(obj)))
-
-    return surface

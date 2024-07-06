@@ -37,7 +37,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas_rhino.conversions.docobjects.curveobject_to_compas`.
 * Added `compas_rhino.conversions.docobjects.meshobject_to_compas`.
 * Added `compas_rhino.conversions.docobjects.pointobject_to_compas`.
-* Added `compas_rhino.conversions.docobjects.surfaceobject_to_compas`.
 * Added `compas.datastructures.HashTree` and `compas.datastructures.HashNode`.
 
 ### Changed

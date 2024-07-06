@@ -2,8 +2,11 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import Rhino.Geometry  # type: ignore  # noqa: F401
 import scriptcontext as sc  # type: ignore
 
+import compas
+import compas.geometry  # noqa: F401
 from compas.datastructures import Mesh
 from compas.geometry import Brep
 from compas.tolerance import TOL
@@ -13,6 +16,11 @@ from .geometry import point_to_compas
 from .shapes import cone_to_compas
 from .shapes import cylinder_to_compas
 from .shapes import sphere_to_compas
+from .surfaces import surface_to_compas
+
+if not compas.IPY:
+    from typing import Callable  # noqa: F401
+    from typing import Type  # noqa: F401
 
 # =============================================================================
 # To Rhino
@@ -20,6 +28,7 @@ from .shapes import sphere_to_compas
 
 
 def brep_to_rhino(brep):
+    # type: (Brep) -> Rhino.Geometry.Brep
     """Convert a COMPAS Brep to a Rhino Brep.
 
     Parameters
@@ -40,6 +49,7 @@ def brep_to_rhino(brep):
 
 
 def brep_to_compas(brep):
+    # type: (Rhino.Geometry.Brep) -> Brep
     """Convert a Rhino Brep to a COMPAS Brep.
 
     Parameters
@@ -60,6 +70,7 @@ def brep_to_compas(brep):
 
 
 def brep_to_compas_box(brep):
+    # type: (Rhino.Geometry.Brep) -> compas.geometry.Box
     """Convert a Rhino brep to a COMPAS box.
 
     Parameters
@@ -75,6 +86,7 @@ def brep_to_compas_box(brep):
 
 
 def brep_to_compas_cone(brep):
+    # type: (Rhino.Geometry.Brep) -> compas.geometry.Cone
     """Convert a Rhino brep to a COMPAS cone.
 
     Parameters
@@ -85,9 +97,13 @@ def brep_to_compas_cone(brep):
     -------
     :class:`compas.geometry.Cone`
 
+    Raises
+    ------
+    ConversionError
+
     """
     if brep.Faces.Count > 2:
-        raise ConversionError("Object brep cannot be converted to a cone.")
+        raise ConversionError("Brep cannot be converted to a cone.")
 
     for face in brep.Faces:
         if face.IsCone():
@@ -95,8 +111,11 @@ def brep_to_compas_cone(brep):
             if result:
                 return cone_to_compas(cone)
 
+    raise ConversionError("Brep cannot be converted to a cone.")
+
 
 def brep_to_compas_cylinder(brep, tol=None):
+    # type: (Rhino.Geometry.Brep, float | None) -> compas.geometry.Cylinder
     """Convert a Rhino brep to a COMPAS cylinder.
 
     Parameters
@@ -107,11 +126,15 @@ def brep_to_compas_cylinder(brep, tol=None):
     -------
     :class:`compas.geometry.Cylinder`
 
+    Raises
+    ------
+    ConversionError
+
     """
     tol = tol or sc.doc.ModelAbsoluteTolerance
 
     if brep.Faces.Count > 3:
-        raise ConversionError("Object brep cannot be converted to a cylinder.")
+        raise ConversionError("Brep cannot be converted to a cylinder.")
 
     for face in brep.Faces:
         # being too strict about what is considered a cylinder
@@ -122,8 +145,11 @@ def brep_to_compas_cylinder(brep, tol=None):
             if result:
                 return cylinder_to_compas(cylinder)
 
+    raise ConversionError("Brep cannot be converted to a cylinder.")
+
 
 def brep_to_compas_sphere(brep):
+    # type: (Rhino.Geometry.Brep) -> compas.geometry.Sphere
     """Convert a Rhino brep to a COMPAS sphere.
 
     Parameters
@@ -133,6 +159,10 @@ def brep_to_compas_sphere(brep):
     Returns
     -------
     :class:`compas.geometry.Sphere`
+
+    Raises
+    ------
+    ConversionError
 
     """
     if brep.Faces.Count != 1:
@@ -146,6 +176,47 @@ def brep_to_compas_sphere(brep):
     if result:
         return sphere_to_compas(sphere)
 
+    raise ConversionError("Brep cannot be converted to a sphere.")
+
+
+# =============================================================================
+# To COMPAS Surface
+# =============================================================================
+
+
+def brep_to_compas_surface(brep, tol=None):
+    # type: (Rhino.Geometry.Brep, float | None) -> compas.geometry.NurbsSurface
+    """Convert a Rhino brep to a COMPAS surface.
+
+    Parameters
+    ----------
+    brep : :rhino:`Rhino.Geometry.Brep`
+
+    Returns
+    -------
+    :class:`compas.geometry.NurbsSurface`
+
+    Raises
+    ------
+    ConversionError
+
+    """
+    tol = tol or sc.doc.ModelAbsoluteTolerance
+
+    if brep.Faces.Count != 1:
+        raise ConversionError("Brep cannot be converted to a surface.")
+
+    face = brep.Faces.Item[0]
+
+    if not face.HasNurbsForm():
+        raise ConversionError("Brep cannot be converted to a surface.")
+
+    result, surface = face.ToNurbsSurface(tol)
+    if result:
+        return surface_to_compas(surface)
+
+    raise ConversionError("Brep cannot be converted to a surface.")
+
 
 # =============================================================================
 # To COMPAS Mesh
@@ -153,6 +224,7 @@ def brep_to_compas_sphere(brep):
 
 
 def brep_to_compas_mesh(brep, facefilter=None, cleanup=False, cls=None):
+    # type: (Rhino.Geometry.Brep, Callable | None, bool, Type[Mesh] | None) -> Mesh
     """Convert the face loops of a Rhino brep to a COMPAS mesh.
 
     Parameters
