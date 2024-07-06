@@ -9,7 +9,6 @@ import rhinoscriptsyntax as rs  # type: ignore
 import scriptcontext as sc  # type: ignore
 import System  # type: ignore
 
-import compas_rhino.objects
 from compas.geometry import centroid_polygon
 from compas_rhino.conversions import vertices_and_faces_to_rhino
 from compas_rhino.layers import clear_current_layer
