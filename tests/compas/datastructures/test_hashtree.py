@@ -3,7 +3,6 @@ from compas.datastructures import Mesh
 
 
 def test_hashtree_from_dict():
-
     tree1 = HashTree.from_dict({"a": {"b": 1, "c": 3}, "d": [1, 2, 3], "e": 2})
     tree2 = HashTree.from_dict({"a": {"b": 1, "c": 2}, "d": [1, 2, 3], "f": 2})
     diff = tree2.diff(tree1)

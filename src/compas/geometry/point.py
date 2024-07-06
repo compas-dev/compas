@@ -86,7 +86,7 @@ class Point(Geometry):
     >>> print(result)
     Point(x=2.000, y=4.000, z=6.000)
 
-    >>> result = p1 ** 2
+    >>> result = p1**2
     >>> print(result)
     Point(x=1.000, y=4.000, z=9.000)
 

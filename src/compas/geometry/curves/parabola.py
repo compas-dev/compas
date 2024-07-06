@@ -73,12 +73,12 @@ class Parabola(Conic):
 
     Visualize the parabola with the COMPAS viewer.
 
-    >>> from compas_viewer import Viewer        # doctest: +SKIP
-    >>> viewer = Viewer()                       # doctest: +SKIP
-    >>> viewer.scene.add(line)                  # doctest: +SKIP
-    >>> viewer.scene.add(parabola)              # doctest: +SKIP
-    >>> viewer.scene.add(parabola.frame)        # doctest: +SKIP
-    >>> viewer.show()                           # doctest: +SKIP
+    >>> from compas_viewer import Viewer  # doctest: +SKIP
+    >>> viewer = Viewer()  # doctest: +SKIP
+    >>> viewer.scene.add(line)  # doctest: +SKIP
+    >>> viewer.scene.add(parabola)  # doctest: +SKIP
+    >>> viewer.scene.add(parabola.frame)  # doctest: +SKIP
+    >>> viewer.show()  # doctest: +SKIP
 
     """
 

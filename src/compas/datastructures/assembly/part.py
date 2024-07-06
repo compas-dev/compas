@@ -39,21 +39,20 @@ class GeometricFeature(Feature):
     >>>
     >>> def trim_brep_plane(brep, plane):
     ...     pass
-    ...
     >>> def trim_mesh_plane(mesh, plane):
     ...     pass
-    ...
     >>> class TrimmingFeature(GeometricFeature):
     ...     OPERATIONS = {Brep: trim_brep_plane, Mesh: trim_mesh_plane}
+    ...
     ...     def __init__(self, trimming_plane):
     ...         super(TrimmingFeature, self).__init__()
     ...         self._geometry = trimming_plane
+    ...
     ...     def apply(self, part):
     ...         part_geometry = part.get_geometry(with_features=True)
     ...         type_ = Brep if isinstance(part_geometry, Brep) else Mesh
     ...         operation = OPERATIONS[type_]
     ...         return operation(part_geometry, self._geometry)
-    ...
     >>>
 
     """
@@ -87,13 +86,15 @@ class ParametricFeature(Feature):
     ...     def __init__(self, extend_by):
     ...         super(ExtensionFeature, self).__init__()
     ...         self.extend_by = extend_by
+    ...
     ...     def apply(self, part):
     ...         part.length += self._extend_by
+    ...
     ...     def restore(self, part):
     ...         part.length -= self._extend_by
+    ...
     ...     def accumulate(self, other):
     ...         return BeamExtensionFeature(max(self.extend_by, other.extend_by))
-    ...
     >>>
 
     """

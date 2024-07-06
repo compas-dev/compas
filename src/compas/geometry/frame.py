@@ -525,8 +525,8 @@ class Frame(Geometry):
         --------
         >>> from compas.tolerance import TOL
         >>> ea1 = 1.4, 0.5, 2.3
-        >>> f = Frame.from_euler_angles(ea1, static=True, axes='xyz')
-        >>> ea2 = f.euler_angles(static=True, axes='xyz')
+        >>> f = Frame.from_euler_angles(ea1, static=True, axes="xyz")
+        >>> ea2 = f.euler_angles(static=True, axes="xyz")
         >>> TOL.is_allclose(ea1, ea2)
         True
 
@@ -555,7 +555,7 @@ class Frame(Geometry):
         --------
         >>> from compas.geometry import Plane
         >>> from compas.tolerance import TOL
-        >>> plane = Plane([0,0,0], [0,0,1])
+        >>> plane = Plane([0, 0, 0], [0, 0, 1])
         >>> frame = Frame.from_plane(plane)
         >>> TOL.is_allclose(frame.normal, plane.normal)
         True
@@ -676,8 +676,8 @@ class Frame(Geometry):
         --------
         >>> from compas.tolerance import TOL
         >>> ea1 = 1.4, 0.5, 2.3
-        >>> f = Frame.from_euler_angles(ea1, static=True, axes='xyz')
-        >>> ea2 = f.euler_angles(static=True, axes='xyz')
+        >>> f = Frame.from_euler_angles(ea1, static=True, axes="xyz")
+        >>> ea2 = f.euler_angles(static=True, axes="xyz")
         >>> TOL.is_allclose(ea1, ea2)
         True
 
@@ -706,7 +706,7 @@ class Frame(Geometry):
         --------
         >>> from compas.geometry import Point
         >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> pw = Point(2, 2, 2) # point in wcf
+        >>> pw = Point(2, 2, 2)  # point in wcf
         >>> pl = frame.to_local_coordinates(pw)  # point in frame
         >>> print(frame.to_world_coordinates(pl))
         Point(x=2.000, y=2.000, z=2.000)
@@ -738,8 +738,8 @@ class Frame(Geometry):
         --------
         >>> from compas.geometry import Point
         >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> pl = Point(1.632, -0.090, 0.573) # point in frame
-        >>> pw = frame.to_world_coordinates(pl) # point in wcf
+        >>> pl = Point(1.632, -0.090, 0.573)  # point in frame
+        >>> pw = frame.to_world_coordinates(pl)  # point in wcf
         >>> print(frame.to_local_coordinates(pw))
         Point(x=1.632, y=-0.090, z=0.573)
 
