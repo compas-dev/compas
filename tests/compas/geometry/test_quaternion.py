@@ -149,4 +149,5 @@ def test_quaternion_other_methods():
     quaternion = Quaternion.from_frame(Frame.worldZX())
     canonized = quaternion.canonized()
 
-    assert str(canonized) == str("Quaternion(0.5, -0.5, -0.5, -0.5)")
+    value = TOL.format_number(0.5)
+    assert str(canonized) == str("Quaternion(" + value + ", -" + value + ", -" + value + ", -" + value + ")")
