@@ -105,7 +105,7 @@ class Polygon(Geometry):
         return "{0}(points={1!r})".format(type(self).__name__, self.points)
 
     def __str__(self):
-        return "{0}(points={1})".format(type(self).__name__, [str(point) for point in self.points])
+        return "{0}(points=[{1}])".format(type(self).__name__, ", ".join([str(point) for point in self.points]))
 
     def __len__(self):
         return len(self.points)

@@ -55,6 +55,12 @@ def test_frame_data():
         assert Frame.validate_data(other.__data__)
 
 
+def test_frame_str_repr():
+    frame = Frame.worldXY()
+    assert str(frame) == "Frame(point=Point(x=0.000, y=0.000, z=0.000), xaxis=Vector(x=1.000, y=0.000, z=0.000), yaxis=Vector(x=0.000, y=1.000, z=0.000))"
+    assert repr(frame) == "Frame(point=Point(x=0.0, y=0.0, z=0.0), xaxis=Vector(x=1.0, y=0.0, z=0.0), yaxis=Vector(x=0.0, y=1.0, z=0.0))"
+
+
 def test_frame_predefined():
     frame = Frame.worldXY()
     assert frame.point == Point(0, 0, 0)

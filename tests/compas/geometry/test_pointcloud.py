@@ -39,6 +39,13 @@ def test_pointcloud_data():
         assert Pointcloud.validate_data(other.__data__)
 
 
+def test_pointcloud_str_repr():
+    points = [[0, 0, x] for x in range(3)]
+    pointcloud = Pointcloud(points)
+    assert str(pointcloud) == "Pointcloud(len(points)=3)"
+    assert repr(pointcloud) == "Pointcloud(points=[Point(x=0.0, y=0.0, z=0.0), Point(x=0.0, y=0.0, z=1.0), Point(x=0.0, y=0.0, z=2.0)])"
+
+
 def test_pointcloud__eq__():
     a = Pointcloud.from_bounds(10, 10, 10, 10)
     points = a.points[:]
