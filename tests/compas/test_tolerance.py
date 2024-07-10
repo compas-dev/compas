@@ -4,8 +4,8 @@ from compas.geometry import Point
 
 
 def test_tolerance_default_tolerance():
-    TOL.precision == Tolerance.PRECISION
-    TOL.precision == 3
+    assert TOL.precision == Tolerance.PRECISION
+    assert TOL.precision == 3
 
 
 def test_tolerance_format_number():
