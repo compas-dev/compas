@@ -108,6 +108,14 @@ class Frame(Geometry):
             self.yaxis,
         )
 
+    def __str__(self):
+        return "{0}(point={1}, xaxis={2}, yaxis={3})".format(
+            type(self).__name__,
+            str(self.point),
+            str(self.xaxis),
+            str(self.yaxis),
+        )
+
     def __len__(self):
         return 3
 

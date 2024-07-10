@@ -2,6 +2,7 @@ import pytest
 import json
 import compas
 from random import random, shuffle
+from compas.geometry import Box
 from compas.geometry import Point  # noqa: F401
 from compas.geometry import Pointcloud
 
@@ -54,3 +55,13 @@ def test_pointcloud__neq__():
     assert a != b
     b = Pointcloud.from_bounds(10, 10, 10, 10)
     assert a != b
+
+
+def test_pointcloud_from_box():
+    x_size = 10.0
+    y_size = 5.0
+    z_size = 3.0
+    box = Box.from_width_height_depth(x_size, z_size, y_size)
+    pointcloud = Pointcloud.from_box(box, 100)
+    assert len(pointcloud.points) == 100
+    assert all((-x_size / 2 < x < x_size / 2) and (-y_size / 2 < y < y_size / 2) and (-z_size / 2 < z < z_size / 2) for x, y, z in pointcloud.points)
