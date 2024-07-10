@@ -1,5 +1,10 @@
 from compas.tolerance import TOL
+from compas.tolerance import Tolerance
 from compas.geometry import Point
+
+
+def test_tolerance_default_tolerance():
+    TOL.precision == Tolerance.PRECISION
 
 
 def test_tolerance_format_number():
@@ -7,7 +12,8 @@ def test_tolerance_format_number():
     assert TOL.format_number(0.5, precision=3) == "0.500"
     assert TOL.format_number(float(0), precision=3) == "0.000"
 
-    # Using default precision
+
+def test_tolerance_format_number_with_default_precision():
     assert TOL.format_number(0) == "0.000"
     assert TOL.format_number(0.5) == "0.500"
     assert TOL.format_number(float(0)) == "0.000"
