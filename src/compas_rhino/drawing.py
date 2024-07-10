@@ -9,7 +9,6 @@ import rhinoscriptsyntax as rs  # type: ignore
 import scriptcontext as sc  # type: ignore
 import System  # type: ignore
 
-import compas_rhino.objects
 from compas.geometry import centroid_polygon
 from compas_rhino.conversions import vertices_and_faces_to_rhino
 from compas_rhino.layers import clear_current_layer
@@ -781,7 +780,7 @@ def draw_mesh(vertices, faces, name=None, color=None, vertex_color=None, disjoin
     if guid != System.Guid.Empty:
         if vertexcolors:
             try:
-                compas_rhino.objects.set_mesh_vertex_colors(guid, vertexcolors)
+                rs.MeshVertexColors(guid, vertexcolors)
             except Exception:
                 pass
 
@@ -859,7 +858,7 @@ def draw_faces(faces, **kwargs):
 
         if vertexcolors:
             try:
-                compas_rhino.objects.set_mesh_vertex_colors(guid, vertexcolors)
+                rs.MeshVertexColors(guid, vertexcolors)
             except Exception:
                 pass
 

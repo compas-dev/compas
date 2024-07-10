@@ -271,7 +271,7 @@ class Torus(Shape):
         >>> from compas.geometry import Frame
         >>> from compas.geometry import Transformation
         >>> from compas.geometry import Torus
-        >>> torus = Torus(Frame.worldXY(), 5, 2)
+        >>> torus = Torus(5, 2)
         >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> T = Transformation.from_frame(frame)
         >>> torus.transform(T)

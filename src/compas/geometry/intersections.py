@@ -493,8 +493,8 @@ def intersection_sphere_sphere(sphere1, sphere2):
 
     """
 
-    center1, radius1 = sphere1.base, sphere1.radius
-    center2, radius2 = sphere2.base, sphere2.radius
+    center1, radius1 = sphere1
+    center2, radius2 = sphere2
 
     distance = distance_point_point(center1, center2)
 

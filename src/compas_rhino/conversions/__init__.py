@@ -43,11 +43,8 @@ from .curves import (
 )
 from .surfaces import (
     surface_to_rhino,
-    data_to_rhino_surface,
-    surface_to_compas_data,
     surface_to_compas,
     surface_to_compas_mesh,
-    surface_to_compas_quadmesh,
 )
 from .shapes import (
     box_to_rhino,
@@ -73,10 +70,12 @@ from .meshes import (
 )
 from .breps import (
     brep_to_rhino,
+    brep_to_compas,
     brep_to_compas_box,
     brep_to_compas_cone,
     brep_to_compas_cylinder,
     brep_to_compas_sphere,
+    brep_to_compas_mesh,
 )
 from .extrusions import (
     extrusion_to_compas_box,
@@ -87,6 +86,13 @@ from .extrusions import (
 from .transformations import (
     transformation_to_rhino,
     transformation_matrix_to_rhino,
+)
+
+from .docobjects import (
+    brepobject_to_compas,
+    curveobject_to_compas,
+    meshobject_to_compas,
+    pointobject_to_compas,
 )
 
 
@@ -127,11 +133,8 @@ __all__ = [
     "curve_to_compas",
     # surfaces
     "surface_to_rhino",
-    "surface_to_compas_data",
-    "data_to_rhino_surface",
     "surface_to_compas",
     "surface_to_compas_mesh",
-    "surface_to_compas_quadmesh",
     # shapes
     "box_to_rhino",
     "sphere_to_rhino",
@@ -154,10 +157,12 @@ __all__ = [
     "mesh_to_compas",
     # breps
     "brep_to_rhino",
+    "brep_to_compas",
     "brep_to_compas_box",
     "brep_to_compas_cone",
     "brep_to_compas_cylinder",
     "brep_to_compas_sphere",
+    "brep_to_compas_mesh",
     # extrusions
     "extrusion_to_compas_box",
     "extrusion_to_compas_cylinder",
@@ -165,4 +170,9 @@ __all__ = [
     # transformations
     "transformation_to_rhino",
     "transformation_matrix_to_rhino",
+    # docobjects
+    "brepobject_to_compas",
+    "curveobject_to_compas",
+    "meshobject_to_compas",
+    "pointobject_to_compas",
 ]

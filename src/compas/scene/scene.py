@@ -33,8 +33,8 @@ class Scene(Tree):
     >>> from compas.geometry import Box
     >>> scene = Scene()
     >>> box = Box.from_width_height_depth(1, 1, 1)
-    >>> scene.add(box)
-    >>> scene.draw()
+    >>> boxobj = scene.add(box)
+    >>> scene.draw()  # doctest: +SKIP
 
     """
 

@@ -18,6 +18,97 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 
+## [2.3.0] 2024-07-06
+
+### Added
+
+* Added code coverage report uploads to codecov.io.
+* Added `compas.geometry.surfaces.surface.Surface.from_native`.
+* Added `compas.geometry.surfaces.nurbs.NurbsSurface.from_plane`.
+* Added `compas.geometry.surfaces.nurbs.NurbsSurface.from_cylinder`.
+* Added `compas.geometry.surfaces.nurbs.NurbsSurface.from_extrusion`.
+* Added `compas.geometry.surfaces.nurbs.NurbsSurface.from_frame`.
+* Added `compas.geometry.surfaces.nurbs.NurbsSurface.from_interpolation`.
+* Added `compas.geometry.surfaces.nurbs.NurbsSurface.from_revolution`.
+* Added `compas.geometry.surfaces.nurbs.NurbsSurface.from_sphere`.
+* Added `compas.geometry.surfaces.nurbs.NurbsSurface.from_torus`.
+* Added `compas_rhino.geometry.surfaces.surface_from_native`.
+* Added `compas_rhino.geometry.surfaces.nurbssurface_from_native`.
+* Added `compas_rhino.geometry.surfaces.nurbssurface_from_cylinder`.
+* Added `compas_rhino.geometry.surfaces.nurbssurface_from_fill`.
+* Added `compas_rhino.geometry.surfaces.nurbssurface_from_torus`.
+* Added `compas_rhino.geometry.surfaces.nurbs.NurbsSurface.from_corners`.
+* Added `compas_rhino.geometry.surfaces.nurbs.NurbsSurface.from_cylinder`.
+* Added `compas_rhino.geometry.surfaces.nurbs.NurbsSurface.from_frame`.
+* Added `compas_rhino.geometry.surfaces.nurbs.NurbsSurface.from_sphere`.
+* Added `compas_rhino.geometry.surfaces.nurbs.NurbsSurface.from_torus`.
+* Added `compas.geometry.curves.curve.Curve.from_native`.
+* Added `compas_rhino.geometry.curves.curve.Curve.from_native`.
+* Added `compas_rhino.geometry.curves.nurbs.NurbsCurve.from_native`.
+* Added `compas_rhino.conversions.breps.brep_to_compas_mesh`.
+* Added `compas_rhino.conversions.docobjects.brepobject_to_compas`.
+* Added `compas_rhino.conversions.docobjects.curveobject_to_compas`.
+* Added `compas_rhino.conversions.docobjects.meshobject_to_compas`.
+* Added `compas_rhino.conversions.docobjects.pointobject_to_compas`.
+* Added `compas.datastructures.HashTree` and `compas.datastructures.HashNode`.
+
+### Changed
+
+* Fixed bug in `compas.geometry.curves.curve.Curve.reversed` by adding missing parenthesis.
+* Fixed all doctests so we can run `invoke test --doctest`.
+* Changed `compas.geometry.surfaces.surface.Surface.__new__` to prevent instantiation of `Surface` directly.
+* Changed `compas.geometry.surfaces.nurbs.NurbsSurface.__new__` to prevent instantiation of `NurbsSurface` directly.
+* Fixed bug in `compas.geometry.surfaces.nurbs.NurbsSurface.__data__`.
+* Changed `compas.geometry.surfaces.nurbs.new_nurbssurface_from_...` to `nurbssurface_from_...`.
+* Changed `compas.geometry.curves.curve.Curve.__new__` to prevent instantiation of `Curve` directly.
+* Changed `compas.geometry.curves.nurbs.new_nurbscurve_from_...` to `nurbscurve_from_...`.
+* Changed `compas.geometry.curves.nurbs.NurbsCurve.__new__` to prevent instantiation of `NurbsCurve` directly.
+* Changed `compas_rhino.geometry.curves.new_nurbscurve_from_...` to `nurbscurve_from_...`.
+* Fixed `compas_ghpython` Grasshopper components not included in published pakcage.
+* Changed `compas.colors.Color.coerce` to take color as is, if it is already an instance of `compas.colors.Color`.
+* Changed `compas_rhino.conversions.surfaces.surface_to_compas` to work only with surface geometry.
+* Changed `compas_rhino.conversions.curves.curve_to_compas_line` to work only with geometry.
+* Changed `compas_rhino.conversions.curves.curve_to_compas_circle` to work only with geometry.
+* Changed `compas_rhino.conversions.curves.curve_to_compas_ellipse` to work only with geometry.
+* Changed `compas_rhino.conversions.curves.curve_to_compas_polyline` to work only with geometry.
+* Changed `compas_rhino.objects.get_point_coordinates` to deprecated (removed in v2.3).
+* Changed `compas_rhino.objects.get_line_coordinates` to deprecated (removed in v2.3).
+* Changed `compas_rhino.objects.get_polyline_coordinates` to deprecated (removed in v2.3).
+* Changed `compas_rhino.objects.get_polygon_coordinates` to deprecated (removed in v2.3).
+* Fixed a bug in `worldtransformation` of `compas.scene.SceneObject` to include the object's own frame.
+
+### Removed
+
+* Removed pluggable `compas.geometry.surfaces.surface.new_surface`.
+* Removed pluggable `compas.geometry.surfaces.surface.new_surface_from_plane`.
+* Removed `compas.geometry.surfaces.surface.Surface.from_plane`.
+* Removed `compas.geometry.surfaces.surface.ConicalSurface.__new__`.
+* Removed `compas.geometry.surfaces.surface.CylindricalSurface.__new__`.
+* Removed `compas.geometry.surfaces.surface.PlanarSurface.__new__`.
+* Removed `compas.geometry.surfaces.surface.SphericalSurface.__new__`.
+* Removed `compas.geometry.surfaces.surface.ToroidalSurface.__new__`.
+* Removed `compas.geometry.surfaces.nurbs.NurbsSurface.__init__`.
+* Removed `compas_rhino.geometry.surfaces.new_surface`.
+* Removed `compas_rhino.geometry.surfaces.new_nurbssurface`.
+* Removed `compas_rhino.geometry.surfaces.nurbs.NurbsSurface.__from_data__`.
+* Removed `compas_rhino.geometry.surfaces.surface.Surface.from_corners`.
+* Removed `compas_rhino.geometry.surfaces.surface.Surface.from_cylinder`.
+* Removed `compas_rhino.geometry.surfaces.surface.Surface.from_frame`.
+* Removed `compas_rhino.geometry.surfaces.surface.Surface.from_sphere`.
+* Removed `compas_rhino.geometry.surfaces.surface.Surface.from_torus`.
+* Removed `compas.geometry.curves.arc.Arc.__new__`.
+* Removed `compas.geometry.curves.bezier.Bezier.__new__`.
+* Removed `compas.geometry.curves.conic.Conic.__new__`.
+* Removed `compas.geometry.curves.polyline.Polyline.__new__`.
+* Removed `compas.geometry.curves.curve.new_curve`.
+* Removed `compas.geometry.curves.curve.new_nurbscurve`.
+* Removed `compas_rhino.geometry.curves.new_curve`.
+* Removed `compas_rhino.geometry.curves.new_nurbscurve`.
+* Removed `compas_rhino.conversions.surfaces.data_to_rhino_surface`.
+* Removed `compas_rhino.conversions.surfaces.surface_to_compas_data`.
+* Removed `compas_rhino.conversions.surfaces.surface_to_compas_quadmesh`.
+* Removed `compas_rhino.conversions.curves.curve_to_compas_data`.
+
 ## [2.2.1] 2024-06-25
 
 ### Added
@@ -27,7 +118,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed error in `compas_ghpython` causing `Scene` to fail in Grasshopper.
 
 ### Removed
-
 
 ## [2.2.0] 2024-06-24
 

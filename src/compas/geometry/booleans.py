@@ -45,7 +45,7 @@ def boolean_union_mesh_mesh(A, B):
     >>> box = Mesh.from_shape(box)
     >>> box.quads_to_triangles()
 
-    >>> sphere = Sphere([1, 1, 1], 1)
+    >>> sphere = Sphere(1, point=[1, 1, 1])
     >>> sphere = Mesh.from_shape(sphere, u=30, v=30)
     >>> sphere.quads_to_triangles()
 

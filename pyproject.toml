@@ -60,6 +60,7 @@ where = ["src"]
 [tool.setuptools.package-data]
 "compas.colors.cmcrameri" = ["*.txt"]
 "compas.data.samples" = ["*.obj", "*.stl", "*.off", "*.ply", "*.json"]
+"compas_ghpython.components.ghuser" = ["*.ghuser"]
 
 # ============================================================================
 # replace pytest.ini
@@ -83,7 +84,7 @@ doctest_optionflags = [
 # ============================================================================
 
 [tool.bumpversion]
-current_version = "2.2.1"
+current_version = "2.3.0"
 message = "Bump version to {new_version}"
 commit = true
 tag = true

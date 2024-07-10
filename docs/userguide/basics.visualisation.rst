@@ -64,28 +64,6 @@ For example, meshes can have different colors for the vertices, the edges, and t
 And the colors of vertices, edges, and faces can be specified individually, per element.
 See the section about mesh visualisation for more information.
 
-Object Transformation
-=====================
-
-All scene objects have a transformation matrix that can be used to transform the object in the visualisation,
-independently of the geometry of the underlying data object.
-The default transformation matrix is the identity matrix, which means that the visualised geometry is the same as the geometry represented by the data.
-
->>> sceneobj = scene.add(box)
->>> sceneobj.transformation
-Transformation([[1.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 1.0, 0.0], [0.0, 0.0, 0.0, 1.0]])
-
-The transformation matrix can be set using a COMPAS Transformation object, or a 4x4 nested list of floats.
-
->>> from compas.geometry import Translation
->>> sceneobj.transformation = Translation.from_vector([1.0, 2.0, 3.0])
->>> sceneobj.transformation
-Transformation([[1.0, 0.0, 0.0, 1.0], [0.0, 1.0, 0.0, 2.0], [0.0, 0.0, 1.0, 3.0], [0.0, 0.0, 0.0, 1.0]])
-
-.. note::
-
-    For more information about working with transformations in COMPAS, see :doc:`basics.geometry.transformations`.
-
 Scene Hierarchy
 ===============
 
@@ -114,6 +92,34 @@ To use a different scene object as the parent, the parent attribute of the scene
 >>> boxobj = scene.add(box, parent=pointobj)
 >>> boxobj.parent
 PointObject
+
+Object Frame And Transformation
+=====================
+
+Every scene objects can have a reference "frame" that represents its local coordinate system relative to the frame of its hierarchical parent.
+In addition, an object can also have a local "transformation" which orientates this object from its frame.
+The final transformation of an object relative to the world coordinate system is the aggregated multiplication of all its hierarchical ancesters' frames, 
+together with its own local frame and transformation. This prorperty can be accessed through the read-only attribute "worldtransformation".
+
+>>> from compas.geometry import Translation
+>>> from compas.geometry import Box
+>>> from compas.geometry import Frame
+>>> sceneobj1 = scene.add(Box())
+>>> sceneobj1.frame = Frame(point = [1.0, 0.0, 0.0], xaxis=[1.0, 0.0, 0.0],yaxis=[0.0, 1.0, 0.0])
+>>> sceneobj1.transformation = Translation.from_vector([10.0, 0.0, 0.0])
+>>> sceneobj1.worldtransformation
+Transformation([[1.0, 0.0, 0.0, 11.0], [0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 1.0, 0.0], [0.0, 0.0, 0.0, 1.0]], check=False)
+>>> sceneobj1.worldtransformation == sceneobj1.frame.to_transfromation() * sceneobj1.transformation
+True
+
+The worldtransformation of a nestd "sceneobj2" will be calculated as: Frame of "sceneobj1" * Frame of "sceneobj2" * Transformation of "sceneobj2" 
+>>> sceneobj2 = scene.add(Box(), parent=sceneobj1)
+>>> sceneobj2.frame = Frame([1.0, 1.0, 0.0], xaxis=[1.0, 0.0, 0.0],yaxis=[0.0, 1.0, 0.0])
+>>> sceneobj2.transformation = Translation.from_vector([10.0, 10.0, 0.0])
+>>> sceneobj.worldtransformation
+Transformation([[1.0, 0.0, 0.0, 12.0], [0.0, 1.0, 0.0, 11.0], [0.0, 0.0, 1.0, 0.0], [0.0, 0.0, 0.0, 1.0]], check=False)
+>>> sceneobj2.worldtransformation == sceneobj1.frame.to_transfromation() * sceneobj2.frame.to_transfrom() * sceneobj2.transformation
+True
 
 
 Scene Context
