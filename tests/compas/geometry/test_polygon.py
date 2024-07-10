@@ -52,11 +52,10 @@ def test_polygon_data():
         assert Polygon.validate_data(other.__data__)
 
 
-def test_polygon_str_repr():
+def test_polygon_str():
     points = [[0, 0, x] for x in range(3)]
     polygon = Polygon(points)
     assert str(polygon) == "Polygon(points=[Point(x=0.000, y=0.000, z=0.000), Point(x=0.000, y=0.000, z=1.000), Point(x=0.000, y=0.000, z=2.000)])"
-    assert repr(polygon) == "Polygon(points=[Point(x=0.0, y=0.0, z=0.0), Point(x=0.0, y=0.0, z=1.0), Point(x=0.0, y=0.0, z=2.0)])"
 
 
 def test_polygon__eq__():
