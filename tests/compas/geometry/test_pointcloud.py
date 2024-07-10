@@ -58,9 +58,9 @@ def test_pointcloud__neq__():
 
 
 def test_pointcloud_from_box():
-    x_size = 10
-    y_size = 5
-    z_size = 3
+    x_size = 10.0
+    y_size = 5.0
+    z_size = 3.0
     box = Box.from_width_height_depth(x_size, z_size, y_size)
     pointcloud = Pointcloud.from_box(box, 100)
     assert len(pointcloud.points) == 100
