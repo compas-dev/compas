@@ -64,4 +64,4 @@ def test_pointcloud_from_box():
     box = Box.from_width_height_depth(x_size, z_size, y_size)
     pointcloud = Pointcloud.from_box(box, 100)
     assert len(pointcloud.points) == 100
-    assert all((-x_size / 2 < x < x_size / 2) and (-y_size / 2 < y < y_size / 2) and (-z_size / 2 < z < z_size) for x, y, z in pointcloud.points)
+    assert all((-x_size / 2 < x < x_size / 2) and (-y_size / 2 < y < y_size / 2) and (-z_size / 2 < z < z_size / 2) for x, y, z in pointcloud.points)
