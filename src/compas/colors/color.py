@@ -173,9 +173,7 @@ class Color(Data):
         self.a = alpha
 
     def __repr__(self):
-        return "{0}(red={1}, green={2}, blue={3}, alpha={4})".format(
-            type(self).__name__, self.r, self.g, self.b, self.a
-        )
+        return "{0}(red={1}, green={2}, blue={3}, alpha={4})".format(type(self).__name__, self.r, self.g, self.b, self.a)
 
     def __str__(self):
         return "{0}(red={1}, green={2}, blue={3}, alpha={4})".format(
