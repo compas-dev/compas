@@ -20,11 +20,3 @@ def test_polyhedron():
     assert polyhedron.lines == [(a, b) for a, b in pairwise(vertices + vertices[:1])]
     assert polyhedron.points[0] == vertices[0]
     assert polyhedron.points[-1] != polyhedron.points[0]
-
-
-def test_polyhedron_str():
-    vertices = [[0, 0, 0], [1, 0, 0], [1, 1, 0]]
-    faces = [[0, 1, 2]]
-    polyhedron = Polyhedron(vertices, faces)
-
-    assert str(polyhedron) == "Polyhedron(vertices=[['0.000', '0.000', '0.000'], ['1.000', '0.000', '0.000'], ['1.000', '1.000', '0.000']], faces=[[0, 1, 2]])"

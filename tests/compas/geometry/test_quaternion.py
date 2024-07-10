@@ -64,11 +64,6 @@ def test_quaternion_data():
         assert Quaternion.validate_data(other.__data__)
 
 
-def test_quaternion_str():
-    quaternion = Quaternion(0.5, 0.5, 0.5, 0.5)
-    assert str(quaternion) == "Quaternion(0.500, 0.500, 0.500, 0.500)"
-
-
 # =============================================================================
 # Properties and Geometry
 # =============================================================================

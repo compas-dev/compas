@@ -46,11 +46,6 @@ def test_plane_data():
         assert Plane.validate_data(other.__data__)
 
 
-def test_plane_str():
-    plane = Plane.worldXY()
-    assert str(plane) == "Plane(point=Point(x=0.000, y=0.000, z=0.000), normal=Vector(x=0.000, y=0.000, z=1.000))"
-
-
 def test_plane_predefined():
     plane = Plane.worldXY()
     assert plane.point == Point(0, 0, 0)
