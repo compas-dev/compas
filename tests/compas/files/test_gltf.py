@@ -179,4 +179,4 @@ def test_gltf_content():
 
 
 # Reset the precision to its default value
-TOL.precision = 3
+TOL.precision = TOL.PRECISION
