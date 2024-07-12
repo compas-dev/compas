@@ -47,4 +47,4 @@ def test_binary_read_write_fidelity():
 
 
 # Reset the precision to its default value
-TOL.precision = 3
+TOL.precision = TOL.PRECISION
