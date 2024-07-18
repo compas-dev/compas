@@ -5,6 +5,7 @@ from compas.datastructures import Mesh
 from compas.files import STL
 from compas.tolerance import TOL
 
+# Temporary change the global precision in the TOL class to 12
 TOL.precision = 12
 
 BASE_FOLDER = os.path.dirname(__file__)
@@ -43,3 +44,7 @@ def test_binary_read_write_fidelity():
     mesh_2 = Mesh.from_stl(fp)
     assert mesh.adjacency == mesh_2.adjacency
     assert mesh.vertex == mesh_2.vertex
+
+
+# Reset the precision to its default value
+TOL.precision = TOL.PRECISION

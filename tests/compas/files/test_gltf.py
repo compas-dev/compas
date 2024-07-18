@@ -5,6 +5,7 @@ from compas.files import GLTF
 from compas.files import GLTFContent
 from compas.tolerance import TOL
 
+# Temporary change the global precision in the TOL class to 12
 TOL.precision = 12
 
 BASE_FOLDER = os.path.dirname(__file__)
@@ -175,3 +176,7 @@ def test_gltf_content():
     assert len(node_0.children) == 0
     assert len(content.nodes) == 1
     assert len(scene.nodes) == 1
+
+
+# Reset the precision to its default value
+TOL.precision = TOL.PRECISION
