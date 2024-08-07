@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Replaced use of `Rhino.Geometry.VertexColors.SetColors` with a for loop and `SetColor` in `compas_ghpyton` since the former requires a `System.Array`.
 * Changed the `__str__` of `compas.geometry.Frame`, `compas.geometry.Plane`, `compas.geometry.Polygon`, `compas.geometry.Polyhedron`, `compas.geometry.Quaternion` to use a limited number of decimals (determined by `Tolerance.PRECISION`). Note: `__repr__` will instead maintain full precision.
 * Changed the `__str__` of `compas.geometry.Pointcloud` to print total number of points instead of the long list of points. Note: `__repr__` will still print all the points with full precision.
 * Fixed bug in `Pointcloud.from_box()`.

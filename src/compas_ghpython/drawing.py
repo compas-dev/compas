@@ -373,8 +373,10 @@ def draw_mesh(vertices, faces, color=None, vertex_normals=None, texture_coordina
 
     if color:
         count = len(mesh.Vertices)
-        colors = [rs.coercecolor(color) for i in range(count)]
-        mesh.VertexColors.SetColors(colors)
+        color = rs.CreateColor(color)
+
+        for i in range(count):
+            mesh.VertexColors.SetColor(i, color.R, color.G, color.B)
 
     return mesh
 
