@@ -40,9 +40,13 @@ def uninstall(version=None, packages=None):
     """
     version = compas_rhino._check_rhino_version(version)
 
-    # We install COMPAS packages in the scripts folder
-    # instead of directly as IPy module.
-    scripts_path = compas_rhino._get_rhino_scripts_path(version)
+    if version == "8.0":
+        # In Rhino 8 there is no scripts folder
+        installation_path = compas_rhino._get_default_rhino_ironpython_sitepackages_path(version)
+    else:
+        # We install COMPAS packages in the scripts folder
+        # instead of directly as IPy module.
+        installation_path = compas_rhino._get_rhino_scripts_path(version)
 
     # This is for old installs
     ipylib_path = compas_rhino._get_rhino_ironpython_lib_path(version)
@@ -54,8 +58,8 @@ def uninstall(version=None, packages=None):
 
     # Also remove all broken symlinks
     # because ... they're broken!
-    for name in os.listdir(scripts_path):
-        path = os.path.join(scripts_path, name)
+    for name in os.listdir(installation_path):
+        path = os.path.join(installation_path, name)
         if os.path.islink(path):
             if not os.path.exists(path):
                 if name not in packages:
@@ -65,7 +69,7 @@ def uninstall(version=None, packages=None):
     symlinks_to_uninstall = []
 
     for package in packages:
-        symlink_path = os.path.join(scripts_path, package)
+        symlink_path = os.path.join(installation_path, package)
         symlinks_to_uninstall.append(dict(name=package, link=symlink_path))
 
         # Handle legacy install location
@@ -78,7 +82,7 @@ def uninstall(version=None, packages=None):
 
     # There is nothing to uninstall
     if not symlinks_to_uninstall:
-        print("\nNo packages to uninstall from Rhino {0} scripts folder: \n{1}.".format(version, scripts_path))
+        print("\nNo packages to uninstall from Rhino {0} scripts folder: \n{1}.".format(version, installation_path))
         return
 
     # -------------------------
@@ -113,7 +117,7 @@ def uninstall(version=None, packages=None):
         )
 
     else:
-        if compas_rhino._try_remove_bootstrapper(scripts_path):
+        if compas_rhino._try_remove_bootstrapper(installation_path):
             results.append(("compas_bootstrapper", "OK"))
         else:
             results.append(
@@ -138,7 +142,7 @@ def uninstall(version=None, packages=None):
     # Output results
     # -------------------------
 
-    print("Uninstalling COMPAS packages from Rhino {0} scripts folder: \n{1}".format(version, scripts_path))
+    print("Uninstalling COMPAS packages from Rhino {0} scripts folder: \n{1}".format(version, installation_path))
     print("\nThe following packages have been detected and will be uninstalled:\n")
 
     for package, status in results:
