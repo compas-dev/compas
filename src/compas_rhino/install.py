@@ -27,18 +27,24 @@ def _make_specs(packages, clean, versions):
     for version in versions:
         try:
             if version == "8.0":
-                ipy_lib_path = compas_rhino._get_default_rhino_ironpython_sitepackages_path(version, legacy=False)
-                ipy_lib_path_legacy = compas_rhino._get_default_rhino_ironpython_sitepackages_path(version, legacy=True)
-                cpython_lib_path = compas_rhino._get_default_rhino_cpython_sitepackages_path(version)
-                specs.append((ipy_lib_path, version, packages, clean))
-                specs.append((ipy_lib_path_legacy, version, packages, clean))
-                specs.append((cpython_lib_path, version, packages, clean))
+                specs.extend(_make_rhino8_cpython_specs(packages, clean))
             else:
                 path = compas_rhino._get_rhino_scripts_path(version)
                 specs.append((path, version, packages, clean))
         except ValueError as ex:
             print("Install folder for Rhino version {} not found: {}".format(version, str(ex)))
     return specs
+
+
+def _make_rhino8_cpython_specs(packages, clean):
+    ipy_lib_path = compas_rhino._get_default_rhino_ironpython_sitepackages_path("8.0", legacy=False)
+    ipy_lib_path_legacy = compas_rhino._get_default_rhino_ironpython_sitepackages_path("8.0", legacy=True)
+    cpython_lib_path = compas_rhino._get_default_rhino_cpython_sitepackages_path("8.0")
+    return [
+        (ipy_lib_path, "8.0", packages, clean),
+        (ipy_lib_path_legacy, "8.0", packages, clean),
+        (cpython_lib_path, "8.0", packages, clean),
+    ]
 
 
 def _install(installation_path, version=None, packages=None, clean=False):
