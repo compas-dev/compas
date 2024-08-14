@@ -76,6 +76,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas_rhino.objects.get_polyline_coordinates` to deprecated (removed in v2.3).
 * Changed `compas_rhino.objects.get_polygon_coordinates` to deprecated (removed in v2.3).
 * Fixed a bug in `worldtransformation` of `compas.scene.SceneObject` to include the object's own frame.
+* `compas_rhino.install` with no version specified installs to all available versions of Rhino.
+* `compas_rhino.install` installs to IronPython, IronPython (Old) and CPython environments.
 
 ### Removed
 
