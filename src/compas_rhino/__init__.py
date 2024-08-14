@@ -275,7 +275,7 @@ def _get_rhino_scripts_path(version):
     scripts_path = os.path.join(appdata, "{}".format(version), "scripts")
 
     if not os.path.exists(scripts_path):
-        raise Exception("The scripts folder does not exist in this location: {}".format(scripts_path))
+        raise ValueError("The scripts folder does not exist in this location: {}".format(scripts_path))
 
     return scripts_path
 
@@ -467,7 +467,7 @@ def _get_default_rhino_cpython_path(version):
         raise Exception("Unsupported platform")
 
     if not os.path.exists(path):
-        path = None
+        raise ValueError("The cpython installation folder for rhino8 {} doesn't exist.".format(version))
 
     return path
 
@@ -494,7 +494,6 @@ def _get_default_rhino_cpython_path_mac(version):
 
 
 def _get_default_rhino_ironpython_sitepackages_path(version, legacy=False):
-    # this should return the path to both
     version = _check_rhino_version(version)
 
     if version != "8.0":
@@ -510,7 +509,7 @@ def _get_default_rhino_ironpython_sitepackages_path(version, legacy=False):
         raise Exception("Unsupported platform.")
 
     if not os.path.exists(path):
-        raise Exception("The default installation folder for rhino8 {} doesn't exist.".format(version))
+        raise ValueError("The default installation folder for rhino8 {} doesn't exist.".format(version))
 
     return path
 
@@ -559,7 +558,7 @@ def _get_default_rhino_cpython_sitepackages_path(version):
         raise Exception("Unsupported platform.")
 
     if not os.path.exists(path):
-        raise Exception("The default installation folder for rhino8 {} doesn't exist.".format(version))
+        raise ValueError("The scripts folder does not exist in this location: {}".format(path))
 
     return path
 
@@ -572,7 +571,7 @@ def _get_default_rhino_cpython_sitepackages_path_mac(version):
 
 def _get_default_rhino_cpython_sitepackages_path_windows(version):
     if version == "8.0":
-        return "{}/.rhinocode/py39-rh8/lib/python3.9/site-packages".format(os.path.expanduser("~"))
+        return "{}/.rhinocode/py39-rh8/Lib/site-packages".format(os.path.expanduser("~"))
     raise NotImplementedError
 
 
