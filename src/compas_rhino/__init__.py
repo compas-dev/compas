@@ -493,17 +493,18 @@ def _get_default_rhino_cpython_path_mac(version):
 # =============================================================================
 
 
-def _get_default_rhino_ironpython_sitepackages_path(version):
+def _get_default_rhino_ironpython_sitepackages_path(version, legacy=False):
+    # this should return the path to both
     version = _check_rhino_version(version)
 
     if version != "8.0":
         raise NotImplementedError
 
     if compas.OSX:
-        path = _get_default_rhino_ironpython_sitepackages_path_mac(version)
+        path = _get_default_rhino_ironpython_sitepackages_path_mac(version, legacy)
 
     elif compas.WINDOWS:
-        path = _get_default_rhino_ironpython_sitepackages_path_windows(version)
+        path = _get_default_rhino_ironpython_sitepackages_path_windows(version, legacy)
 
     else:
         raise Exception("Unsupported platform.")
@@ -514,16 +515,23 @@ def _get_default_rhino_ironpython_sitepackages_path(version):
     return path
 
 
-def _get_default_rhino_ironpython_sitepackages_path_mac(version):
+def _get_default_rhino_ironpython_sitepackages_path_mac(version, legacy):
+    # TODO: is there a distinction between legacy and new IronPython components on Mac?
     if version == "8.0":
         return "{}/.rhinocode/py27-rh8/Lib/site-packages".format(os.path.expanduser("~"))
     raise NotImplementedError
 
 
-def _get_default_rhino_ironpython_sitepackages_path_windows(version):
-    if version == "8.0":
+def _get_default_rhino_ironpython_sitepackages_path_windows(version, legacy):
+    if version != "8.0":
+        raise NotImplementedError
+
+    if legacy:
+        # EditPythonScript & legacy (OLD) IronPython components both look here
+        return "{}/AppData/Roaming/McNeel/Rhinoceros/8.0/scripts".format(os.path.expanduser("~"))
+    else:
+        # New IronPyhton components look here
         return "{}/.rhinocode/py27-rh8/Lib/site-packages".format(os.path.expanduser("~"))
-    raise NotImplementedError
 
 
 # =============================================================================
