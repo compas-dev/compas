@@ -159,43 +159,6 @@ def _try_remove_bootstrapper(path):
 # =============================================================================
 # =============================================================================
 # =============================================================================
-# Rhino executable
-# =============================================================================
-# =============================================================================
-# =============================================================================
-
-
-# def _get_default_rhino_executable_path(version):
-#     version = _check_rhino_version(version)
-
-#     if compas.WINDOWS:
-#         path = _get_default_rhino_executable_path_windows(version)
-
-#     elif compas.OSX:
-#         path = _get_default_rhino_executable_path_mac(version)
-
-#     else:
-#         raise Exception("Unsupported platform")
-
-#     if not os.path.exists(path):
-#         path = None
-
-#     return path
-
-
-# def _get_default_rhino_executable_path_mac(version):
-#     if version == "8.0":
-#         return "/Applications/Rhino 8.app/Contents/MacOS/Rhinoceros"
-#     raise NotImplementedError
-
-
-# def _get_default_rhino_executable_path_windows(version):
-#     raise NotImplementedError
-
-
-# =============================================================================
-# =============================================================================
-# =============================================================================
 # Base Application folder (Program Files on Windows and Applications on Mac)
 # =============================================================================
 # =============================================================================
@@ -405,41 +368,6 @@ def _get_rhino_grasshopperplugin_path(version):
         raise Exception("The grasshopper folder does not exist in this location: {}".format(gh_path))
 
     return gh_path
-
-
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# Rhino IronPython
-# =============================================================================
-# =============================================================================
-# =============================================================================
-
-
-# def _get_default_rhino_ironpython_path(version):
-#     version = _check_rhino_version(version)
-
-#     if compas.WINDOWS:
-#         path = _get_default_rhino_ironpython_path_windows(version)
-
-#     elif compas.OSX:
-#         path = _get_default_rhino_ironpython_path_mac(version)
-
-#     else:
-#         raise Exception("Unsupported platform")
-
-#     if not os.path.exists(path):
-#         path = None
-
-#     return path
-
-
-# def _get_default_rhino_ironpython_path_mac(version):
-#     raise NotImplementedError
-
-
-# def _get_default_rhino_ironpython_path_windows(version):
-#     raise NotImplementedError
 
 
 # =============================================================================
