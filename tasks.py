@@ -22,6 +22,7 @@ ns = Collection(
     build.clean,
     build.release,
     build.build_ghuser_components,
+    build.build_cpython_ghuser_components,
 )
 ns.configure(
     {
