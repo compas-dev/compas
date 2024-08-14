@@ -13,6 +13,35 @@ import compas_rhino
 
 
 def install(version=None, packages=None, clean=False):
+    print("install invoked with version: {}".format(version))
+    if version is None:
+        versions = compas_rhino.SUPPORTED_VERSIONS
+    else:
+        versions = [version]
+    for spec in _make_specs(packages, clean, versions):
+        _install(*spec)
+
+
+def _make_specs(packages, clean, versions):
+    specs = []
+    for version in versions:
+        try:
+            if version == "8.0":
+                ipy_lib_path = compas_rhino._get_default_rhino_ironpython_sitepackages_path(version, legacy=False)
+                ipy_lib_path_legacy = compas_rhino._get_default_rhino_ironpython_sitepackages_path(version, legacy=True)
+                cpython_lib_path = compas_rhino._get_default_rhino_cpython_sitepackages_path(version)
+                specs.append((ipy_lib_path, version, packages, clean))
+                specs.append((ipy_lib_path_legacy, version, packages, clean))
+                specs.append((cpython_lib_path, version, packages, clean))
+            else:
+                path = compas_rhino._get_rhino_scripts_path(version)
+                specs.append((path, version, packages, clean))
+        except ValueError as ex:
+            print("Install folder for Rhino version {} not found: {}".format(version, str(ex)))
+    return specs
+
+
+def _install(installation_path, version=None, packages=None, clean=False):
     """Install COMPAS for Rhino.
 
     Parameters
@@ -47,11 +76,11 @@ def install(version=None, packages=None, clean=False):
     # instead of directly as IPy module.
     # scripts_path = compas_rhino._get_rhino_scripts_path(version)
 
-    # In Rhino 8 there is no scripts folder
-    if version == "8.0":
-        installation_path = compas_rhino._get_default_rhino_ironpython_sitepackages_path(version)
-    else:
-        installation_path = compas_rhino._get_rhino_scripts_path(version)
+    # # In Rhino 8 there is no scripts folder
+    # if version == "8.0":
+    #     installation_path = compas_rhino._get_default_rhino_ironpython_sitepackages_path(version)
+    # else:
+    #     installation_path = compas_rhino._get_rhino_scripts_path(version)
 
     # This is for old installs
     ipylib_path = compas_rhino._get_rhino_ironpython_lib_path(version)
@@ -370,7 +399,7 @@ if __name__ == "__main__":
         "-v",
         "--version",
         choices=compas_rhino.SUPPORTED_VERSIONS,
-        default=compas_rhino.DEFAULT_VERSION,
+        # default=compas_rhino.DEFAULT_VERSION,
         help="The version of Rhino to install the packages in.",
     )
     parser.add_argument("-p", "--packages", nargs="+", help="The packages to install.")
