@@ -13,12 +13,41 @@ import compas_rhino
 
 
 def install(version=None, packages=None, clean=False):
-    print("install invoked with version: {}".format(version))
+    """Install COMPAS for Rhino.
+
+    Parameters
+    ----------
+    version : {'5.0', '6.0', '7.0', '8.0'}, optional
+        The version number of Rhino.
+        When not specified, installation would be attempted for all supported versions.
+    packages : list of str, optional
+        List of packages to install or None to use default package list.
+        Default is the result of ``installable_rhino_packages``,
+        which collects all installable packages in the current environment.
+    clean : bool, optional
+        If True, this will clean up the entire scripts folder and remove
+        also existing symlinks that are not importable in the current environment.
+
+    Examples
+    --------
+    .. code-block:: python
+
+        import compas_rhino.install
+
+        compas_rhino.install.install()
+
+    .. code-block:: bash
+
+        python -m compas_rhino.install
+
+    """
     if version is None:
         versions = compas_rhino.SUPPORTED_VERSIONS
     else:
         versions = [version]
+
     for spec in _make_specs(packages, clean, versions):
+        # specs are tuples of (installation_path, version, packages, clean)
         _install(*spec)
 
 
@@ -48,45 +77,11 @@ def _make_rhino8_cpython_specs(packages, clean):
 
 
 def _install(installation_path, version=None, packages=None, clean=False):
-    """Install COMPAS for Rhino.
-
-    Parameters
-    ----------
-    version : {'5.0', '6.0', '7.0', '8.0'}, optional
-        The version number of Rhino.
-        Default is ``'7.0'``.
-    packages : list of str, optional
-        List of packages to install or None to use default package list.
-        Default is the result of ``installable_rhino_packages``,
-        which collects all installable packages in the current environment.
-    clean : bool, optional
-        If True, this will clean up the entire scripts folder and remove
-        also existing symlinks that are not importable in the current environment.
-
-    Examples
-    --------
-    .. code-block:: python
-
-        import compas_rhino.install
-
-        compas_rhino.install.install()
-
-    .. code-block:: bash
-
-        python -m compas_rhino.install
-
-    """
     version = compas_rhino._check_rhino_version(version)
 
     # We install COMPAS packages in the scripts folder
     # instead of directly as IPy module.
     # scripts_path = compas_rhino._get_rhino_scripts_path(version)
-
-    # # In Rhino 8 there is no scripts folder
-    # if version == "8.0":
-    #     installation_path = compas_rhino._get_default_rhino_ironpython_sitepackages_path(version)
-    # else:
-    #     installation_path = compas_rhino._get_rhino_scripts_path(version)
 
     # This is for old installs
     ipylib_path = compas_rhino._get_rhino_ironpython_lib_path(version)
@@ -405,8 +400,7 @@ if __name__ == "__main__":
         "-v",
         "--version",
         choices=compas_rhino.SUPPORTED_VERSIONS,
-        # default=compas_rhino.DEFAULT_VERSION,
-        help="The version of Rhino to install the packages in.",
+        help="The version of Rhino to install the packages in. If not specified, all supported versions will be attempted.",
     )
     parser.add_argument("-p", "--packages", nargs="+", help="The packages to install.")
     parser.add_argument("-c", "--clean", default=False, action="store_true", help="Clean up the installation directory")
