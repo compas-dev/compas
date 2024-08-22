@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=4c969af8" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=87e54e7c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
@@ -1121,7 +1121,7 @@ document.write(`
 <h1>Polygon</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.Polygon">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Polygon</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/82af17e/src/compas/geometry/polygon.py#L24"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Polygon</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/f3f1fda/src/compas/geometry/polygon.py#L24"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Geometry.html#compas.geometry.Geometry" title="compas.geometry.geometry.Geometry"><code class="xref py py-class docutils literal notranslate"><span class="pre">Geometry</span></code></a></p>
 <p>A polygon is a geometric object defined by a sequence of points forming a closed loop.</p>
 <p>A polygon is defined by a sequence of points connected by line segments
@@ -1140,6 +1140,26 @@ but the geometry of the resulting object is defined by a list of explicit point 
 <dt><strong>points</strong><span class="classifier">list[[float, float, float] | <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>]</span></dt><dd><p>An ordered list of points.</p>
 </dd>
 <dt><strong>name</strong><span class="classifier">str, optional</span></dt><dd><p>The name of the polygon.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>points</strong><span class="classifier">list of <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a></span></dt><dd><p>The points of the polygon.</p>
+</dd>
+<dt><strong>lines</strong><span class="classifier">list of <a class="reference internal" href="compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Line</span></code></a>, read-only</span></dt><dd><p>The lines of the polygon.</p>
+</dd>
+<dt><strong>length</strong><span class="classifier">float, read-only</span></dt><dd><p>The length of the boundary.</p>
+</dd>
+<dt><strong>centroid</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>, read-only</span></dt><dd><p>The centroid of the polygon.</p>
+</dd>
+<dt><strong>normal</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>, read-only</span></dt><dd><p>The (average) normal of the polygon.</p>
+</dd>
+<dt><strong>area</strong><span class="classifier">float, read-only</span></dt><dd><p>The area of the polygon.</p>
+</dd>
+<dt><strong>is_convex</strong><span class="classifier">bool, read-only</span></dt><dd><p>True if the polygon is convex.</p>
+</dd>
+<dt><strong>is_planar</strong><span class="classifier">bool, read-only</span></dt><dd><p>True if the polygon is planar.</p>
 </dd>
 </dl>
 </dd>
@@ -1162,28 +1182,6 @@ but the geometry of the resulting object is defined by a list of explicit point 
 <span class="go">1.0</span>
 </pre></div>
 </div>
-<dl class="field-list">
-<dt class="field-odd">Attributes<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>points</strong><span class="classifier">list of <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a></span></dt><dd><p>The points of the polygon.</p>
-</dd>
-<dt><strong>lines</strong><span class="classifier">list of <a class="reference internal" href="compas.geometry.Line.html#compas.geometry.Line" title="compas.geometry.Line"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Line</span></code></a>, read-only</span></dt><dd><p>The lines of the polygon.</p>
-</dd>
-<dt><strong>length</strong><span class="classifier">float, read-only</span></dt><dd><p>The length of the boundary.</p>
-</dd>
-<dt><strong>centroid</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>, read-only</span></dt><dd><p>The centroid of the polygon.</p>
-</dd>
-<dt><strong>normal</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>, read-only</span></dt><dd><p>The (average) normal of the polygon.</p>
-</dd>
-<dt><strong>area</strong><span class="classifier">float, read-only</span></dt><dd><p>The area of the polygon.</p>
-</dd>
-<dt><strong>is_convex</strong><span class="classifier">bool, read-only</span></dt><dd><p>True if the polygon is convex.</p>
-</dd>
-<dt><strong>is_planar</strong><span class="classifier">bool, read-only</span></dt><dd><p>True if the polygon is planar.</p>
-</dd>
-</dl>
-</dd>
-</dl>
 <p class="rubric">Methods</p>
 <table class="autosummary longtable table autosummary">
 <tbody>
@@ -1336,7 +1334,7 @@ but the geometry of the resulting object is defined by a list of explicit point 
       
         <div class="footer-item">
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.5.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
     <br/>
   </p>
 </div>

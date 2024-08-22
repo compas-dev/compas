@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=87e54e7c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
@@ -1122,7 +1122,7 @@ document.write(`
 <h1>Mesh</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.datastructures.Mesh">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">Mesh</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/82af17e/src/compas/datastructures/mesh/mesh.py#L77"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">Mesh</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/f3f1fda/src/compas/datastructures/mesh/mesh.py#L77"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Datastructure</span></code></p>
 <p>Data structure for representing open or closed surface meshes.</p>
 <dl class="field-list simple">
@@ -1140,20 +1140,8 @@ document.write(`
 </dd>
 </dl>
 </dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_polyhedron</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">V</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">number_of_vertices</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">E</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">F</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">number_of_faces</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">euler</span><span class="p">()</span> <span class="o">==</span> <span class="n">V</span> <span class="o">-</span> <span class="n">E</span> <span class="o">+</span> <span class="n">F</span>
-<span class="go">True</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Attributes<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
 <dt><strong>default_vertex_attributes</strong><span class="classifier">dict[str, Any]</span></dt><dd><p>Dictionary containing default values for the attributes of vertices.
 It is recommended to add a default to this dictionary using <a class="reference internal" href="generated/compas.datastructures.Mesh.update_default_vertex_attributes.html" title="compas.datastructures.Mesh.update_default_vertex_attributes"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update_default_vertex_attributes()</span></code></a>
 for every vertex attribute used in the data structure.</p>
@@ -1169,6 +1157,16 @@ for every face attribute used in the data structure.</p>
 </dl>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_polyhedron</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">V</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">number_of_vertices</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">E</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">F</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">number_of_faces</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">euler</span><span class="p">()</span> <span class="o">==</span> <span class="n">V</span> <span class="o">-</span> <span class="n">E</span> <span class="o">+</span> <span class="n">F</span>
+<span class="go">True</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <section id="methods">
@@ -1893,7 +1891,7 @@ for every face attribute used in the data structure.</p>
       
         <div class="footer-item">
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.5.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
     <br/>
   </p>
 </div>

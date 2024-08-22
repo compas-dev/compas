@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=4c969af8" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=87e54e7c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
@@ -1121,26 +1121,18 @@ document.write(`
 <h1>RhinoNurbsCurve</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas_rhino.geometry.RhinoNurbsCurve">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></span><span class="sig-name descname"><span class="pre">RhinoNurbsCurve</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/82af17e/src/compas/../compas_rhino/geometry/curves/nurbs.py#L34"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></span><span class="sig-name descname"><span class="pre">RhinoNurbsCurve</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/f3f1fda/src/compas/../compas_rhino/geometry/curves/nurbs.py#L34"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">RhinoCurve</span></code>, <a class="reference internal" href="compas.geometry.NurbsCurve.html#compas.geometry.NurbsCurve" title="compas.geometry.curves.nurbs.NurbsCurve"><code class="xref py py-class docutils literal notranslate"><span class="pre">NurbsCurve</span></code></a></p>
 <p>Class representing a NURBS curve based on the NurbsCurve of Rhino.Geometry.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>name</strong><span class="classifier">str, optional</span></dt><dd><p>Name of the curve.</p>
 </dd>
 </dl>
 </dd>
-</dl>
-<p class="rubric">References</p>
-<ul class="simple">
-<li><p><a class="reference external" href="https://developer.rhino3d.com/api/RhinoCommon/html/T_Rhino_Geometry_NurbsCurve.htm">https://developer.rhino3d.com/api/RhinoCommon/html/T_Rhino_Geometry_NurbsCurve.htm</a></p></li>
-<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Non-uniform_rational_B-spline">https://en.wikipedia.org/wiki/Non-uniform_rational_B-spline</a></p></li>
-<li><p><a class="reference external" href="https://developer.rhino3d.com/guides/opennurbs/nurbs-geometry-overview/">https://developer.rhino3d.com/guides/opennurbs/nurbs-geometry-overview/</a></p></li>
-</ul>
-<dl class="field-list">
-<dt class="field-odd">Attributes<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
 <dt><strong>points</strong><span class="classifier">list[<a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>], read-only</span></dt><dd><p>The control points of the curve.</p>
 </dd>
 <dt><strong>weights</strong><span class="classifier">list[float], read-only</span></dt><dd><p>The weights of the control points.</p>
@@ -1162,6 +1154,12 @@ document.write(`
 </dl>
 </dd>
 </dl>
+<p class="rubric">References</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://developer.rhino3d.com/api/RhinoCommon/html/T_Rhino_Geometry_NurbsCurve.htm">https://developer.rhino3d.com/api/RhinoCommon/html/T_Rhino_Geometry_NurbsCurve.htm</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Non-uniform_rational_B-spline">https://en.wikipedia.org/wiki/Non-uniform_rational_B-spline</a></p></li>
+<li><p><a class="reference external" href="https://developer.rhino3d.com/guides/opennurbs/nurbs-geometry-overview/">https://developer.rhino3d.com/guides/opennurbs/nurbs-geometry-overview/</a></p></li>
+</ul>
 <p class="rubric">Methods</p>
 <table class="autosummary longtable table autosummary">
 <tbody>
@@ -1404,7 +1402,7 @@ document.write(`
       
         <div class="footer-item">
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.5.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
     <br/>
   </p>
 </div>

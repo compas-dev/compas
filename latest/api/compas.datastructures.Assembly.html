@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=87e54e7c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
@@ -1121,15 +1121,21 @@ document.write(`
 <h1>Assembly</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.datastructures.Assembly">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">Assembly</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/82af17e/src/compas/datastructures/assembly/assembly.py#L11"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.datastructures.</span></span><span class="sig-name descname"><span class="pre">Assembly</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/f3f1fda/src/compas/datastructures/assembly/assembly.py#L11"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Datastructure</span></code></p>
 <p>A data structure for managing the connections between different parts of an assembly.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>name</strong><span class="classifier">str, optional</span></dt><dd><p>The name of the assembly.</p>
 </dd>
 <dt><strong>**kwargs</strong><span class="classifier">dict, optional</span></dt><dd><p>Additional keyword arguments, which are stored in the attributes dict.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>graph</strong><span class="classifier"><a class="reference internal" href="compas.datastructures.Graph.html#compas.datastructures.Graph" title="compas.datastructures.Graph"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Graph</span></code></a></span></dt><dd><p>The graph that is used under the hood to store the parts and their connections.</p>
 </dd>
 </dl>
 </dd>
@@ -1142,14 +1148,6 @@ document.write(`
 <dt><a class="reference internal" href="compas.datastructures.VolMesh.html#compas.datastructures.VolMesh" title="compas.datastructures.VolMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.VolMesh</span></code></a></dt><dd></dd>
 </dl>
 </div>
-<dl class="field-list">
-<dt class="field-odd">Attributes<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>graph</strong><span class="classifier"><a class="reference internal" href="compas.datastructures.Graph.html#compas.datastructures.Graph" title="compas.datastructures.Graph"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Graph</span></code></a></span></dt><dd><p>The graph that is used under the hood to store the parts and their connections.</p>
-</dd>
-</dl>
-</dd>
-</dl>
 </dd></dl>
 
 <section id="methods">
@@ -1319,7 +1317,7 @@ document.write(`
       
         <div class="footer-item">
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.5.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
     <br/>
   </p>
 </div>
