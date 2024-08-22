@@ -104,7 +104,7 @@ if not compas.IPY:
         scene = Scene()
         sceneobj1 = scene.add(Box())
         sceneobj2 = scene.add(Box(), parent=sceneobj1)
-        sceneobj3 = scene.add(Box(), parent=sceneobj2)
+        sceneobj3 = scene.add(Box(), parent=sceneobj2)  # noqa: F841
 
         assert len(scene.objects) == 3
 
