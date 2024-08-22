@@ -76,6 +76,14 @@ class Scene(Tree):
         # type: () -> list[SceneObject]
         return [node for node in self.nodes if not node.is_root]  # type: ignore
 
+    @property
+    def context_objects(self):
+        # type: () -> list
+        guids = []
+        for obj in self.objects:
+            guids += obj.guids
+        return guids
+
     def add(self, item, parent=None, **kwargs):
         # type: (compas.geometry.Geometry | compas.datastructures.Datastructure, SceneObject | TreeNode | None, dict) -> SceneObject
         """Add an item to the scene.
@@ -108,21 +116,32 @@ class Scene(Tree):
         super(Scene, self).add(sceneobject, parent=parent)
         return sceneobject
 
-    def clear(self):
-        # type: () -> None
-        """Clear everything from the current context of the scene."""
+    def clear_context(self, guids=None):
+        # type: (list | None) -> None
+        """Clear all objects from the visualisation context."""
+        clear(guids)
 
-        clear()
+    def clear(self, clear_scene=True, clear_context=True):
+        # type: (bool, bool) -> None
+        """Clear all objects inside the scene.
 
-    def clear_objects(self):
-        # type: () -> None
-        """Clear all objects inside the scene."""
+        Parameters
+        ----------
+        context : bool, optional
+            Clear all objects from the context as well.
 
+        """
         guids = []
+
         for sceneobject in self.objects:
             guids += sceneobject.guids
             sceneobject._guids = None
-        clear(guids=guids)
+
+            if clear_scene:
+                self.remove(sceneobject)
+
+        if clear_context:
+            self.clear_context(guids)
 
     def draw(self):
         """Draw the scene."""
@@ -132,8 +151,6 @@ class Scene(Tree):
 
         before_draw()
 
-        self.clear_objects()
-
         drawn_objects = []
         for sceneobject in self.objects:
             if sceneobject.show:
@@ -142,3 +159,8 @@ class Scene(Tree):
         after_draw(drawn_objects)
 
         return drawn_objects
+
+    def redraw(self):
+        """Redraw the scene."""
+        self.clear(clear_scene=False, clear_context=True)
+        self.draw()

@@ -9,11 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `compas.scene.Scene.redraw`.
+* Added `compas.scene.Scene.context_objects` representing all objects drawn in the visualisation context by the scene.
+* Added `compas.scene.Scene.clear_context` with optional `guids` to clear some or all objects from the visualisation context.
+* Added `clear_scene` and `clear_context` parameters to `compas.scene.Scene.clear` to differentiate between removing objects from the scene internally or removing corresponding objects from the viz context, or both (default).
+* Added `compas_rhino.conversions.extrusion_to_compas_box` as direct conversion of extrusion breps.
+
 ### Changed
 
 * Changed the `__str__` of `compas.geometry.Frame`, `compas.geometry.Plane`, `compas.geometry.Polygon`, `compas.geometry.Polyhedron`, `compas.geometry.Quaternion` to use a limited number of decimals (determined by `Tolerance.PRECISION`). Note: `__repr__` will instead maintain full precision.
 * Changed the `__str__` of `compas.geometry.Pointcloud` to print total number of points instead of the long list of points. Note: `__repr__` will still print all the points with full precision.
 * Fixed bug in `Pointcloud.from_box()`.
+* Changed `compas.scene.MeshObject` to not use vertex coordinate caching because it is too fragile.
+* Changed `compas_rhino.scene.RhinoMeshObject` to keep track of element-guid pairs in dicts.
 
 ### Removed
 
