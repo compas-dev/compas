@@ -2,9 +2,11 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import Rhino  # type: ignore
 import scriptcontext as sc  # type: ignore
 
 import compas_rhino.objects
+from compas.geometry import centroid_points
 from compas.scene import MeshObject
 from compas_rhino.conversions import line_to_rhino
 from compas_rhino.conversions import point_to_rhino
@@ -291,155 +293,155 @@ class RhinoMeshObject(RhinoSceneObject, MeshObject):
     # draw labels
     # ==========================================================================
 
-    # def draw_vertexlabels(self, text, color=None, group=None, fontheight=10, fontface="Arial Regular"):
-    #     """Draw labels for a selection of vertices.
+    def draw_vertexlabels(self, text, color=None, group=None, fontheight=10, fontface="Arial Regular"):
+        """Draw labels for a selection of vertices.
 
-    #     Parameters
-    #     ----------
-    #     text : dict[int, str]
-    #         A dictionary of vertex labels as vertex-text pairs.
-    #     color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
-    #         The color of the vertex labels.
-    #     group : str, optional
-    #         The name of a group to join the created Rhino objects in.
-    #     fontheight : int, optional
-    #         Font height of the vertex labels.
-    #     fontface : str, optional
-    #         Font face of the vertex labels.
+        Parameters
+        ----------
+        text : dict[int, str]
+            A dictionary of vertex labels as vertex-text pairs.
+        color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
+            The color of the vertex labels.
+        group : str, optional
+            The name of a group to join the created Rhino objects in.
+        fontheight : int, optional
+            Font height of the vertex labels.
+        fontface : str, optional
+            Font face of the vertex labels.
 
-    #     Returns
-    #     -------
-    #     list[System.Guid]
-    #         The GUIDs of the created Rhino point objects.
+        Returns
+        -------
+        list[System.Guid]
+            The GUIDs of the created Rhino point objects.
 
-    #     """
-    #     guids = []
+        """
+        guids = []
 
-    #     self.vertexcolor = color
+        self.vertexcolor = color
 
-    #     transformation = transformation_to_rhino(self.worldtransformation)
+        transformation = transformation_to_rhino(self.worldtransformation)
 
-    #     for vertex in text:
-    #         name = "{}.vertex.{}.label".format(self.mesh.name, vertex)  # type: ignore
-    #         color = self.vertexcolor[vertex]  # type: ignore
-    #         attr = self.compile_attributes(name=name, color=color)
+        for vertex in text:
+            name = "{}.vertex.{}.label".format(self.mesh.name, vertex)  # type: ignore
+            color = self.vertexcolor[vertex]  # type: ignore
+            attr = self.compile_attributes(name=name, color=color)
 
-    #         location = point_to_rhino(self.mesh.vertex_attributes(vertex, "xyz"))
-    #         location.Transform(transformation)
+            location = point_to_rhino(self.mesh.vertex_attributes(vertex, "xyz"))
+            location.Transform(transformation)
 
-    #         dot = Rhino.Geometry.TextDot(str(text[vertex]), location)  # type: ignore
-    #         dot.FontHeight = fontheight
-    #         dot.FontFace = fontface
+            dot = Rhino.Geometry.TextDot(str(text[vertex]), location)  # type: ignore
+            dot.FontHeight = fontheight
+            dot.FontFace = fontface
 
-    #         guid = sc.doc.Objects.AddTextDot(dot, attr)
-    #         guids.append(guid)
+            guid = sc.doc.Objects.AddTextDot(dot, attr)
+            guids.append(guid)
 
-    #     if group:
-    #         self.add_to_group(group, guids)
+        if group:
+            self.add_to_group(group, guids)
 
-    #     self._guids_vertexlabels = guids
-    #     self._guids += guids
-    #     return guids
+        self._guids_vertexlabels = guids
+        self._guids += guids
+        return guids
 
-    # def draw_edgelabels(self, text, color=None, group=None, fontheight=10, fontface="Arial Regular"):
-    #     """Draw labels for a selection of edges.
+    def draw_edgelabels(self, text, color=None, group=None, fontheight=10, fontface="Arial Regular"):
+        """Draw labels for a selection of edges.
 
-    #     Parameters
-    #     ----------
-    #     text : dict[tuple[int, int], str]
-    #         A dictionary of edge labels as edge-text pairs.
-    #     color : :class:`compas.colors.Color` | dict[tuple[int, int], :class:`compas.colors.Color`], optional
-    #         The color of the edge labels.
-    #     group : str, optional
-    #         The name of a group to join the created Rhino objects in.
-    #     fontheight : int, optional
-    #         Font height of the edge labels.
-    #     fontface : str, optional
-    #         Font face of the edge labels.
+        Parameters
+        ----------
+        text : dict[tuple[int, int], str]
+            A dictionary of edge labels as edge-text pairs.
+        color : :class:`compas.colors.Color` | dict[tuple[int, int], :class:`compas.colors.Color`], optional
+            The color of the edge labels.
+        group : str, optional
+            The name of a group to join the created Rhino objects in.
+        fontheight : int, optional
+            Font height of the edge labels.
+        fontface : str, optional
+            Font face of the edge labels.
 
-    #     Returns
-    #     -------
-    #     list[System.Guid]
-    #         The GUIDs of the created Rhino point objects.
+        Returns
+        -------
+        list[System.Guid]
+            The GUIDs of the created Rhino point objects.
 
-    #     """
-    #     guids = []
+        """
+        guids = []
 
-    #     self.edgecolor = color
+        self.edgecolor = color
 
-    #     transformation = transformation_to_rhino(self.worldtransformation)
+        transformation = transformation_to_rhino(self.worldtransformation)
 
-    #     for edge in text:
-    #         name = "{}.edge.{}-{}".format(self.mesh.name, *edge)  # type: ignore
-    #         color = self.edgecolor[edge]  # type: ignore
-    #         attr = self.compile_attributes(name="{}.label".format(name), color=color)
+        for edge in text:
+            name = "{}.edge.{}-{}".format(self.mesh.name, *edge)  # type: ignore
+            color = self.edgecolor[edge]  # type: ignore
+            attr = self.compile_attributes(name="{}.label".format(name), color=color)
 
-    #         line = self.mesh.edge_line(edge)
-    #         location = point_to_rhino(line.midpoint)
-    #         location.Transform(transformation)
+            line = self.mesh.edge_line(edge)
+            location = point_to_rhino(line.midpoint)
+            location.Transform(transformation)
 
-    #         dot = Rhino.Geometry.TextDot(str(text[edge]), location)  # type: ignore
-    #         dot.FontHeight = fontheight
-    #         dot.FontFace = fontface
+            dot = Rhino.Geometry.TextDot(str(text[edge]), location)  # type: ignore
+            dot.FontHeight = fontheight
+            dot.FontFace = fontface
 
-    #         guid = sc.doc.Objects.AddTextDot(dot, attr)
-    #         guids.append(guid)
+            guid = sc.doc.Objects.AddTextDot(dot, attr)
+            guids.append(guid)
 
-    #     if group:
-    #         self.add_to_group(group, guids)
+        if group:
+            self.add_to_group(group, guids)
 
-    #     self._guids_edgelabels = guids
-    #     self._guids += guids
-    #     return guids
+        self._guids_edgelabels = guids
+        self._guids += guids
+        return guids
 
-    # def draw_facelabels(self, text, color=None, group=None, fontheight=10, fontface="Arial Regular"):
-    #     """Draw labels for a selection of faces.
+    def draw_facelabels(self, text, color=None, group=None, fontheight=10, fontface="Arial Regular"):
+        """Draw labels for a selection of faces.
 
-    #     Parameters
-    #     ----------
-    #     text : dict[int, str]
-    #         A dictionary of face labels as face-text pairs.
-    #     color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
-    #         The color of the face labels.
-    #     group : str, optional
-    #         The name of a group to join the created Rhino objects in.
-    #     fontheight : int, optional
-    #         Font height of the face labels.
-    #     fontface : str, optional
-    #         Font face of the face labels.
+        Parameters
+        ----------
+        text : dict[int, str]
+            A dictionary of face labels as face-text pairs.
+        color : :class:`compas.colors.Color` | dict[int, :class:`compas.colors.Color`], optional
+            The color of the face labels.
+        group : str, optional
+            The name of a group to join the created Rhino objects in.
+        fontheight : int, optional
+            Font height of the face labels.
+        fontface : str, optional
+            Font face of the face labels.
 
-    #     Returns
-    #     -------
-    #     list[System.Guid]
-    #         The GUIDs of the created Rhino point objects.
+        Returns
+        -------
+        list[System.Guid]
+            The GUIDs of the created Rhino point objects.
 
-    #     """
-    #     guids = []
+        """
+        guids = []
 
-    #     transformation = transformation_to_rhino(self.worldtransformation)
+        transformation = transformation_to_rhino(self.worldtransformation)
 
-    #     for face in text:
-    #         name = "{}.face.{}.label".format(self.mesh.name, face)  # type: ignore
-    #         color = self.facecolor[face]  # type: ignore
-    #         attr = self.compile_attributes(name=name, color=color)
+        for face in text:
+            name = "{}.face.{}.label".format(self.mesh.name, face)  # type: ignore
+            color = self.facecolor[face]  # type: ignore
+            attr = self.compile_attributes(name=name, color=color)
 
-    #         points = [self.mesh.vertex_attributes(vertex, "xyz") for vertex in self.mesh.face_vertices(face)]  # type: ignore
-    #         location = point_to_rhino(centroid_points(points))
-    #         location.Transform(transformation)
+            points = [self.mesh.vertex_attributes(vertex, "xyz") for vertex in self.mesh.face_vertices(face)]  # type: ignore
+            location = point_to_rhino(centroid_points(points))
+            location.Transform(transformation)
 
-    #         dot = Rhino.Geometry.TextDot(str(text[face]), location)  # type: ignore
-    #         dot.FontHeight = fontheight
-    #         dot.FontFace = fontface
+            dot = Rhino.Geometry.TextDot(str(text[face]), location)  # type: ignore
+            dot.FontHeight = fontheight
+            dot.FontFace = fontface
 
-    #         guid = sc.doc.Objects.AddTextDot(dot, attr)
-    #         guids.append(guid)
+            guid = sc.doc.Objects.AddTextDot(dot, attr)
+            guids.append(guid)
 
-    #     if group:
-    #         self.add_to_group(group, guids)
+        if group:
+            self.add_to_group(group, guids)
 
-    #     self._guids_facelabels = guids
-    #     self._guids += guids
-    #     return guids
+        self._guids_facelabels = guids
+        self._guids += guids
+        return guids
 
     # ==========================================================================
     # draw normals
