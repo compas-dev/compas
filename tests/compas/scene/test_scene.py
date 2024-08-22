@@ -99,3 +99,15 @@ if not compas.IPY:
             sceneobj3.worldtransformation
             == sceneobj1.frame.to_transformation() * sceneobj2.frame.to_transformation() * sceneobj3.frame.to_transformation() * sceneobj3.transformation
         )
+
+    def test_scene_clear():
+        scene = Scene()
+        sceneobj1 = scene.add(Box())
+        sceneobj2 = scene.add(Box(), parent=sceneobj1)
+        sceneobj3 = scene.add(Box(), parent=sceneobj2)
+
+        assert len(scene.objects) == 3
+
+        scene.clear(clear_context=False, clear_scene=True)
+
+        assert len(scene.objects) == 0
