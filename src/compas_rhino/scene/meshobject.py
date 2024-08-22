@@ -6,6 +6,9 @@ import Rhino  # type: ignore
 import scriptcontext as sc  # type: ignore
 
 import compas_rhino.objects
+from compas.colors import Color
+from compas.geometry import Line
+from compas.geometry import Point
 from compas.geometry import centroid_points
 from compas.scene import MeshObject
 from compas_rhino.conversions import line_to_rhino
@@ -447,86 +450,96 @@ class RhinoMeshObject(RhinoSceneObject, MeshObject):
     # draw normals
     # ==========================================================================
 
-    # def draw_vertexnormals(self, vertices=None, color=(0, 255, 0), scale=1.0, group=None):
-    #     """Draw the normals at the vertices of the mesh.
+    def draw_vertexnormals(self, color=None, scale=1.0, group=None):
+        """Draw the normals at the vertices of the mesh.
 
-    #     Parameters
-    #     ----------
-    #     vertices : list[int], optional
-    #         A selection of vertex normals to draw.
-    #         Default is to draw all vertex normals.
-    #     color : tuple[int, int, int] | tuple[float, float, float] | :class:`compas.colors.Color`, optional
-    #         The color specification of the normal vectors.
-    #     scale : float, optional
-    #         Scale factor for the vertex normals.
-    #     group : str, optional
-    #         The name of a group to join the created Rhino objects in.
+        Parameters
+        ----------
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`compas.colors.Color`, optional
+            The color specification of the normal vectors.
+            If no  color is specified, the color of the corresponding vertex is used.
+        scale : float, optional
+            Scale factor for the vertex normals.
+        group : str, optional
+            The name of a group to join the created Rhino objects in.
 
-    #     Returns
-    #     -------
-    #     list[System.Guid]
-    #         The GUIDs of the created Rhino objects.
+        Returns
+        -------
+        list[System.Guid]
+            The GUIDs of the created Rhino objects.
 
-    #     """
-    #     guids = []
+        """
+        guids = []
 
-    #     color = Color.coerce(color)
+        vertices = list(self.mesh.vertices()) if self.show_vertices is True else self.show_vertices or []
+        transformation = transformation_to_rhino(self.worldtransformation)
 
-    #     for vertex in vertices or self.mesh.vertices():  # type: ignore
-    #         name = "{}.vertex.{}.normal".format(self.mesh.name, vertex)  # type: ignore
-    #         attr = self.compile_attributes(name=name, color=color)
+        color = Color.coerce(color)
 
-    #         point = self.mesh.vertex_point(vertex)
-    #         normal = self.mesh.vertex_normal(vertex)  # type: ignore
+        for vertex in vertices:
+            name = "{}.vertex.{}.normal".format(self.mesh.name, vertex)  # type: ignore
+            attr = self.compile_attributes(name=name, color=color or self.vertexcolor[vertex])  # type: ignore
 
-    #         guid = sc.doc.Objects.AddLine(point_to_rhino(point), point_to_rhino(point + normal * scale), attr)
-    #         guids.append(guid)
+            point = self.mesh.vertex_point(vertex)
+            normal = self.mesh.vertex_normal(vertex)  # type: ignore
+            line = Line.from_point_and_vector(point, normal)
 
-    #     if group:
-    #         self.add_to_group(group, guids)
+            geometry = line_to_rhino(line)
+            geometry.Transform(transformation)
 
-    #     self._guids_vertexnormals = guids
-    #     self._guids += guids
-    #     return guids
+            guid = sc.doc.Objects.AddLine(geometry, attr)
+            guids.append(guid)
 
-    # def draw_facenormals(self, faces=None, color=(0, 255, 255), scale=1.0, group=None):
-    #     """Draw the normals of the faces.
+        if group:
+            self.add_to_group(group, guids)
 
-    #     Parameters
-    #     ----------
-    #     faces : list[int], optional
-    #         A selection of face normals to draw.
-    #         Default is to draw all face normals.
-    #     color : tuple[int, int, int] | tuple[float, float, float] | :class:`compas.colors.Color`, optional
-    #         The color specification of the normal vectors.
-    #     scale : float, optional
-    #         Scale factor for the face normals.
-    #     group : str, optional
-    #         The name of a group to join the created Rhino objects in.
+        self._guids_vertexnormals = guids
+        self._guids += guids
+        return guids
 
-    #     Returns
-    #     -------
-    #     list[System.Guid]
-    #         The GUIDs of the created Rhino objects.
+    def draw_facenormals(self, color=None, scale=1.0, group=None):
+        """Draw the normals of the faces.
 
-    #     """
-    #     guids = []
+        Parameters
+        ----------
+        color : tuple[int, int, int] | tuple[float, float, float] | :class:`compas.colors.Color`, optional
+            The color specification of the normal vectors.
+            If no color is specified, the color of the corresponding face is used.
+        scale : float, optional
+            Scale factor for the face normals.
+        group : str, optional
+            The name of a group to join the created Rhino objects in.
 
-    #     color = Color.coerce(color)
+        Returns
+        -------
+        list[System.Guid]
+            The GUIDs of the created Rhino objects.
 
-    #     for face in faces or self.mesh.faces():  # type: ignore
-    #         name = "{}.face.{}.normal".format(self.mesh.name, face)  # type: ignore
-    #         attr = self.compile_attributes(name=name, color=color)
+        """
+        guids = []
 
-    #         point = Point(*centroid_points([self.vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)]))  # type: ignore
-    #         normal = self.mesh.face_normal(face)  # type: ignore
+        faces = list(self.mesh.faces()) if self.show_faces is True else self.show_faces or []
+        transformation = transformation_to_rhino(self.worldtransformation)
 
-    #         guid = sc.doc.Objects.AddLine(point_to_rhino(point), point_to_rhino(point + normal * scale), attr)
-    #         guids.append(guid)
+        color = Color.coerce(color)
 
-    #     if group:
-    #         self.add_to_group(group, guids)
+        for face in faces:
+            name = "{}.face.{}.normal".format(self.mesh.name, face)  # type: ignore
+            attr = self.compile_attributes(name=name, color=color or self.facecolor[face])  # type: ignore
 
-    #     self._guids_facenormals = guids
+            point = self.mesh.face_centroid(face)
+            normal = self.mesh.face_normal(face)
+            line = Line.from_point_and_vector(point, normal)
 
-    #     return guids
+            geometry = line_to_rhino(line)
+            geometry.Transform(transformation)
+
+            guid = sc.doc.Objects.AddLine(geometry, attr)
+            guids.append(guid)
+
+        if group:
+            self.add_to_group(group, guids)
+
+        self._guids_facenormals = guids
+
+        return guids
