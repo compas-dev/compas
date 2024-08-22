@@ -29,10 +29,6 @@ class MeshObject(GHSceneObject, BaseMeshObject):
     def __init__(self, disjoint=False, **kwargs):
         super(MeshObject, self).__init__(**kwargs)
         self.disjoint = disjoint
-        self._guid_mesh = None
-        self._guid_face = {}
-        self._guid_edge = {}
-        self._guid_vertex = {}
 
     def draw(self):
         """Draw the mesh.
