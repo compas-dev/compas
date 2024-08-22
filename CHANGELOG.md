@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `compas.scene.MeshObject` to not use vertex coordinate caching because it is too fragile.
 * Changed `compas_rhino.scene.RhinoMeshObject` to keep track of element-guid pairs in dicts.
 * Changed `compas.scene.Scene._guids` to a default value of `[]`.
+* Fixed bug due to missing import in `compas_rhino.scene.graphobject`.
 
 ### Removed
 
