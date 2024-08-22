@@ -8,7 +8,6 @@ import scriptcontext as sc  # type: ignore
 import compas_rhino.objects
 from compas.colors import Color
 from compas.geometry import Line
-from compas.geometry import Point
 from compas.geometry import centroid_points
 from compas.scene import MeshObject
 from compas_rhino.conversions import line_to_rhino
