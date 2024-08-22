@@ -12,6 +12,7 @@ from compas.geometry import Brep
 from compas.tolerance import TOL
 
 from .exceptions import ConversionError
+from .extrusions import extrusion_to_compas_box
 from .geometry import point_to_compas
 from .shapes import cone_to_compas
 from .shapes import cylinder_to_compas
@@ -82,7 +83,7 @@ def brep_to_compas_box(brep):
     :class:`compas.geometry.Box`
 
     """
-    raise NotImplementedError
+    return extrusion_to_compas_box(brep.Geometry)
 
 
 def brep_to_compas_cone(brep):

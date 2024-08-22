@@ -6,6 +6,7 @@ import Rhino  # type: ignore
 import scriptcontext as sc  # type: ignore
 
 import compas_rhino
+import compas_rhino.objects
 from compas.geometry import Line
 from compas.scene import GraphObject
 from compas_rhino.conversions import line_to_rhino
