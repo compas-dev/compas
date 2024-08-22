@@ -50,7 +50,6 @@ class MeshObject(GHSceneObject, BaseMeshObject):
         self._guids = []
 
         if self.show_faces is True:
-
             vertexcolors = []
             if len(self.vertexcolor):  # type: ignore
                 vertexcolors = [self.vertexcolor[vertex] for vertex in self.mesh.vertices()]  # type: ignore
