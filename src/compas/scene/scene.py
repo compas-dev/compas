@@ -76,6 +76,14 @@ class Scene(Tree):
         # type: () -> list[SceneObject]
         return [node for node in self.nodes if not node.is_root]  # type: ignore
 
+    @property
+    def context_objects(self):
+        # type: () -> list
+        guids = []
+        for obj in self.objects:
+            guids += obj.guids
+        return guids
+
     def add(self, item, parent=None, **kwargs):
         # type: (compas.geometry.Geometry | compas.datastructures.Datastructure, SceneObject | TreeNode | None, dict) -> SceneObject
         """Add an item to the scene.
@@ -108,31 +116,81 @@ class Scene(Tree):
         super(Scene, self).add(sceneobject, parent=parent)
         return sceneobject
 
-    def clear(self):
-        # type: () -> None
-        """Clear everything from the current context of the scene."""
+    def clear_context(self, guids=None):
+        # type: (list | None) -> None
+        """Clear the visualisation context.
 
-        clear()
+        Parameters
+        ----------
+        guids : list, optional
+            The identifiers of the objects in the visualisation context.
 
-    def clear_objects(self):
-        # type: () -> None
-        """Clear all objects inside the scene."""
+        Returns
+        -------
+        None
 
+        Notes
+        -----
+        If `guids=None`, this will clear all objects from the visualisation context.
+        For example, when used in Rhino, it will remove everything from the Rhino model.
+        This is equivalent to `compas_rhino.clear()`.
+
+        If `guids` is a list, only those objects in the list will be removed.
+
+        The method is used by `Scene.clear` to remove all objects previously drawn by the scene,
+        without removing other model objects.
+
+        """
+        clear(guids)
+
+    def clear(self, clear_scene=True, clear_context=True):
+        # type: (bool, bool) -> None
+        """Clear the scene.
+
+        Parameters
+        ----------
+        clear_scene : bool, optional
+            If True, all scene objects will be removed from the scene tree.
+        clear_context : bool, optional
+            If True, all objects drawn by the scene in the visualisation context will be removed.
+
+        Returns
+        -------
+        None
+
+        Notes
+        -----
+        To redraw the scene, without modifying any of the other objects in the visualisation context:
+
+        >>> scene.clear(clear_scene=False, clear_context=True)
+        >>> scene.draw()
+
+        """
         guids = []
+
         for sceneobject in self.objects:
             guids += sceneobject.guids
             sceneobject._guids = None
-        clear(guids=guids)
+
+            if clear_scene:
+                self.remove(sceneobject)
+
+        if clear_context:
+            self.clear_context(guids)
 
     def draw(self):
-        """Draw the scene."""
+        """Draw the scene.
+
+        This will just draw all scene objects in the scene tree,
+        without making any modifications to the visualisation context.
+        For example, it will not remove any of the previously drawn objects.
+
+        """
 
         if not self.context:
             raise ValueError("No context detected.")
 
         before_draw()
-
-        self.clear_objects()
 
         drawn_objects = []
         for sceneobject in self.objects:
@@ -142,3 +200,14 @@ class Scene(Tree):
         after_draw(drawn_objects)
 
         return drawn_objects
+
+    def redraw(self):
+        """Redraw the scene.
+
+        This removes all previously drawn objects from the visualisation context,
+        before drawing all scene objects in the scene tree.
+
+        """
+
+        self.clear(clear_scene=False, clear_context=True)
+        self.draw()

@@ -1,8 +1,3 @@
-import pytest
-import json
-import compas
-from random import random
-from compas.geometry import Point
 from compas.geometry import Polyhedron
 from compas.itertools import pairwise
 
