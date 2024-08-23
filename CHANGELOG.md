@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Changed supported Blender versions to latest LTS versions (3.3, 3.6, 4.2).
+
 ### Removed
 
 

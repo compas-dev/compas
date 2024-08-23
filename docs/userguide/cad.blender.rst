@@ -10,7 +10,8 @@ and :mod:`compas_blender` provides functionality for converting COMPAS objects t
 
 .. note::
 
-    These instructions are for the latest version of Blender (4.0) and for the current LTS versions (3.3 and 3.6).
+    These instructions are for the current LTS versions of Blender (3.3, 3.6 and 4.2).
+    Other versions are currently not supported.
 
 .. warning::
 
@@ -34,9 +35,9 @@ This procedure simply uses that Python installation and associated ``pip`` to in
 The location of the executable is different on different platforms.
 The default locations are:
 
-* Windows: ``C:\Program Files\Blender Foundation\Blender 4.0\4.0\python\bin\python.exe``
-* macOS: ``/Applications/Blender.app/Contents/Resources/4.0/python/bin/python3.10``
-* Linux: ``/usr/share/blender/4.0/python/bin/python3.10`` (i think :)
+* Windows: ``C:\Program Files\Blender Foundation\Blender 4.2\4.2\python\bin\python.exe``
+* macOS: ``/Applications/Blender.app/Contents/Resources/4.2/python/bin/python3.10``
+* Linux: ``/usr/share/blender/4.2/python/bin/python3.10`` (i think :)
 
 .. note::
 
@@ -53,7 +54,7 @@ Before installing `compas` with `pip`, it is highly recommended that you update 
 
 .. code-block:: bash
 
-    $ /Applications/Blender.app/Contents/Resources/4.0/python/bin/python3.10 -m pip install --upgrade pip
+    $ /Applications/Blender.app/Contents/Resources/4.2/python/bin/python3.10 -m pip install --upgrade pip
 
 
 Install from PyPI
@@ -63,7 +64,7 @@ For example on Mac:
 
 .. code-block:: bash
 
-    $ /Applications/Blender.app/Contents/Resources/4.0/python/bin/python3.10 -m pip install compas
+    $ /Applications/Blender.app/Contents/Resources/4.2/python/bin/python3.10 -m pip install compas
 
 
 Install from Source
@@ -72,7 +73,7 @@ Install from Source
 .. code-block:: bash
 
     $ cd path/to/compas
-    $ /Applications/Blender.app/Contents/Resources/4.0/python/bin/python3.10 -m pip install -e .
+    $ /Applications/Blender.app/Contents/Resources/4.2/python/bin/python3.10 -m pip install -e .
 
 
 Using ``compas_blender.install``
@@ -95,7 +96,7 @@ Optionally, you can specify the version of Blender using the ``-v`` flag.
 
 .. code-block:: bash
 
-    $ python -m compas_blender.install -v 4.0
+    $ python -m compas_blender.install -v 4.2
 
 To remove all previously installed symlinks before installing new ones, use the ``--clean`` flag.
 
@@ -111,7 +112,7 @@ To test if the installation was successful, you can run the following on the Ble
 
 >>> import compas
 >>> print(compas.__version__)
-'2.0.0'
+'2.4.0'
 
 
 Visualisation
