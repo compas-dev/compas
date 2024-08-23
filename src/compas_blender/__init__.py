@@ -15,8 +15,8 @@ __version__ = "2.4.0"
 
 
 INSTALLABLE_PACKAGES = ["compas", "compas_blender"]
-SUPPORTED_VERSIONS = ["3.3", "3.6", "4.0"]
-DEFAULT_VERSION = "4.0"
+SUPPORTED_VERSIONS = ["3.3", "3.6", "4.2"]
+DEFAULT_VERSION = "4.2"
 
 INSTALLATION_ARGUMENTS = None
 
