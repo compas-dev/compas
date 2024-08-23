@@ -11,6 +11,10 @@ Working in Rhino 8
     The installation procedures listed here are for using COMPAS with CPython in Rhino 8.
     For using COMPAS with IronPython in Rhino 8, see :doc:`/userguide/cad.rhino`.
 
+.. note::
+
+    This page describes how to install COMPAS in Rhino 8 for use with CPython.
+    To install COMPAS for use with IronPython in Rhino 8, follow the procedure in :doc:`/userguide/cad.rhino` and use the appropriate version flag.
 
 Installation
 ============

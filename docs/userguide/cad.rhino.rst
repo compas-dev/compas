@@ -38,8 +38,8 @@ Once the command terminates, you should see a message like this:
 
     ...
 
-The default Rhino version is 8.
-To install into Rhino 7, use the ``-v`` flag.
+By default, installation will be attempted to all available versions of Rhino.
+To install into Rhino 7 only, use the ``-v`` flag.
 
 .. code-block:: bash
 
@@ -248,7 +248,7 @@ However, you can create a Rhino Object in a Rhino Dcocument explicitly from a CO
 .. code-block:: python
 
     import scriptcontext as sc
-    import compas.geometry 
+    import compas.geometry
     import compas_rhino_conversions
 
     point = compas.geometry.Point(...)
