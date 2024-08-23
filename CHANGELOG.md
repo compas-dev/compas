@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Changed supported Blender versions to latest LTS versions (3.3, 3.6, 4.2).
+* Fixed bug in `compas_rhino.conversions.cone_to_compas`.
+* Fixed bug in `compas_rhino.conversions.cylinder_to_compas`.
 
 ### Removed
 
