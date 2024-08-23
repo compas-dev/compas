@@ -538,7 +538,8 @@ Blender is also a supported visualisation backend for COMPAS scenes,
 and <code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_blender</span></code> provides functionality for converting COMPAS objects to Blender objects, and vice versa.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>These instructions are for the latest version of Blender (4.0) and for the current LTS versions (3.3 and 3.6).</p>
+<p>These instructions are for the current LTS versions of Blender (3.3, 3.6 and 4.2).
+Other versions are currently not supported.</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -559,9 +560,9 @@ This procedure simply uses that Python installation and associated <code class="
 The location of the executable is different on different platforms.
 The default locations are:</p>
 <ul class="simple">
-<li><p>Windows: <code class="docutils literal notranslate"><span class="pre">C:\Program</span> <span class="pre">Files\Blender</span> <span class="pre">Foundation\Blender</span> <span class="pre">4.0\4.0\python\bin\python.exe</span></code></p></li>
-<li><p>macOS: <code class="docutils literal notranslate"><span class="pre">/Applications/Blender.app/Contents/Resources/4.0/python/bin/python3.10</span></code></p></li>
-<li><p>Linux: <code class="docutils literal notranslate"><span class="pre">/usr/share/blender/4.0/python/bin/python3.10</span></code> (i think :)</p></li>
+<li><p>Windows: <code class="docutils literal notranslate"><span class="pre">C:\Program</span> <span class="pre">Files\Blender</span> <span class="pre">Foundation\Blender</span> <span class="pre">4.2\4.2\python\bin\python.exe</span></code></p></li>
+<li><p>macOS: <code class="docutils literal notranslate"><span class="pre">/Applications/Blender.app/Contents/Resources/4.2/python/bin/python3.10</span></code></p></li>
+<li><p>Linux: <code class="docutils literal notranslate"><span class="pre">/usr/share/blender/4.2/python/bin/python3.10</span></code> (i think :)</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -573,21 +574,21 @@ The default locations are:</p>
 <section id="update-pip">
 <h4>Update <cite>pip</cite></h4>
 <p>Before installing <cite>compas</cite> with <cite>pip</cite>, it is highly recommended that you update <cite>pip</cite> itself.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>/Applications/Blender.app/Contents/Resources/4.0/python/bin/python3.10<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>/Applications/Blender.app/Contents/Resources/4.2/python/bin/python3.10<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip
 </pre></div>
 </div>
 </section>
 <section id="install-from-pypi">
 <h4>Install from PyPI</h4>
 <p>For example on Mac:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>/Applications/Blender.app/Contents/Resources/4.0/python/bin/python3.10<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>compas
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>/Applications/Blender.app/Contents/Resources/4.2/python/bin/python3.10<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>compas
 </pre></div>
 </div>
 </section>
 <section id="install-from-source">
 <h4>Install from Source</h4>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>path/to/compas
-$<span class="w"> </span>/Applications/Blender.app/Contents/Resources/4.0/python/bin/python3.10<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
+$<span class="w"> </span>/Applications/Blender.app/Contents/Resources/4.2/python/bin/python3.10<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
 </pre></div>
 </div>
 </section>
@@ -606,7 +607,7 @@ Therefore, before running the command below, you should activate the environment
 </pre></div>
 </div>
 <p>Optionally, you can specify the version of Blender using the <code class="docutils literal notranslate"><span class="pre">-v</span></code> flag.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>compas_blender.install<span class="w"> </span>-v<span class="w"> </span><span class="m">4</span>.0
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>compas_blender.install<span class="w"> </span>-v<span class="w"> </span><span class="m">4</span>.2
 </pre></div>
 </div>
 <p>To remove all previously installed symlinks before installing new ones, use the <code class="docutils literal notranslate"><span class="pre">--clean</span></code> flag.</p>
@@ -620,7 +621,7 @@ Therefore, before running the command below, you should activate the environment
 <p>To test if the installation was successful, you can run the following on the Blender command line.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">compas</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
-<span class="go">&#39;2.0.0&#39;</span>
+<span class="go">&#39;2.4.0&#39;</span>
 </pre></div>
 </div>
 </section>
