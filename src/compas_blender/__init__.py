@@ -200,6 +200,8 @@ def _get_default_blender_python_path(version):
 
 
 def _get_default_blender_python_path_mac(version):
+    if version == "4.2":
+        return "/Applications/Blender.app/Contents/Resources/{}/python/bin/python3.11".format(version)
     return "/Applications/Blender.app/Contents/Resources/{}/python/bin/python3.10".format(version)
 
 

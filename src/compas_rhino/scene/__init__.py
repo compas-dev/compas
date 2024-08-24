@@ -93,7 +93,8 @@ def register_scene_objects():
     register(Curve, RhinoCurveObject, context="Rhino")
     register(Surface, RhinoSurfaceObject, context="Rhino")
     register(Brep, RhinoBrepObject, context="Rhino")
-    print("Rhino SceneObjects registered.")
+
+    # print("Rhino SceneObjects registered.")
 
 
 __all__ = [

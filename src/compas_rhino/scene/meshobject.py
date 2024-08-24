@@ -481,7 +481,7 @@ class RhinoMeshObject(RhinoSceneObject, MeshObject):
 
             point = self.mesh.vertex_point(vertex)
             normal = self.mesh.vertex_normal(vertex)  # type: ignore
-            line = Line.from_point_and_vector(point, normal)
+            line = Line.from_point_and_vector(point, normal * scale)
 
             geometry = line_to_rhino(line)
             geometry.Transform(transformation)
@@ -528,7 +528,7 @@ class RhinoMeshObject(RhinoSceneObject, MeshObject):
 
             point = self.mesh.face_centroid(face)
             normal = self.mesh.face_normal(face)
-            line = Line.from_point_and_vector(point, normal)
+            line = Line.from_point_and_vector(point, normal * scale)
 
             geometry = line_to_rhino(line)
             geometry.Transform(transformation)

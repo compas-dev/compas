@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed supported Blender versions to latest LTS versions (3.3, 3.6, 4.2).
 * Fixed bug in `compas_rhino.conversions.cone_to_compas`.
 * Fixed bug in `compas_rhino.conversions.cylinder_to_compas`.
+* Fixed bug in `compas_rhino.scene.RhinoMeshObject.draw_vertexnormals` (scale not used).
+* Fixed bug in `compas_rhino.scene.RhinoMeshObject.draw_facenormals` (scale not used).
+* Changed scene object registration to stop printing messages.
 
 ### Removed
 
