@@ -12,4 +12,4 @@ class CompasToRhinoGeometry(component):
         if not cg:
             return None
 
-        return SceneObject(cg).draw()
+        return SceneObject(item=cg).draw()
