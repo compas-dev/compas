@@ -6,11 +6,9 @@ import Rhino  # type: ignore
 import scriptcontext as sc  # type: ignore
 
 from compas.geometry import Box
-from compas.geometry import Circle
 from compas.geometry import Cone
 from compas.geometry import Cylinder
 from compas.geometry import Frame
-from compas.geometry import Plane
 from compas.geometry import Sphere
 from compas.geometry import Torus
 
@@ -19,11 +17,9 @@ from .curves import line_to_rhino_curve
 
 # from .geometry import plane_to_rhino
 from .geometry import frame_to_rhino
-from .geometry import plane_to_compas
 from .geometry import plane_to_compas_frame
 from .geometry import point_to_compas
 from .geometry import point_to_rhino
-from .geometry import vector_to_compas
 
 # =============================================================================
 # To Rhino
@@ -253,8 +249,9 @@ def cone_to_compas(cone):
     :class:`compas.geometry.Cone`
 
     """
-    plane = Plane(cone.BasePoint, vector_to_compas(cone.Plane.Normal).inverted())
-    return Cone(Circle(plane, cone.Radius), cone.Height)
+    frame = plane_to_compas_frame(cone.Plane)
+    frame.point = point_to_compas(cone.BasePoint)  # invert the z-axis?
+    return Cone(radius=cone.Radius, height=cone.Height, frame=frame)
 
 
 def cylinder_to_compas(cylinder):
@@ -269,10 +266,10 @@ def cylinder_to_compas(cylinder):
     :class:`compas.geometry.Cylinder`
 
     """
-    plane = plane_to_compas(cylinder.BasePlane)
+    frame = plane_to_compas_frame(cylinder.BasePlane)
     height = cylinder.TotalHeight
-    plane.point += plane.normal * (0.5 * height)
-    return Cylinder(Circle(plane, cylinder.Radius), height)
+    frame.point += frame.normal * (0.5 * height)
+    return Cylinder(radius=cylinder.Radius, height=height, frame=frame)
 
 
 def torus_to_compas(torus):

@@ -231,7 +231,7 @@ def vertices_and_faces_to_rhino(
 
 
 def mesh_to_compas(rhinomesh, cls=None):
-    """Convert a Rhino mesh object to a COMPAS mesh.
+    """Convert a Rhino mesh to a COMPAS mesh.
 
     Parameters
     ----------

@@ -5,7 +5,6 @@ from __future__ import print_function
 import compas.colors  # noqa: F401
 import compas.datastructures  # noqa: F401
 import compas.geometry  # noqa: F401
-from compas.geometry import transform_points
 
 from .descriptors.colordict import ColorDictAttribute
 from .sceneobject import SceneObject
@@ -71,7 +70,6 @@ class MeshObject(SceneObject):
     ):  # fmt: skip
         # type: (...) -> None
         super(MeshObject, self).__init__(**kwargs)  # type: ignore
-        self._vertex_xyz = None
         self.show_vertices = show_vertices
         self.show_edges = show_edges
         self.show_faces = show_faces
@@ -107,7 +105,6 @@ class MeshObject(SceneObject):
         # type: (compas.datastructures.Mesh) -> None
         self._item = mesh
         self._transformation = None
-        self._vertex_xyz = None
 
     @property
     def transformation(self):
@@ -117,23 +114,7 @@ class MeshObject(SceneObject):
     @transformation.setter
     def transformation(self, transformation):
         # type: (compas.geometry.Transformation) -> None
-        self._vertex_xyz = None
         self._transformation = transformation
-
-    @property
-    def vertex_xyz(self):
-        # type: () -> dict[int, list[float]]
-        if self.mesh:
-            if self._vertex_xyz is None:
-                points = self.mesh.vertices_attributes("xyz")
-                points = transform_points(points, self.worldtransformation)
-                self._vertex_xyz = dict(zip(self.mesh.vertices(), points))
-        return self._vertex_xyz  # type: ignore
-
-    @vertex_xyz.setter
-    def vertex_xyz(self, vertex_xyz):
-        # type: (dict[int, list[float]]) -> None
-        self._vertex_xyz = vertex_xyz
 
     def draw_vertices(self):
         """Draw the vertices of the mesh.

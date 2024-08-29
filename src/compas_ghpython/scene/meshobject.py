@@ -51,44 +51,36 @@ class MeshObject(GHSceneObject, BaseMeshObject):
 
         if self.show_faces is True:
             vertexcolors = []
-            if len(self.vertexcolor):
-                vertexcolors = [self.vertexcolor[vertex] for vertex in self.mesh.vertices()]
+            if len(self.vertexcolor):  # type: ignore
+                vertexcolors = [self.vertexcolor[vertex] for vertex in self.mesh.vertices()]  # type: ignore
 
             facecolors = []
-            if len(self.facecolor):
-                facecolors = [self.facecolor[face] for face in self.mesh.faces()]
-
-            color = None
-            if not vertexcolors and not facecolors:
-                color = self.color
+            if len(self.facecolor):  # type: ignore
+                facecolors = [self.facecolor[face] for face in self.mesh.faces()]  # type: ignore
 
             vertex_index = self.mesh.vertex_index()
-            vertex_xyz = self.vertex_xyz
 
-            vertices = [vertex_xyz[vertex] for vertex in self.mesh.vertices()]
+            vertices = [self.mesh.vertex_attributes(vertex, "xyz") for vertex in self.mesh.vertices()]
             faces = [[vertex_index[vertex] for vertex in self.mesh.face_vertices(face)] for face in self.mesh.faces()]
 
             geometry = conversions.vertices_and_faces_to_rhino(
                 vertices,
                 faces,
-                color=color,
+                color=self.color,
                 vertexcolors=vertexcolors,
                 facecolors=facecolors,
                 disjoint=self.disjoint,
             )
 
-            # geometry.Transform(conversions.transformation_to_rhino(self.worldtransformation))
+            geometry.Transform(conversions.transformation_to_rhino(self.worldtransformation))
 
             self._guids.append(geometry)
 
         elif self.show_faces:
-            self._guids += self.draw_faces()
+            self.draw_faces()
 
-        if self.show_vertices:
-            self._guids += self.draw_vertices()
-
-        if self.show_edges:
-            self._guids += self.draw_edges()
+        self.draw_vertices()
+        self.draw_edges()
 
         return self.guids
 
@@ -104,9 +96,13 @@ class MeshObject(GHSceneObject, BaseMeshObject):
 
         vertices = list(self.mesh.vertices()) if self.show_vertices is True else self.show_vertices or []
 
+        transformation = conversions.transformation_to_rhino(self.worldtransformation)
+
         if vertices:
             for vertex in vertices:
-                points.append(conversions.point_to_rhino(self.vertex_xyz[vertex]))
+                geometry = conversions.point_to_rhino(self.mesh.vertex_attributes(vertex, "xyz"))
+                geometry.Transform(transformation)
+                points.append(geometry)
 
         return points
 
@@ -122,9 +118,14 @@ class MeshObject(GHSceneObject, BaseMeshObject):
 
         edges = list(self.mesh.edges()) if self.show_edges is True else self.show_edges or []
 
+        transformation = conversions.transformation_to_rhino(self.worldtransformation)
+
         if edges:
             for edge in edges:
-                lines.append(conversions.line_to_rhino((self.vertex_xyz[edge[0]], self.vertex_xyz[edge[1]])))
+                line = self.mesh.edge_line(edge)
+                geometry = conversions.line_to_rhino(line)
+                geometry.Transform(transformation)
+                lines.append(geometry)
 
         return lines
 
@@ -140,12 +141,17 @@ class MeshObject(GHSceneObject, BaseMeshObject):
 
         faces = list(self.mesh.faces()) if self.show_faces is True else self.show_faces or []
 
+        transformation = conversions.transformation_to_rhino(self.worldtransformation)
+
         if faces:
             for face in faces:
-                color = self.facecolor[face]
-                vertices = [self.vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)]
+                color = self.facecolor[face]  # type: ignore
+                vertices = [self.mesh.vertex_attributes(vertex, "xyz") for vertex in self.mesh.face_vertices(face)]  # type: ignore
                 facet = ngon(len(vertices))
+
                 if facet:
-                    meshes.append(conversions.vertices_and_faces_to_rhino(vertices, [facet], color=color))
+                    geometry = conversions.vertices_and_faces_to_rhino(vertices, [facet], color=color)
+                    geometry.Transform(transformation)
+                    meshes.append(geometry)
 
         return meshes

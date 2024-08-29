@@ -86,7 +86,8 @@ def register_scene_objects():
     register(Vector, VectorObject, context="Grasshopper")
     register(VolMesh, VolMeshObject, context="Grasshopper")
     register(Brep, BrepObject, context="Grasshopper")
-    print("GH SceneObjects registered.")
+
+    # print("GH SceneObjects registered.")
 
 
 __all__ = [

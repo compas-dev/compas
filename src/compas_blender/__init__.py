@@ -11,12 +11,12 @@ except ImportError:
     pass
 
 
-__version__ = "2.3.0"
+__version__ = "2.4.1"
 
 
 INSTALLABLE_PACKAGES = ["compas", "compas_blender"]
-SUPPORTED_VERSIONS = ["3.3", "3.6", "4.0"]
-DEFAULT_VERSION = "4.0"
+SUPPORTED_VERSIONS = ["3.3", "3.6", "4.2"]
+DEFAULT_VERSION = "4.2"
 
 INSTALLATION_ARGUMENTS = None
 
@@ -200,6 +200,8 @@ def _get_default_blender_python_path(version):
 
 
 def _get_default_blender_python_path_mac(version):
+    if version == "4.2":
+        return "/Applications/Blender.app/Contents/Resources/{}/python/bin/python3.11".format(version)
     return "/Applications/Blender.app/Contents/Resources/{}/python/bin/python3.10".format(version)
 
 

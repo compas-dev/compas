@@ -12,9 +12,48 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Replaced use of `Rhino.Geometry.VertexColors.SetColors` with a for loop and `SetColor` in `compas_ghpyton` since the former requires a `System.Array`.
+
+### Removed
+
+
+## [2.4.1] 2024-08-25
+
+### Added
+
+### Changed
+
+* Changed supported Blender versions to latest LTS versions (3.3, 3.6, 4.2).
+* Fixed bug in `compas_rhino.conversions.cone_to_compas`.
+* Fixed bug in `compas_rhino.conversions.cylinder_to_compas`.
+* Fixed bug in `compas_rhino.scene.RhinoMeshObject.draw_vertexnormals` (scale not used).
+* Fixed bug in `compas_rhino.scene.RhinoMeshObject.draw_facenormals` (scale not used).
+* Changed scene object registration to stop printing messages.
+
+### Removed
+
+## [2.4.0] 2024-08-22
+
+### Added
+
+* Added `compas.scene.Scene.redraw`.
+* Added `compas.scene.Scene.context_objects` representing all objects drawn in the visualisation context by the scene.
+* Added `compas.scene.Scene.clear_context` with optional `guids` to clear some or all objects from the visualisation context.
+* Added `clear_scene` and `clear_context` parameters to `compas.scene.Scene.clear` to differentiate between removing objects from the scene internally or removing corresponding objects from the viz context, or both (default).
+* Added `compas_rhino.conversions.extrusion_to_compas_box` as direct conversion of extrusion breps.
+
+### Changed
+
 * Changed the `__str__` of `compas.geometry.Frame`, `compas.geometry.Plane`, `compas.geometry.Polygon`, `compas.geometry.Polyhedron`, `compas.geometry.Quaternion` to use a limited number of decimals (determined by `Tolerance.PRECISION`). Note: `__repr__` will instead maintain full precision.
 * Changed the `__str__` of `compas.geometry.Pointcloud` to print total number of points instead of the long list of points. Note: `__repr__` will still print all the points with full precision.
 * Fixed bug in `Pointcloud.from_box()`.
+* Changed `compas.scene.MeshObject` to not use vertex coordinate caching because it is too fragile.
+* Changed `compas_rhino.scene.RhinoMeshObject` to keep track of element-guid pairs in dicts.
+* Changed `compas.scene.Scene._guids` to a default value of `[]`.
+* Fixed bug due to missing import in `compas_rhino.scene.graphobject`.
+* Changed `compas_rhino.scene.RhinoMeshObject.draw_vertexnormals` to use the same selection of vertices as `draw_vertices`.
+* Changed `compas_rhino.scene.RhinoMeshObject.draw_vertexnormals` to use the corresponding vertex color if no color is specified.
+* Changed `compas_rhino.scene.RhinoMeshObject.draw_facenormals` to use the same selection of vertices as `draw_faces`.
+* Changed `compas_rhino.scene.RhinoMeshObject.draw_facenormals` to use the corresponding face color if no color is specified.
 
 ### Removed
 

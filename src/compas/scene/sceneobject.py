@@ -111,7 +111,7 @@ class SceneObject(TreeNode):
         # which means that adding child objects will be added in context "None"
         self.context = context
         self._item = item
-        self._guids = None
+        self._guids = []
         self._node = None
         self._frame = frame
         self._transformation = transformation
