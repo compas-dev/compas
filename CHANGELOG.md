@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Fixed args for `SceneObject` on Grasshopper `Draw` component.
+* Replaced use of `Rhino.Geometry.VertexColors.SetColors` with a for loop and `SetColor` in `compas_ghpyton` since the former requires a `System.Array`.
 
 ### Removed
 
@@ -30,7 +31,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed scene object registration to stop printing messages.
 
 ### Removed
-
 
 ## [2.4.0] 2024-08-22
 
