@@ -1,3 +1,4 @@
+import compas.data  # noqa: F401
 import compas.datastructures  # noqa: F401
 import compas.geometry  # noqa: F401
 from compas.datastructures import Tree
@@ -211,3 +212,37 @@ class Scene(Tree):
 
         self.clear(clear_scene=False, clear_context=True)
         self.draw()
+
+    def find_by_name(self, name):
+        """Find the first scene object with the given name.
+
+        Parameters
+        ----------
+        name : str
+            Name of the object.
+
+        Returns
+        -------
+        :class:`SceneObject`
+
+        """
+        # type: (str) -> SceneObject
+        return self.get_node_by_name(name=name)
+
+    def find_by_itemtype(self, itemtype):
+        """Find the first scene object with a data item of the given type.
+
+        Parameters
+        ----------
+        itemtype : :class:`compas.data.Data`
+            The type of the data item associated with the scene object.
+
+        Returns
+        -------
+        :class:`SceneObject`
+
+        """
+        # type: (Type[compas.data.Data]) -> SceneObject
+        for obj in self.objects:
+            if isinstance(obj.item, itemtype):
+                return obj

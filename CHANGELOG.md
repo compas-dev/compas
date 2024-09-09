@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `compas.scene.Scene.find_by_name` to find the first scene object with the given name.
+* Added `compas.scene.Scene.find_by_itemtype` to find the first scene object with a data item of the given type.
+
 ### Changed
 
 ### Removed
