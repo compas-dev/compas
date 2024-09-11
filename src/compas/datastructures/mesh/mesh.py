@@ -4542,7 +4542,7 @@ class Mesh(Datastructure):
         from compas.geometry import bestfit_circle_numpy
 
         point, normal, radius = bestfit_circle_numpy(self.face_coordinates(face))
-        return Circle((point, normal), radius)
+        return Circle.from_plane_and_radius(Plane(point, normal), radius)
 
     def face_frame(self, face):
         """The frame of a face.
