@@ -1,0 +1,105 @@
+html {
+    --pst-font-size-base: 1rem;
+    --pst-sidebar-font-size: 0.8rem;
+}
+
+html[data-theme="light"] {
+    --pst-color-primary: #0092d2;
+    --pst-color-info: #0092d2;
+    --pst-color-text-muted: #888;
+    --pst-color-inline-code: #ff5e99;
+    --pst-color-secondary-bg: #ffe800;
+}
+
+body {
+    line-height: 1.75;
+    font-weight: 300;
+}
+
+/* Layout */
+
+/* default is 60em */
+/* .bd-main .bd-content .bd-article-container {
+    max-width: 100%;
+} */
+.bd-main.no-sidebars .bd-content .bd-article-container {
+    max-width: 60rem;
+    margin: 0 auto;
+}
+
+/* default is 88rem */
+/* .bd-page-width {
+    max-width: 1920px;
+} */
+
+/*
+Ideally max-width would only be applied to the content of the sidebar
+and the sidebar itself would be 25% of the page width.
+The content then should be aligned to the right.
+*/
+
+/* .bd-sidebar-primary {
+    width: 25%;
+    max-width: 22rem;
+} */
+
+.bd-header {
+    box-shadow: none;
+    border-bottom: 1px solid var(--pst-color-shadow);
+}
+
+.navbar-brand img {
+    height: 32px;
+}
+
+.bd-header .navbar-brand {
+    margin-right: 1rem;
+}
+
+.bd-sidebar-primary .toctree-l3 {
+    font-size: 0.8rem;
+}
+
+/* Links */
+
+.bd-header .navbar-nav li a.nav-link:hover {
+    color: var(--pst-color-primary);
+    text-decoration: none;
+}
+
+nav.bd-links li > a:hover {
+    color: var(--pst-color-primary);
+    text-decoration: none;
+}
+
+ul.bd-breadcrumbs li.breadcrumb-item a:hover {
+    color: var(--pst-color-primary);
+    text-decoration: none;
+}
+
+/* Article */
+
+/* .bd-article-container h1 {
+    color: #0092d2 !important;
+} */
+
+#rtd-footer-container {
+    bottom: 0 !important;
+    margin: 0 !important;
+    display: none;
+}
+
+dl[class]:not(.option-list):not(.field-list):not(.footnote):not(.glossary):not(.simple) dt.field-even,
+dl[class]:not(.option-list):not(.field-list):not(.footnote):not(.glossary):not(.simple) dt.field-odd {
+    background-color: var(--pst-color-surface);
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+}
+
+.highlight pre {
+    line-height: 150% !important;
+}
+
+.bd-footer-article {
+    margin-top: 2rem;
+}
