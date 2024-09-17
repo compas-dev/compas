@@ -7,7 +7,7 @@ import sys
 import compas
 import compas._os
 
-__version__ = "2.4.1"
+__version__ = "2.4.2"
 
 
 PURGE_ON_DELETE = True
