@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Fixed support for `compas_gpython` in Rhino 8 Grasshopper CPython components.
+
 ### Removed
 
 
