@@ -4,7 +4,6 @@ from __future__ import print_function
 
 from compas.scene import MeshObject as BaseMeshObject
 from compas_rhino import conversions
-from compas_rhino.scene.helpers import ngon
 
 from .sceneobject import GHSceneObject
 
@@ -147,7 +146,7 @@ class MeshObject(GHSceneObject, BaseMeshObject):
             for face in faces:
                 color = self.facecolor[face]  # type: ignore
                 vertices = [self.mesh.vertex_attributes(vertex, "xyz") for vertex in self.mesh.face_vertices(face)]  # type: ignore
-                facet = ngon(len(vertices))
+                facet = self._create_ngon(len(vertices))
 
                 if facet:
                     geometry = conversions.vertices_and_faces_to_rhino(vertices, [facet], color=color)
@@ -155,3 +154,13 @@ class MeshObject(GHSceneObject, BaseMeshObject):
                     meshes.append(geometry)
 
         return meshes
+
+    @staticmethod
+    def _create_ngon(vertex_count):
+        if vertex_count < 3:
+            return
+        if vertex_count == 3:
+            return [0, 1, 2]
+        if vertex_count == 4:
+            return [0, 1, 2, 3]
+        return list(range(vertex_count))

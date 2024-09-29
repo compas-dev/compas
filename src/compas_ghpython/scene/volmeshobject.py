@@ -4,7 +4,6 @@ from __future__ import print_function
 
 from compas.scene import VolMeshObject as BaseVolMeshObject
 from compas_rhino import conversions
-from compas_rhino.scene.helpers import ngon
 
 from .sceneobject import GHSceneObject
 
@@ -84,7 +83,7 @@ class VolMeshObject(GHSceneObject, BaseVolMeshObject):
         for face in faces:
             color = self.facecolor[face]
             vertices = [self.vertex_xyz[vertex] for vertex in self.volmesh.face_vertices(face)]
-            facet = ngon(len(vertices))
+            facet = self._create_ngon(len(vertices))
             if facet:
                 meshes.append(conversions.vertices_and_faces_to_rhino(vertices, [facet], color=color))
 
@@ -115,3 +114,13 @@ class VolMeshObject(GHSceneObject, BaseVolMeshObject):
             meshes.append(mesh)
 
         return meshes
+
+    @staticmethod
+    def _create_ngon(vertex_count):
+        if vertex_count < 3:
+            return
+        if vertex_count == 3:
+            return [0, 1, 2]
+        if vertex_count == 4:
+            return [0, 1, 2, 3]
+        return list(range(vertex_count))
