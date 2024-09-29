@@ -11,9 +11,6 @@ from compas_rhino import unload_modules  # noqa: F401
 
 __version__ = "2.4.2"
 
-if compas.is_rhino():
-    from .utilities import *  # noqa: F401 F403
-
 __all__ = [
     "get_grasshopper_managedplugin_path",
     "get_grasshopper_library_path",
