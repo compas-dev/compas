@@ -22,6 +22,8 @@ import inspect
 import pkgutil
 import threading
 
+import compas
+
 __all__ = [
     "pluggable",
     "plugin",
@@ -32,6 +34,17 @@ __all__ = [
     "PluginValidator",
     "PluginDefaultNotAvailableError",
 ]
+
+if compas.RHINO:
+    import System  # type: ignore
+
+    DotNetException = System.Exception
+else:
+
+    class DummyDotNetException(BaseException):
+        pass
+
+    DotNetException = DummyDotNetException
 
 
 class PluginNotInstalledError(Exception):
@@ -401,7 +414,6 @@ class Importer(object):
             If importable, it returns the imported module, otherwise ``None``.
         """
         module = None
-
         try:
             module = __import__(module_name, fromlist=["__name__"], level=0)
             self._cache[module_name] = True
@@ -409,7 +421,8 @@ class Importer(object):
         # There are two types of possible failure modes:
         # 1) cannot be imported, or
         # 2) is a python 3 module and we're in IPY, which causes a SyntaxError
-        except (ImportError, SyntaxError):
+        # 3) in Rhino8 we may get a nasty DotNet Exception when trying to import a module
+        except (ImportError, SyntaxError, DotNetException):
             self._cache[module_name] = False
 
         return module
