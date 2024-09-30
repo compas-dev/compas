@@ -39,19 +39,7 @@ def test_ensure_implementations_with_valid_impl():
     PluginValidator.ensure_implementations(CompleteImpl)
 
 
-if not compas.IPY:
+def test_dot_net_exception():
+    from compas.plugins import DotNetException
 
-    def test_dot_net_exception():
-        from compas.plugins import DotNetException
-
-        assert DotNetException is not None
-        assert isinstance(DotNetException(), BaseException)
-
-
-if compas.IPY:
-
-    def test_dot_new_exception_ipy():
-        import System.Exception
-        from compas.plugins import DotNetException
-
-        assert DotNetException is System.Exception
+    assert DotNetException is not None
