@@ -39,7 +39,13 @@ def test_ensure_implementations_with_valid_impl():
 
 
 def test_dot_net_exception():
+    import compas
     from compas.plugins import DotNetException
 
-    assert DotNetException is not None
-    assert isinstance(DotNetException(), BaseException)
+    if compas.RHINO:
+        import System.Exception
+
+        assert DotNetException is System.Exception
+    else:
+        assert DotNetException is not None
+        assert isinstance(DotNetException(), BaseException)
