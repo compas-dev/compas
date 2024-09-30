@@ -2,6 +2,7 @@ from abc import abstractmethod
 
 import pytest
 
+import compas
 from compas.plugins import IncompletePluginImplError
 from compas.plugins import PluginValidator
 
@@ -38,14 +39,19 @@ def test_ensure_implementations_with_valid_impl():
     PluginValidator.ensure_implementations(CompleteImpl)
 
 
-def test_dot_net_exception():
-    import compas
-    from compas.plugins import DotNetException
+if not compas.IPY:
 
-    assert DotNetException is not None
-    if compas.RHINO:
+    def test_dot_net_exception():
+        from compas.plugins import DotNetException
+
+        assert DotNetException is not None
+        assert isinstance(DotNetException(), BaseException)
+
+
+if compas.IPY:
+
+    def test_dot_new_exception_ipy():
         import System.Exception
+        from compas.plugins import DotNetException
 
         assert DotNetException is System.Exception
-    else:
-        assert isinstance(DotNetException(), BaseException)
