@@ -61,3 +61,18 @@ def test_dot_net_exception_without_rhino():
     from compas.plugins import DummyDotNetException
 
     assert DotNetException == DummyDotNetException
+
+
+def test_importer_fail_silently():
+    from compas.plugins import Importer
+
+    importer = Importer()
+
+    is_importable = importer.check_importable("compas")
+    assert is_importable
+
+    is_importable = importer.check_importable("Rhino")
+    assert not is_importable
+
+    is_importable = importer.check_importable("Grasshopper")
+    assert not is_importable
