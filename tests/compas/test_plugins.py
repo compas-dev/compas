@@ -1,7 +1,6 @@
 from abc import abstractmethod
 
 import pytest
-
 import compas
 from compas.plugins import IncompletePluginImplError
 from compas.plugins import PluginValidator
@@ -39,7 +38,21 @@ def test_ensure_implementations_with_valid_impl():
     PluginValidator.ensure_implementations(CompleteImpl)
 
 
-def test_dot_net_exception():
+@pytest.mark.skipif(not compas.IPY, reason="Only works in Rhino")
+def test_dot_net_exception_with_rhino():
     from compas.plugins import DotNetException
 
     assert DotNetException is not None
+
+    import System
+
+    assert DotNetException == System.Exception
+
+
+def test_dot_net_exception_without_rhino():
+    from compas.plugins import DotNetException
+
+    assert DotNetException is not None
+    from compas.plugins import DummyDotNetException
+
+    assert DotNetException == DummyDotNetException
