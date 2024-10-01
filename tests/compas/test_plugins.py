@@ -38,8 +38,10 @@ def test_ensure_implementations_with_valid_impl():
     PluginValidator.ensure_implementations(CompleteImpl)
 
 
-@pytest.mark.skipif(not compas.IPY, reason="Only works in Rhino")
 def test_dot_net_exception_with_rhino():
+    if not compas.RHINO:
+        return
+
     from compas.plugins import DotNetException
 
     assert DotNetException is not None
@@ -50,6 +52,9 @@ def test_dot_net_exception_with_rhino():
 
 
 def test_dot_net_exception_without_rhino():
+    if compas.RHINO:
+        return
+
     from compas.plugins import DotNetException
 
     assert DotNetException is not None
