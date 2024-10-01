@@ -36,9 +36,9 @@ __all__ = [
 ]
 
 if compas.RHINO:
-    import System  # type: ignore
+    import System  # type: ignore  # pragma: no cover
 
-    DotNetException = System.Exception
+    DotNetException = System.Exception  # pragma: no cover
 else:
 
     class DummyDotNetException(BaseException):
