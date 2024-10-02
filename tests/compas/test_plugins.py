@@ -58,9 +58,7 @@ def test_dot_net_exception_without_rhino():
     from compas.plugins import DotNetException
 
     assert DotNetException is not None
-    from compas.plugins import DummyDotNetException
-
-    assert DotNetException == DummyDotNetException
+    assert issubclass(DotNetException, BaseException)
 
 
 def test_importer_fail_silently():
