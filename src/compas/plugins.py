@@ -41,10 +41,10 @@ if compas.RHINO:
     DotNetException = System.Exception
 else:
 
-    class DummyDotNetException(BaseException):
-        pass
+    class DotNetException(BaseException):
+        """Ensures DotNetException is always a valid exception class. Even when not in IPY."""
 
-    DotNetException = DummyDotNetException
+        pass
 
 
 class PluginNotInstalledError(Exception):
