@@ -205,6 +205,7 @@ class Graph(Datastructure):
             if v not in graph.node:
                 graph.add_node(v)
             graph.add_edge(u, v)
+        return graph
 
     @classmethod
     def from_networkx(cls, graph):
