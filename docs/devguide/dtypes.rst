@@ -102,16 +102,78 @@ True
 Attribute types
 ===============
 
-
-Data schema
-===========
-
-Optionally, you can provide a data schema that describes
-the internal serialization data of your class more precisely.
+Any attribute that is an instance of a Python base type or a serializable COMPAS data object
+can be included in the data dict created by the ``__data__`` property without further processing.
+The serialization process will take care of all required conversions automatically.
 
 .. code-block:: python
 
     class CustomData(Data):
+        
+        def __init__(self, point, frame, mesh, name=None):
+            super().__init__(name=name)
+            self.point = point
+            self.frame = frame
+            self.mesh = mesh
 
-        DATASCHEMA = {}
+        @property
+        def __data__(self):
+            return {
+                "point": self.point,
+                "frame": self.frame,
+                "mesh": self.mesh,
+            }
 
+
+>>> import compas
+>>> from compas.geometry import Point, Frame
+>>> from compas.datastructures import Mesh
+>>> point = Point(1, 2, 3)
+>>> frame = Frame()
+>>> mesh = Mesh.from_meshgrid(10, 10)
+>>> custom = CustomData(point, frame, mesh)
+>>> compas.json_dump(custom, "custom.json")
+>>> result = compas.json_load("custom.json")
+>>> isinstance(result.point, Point)
+True
+>>> isinstance(result.frame, Frame)
+True
+>>> isinstance(result.mesh, Mesh)
+True
+>>> result.point == point
+True
+>>> result.point is point
+False
+
+
+Note that when many instances of a type like this have to serialized/deserialized,
+letting the encoders and decoders that care of this automatically,
+can unnecessarily increase the size of the JSON file.
+
+To avoid this, anticipated conversions can be included explicitly in `__data__` and `__from_data__`.
+
+.. code-block:: python
+
+    class CustomData(Data):
+        
+        def __init__(self, point, frame, mesh, name=None):
+            super().__init__(name=name)
+            self.point = point
+            self.frame = frame
+            self.mesh = mesh
+
+        @property
+        def __data__(self):
+            return {
+                "point": self.point.__data__,
+                "frame": self.frame.__data__,
+                "mesh": self.mesh.__data__,
+            }
+
+        @classmethod
+        def __from_data__(cls, data):
+            return cls(
+                Point.__from_data__(data['point']),
+                Frame.__from_data__(data['frame']),
+                Mesh.__from_data__(data['mesh3']),
+            )
