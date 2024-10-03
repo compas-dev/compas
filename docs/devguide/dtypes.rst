@@ -3,20 +3,20 @@ Implementing a New Data Type
 
 COMPAS data types are classes that are based on :class:`compas.data.Data`.
 
-Data types can be serialised to JSON with
+Data types can be serialized to JSON with
 
 * :func:`compas.json_dump`
 * :func:`compas.json_dumps`
 * :func:`compas.json_dumpz`
 
-and deserialised with the corresponding "load" functions
+and deserialized with the corresponding "load" functions
 
 * :func:`compas.json_load`
 * :func:`compas.json_loads`
 * :func:`compas.json_loadz`
 
 All geometry objects and data structures,
-and also, for example, the visualisation scene,
+and also, for example, the visualization scene,
 are serializable data types.
 
 
@@ -54,8 +54,8 @@ True
 2
 
 If the attributes stored in the data dictionary defined by the ``__data__`` property
-are different from the initialisation parameters of the class,
-you also have to customise the ``__from_data__`` class method to compensate for the difference.
+are different from the initialization parameters of the class,
+you also have to customize the ``__from_data__`` class method to compensate for the difference.
 
 .. code-block:: python
 
@@ -107,7 +107,7 @@ Data schema
 ===========
 
 Optionally, you can provide a data schema that describes
-the internal serialisation data of your class more precisely.
+the internal serialization data of your class more precisely.
 
 .. code-block:: python
 
