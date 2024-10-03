@@ -17,7 +17,7 @@ and deserialised with the corresponding "load" functions
 
 All geometry objects and data structures,
 and also, for example, the visualisation scene,
-are data types.
+are serializable data types.
 
 
 Creating a new data type
