@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="../_static/compas.ico" type="image/x-icon">
-    <title>Working in Rhino 8 &#8212; COMPAS</title>
+    <title>Working in Rhino 8 (with CPython) &#8212; COMPAS</title>
   
   
   
@@ -465,7 +465,7 @@ document.write(`
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorial: Working in CAD</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="cad.rhino.html">Working in Rhino</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Working in Rhino 8</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Working in Rhino 8 (with CPython)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cad.grasshopper.html">Working in Grasshopper</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cad.blender.html">Working in Blender</a></li>
 </ul>
@@ -514,7 +514,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">User Guide</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">Working in Rhino 8</li>
+    <li class="breadcrumb-item active" aria-current="page">Working in Rhino 8 (with CPython)</li>
   </ul>
 </nav>
 </div>
@@ -531,54 +531,58 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="working-in-rhino-8">
-<h1>Working in Rhino 8</h1>
+  <section id="working-in-rhino-8-with-cpython">
+<h1>Working in Rhino 8 (with CPython)</h1>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>Support for the new Rhino 8 ScriptEditor is experimental.</p>
+<p>Support for the new Rhino 8 Script Editor is experimental.</p>
 </div>
+<p>Rhino 8 supports both CPython and IronPython.
+The instructions on this page are for working with COMPAS in the new Script Editor using CPython.
+More information about the Script Editor is available here: &lt;<a class="reference external" href="https://www.rhino3d.com/features/developer/scripting/">https://www.rhino3d.com/features/developer/scripting/</a>&gt;</p>
+<p>For working with COMPAS in Rhino 8 with IronPython,
+or for information about working in earlier versions of Rhino, see <a class="reference internal" href="cad.rhino.html"><span class="doc">Working in Rhino</span></a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The installation procedures listed here are for using COMPAS with CPython in Rhino 8.
-For using COMPAS with IronPython in Rhino 8, see <a class="reference internal" href="cad.rhino.html"><span class="doc">Working in Rhino</span></a>.</p>
+<p>To launch Rhino 8 Script Editor, simply type <cite>ScriptEditor</cite> at the Rhino 8 command prompt.</p>
 </div>
 <section id="installation">
 <h2>Installation</h2>
-<p>Rhino 8 comes with its own CPython executable (Python 3.9).
-This procedure simply uses that executable and its associated <code class="docutils literal notranslate"><span class="pre">pip</span></code> to install COMPAS.
-The location of the executable is different on different platforms.</p>
+<p>To use COMPAS packages in your Rhino 8 CPython scripts,
+you can now simply add the packages as requirements in a comment.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="ch">#! python3</span>
+<span class="c1"># r: compas</span>
+
+<span class="kn">import</span> <span class="nn">compas</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+
+<span class="n">mesh</span> <span class="o">=</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>More information is available here: &lt;<a class="reference external" href="https://developer.rhino3d.com/guides/scripting/scripting-command">https://developer.rhino3d.com/guides/scripting/scripting-command</a>&gt;</p>
+</section>
+<section id="alternative-method">
+<h2>Alternative Method</h2>
+<p>The above method only works if the package you want to install is available on <a class="reference external" href="https://pypi.org/">PyPI</a>.
+If you want to install a package from local source,
+you can use <cite>pip</cite> directly in combination with the Python executable that is included in Rhino.
+The default location of the executable is different for Windows and Mac.</p>
 <ul class="simple">
 <li><p>Windows: <code class="docutils literal notranslate"><span class="pre">%USERPROFILE%\.rhinocode\py39-rh8\python.exe</span></code></p></li>
 <li><p>macOS: <code class="docutils literal notranslate"><span class="pre">~/.rhinocode/py39-rh8/python3.9</span></code></p></li>
 </ul>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If you already have an installation of COMPAS on your system, you can try finding the Rhino 8 Python executable by running the following in a terminal or command prompt:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>compas_rhino.print_python_path
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>path/to/compas
+$<span class="w"> </span>~/.rhinocode/py39-rh8/python3.9<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>.
 </pre></div>
 </div>
-</div>
-<section id="update-pip">
-<h3>Update <cite>pip</cite></h3>
-<p>Before installing <cite>compas</cite> with <cite>pip</cite>, it is highly recommended that you update <cite>pip</cite> itself.</p>
+<p>To create an editable install, you should update <cite>pip</cite> itself, first.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>~/.rhinocode/py39-rh8/python3.9<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip
 </pre></div>
 </div>
-</section>
-<section id="install-from-pypi">
-<h3>Install from PyPI</h3>
-<p>For example on Mac:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>~/.rhinocode/py39-rh8/python3.9<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>compas
-</pre></div>
-</div>
-</section>
-<section id="install-from-source">
-<h3>Install from Source</h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>path/to/compas
 $<span class="w"> </span>~/.rhinocode/py39-rh8/python3.9<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
 </pre></div>
 </div>
-</section>
 </section>
 <section id="verification">
 <h2>Verification</h2>
@@ -612,12 +616,8 @@ $<span class="w"> </span>~/.rhinocode/py39-rh8/python3.9<span class="w"> </span>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#update-pip">Update <cite>pip</cite></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-from-pypi">Install from PyPI</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-from-source">Install from Source</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#alternative-method">Alternative Method</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verification">Verification</a></li>
 </ul>
   </nav></div>
