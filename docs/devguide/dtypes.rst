@@ -145,9 +145,9 @@ True
 False
 
 
-Note that when many instances of a type like this have to serialized/deserialized,
-letting the encoders and decoders that care of this automatically,
-can unnecessarily increase the size of the JSON file.
+Note that the the automatic serialization process will incur overhead information
+that increases the size of the resulting JSON file.
+The performance impact may be significant when many of these instances are serialized.
 
 To avoid this, anticipated conversions can be included explicitly in `__data__` and `__from_data__`.
 
