@@ -55,7 +55,7 @@ True
 
 If the attributes stored in the data dictionary defined by the ``__data__`` property
 are different from the initialization parameters of the class,
-you also have to customize the ``__from_data__`` class method to compensate for the difference.
+you must also customize the ``__from_data__`` class method to compensate for the difference.
 
 .. code-block:: python
 
