@@ -103,7 +103,7 @@ Attribute types
 
 Any attribute that is an instance of a Python base type or a serializable COMPAS data object
 can be included in the data dict created by the ``__data__`` property without further processing.
-The serialization process will take care of all required conversions automatically.
+The serialization process will recursively serialize all these attributes.
 
 .. code-block:: python
 
