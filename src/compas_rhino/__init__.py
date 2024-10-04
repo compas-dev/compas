@@ -16,6 +16,7 @@ INSTALLABLE_PACKAGES = ["compas", "compas_rhino", "compas_ghpython"]
 SUPPORTED_VERSIONS = ["5.0", "6.0", "7.0", "8.0"]
 DEFAULT_VERSION = "8.0"
 INSTALLED_VERSION = None
+INSTALLED_RHINO_VERSIONS = []
 
 INSTALLATION_ARGUMENTS = None
 
@@ -30,6 +31,7 @@ __all__ = [
     "SUPPORTED_VERSIONS",
     "DEFAULT_VERSION",
     "INSTALLED_VERSION",
+    "INSTALLED_RHINO_VERSIONS",
     "IRONPYTHON_PLUGIN_GUID",
     "GRASSHOPPER_PLUGIN_GUID",
     "RHINOCYCLES_PLUGIN_GUID",
@@ -200,6 +202,44 @@ def _try_remove_bootstrapper(path):
 # =============================================================================
 # =============================================================================
 # =============================================================================
+
+
+def _get_application_folder():
+    if compas.WINDOWS:
+        return os.getenv("ProgramFiles")
+
+    if compas.OSX:
+        return os.path.join("/", "Applications")
+
+    raise Exception("Unsupported platform")
+
+
+def _get_installed_rhino_versions():
+    global INSTALLED_RHINO_VERSIONS
+
+    appfolder = _get_application_folder()
+    versions = []
+
+    if compas.WINDOWS:
+        for version in ["6", "7", "8", "9"]:
+            if os.path.exists(os.path.join(appfolder, "Rhino {}".format(version))):
+                versions.append(version)
+
+    elif compas.OSX:
+        if os.path.exists(os.path.join(appfolder, "Rhinocerso.app")):
+            versions.append("6")
+
+        for version in ["7", "8", "9"]:
+            if os.path.exists(os.path.join(appfolder, "Rhino {}.app".format(version))):
+                versions.append(version)
+
+    else:
+        raise Exception("Unsupported platform")
+
+    versions = ["{:.1f}".format(float(v)) for v in versions]
+    INSTALLED_RHINO_VERSIONS = versions
+
+    return versions
 
 
 def _get_rhino_application_folder(version):
