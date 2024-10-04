@@ -23,8 +23,7 @@ are serializable data types.
 Creating a new data type
 ========================
 
-In most cases, to create a new data type it is sufficient to implement the ``__data__`` property
-of your custom data class.
+In most cases, it is sufficient to implement the ``__data__`` property when creating your custom `Data` class.
 
 .. code-block:: python
 
