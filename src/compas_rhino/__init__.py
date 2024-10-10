@@ -75,7 +75,7 @@ def unload_modules(top_level_module_name):
     list
         List of unloaded module names.
     """
-    modules = filter(lambda m: m.startswith(top_level_module_name), sys.modules)
+    modules = [name for name in sys.modules if name.startswith(top_level_module_name)]
 
     for module in modules:
         sys.modules.pop(module)
