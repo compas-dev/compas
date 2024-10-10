@@ -75,12 +75,12 @@ def unload_modules(top_level_module_name):
     list
         List of unloaded module names.
     """
-    modules = [name for name in sys.modules if name.startswith(top_level_module_name)]
+    to_remove = [name for name in sys.modules if name.startswith(top_level_module_name)]
 
-    for module in modules:
+    for module in to_remove:
         sys.modules.pop(module)
 
-    return modules
+    return to_remove
 
 
 def clear(guids=None):
