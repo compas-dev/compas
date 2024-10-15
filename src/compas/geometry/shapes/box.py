@@ -592,8 +592,8 @@ class Box(Shape):
         """
         box = self.copy()
         box.xsize *= x
-        box.ysize *= y
-        box.zsize *= z
+        box.ysize *= y if y is not None else x
+        box.zsize *= z if z is not None else x
 
         return box
 
