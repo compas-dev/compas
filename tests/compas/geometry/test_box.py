@@ -35,21 +35,15 @@ def test_box_corners(default_box):
     assert len(default_box.points) == 8
 
 
-@pytest.mark.parametrize(
-    "index, expected",
-    [
-        (0, Point(-0.5, -1.0, -1.5)),
-        (1, Point(-0.5, 1.0, -1.5)),
-        (2, Point(0.5, 1.0, -1.5)),
-        (3, Point(0.5, -1.0, -1.5)),
-        (4, Point(-0.5, -1.0, 1.5)),
-        (5, Point(-0.5, 1.0, 1.5)),
-        (6, Point(0.5, 1.0, 1.5)),
-        (7, Point(0.5, -1.0, 1.5)),
-    ],
-)
-def test_box_corner(default_box, index, expected):
-    assert default_box.corner(index) == expected
+def test_box_corner(default_box):
+    assert default_box.corner(0) == Point(-0.5, -1.0, -1.5)
+    assert default_box.corner(1) == Point(-0.5, 1.0, -1.5)
+    assert default_box.corner(2) == Point(0.5, 1.0, -1.5)
+    assert default_box.corner(3) == Point(0.5, -1.0, -1.5)
+    assert default_box.corner(4) == Point(-0.5, -1.0, 1.5)
+    assert default_box.corner(5) == Point(-0.5, 1.0, 1.5)
+    assert default_box.corner(6) == Point(0.5, 1.0, 1.5)
+    assert default_box.corner(7) == Point(0.5, -1.0, 1.5)
 
 
 def test_box_contains_point(default_box):
