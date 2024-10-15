@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Fixed `RuntimeError` when using `compas_rhino.unload_modules` in CPython`. 
+* Fixed `scaled` in `Box`.
 
 ### Removed
 

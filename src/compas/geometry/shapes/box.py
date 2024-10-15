@@ -575,6 +575,28 @@ class Box(Shape):
         self.ysize *= factor
         self.zsize *= factor
 
+    def scaled(self, x, y=None, z=None):
+        """Returns a scaled copy of the box.
+
+        Parameters
+        ----------
+        x : float
+            The scaling factor in the x-direction.
+        y : float, optional
+            The scaling factor in the y-direction.
+            Defaults to ``x``.
+        z : float, optional
+            The scaling factor in the z-direction.
+            Defaults to ``x``.
+
+        """
+        box = self.copy()
+        box.xsize *= x
+        box.ysize *= y
+        box.zsize *= z
+
+        return box
+
     # ==========================================================================
     # Methods
     # ==========================================================================
