@@ -105,6 +105,9 @@ def test_box_scale(default_box):
 
 def test_box_scaled(default_box):
     new_box = default_box.scaled(2.0, 4.0, 2.0)
+    assert default_box.xsize == 1.0
+    assert default_box.ysize == 2.0
+    assert default_box.zsize == 3.0
     assert new_box.xsize == 2.0
     assert new_box.ysize == 8.0
     assert new_box.zsize == 6.0

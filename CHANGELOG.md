@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Fixed `RuntimeError` when using `compas_rhino.unload_modules` in CPython`. 
 * Fixed `scaled` in `Box`.
+* Changed argument names of `Box.scale()` to `x`, `y`, `z`, instead of `factor` and made `y` and `z` optional to keep positional arguments backwards compatible.
 
 ### Removed
 
