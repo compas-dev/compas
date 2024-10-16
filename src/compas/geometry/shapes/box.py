@@ -558,22 +558,48 @@ class Box(Shape):
     #     self.ysize *= scaley
     #     self.zsize *= scalez
 
-    def scale(self, factor):
+    def scale(self, x, y=None, z=None):
         """Scale the box.
 
         Parameters
         ----------
-        factor : float
-            The scaling factor.
+        x : float
+            The scaling factor in x-direction. If no other factor is specified,
+            this factor will be used for all directions.
+        y : float, optional
+            The scaling factor in the y-direction.
+            Defaults to ``x``.
+        z : float, optional
+            The scaling factor in the z-direction.
+            Defaults to ``x``.
 
         Returns
         -------
         None
 
         """
-        self.xsize *= factor
-        self.ysize *= factor
-        self.zsize *= factor
+        self.xsize *= x
+        self.ysize *= y if y is not None else x
+        self.zsize *= z if z is not None else x
+
+    def scaled(self, x, y=None, z=None):
+        """Returns a scaled copy of the box.
+
+        Parameters
+        ----------
+        x : float
+            The scaling factor in the x-direction.
+        y : float, optional
+            The scaling factor in the y-direction.
+            Defaults to ``x``.
+        z : float, optional
+            The scaling factor in the z-direction.
+            Defaults to ``x``.
+
+        """
+        box = self.copy()
+        box.scale(x, y, z)
+        return box
 
     # ==========================================================================
     # Methods
