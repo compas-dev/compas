@@ -27,25 +27,28 @@ In most cases, it is sufficient to implement the ``__data__`` property when crea
 
 .. code-block:: python
 
-    class CustomData(Data):
+    class SomeThing(Data):
 
-        def __init__(self, a, b, name=None)
-            super(CustomData, self).__init__(name=name)
+        def __init__(self, a, b)
+            super().__init__()
+            # note that if the code needs to be compatible with IronPython
+            # you should write the following:
+            # super(SomeThing, self).__init__()
             self.a = a
             self.b = b
 
         @property
         def __data__(self):
-            data = super(CustomData, self).__data__
-            data['a'] = self.a
-            data['b'] = self.b
-            return data
+            return {
+                "a": self.a,
+                "b": self.b,
+            }
 
 
->>> custom = CustomData(a=1, b=2)
+>>> custom = SomeThing(a=1, b=2)
 >>> compas.json_dump(custom, "custom.json")
 >>> result = compas.json_load("custom.json")
->>> isinstance(result, CustomData)
+>>> isinstance(result, SomeThing)
 True
 >>> result.a
 1
@@ -58,23 +61,20 @@ you must also customize the ``__from_data__`` class method to compensate for the
 
 .. code-block:: python
 
-    class CustomData(Data):
+    class SomeThing(Data):
 
         def __init__(self)
             super().__init__()
             # note that if the code needs to be compatible with IronPython
             # you should write the following:
-            # super(CustomData, self).__init__()
+            # super(SomeThing, self).__init__()
             self.items = []
 
         @property
         def __data__(self):
-            data = super().__data__
-            # note that if the code needs to be compatible with IronPython
-            # you should write the following:
-            # data = super(CustomData, self).__data__
-            data['items'] = self.items
-            return data
+            return {
+                "items": self.items,
+            }
 
         @classmethod
         def __from_data__(cls, data):
@@ -87,12 +87,12 @@ you must also customize the ``__from_data__`` class method to compensate for the
             self.items.append(item)
 
 
->>> custom = CustomData()
+>>> custom = SomeThing()
 >>> custom.add(1)
 >>> custom.add(2)
 >>> compas.json_dump(custom, "custom.json")
 >>> result = compas.json_load("custom.json")
->>> isinstance(result, CustomData)
+>>> isinstance(result, SomeThing)
 True
 >>> result.items
 [1, 2]
@@ -107,10 +107,13 @@ The serialization process will recursively serialize all these attributes.
 
 .. code-block:: python
 
-    class CustomData(Data):
-        
-        def __init__(self, point, frame, mesh, name=None):
-            super().__init__(name=name)
+    class SomeThing(Data):
+
+        def __init__(self, point, frame, mesh):
+            super().__init__()
+            # note that if the code needs to be compatible with IronPython
+            # you should write the following:
+            # super(SomeThing, self).__init__()
             self.point = point
             self.frame = frame
             self.mesh = mesh
@@ -130,7 +133,7 @@ The serialization process will recursively serialize all these attributes.
 >>> point = Point(1, 2, 3)
 >>> frame = Frame()
 >>> mesh = Mesh.from_meshgrid(10, 10)
->>> custom = CustomData(point, frame, mesh)
+>>> custom = SomeThing(point, frame, mesh)
 >>> compas.json_dump(custom, "custom.json")
 >>> result = compas.json_load("custom.json")
 >>> isinstance(result.point, Point)
@@ -153,10 +156,13 @@ To avoid this, anticipated conversions can be included explicitly in `__data__` 
 
 .. code-block:: python
 
-    class CustomData(Data):
-        
-        def __init__(self, point, frame, mesh, name=None):
-            super().__init__(name=name)
+    class SomeThing(Data):
+
+        def __init__(self, point, frame, mesh):
+            super().__init__()
+            # note that if the code needs to be compatible with IronPython
+            # you should write the following:
+            # super(SomeThing, self).__init__()
             self.point = point
             self.frame = frame
             self.mesh = mesh
@@ -174,5 +180,5 @@ To avoid this, anticipated conversions can be included explicitly in `__data__` 
             return cls(
                 Point.__from_data__(data['point']),
                 Frame.__from_data__(data['frame']),
-                Mesh.__from_data__(data['mesh3']),
+                Mesh.__from_data__(data['mesh']),
             )
