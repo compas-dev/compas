@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed `RuntimeError` when using `compas_rhino.unload_modules` in CPython`. 
 * Fixed bug in `Box.scaled` causing a `TypeError` due to incorrect parameter forwarding.
 * Changed argument names of `Box.scale()` to `x`, `y`, `z`, instead of `factor` and made `y` and `z` optional to keep positional arguments backwards compatible.
+* Fixed import errors in `compas_rhino.conduits` for Rhino 8.
 
 ### Removed
 

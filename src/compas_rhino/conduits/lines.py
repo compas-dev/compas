@@ -2,11 +2,11 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from Rhino.Geometry import Point3d
-from System.Drawing.Color import FromArgb
+import Rhino  # type: ignore
+import System  # type: ignore
 
+from compas.data.validators import is_sequence_of_iterable
 from compas.itertools import iterable_like
-from compas.utilities import is_sequence_of_iterable
 
 from .base import BaseConduit
 
@@ -58,7 +58,7 @@ class LinesConduit(BaseConduit):
     """
 
     default_thickness = 1.0
-    default_color = FromArgb(255, 255, 255)
+    default_color = System.Drawing.Color.FromArgb(255, 255, 255)
 
     def __init__(self, lines, thickness=None, color=None, **kwargs):
         super(LinesConduit, self).__init__(**kwargs)
@@ -76,7 +76,7 @@ class LinesConduit(BaseConduit):
     def thickness(self, thickness):
         thickness = thickness or self.default_thickness
         try:
-            len(thickness)
+            len(thickness)  # type: ignore
         except TypeError:
             thickness = [thickness]
         thickness = iterable_like(self.lines, thickness, self.default_thickness)
@@ -91,7 +91,7 @@ class LinesConduit(BaseConduit):
         color = color or self.default_color
         if not is_sequence_of_iterable(color):
             color = [color]
-        self._color = [FromArgb(*c) for c in iterable_like(self.lines, color, self.default_color)]
+        self._color = [System.Drawing.Color.FromArgb(*c) for c in iterable_like(self.lines, color, self.default_color)]
 
     def DrawForeground(self, e):
         """Draw the lines.
@@ -105,5 +105,10 @@ class LinesConduit(BaseConduit):
         None
 
         """
-        for (start, end), color, thickness in zip(self.lines, self.color, self.thickness):
-            e.Display.DrawLine(Point3d(*start), Point3d(*end), color, thickness)
+        for (start, end), color, thickness in zip(self.lines, self.color, self.thickness):  # type: ignore
+            e.Display.DrawLine(
+                Rhino.Geometry.Point3d(*start),
+                Rhino.Geometry.Point3d(*end),
+                color,
+                thickness,
+            )
