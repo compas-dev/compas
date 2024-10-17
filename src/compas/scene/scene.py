@@ -163,8 +163,8 @@ class Scene(Tree):
         -----
         To redraw the scene, without modifying any of the other objects in the visualisation context:
 
-        >>> scene.clear(clear_scene=False, clear_context=True)
-        >>> scene.draw()
+        >>> scene.clear(clear_scene=False, clear_context=True)  # doctest: +SKIP
+        >>> scene.draw()  # doctest: +SKIP
 
         """
         guids = []
@@ -209,7 +209,6 @@ class Scene(Tree):
         before drawing all scene objects in the scene tree.
 
         """
-
         self.clear(clear_scene=False, clear_context=True)
         self.draw()
 

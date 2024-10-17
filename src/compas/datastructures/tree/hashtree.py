@@ -117,19 +117,21 @@ class HashTree(Tree):
     >>> tree1 = HashTree.from_dict({"a": {"b": 1, "c": 3}, "d": [1, 2, 3], "e": 2})
     >>> tree2 = HashTree.from_dict({"a": {"b": 1, "c": 2}, "d": [1, 2, 3], "f": 2})
     >>> print(tree1)
-    +-- ROOT @ 4cd56
-        +-- .a @ c16fd
-        |   +-- .b:1 @ c9b55
-        |   +-- .c:3 @ 518d4
-        +-- .d:[1, 2, 3] @ 9be3a
-        +-- .e:2 @ 68355
+    <Tree with 6 nodes>
+    └── ROOT @ 4cd56
+        ├── .a @ c16fd
+        │   ├── .b:1 @ c9b55
+        │   └── .c:3 @ 518d4
+        ├── .d:[1, 2, 3] @ 9be3a
+        └── .e:2 @ 68355
     >>> print(tree2)
-    +-- ROOT @ fbe39
-        +-- .a @ c2022
-        |   +-- .b:1 @ c9b55
-        |   +-- .c:2 @ e3365
-        +-- .d:[1, 2, 3] @ 9be3a
-        +-- .f:2 @ 93861
+    <Tree with 6 nodes>
+    └── ROOT @ fbe39
+        ├── .a @ c2022
+        │   ├── .b:1 @ c9b55
+        │   └── .c:2 @ e3365
+        ├── .d:[1, 2, 3] @ 9be3a
+        └── .f:2 @ 93861
     >>> tree2.print_diff(tree1)
     Added:
     {'path': '.f', 'value': 2}
