@@ -115,6 +115,7 @@ class DataEncoder(json.JSONEncoder):
             The serialized object.
 
         """
+        from compas.datastructures.attributes import AttributeView
 
         if hasattr(o, "__jsondump__"):
             return o.__jsondump__(minimal=DataEncoder.minimal)
@@ -152,6 +153,9 @@ class DataEncoder(json.JSONEncoder):
         if dotnet_support:
             if isinstance(o, (System.Decimal, System.Double, System.Single)):
                 return float(o)
+
+        if isinstance(o, AttributeView):
+            return dict(o)
 
         return super(DataEncoder, self).default(o)
 

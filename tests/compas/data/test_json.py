@@ -20,7 +20,7 @@ def test_json_native():
 
 def test_json_primitive():
     before = Point(0, 0, 0)
-    after = compas.json_loads(compas.json_dumps(before))
+    after = compas.json_loads(compas.json_dumps(before))  # type: Point
     assert before.__dtype__ == after.__dtype__
     assert all(a == b for a, b in zip(before, after))
     assert before.guid == after.guid
@@ -28,7 +28,7 @@ def test_json_primitive():
 
 def test_json_shape():
     before = Box(frame=Frame(Point(0, 0, 0), Vector(1, 0, 0), Vector(0, 1, 0)), xsize=1, ysize=1, zsize=1)
-    after = compas.json_loads(compas.json_dumps(before))
+    after = compas.json_loads(compas.json_dumps(before))  # type: Box
     assert before.__dtype__ == after.__dtype__
     assert all(a == b for a, b in zip(before.to_vertices_and_faces()[0], after.to_vertices_and_faces()[0]))
     assert before.guid == after.guid
@@ -36,7 +36,7 @@ def test_json_shape():
 
 def test_json_xform():
     before = Transformation.from_frame_to_frame(Frame.worldXY(), Frame.worldXY())
-    after = compas.json_loads(compas.json_dumps(before))
+    after = compas.json_loads(compas.json_dumps(before))  # type: Transformation
     assert before.__dtype__ == after.__dtype__
     assert all(a == b for a, b in zip(before, after))
     assert before.guid == after.guid
@@ -47,7 +47,7 @@ def test_json_graph():
     a = before.add_node()
     b = before.add_node()
     before.add_edge(a, b)
-    after = compas.json_loads(compas.json_dumps(before))
+    after = compas.json_loads(compas.json_dumps(before))  # type: Graph
     assert before.__dtype__ == after.__dtype__
     # assert before.attributes == after.attributes
     assert all(before.has_node(node) for node in after.nodes())
@@ -59,7 +59,7 @@ def test_json_graph():
 
 def test_json_mesh():
     before = Mesh.from_vertices_and_faces([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]], [[0, 1, 2, 3]])
-    after = compas.json_loads(compas.json_dumps(before))
+    after = compas.json_loads(compas.json_dumps(before))  # type: Mesh
     assert before.__dtype__ == after.__dtype__
     # assert before.attributes == after.attributes
     assert all(before.has_vertex(vertex) for vertex in after.vertices())
@@ -95,7 +95,7 @@ def test_json_volmesh():
             ]
         ],
     )
-    after = compas.json_loads(compas.json_dumps(before))
+    after = compas.json_loads(compas.json_dumps(before))  # type: VolMesh
     assert before.__dtype__ == after.__dtype__
     # assert before.attributes == after.attributes
     assert all(before.has_vertex(vertex) for vertex in after.vertices())
@@ -121,9 +121,31 @@ def test_json_zip():
 
     before = Box(frame=Frame(Point(0, 0, 0), Vector(1, 0, 0), Vector(0, 1, 0)), xsize=2, ysize=5, zsize=3)
     compas.json_dumpz(before, zipfile_name)
-    after = compas.json_loadz(zipfile_name)
+    after = compas.json_loadz(zipfile_name)  # type: Box
     assert before.__dtype__ == after.__dtype__
     assert all(a == b for a, b in zip(before.to_vertices_and_faces()[0], after.to_vertices_and_faces()[0]))
+    assert before.guid == after.guid
+
+
+def test_json_attributeview():
+    mesh = Mesh.from_meshgrid(10, 10)
+    before = Mesh()
+    for vertex in mesh.vertices():
+        attr = mesh.vertex_attributes(vertex)
+        before.add_vertex(key=vertex, attr_dict=attr)
+    for face in mesh.faces():
+        attr = mesh.face_attributes(face)
+        before.add_face(vertices=mesh.face_vertices(face), fkey=face, attr_dict=attr)
+    after = compas.json_loads(compas.json_dumps(before))  # type: Mesh
+
+    assert before.__dtype__ == after.__dtype__
+    assert all(before.has_vertex(vertex) for vertex in after.vertices())
+    assert all(after.has_vertex(vertex) for vertex in before.vertices())
+    assert all(before.has_face(face) for face in after.faces())
+    assert all(after.has_face(face) for face in before.faces())
+    assert all(before.has_edge(edge) for edge in after.edges())
+    assert all(after.has_edge(edge) for edge in before.edges())
+    assert all(before.face_vertices(a) == after.face_vertices(b) for a, b in zip(before.faces(), after.faces()))
     assert before.guid == after.guid
 
 
