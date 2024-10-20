@@ -286,6 +286,10 @@ document.write(`
   
 
   
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
 </div>
 
     </nav>
@@ -434,6 +438,8 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="plugins.html">Developing a Plugin For a Pluggable</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ghcomponent.html">Developing a GH Component</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Implementing a New Data Type</a></li>
+
+
 </ul>
 </div>
 </nav></div>
@@ -493,6 +499,174 @@ document.write(`
                   
   <section id="implementing-a-new-data-type">
 <h1>Implementing a New Data Type</h1>
+<p>COMPAS data types are classes that are based on <a class="reference internal" href="../api/generated/compas.data.Data.html" title="compas.data.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.data.Data</span></code></a>.</p>
+<p>Data types can be serialized to JSON with</p>
+<ul class="simple">
+<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">compas.json_dump()</span></code></p></li>
+<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">compas.json_dumps()</span></code></p></li>
+<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">compas.json_dumpz()</span></code></p></li>
+</ul>
+<p>and deserialized with the corresponding “load” functions</p>
+<ul class="simple">
+<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">compas.json_load()</span></code></p></li>
+<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">compas.json_loads()</span></code></p></li>
+<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">compas.json_loadz()</span></code></p></li>
+</ul>
+<p>All geometry objects and data structures,
+and also, for example, the visualization scene,
+are serializable data types.</p>
+</section>
+<section id="creating-a-new-data-type">
+<h1>Creating a new data type</h1>
+<p>In most cases, it is sufficient to implement the <code class="docutils literal notranslate"><span class="pre">__data__</span></code> property when creating your custom <cite>Data</cite> class.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SomeThing</span><span class="p">(</span><span class="n">Data</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1"># note that if the code needs to be compatible with IronPython</span>
+        <span class="c1"># you should write the following:</span>
+        <span class="c1"># super(SomeThing, self).__init__()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="n">a</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="n">b</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">__data__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span>
+            <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span>
+        <span class="p">}</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">custom</span> <span class="o">=</span> <span class="n">SomeThing</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">compas</span><span class="o">.</span><span class="n">json_dump</span><span class="p">(</span><span class="n">custom</span><span class="p">,</span> <span class="s2">&quot;custom.json&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">json_load</span><span class="p">(</span><span class="s2">&quot;custom.json&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">SomeThing</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">a</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">b</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+<p>If the attributes stored in the data dictionary defined by the <code class="docutils literal notranslate"><span class="pre">__data__</span></code> property
+are different from the initialization parameters of the class,
+you must also customize the <code class="docutils literal notranslate"><span class="pre">__from_data__</span></code> class method to compensate for the difference.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SomeThing</span><span class="p">(</span><span class="n">Data</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1"># note that if the code needs to be compatible with IronPython</span>
+        <span class="c1"># you should write the following:</span>
+        <span class="c1"># super(SomeThing, self).__init__()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">items</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">__data__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;items&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">__from_data__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="n">custom</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;items&#39;</span><span class="p">]:</span>
+            <span class="n">custom</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">custom</span>
+
+    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">custom</span> <span class="o">=</span> <span class="n">SomeThing</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">custom</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">custom</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">compas</span><span class="o">.</span><span class="n">json_dump</span><span class="p">(</span><span class="n">custom</span><span class="p">,</span> <span class="s2">&quot;custom.json&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">json_load</span><span class="p">(</span><span class="s2">&quot;custom.json&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">SomeThing</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">items</span>
+<span class="go">[1, 2]</span>
+</pre></div>
+</div>
+</section>
+<section id="attribute-types">
+<h1>Attribute types</h1>
+<p>Any attribute that is an instance of a Python base type or a serializable COMPAS data object
+can be included in the data dict created by the <code class="docutils literal notranslate"><span class="pre">__data__</span></code> property without further processing.
+The serialization process will recursively serialize all these attributes.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SomeThing</span><span class="p">(</span><span class="n">Data</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">mesh</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1"># note that if the code needs to be compatible with IronPython</span>
+        <span class="c1"># you should write the following:</span>
+        <span class="c1"># super(SomeThing, self).__init__()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">point</span> <span class="o">=</span> <span class="n">point</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">frame</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span> <span class="o">=</span> <span class="n">mesh</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">__data__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;point&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="p">,</span>
+            <span class="s2">&quot;frame&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="p">,</span>
+            <span class="s2">&quot;mesh&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="p">,</span>
+        <span class="p">}</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">compas</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Point</span><span class="p">,</span> <span class="n">Frame</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">frame</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_meshgrid</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">custom</span> <span class="o">=</span> <span class="n">SomeThing</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">mesh</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">compas</span><span class="o">.</span><span class="n">json_dump</span><span class="p">(</span><span class="n">custom</span><span class="p">,</span> <span class="s2">&quot;custom.json&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">json_load</span><span class="p">(</span><span class="s2">&quot;custom.json&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">point</span><span class="p">,</span> <span class="n">Point</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">frame</span><span class="p">,</span> <span class="n">Frame</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">mesh</span><span class="p">,</span> <span class="n">Mesh</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">point</span> <span class="o">==</span> <span class="n">point</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">point</span> <span class="ow">is</span> <span class="n">point</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<p>Note that the the automatic serialization process will incur overhead information
+that increases the size of the resulting JSON file.
+The performance impact may be significant when many of these instances are serialized.</p>
+<p>To avoid this, anticipated conversions can be included explicitly in <cite>__data__</cite> and <cite>__from_data__</cite>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SomeThing</span><span class="p">(</span><span class="n">Data</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">mesh</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1"># note that if the code needs to be compatible with IronPython</span>
+        <span class="c1"># you should write the following:</span>
+        <span class="c1"># super(SomeThing, self).__init__()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">point</span> <span class="o">=</span> <span class="n">point</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">frame</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span> <span class="o">=</span> <span class="n">mesh</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">__data__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;point&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="o">.</span><span class="n">__data__</span><span class="p">,</span>
+            <span class="s2">&quot;frame&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">__data__</span><span class="p">,</span>
+            <span class="s2">&quot;mesh&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">__data__</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">__from_data__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">Point</span><span class="o">.</span><span class="n">__from_data__</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;point&#39;</span><span class="p">]),</span>
+            <span class="n">Frame</span><span class="o">.</span><span class="n">__from_data__</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;frame&#39;</span><span class="p">]),</span>
+            <span class="n">Mesh</span><span class="o">.</span><span class="n">__from_data__</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mesh&#39;</span><span class="p">]),</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
 </section>
 
 
@@ -507,6 +681,23 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Implementing a New Data Type</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-new-data-type">Creating a new data type</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#attribute-types">Attribute types</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
               
             
           </div>
