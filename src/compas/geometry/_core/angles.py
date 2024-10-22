@@ -78,8 +78,7 @@ def angle_vectors(u, v, deg=False, tol=None):
 def angle_vectors_signed(u, v, normal, deg=False, tol=None):
     """Computes the signed angle between two vectors.
 
-    It calculates the angle such that rotating vector u about the normal by
-    angle would result in a vector that looks into the same direction as v.
+    Returns the smallest angle between 2 vectors, with the sign of the angle based on the direction of the normal vector according to the right hand rule of rotation.
 
     Parameters
     ----------
@@ -119,6 +118,43 @@ def angle_vectors_signed(u, v, normal, deg=False, tol=None):
         return degrees(angle)
     else:
         return angle
+
+def angle_vectors_projected(u, v, normal, deg=False, tol=None):
+    """Computes the signed angle between two vectors.
+
+    Retuns the angle between 2 vectors projected onto a plane defined by a normal vector.
+    This can be positive or negative depending on the direction of the normal vector and the order of the input vectors
+
+    Parameters
+    ----------
+    u : [float, float, float] | :class:`compas.geometry.Vector`
+        XYZ components of the first vector.
+    v : [float, float, float] | :class:`compas.geometry.Vector`
+        XYZ components of the second vector.
+    normal : [float, float, float] | :class:`compas.geometry.Vector`
+        XYZ components of the plane's normal spanned by u and v.
+    deg : bool, optional
+        If True, returns the angle in degrees.
+    tol : float, optional
+        The tolerance for comparing values to zero.
+        Default is :attr:`TOL.absolute`.
+
+    Returns
+    -------
+    float
+        The signed angle in radians (in degrees if deg == True).
+
+    Examples
+    --------
+    >>> normal = [0.0, 0.0, 1.0]
+    >>> angle_vectors_signed([0.0, 1.0, 0.0], [1.0, 0.0, 0.0], normal)
+    -1.57079
+
+    """
+    u_cross = cross_vectors(u,normal)
+    v_cross = cross_vectors(v,normal)
+
+    return angle_vectors_signed(u_cross, v_cross, normal, deg, tol)
 
 
 def angle_vectors_xy(u, v, deg=False, tol=None):
