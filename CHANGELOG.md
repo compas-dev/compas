@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added instructions for creating new data types to the dev guide.
+
 ### Changed
 
 * Fixed `RuntimeError` when using `compas_rhino.unload_modules` in CPython`. 
@@ -16,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed argument names of `Box.scale()` to `x`, `y`, `z`, instead of `factor` and made `y` and `z` optional to keep positional arguments backwards compatible.
 * Fixed import errors in `compas_rhino.conduits` for Rhino 8.
 * Fixed doctest failures.
+* Fixed bug in serialization when `compas.datastructures.attributes.AttributeView` is used.
 
 ### Removed
 
@@ -27,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Fixed support for `compas_gpython` in Rhino 8 Grasshopper CPython components.
+* Changed installation instructions for Rhino 8 in the user guide.
 * Fixed `Graph.from_edges` always returning `None`.
 
 ### Removed
