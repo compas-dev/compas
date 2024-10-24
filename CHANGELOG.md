@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed import errors in `compas_rhino.conduits` for Rhino 8.
 * Fixed doctest failures.
 * Fixed bug in serialization when `compas.datastructures.attributes.AttributeView` is used.
+* Fixed bug in the serialisation of empty scenes.
 
 ### Removed
 
