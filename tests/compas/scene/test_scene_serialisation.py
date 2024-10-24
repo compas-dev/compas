@@ -115,3 +115,9 @@ if not compas.IPY:
 
         scene2 = Scene.from_jsonstring(scene1.to_jsonstring())
         assert assert_is_data_equal(scene1, scene2)
+
+    def test_scene_serialisation_empty():
+        scene = Scene()
+        scene = compas.json_loads(compas.json_dumps(scene))
+
+        assert isinstance(scene, Scene)

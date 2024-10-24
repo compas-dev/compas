@@ -56,7 +56,7 @@ class Scene(Tree):
         items = {str(item.guid): item for item in data["items"]}
 
         def add(node, parent, items):
-            for child_node in node["children"]:
+            for child_node in node.get("children", []):
                 guid = child_node["item"]
                 settings = child_node["settings"]
                 sceneobject = parent.add(items[guid], **settings)
