@@ -210,7 +210,7 @@ class Data(object):
             raise TypeError("The data in the file is not a {}.".format(cls))
         return data
 
-    def to_json(self, filepath, pretty=False):
+    def to_json(self, filepath, pretty=False, compact=False, minimal=False):
         """Convert an object to its native data representation and save it to a JSON file.
 
         Parameters
@@ -218,11 +218,14 @@ class Data(object):
         filepath : str
             The path to the JSON file.
         pretty : bool, optional
-            If True, the JSON file will be pretty printed.
-            Defaults to False.
+            If True, format the output with newlines and indentation.
+        compact : bool, optional
+            If True, format the output without any whitespace.
+        minimal : bool, optional
+            If True, exclude the GUID from the JSON output.
 
         """
-        compas.json_dump(self, filepath, pretty=pretty)
+        compas.json_dump(self, filepath, pretty=pretty, compact=compact, minimal=minimal)
 
     @classmethod
     def from_jsonstring(cls, string):  # type: (...) -> Data
@@ -249,14 +252,17 @@ class Data(object):
             raise TypeError("The data in the string is not a {}.".format(cls))
         return data
 
-    def to_jsonstring(self, pretty=False):
+    def to_jsonstring(self, pretty=False, compact=False, minimal=False):
         """Convert an object to its native data representation and save it to a JSON string.
 
         Parameters
         ----------
         pretty : bool, optional
-            If True, the JSON string will be pretty printed.
-            Defaults to False.
+            If True, format the output with newlines and indentation.
+        compact : bool, optional
+            If True, format the output without any whitespace.
+        minimal : bool, optional
+            If True, exclude the GUID from the JSON output.
 
         Returns
         -------
@@ -264,7 +270,7 @@ class Data(object):
             The JSON string.
 
         """
-        return compas.json_dumps(self, pretty=pretty)
+        return compas.json_dumps(self, pretty=pretty, compact=compact, minimal=minimal)
 
     def copy(self, cls=None):  # type: (...) -> D
         """Make an independent copy of the data object.
@@ -284,7 +290,8 @@ class Data(object):
         if not cls:
             cls = type(self)
         obj = cls.__from_data__(deepcopy(self.__data__))
-        obj.name = self.name
+        if self._name is not None:
+            obj._name = self._name
         return obj  # type: ignore
 
     def sha256(self, as_string=False):
