@@ -296,6 +296,31 @@ class RhinoBrep(Brep):
         rhino_mesh = mesh_to_rhino(mesh)
         return cls.from_native(Rhino.Geometry.Brep.CreateFromMesh(rhino_mesh, True))
 
+    @classmethod
+    def from_loft(cls, curves):
+        """Construct a Brep by lofting a set of curves.
+
+        Parameters
+        ----------
+        curves : list[:class:`compas.geometry.Curve`]
+
+        Returns
+        -------
+        :class:`compas.geometry.Brep`
+
+        """
+        rhino_curves = [curve_to_rhino(curve) for curve in curves]
+        start = Rhino.Geometry.Point3d.Unset
+        end = Rhino.Geometry.Point3d.Unset
+        loft_type = Rhino.Geometry.LoftType.Normal
+
+        results = Rhino.Geometry.Brep.CreateFromLoft(rhino_curves, start, end, loft_type, closed=False)
+        if not results:
+            raise BrepTrimmingError("Loft operation ended with no result")
+        result = results[0]
+
+        return cls.from_native(result)
+
     # ==============================================================================
     # Methods
     # ==============================================================================
