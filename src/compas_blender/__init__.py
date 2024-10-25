@@ -11,7 +11,7 @@ except ImportError:
     pass
 
 
-__version__ = "2.4.3"
+__version__ = "2.5.0"
 
 
 INSTALLABLE_PACKAGES = ["compas", "compas_blender"]
