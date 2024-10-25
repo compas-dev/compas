@@ -5,7 +5,12 @@
     "url": "https://compas.dev/compas/latest/"
   },
   {
-    "name": "2.4.3 (stable)",
+    "name": "2.5.0 (stable)",
+    "version": "2.5.0",
+    "url": "https://compas.dev/compas/2.5.0/"
+  },
+  {
+    "name": "2.4.3",
     "version": "2.4.3",
     "url": "https://compas.dev/compas/2.4.3/"
   },
