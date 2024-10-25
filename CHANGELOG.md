@@ -10,16 +10,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Added instructions for creating new data types to the dev guide.
+* Added `compact=False`, `minimal=False` to `compas.data.Data.to_json()` to `compas.data.Data.to_jsonstring()`.
+* Added `copy_guid=False` to `compas.data.Data.copy()`. If true, the copy has the same guid as the original.
 
 ### Changed
 
-* Fixed `RuntimeError` when using `compas_rhino.unload_modules` in CPython`. 
+* Fixed `RuntimeError` when using `compas_rhino.unload_modules` in CPython`.
 * Fixed bug in `Box.scaled` causing a `TypeError` due to incorrect parameter forwarding.
 * Changed argument names of `Box.scale()` to `x`, `y`, `z`, instead of `factor` and made `y` and `z` optional to keep positional arguments backwards compatible.
 * Fixed import errors in `compas_rhino.conduits` for Rhino 8.
 * Fixed doctest failures.
 * Fixed bug in serialization when `compas.datastructures.attributes.AttributeView` is used.
 * Fixed bug in the serialisation of empty scenes.
+* Fixed bug in serialisation process due to `name` attribute appearing in json representation after copy even if not present before copy.
 
 ### Removed
 
