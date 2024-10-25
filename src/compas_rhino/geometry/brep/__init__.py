@@ -38,3 +38,8 @@ def from_sphere(*args, **kwargs):
 @plugin(category="factories", requires=["Rhino"])
 def from_mesh(*args, **kwargs):
     return RhinoBrep.from_mesh(*args, **kwargs)
+
+
+@plugin(category="factories", requires=["Rhino"])
+def from_loft(*args, **kwargs):
+    return RhinoBrep.from_loft(*args, **kwargs)
