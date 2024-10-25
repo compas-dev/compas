@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added instructions for creating new data types to the dev guide.
 * Added `compact=False`, `minimal=False` to `compas.data.Data.to_json()` to `compas.data.Data.to_jsonstring()`.
+* Added `copy_guid=False` to `compas.data.Data.copy()`. If true, the copy has the same guid as the original.
 
 ### Changed
 

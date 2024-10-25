@@ -272,7 +272,7 @@ class Data(object):
         """
         return compas.json_dumps(self, pretty=pretty, compact=compact, minimal=minimal)
 
-    def copy(self, cls=None):  # type: (...) -> D
+    def copy(self, cls=None, copy_guid=False):  # type: (...) -> D
         """Make an independent copy of the data object.
 
         Parameters
@@ -280,6 +280,8 @@ class Data(object):
         cls : Type[:class:`compas.data.Data`], optional
             The type of data object to return.
             Defaults to the type of the current data object.
+        copy_guid : bool, optional
+            If True, the copy will have the same guid as the original.
 
         Returns
         -------
@@ -291,7 +293,9 @@ class Data(object):
             cls = type(self)
         obj = cls.__from_data__(deepcopy(self.__data__))
         if self._name is not None:
-            obj._name = self._name
+            obj._name = self.name
+        if copy_guid:
+            obj._guid = self.guid
         return obj  # type: ignore
 
     def sha256(self, as_string=False):
