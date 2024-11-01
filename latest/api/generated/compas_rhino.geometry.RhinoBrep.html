@@ -1121,7 +1121,7 @@ document.write(`
 <h1>RhinoBrep</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas_rhino.geometry.RhinoBrep">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></span><span class="sig-name descname"><span class="pre">RhinoBrep</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/663a05c/src/compas/../compas_rhino/geometry/brep/brep.py#L33"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></span><span class="sig-name descname"><span class="pre">RhinoBrep</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/fb5bc8e/src/compas/../compas_rhino/geometry/brep/brep.py#L33"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Brep.html#compas.geometry.Brep" title="compas.geometry.brep.brep.Brep"><code class="xref py py-class docutils literal notranslate"><span class="pre">Brep</span></code></a></p>
 <p>Rhino Brep backend class.</p>
 <p>Wraps around and allows serialization and de-serialization of a <code class="xref py py-class docutils literal notranslate"><span class="pre">Rhino.Geometry.Brep</span></code>.</p>
@@ -1178,31 +1178,34 @@ document.write(`
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_extrusion.html#compas_rhino.geometry.RhinoBrep.from_extrusion" title="compas_rhino.geometry.RhinoBrep.from_extrusion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_extrusion</span></code></a></p></td>
 <td><p>Create a RhinoBrep from an extrusion.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_mesh.html#compas_rhino.geometry.RhinoBrep.from_mesh" title="compas_rhino.geometry.RhinoBrep.from_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_mesh</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_loft.html#compas_rhino.geometry.RhinoBrep.from_loft" title="compas_rhino.geometry.RhinoBrep.from_loft"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_loft</span></code></a></p></td>
+<td><p>Construct a Brep by lofting a set of curves.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_mesh.html#compas_rhino.geometry.RhinoBrep.from_mesh" title="compas_rhino.geometry.RhinoBrep.from_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_mesh</span></code></a></p></td>
 <td><p>Create a RhinoBrep from a mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_native.html#compas_rhino.geometry.RhinoBrep.from_native" title="compas_rhino.geometry.RhinoBrep.from_native"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_native</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_native.html#compas_rhino.geometry.RhinoBrep.from_native" title="compas_rhino.geometry.RhinoBrep.from_native"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_native</span></code></a></p></td>
 <td><p>Constructs a RhinoBrep from an instance of a Rhino.Geometry.Brep.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_sphere.html#compas_rhino.geometry.RhinoBrep.from_sphere" title="compas_rhino.geometry.RhinoBrep.from_sphere"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_sphere</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_sphere.html#compas_rhino.geometry.RhinoBrep.from_sphere" title="compas_rhino.geometry.RhinoBrep.from_sphere"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_sphere</span></code></a></p></td>
 <td><p>Create a RhinoBrep from a sphere.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.slice.html#compas_rhino.geometry.RhinoBrep.slice" title="compas_rhino.geometry.RhinoBrep.slice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">slice</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.slice.html#compas_rhino.geometry.RhinoBrep.slice" title="compas_rhino.geometry.RhinoBrep.slice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">slice</span></code></a></p></td>
 <td><p>Slice through the Brep with a plane.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.split.html#compas_rhino.geometry.RhinoBrep.split" title="compas_rhino.geometry.RhinoBrep.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.split.html#compas_rhino.geometry.RhinoBrep.split" title="compas_rhino.geometry.RhinoBrep.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a></p></td>
 <td><p>Splits a Brep into pieces using a Brep as a cutter.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.to_meshes.html#compas_rhino.geometry.RhinoBrep.to_meshes" title="compas_rhino.geometry.RhinoBrep.to_meshes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_meshes</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.to_meshes.html#compas_rhino.geometry.RhinoBrep.to_meshes" title="compas_rhino.geometry.RhinoBrep.to_meshes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_meshes</span></code></a></p></td>
 <td><p>Convert the faces of this Brep shape to meshes.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.transform.html#compas_rhino.geometry.RhinoBrep.transform" title="compas_rhino.geometry.RhinoBrep.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.transform.html#compas_rhino.geometry.RhinoBrep.transform" title="compas_rhino.geometry.RhinoBrep.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
 <td><p>Transform this Brep by given transformation matrix</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.trim.html#compas_rhino.geometry.RhinoBrep.trim" title="compas_rhino.geometry.RhinoBrep.trim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trim</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.trim.html#compas_rhino.geometry.RhinoBrep.trim" title="compas_rhino.geometry.RhinoBrep.trim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trim</span></code></a></p></td>
 <td><p>Trim this brep by the given trimming plane.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.trimmed.html#compas_rhino.geometry.RhinoBrep.trimmed" title="compas_rhino.geometry.RhinoBrep.trimmed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trimmed</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.trimmed.html#compas_rhino.geometry.RhinoBrep.trimmed" title="compas_rhino.geometry.RhinoBrep.trimmed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trimmed</span></code></a></p></td>
 <td><p>Returns a trimmed copy of this brep by the given trimming plane.</p></td>
 </tr>
 </tbody>
@@ -1270,100 +1273,97 @@ document.write(`
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_jsonstring.html#compas_rhino.geometry.RhinoBrep.from_jsonstring" title="compas_rhino.geometry.RhinoBrep.from_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_jsonstring</span></code></a></p></td>
 <td><p>Construct an object of this type from a JSON string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_loft.html#compas_rhino.geometry.RhinoBrep.from_loft" title="compas_rhino.geometry.RhinoBrep.from_loft"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_loft</span></code></a></p></td>
-<td><p>Construct a Brep by lofting a set of curves.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_pipe.html#compas_rhino.geometry.RhinoBrep.from_pipe" title="compas_rhino.geometry.RhinoBrep.from_pipe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_pipe</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_pipe.html#compas_rhino.geometry.RhinoBrep.from_pipe" title="compas_rhino.geometry.RhinoBrep.from_pipe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_pipe</span></code></a></p></td>
 <td><p>Construct a Brep by extruding a closed curve along a path curve.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_plane.html#compas_rhino.geometry.RhinoBrep.from_plane" title="compas_rhino.geometry.RhinoBrep.from_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_plane</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_plane.html#compas_rhino.geometry.RhinoBrep.from_plane" title="compas_rhino.geometry.RhinoBrep.from_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_plane</span></code></a></p></td>
 <td><p>Construct a Brep from one plane and its u and v domains.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_planes.html#compas_rhino.geometry.RhinoBrep.from_planes" title="compas_rhino.geometry.RhinoBrep.from_planes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_planes</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_planes.html#compas_rhino.geometry.RhinoBrep.from_planes" title="compas_rhino.geometry.RhinoBrep.from_planes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_planes</span></code></a></p></td>
 <td><p>Construct a Brep from a set of planes.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_polygons.html#compas_rhino.geometry.RhinoBrep.from_polygons" title="compas_rhino.geometry.RhinoBrep.from_polygons"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_polygons</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_polygons.html#compas_rhino.geometry.RhinoBrep.from_polygons" title="compas_rhino.geometry.RhinoBrep.from_polygons"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_polygons</span></code></a></p></td>
 <td><p>Construct a Brep from a set of polygons.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_step.html#compas_rhino.geometry.RhinoBrep.from_step" title="compas_rhino.geometry.RhinoBrep.from_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_step</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_step.html#compas_rhino.geometry.RhinoBrep.from_step" title="compas_rhino.geometry.RhinoBrep.from_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_step</span></code></a></p></td>
 <td><p>Conctruct a Brep from the data contained in a STEP file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_sweep.html#compas_rhino.geometry.RhinoBrep.from_sweep" title="compas_rhino.geometry.RhinoBrep.from_sweep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_sweep</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_sweep.html#compas_rhino.geometry.RhinoBrep.from_sweep" title="compas_rhino.geometry.RhinoBrep.from_sweep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_sweep</span></code></a></p></td>
 <td><p>Construct a BRep by sweeping a profile along a path.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_torus.html#compas_rhino.geometry.RhinoBrep.from_torus" title="compas_rhino.geometry.RhinoBrep.from_torus"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_torus</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_torus.html#compas_rhino.geometry.RhinoBrep.from_torus" title="compas_rhino.geometry.RhinoBrep.from_torus"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_torus</span></code></a></p></td>
 <td><p>Construct a Brep from a COMPAS torus.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.heal.html#compas_rhino.geometry.RhinoBrep.heal" title="compas_rhino.geometry.RhinoBrep.heal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">heal</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.heal.html#compas_rhino.geometry.RhinoBrep.heal" title="compas_rhino.geometry.RhinoBrep.heal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">heal</span></code></a></p></td>
 <td><p>Heal the shape.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.make_solid.html#compas_rhino.geometry.RhinoBrep.make_solid" title="compas_rhino.geometry.RhinoBrep.make_solid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_solid</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.make_solid.html#compas_rhino.geometry.RhinoBrep.make_solid" title="compas_rhino.geometry.RhinoBrep.make_solid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_solid</span></code></a></p></td>
 <td><p>Convert the current shape to a solid if it is a shell.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.overlap.html#compas_rhino.geometry.RhinoBrep.overlap" title="compas_rhino.geometry.RhinoBrep.overlap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">overlap</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.overlap.html#compas_rhino.geometry.RhinoBrep.overlap" title="compas_rhino.geometry.RhinoBrep.overlap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">overlap</span></code></a></p></td>
 <td><p>Compute the overlap between this BRep and another.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.rotate.html#compas_rhino.geometry.RhinoBrep.rotate" title="compas_rhino.geometry.RhinoBrep.rotate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.rotate.html#compas_rhino.geometry.RhinoBrep.rotate" title="compas_rhino.geometry.RhinoBrep.rotate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate</span></code></a></p></td>
 <td><p>Rotate the geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.rotated.html#compas_rhino.geometry.RhinoBrep.rotated" title="compas_rhino.geometry.RhinoBrep.rotated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotated</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.rotated.html#compas_rhino.geometry.RhinoBrep.rotated" title="compas_rhino.geometry.RhinoBrep.rotated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotated</span></code></a></p></td>
 <td><p>Returns a rotated copy of this geometry.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.scale.html#compas_rhino.geometry.RhinoBrep.scale" title="compas_rhino.geometry.RhinoBrep.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.scale.html#compas_rhino.geometry.RhinoBrep.scale" title="compas_rhino.geometry.RhinoBrep.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a></p></td>
 <td><p>Scale the geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.scaled.html#compas_rhino.geometry.RhinoBrep.scaled" title="compas_rhino.geometry.RhinoBrep.scaled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scaled</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.scaled.html#compas_rhino.geometry.RhinoBrep.scaled" title="compas_rhino.geometry.RhinoBrep.scaled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scaled</span></code></a></p></td>
 <td><p>Returns a scaled copy of this geometry.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.sew.html#compas_rhino.geometry.RhinoBrep.sew" title="compas_rhino.geometry.RhinoBrep.sew"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sew</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.sew.html#compas_rhino.geometry.RhinoBrep.sew" title="compas_rhino.geometry.RhinoBrep.sew"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sew</span></code></a></p></td>
 <td><p>Sew together the individual parts of the shape.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.sha256.html#compas_rhino.geometry.RhinoBrep.sha256" title="compas_rhino.geometry.RhinoBrep.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.sha256.html#compas_rhino.geometry.RhinoBrep.sha256" title="compas_rhino.geometry.RhinoBrep.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.to_iges.html#compas_rhino.geometry.RhinoBrep.to_iges" title="compas_rhino.geometry.RhinoBrep.to_iges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_iges</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.to_iges.html#compas_rhino.geometry.RhinoBrep.to_iges" title="compas_rhino.geometry.RhinoBrep.to_iges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_iges</span></code></a></p></td>
 <td><p>Write the Brep shape to an IGES file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.to_json.html#compas_rhino.geometry.RhinoBrep.to_json" title="compas_rhino.geometry.RhinoBrep.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.to_json.html#compas_rhino.geometry.RhinoBrep.to_json" title="compas_rhino.geometry.RhinoBrep.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Convert an object to its native data representation and save it to a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.to_jsonstring.html#compas_rhino.geometry.RhinoBrep.to_jsonstring" title="compas_rhino.geometry.RhinoBrep.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.to_jsonstring.html#compas_rhino.geometry.RhinoBrep.to_jsonstring" title="compas_rhino.geometry.RhinoBrep.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
 <td><p>Convert an object to its native data representation and save it to a JSON string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.to_polygons.html#compas_rhino.geometry.RhinoBrep.to_polygons" title="compas_rhino.geometry.RhinoBrep.to_polygons"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polygons</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.to_polygons.html#compas_rhino.geometry.RhinoBrep.to_polygons" title="compas_rhino.geometry.RhinoBrep.to_polygons"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polygons</span></code></a></p></td>
 <td><p>Convert the faces of this Brep shape to polygons.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.to_step.html#compas_rhino.geometry.RhinoBrep.to_step" title="compas_rhino.geometry.RhinoBrep.to_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_step</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.to_step.html#compas_rhino.geometry.RhinoBrep.to_step" title="compas_rhino.geometry.RhinoBrep.to_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_step</span></code></a></p></td>
 <td><p>Write the Brep shape to a STEP file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.to_stl.html#compas_rhino.geometry.RhinoBrep.to_stl" title="compas_rhino.geometry.RhinoBrep.to_stl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_stl</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.to_stl.html#compas_rhino.geometry.RhinoBrep.to_stl" title="compas_rhino.geometry.RhinoBrep.to_stl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_stl</span></code></a></p></td>
 <td><p>Write the Brep shape to an STL file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.to_tesselation.html#compas_rhino.geometry.RhinoBrep.to_tesselation" title="compas_rhino.geometry.RhinoBrep.to_tesselation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_tesselation</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.to_tesselation.html#compas_rhino.geometry.RhinoBrep.to_tesselation" title="compas_rhino.geometry.RhinoBrep.to_tesselation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_tesselation</span></code></a></p></td>
 <td><p>Create a tesselation of the shape for visualisation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.to_viewmesh.html#compas_rhino.geometry.RhinoBrep.to_viewmesh" title="compas_rhino.geometry.RhinoBrep.to_viewmesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_viewmesh</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.to_viewmesh.html#compas_rhino.geometry.RhinoBrep.to_viewmesh" title="compas_rhino.geometry.RhinoBrep.to_viewmesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_viewmesh</span></code></a></p></td>
 <td><p>Convert this Brep to a view mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.transformed.html#compas_rhino.geometry.RhinoBrep.transformed" title="compas_rhino.geometry.RhinoBrep.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.transformed.html#compas_rhino.geometry.RhinoBrep.transformed" title="compas_rhino.geometry.RhinoBrep.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
 <td><p>Returns a transformed copy of this geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.translate.html#compas_rhino.geometry.RhinoBrep.translate" title="compas_rhino.geometry.RhinoBrep.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.translate.html#compas_rhino.geometry.RhinoBrep.translate" title="compas_rhino.geometry.RhinoBrep.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a></p></td>
 <td><p>Translate the geometry.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.translated.html#compas_rhino.geometry.RhinoBrep.translated" title="compas_rhino.geometry.RhinoBrep.translated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translated</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.translated.html#compas_rhino.geometry.RhinoBrep.translated" title="compas_rhino.geometry.RhinoBrep.translated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translated</span></code></a></p></td>
 <td><p>Returns a translated copy of this geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.validate_data.html#compas_rhino.geometry.RhinoBrep.validate_data" title="compas_rhino.geometry.RhinoBrep.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.validate_data.html#compas_rhino.geometry.RhinoBrep.validate_data" title="compas_rhino.geometry.RhinoBrep.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
 <td><p>Validate the data against the object's data schema.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.vertex_edges.html#compas_rhino.geometry.RhinoBrep.vertex_edges" title="compas_rhino.geometry.RhinoBrep.vertex_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_edges</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.vertex_edges.html#compas_rhino.geometry.RhinoBrep.vertex_edges" title="compas_rhino.geometry.RhinoBrep.vertex_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_edges</span></code></a></p></td>
 <td><p>Identify the edges connected to a given vertex.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.vertex_faces.html#compas_rhino.geometry.RhinoBrep.vertex_faces" title="compas_rhino.geometry.RhinoBrep.vertex_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_faces</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.vertex_faces.html#compas_rhino.geometry.RhinoBrep.vertex_faces" title="compas_rhino.geometry.RhinoBrep.vertex_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_faces</span></code></a></p></td>
 <td><p>Identify the faces connected to a vertex.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.vertex_neighbors.html#compas_rhino.geometry.RhinoBrep.vertex_neighbors" title="compas_rhino.geometry.RhinoBrep.vertex_neighbors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_neighbors</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.vertex_neighbors.html#compas_rhino.geometry.RhinoBrep.vertex_neighbors" title="compas_rhino.geometry.RhinoBrep.vertex_neighbors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_neighbors</span></code></a></p></td>
 <td><p>Identify the neighbouring vertices of a given vertex.</p></td>
 </tr>
 </tbody>

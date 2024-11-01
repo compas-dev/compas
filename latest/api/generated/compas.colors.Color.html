@@ -1121,7 +1121,7 @@ document.write(`
 <h1>Color</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.colors.Color">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.colors.</span></span><span class="sig-name descname"><span class="pre">Color</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/663a05c/src/compas/colors/color.py#L29"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.colors.</span></span><span class="sig-name descname"><span class="pre">Color</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/fb5bc8e/src/compas/colors/color.py#L29"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.data.Data.html#compas.data.Data" title="compas.data.data.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">Data</span></code></a></p>
 <p>Class for working with colors.</p>
 <dl class="field-list">
@@ -1202,7 +1202,7 @@ Note that this is not the same as the “Lightness” of HLS or the “Value/Bri
 <p class="rubric">Examples</p>
 <p>By default, this class will create a color with the RGB components in the range <code class="docutils literal notranslate"><span class="pre">[0.0,</span> <span class="pre">1.0]</span></code>.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="go">Color(1, 0, 0, alpha=1.0)</span>
+<span class="go">Color(red=1, green=0, blue=0, alpha=1.0)</span>
 </pre></div>
 </div>
 <p>Attempting to create a color with components outside of the range <code class="docutils literal notranslate"><span class="pre">[0.0,</span> <span class="pre">1.0]</span></code> will raise a <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>.</p>
@@ -1214,7 +1214,7 @@ Note that this is not the same as the “Lightness” of HLS or the “Value/Bri
 </div>
 <p>To create a color with components in the range <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">255]</span></code>, use the <a class="reference internal" href="compas.colors.Color.from_rgb255.html#compas.colors.Color.from_rgb255" title="compas.colors.Color.from_rgb255"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_rgb255()</span></code></a> constructor.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Color</span><span class="o">.</span><span class="n">from_rgb255</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="go">Color(1.0, 0.0, 0.0, alpha=1.0)</span>
+<span class="go">Color(red=1.0, green=0.0, blue=0.0, alpha=1.0)</span>
 </pre></div>
 </div>
 <p>Similarly, other constructors are available to create colors from other color spaces.</p>
@@ -1235,13 +1235,13 @@ Note that this is not the same as the “Lightness” of HLS or the “Value/Bri
 <p>Colors can be modified through inversion, saturation/desaturation, and lightening/darkening.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">color</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">red</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">color</span><span class="o">.</span><span class="n">desaturated</span><span class="p">(</span><span class="mi">25</span><span class="p">)</span>
-<span class="go">Color(0.875, 0.125, 0.125, alpha=1.0)</span>
+<span class="go">Color(red=0.875, green=0.125, blue=0.125, alpha=1.0)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">color</span><span class="o">.</span><span class="n">desaturated</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
-<span class="go">Color(0.75, 0.25, 0.25, alpha=1.0)</span>
+<span class="go">Color(red=0.75, green=0.25, blue=0.25, alpha=1.0)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">color</span><span class="o">.</span><span class="n">desaturated</span><span class="p">(</span><span class="mi">75</span><span class="p">)</span>
-<span class="go">Color(0.625, 0.375, 0.375, alpha=1.0)</span>
+<span class="go">Color(red=0.625, green=0.375, blue=0.375, alpha=1.0)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">color</span><span class="o">.</span><span class="n">desaturated</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
-<span class="go">Color(0.5, 0.5, 0.5, alpha=1.0)</span>
+<span class="go">Color(red=0.5, green=0.5, blue=0.5, alpha=1.0)</span>
 </pre></div>
 </div>
 <p class="rubric">Methods</p>

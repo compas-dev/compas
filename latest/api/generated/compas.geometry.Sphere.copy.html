@@ -1126,13 +1126,15 @@ document.write(`
 <h1>Sphere.copy</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.geometry.Sphere.copy">
-<span class="sig-prename descclassname"><span class="pre">Sphere.</span></span><span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/663a05c/src/compas/data/data.py#L269"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Sphere.</span></span><span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy_guid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/fb5bc8e/src/compas/data/data.py#L275"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Make an independent copy of the data object.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>cls</strong><span class="classifier">Type[<a class="reference internal" href="compas.data.Data.html#compas.data.Data" title="compas.data.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.data.Data</span></code></a>], optional</span></dt><dd><p>The type of data object to return.
 Defaults to the type of the current data object.</p>
+</dd>
+<dt><strong>copy_guid</strong><span class="classifier">bool, optional</span></dt><dd><p>If True, the copy will have the same guid as the original.</p>
 </dd>
 </dl>
 </dd>

@@ -1121,7 +1121,7 @@ document.write(`
 <h1>Box</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.Box">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Box</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/663a05c/src/compas/geometry/shapes/box.py#L15"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Box</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/fb5bc8e/src/compas/geometry/shapes/box.py#L15"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Shape.html#compas.geometry.Shape" title="compas.geometry.shapes.shape.Shape"><code class="xref py py-class docutils literal notranslate"><span class="pre">Shape</span></code></a></p>
 <p>A box is defined by a frame and its dimensions along the frame’s x-, y- and z-axes.</p>
 <p>The center of the box is positioned at the origin of the
@@ -1254,7 +1254,10 @@ Defaults to <code class="docutils literal notranslate"><span class="pre">Frame.w
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Box.scale.html#compas.geometry.Box.scale" title="compas.geometry.Box.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a></p></td>
 <td><p>Scale the box.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Box.to_brep.html#compas.geometry.Box.to_brep" title="compas.geometry.Box.to_brep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_brep</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Box.scaled.html#compas.geometry.Box.scaled" title="compas.geometry.Box.scaled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scaled</span></code></a></p></td>
+<td><p>Returns a scaled copy of the box.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Box.to_brep.html#compas.geometry.Box.to_brep" title="compas.geometry.Box.to_brep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_brep</span></code></a></p></td>
 <td><p>Returns a BREP representation of the box.</p></td>
 </tr>
 </tbody>
@@ -1289,40 +1292,37 @@ Defaults to <code class="docutils literal notranslate"><span class="pre">Frame.w
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Box.rotated.html#compas.geometry.Box.rotated" title="compas.geometry.Box.rotated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotated</span></code></a></p></td>
 <td><p>Returns a rotated copy of this geometry.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Box.scaled.html#compas.geometry.Box.scaled" title="compas.geometry.Box.scaled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scaled</span></code></a></p></td>
-<td><p>Returns a scaled copy of this geometry.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Box.sha256.html#compas.geometry.Box.sha256" title="compas.geometry.Box.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Box.sha256.html#compas.geometry.Box.sha256" title="compas.geometry.Box.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Box.to_json.html#compas.geometry.Box.to_json" title="compas.geometry.Box.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Box.to_json.html#compas.geometry.Box.to_json" title="compas.geometry.Box.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Convert an object to its native data representation and save it to a JSON file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Box.to_jsonstring.html#compas.geometry.Box.to_jsonstring" title="compas.geometry.Box.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Box.to_jsonstring.html#compas.geometry.Box.to_jsonstring" title="compas.geometry.Box.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
 <td><p>Convert an object to its native data representation and save it to a JSON string.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Box.to_mesh.html#compas.geometry.Box.to_mesh" title="compas.geometry.Box.to_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_mesh</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Box.to_mesh.html#compas.geometry.Box.to_mesh" title="compas.geometry.Box.to_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_mesh</span></code></a></p></td>
 <td><p>Returns a mesh representation of the box.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Box.to_polyhedron.html#compas.geometry.Box.to_polyhedron" title="compas.geometry.Box.to_polyhedron"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polyhedron</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Box.to_polyhedron.html#compas.geometry.Box.to_polyhedron" title="compas.geometry.Box.to_polyhedron"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polyhedron</span></code></a></p></td>
 <td><p>Convert the shape to a polyhedron.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Box.to_vertices_and_faces.html#compas.geometry.Box.to_vertices_and_faces" title="compas.geometry.Box.to_vertices_and_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_vertices_and_faces</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Box.to_vertices_and_faces.html#compas.geometry.Box.to_vertices_and_faces" title="compas.geometry.Box.to_vertices_and_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_vertices_and_faces</span></code></a></p></td>
 <td><p>Convert the shape to a list of vertices and faces.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Box.transform.html#compas.geometry.Box.transform" title="compas.geometry.Box.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Box.transform.html#compas.geometry.Box.transform" title="compas.geometry.Box.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
 <td><p>Transform the shape.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Box.transformed.html#compas.geometry.Box.transformed" title="compas.geometry.Box.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Box.transformed.html#compas.geometry.Box.transformed" title="compas.geometry.Box.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
 <td><p>Returns a transformed copy of this geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Box.translate.html#compas.geometry.Box.translate" title="compas.geometry.Box.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Box.translate.html#compas.geometry.Box.translate" title="compas.geometry.Box.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a></p></td>
 <td><p>Translate the shape.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Box.translated.html#compas.geometry.Box.translated" title="compas.geometry.Box.translated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translated</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Box.translated.html#compas.geometry.Box.translated" title="compas.geometry.Box.translated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translated</span></code></a></p></td>
 <td><p>Returns a translated copy of this geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Box.validate_data.html#compas.geometry.Box.validate_data" title="compas.geometry.Box.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Box.validate_data.html#compas.geometry.Box.validate_data" title="compas.geometry.Box.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
 <td><p>Validate the data against the object's data schema.</p></td>
 </tr>
 </tbody>
