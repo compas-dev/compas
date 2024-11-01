@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added key conversion map to `compas.colors.ColorDict` to avoid serialisation problems with tuple keys when used in combination with edges.
+
 ### Changed
 
 ### Removed
