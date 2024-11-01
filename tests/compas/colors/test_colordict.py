@@ -36,7 +36,7 @@ def test_colordict_json():
     cd1[1] = Color.blue()
     cd1[(1, 0)] = Color.green()
 
-    cd2: ColorDict = compas.json_loads(compas.json_dumps(cd1))  # type: ignore
+    cd2 = compas.json_loads(compas.json_dumps(cd1))
 
     assert cd2[1] == Color.blue()
     assert cd2["1"] == Color.blue()
