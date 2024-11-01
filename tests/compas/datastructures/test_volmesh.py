@@ -244,3 +244,9 @@ def test_cells_where_predicate():
 # ==============================================================================
 # Methods
 # ==============================================================================
+
+def test_delete_cell():
+    hf = VolMesh.from_meshgrid(10, 10, 10, 5, 5, 5)
+    assert hf.number_of_cells() == 125
+    hf.delete_cell(1)
+    assert hf.number_of_cells() == 124
