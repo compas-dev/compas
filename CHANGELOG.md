@@ -11,7 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Fixed bug in `VolMesh.delete_cell`.
 * Fixed `NoneType` error when calling `compas.geometry.Sphere.edges`.
+
 
 ### Removed
 
