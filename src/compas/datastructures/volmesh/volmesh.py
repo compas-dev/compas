@@ -1023,6 +1023,11 @@ class VolMesh(Datastructure):
         -------
         None
 
+        Raises
+        ------
+        KeyError
+            If the cell does not exist.
+
         See Also
         --------
         :meth:`delete_vertex`, :meth:`delete_halfface`
