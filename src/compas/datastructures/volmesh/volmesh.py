@@ -1032,17 +1032,12 @@ class VolMesh(Datastructure):
         --------
         :meth:`delete_vertex`, :meth:`delete_halfface`
 
+        Notes
+        -----
+        Remaining unused vertices are not automatically deleted.
+        Use :meth:`remove_unused_vertices` to accomplish this.
+
         """
-        # @gonzalo: perhaps vertices should not be removed implicitly
-        # we could add a flag or leave it entirely up to the user
-        # with something like remove_unused_vertices
-
-        # cell_vertices = self.cell_vertices(cell)
-        # remove vertex data
-        # for vertex in cell_vertices:
-        #     if len(self.vertex_cells(vertex)) == 1:
-        #         del self._vertex[vertex]
-
         cell_faces = self.cell_faces(cell)
 
         # remove edge data
