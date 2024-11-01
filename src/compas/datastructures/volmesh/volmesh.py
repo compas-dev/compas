@@ -1023,41 +1023,61 @@ class VolMesh(Datastructure):
         -------
         None
 
+        Raises
+        ------
+        KeyError
+            If the cell does not exist.
+
         See Also
         --------
         :meth:`delete_vertex`, :meth:`delete_halfface`
 
+        Notes
+        -----
+        Remaining unused vertices are not automatically deleted.
+        Use :meth:`remove_unused_vertices` to accomplish this.
+
         """
-        cell_vertices = self.cell_vertices(cell)
         cell_faces = self.cell_faces(cell)
 
+        # remove edge data
         for face in cell_faces:
             for edge in self.halfface_halfedges(face):
+                # this should also use a key map
                 u, v = edge
                 if (u, v) in self._edge_data:
                     del self._edge_data[u, v]
                 if (v, u) in self._edge_data:
                     del self._edge_data[v, u]
 
-        for vertex in cell_vertices:
-            if len(self.vertex_cells(vertex)) == 1:
-                del self._vertex[vertex]
-
+        # remove face data
         for face in cell_faces:
             vertices = self.halfface_vertices(face)
-            for u, v in uv_from_vertices(vertices):
-                self._plane[u][v][face] = None
-                if self._plane[v][u][face] is None:
-                    del self._plane[u][v][face]
-                    del self._plane[v][u][face]
-            del self._halfface[face]
             key = "-".join(map(str, sorted(vertices)))
             if key in self._face_data:
                 del self._face_data[key]
 
-        del self._cell[cell]
+        # remove cell data
         if cell in self._cell_data:
             del self._cell_data[cell]
+
+        # remove planes and halffaces
+        for face in cell_faces:
+            vertices = self.halfface_vertices(face)
+            for u, v, w in uvw_from_vertices(vertices):
+                if self._plane[w][v][u] is None:
+                    del self._plane[u][v][w]
+                    del self._plane[w][v][u]
+                    if not self._plane[u][v]:
+                        del self._plane[u][v]
+                    if not self._plane[w][v]:
+                        del self._plane[w][v]
+                else:
+                    self._plane[u][v][w] = None
+            del self._halfface[face]
+
+        # remove cell
+        del self._cell[cell]
 
     def remove_unused_vertices(self):
         """Remove all unused vertices from the volmesh object.

@@ -244,3 +244,67 @@ def test_cells_where_predicate():
 # ==============================================================================
 # Methods
 # ==============================================================================
+
+
+def test_delete_cell_of_volmesh_with_1_1_1():
+    volmesh = VolMesh.from_meshgrid(1, 1, 1, 1, 1, 1)
+    nov = volmesh.number_of_vertices()
+    noe = volmesh.number_of_edges()
+    nof = volmesh.number_of_faces()
+    noc = volmesh.number_of_cells()
+
+    volmesh.delete_cell(0)
+
+    assert volmesh.number_of_vertices() == nov
+    assert volmesh.number_of_cells() == noc - 1
+    assert volmesh.number_of_edges() == noe - 12
+    assert volmesh.number_of_faces() == nof - 6
+
+
+@pytest.mark.parametrize(
+    "c",
+    [0, 1],
+)
+def test_delete_cell_of_volmesh_with_2_1_1(c):
+    volmesh = VolMesh.from_meshgrid(1, 1, 1, 2, 1, 1)
+    nov = volmesh.number_of_vertices()
+    noe = volmesh.number_of_edges()
+    nof = volmesh.number_of_faces()
+    noc = volmesh.number_of_cells()
+
+    volmesh.delete_cell(c)
+
+    assert volmesh.number_of_vertices() == nov
+    assert volmesh.number_of_cells() == noc - 1
+    assert volmesh.number_of_edges() == noe - 8
+    assert volmesh.number_of_faces() == nof - 5
+
+
+@pytest.mark.parametrize(
+    "c",
+    [0, 1, 2],
+)
+def test_delete_cell_of_volmesh_with_3_1_1(c):
+    volmesh = VolMesh.from_meshgrid(1, 1, 1, 3, 1, 1)
+    nov = volmesh.number_of_vertices()
+    noe = volmesh.number_of_edges()
+    nof = volmesh.number_of_faces()
+    noc = volmesh.number_of_cells()
+
+    volmesh.delete_cell(c)
+
+    if c == 0:
+        assert volmesh.number_of_vertices() == nov
+        assert volmesh.number_of_cells() == noc - 1
+        assert volmesh.number_of_edges() == noe - 8
+        assert volmesh.number_of_faces() == nof - 5
+    elif c == 1:
+        assert volmesh.number_of_vertices() == nov
+        assert volmesh.number_of_cells() == noc - 1
+        assert volmesh.number_of_edges() == noe - 4
+        assert volmesh.number_of_faces() == nof - 4
+    elif c == 2:
+        assert volmesh.number_of_vertices() == nov
+        assert volmesh.number_of_cells() == noc - 1
+        assert volmesh.number_of_edges() == noe - 8
+        assert volmesh.number_of_faces() == nof - 5
