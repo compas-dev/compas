@@ -24,7 +24,7 @@ class ColorDict(Data):
 
     """
 
-    keymap = {
+    KEYMAP = {
         int: lambda x: str(x),
         tuple: lambda x: ",".join(map(str, sorted(x))),
         list: lambda x: ",".join(map(str, sorted(x))),
@@ -62,8 +62,8 @@ class ColorDict(Data):
         self._default = default
 
     def keymapper(self, key):
-        if key.__class__ in self.keymap:
-            return self.keymap[key.__class__](key)
+        if key.__class__ in self.KEYMAP:
+            return self.KEYMAP[key.__class__](key)
         return key
 
     def __getitem__(self, key):
