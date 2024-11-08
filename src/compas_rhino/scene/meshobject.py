@@ -74,6 +74,7 @@ class RhinoMeshObject(RhinoSceneObject, MeshObject):
 
         """
         compas_rhino.objects.delete_objects(self.guids, purge=True)
+        self.guids = []
 
     def clear_vertices(self):
         """Delete all vertices drawn by this scene object.
@@ -84,6 +85,7 @@ class RhinoMeshObject(RhinoSceneObject, MeshObject):
 
         """
         compas_rhino.objects.delete_objects(self._guid_vertex, purge=True)
+        self._guid_vertex = {}
 
     def clear_edges(self):
         """Delete all edges drawn by this scene object.
@@ -94,6 +96,7 @@ class RhinoMeshObject(RhinoSceneObject, MeshObject):
 
         """
         compas_rhino.objects.delete_objects(self._guid_edge, purge=True)
+        self._guid_edge = {}
 
     def clear_faces(self):
         """Delete all faces drawn by this scene object.
@@ -104,6 +107,7 @@ class RhinoMeshObject(RhinoSceneObject, MeshObject):
 
         """
         compas_rhino.objects.delete_objects(self._guid_face, purge=True)
+        self._guid_face = {}
 
     # ==========================================================================
     # draw
