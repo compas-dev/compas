@@ -3111,37 +3111,6 @@ class VolMesh(Datastructure):
         nbr = self._plane[w][v][u]
         return None if nbr is None else self._cell[nbr][w][v]
 
-    # def halfface_adjacent_halfface(self, halfface, halfedge):
-    #     """Return the halfface adjacent to the halfface across the halfedge.
-
-    #     Parameters
-    #     ----------
-    #     halfface : int
-    #         The identifier of the halfface.
-    #     halfedge : tuple[int, int]
-    #         The identifier of the halfedge.
-
-    #     Returns
-    #     -------
-    #     int | None
-    #         The identifier of the adjacent half-face, or None if `halfedge` is on the boundary.
-
-    #     See Also
-    #     --------
-    #     :meth:`halfface_opposite_halfface`
-
-    #     Notes
-    #     -----
-    #     The adjacent face belongs to one of the cell neighbors over faces of the initial cell.
-    #     A face and its adjacent face share two common vertices.
-
-    #     """
-    #     u, v = halfedge
-    #     cell = self.halfface_cell(halfface)
-    #     nbr_halfface = self._cell[cell][v][u]
-    #     nbr_cell = self._plane[u][v][nbr_halfface]
-    #     return None if nbr_cell is None else self._cell[nbr_cell][v][u]
-
     def halfface_vertex_ancestor(self, halfface, vertex):
         """Return the vertex before the specified vertex in a specific face.
 
