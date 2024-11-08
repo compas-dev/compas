@@ -213,6 +213,7 @@ class Scene(Tree):
         self.draw()
 
     def find_by_name(self, name):
+        # type: (str) -> SceneObject
         """Find the first scene object with the given name.
 
         Parameters
@@ -225,10 +226,10 @@ class Scene(Tree):
         :class:`SceneObject`
 
         """
-        # type: (str) -> SceneObject
         return self.get_node_by_name(name=name)
 
     def find_by_itemtype(self, itemtype):
+        # type: (...) -> SceneObject | None
         """Find the first scene object with a data item of the given type.
 
         Parameters
@@ -238,16 +239,27 @@ class Scene(Tree):
 
         Returns
         -------
-        :class:`SceneObject`
+        :class:`SceneObject` or None
 
         """
-        # type: (Type[compas.data.Data]) -> SceneObject
         for obj in self.objects:
             if isinstance(obj.item, itemtype):
                 return obj
 
     def find_all_by_itemtype(self, itemtype):
-        # type: (Type[compas.data.Data]) -> list[SceneObject]
+        # type: (...) -> list[SceneObject]
+        """Find all scene objects with a data item of the given type.
+
+        Parameters
+        ----------
+        itemtype : :class:`compas.data.Data`
+            The type of the data item associated with the scene object.
+
+        Returns
+        -------
+        list[:class:`SceneObject`]
+
+        """
         sceneobjects = []
         for obj in self.objects:
             if isinstance(obj.item, itemtype):
