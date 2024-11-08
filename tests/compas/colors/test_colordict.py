@@ -1,5 +1,3 @@
-import pytest
-import json
 import compas
 
 from compas.colors import Color
