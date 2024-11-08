@@ -10,11 +10,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Added key conversion map to `compas.colors.ColorDict` to avoid serialisation problems with tuple keys when used in combination with edges.
+* Added `Scene.find_all_by_itemtype`.
 
 ### Changed
 
 * Fixed bug in `VolMesh.delete_cell`.
 * Fixed `NoneType` error when calling `compas.geometry.Sphere.edges`.
+* Fixed bug in `VolMesh.vertex_halffaces`.
+* Fixed bug in `VolMesh.vertex_cells`.
+* Fixed bug in `VolMesh.is_halfface_on_boundary`.
 
 
 ### Removed
