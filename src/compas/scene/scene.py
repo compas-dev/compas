@@ -245,3 +245,11 @@ class Scene(Tree):
         for obj in self.objects:
             if isinstance(obj.item, itemtype):
                 return obj
+
+    def find_all_by_itemtype(self, itemtype):
+        # type: (Type[compas.data.Data]) -> list[SceneObject]
+        sceneobjects = []
+        for obj in self.objects:
+            if isinstance(obj.item, itemtype):
+                sceneobjects.append(obj)
+        return sceneobjects
