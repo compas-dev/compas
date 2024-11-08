@@ -20,8 +20,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed bug in `VolMesh.vertex_cells`.
 * Fixed bug in `VolMesh.is_halfface_on_boundary`.
 
-
 ### Removed
+
+* Removed `VolMesh.halfface_adjacent_halfface` because of general nonsensicalness, and because it is (and probably always has been) completely broken.
 
 
 ## [2.5.0] 2024-10-25
