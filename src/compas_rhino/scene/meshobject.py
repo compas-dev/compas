@@ -74,7 +74,7 @@ class RhinoMeshObject(RhinoSceneObject, MeshObject):
 
         """
         compas_rhino.objects.delete_objects(self.guids, purge=True)
-        self.guids = []
+        self._guids = []
 
     def clear_vertices(self):
         """Delete all vertices drawn by this scene object.
