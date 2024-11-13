@@ -26,6 +26,11 @@ class BrepTrim(Data):
         True if this trim is reversed from its associated edge curve and False otherwise.
     native_trim : Any
         The underlying trim object. Type is backend-dependent.
+    start_vertex : Any, read-only
+        The start vertex of this trim.
+    end_vertex : Any, read-only
+        The end vertex of this trim.
+    vertices : list[Any], read-only
 
     """
 
@@ -43,4 +48,16 @@ class BrepTrim(Data):
 
     @property
     def native_trim(self):
+        raise NotImplementedError
+
+    @property
+    def start_vertex(self):
+        raise NotImplementedError
+
+    @property
+    def end_vertex(self):
+        raise NotImplementedError
+
+    @property
+    def vertices(self):
         raise NotImplementedError
