@@ -10,6 +10,7 @@ from compas.geometry import BrepTrimmingError
 from compas.geometry import Frame
 from compas.geometry import Plane
 from compas.geometry import Point
+from compas.geometry import Polyline
 from compas.tolerance import TOL
 from compas_rhino.conversions import box_to_rhino
 from compas_rhino.conversions import curve_to_compas
@@ -19,6 +20,7 @@ from compas_rhino.conversions import mesh_to_compas
 from compas_rhino.conversions import mesh_to_rhino
 from compas_rhino.conversions import plane_to_rhino
 from compas_rhino.conversions import point_to_rhino
+from compas_rhino.conversions import polyline_to_rhino_curve
 from compas_rhino.conversions import sphere_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
 from compas_rhino.conversions import vector_to_rhino
@@ -223,7 +225,7 @@ class RhinoBrep(Brep):
 
         Parameters
         ----------
-        curve : :class:`~compas.geometry.Curve`
+        curve : :class:`~compas.geometry.Curve` or :class:`~compas.geometry.Polyline`
             The curve to extrude.
         vector : :class:`~compas.geometry.Vector`
             The vector to extrude the curve along.
@@ -235,7 +237,11 @@ class RhinoBrep(Brep):
         :class:`~compas_rhino.geometry.RhinoBrep`
 
         """
-        extrusion = Rhino.Geometry.Surface.CreateExtrusion(curve_to_rhino(curve), vector_to_rhino(vector))
+        if isinstance(curve, Polyline):
+            rhino_curve = polyline_to_rhino_curve(curve)
+        else:
+            rhino_curve = curve_to_rhino(curve)
+        extrusion = Rhino.Geometry.Surface.CreateExtrusion(rhino_curve, vector_to_rhino(vector))
         if extrusion is None:
             raise BrepError("Failed to create extrusion from curve: {} and vector: {}".format(curve, vector))
         rhino_brep = extrusion.ToBrep()

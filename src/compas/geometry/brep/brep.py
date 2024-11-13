@@ -392,7 +392,7 @@ class Brep(Geometry):
 
         Parameters
         ----------
-        curve : :class:`compas.geometry.Curve`
+        curve : :class:`compas.geometry.Curve` or :class:`compas.geometry.Polyline`
             The curve to extrude
         vector : :class:`compas.geometry.Vector`
             The vector to extrude the curve by

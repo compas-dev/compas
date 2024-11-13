@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Added support for `Polyline` as input for `compas_rhino.Brep.from_extrusion`.
+
 ### Removed
 
 
