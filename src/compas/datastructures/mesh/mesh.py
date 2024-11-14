@@ -2932,8 +2932,17 @@ class Mesh(Datastructure):
                     del self.facedata[face]
 
     # only reason this is here and not on the halfedge is because of the spatial tree
-    def unify_cycles(self, root=None):
+    def unify_cycles(self, root=None, nmax=None, radius=None):
         """Unify the cycles of the mesh.
+
+        Parameters
+        ----------
+        root : str, optional
+            The key of the root face.
+        nmax : int, optional
+            The maximum number of neighboring faces to consider. If neither nmax nor radius is specified, all faces will be considered.
+        radius : float, optional
+            The radius of the search sphere for neighboring faces. If neither nmax nor radius is specified, all faces will be considered.
 
         Returns
         -------
@@ -2951,7 +2960,7 @@ class Mesh(Datastructure):
         vertices = self.vertices_attributes("xyz")
         faces = [[vertex_index[vertex] for vertex in self.face_vertices(face)] for face in self.faces()]
 
-        unify_cycles(vertices, faces)
+        unify_cycles(vertices, faces, root=root, nmax=nmax, radius=radius)
 
         self.halfedge = {key: {} for key in self.vertices()}
         for index, vertices in enumerate(faces):

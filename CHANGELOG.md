@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Fixed `PluginNotInstalledError` when using `Brep.from_boolean_*` in Rhino.
+* Expose the parameters `radius` and `nmax` from `compas.topology._face_adjacency` to `compas.topology.face_adjacency` and further propagate them to `unify_cycles` and `Mesh.unify_cycles`.
+* Modify `face_adjacency` to avoid using `compas.topology._face_adjacency` by default when there are more than 100 faces, unless one of the parameters `radius`, `nmax` is passed
 
 ### Removed
 

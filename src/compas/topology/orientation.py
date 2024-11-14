@@ -94,7 +94,7 @@ def _face_adjacency(vertices, faces, nmax=10, radius=10.0):
     return adjacency
 
 
-def face_adjacency(points, faces):
+def face_adjacency(points, faces, nmax=None, radius=None):
     """Build a face adjacency dict.
 
     Parameters
@@ -103,6 +103,10 @@ def face_adjacency(points, faces):
         The vertex locations of the faces.
     faces : list[list[int]]
         The faces defined as list of indices in the points list.
+    nmax : int, optional
+        The maximum number of neighboring faces to consider. If neither nmax nor radius is specified, all faces will be considered.
+    radius : float, optional
+        The radius of the search sphere for neighboring faces. If neither nmax nor radius is specified, all faces will be considered.
 
     Returns
     -------
@@ -117,10 +121,12 @@ def face_adjacency(points, faces):
     purely geometrical, but uses a spatial indexing tree to speed up the search.
 
     """
-    f = len(faces)
-
-    if f > 100:
-        return _face_adjacency(points, faces)
+    if nmax is not None:
+        if radius is not None:
+            return _face_adjacency(points, faces, nmax=nmax, radius=radius)
+        return _face_adjacency(points, faces, nmax=nmax)
+    if radius is not None:
+        return _face_adjacency(points, faces, radius=radius)
 
     adjacency = {}
 
@@ -152,7 +158,7 @@ def face_adjacency(points, faces):
     return adjacency
 
 
-def unify_cycles(vertices, faces, root=None):
+def unify_cycles(vertices, faces, root=None, nmax=None, radius=None):
     """Unify the cycle directions of all faces.
 
     Unified cycle directions is a necessary condition for the data structure to
@@ -166,6 +172,10 @@ def unify_cycles(vertices, faces, root=None):
         The faces of the mesh defined as lists of vertex indices.
     root : str, optional
         The key of the root face.
+    nmax : int, optional
+        The maximum number of neighboring faces to consider. If neither nmax nor radius is specified, all faces will be considered.
+    radius : float, optional
+        The radius of the search sphere for neighboring faces. If neither nmax nor radius is specified, all faces will be considered.
 
     Returns
     -------
@@ -196,7 +206,7 @@ def unify_cycles(vertices, faces, root=None):
     if root is None:
         root = random.choice(list(range(len(faces))))
 
-    adj = face_adjacency(vertices, faces)  # this is the only place where the vertex coordinates are used
+    adj = face_adjacency(vertices, faces, nmax=nmax, radius=radius)  # this is the only place where the vertex coordinates are used
 
     visited = breadth_first_traverse(adj, root, unify)
 
