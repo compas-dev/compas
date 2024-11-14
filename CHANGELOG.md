@@ -9,9 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added attribute `start_vertex` to `compas.geometry.BrepTrim`.
+* Added attribute `end_vertex` to `compas.geometry.BrepTrim`.
+* Added attribute `vertices` to `compas.geometry.BrepTrim`.
+* Added attribute `start_vertex` to `compas_rhino.geometry.RhinoBrepTrim`.
+* Added attribute `start_vertex` to `compas_rhino.geometry.RhinoBrepTrim`.
+* Added attribute `vertices` to `compas_rhino.geometry.RhinoBrepTrim`.
+
 ### Changed
 
 * Fixed `PluginNotInstalledError` when using `Brep.from_boolean_*` in Rhino.
+* Added support for `Polyline` as input for `compas_rhino.Brep.from_extrusion`.
 
 ### Removed
 
