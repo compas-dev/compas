@@ -9,11 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added attribute `start_vertex` to `compas.geometry.BrepTrim`.
+* Added attribute `end_vertex` to `compas.geometry.BrepTrim`.
+* Added attribute `vertices` to `compas.geometry.BrepTrim`.
+* Added attribute `start_vertex` to `compas_rhino.geometry.RhinoBrepTrim`.
+* Added attribute `start_vertex` to `compas_rhino.geometry.RhinoBrepTrim`.
+* Added attribute `vertices` to `compas_rhino.geometry.RhinoBrepTrim`.
+
 ### Changed
 
 * Fixed `PluginNotInstalledError` when using `Brep.from_boolean_*` in Rhino.
 * Expose the parameters `radius` and `nmax` from `compas.topology._face_adjacency` to `compas.topology.face_adjacency` and further propagate them to `unify_cycles` and `Mesh.unify_cycles`.
 * Modify `face_adjacency` to avoid using `compas.topology._face_adjacency` by default when there are more than 100 faces, unless one of the parameters `radius`, `nmax` is passed
+* Added support for `Polyline` as input for `compas_rhino.Brep.from_extrusion`.
 
 ### Removed
 
