@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Fixed `PluginNotInstalledError` when using `Brep.from_boolean_*` in Rhino.
 * Added support for `Polyline` as input for `compas_rhino.Brep.from_extrusion`.
 
 ### Removed
