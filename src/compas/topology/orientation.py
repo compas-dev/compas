@@ -60,7 +60,9 @@ def _closest_faces(vertices, faces, nmax=10, radius=10.0):
     return closest
 
 
-def _face_adjacency(vertices, faces, nmax=10, radius=10.0):
+def _face_adjacency(vertices, faces, nmax=None, radius=None):
+    nmax = nmax or 10
+    radius = radius or 10.0
     closest = _closest_faces(vertices, faces, nmax=nmax, radius=radius)
 
     adjacency = {}
@@ -121,12 +123,8 @@ def face_adjacency(points, faces, nmax=None, radius=None):
     purely geometrical, but uses a spatial indexing tree to speed up the search.
 
     """
-    if nmax is not None:
-        if radius is not None:
-            return _face_adjacency(points, faces, nmax=nmax, radius=radius)
-        return _face_adjacency(points, faces, nmax=nmax)
-    if radius is not None:
-        return _face_adjacency(points, faces, radius=radius)
+    if nmax or radius:
+        return _face_adjacency(points, faces, nmax=nmax, radius=radius)
 
     adjacency = {}
 
@@ -170,7 +168,7 @@ def unify_cycles(vertices, faces, root=None, nmax=None, radius=None):
         The vertex coordinates of the mesh.
     faces : list[list[int]]
         The faces of the mesh defined as lists of vertex indices.
-    root : str, optional
+    root : int, optional
         The key of the root face.
     nmax : int, optional
         The maximum number of neighboring faces to consider. If neither nmax nor radius is specified, all faces will be considered.

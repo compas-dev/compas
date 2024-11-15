@@ -2937,7 +2937,7 @@ class Mesh(Datastructure):
 
         Parameters
         ----------
-        root : str, optional
+        root : int, optional
             The key of the root face.
         nmax : int, optional
             The maximum number of neighboring faces to consider. If neither nmax nor radius is specified, all faces will be considered.
