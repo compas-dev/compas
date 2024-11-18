@@ -30,8 +30,5 @@ def test_face_adjacency():
         dy = 10
         mesh = Mesh.from_meshgrid(dx, nx, dy, ny)
         vertices, faces = mesh.to_vertices_and_faces()
-        radius = math.sqrt((dx / nx) ** 2 + (dy / ny) ** 2) + TOL.absolute
-        unify_cycles(vertices, faces, max_distance=radius)
-
-
-test_face_adjacency()
+        max_distance = math.sqrt((dx / nx) ** 2 + (dy / ny) ** 2) + TOL.absolute
+        unify_cycles(vertices, faces, max_distance=max_distance)

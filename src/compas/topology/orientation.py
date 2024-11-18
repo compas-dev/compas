@@ -35,7 +35,7 @@ def _closest_faces(vertices, faces, nmax=10, max_distance=10.0):
 
             tree = KDTree(points)
             closest = [tree.nearest_neighbors(point, k) for point in points]
-            closest = [[index for xyz, index, d in nnbrs] for nnbrs in closest]
+            closest = [[index for xyz, index, d in nnbrs if d < max_distance] for nnbrs in closest]
 
         else:
             tree = RTree()
