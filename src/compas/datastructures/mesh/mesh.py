@@ -2940,9 +2940,9 @@ class Mesh(Datastructure):
         root : int, optional
             The key of the root face.
         nmax : int, optional
-            The maximum number of neighboring faces to consider. If neither nmax nor radius is specified, all faces will be considered.
-        radius : float, optional
-            The radius of the search sphere for neighboring faces. If neither nmax nor radius is specified, all faces will be considered.
+            The maximum number of neighboring faces to consider. If neither nmax nor max_distance is specified, all faces will be considered.
+        max_distance : float, optional
+            The max_distance of the search sphere for neighboring faces. If neither nmax nor max_distance is specified, all faces will be considered.
 
         Returns
         -------
