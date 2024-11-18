@@ -9,7 +9,7 @@ from compas.itertools import pairwise
 from compas.topology import breadth_first_traverse
 
 
-def _closest_faces(vertices, faces, nmax=10, radius=10.0):
+def _closest_faces(vertices, faces, nmax=10, max_distance=10.0):
     points = [centroid_points([vertices[index] for index in face]) for face in faces]
 
     k = min(len(faces), nmax)
@@ -21,6 +21,7 @@ def _closest_faces(vertices, faces, nmax=10, radius=10.0):
     # [2] the distance between the test point and the face centroid
 
     try:
+        import numpy as np
         from scipy.spatial import cKDTree
 
     except Exception:
@@ -48,22 +49,27 @@ def _closest_faces(vertices, faces, nmax=10, radius=10.0):
 
             closest = []
             for i, point in enumerate(points):
-                sphere = Sphere(Point3d(*point), radius)
+                sphere = Sphere(Point3d(*point), max_distance)
                 data = []
                 tree.Search(sphere, callback, data)
                 closest.append(data)
 
     else:
         tree = cKDTree(points)
-        _, closest = tree.query(points, k=k, workers=-1)
+        distances, closest = tree.query(points, k=k, workers=-1)
+        closest_within_distance = []
+        for i, closest_row in enumerate(closest):
+            idx = np.where(distances[i] < max_distance)[0]
+            closest_within_distance.append(closest_row[idx].tolist())
+        closest = closest_within_distance
 
     return closest
 
 
-def _face_adjacency(vertices, faces, nmax=None, radius=None):
+def _face_adjacency(vertices, faces, nmax=None, max_distance=None):
     nmax = nmax or 10
-    radius = radius or 10.0
-    closest = _closest_faces(vertices, faces, nmax=nmax, radius=radius)
+    max_distance = max_distance or 10.0
+    closest = _closest_faces(vertices, faces, nmax=nmax, max_distance=max_distance)
 
     adjacency = {}
 
@@ -96,7 +102,7 @@ def _face_adjacency(vertices, faces, nmax=None, radius=None):
     return adjacency
 
 
-def face_adjacency(points, faces, nmax=None, radius=None):
+def face_adjacency(points, faces, nmax=None, max_distance=None):
     """Build a face adjacency dict.
 
     Parameters
@@ -106,9 +112,9 @@ def face_adjacency(points, faces, nmax=None, radius=None):
     faces : list[list[int]]
         The faces defined as list of indices in the points list.
     nmax : int, optional
-        The maximum number of neighboring faces to consider. If neither nmax nor radius is specified, all faces will be considered.
-    radius : float, optional
-        The radius of the search sphere for neighboring faces. If neither nmax nor radius is specified, all faces will be considered.
+        The maximum number of neighboring faces to consider. If neither nmax nor max_distance is specified, all faces will be considered.
+    max_distance : float, optional
+        The max_distance of the search sphere for neighboring faces. If neither nmax nor max_distance is specified, all faces will be considered.
 
     Returns
     -------
@@ -123,8 +129,8 @@ def face_adjacency(points, faces, nmax=None, radius=None):
     purely geometrical, but uses a spatial indexing tree to speed up the search.
 
     """
-    if nmax or radius:
-        return _face_adjacency(points, faces, nmax=nmax, radius=radius)
+    if nmax or max_distance:
+        return _face_adjacency(points, faces, nmax=nmax, max_distance=max_distance)
 
     adjacency = {}
 
@@ -156,7 +162,7 @@ def face_adjacency(points, faces, nmax=None, radius=None):
     return adjacency
 
 
-def unify_cycles(vertices, faces, root=None, nmax=None, radius=None):
+def unify_cycles(vertices, faces, root=None, nmax=None, max_distance=None):
     """Unify the cycle directions of all faces.
 
     Unified cycle directions is a necessary condition for the data structure to
@@ -171,9 +177,9 @@ def unify_cycles(vertices, faces, root=None, nmax=None, radius=None):
     root : int, optional
         The key of the root face.
     nmax : int, optional
-        The maximum number of neighboring faces to consider. If neither nmax nor radius is specified, all faces will be considered.
-    radius : float, optional
-        The radius of the search sphere for neighboring faces. If neither nmax nor radius is specified, all faces will be considered.
+        The maximum number of neighboring faces to consider. If neither nmax nor max_distance is specified, all faces will be considered.
+    max_distance : float, optional
+        The max_distance of the search sphere for neighboring faces. If neither nmax nor max_distance is specified, all faces will be considered.
 
     Returns
     -------
@@ -204,7 +210,7 @@ def unify_cycles(vertices, faces, root=None, nmax=None, radius=None):
     if root is None:
         root = random.choice(list(range(len(faces))))
 
-    adj = face_adjacency(vertices, faces, nmax=nmax, radius=radius)  # this is the only place where the vertex coordinates are used
+    adj = face_adjacency(vertices, faces, nmax=nmax, max_distance=max_distance)  # this is the only place where the vertex coordinates are used
 
     visited = breadth_first_traverse(adj, root, unify)
 
