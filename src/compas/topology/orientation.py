@@ -9,10 +9,10 @@ from compas.itertools import pairwise
 from compas.topology import breadth_first_traverse
 
 
-def _closest_faces(vertices, faces, nmax=10, max_distance=10.0):
+def _closest_faces(vertices, faces, nmax, max_distance):
     points = [centroid_points([vertices[index] for index in face]) for face in faces]
 
-    k = min(len(faces), nmax)
+    k = len(faces) if nmax is None else min(len(faces), nmax)
 
     # determine the k closest faces for each face
     # each item in "closest" is
@@ -24,20 +24,23 @@ def _closest_faces(vertices, faces, nmax=10, max_distance=10.0):
         import numpy as np
         from scipy.spatial import cKDTree
 
+        tree = cKDTree(points)
+        distances, closest = tree.query(points, k=k, workers=-1)
+        if max_distance is None:
+            return closest
+
+        closest_within_distance = []
+        for i, closest_row in enumerate(closest):
+            idx = np.where(distances[i] < max_distance)[0]
+            closest_within_distance.append(closest_row[idx].tolist())
+        return closest_within_distance
+
     except Exception:
         try:
             from Rhino.Geometry import Point3d  # type: ignore
             from Rhino.Geometry import RTree  # type: ignore
             from Rhino.Geometry import Sphere  # type: ignore
 
-        except Exception:
-            from compas.geometry import KDTree
-
-            tree = KDTree(points)
-            closest = [tree.nearest_neighbors(point, k) for point in points]
-            closest = [[index for xyz, index, d in nnbrs if d < max_distance] for nnbrs in closest]
-
-        else:
             tree = RTree()
 
             for i, point in enumerate(points):
@@ -53,22 +56,21 @@ def _closest_faces(vertices, faces, nmax=10, max_distance=10.0):
                 data = []
                 tree.Search(sphere, callback, data)
                 closest.append(data)
+            return closest
 
-    else:
-        tree = cKDTree(points)
-        distances, closest = tree.query(points, k=k, workers=-1)
-        closest_within_distance = []
-        for i, closest_row in enumerate(closest):
-            idx = np.where(distances[i] < max_distance)[0]
-            closest_within_distance.append(closest_row[idx].tolist())
-        closest = closest_within_distance
+        except Exception:
+            from compas.geometry import KDTree
 
-    return closest
+            tree = KDTree(points)
+            closest = [tree.nearest_neighbors(point, k) for point in points]
+            if max_distance is None:
+                return closest
+            return [[index for xyz, index, d in nnbrs if d < max_distance] for nnbrs in closest]
 
 
 def _face_adjacency(vertices, faces, nmax=None, max_distance=None):
-    nmax = nmax or 10
-    max_distance = max_distance or 10.0
+    if nmax is None and max_distance is None:
+        raise ValueError("Either nmax or max_distance should be specified.")
     closest = _closest_faces(vertices, faces, nmax=nmax, max_distance=max_distance)
 
     adjacency = {}
