@@ -9,10 +9,10 @@ from compas.itertools import pairwise
 from compas.topology import breadth_first_traverse
 
 
-def _closest_faces(vertices, faces, nmax=10, radius=10.0):
+def _closest_faces(vertices, faces, nmax, max_distance):
     points = [centroid_points([vertices[index] for index in face]) for face in faces]
 
-    k = min(len(faces), nmax)
+    k = len(faces) if nmax is None else min(len(faces), nmax)
 
     # determine the k closest faces for each face
     # each item in "closest" is
@@ -21,7 +21,19 @@ def _closest_faces(vertices, faces, nmax=10, radius=10.0):
     # [2] the distance between the test point and the face centroid
 
     try:
+        import numpy as np
         from scipy.spatial import cKDTree
+
+        tree = cKDTree(points)
+        distances, closest = tree.query(points, k=k, workers=-1)
+        if max_distance is None:
+            return closest
+
+        closest_within_distance = []
+        for i, closest_row in enumerate(closest):
+            idx = np.where(distances[i] < max_distance)[0]
+            closest_within_distance.append(closest_row[idx].tolist())
+        return closest_within_distance
 
     except Exception:
         try:
@@ -29,14 +41,6 @@ def _closest_faces(vertices, faces, nmax=10, radius=10.0):
             from Rhino.Geometry import RTree  # type: ignore
             from Rhino.Geometry import Sphere  # type: ignore
 
-        except Exception:
-            from compas.geometry import KDTree
-
-            tree = KDTree(points)
-            closest = [tree.nearest_neighbors(point, k) for point in points]
-            closest = [[index for xyz, index, d in nnbrs] for nnbrs in closest]
-
-        else:
             tree = RTree()
 
             for i, point in enumerate(points):
@@ -48,20 +52,26 @@ def _closest_faces(vertices, faces, nmax=10, radius=10.0):
 
             closest = []
             for i, point in enumerate(points):
-                sphere = Sphere(Point3d(*point), radius)
+                sphere = Sphere(Point3d(*point), max_distance)
                 data = []
                 tree.Search(sphere, callback, data)
                 closest.append(data)
+            return closest
 
-    else:
-        tree = cKDTree(points)
-        _, closest = tree.query(points, k=k, workers=-1)
+        except Exception:
+            from compas.geometry import KDTree
 
-    return closest
+            tree = KDTree(points)
+            closest = [tree.nearest_neighbors(point, k) for point in points]
+            if max_distance is None:
+                return closest
+            return [[index for xyz, index, d in nnbrs if d < max_distance] for nnbrs in closest]
 
 
-def _face_adjacency(vertices, faces, nmax=10, radius=10.0):
-    closest = _closest_faces(vertices, faces, nmax=nmax, radius=radius)
+def _face_adjacency(vertices, faces, nmax=None, max_distance=None):
+    if nmax is None and max_distance is None:
+        raise ValueError("Either nmax or max_distance should be specified.")
+    closest = _closest_faces(vertices, faces, nmax=nmax, max_distance=max_distance)
 
     adjacency = {}
 
@@ -94,7 +104,7 @@ def _face_adjacency(vertices, faces, nmax=10, radius=10.0):
     return adjacency
 
 
-def face_adjacency(points, faces):
+def face_adjacency(points, faces, nmax=None, max_distance=None):
     """Build a face adjacency dict.
 
     Parameters
@@ -103,6 +113,10 @@ def face_adjacency(points, faces):
         The vertex locations of the faces.
     faces : list[list[int]]
         The faces defined as list of indices in the points list.
+    nmax : int, optional
+        The maximum number of neighboring faces to consider. If neither nmax nor max_distance is specified, all faces will be considered.
+    max_distance : float, optional
+        The max_distance of the search sphere for neighboring faces. If neither nmax nor max_distance is specified, all faces will be considered.
 
     Returns
     -------
@@ -117,10 +131,8 @@ def face_adjacency(points, faces):
     purely geometrical, but uses a spatial indexing tree to speed up the search.
 
     """
-    f = len(faces)
-
-    if f > 100:
-        return _face_adjacency(points, faces)
+    if nmax or max_distance:
+        return _face_adjacency(points, faces, nmax=nmax, max_distance=max_distance)
 
     adjacency = {}
 
@@ -152,7 +164,7 @@ def face_adjacency(points, faces):
     return adjacency
 
 
-def unify_cycles(vertices, faces, root=None):
+def unify_cycles(vertices, faces, root=None, nmax=None, max_distance=None):
     """Unify the cycle directions of all faces.
 
     Unified cycle directions is a necessary condition for the data structure to
@@ -164,8 +176,12 @@ def unify_cycles(vertices, faces, root=None):
         The vertex coordinates of the mesh.
     faces : list[list[int]]
         The faces of the mesh defined as lists of vertex indices.
-    root : str, optional
+    root : int, optional
         The key of the root face.
+    nmax : int, optional
+        The maximum number of neighboring faces to consider. If neither nmax nor max_distance is specified, all faces will be considered.
+    max_distance : float, optional
+        The max_distance of the search sphere for neighboring faces. If neither nmax nor max_distance is specified, all faces will be considered.
 
     Returns
     -------
@@ -196,7 +212,7 @@ def unify_cycles(vertices, faces, root=None):
     if root is None:
         root = random.choice(list(range(len(faces))))
 
-    adj = face_adjacency(vertices, faces)  # this is the only place where the vertex coordinates are used
+    adj = face_adjacency(vertices, faces, nmax=nmax, max_distance=max_distance)  # this is the only place where the vertex coordinates are used
 
     visited = breadth_first_traverse(adj, root, unify)
 
