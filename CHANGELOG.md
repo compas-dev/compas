@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* `compas_rhino.uninstall` will try to remove compas packages from all possible
+  install locations.
+
 ### Removed
 
 
