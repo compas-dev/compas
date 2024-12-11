@@ -6,6 +6,7 @@ import Rhino  # type: ignore
 
 from compas.geometry import Brep
 from compas.geometry import BrepError
+from compas.geometry import BrepFilletError
 from compas.geometry import BrepTrimmingError
 from compas.geometry import Frame
 from compas.geometry import Plane
@@ -583,3 +584,55 @@ class RhinoBrep(Brep):
         """
         resulting_breps = self._brep.Split(cutter.native_brep, TOL.absolute)
         return [RhinoBrep.from_native(brep) for brep in resulting_breps]
+
+    def fillet(self, radius, edges=None):
+        """Fillet edges of the Brep.
+
+        Parameters
+        ----------
+        radius : float
+            The radius of the fillet.
+        edges : list(:class:`compas_rhino.geometry.RhinoBrepEdge`)
+            The edges to fillet.
+
+        Raises
+        -------
+        BrepFilletingError
+            If the fillet operation fails.
+
+        """
+        resulting_breps = self.filleted(radius, edges)
+        self._brep = resulting_breps.native_brep
+
+    def filleted(self, radius, edges=None):
+        """Returns a filleted copy of the Brep.
+
+        Parameters
+        ----------
+        radius : float
+            The radius of the fillet.
+        edges : list(:class:`compas_rhino.geometry.RhinoBrepEdge`)
+            List of edges to exclude from the operation. When None all edges are included.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoBrep`
+            The resulting Brep.
+
+        Raises
+        -------
+        BrepFilletingError
+            If the fillet operation fails.
+
+        """
+        excluded_indices = [edge.native_edge.EdgeIndex for edge in edges] if edges else []
+
+        edge_indices = [i for i in range(len(self.edges)) if i not in excluded_indices]
+        radii = [radius] * len(edge_indices)
+        blend = Rhino.Geometry.BlendType.Fillet
+        rail = Rhino.Geometry.RailType.DistanceFromEdge
+
+        resulting_breps = Rhino.Geometry.Brep.CreateFilletEdges(self._brep, edge_indices, radii, radii, blend, rail, TOL.absolute)
+        if not resulting_breps:
+            raise BrepFilletError("Fillet operation ended with no result")
+        return RhinoBrep.from_native(resulting_breps[0])
