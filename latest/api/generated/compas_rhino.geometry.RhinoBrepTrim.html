@@ -1121,9 +1121,9 @@ document.write(`
 <h1>RhinoBrepTrim</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas_rhino.geometry.RhinoBrepTrim">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></span><span class="sig-name descname"><span class="pre">RhinoBrepTrim</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/5c334dd/src/compas/../compas_rhino/geometry/brep/trim.py#L11"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></span><span class="sig-name descname"><span class="pre">RhinoBrepTrim</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/d77f706/src/compas/../compas_rhino/geometry/brep/trim.py#L13"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.BrepTrim.html#compas.geometry.BrepTrim" title="compas.geometry.brep.trim.BrepTrim"><code class="xref py py-class docutils literal notranslate"><span class="pre">BrepTrim</span></code></a></p>
-<p>An interface for a Brep Trim</p>
+<p>Trims hold topological information about how the edges of a Brep face are are organized.</p>
 <dl class="field-list">
 <dt class="field-odd">Attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -1134,6 +1134,12 @@ document.write(`
 <dt><strong>is_reversed</strong><span class="classifier">bool</span></dt><dd><p>True if this trim is reversed from its associated edge curve and False otherwise.</p>
 </dd>
 <dt><strong>native_trim</strong><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rhino.Geometry.BrepTrim</span></code></span></dt><dd><p>The underlying Rhino BrepTrim object.</p>
+</dd>
+<dt><strong>start_vertex</strong><span class="classifier"><a class="reference internal" href="compas_rhino.geometry.RhinoBrepVertex.html#compas_rhino.geometry.RhinoBrepVertex" title="compas_rhino.geometry.RhinoBrepVertex"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoBrepVertex</span></code></a>, read-only</span></dt><dd><p>The start vertex of this trim.</p>
+</dd>
+<dt><strong>end_vertex</strong><span class="classifier"><a class="reference internal" href="compas_rhino.geometry.RhinoBrepVertex.html#compas_rhino.geometry.RhinoBrepVertex" title="compas_rhino.geometry.RhinoBrepVertex"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoBrepVertex</span></code></a>, read-only</span></dt><dd><p>The end vertex of this trim.</p>
+</dd>
+<dt><strong>vertices</strong><span class="classifier">list[<a class="reference internal" href="compas_rhino.geometry.RhinoBrepVertex.html#compas_rhino.geometry.RhinoBrepVertex" title="compas_rhino.geometry.RhinoBrepVertex"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoBrepVertex</span></code></a>], read-only</span></dt><dd><p>The list of vertices which comprise this trim (start and end).</p>
 </dd>
 </dl>
 </dd>
