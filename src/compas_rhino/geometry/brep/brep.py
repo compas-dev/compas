@@ -625,9 +625,10 @@ class RhinoBrep(Brep):
             If the fillet operation fails.
 
         """
-        excluded_indices = [edge.native_edge.EdgeIndex for edge in edges] if edges else []
+        all_edge_indices = set(edge.native_edge.EdgeIndex for edge in self.edges)
+        excluded_indices = set(edge.native_edge.EdgeIndex for edge in edges or [])
 
-        edge_indices = [i for i in range(len(self.edges)) if i not in excluded_indices]
+        edge_indices = all_edge_indices - excluded_indices
         radii = [radius] * len(edge_indices)
         blend = Rhino.Geometry.BlendType.Fillet
         rail = Rhino.Geometry.RailType.DistanceFromEdge
