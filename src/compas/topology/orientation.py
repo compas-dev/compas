@@ -2,8 +2,6 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import random
-
 from compas.geometry import centroid_points
 from compas.itertools import pairwise
 from compas.topology import breadth_first_traverse
