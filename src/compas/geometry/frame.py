@@ -613,7 +613,6 @@ class Frame(Geometry):
         """Return an inverted copy of the frame."""
         frame = self.copy()  # type: Frame
         frame.invert()
-        print(frame.xaxis, frame.yaxis, frame.zaxis)
         return frame
 
     def interpolate_frame(self, other, t):
