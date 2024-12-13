@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Added implementation of `RhinoBrep.fillet()` and `RhinoBrep.filleted()` to `compas_rhino`.
+* Added `Frame.invert` and `Frame.inverted`.
 
 ### Changed
 

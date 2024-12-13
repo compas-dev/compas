@@ -604,6 +604,18 @@ class Frame(Geometry):
     # Methods
     # ==========================================================================
 
+    def invert(self):
+        """Invert the frame while keeping the X axis fixed."""
+        self._yaxis = self.yaxis * -1
+        self._zaxis = None
+
+    def inverted(self):
+        """Return an inverted copy of the frame."""
+        frame = self.copy()  # type: Frame
+        frame.invert()
+        print(frame.xaxis, frame.yaxis, frame.zaxis)
+        return frame
+
     def interpolate_frame(self, other, t):
         """Interpolates between two frames at a given parameter t in the range [0, 1]
 

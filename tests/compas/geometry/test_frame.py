@@ -92,3 +92,35 @@ def test_interpolate_frame_start_end():
 
     three_quarter_frame = frame1.interpolate_frame(frame2, 0.75)
     assert TOL.is_allclose([math.degrees(three_quarter_frame.axis_angle_vector.y)], [-67.5], atol=TOL.angular)
+
+
+def test_frame_invert():
+    frame = Frame([0, 0, 0])
+
+    assert TOL.is_close(frame.xaxis.dot([1, 0, 0]), 1.0)
+    assert TOL.is_close(frame.yaxis.dot([0, 1, 0]), 1.0)
+    assert TOL.is_close(frame.zaxis.dot([0, 0, 1]), 1.0)
+
+    frame.invert()
+
+    assert TOL.is_close(frame.xaxis.dot([1, 0, 0]), 1.0)
+    assert TOL.is_close(frame.yaxis.dot([0, -1, 0]), 1.0)
+    assert TOL.is_close(frame.zaxis.dot([0, 0, -1]), 1.0)
+
+
+def test_frame_inverted():
+    frame = Frame([0, 0, 0])
+
+    assert TOL.is_close(frame.xaxis.dot([1, 0, 0]), 1.0)
+    assert TOL.is_close(frame.yaxis.dot([0, 1, 0]), 1.0)
+    assert TOL.is_close(frame.zaxis.dot([0, 0, 1]), 1.0)
+
+    other = frame.inverted()
+
+    assert TOL.is_close(frame.xaxis.dot([1, 0, 0]), 1.0)
+    assert TOL.is_close(frame.yaxis.dot([0, 1, 0]), 1.0)
+    assert TOL.is_close(frame.zaxis.dot([0, 0, 1]), 1.0)
+
+    assert TOL.is_close(other.xaxis.dot([1, 0, 0]), 1.0)
+    assert TOL.is_close(other.yaxis.dot([0, -1, 0]), 1.0)
+    assert TOL.is_close(other.zaxis.dot([0, 0, -1]), 1.0)
