@@ -679,6 +679,8 @@ class Vector(Geometry):
         """
         self.scale(-1.0)
 
+    flip = invert
+
     def inverted(self):
         """Returns a inverted copy of this vector
 
@@ -696,6 +698,8 @@ class Vector(Geometry):
 
         """
         return self.scaled(-1.0)
+
+    flipped = inverted
 
     def scale(self, n):
         """Scale this vector by a factor n.

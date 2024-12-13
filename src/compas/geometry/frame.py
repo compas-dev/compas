@@ -609,11 +609,15 @@ class Frame(Geometry):
         self._yaxis = self.yaxis * -1
         self._zaxis = None
 
+    flip = invert
+
     def inverted(self):
         """Return an inverted copy of the frame."""
         frame = self.copy()  # type: Frame
         frame.invert()
         return frame
+
+    flipped = inverted
 
     def interpolate_frame(self, other, t):
         """Interpolates between two frames at a given parameter t in the range [0, 1]
