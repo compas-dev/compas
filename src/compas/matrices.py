@@ -1,14 +1,22 @@
+from typing import Literal
+from typing import Union
+
+import numpy.typing as npt
 from numpy import abs
 from numpy import array
 from numpy import asarray
 from numpy import tile
-from scipy.sparse import coo_matrix  # type: ignore
-from scipy.sparse import csr_matrix  # type: ignore
-from scipy.sparse import diags  # type: ignore
-from scipy.sparse import vstack as svstack  # type: ignore
+from scipy.sparse import coo_matrix
+from scipy.sparse import csc_matrix
+from scipy.sparse import csr_matrix
+from scipy.sparse import diags
+from scipy.sparse import vstack as svstack
 
 
-def _return_matrix(M, rtype):
+def _return_matrix(
+    M: Union[csc_matrix, csr_matrix, coo_matrix],
+    rtype: Literal["array", "csc", "csr", "coo", "list"],
+) -> Union[npt.NDArray, csc_matrix, csr_matrix, coo_matrix, list]:
     if rtype == "list":
         return M.toarray().tolist()
     if rtype == "array":
@@ -27,12 +35,15 @@ def _return_matrix(M, rtype):
 # ==============================================================================
 
 
-def adjacency_matrix(adjacency, rtype="array"):
+def adjacency_matrix(
+    adjacency: list[list[int]],
+    rtype: Literal["array", "csc", "csr", "coo", "list"] = "array",
+) -> Union[npt.NDArray, csc_matrix, csr_matrix, coo_matrix, list]:
     """Creates a vertex adjacency matrix.
 
     Parameters
     ----------
-    adjacency : list
+    adjacency : list[list[int]]
         List of lists, vertex adjacency data.
     rtype : {'array', 'csc', 'csr', 'coo', 'list'}
         Format of the result.
@@ -49,7 +60,11 @@ def adjacency_matrix(adjacency, rtype="array"):
     return _return_matrix(A, rtype)
 
 
-def face_matrix(face_vertices, rtype="array", normalize=False):
+def face_matrix(
+    face_vertices: list[list[int]],
+    rtype: Literal["array", "csc", "csr", "coo", "list"] = "array",
+    normalize: bool = False,
+) -> Union[npt.NDArray, csc_matrix, csr_matrix, coo_matrix, list]:
     """Creates a face-vertex adjacency matrix.
 
     Parameters
@@ -78,12 +93,15 @@ def face_matrix(face_vertices, rtype="array", normalize=False):
 # ==============================================================================
 
 
-def degree_matrix(adjacency, rtype="array"):
+def degree_matrix(
+    adjacency: list[list[int]],
+    rtype: Literal["array", "csc", "csr", "coo", "list"] = "array",
+) -> Union[npt.NDArray, csc_matrix, csr_matrix, coo_matrix, list]:
     """Creates a matrix representing vertex degrees.
 
     Parameters
     ----------
-    adjacency : list
+    adjacency : list[list[int]]
         List of lists, vertex adjacency data.
     rtype : {'array', 'csc', 'csr', 'coo', 'list'}
         Format of the result.
@@ -105,7 +123,10 @@ def degree_matrix(adjacency, rtype="array"):
 # ==============================================================================
 
 
-def connectivity_matrix(edges, rtype="array"):
+def connectivity_matrix(
+    edges: list[list[int]],
+    rtype: Literal["array", "csc", "csr", "coo", "list"] = "array",
+) -> Union[npt.NDArray, csc_matrix, csr_matrix, coo_matrix, list]:
     r"""Creates a connectivity matrix from a list of vertex index pairs.
 
     Parameters
@@ -161,7 +182,11 @@ def connectivity_matrix(edges, rtype="array"):
 
 # change this to a procedural approach
 # constructing (fundamental) matrices should not involve matrix operations
-def laplacian_matrix(edges, normalize=False, rtype="array"):
+def laplacian_matrix(
+    edges: list[list[int]],
+    normalize: bool = False,
+    rtype: Literal["array", "csc", "csr", "coo", "list"] = "array",
+) -> Union[npt.NDArray, csc_matrix, csr_matrix, coo_matrix, list]:
     r"""Creates a laplacian matrix from a list of edge topologies.
 
     Parameters
@@ -208,7 +233,12 @@ def laplacian_matrix(edges, normalize=False, rtype="array"):
 # ==============================================================================
 
 
-def equilibrium_matrix(C, xyz, free, rtype="array"):
+def equilibrium_matrix(
+    C: npt.ArrayLike,
+    xyz: npt.ArrayLike,
+    free: list[int],
+    rtype: Literal["array", "csc", "csr", "coo", "list"] = "array",
+) -> Union[npt.NDArray, csc_matrix, csr_matrix, coo_matrix, list]:
     r"""Construct the equilibrium matrix of a structural system.
 
     Parameters
@@ -258,14 +288,14 @@ def equilibrium_matrix(C, xyz, free, rtype="array"):
 
     """
     xyz = asarray(xyz, dtype=float)
-    C = csr_matrix(C)
+    C: csr_matrix = csr_matrix(C)
     xy = xyz[:, :2]
     uv = C.dot(xy)
     U = diags([uv[:, 0].flatten()], [0])
     V = diags([uv[:, 1].flatten()], [0])
-    Ct = C.transpose()
+    Ct: csc_matrix = C.transpose()
     Cti = Ct[free, :]
-    E = svstack((Cti.dot(U), Cti.dot(V)))
+    E: csc_matrix = svstack((Cti.dot(U), Cti.dot(V)))
     return _return_matrix(E, rtype)
 
 
