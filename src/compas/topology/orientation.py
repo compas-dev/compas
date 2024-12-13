@@ -193,6 +193,11 @@ def unify_cycles(vertices, faces, root=None, nmax=None, max_distance=None):
     Exception
         If no all faces are included in the unnification process.
 
+    Notes
+    -----
+    The cycles of the faces will be aligned with the cycle direction of the root face.
+    If no root face is specified, the first face in the list will be used.
+
     """
 
     def unify(node, nbr):
@@ -210,7 +215,8 @@ def unify_cycles(vertices, faces, root=None, nmax=None, max_distance=None):
                     return
 
     if root is None:
-        root = random.choice(list(range(len(faces))))
+        # root = random.choice(list(range(len(faces))))
+        root = 0
 
     adj = face_adjacency(vertices, faces, nmax=nmax, max_distance=max_distance)  # this is the only place where the vertex coordinates are used
 

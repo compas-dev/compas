@@ -14,6 +14,7 @@ HERE = os.path.dirname(__file__)
 def test_unify_cycles():
     if compas.IPY:
         return
+
     test_data = compas.json_load(os.path.join(HERE, "..", "fixtures", "topology", "vertices_faces.json"))
     vertices = test_data["vertices"]
     faces = test_data["faces"]
@@ -25,12 +26,15 @@ def test_unify_cycles():
     # no parameters
     unify_cycles(vertices, faces)
     assert TOL.is_close(volume, volume_polyhedron((vertices, faces)))
+
     # only max_nbrs
     unify_cycles(vertices, faces, nmax=max_nbrs)
     assert TOL.is_close(volume, volume_polyhedron((vertices, faces)))
+
     # only max_distance
     unify_cycles(vertices, faces, max_distance=max_edge_length)
     assert TOL.is_close(volume, volume_polyhedron((vertices, faces)))
+
     # both parameters
     unify_cycles(vertices, faces, nmax=max_nbrs, max_distance=max_edge_length)
     assert TOL.is_close(volume, volume_polyhedron((vertices, faces)))
