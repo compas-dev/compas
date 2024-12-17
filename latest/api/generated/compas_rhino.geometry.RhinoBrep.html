@@ -107,7 +107,7 @@
 
 
   <div class="bd-header-announcement container-fluid bd-header-announcement">
-    <div class="bd-header-announcement__content">This is the documentation of the first stable release of COMPAS 2. If you have feedback, please give it here: <a href='https://compas.dev/compas/issues'>COMPAS issue tracker</a>.</div>
+    <div class="bd-header-announcement__content">This is the documentation of the first stable release of COMPAS 2. If you have feedback, please give it here: <a href='https://github.com/compas-dev/compas/issues'>COMPAS issue tracker</a>.</div>
   </div>
 
   
@@ -1121,7 +1121,7 @@ document.write(`
 <h1>RhinoBrep</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas_rhino.geometry.RhinoBrep">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></span><span class="sig-name descname"><span class="pre">RhinoBrep</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/67f52ea/src/compas/../compas_rhino/geometry/brep/brep.py#L35"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_rhino.geometry.</span></span><span class="sig-name descname"><span class="pre">RhinoBrep</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/3b38816/src/compas/../compas_rhino/geometry/brep/brep.py#L36"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Brep.html#compas.geometry.Brep" title="compas.geometry.brep.brep.Brep"><code class="xref py py-class docutils literal notranslate"><span class="pre">Brep</span></code></a></p>
 <p>Rhino Brep backend class.</p>
 <p>Wraps around and allows serialization and de-serialization of a <code class="xref py py-class docutils literal notranslate"><span class="pre">Rhino.Geometry.Brep</span></code>.</p>
@@ -1159,6 +1159,12 @@ document.write(`
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.copy.html#compas_rhino.geometry.RhinoBrep.copy" title="compas_rhino.geometry.RhinoBrep.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
 <td><p>Creates a deep-copy of this Brep using the native Rhino.Geometry.Brep copying mechanism.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.fillet.html#compas_rhino.geometry.RhinoBrep.fillet" title="compas_rhino.geometry.RhinoBrep.fillet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fillet</span></code></a></p></td>
+<td><p>Fillet edges of the Brep.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.filleted.html#compas_rhino.geometry.RhinoBrep.filleted" title="compas_rhino.geometry.RhinoBrep.filleted"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filleted</span></code></a></p></td>
+<td><p>Returns a filleted copy of the Brep.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.from_boolean_difference.html#compas_rhino.geometry.RhinoBrep.from_boolean_difference" title="compas_rhino.geometry.RhinoBrep.from_boolean_difference"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_boolean_difference</span></code></a></p></td>
 <td><p>Construct a Brep from the boolean difference of two groups of Breps.</p></td>
@@ -1242,12 +1248,6 @@ document.write(`
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.edge_loop.html#compas_rhino.geometry.RhinoBrep.edge_loop" title="compas_rhino.geometry.RhinoBrep.edge_loop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_loop</span></code></a></p></td>
 <td><p>Identify the parent loops of the a given edge.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.fillet.html#compas_rhino.geometry.RhinoBrep.fillet" title="compas_rhino.geometry.RhinoBrep.fillet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fillet</span></code></a></p></td>
-<td><p>Fillet the edges of the Brep.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.filleted.html#compas_rhino.geometry.RhinoBrep.filleted" title="compas_rhino.geometry.RhinoBrep.filleted"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filleted</span></code></a></p></td>
-<td><p>Construct a filleted copy of the Brep.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.fix.html#compas_rhino.geometry.RhinoBrep.fix" title="compas_rhino.geometry.RhinoBrep.fix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fix</span></code></a></p></td>
 <td><p>Fix the shell.</p></td>

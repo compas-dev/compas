@@ -107,7 +107,7 @@
 
 
   <div class="bd-header-announcement container-fluid bd-header-announcement">
-    <div class="bd-header-announcement__content">This is the documentation of the first stable release of COMPAS 2. If you have feedback, please give it here: <a href='https://compas.dev/compas/issues'>COMPAS issue tracker</a>.</div>
+    <div class="bd-header-announcement__content">This is the documentation of the first stable release of COMPAS 2. If you have feedback, please give it here: <a href='https://github.com/compas-dev/compas/issues'>COMPAS issue tracker</a>.</div>
   </div>
 
   
@@ -1126,11 +1126,21 @@ document.write(`
 <h1>Mesh.unify_cycles</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.datastructures.Mesh.unify_cycles">
-<span class="sig-prename descclassname"><span class="pre">Mesh.</span></span><span class="sig-name descname"><span class="pre">unify_cycles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/67f52ea/src/compas/datastructures/mesh/mesh.py#L2935"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Mesh.</span></span><span class="sig-name descname"><span class="pre">unify_cycles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_distance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/3b38816/src/compas/datastructures/mesh/mesh.py#L2935"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Unify the cycles of the mesh.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
+<dt><strong>root</strong><span class="classifier">int, optional</span></dt><dd><p>The key of the root face.</p>
+</dd>
+<dt><strong>nmax</strong><span class="classifier">int, optional</span></dt><dd><p>The maximum number of neighboring faces to consider. If neither nmax nor max_distance is specified, all faces will be considered.</p>
+</dd>
+<dt><strong>max_distance</strong><span class="classifier">float, optional</span></dt><dd><p>The max_distance of the search sphere for neighboring faces. If neither nmax nor max_distance is specified, all faces will be considered.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
 <dt>None</dt><dd><p>The mesh is modified in place.</p>
 </dd>
 </dl>

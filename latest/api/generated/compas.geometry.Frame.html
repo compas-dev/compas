@@ -107,7 +107,7 @@
 
 
   <div class="bd-header-announcement container-fluid bd-header-announcement">
-    <div class="bd-header-announcement__content">This is the documentation of the first stable release of COMPAS 2. If you have feedback, please give it here: <a href='https://compas.dev/compas/issues'>COMPAS issue tracker</a>.</div>
+    <div class="bd-header-announcement__content">This is the documentation of the first stable release of COMPAS 2. If you have feedback, please give it here: <a href='https://github.com/compas-dev/compas/issues'>COMPAS issue tracker</a>.</div>
   </div>
 
   
@@ -1121,7 +1121,7 @@ document.write(`
 <h1>Frame</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.Frame">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Frame</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/67f52ea/src/compas/geometry/frame.py#L27"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Frame</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/3b38816/src/compas/geometry/frame.py#L27"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Geometry.html#compas.geometry.Geometry" title="compas.geometry.geometry.Geometry"><code class="xref py py-class docutils literal notranslate"><span class="pre">Geometry</span></code></a></p>
 <p>A frame is defined by a base point and two orthonormal base vectors.</p>
 <dl class="field-list">
@@ -1178,6 +1178,12 @@ vector as starting point.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.euler_angles.html#compas.geometry.Frame.euler_angles" title="compas.geometry.Frame.euler_angles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">euler_angles</span></code></a></p></td>
 <td><p>The Euler angles from the rotation given by the frame.</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.flip.html#compas.geometry.Frame.flip" title="compas.geometry.Frame.flip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flip</span></code></a></p></td>
+<td><p>Invert the frame while keeping the X axis fixed.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.flipped.html#compas.geometry.Frame.flipped" title="compas.geometry.Frame.flipped"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flipped</span></code></a></p></td>
+<td><p>Return an inverted copy of the frame.</p></td>
+</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.from_axis_angle_vector.html#compas.geometry.Frame.from_axis_angle_vector" title="compas.geometry.Frame.from_axis_angle_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_axis_angle_vector</span></code></a></p></td>
 <td><p>Construct a frame from an axis-angle vector representing the rotation.</p></td>
 </tr>
@@ -1210,6 +1216,12 @@ vector as starting point.</p>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.interpolate_frames.html#compas.geometry.Frame.interpolate_frames" title="compas.geometry.Frame.interpolate_frames"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolate_frames</span></code></a></p></td>
 <td><p>Generates a specified number of interpolated frames between two given frames</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.invert.html#compas.geometry.Frame.invert" title="compas.geometry.Frame.invert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">invert</span></code></a></p></td>
+<td><p>Invert the frame while keeping the X axis fixed.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Frame.inverted.html#compas.geometry.Frame.inverted" title="compas.geometry.Frame.inverted"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverted</span></code></a></p></td>
+<td><p>Return an inverted copy of the frame.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Frame.to_local_coordinates.html#compas.geometry.Frame.to_local_coordinates" title="compas.geometry.Frame.to_local_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_local_coordinates</span></code></a></p></td>
 <td><p>Returns the object's coordinates in the local coordinate system of the frame.</p></td>
