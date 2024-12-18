@@ -43,14 +43,12 @@ def install(version=None, packages=None, clean=False):
     """
     version = compas_rhino._check_rhino_version(version)
 
-    # We install COMPAS packages in the scripts folder
-    # instead of directly as IPy module.
-    # scripts_path = compas_rhino._get_rhino_scripts_path(version)
-
-    # In Rhino 8 there is no scripts folder
     if version == "8.0":
+        # In Rhino 8 there is no scripts folder
         installation_path = compas_rhino._get_default_rhino_ironpython_sitepackages_path(version)
     else:
+        # We install COMPAS packages in the scripts folder
+        # instead of directly as IPy module.
         installation_path = compas_rhino._get_rhino_scripts_path(version)
 
     # This is for old installs
