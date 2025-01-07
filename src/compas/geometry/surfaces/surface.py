@@ -160,7 +160,7 @@ class Surface(Geometry):
             A COMPAS surface.
 
         """
-        raise NotImplementedError
+        return surface_from_native(surface)
 
     @classmethod
     def from_obj(cls, filepath):

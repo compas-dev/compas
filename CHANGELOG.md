@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Fixed `NotImplementedError` when calling `compas_rhino.conversions.surface_to_compas` on NURBS Surface.
+* Fixed `NotImplementedError` when calling `compas_rhino.conversions.surface_to_compas` on Surface.
 
 ### Removed
 
