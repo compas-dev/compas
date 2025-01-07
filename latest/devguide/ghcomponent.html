@@ -28,7 +28,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/css/compas.css?v=617b33e2" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
@@ -590,11 +590,11 @@ This takes care of a lot of the boilerplate code, and makes compiling and instal
 <p>The GHPython Componentizer only supports GHPython components in advanced mode.
 This means each component must inherit from the <code class="docutils literal notranslate"><span class="pre">ghpythonlib.component</span></code> class and implement the <code class="docutils literal notranslate"><span class="pre">RunScript()</span></code> method.</p>
 <p>A typical <code class="docutils literal notranslate"><span class="pre">code</span></code> file might look like this:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ghpythonlib.componentbase</span> <span class="kn">import</span> <span class="n">executingcomponent</span> <span class="k">as</span> <span class="n">component</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ghpythonlib.componentbase</span><span class="w"> </span><span class="kn">import</span> <span class="n">executingcomponent</span> <span class="k">as</span> <span class="n">component</span>
 
-<span class="k">class</span> <span class="nc">ExampleComponent</span><span class="p">(</span><span class="n">component</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ExampleComponent</span><span class="p">(</span><span class="n">component</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="nf">RunScript</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Input1</span><span class="p">,</span> <span class="n">Input2</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">RunScript</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Input1</span><span class="p">,</span> <span class="n">Input2</span><span class="p">):</span>
         <span class="c1"># do the work here</span>
         <span class="n">Output1</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">Output2</span> <span class="o">=</span> <span class="kc">None</span>

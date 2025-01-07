@@ -28,7 +28,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/css/compas.css?v=617b33e2" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
@@ -575,7 +575,7 @@ python<span class="w"> </span>-m<span class="w"> </span>compas_rhino.install
 <section id="verification">
 <h2>Verification</h2>
 <p>To test if the installation was successful, you can run the following script in Rhino.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">compas</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">compas</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
 </pre></div>
@@ -585,9 +585,9 @@ python<span class="w"> </span>-m<span class="w"> </span>compas_rhino.install
 <h2>Visualisation</h2>
 <p>Visualisation of COMPAS objects in Rhino is handled using viualisation scenes.
 For more information on visualisation scenes, see <a class="reference internal" href="basics.visualisation.html"><span class="doc">Visualisation</span></a>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">compas</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
-<span class="kn">from</span> <span class="nn">compas.scene</span> <span class="kn">import</span> <span class="n">Scene</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">compas</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">compas.datastructures</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">compas.scene</span><span class="w"> </span><span class="kn">import</span> <span class="n">Scene</span>
 
 <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tubemesh.obj&#39;</span><span class="p">))</span>
 
@@ -604,8 +604,8 @@ For more information on visualisation scenes, see <a class="reference internal" 
 <section id="rhino-geometry-to-compas">
 <h3>Rhino Geometry to COMPAS</h3>
 <p>Conversions of geometry is straightforward and explicit.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">Rhino.Geometry</span>
-<span class="kn">import</span> <span class="nn">compas_rhino.conversions</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">Rhino.Geometry</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">compas_rhino.conversions</span>
 
 <span class="n">point</span> <span class="o">=</span> <span class="n">Rhino</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">Point3d</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 <span class="n">point</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">conversions</span><span class="o">.</span><span class="n">point_to_compas</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
@@ -644,8 +644,8 @@ Therefore, to convert <cite>Rhino.Geometry.Plane</cite> to <a class="reference i
 <p>A Rhino Document contains Rhino Object instead of Rhino Geometry.
 The geometry of a Rhino Object is stored in the corresponding attribute (<cite>obj.Geometry</cite>).</p>
 <p>Converting point, curve, and mesh objects is straightforward.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">compas_rhino.objects</span>
-<span class="kn">import</span> <span class="nn">compas_rhino.conversions</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">compas_rhino.objects</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">compas_rhino.conversions</span>
 
 <span class="n">guid</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">select_point</span><span class="p">()</span>
 <span class="n">point</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">conversions</span><span class="o">.</span><span class="n">pointobject_to_compas</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span>
@@ -660,8 +660,8 @@ The geometry of a Rhino Object is stored in the corresponding attribute (<cite>o
 <p>In the case of curve objects, note that the conversion function will return a NurbsCurve in almost all cases.
 If the curve has a specific geometry, it can be converted explicitly using the corresponding geomtry conversion function.
 For example, if the curve is a circle.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">compas_rhino.objects</span>
-<span class="kn">import</span> <span class="nn">compas_rhino.conversions</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">compas_rhino.objects</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">compas_rhino.conversions</span>
 
 <span class="n">guid</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">select_curve</span><span class="p">()</span>
 <span class="n">obj</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">find_object</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span>
@@ -673,8 +673,8 @@ For example, if the curve is a circle.</p>
 This is because in a Rhino Document, almost all other geometries are represented by a BrepObject regardless of the actual geometry type.
 For example, when you add a sphere to a model, the DocObject is a BrepObject, and the geometry of the object is a Brep.
 Therefore, conversions of other objects have to be done more carefully.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">compas_rhino.objects</span>
-<span class="kn">import</span> <span class="nn">compas_rhino.conversions</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">compas_rhino.objects</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">compas_rhino.conversions</span>
 
 <span class="n">guid</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">select_object</span><span class="p">()</span>
 <span class="n">brep</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">conversions</span><span class="o">.</span><span class="n">brepobject_to_compas</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span>
@@ -683,8 +683,8 @@ Therefore, conversions of other objects have to be done more carefully.</p>
 <p>Also here, if the object is (supposed to be) a specific type of geometry,
 conversion can be done more explicitly using the geometry conversion functions instead.
 For example, if the geometry of the object is a Rhino Cylinder.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">compas_rhino.objects</span>
-<span class="kn">import</span> <span class="nn">compas_rhino.conversions</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">compas_rhino.objects</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">compas_rhino.conversions</span>
 
 <span class="n">guid</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">select_object</span><span class="p">()</span>
 <span class="n">obj</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">find_object</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span>
@@ -695,8 +695,8 @@ For example, if the geometry of the object is a Rhino Cylinder.</p>
 </section>
 <section id="compas-to-rhino-geometry">
 <h3>COMPAS to Rhino Geometry</h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">compas.geometry</span>
-<span class="kn">import</span> <span class="nn">compas_rhino.conversions</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">compas.geometry</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">compas_rhino.conversions</span>
 
 <span class="n">point</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 <span class="n">point</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">conversions</span><span class="o">.</span><span class="n">point_to_rhino</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
@@ -730,9 +730,9 @@ For example, if the geometry of the object is a Rhino Cylinder.</p>
 <h3>COMPAS to Rhino Object</h3>
 <p>COMPAS objects are converted to Rhino Objects implicitly, by placing them into a visualisation scene.
 However, you can create a Rhino Object in a Rhino Dcocument explicitly from a COMPAS object.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">scriptcontext</span> <span class="k">as</span> <span class="nn">sc</span>
-<span class="kn">import</span> <span class="nn">compas.geometry</span>
-<span class="kn">import</span> <span class="nn">compas_rhino_conversions</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">scriptcontext</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sc</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">compas.geometry</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">compas_rhino_conversions</span>
 
 <span class="n">point</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 <span class="n">geometry</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">conversions</span><span class="o">.</span><span class="n">point_to_rhino</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>

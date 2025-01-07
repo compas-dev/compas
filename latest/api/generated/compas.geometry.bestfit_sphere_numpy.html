@@ -28,7 +28,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/css/compas.css?v=617b33e2" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=4c969af8" />
@@ -1121,7 +1121,7 @@ document.write(`
 <h1>bestfit_sphere_numpy</h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="compas.geometry.bestfit_sphere_numpy">
-<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">bestfit_sphere_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/3b38816/src/compas/geometry/bestfit_numpy.py#L201"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">bestfit_sphere_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/7bbe6ac/src/compas/geometry/bestfit_numpy.py#L201"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Returns the sphere’s center and radius that fits best through a set of points.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1157,7 +1157,7 @@ Available at: <a class="reference external" href="https://jekel.me/2015/Least-Sq
 </div>
 </div>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">bestfit_sphere_numpy</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">compas.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">bestfit_sphere_numpy</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">points</span> <span class="o">=</span> <span class="p">[(</span><span class="mf">291.580</span><span class="p">,</span> <span class="o">-</span><span class="mf">199.041</span><span class="p">,</span> <span class="mf">120.194</span><span class="p">),</span> <span class="p">(</span><span class="mf">293.003</span><span class="p">,</span> <span class="o">-</span><span class="mf">52.379</span><span class="p">,</span> <span class="mf">33.599</span><span class="p">),</span>                  <span class="p">(</span><span class="mf">514.217</span><span class="p">,</span> <span class="mf">26.345</span><span class="p">,</span> <span class="mf">29.143</span><span class="p">),</span> <span class="p">(</span><span class="mf">683.253</span><span class="p">,</span> <span class="mf">26.510</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.194</span><span class="p">),</span>                  <span class="p">(</span><span class="mf">683.247</span><span class="p">,</span> <span class="o">-</span><span class="mf">327.154</span><span class="p">,</span> <span class="mf">179.113</span><span class="p">),</span> <span class="p">(</span><span class="mf">231.606</span><span class="p">,</span> <span class="o">-</span><span class="mf">430.659</span><span class="p">,</span> <span class="mf">115.458</span><span class="p">),</span>                  <span class="p">(</span><span class="mf">87.278</span><span class="p">,</span> <span class="o">-</span><span class="mf">419.178</span><span class="p">,</span> <span class="o">-</span><span class="mf">18.863</span><span class="p">),</span> <span class="p">(</span><span class="mf">24.731</span><span class="p">,</span> <span class="o">-</span><span class="mf">340.222</span><span class="p">,</span> <span class="o">-</span><span class="mf">127.158</span><span class="p">)]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">center</span><span class="p">,</span> <span class="n">radius</span> <span class="o">=</span> <span class="n">bestfit_sphere_numpy</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
 </pre></div>
