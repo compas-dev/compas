@@ -142,10 +142,10 @@ class Frame(Geometry):
     def __iter__(self):
         return iter([self.point, self.xaxis, self.yaxis])
 
-    def __eq__(self, other, tol=None):
+    def __eq__(self, other):
         if not hasattr(other, "__iter__") or not hasattr(other, "__len__") or len(self) != len(other):
             return False
-        return TOL.is_allclose(self, other, atol=tol)
+        return TOL.is_allclose(self.point, other[0]) and TOL.is_allclose(self.xaxis, other[1]) and TOL.is_allclose(self.yaxis, other[2])
 
     # ==========================================================================
     # Properties
