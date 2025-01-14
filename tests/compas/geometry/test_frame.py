@@ -124,3 +124,35 @@ def test_frame_inverted():
     assert TOL.is_close(other.xaxis.dot([1, 0, 0]), 1.0)
     assert TOL.is_close(other.yaxis.dot([0, -1, 0]), 1.0)
     assert TOL.is_close(other.zaxis.dot([0, 0, -1]), 1.0)
+
+
+def test_frame_comparison_relative():
+    a = Frame(Point(random(), random(), random()))
+
+    b = a.copy()
+    b.point.x += 0.1 * TOL.relative * b.point.x
+    assert a == b
+
+    c = a.copy()
+    c.point.x += TOL.relative * c.point.x
+    assert a == c
+
+    d = a.copy()
+    d.point.x += 10.0 * TOL.relative * d.point.x
+    assert a != d
+
+
+def test_frame_comparison_absolute():
+    a = Frame(Point(0, 0, 0))
+
+    b = a.copy()
+    b.point.x += 0.1 * TOL.absolute
+    assert a == b
+
+    c = a.copy()
+    c.point.x += TOL.absolute
+    assert a == c
+
+    d = a.copy()
+    d.point.x += 10.0 * TOL.absolute
+    assert a != d
