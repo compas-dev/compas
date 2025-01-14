@@ -4,6 +4,7 @@ from __future__ import print_function
 
 from compas.geometry import Frame
 from compas.geometry import Line
+from compas.geometry import Point  # noqa: F401
 from compas.geometry import Transformation
 from compas.geometry import Vector
 from compas.geometry import centroid_points
@@ -478,7 +479,7 @@ class Box(Shape):
     # Discretisation
     # ==========================================================================
 
-    def compute_vertices(self):  # type: () -> list[list[float]]
+    def compute_vertices(self):  # type: () -> list[Point]
         """Compute the vertices of the discrete representation of the box."""
         point = self.frame.point
         xaxis = self.frame.xaxis

@@ -11,6 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Fixed `NotImplementedError` when calling `compas_rhino.conversions.surface_to_compas` on NURBS Surface.
+* Fixed `NotImplementedError` when calling `compas_rhino.conversions.surface_to_compas` on Surface.
+* Changed point comparison (`compas.geometry.Point.__eq__`) to use `TOL.is_allclose` instead of raw coordinate comparison.
+* Changed vector comparison (`compas.geometry.Vector.__eq__`) to use `TOL.is_allclose` instead of raw coordinate comparison.
+* Fixed bug in frame comparison (`compas.geometry.Frame.__eq__`).
+* Fixed bug in `compas.geometry.oriented_bounding_box_numpy`.
 * Fixed cannot copy `Line` using `deepcopy`.
 
 ### Removed
