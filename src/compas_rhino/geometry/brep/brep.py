@@ -6,10 +6,12 @@ import Rhino  # type: ignore
 
 from compas.geometry import Brep
 from compas.geometry import BrepError
+from compas.geometry import BrepFilletError
 from compas.geometry import BrepTrimmingError
 from compas.geometry import Frame
 from compas.geometry import Plane
 from compas.geometry import Point
+from compas.geometry import Polyline
 from compas.tolerance import TOL
 from compas_rhino.conversions import box_to_rhino
 from compas_rhino.conversions import curve_to_compas
@@ -19,6 +21,7 @@ from compas_rhino.conversions import mesh_to_compas
 from compas_rhino.conversions import mesh_to_rhino
 from compas_rhino.conversions import plane_to_rhino
 from compas_rhino.conversions import point_to_rhino
+from compas_rhino.conversions import polyline_to_rhino_curve
 from compas_rhino.conversions import sphere_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
 from compas_rhino.conversions import vector_to_rhino
@@ -223,7 +226,7 @@ class RhinoBrep(Brep):
 
         Parameters
         ----------
-        curve : :class:`~compas.geometry.Curve`
+        curve : :class:`~compas.geometry.Curve` or :class:`~compas.geometry.Polyline`
             The curve to extrude.
         vector : :class:`~compas.geometry.Vector`
             The vector to extrude the curve along.
@@ -235,7 +238,11 @@ class RhinoBrep(Brep):
         :class:`~compas_rhino.geometry.RhinoBrep`
 
         """
-        extrusion = Rhino.Geometry.Surface.CreateExtrusion(curve_to_rhino(curve), vector_to_rhino(vector))
+        if isinstance(curve, Polyline):
+            rhino_curve = polyline_to_rhino_curve(curve)
+        else:
+            rhino_curve = curve_to_rhino(curve)
+        extrusion = Rhino.Geometry.Surface.CreateExtrusion(rhino_curve, vector_to_rhino(vector))
         if extrusion is None:
             raise BrepError("Failed to create extrusion from curve: {} and vector: {}".format(curve, vector))
         rhino_brep = extrusion.ToBrep()
@@ -295,6 +302,31 @@ class RhinoBrep(Brep):
         """
         rhino_mesh = mesh_to_rhino(mesh)
         return cls.from_native(Rhino.Geometry.Brep.CreateFromMesh(rhino_mesh, True))
+
+    @classmethod
+    def from_loft(cls, curves):
+        """Construct a Brep by lofting a set of curves.
+
+        Parameters
+        ----------
+        curves : list[:class:`compas.geometry.Curve`]
+
+        Returns
+        -------
+        :class:`compas.geometry.Brep`
+
+        """
+        rhino_curves = [curve_to_rhino(curve) for curve in curves]
+        start = Rhino.Geometry.Point3d.Unset
+        end = Rhino.Geometry.Point3d.Unset
+        loft_type = Rhino.Geometry.LoftType.Normal
+
+        results = Rhino.Geometry.Brep.CreateFromLoft(rhino_curves, start, end, loft_type, closed=False)
+        if not results:
+            raise BrepTrimmingError("Loft operation ended with no result")
+        result = results[0]
+
+        return cls.from_native(result)
 
     # ==============================================================================
     # Methods
@@ -552,3 +584,56 @@ class RhinoBrep(Brep):
         """
         resulting_breps = self._brep.Split(cutter.native_brep, TOL.absolute)
         return [RhinoBrep.from_native(brep) for brep in resulting_breps]
+
+    def fillet(self, radius, edges=None):
+        """Fillet edges of the Brep.
+
+        Parameters
+        ----------
+        radius : float
+            The radius of the fillet.
+        edges : list(:class:`compas_rhino.geometry.RhinoBrepEdge`)
+            The edges to fillet.
+
+        Raises
+        -------
+        BrepFilletingError
+            If the fillet operation fails.
+
+        """
+        resulting_breps = self.filleted(radius, edges)
+        self._brep = resulting_breps.native_brep
+
+    def filleted(self, radius, edges=None):
+        """Returns a filleted copy of the Brep.
+
+        Parameters
+        ----------
+        radius : float
+            The radius of the fillet.
+        edges : list(:class:`compas_rhino.geometry.RhinoBrepEdge`)
+            List of edges to exclude from the operation. When None all edges are included.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoBrep`
+            The resulting Brep.
+
+        Raises
+        -------
+        BrepFilletingError
+            If the fillet operation fails.
+
+        """
+        all_edge_indices = set(edge.native_edge.EdgeIndex for edge in self.edges)
+        excluded_indices = set(edge.native_edge.EdgeIndex for edge in edges or [])
+
+        edge_indices = all_edge_indices - excluded_indices
+        radii = [radius] * len(edge_indices)
+        blend = Rhino.Geometry.BlendType.Fillet
+        rail = Rhino.Geometry.RailType.DistanceFromEdge
+
+        resulting_breps = Rhino.Geometry.Brep.CreateFilletEdges(self._brep, edge_indices, radii, radii, blend, rail, TOL.absolute)
+        if not resulting_breps:
+            raise BrepFilletError("Fillet operation ended with no result")
+        return RhinoBrep.from_native(resulting_breps[0])

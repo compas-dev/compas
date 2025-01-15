@@ -267,7 +267,7 @@ class Cone(Shape):
         list[list[int]]
 
         """
-        vertices = self._vertices
+        vertices = self.vertices
 
         faces = []
         first = 0

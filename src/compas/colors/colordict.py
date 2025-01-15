@@ -24,16 +24,23 @@ class ColorDict(Data):
 
     """
 
+    KEYMAP = {
+        int: lambda x: str(x),
+        tuple: lambda x: ",".join(map(str, sorted(x))),
+        list: lambda x: ",".join(map(str, sorted(x))),
+    }
+
     @property
     def __data__(self):
-        return {"default": self.default, "dict": self._dict}
+        return {
+            "default": self.default,
+            "dict": self._dict,
+        }
 
     @classmethod
     def __from_data__(cls, data):
         colordict = cls(data["default"])
-        # note: this is specific to color dicts for vertices of meshes
-        # perhaps the color dict needs to be subclassed per scene object type
-        colordict.update({int(key): value for key, value in data["dict"].items()})
+        colordict.update(data["dict"])
         return colordict
 
     def __init__(self, default, name=None):
@@ -54,14 +61,19 @@ class ColorDict(Data):
             default = Color.coerce(default)
         self._default = default
 
+    def keymapper(self, key):
+        if key.__class__ in self.KEYMAP:
+            return self.KEYMAP[key.__class__](key)
+        return key
+
     def __getitem__(self, key):
-        return self._dict.get(key, self.default)
+        return self._dict.get(self.keymapper(key), self.default)
 
     def __setitem__(self, key, value):
-        self._dict[key] = Color.coerce(value)
+        self._dict[self.keymapper(key)] = Color.coerce(value)
 
     def __delitem__(self, key):
-        del self._dict[key]
+        del self._dict[self.keymapper(key)]
 
     def __iter__(self):
         return iter(self._dict)
@@ -70,7 +82,7 @@ class ColorDict(Data):
         return len(self._dict)
 
     def __contains__(self, key):
-        return key in self._dict
+        return self.keymapper(key) in self._dict
 
     def items(self):
         return self._dict.items()
@@ -82,7 +94,7 @@ class ColorDict(Data):
         return self._dict.values()
 
     def get(self, key, default=None):
-        return self._dict.get(key, default or self.default)
+        return self._dict.get(self.keymapper(key), default or self.default)
 
     def clear(self):
         """Clear the previously stored items.
@@ -108,4 +120,4 @@ class ColorDict(Data):
 
         """
         for key, value in other.items():
-            self[key] = value
+            self[self.keymapper(key)] = value

@@ -392,7 +392,7 @@ class NurbsSurface(Surface):
         :class:`compas.geometry.NurbsSurface`
 
         """
-        raise NotImplementedError
+        return nurbssurface_from_native(cls, surface)
 
     @classmethod
     def from_parameters(

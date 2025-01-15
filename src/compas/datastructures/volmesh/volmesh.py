@@ -383,7 +383,7 @@ class VolMesh(Datastructure):
 
     @classmethod
     def from_vertices_and_cells(cls, vertices, cells):
-        # type: (list[list[float]], list[list[list[int]]]) -> VolMesh
+        # type: (list[list[float]] | dict[int, list[float]], list[list[list[int]]]) -> VolMesh
         """Construct a volmesh object from vertices and cells.
 
         Parameters
@@ -407,11 +407,11 @@ class VolMesh(Datastructure):
         volmesh = cls()
 
         if isinstance(vertices, Mapping):
-            for key, xyz in vertices.items():
+            for key, xyz in vertices.items():  # type: ignore
                 volmesh.add_vertex(key=key, attr_dict=dict(zip(("x", "y", "z"), xyz)))
         else:
-            for x, y, z in iter(vertices):
-                volmesh.add_vertex(x=x, y=y, z=z)
+            for x, y, z in iter(vertices):  # type: ignore
+                volmesh.add_vertex(x=x, y=y, z=z)  # type: ignore
 
         for cell in cells:
             volmesh.add_cell(cell)
@@ -531,9 +531,9 @@ class VolMesh(Datastructure):
         the faces to the file.
 
         """
-        meshes = [self.cell_to_mesh(cell) for cell in self.cells()]
+        meshes = [self.cell_to_mesh(cell) for cell in self.cells()]  # type: ignore
         obj = OBJ(filepath, precision=precision)
-        obj.write(meshes, **kwargs)
+        obj.write(meshes, **kwargs)  # type: ignore
 
     def to_vertices_and_cells(self):
         # type: () -> tuple[list[list[float]], list[list[list[int]]]]
@@ -659,7 +659,7 @@ class VolMesh(Datastructure):
         :meth:`edge_sample`, :meth:`face_sample`, :meth:`cell_sample`
 
         """
-        return sample(list(self.vertices()), size)
+        return sample(list(self.vertices()), size)  # type: ignore
 
     def edge_sample(self, size=1):
         # type: (int) -> list[tuple[int, int]]
@@ -680,7 +680,7 @@ class VolMesh(Datastructure):
         :meth:`vertex_sample`, :meth:`face_sample`, :meth:`cell_sample`
 
         """
-        return sample(list(self.edges()), size)
+        return sample(list(self.edges()), size)  # type: ignore
 
     def face_sample(self, size=1):
         # type: (int) -> list[int]
@@ -701,7 +701,7 @@ class VolMesh(Datastructure):
         :meth:`vertex_sample`, :meth:`edge_sample`, :meth:`cell_sample`
 
         """
-        return sample(list(self.faces()), size)
+        return sample(list(self.faces()), size)  # type: ignore
 
     def cell_sample(self, size=1):
         # type: (int) -> list[int]
@@ -722,7 +722,7 @@ class VolMesh(Datastructure):
         :meth:`vertex_sample`, :meth:`edge_sample`, :meth:`face_sample`
 
         """
-        return sample(list(self.cells()), size)
+        return sample(list(self.cells()), size)  # type: ignore
 
     def vertex_index(self):
         # type: () -> dict[int, int]
@@ -739,7 +739,7 @@ class VolMesh(Datastructure):
         :meth:`index_vertex`
 
         """
-        return {key: index for index, key in enumerate(self.vertices())}
+        return {key: index for index, key in enumerate(self.vertices())}  # type: ignore
 
     def index_vertex(self):
         # type: () -> dict[int, int]
@@ -756,7 +756,7 @@ class VolMesh(Datastructure):
         :meth:`vertex_index`
 
         """
-        return dict(enumerate(self.vertices()))
+        return dict(enumerate(self.vertices()))  # type: ignore
 
     def vertex_gkey(self, precision=None):
         # type: (int | None) -> dict[int, str]
@@ -781,7 +781,7 @@ class VolMesh(Datastructure):
         """
         gkey = TOL.geometric_key
         xyz = self.vertex_coordinates
-        return {vertex: gkey(xyz(vertex), precision) for vertex in self.vertices()}
+        return {vertex: gkey(xyz(vertex), precision) for vertex in self.vertices()}  # type: ignore
 
     def gkey_vertex(self, precision=None):
         # type: (int | None) -> dict[str, int]
@@ -806,7 +806,7 @@ class VolMesh(Datastructure):
         """
         gkey = TOL.geometric_key
         xyz = self.vertex_coordinates
-        return {gkey(xyz(vertex), precision): vertex for vertex in self.vertices()}
+        return {gkey(xyz(vertex), precision): vertex for vertex in self.vertices()}  # type: ignore
 
     # --------------------------------------------------------------------------
     # Builders & Modifiers
@@ -1023,41 +1023,61 @@ class VolMesh(Datastructure):
         -------
         None
 
+        Raises
+        ------
+        KeyError
+            If the cell does not exist.
+
         See Also
         --------
         :meth:`delete_vertex`, :meth:`delete_halfface`
 
+        Notes
+        -----
+        Remaining unused vertices are not automatically deleted.
+        Use :meth:`remove_unused_vertices` to accomplish this.
+
         """
-        cell_vertices = self.cell_vertices(cell)
         cell_faces = self.cell_faces(cell)
 
+        # remove edge data
         for face in cell_faces:
             for edge in self.halfface_halfedges(face):
+                # this should also use a key map
                 u, v = edge
                 if (u, v) in self._edge_data:
                     del self._edge_data[u, v]
                 if (v, u) in self._edge_data:
                     del self._edge_data[v, u]
 
-        for vertex in cell_vertices:
-            if len(self.vertex_cells(vertex)) == 1:
-                del self._vertex[vertex]
-
+        # remove face data
         for face in cell_faces:
             vertices = self.halfface_vertices(face)
-            for u, v in uv_from_vertices(vertices):
-                self._plane[u][v][face] = None
-                if self._plane[v][u][face] is None:
-                    del self._plane[u][v][face]
-                    del self._plane[v][u][face]
-            del self._halfface[face]
             key = "-".join(map(str, sorted(vertices)))
             if key in self._face_data:
                 del self._face_data[key]
 
-        del self._cell[cell]
+        # remove cell data
         if cell in self._cell_data:
             del self._cell_data[cell]
+
+        # remove planes and halffaces
+        for face in cell_faces:
+            vertices = self.halfface_vertices(face)
+            for u, v, w in uvw_from_vertices(vertices):
+                if self._plane[w][v][u] is None:
+                    del self._plane[u][v][w]
+                    del self._plane[w][v][u]
+                    if not self._plane[u][v]:
+                        del self._plane[u][v]
+                    if not self._plane[w][v]:
+                        del self._plane[w][v]
+                else:
+                    self._plane[u][v][w] = None
+            del self._halfface[face]
+
+        # remove cell
+        del self._cell[cell]
 
     def remove_unused_vertices(self):
         """Remove all unused vertices from the volmesh object.
@@ -1740,8 +1760,10 @@ class VolMesh(Datastructure):
         u = vertex
         faces = []
         for v in self._plane[u]:
-            for face in self._plane[u][v]:
-                if face is not None:
+            for w in self._plane[u][v]:
+                cell = self._plane[u][v][w]
+                if cell is not None:
+                    face = self.cell_halfedge_face(cell, (u, v))
                     faces.append(face)
         return faces
 
@@ -1769,7 +1791,8 @@ class VolMesh(Datastructure):
             for w in self._plane[u][v]:
                 cell = self._plane[u][v][w]
                 if cell is not None:
-                    cells.append(cell)
+                    if cell not in cells:
+                        cells.append(cell)
         return cells
 
     def is_vertex_on_boundary(self, vertex):
@@ -3088,37 +3111,6 @@ class VolMesh(Datastructure):
         nbr = self._plane[w][v][u]
         return None if nbr is None else self._cell[nbr][w][v]
 
-    def halfface_adjacent_halfface(self, halfface, halfedge):
-        """Return the halfface adjacent to the halfface across the halfedge.
-
-        Parameters
-        ----------
-        halfface : int
-            The identifier of the halfface.
-        halfedge : tuple[int, int]
-            The identifier of the halfedge.
-
-        Returns
-        -------
-        int | None
-            The identifier of the adjacent half-face, or None if `halfedge` is on the boundary.
-
-        See Also
-        --------
-        :meth:`halfface_opposite_halfface`
-
-        Notes
-        -----
-        The adjacent face belongs a to one of the cell neighbors over faces of the initial cell.
-        A face and its adjacent face share two common vertices.
-
-        """
-        u, v = halfedge
-        cell = self.halfface_cell(halfface)
-        nbr_halfface = self._cell[cell][v][u]
-        nbr_cell = self._plane[u][v][nbr_halfface]
-        return None if nbr_cell is None else self._cell[nbr_cell][v][u]
-
     def halfface_vertex_ancestor(self, halfface, vertex):
         """Return the vertex before the specified vertex in a specific face.
 
@@ -3262,8 +3254,8 @@ class VolMesh(Datastructure):
         :meth:`is_vertex_on_boundary`, :meth:`is_edge_on_boundary`, :meth:`is_cell_on_boundary`
 
         """
-        u, v = self._halfface[halfface][:2]
-        return self._plane[v][u][halfface] is None
+        u, v, w = self._halfface[halfface][:3]
+        return self._plane[w][v][u] is None
 
     # --------------------------------------------------------------------------
     # Face Geometry

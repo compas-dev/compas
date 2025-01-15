@@ -38,3 +38,23 @@ def from_sphere(*args, **kwargs):
 @plugin(category="factories", requires=["Rhino"])
 def from_mesh(*args, **kwargs):
     return RhinoBrep.from_mesh(*args, **kwargs)
+
+
+@plugin(category="factories", requires=["Rhino"])
+def from_loft(*args, **kwargs):
+    return RhinoBrep.from_loft(*args, **kwargs)
+
+
+@plugin(category="factories", requires=["Rhino"])
+def from_boolean_difference(*args, **kwargs):
+    return RhinoBrep.from_boolean_difference(*args, **kwargs)
+
+
+@plugin(category="factories", requires=["Rhino"])
+def from_boolean_intersection(*args, **kwargs):
+    return RhinoBrep.from_boolean_intersection(*args, **kwargs)
+
+
+@plugin(category="factories", requires=["Rhino"])
+def from_boolean_union(*args, **kwargs):
+    return RhinoBrep.from_boolean_union(*args, **kwargs)

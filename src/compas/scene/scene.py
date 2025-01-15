@@ -56,7 +56,7 @@ class Scene(Tree):
         items = {str(item.guid): item for item in data["items"]}
 
         def add(node, parent, items):
-            for child_node in node["children"]:
+            for child_node in node.get("children", []):
                 guid = child_node["item"]
                 settings = child_node["settings"]
                 sceneobject = parent.add(items[guid], **settings)
@@ -163,8 +163,8 @@ class Scene(Tree):
         -----
         To redraw the scene, without modifying any of the other objects in the visualisation context:
 
-        >>> scene.clear(clear_scene=False, clear_context=True)
-        >>> scene.draw()
+        >>> scene.clear(clear_scene=False, clear_context=True)  # doctest: +SKIP
+        >>> scene.draw()  # doctest: +SKIP
 
         """
         guids = []
@@ -209,11 +209,11 @@ class Scene(Tree):
         before drawing all scene objects in the scene tree.
 
         """
-
         self.clear(clear_scene=False, clear_context=True)
         self.draw()
 
     def find_by_name(self, name):
+        # type: (str) -> SceneObject
         """Find the first scene object with the given name.
 
         Parameters
@@ -226,10 +226,10 @@ class Scene(Tree):
         :class:`SceneObject`
 
         """
-        # type: (str) -> SceneObject
         return self.get_node_by_name(name=name)
 
     def find_by_itemtype(self, itemtype):
+        # type: (...) -> SceneObject | None
         """Find the first scene object with a data item of the given type.
 
         Parameters
@@ -239,10 +239,29 @@ class Scene(Tree):
 
         Returns
         -------
-        :class:`SceneObject`
+        :class:`SceneObject` or None
 
         """
-        # type: (Type[compas.data.Data]) -> SceneObject
         for obj in self.objects:
             if isinstance(obj.item, itemtype):
                 return obj
+
+    def find_all_by_itemtype(self, itemtype):
+        # type: (...) -> list[SceneObject]
+        """Find all scene objects with a data item of the given type.
+
+        Parameters
+        ----------
+        itemtype : :class:`compas.data.Data`
+            The type of the data item associated with the scene object.
+
+        Returns
+        -------
+        list[:class:`SceneObject`]
+
+        """
+        sceneobjects = []
+        for obj in self.objects:
+            if isinstance(obj.item, itemtype):
+                sceneobjects.append(obj)
+        return sceneobjects

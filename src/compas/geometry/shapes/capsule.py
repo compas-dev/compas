@@ -297,7 +297,7 @@ class Capsule(Shape):
         if v % 2 == 1:
             v += 1
 
-        vertices = self._vertices
+        vertices = self.vertices
 
         faces = []
 

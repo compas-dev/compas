@@ -11,10 +11,114 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-* Fixed `RuntimeError` when using `compas_rhino.unload_modules` in CPython`. 
+### Removed
+
+
+## [2.8.1] 2025-01-15
+
+### Added
+
+### Changed
+
+* Fixed `NotImplementedError` when calling `compas_rhino.conversions.surface_to_compas` on NURBS Surface.
+* Fixed `NotImplementedError` when calling `compas_rhino.conversions.surface_to_compas` on Surface.
+* Changed point comparison (`compas.geometry.Point.__eq__`) to use `TOL.is_allclose` instead of raw coordinate comparison.
+* Changed vector comparison (`compas.geometry.Vector.__eq__`) to use `TOL.is_allclose` instead of raw coordinate comparison.
+* Fixed bug in frame comparison (`compas.geometry.Frame.__eq__`).
+* Fixed bug in `compas.geometry.oriented_bounding_box_numpy`.
+* Fixed cannot copy `Line` using `deepcopy`.
+
+### Removed
+
+
+## [2.8.0] 2024-12-13
+
+### Added
+
+* Added implementation of `RhinoBrep.fillet()` and `RhinoBrep.filleted()` to `compas_rhino`.
+* Added `Frame.invert` and `Frame.inverted`.
+* Added `Frame.flip` and `Frame.flipped` as alias for invert and inverted.
+* Added `Vector.flip` and `Vector.flipped` as alias for invert and inverted.
+
+### Changed
+
+* Fixed `native_edge` property of `RhinoBrepEdge`.
+* Expose the parameters `radius` and `nmax` from `compas.topology._face_adjacency` to `compas.topology.face_adjacency` and further propagate them to `unify_cycles` and `Mesh.unify_cycles`.
+* Modify `face_adjacency` to avoid using `compas.topology._face_adjacency` by default when there are more than 100 faces, unless one of the parameters `radius`, `nmax` is passed.
+* Changed `unify_cycles` to use the first face in the list as root if no root is provided.
+
+### Removed
+
+
+## [2.7.0] 2024-11-28
+
+### Added
+
+* Added attribute `start_vertex` to `compas.geometry.BrepTrim`.
+* Added attribute `end_vertex` to `compas.geometry.BrepTrim`.
+* Added attribute `vertices` to `compas.geometry.BrepTrim`.
+* Added attribute `start_vertex` to `compas_rhino.geometry.RhinoBrepTrim`.
+* Added attribute `start_vertex` to `compas_rhino.geometry.RhinoBrepTrim`.
+* Added attribute `vertices` to `compas_rhino.geometry.RhinoBrepTrim`.
+
+### Changed
+
+* Fixed `PluginNotInstalledError` when using `Brep.from_boolean_*` in Rhino.
+* Added support for `Polyline` as input for `compas_rhino.Brep.from_extrusion`.
+
+### Removed
+
+
+## [2.6.1] 2024-11-09
+
+### Added
+
+### Changed
+
+* Fixed bug in `compas_rhino.scene.RhinoMeshObject.clear()`.
+
+### Removed
+
+
+## [2.6.0] 2024-11-08
+
+### Added
+
+* Added key conversion map to `compas.colors.ColorDict` to avoid serialisation problems with tuple keys when used in combination with edges.
+* Added `Scene.find_all_by_itemtype`.
+
+### Changed
+
+* Fixed bug in `VolMesh.delete_cell`.
+* Fixed `NoneType` error when calling `compas.geometry.Sphere.edges`.
+* Fixed bug in `VolMesh.vertex_halffaces`.
+* Fixed bug in `VolMesh.vertex_cells`.
+* Fixed bug in `VolMesh.is_halfface_on_boundary`.
+
+### Removed
+
+* Removed `VolMesh.halfface_adjacent_halfface` because of general nonsensicalness, and because it is (and probably always has been) completely broken.
+
+
+## [2.5.0] 2024-10-25
+
+### Added
+
+* Added instructions for creating new data types to the dev guide.
+* Added `compact=False`, `minimal=False` to `compas.data.Data.to_json()` to `compas.data.Data.to_jsonstring()`.
+* Added `copy_guid=False` to `compas.data.Data.copy()`. If true, the copy has the same guid as the original.
+* Added implementation of `Brep.from_loft()` to `compas_rhino`.
+
+### Changed
+
+* Fixed `RuntimeError` when using `compas_rhino.unload_modules` in CPython`.
 * Fixed bug in `Box.scaled` causing a `TypeError` due to incorrect parameter forwarding.
 * Changed argument names of `Box.scale()` to `x`, `y`, `z`, instead of `factor` and made `y` and `z` optional to keep positional arguments backwards compatible.
 * Fixed import errors in `compas_rhino.conduits` for Rhino 8.
+* Fixed doctest failures.
+* Fixed bug in serialization when `compas.datastructures.attributes.AttributeView` is used.
+* Fixed bug in the serialisation of empty scenes.
+* Fixed bug in serialisation process due to `name` attribute appearing in json representation after copy even if not present before copy.
 
 ### Removed
 
@@ -26,6 +130,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Fixed support for `compas_gpython` in Rhino 8 Grasshopper CPython components.
+* Changed installation instructions for Rhino 8 in the user guide.
 * Fixed `Graph.from_edges` always returning `None`.
 
 ### Removed

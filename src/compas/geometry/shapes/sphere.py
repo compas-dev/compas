@@ -218,7 +218,7 @@ class Sphere(Shape):
         u = self.resolution_u
         v = self.resolution_v
 
-        vertices = self._vertices
+        vertices = self.vertices
 
         faces = []
 

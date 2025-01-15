@@ -1,7 +1,9 @@
 import pytest
 import os
 import compas
+from random import random
 from compas.tolerance import TOL
+from compas.geometry import Box
 from compas.geometry import bounding_box
 from compas.geometry import bounding_box_xy
 
@@ -146,3 +148,26 @@ def test_oriented_bounding_box_numpy_from_fixtures():
     results = oriented_bounding_box_numpy(coords)
     for result, expected_values in zip(results, expected):
         assert TOL.is_allclose(result, expected_values)
+
+
+def test_oriented_bounding_box_numpy_flat():
+    if compas.IPY:
+        return
+
+    from compas.geometry import oriented_bounding_box_numpy
+
+    points = [[10 * random(), 10 * random(), 0] for i in range(100)]
+    box = Box.from_bounding_box(oriented_bounding_box_numpy(points))
+
+    for point in points:
+        assert box.contains_point(point)
+
+    assert not box.contains_point([10 * random(), 10 * random(), 1])
+
+    points = [[10 * random(), 10 * random(), 10] for i in range(100)]
+    box = Box.from_bounding_box(oriented_bounding_box_numpy(points))
+
+    for point in points:
+        assert box.contains_point(point)
+
+    assert not box.contains_point([10 * random(), 10 * random(), 11])

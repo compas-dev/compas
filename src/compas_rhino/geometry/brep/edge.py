@@ -115,7 +115,7 @@ class RhinoBrepEdge(BrepEdge):
 
     @property
     def native_edge(self):
-        return self._native_edge
+        return self._edge
 
     @native_edge.setter
     def native_edge(self, value):
