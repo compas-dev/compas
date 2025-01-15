@@ -17,7 +17,6 @@ from compas.geometry import matrix_from_quaternion
 from compas.geometry import quaternion_from_matrix
 from compas.geometry import subtract_vectors
 from compas.itertools import linspace
-from compas.tolerance import TOL
 
 from .point import Point
 from .quaternion import Quaternion
