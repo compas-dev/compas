@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Deprecated the `-v8.0` flag in `compas_rhino.install`. Install to Rhino8 by following: https://compas.dev/compas/latest/userguide/cad.rhino8.html.
+
 ### Removed
 
 
