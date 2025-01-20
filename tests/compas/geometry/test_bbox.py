@@ -3,6 +3,7 @@ import os
 import compas
 from random import random
 from compas.tolerance import TOL
+from compas.datastructures import Mesh
 from compas.geometry import Box
 from compas.geometry import bounding_box
 from compas.geometry import bounding_box_xy
@@ -177,17 +178,14 @@ def test_minimum_area_rectangle_xy():
     if compas.IPY:
         return
 
-    from compas.datastructures import Mesh
     from compas.geometry import bbox_numpy
     import numpy as np
 
-    bad_mesh = Mesh.from_obj(os.path.join(HERE, "fixtures", "bbox_rect_bad.obj"))
-    compas_pts, _ = bad_mesh.to_vertices_and_faces()
-    points = np.array(compas_pts)
-
+    mesh = Mesh.from_obj(os.path.join(HERE, "fixtures", "bbox_rect_bad.obj"))
+    points, _ = mesh.to_vertices_and_faces()
     expected = [[359.481028, 229.73229169], [256.84043629, 120.92493596], [295.67358196, 84.29269706], [398.31417367, 193.10005279]]
 
-    min_bbox = bbox_numpy.minimum_area_rectangle_xy(points)
+    min_bbox = bbox_numpy.minimum_area_rectangle_xy(np.array(points))
 
     assert TOL.is_allclose([(x, y) for x, y in min_bbox], expected)
 
@@ -196,16 +194,13 @@ def test_minimum_area_rectangle_xy_translated():
     if compas.IPY:
         return
 
-    from compas.datastructures import Mesh
     from compas.geometry import bbox_numpy
     import numpy as np
 
-    bad_mesh = Mesh.from_obj(os.path.join(HERE, "fixtures", "bbox_rect_good.obj"))
-    compas_pts, _ = bad_mesh.to_vertices_and_faces()
-    points = np.array(compas_pts)
-
+    mesh = Mesh.from_obj(os.path.join(HERE, "fixtures", "bbox_rect_good.obj"))
+    points, _ = mesh.to_vertices_and_faces()
     expected = [[307.39472429, 358.36965131], [204.75412877, 249.56229154], [243.58728967, 212.93003827], [346.22788519, 321.73739804]]
 
-    min_bbox = bbox_numpy.minimum_area_rectangle_xy(points)
+    min_bbox = bbox_numpy.minimum_area_rectangle_xy(np.array(points))
 
     assert TOL.is_allclose([(x, y) for x, y in min_bbox], expected)
