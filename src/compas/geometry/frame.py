@@ -17,7 +17,6 @@ from compas.geometry import matrix_from_quaternion
 from compas.geometry import quaternion_from_matrix
 from compas.geometry import subtract_vectors
 from compas.itertools import linspace
-from compas.tolerance import TOL
 
 from .point import Point
 from .quaternion import Quaternion
@@ -142,10 +141,10 @@ class Frame(Geometry):
     def __iter__(self):
         return iter([self.point, self.xaxis, self.yaxis])
 
-    def __eq__(self, other, tol=None):
+    def __eq__(self, other):
         if not hasattr(other, "__iter__") or not hasattr(other, "__len__") or len(self) != len(other):
             return False
-        return TOL.is_allclose(self, other, atol=tol)
+        return self.point == other[0] and self.xaxis == other[1] and self.yaxis == other[2]
 
     # ==========================================================================
     # Properties
@@ -603,6 +602,21 @@ class Frame(Geometry):
     # ==========================================================================
     # Methods
     # ==========================================================================
+
+    def invert(self):
+        """Invert the frame while keeping the X axis fixed."""
+        self._yaxis = self.yaxis * -1
+        self._zaxis = None
+
+    flip = invert
+
+    def inverted(self):
+        """Return an inverted copy of the frame."""
+        frame = self.copy()  # type: Frame
+        frame.invert()
+        return frame
+
+    flipped = inverted
 
     def interpolate_frame(self, other, t):
         """Interpolates between two frames at a given parameter t in the range [0, 1]

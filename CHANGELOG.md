@@ -9,6 +9,53 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+* Changed `requirements.txt` to allow `numpy>=2`.
+
+### Removed
+
+
+## [2.8.1] 2025-01-15
+
+### Added
+
+### Changed
+
+* Fixed `NotImplementedError` when calling `compas_rhino.conversions.surface_to_compas` on NURBS Surface.
+* Fixed `NotImplementedError` when calling `compas_rhino.conversions.surface_to_compas` on Surface.
+* Changed point comparison (`compas.geometry.Point.__eq__`) to use `TOL.is_allclose` instead of raw coordinate comparison.
+* Changed vector comparison (`compas.geometry.Vector.__eq__`) to use `TOL.is_allclose` instead of raw coordinate comparison.
+* Fixed bug in frame comparison (`compas.geometry.Frame.__eq__`).
+* Fixed bug in `compas.geometry.oriented_bounding_box_numpy`.
+* Fixed cannot copy `Line` using `deepcopy`.
+
+### Removed
+
+
+## [2.8.0] 2024-12-13
+
+### Added
+
+* Added implementation of `RhinoBrep.fillet()` and `RhinoBrep.filleted()` to `compas_rhino`.
+* Added `Frame.invert` and `Frame.inverted`.
+* Added `Frame.flip` and `Frame.flipped` as alias for invert and inverted.
+* Added `Vector.flip` and `Vector.flipped` as alias for invert and inverted.
+
+### Changed
+
+* Fixed `native_edge` property of `RhinoBrepEdge`.
+* Expose the parameters `radius` and `nmax` from `compas.topology._face_adjacency` to `compas.topology.face_adjacency` and further propagate them to `unify_cycles` and `Mesh.unify_cycles`.
+* Modify `face_adjacency` to avoid using `compas.topology._face_adjacency` by default when there are more than 100 faces, unless one of the parameters `radius`, `nmax` is passed.
+* Changed `unify_cycles` to use the first face in the list as root if no root is provided.
+
+### Removed
+
+
+## [2.7.0] 2024-11-28
+
+### Added
+
 * Added attribute `start_vertex` to `compas.geometry.BrepTrim`.
 * Added attribute `end_vertex` to `compas.geometry.BrepTrim`.
 * Added attribute `vertices` to `compas.geometry.BrepTrim`.
