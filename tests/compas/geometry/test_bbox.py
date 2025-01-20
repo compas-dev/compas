@@ -171,3 +171,41 @@ def test_oriented_bounding_box_numpy_flat():
         assert box.contains_point(point)
 
     assert not box.contains_point([10 * random(), 10 * random(), 11])
+
+
+def test_minimum_area_rectangle_xy():
+    if compas.IPY:
+        return
+
+    from compas.datastructures import Mesh
+    from compas.geometry import bbox_numpy
+    import numpy as np
+
+    bad_mesh = Mesh.from_obj(os.path.join(HERE, "fixtures", "bbox_rect_bad.obj"))
+    compas_pts, _ = bad_mesh.to_vertices_and_faces()
+    points = np.array(compas_pts)
+
+    expected = [[359.481028, 229.73229169], [256.84043629, 120.92493596], [295.67358196, 84.29269706], [398.31417367, 193.10005279]]
+
+    min_bbox = bbox_numpy.minimum_area_rectangle_xy(points)
+
+    assert TOL.is_allclose([(x, y) for x, y in min_bbox], expected)
+
+
+def test_minimum_area_rectangle_xy_translated():
+    if compas.IPY:
+        return
+
+    from compas.datastructures import Mesh
+    from compas.geometry import bbox_numpy
+    import numpy as np
+
+    bad_mesh = Mesh.from_obj(os.path.join(HERE, "fixtures", "bbox_rect_good.obj"))
+    compas_pts, _ = bad_mesh.to_vertices_and_faces()
+    points = np.array(compas_pts)
+
+    expected = [[307.39472429, 358.36965131], [204.75412877, 249.56229154], [243.58728967, 212.93003827], [346.22788519, 321.73739804]]
+
+    min_bbox = bbox_numpy.minimum_area_rectangle_xy(points)
+
+    assert TOL.is_allclose([(x, y) for x, y in min_bbox], expected)
