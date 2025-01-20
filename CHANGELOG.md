@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Fixed unexpected behavior in `compas.geometry.bbox_numpy.minimum_area_rectangle_xy`.
+
 ### Removed
 
 
