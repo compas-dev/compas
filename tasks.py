@@ -23,6 +23,7 @@ ns = Collection(
     build.clean,
     build.release,
     grasshopper.build_ghuser_components,
+    grasshopper.build_cpython_ghuser_components,
     grasshopper.yakerize,
 )
 ns.configure(
