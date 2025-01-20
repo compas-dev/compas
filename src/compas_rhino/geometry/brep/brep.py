@@ -16,7 +16,6 @@ from compas.geometry import Point
 from compas.geometry import Polyline
 from compas.tolerance import TOL
 from compas_rhino.conversions import box_to_rhino
-from compas_rhino.conversions import brep_to_compas
 from compas_rhino.conversions import curve_to_compas
 from compas_rhino.conversions import curve_to_rhino
 from compas_rhino.conversions import cylinder_to_rhino
