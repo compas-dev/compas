@@ -3,7 +3,9 @@ from __future__ import division
 from __future__ import print_function
 
 import Rhino  # type: ignore
+import rhinoscriptsyntax as rs  # type: ignore
 
+import compas_rhino.objects
 from compas.geometry import Brep
 from compas.geometry import BrepError
 from compas.geometry import BrepFilletError
@@ -14,6 +16,7 @@ from compas.geometry import Point
 from compas.geometry import Polyline
 from compas.tolerance import TOL
 from compas_rhino.conversions import box_to_rhino
+from compas_rhino.conversions import brep_to_compas
 from compas_rhino.conversions import curve_to_compas
 from compas_rhino.conversions import curve_to_rhino
 from compas_rhino.conversions import cylinder_to_rhino
@@ -186,22 +189,85 @@ class RhinoBrep(Brep):
     # ==============================================================================
 
     @classmethod
-    def from_native(cls, rhino_brep):
-        """Constructs a RhinoBrep from an instance of a Rhino.Geometry.Brep.
+    def from_boolean_difference(cls, breps_a, breps_b):
+        """Construct a Brep from the boolean difference of two groups of Breps.
 
         Parameters
         ----------
-        rhino_brep : :class:`Rhino.Geometry.Brep`
-            The instance of Rhino brep to wrap.
+        breps_a : :class:`compas_rhino.geometry.RhinoBrep` or list(:class:`compas_rhino.geometry.RhinoBrep`)
+            One or more Breps from which to substract.
+        breps_b : :class:`compas_rhino.geometry.RhinoBrep` or list(:class:`compas_rhino.geometry.RhinoBrep`)
+            One or more Breps to substract.
 
         Returns
         -------
-        :class:`compas_rhino.geometry.RhinoBrep`
+        list(:class:`compas_rhino.geometry.RhinoBrep`)
+            list of one or more resulting Breps.
 
         """
-        brep = cls()
-        brep._brep = rhino_brep
-        return brep
+        if not isinstance(breps_a, list):
+            breps_a = [breps_a]
+        if not isinstance(breps_b, list):
+            breps_b = [breps_b]
+        resulting_breps = Rhino.Geometry.Brep.CreateBooleanDifference(
+            [b.native_brep for b in breps_a],
+            [b.native_brep for b in breps_b],
+            TOL.absolute,
+        )
+        return [RhinoBrep.from_native(brep) for brep in resulting_breps]
+
+    @classmethod
+    def from_boolean_union(cls, breps_a, breps_b):
+        """Construct a Brep from the boolean union of two groups of Breps.
+
+        Parameters
+        ----------
+        breps_a : :class:`compas_rhino.geometry.RhinoBrep` or list(:class:`compas_rhino.geometry.RhinoBrep`)
+            One of more breps to join.
+        breps_b : :class:`compas_rhino.geometry.RhinoBrep` or list(:class:`compas_rhino.geometry.RhinoBrep`)
+            Another one of more breps to join.
+
+        Returns
+        -------
+        list(:class:`compas_rhino.geometry.RhinoBrep`)
+            list of one or more resulting Breps.
+
+        """
+        if not isinstance(breps_a, list):
+            breps_a = [breps_a]
+        if not isinstance(breps_b, list):
+            breps_b = [breps_b]
+
+        resulting_breps = Rhino.Geometry.Brep.CreateBooleanUnion([b.native_brep for b in breps_a + breps_b], TOL.absolute)
+        return [RhinoBrep.from_native(brep) for brep in resulting_breps]
+
+    @classmethod
+    def from_boolean_intersection(cls, breps_a, breps_b):
+        """Construct a Brep from the boolean intersection of two groups of Breps.
+
+        Parameters
+        ----------
+        breps_a : :class:`compas_rhino.geometry.RhinoBrep` or list(:class:`compas_rhino.geometry.RhinoBrep`)
+            One or more Breps to instrsect.
+        breps_b : :class:`compas_rhino.geometry.RhinoBrep` or list(:class:`compas_rhino.geometry.RhinoBrep`)
+            Another one or more Breps to intersect.
+
+        Returns
+        -------
+        list(:class:`compas_rhino.geometry.RhinoBrep`)
+            list of one or more resulting Breps.
+
+        """
+        if not isinstance(breps_a, list):
+            breps_a = [breps_a]
+        if not isinstance(breps_b, list):
+            breps_b = [breps_b]
+        resulting_breps = Rhino.Geometry.Brep.CreateBooleanIntersection(
+            [b.native_brep for b in breps_a],
+            [b.native_brep for b in breps_b],
+            TOL.absolute,
+        )
+        return [RhinoBrep.from_native(brep) for brep in resulting_breps]
 
     @classmethod
     def from_box(cls, box):
@@ -219,6 +285,23 @@ class RhinoBrep(Brep):
         """
         rhino_box = box_to_rhino(box)
         return cls.from_native(rhino_box.ToBrep())
+
+    @classmethod
+    def from_cylinder(cls, cylinder):
+        """Create a RhinoBrep from a box.
+
+        Parameters
+        ----------
+        box : :class:`compas.geometry.Box`
+            The box geometry of the brep.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoBrep`
+
+        """
+        rhino_cylinder = cylinder_to_rhino(cylinder)
+        return cls.from_native(rhino_cylinder.ToBrep(True, True))
 
     @classmethod
     def from_extrusion(cls, curve, vector, cap_ends=True):
@@ -253,57 +336,6 @@ class RhinoBrep(Brep):
         return cls.from_native(rhino_brep)
 
     @classmethod
-    def from_sphere(cls, sphere):
-        """Create a RhinoBrep from a sphere.
-
-        Parameters
-        ----------
-        sphere : :class:`compas.geometry.Sphere`
-            The source sphere.
-
-        Returns
-        -------
-        :class:`compas_rhino.geometry.RhinoBrep`
-
-        """
-        rhino_sphere = sphere_to_rhino(sphere)
-        return cls.from_native(rhino_sphere.ToBrep())
-
-    @classmethod
-    def from_cylinder(cls, cylinder):
-        """Create a RhinoBrep from a box.
-
-        Parameters
-        ----------
-        box : :class:`compas.geometry.Box`
-            The box geometry of the brep.
-
-        Returns
-        -------
-        :class:`compas_rhino.geometry.RhinoBrep`
-
-        """
-        rhino_cylinder = cylinder_to_rhino(cylinder)
-        return cls.from_native(rhino_cylinder.ToBrep(True, True))
-
-    @classmethod
-    def from_mesh(cls, mesh):
-        """Create a RhinoBrep from a mesh.
-
-        Parameters
-        ----------
-        mesh : :class:`compas.datastructures.Mesh`
-            The source mesh.
-
-        Returns
-        -------
-        :class:`compas_rhino.geometry.RhinoBrep`
-
-        """
-        rhino_mesh = mesh_to_rhino(mesh)
-        return cls.from_native(Rhino.Geometry.Brep.CreateFromMesh(rhino_mesh, True))
-
-    @classmethod
     def from_loft(cls, curves):
         """Construct a Brep by lofting a set of curves.
 
@@ -327,6 +359,83 @@ class RhinoBrep(Brep):
         result = results[0]
 
         return cls.from_native(result)
+
+    @classmethod
+    def from_mesh(cls, mesh):
+        """Create a RhinoBrep from a mesh.
+
+        Parameters
+        ----------
+        mesh : :class:`compas.datastructures.Mesh`
+            The source mesh.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoBrep`
+
+        """
+        rhino_mesh = mesh_to_rhino(mesh)
+        return cls.from_native(Rhino.Geometry.Brep.CreateFromMesh(rhino_mesh, True))
+
+    @classmethod
+    def from_native(cls, rhino_brep):
+        """Constructs a RhinoBrep from an instance of a Rhino.Geometry.Brep.
+
+        Parameters
+        ----------
+        rhino_brep : :class:`Rhino.Geometry.Brep`
+            The instance of Rhino brep to wrap.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoBrep`
+
+        """
+        brep = cls()
+        brep._brep = rhino_brep
+        return brep
+
+    @classmethod
+    def from_sphere(cls, sphere):
+        """Create a RhinoBrep from a sphere.
+
+        Parameters
+        ----------
+        sphere : :class:`compas.geometry.Sphere`
+            The source sphere.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoBrep`
+
+        """
+        rhino_sphere = sphere_to_rhino(sphere)
+        return cls.from_native(rhino_sphere.ToBrep())
+
+    @classmethod
+    def from_step(cls, filepath):
+        """Construct a RhinoBrep from a STEP file.
+
+        Parameters
+        ----------
+        filepath : str
+            The path to the step file.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoBrep`
+
+        """
+        rs.Command('_-Import "' + filepath + '" _Enter', False)
+        guid = rs.LastCreatedObjects()[0]
+        obj = compas_rhino.objects.find_object(guid)
+        geometry = obj.Geometry.Duplicate()
+        compas_rhino.objects.delete_object(guid)
+        return cls.from_native(geometry)
+
+    # ==============================================================================
+    # Conversions
+    # ==============================================================================
 
     # ==============================================================================
     # Methods
@@ -468,87 +577,6 @@ class RhinoBrep(Brep):
             result = capped
         return RhinoBrep.from_native(result)
 
-    @classmethod
-    def from_boolean_difference(cls, breps_a, breps_b):
-        """Construct a Brep from the boolean difference of two groups of Breps.
-
-        Parameters
-        ----------
-        breps_a : :class:`compas_rhino.geometry.RhinoBrep` or list(:class:`compas_rhino.geometry.RhinoBrep`)
-            One or more Breps from which to substract.
-        breps_b : :class:`compas_rhino.geometry.RhinoBrep` or list(:class:`compas_rhino.geometry.RhinoBrep`)
-            One or more Breps to substract.
-
-        Returns
-        -------
-        list(:class:`compas_rhino.geometry.RhinoBrep`)
-            list of one or more resulting Breps.
-
-        """
-        if not isinstance(breps_a, list):
-            breps_a = [breps_a]
-        if not isinstance(breps_b, list):
-            breps_b = [breps_b]
-        resulting_breps = Rhino.Geometry.Brep.CreateBooleanDifference(
-            [b.native_brep for b in breps_a],
-            [b.native_brep for b in breps_b],
-            TOL.absolute,
-        )
-        return [RhinoBrep.from_native(brep) for brep in resulting_breps]
-
-    @classmethod
-    def from_boolean_union(cls, breps_a, breps_b):
-        """Construct a Brep from the boolean union of two groups of Breps.
-
-        Parameters
-        ----------
-        breps_a : :class:`compas_rhino.geometry.RhinoBrep` or list(:class:`compas_rhino.geometry.RhinoBrep`)
-            One of more breps to join.
-        breps_b : :class:`compas_rhino.geometry.RhinoBrep` or list(:class:`compas_rhino.geometry.RhinoBrep`)
-            Another one of more breps to join.
-
-        Returns
-        -------
-        list(:class:`compas_rhino.geometry.RhinoBrep`)
-            list of one or more resulting Breps.
-
-        """
-        if not isinstance(breps_a, list):
-            breps_a = [breps_a]
-        if not isinstance(breps_b, list):
-            breps_b = [breps_b]
-
-        resulting_breps = Rhino.Geometry.Brep.CreateBooleanUnion([b.native_brep for b in breps_a + breps_b], TOL.absolute)
-        return [RhinoBrep.from_native(brep) for brep in resulting_breps]
-
-    @classmethod
-    def from_boolean_intersection(cls, breps_a, breps_b):
-        """Construct a Brep from the boolean intersection of two groups of Breps.
-
-        Parameters
-        ----------
-        breps_a : :class:`compas_rhino.geometry.RhinoBrep` or list(:class:`compas_rhino.geometry.RhinoBrep`)
-            One or more Breps to instrsect.
-        breps_b : :class:`compas_rhino.geometry.RhinoBrep` or list(:class:`compas_rhino.geometry.RhinoBrep`)
-            Another one or more Breps to intersect.
-
-        Returns
-        -------
-        list(:class:`compas_rhino.geometry.RhinoBrep`)
-            list of one or more resulting Breps.
-
-        """
-        if not isinstance(breps_a, list):
-            breps_a = [breps_a]
-        if not isinstance(breps_b, list):
-            breps_b = [breps_b]
-        resulting_breps = Rhino.Geometry.Brep.CreateBooleanIntersection(
-            [b.native_brep for b in breps_a],
-            [b.native_brep for b in breps_b],
-            TOL.absolute,
-        )
-        return [RhinoBrep.from_native(brep) for brep in resulting_breps]
-
     def slice(self, plane):
         """Slice through the Brep with a plane.
 
@@ -625,7 +653,7 @@ class RhinoBrep(Brep):
             If the fillet operation fails.
 
         """
-        all_edge_indices = set(edge.native_edge.EdgeIndex for edge in self.edges)
+        all_edge_indices = set(edge.native_edge.EdgeIndex for edge in self.edges)  # type: ignore
         excluded_indices = set(edge.native_edge.EdgeIndex for edge in edges or [])
 
         edge_indices = all_edge_indices - excluded_indices
