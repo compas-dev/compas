@@ -1,0 +1,45 @@
+name: publish_yak
+
+on: workflow_dispatch
+
+jobs:
+
+  publish_test_yak:
+    runs-on: windows-latest
+
+    steps:
+
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Create CPython Grasshopper user objects
+      run: |
+        invoke build-cpython-ghuser-components
+
+    - name: Create IronPython Grasshopper user objects
+      run: |
+        choco install ironpython --version=2.7.8.1
+        invoke clean
+        invoke build-ghuser-components
+
+    - name: Create Rhino7 Yak package
+      shell: pwsh
+      run: |
+        invoke yakerize -m $COMPAS_GH_PATH\yak_template\manifest.yml -l $COMPAS_GH_PATH\yak_template\icon.png -g $COMPAS_GH_PATH\components\ghuser -t rh7
+      env:
+        COMPAS_GH_PATH: src\compas_ghpython
+
+    - name: Create Rhino8 Yak package
+      shell: pwsh
+      run: |
+        invoke yakerize -m $COMPAS_GH_PATH\yak_template\manifest.yml -l $COMPAS_GH_PATH\yak_template\icon.png -g $COMPAS_GH_PATH\components_cpython\ghuser -t rh8
+      env:
+          COMPAS_GH_PATH: src\compas_ghpython
+
+    - name: Publish to Yak test server (Rhino 7)
+      shell: pwsh
+      run: |
+        $file = Get-ChildItem -Path dist\yak_package\*rh7*.yak -File | Select-Object -ExpandProperty Name
+        invoke publish-yak --test-server -y $file
+      env:
+        YAK_TOKEN: ${{ secrets.YAK_DF_TOKEN }}
