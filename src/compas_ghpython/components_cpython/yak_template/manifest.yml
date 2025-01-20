@@ -1,0 +1,7 @@
+name: bluejay
+version: {{ version }}
+authors:
+  - tom van mele et. al.
+description: The **COMPAS** framework is an open-source, Python-based framework for computational research and collaboration in architecture, engineering, digital fabrication and construction.
+url: "https://github.com/compas-dev/compas"
+keyworks: ["COMPAS", "framework", "architecture", "engineering", "digital fabrication", "construction"]
