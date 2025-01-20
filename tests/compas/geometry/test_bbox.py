@@ -187,7 +187,7 @@ def test_minimum_area_rectangle_xy():
 
     min_bbox = bbox_numpy.minimum_area_rectangle_xy(np.array(points))
 
-    assert TOL.is_allclose([(x, y) for x, y in min_bbox], expected)
+    assert TOL.is_allclose(min_bbox, expected)
 
 
 def test_minimum_area_rectangle_xy_translated():
@@ -203,4 +203,4 @@ def test_minimum_area_rectangle_xy_translated():
 
     min_bbox = bbox_numpy.minimum_area_rectangle_xy(np.array(points))
 
-    assert TOL.is_allclose([(x, y) for x, y in min_bbox], expected)
+    assert TOL.is_allclose(min_bbox, expected)
