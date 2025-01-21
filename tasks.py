@@ -22,8 +22,8 @@ ns = Collection(
     build.prepare_changelog,
     build.clean,
     build.release,
-    grasshopper.build_ghuser_components,
-    grasshopper.build_cpython_ghuser_components,
+    build.build_ghuser_components,
+    build.build_cpython_ghuser_components,
     grasshopper.yakerize,
     grasshopper.publish_yak,
 )
