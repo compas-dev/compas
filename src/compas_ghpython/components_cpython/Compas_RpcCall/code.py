@@ -2,6 +2,7 @@
 Remote Procedure Call: to invoke Python functions outside of Rhino, in the context of the CPython interpreter.
 """
 
+# r: compas
 from ghpythonlib.componentbase import executingcomponent as component
 
 from compas.rpc import Proxy

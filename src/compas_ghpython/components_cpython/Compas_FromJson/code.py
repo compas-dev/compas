@@ -1,6 +1,7 @@
 """
 Deserializes JSON into COMPAS objects.
 """
+# r: compas
 
 from ghpythonlib.componentbase import executingcomponent as component
 

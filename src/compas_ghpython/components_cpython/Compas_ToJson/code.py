@@ -2,6 +2,7 @@
 Serializes COMPAS objects to JSON.
 """
 
+# r: compas
 from ghpythonlib.componentbase import executingcomponent as component
 
 import compas
