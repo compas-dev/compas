@@ -252,9 +252,9 @@ class Surface(Geometry):
         faces = [
             [
                 i * (nv + 1) + j,
-                (i + 1) * (nv + 1) + j,
-                (i + 1) * (nv + 1) + j + 1,
                 i * (nv + 1) + j + 1,
+                (i + 1) * (nv + 1) + j + 1,
+                (i + 1) * (nv + 1) + j,
             ]
             for i, j in product(range(nu), range(nv))
         ]
