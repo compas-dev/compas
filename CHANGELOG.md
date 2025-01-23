@@ -9,9 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added implementation for `compas_rhino.geometry.RhinoBrep.from_step`.
+
 ### Changed
 
 * Fixed unexpected behavior in `compas.geometry.bbox_numpy.minimum_area_rectangle_xy`.
+* Changed `requirements.txt` to allow `numpy>=2`.
+* Fixed bug in `compas.geometry.Polygon.points` setter by removing duplicate points if they exist.
+* Fixed bug in `compas.geometry.Polygon.plane` by aligning the normal of the bestfit plane with the approximate normal of the polygon faces.
+* Changed the order of face vertices in `compas.geometry.Surface.to_vertices_and_faces` to a counter clockwise cycling direction and outward facing normals for curved surfaces.>>>>>>> main
 
 ### Removed
 

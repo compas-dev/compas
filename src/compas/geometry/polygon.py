@@ -16,6 +16,7 @@ from compas.geometry import centroid_polygon
 from compas.geometry import earclip_polygon
 from compas.geometry import is_coplanar
 from compas.geometry import is_polygon_convex
+from compas.geometry import normal_triangle
 from compas.geometry import transform_points
 from compas.itertools import pairwise
 from compas.tolerance import TOL
@@ -135,9 +136,15 @@ class Polygon(Geometry):
 
     @points.setter
     def points(self, points):
-        if points[-1] == points[0]:
-            points = points[:-1]
-        self._points = [Point(*xyz) for xyz in points]
+        previous = Point(*points[0])
+        self._points = [previous]
+        for xyz in points[1:]:
+            if previous == xyz:
+                continue
+            previous = Point(*xyz)
+            self._points.append(previous)
+        if self._points[0] == self._points[-1]:
+            del self._points[-1]
         self._lines = None
 
     @property
@@ -173,7 +180,19 @@ class Polygon(Geometry):
 
     @property
     def plane(self):
-        return Plane.from_points(self.points)
+        # by just taking the bestfit plane,
+        # the normal might not be aligned with the winding direciton of the polygon
+        # this can be solved by comparing the plane normal with the normal of one of the triangles of the polygon
+        # for convex polygons this is always correct
+        # in the case of concave polygons it may not be
+        # to be entirely correct, the check should be done with one of the polygon ears after earclipping
+        # however, this is costly
+        # and even then it is only correct if we assume th polygon is plat enough to have a consistent direction
+        normal = normal_triangle([self.centroid] + self.points[:2])
+        plane = Plane.from_points(self.points)
+        if plane.normal.dot(normal) < 0:
+            plane.normal.flip()
+        return plane
 
     @property
     def frame(self):

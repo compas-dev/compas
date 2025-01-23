@@ -18,7 +18,7 @@ class Ear(object):
         Coordinates of the vertex of the Ear triangle.
     next : int
         Index of the next vertex of the Ear triangle.
-    prew : int
+    prev : int
         Index of the previous vertex of the Ear triangle.
     neighbour_coords : list
         Coordinates of the next and previous vertices of the Ear triangle.
@@ -32,10 +32,10 @@ class Ear(object):
         index_in_indexes_arr = indexes.index(ind)
         self.next = indexes[(index_in_indexes_arr + 1) % length]
         if index_in_indexes_arr == 0:
-            self.prew = indexes[length - 1]
+            self.prev = indexes[length - 1]
         else:
-            self.prew = indexes[index_in_indexes_arr - 1]
-        self.neighbour_coords = [points[self.prew], points[self.next]]
+            self.prev = indexes[index_in_indexes_arr - 1]
+        self.neighbour_coords = [points[self.prev], points[self.next]]
 
     def is_inside(self, point):
         """Check if a given point is inside the triangle formed by the Ear.
@@ -120,7 +120,7 @@ class Ear(object):
             List of vertex indices forming the Ear triangle.
 
         """
-        return [self.prew, self.index, self.next]
+        return [self.prev, self.index, self.next]
 
 
 class Earcut(object):
@@ -168,7 +168,7 @@ class Earcut(object):
 
         """
         self.ears.append(new_ear)
-        self.neighbours.append(new_ear.prew)
+        self.neighbours.append(new_ear.prev)
         self.neighbours.append(new_ear.next)
 
     def find_ears(self):
@@ -229,16 +229,16 @@ class Earcut(object):
             current = self.ears.pop(0)
 
             indexes.remove(current.index)
-            self.neighbours.remove(current.prew)
+            self.neighbours.remove(current.prev)
             self.neighbours.remove(current.next)
 
             self.triangles.append(current.get_triangle())
 
-            # Check if prew and next vertices form new ears
-            prew_ear_new = Ear(self.vertices, indexes, current.prew)
+            # Check if prev and next vertices form new ears
+            prev_ear_new = Ear(self.vertices, indexes, current.prev)
             next_ear_new = Ear(self.vertices, indexes, current.next)
-            if prew_ear_new.validate(self.vertices, indexes, self.ears) and prew_ear_new.index not in self.neighbours:
-                self.add_ear(prew_ear_new)
+            if prev_ear_new.validate(self.vertices, indexes, self.ears) and prev_ear_new.index not in self.neighbours:
+                self.add_ear(prev_ear_new)
                 continue
             if next_ear_new.validate(self.vertices, indexes, self.ears) and next_ear_new.index not in self.neighbours:
                 self.add_ear(next_ear_new)
@@ -270,8 +270,6 @@ def earclip_polygon(polygon):
         If no more ears were found for triangulation.
 
     """
-
-    # Orient the copy of polygon points to XY plane.
     from compas.geometry import Frame  # Avoid circular import.
     from compas.geometry import Plane  # Avoid circular import.
     from compas.geometry import Transformation  # Avoid circular import.
