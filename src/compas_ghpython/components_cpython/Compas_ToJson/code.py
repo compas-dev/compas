@@ -8,7 +8,7 @@ import Grasshopper
 import compas
 
 
-class CompasInfo(Grasshopper.Kernel.GH_ScriptInstance):
+class CompasDumpToJson(Grasshopper.Kernel.GH_ScriptInstance):
     def RunScript(self, data, filepath, pretty):
         json = filepath
 

@@ -9,7 +9,7 @@ import Grasshopper
 import compas
 
 
-class CompasInfo(Grasshopper.Kernel.GH_ScriptInstance):
+class CompasLoadFromJson(Grasshopper.Kernel.GH_ScriptInstance):
     def RunScript(self, json):
         if not json:
             return None
