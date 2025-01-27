@@ -3,12 +3,12 @@ Remote Procedure Call: to invoke Python functions outside of Rhino, in the conte
 """
 
 # r: compas==2.8.1
-from ghpythonlib.componentbase import executingcomponent as component
+import Grasshopper
 
 from compas.rpc import Proxy
 
 
-class CompasRpcCall(component):
+class CompasRemoteProcedureCall(Grasshopper.Kernel.GH_ScriptInstance):
     def RunScript(self, module, function, parameters, path, restart):
         if not (module and function):
             return

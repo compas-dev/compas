@@ -5,12 +5,12 @@ Displays information about the active COMPAS environment.
 # r: compas==2.8.1
 
 import compas_bootstrapper
-from ghpythonlib.componentbase import executingcomponent as component
+import Grasshopper
 
 import compas
 
 
-class CompasInfo(component):
+class CompasInfo(Grasshopper.Kernel.GH_ScriptInstance):
     def RunScript(self):
         self.Message = "COMPAS v{}".format(compas.__version__)
         info = "COMPAS Version: {}\nEnvironment: {}"
