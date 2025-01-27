@@ -1,6 +1,7 @@
 """
 Displays information about the active COMPAS environment.
 """
+
 # r: compas==2.8.1
 
 import compas_bootstrapper
