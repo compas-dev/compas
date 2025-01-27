@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added CPython implementations of GH components for Rhino8.
+* Added import to new `yakerize` task from `compas_invocations2`.
+* Added import to new `publish_yak` task from `compas_invocations2`.
+
 ### Changed
 
 * Changed `requirements.txt` to allow `numpy>=2`.
