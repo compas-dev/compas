@@ -1,15 +1,16 @@
+# r: compas>=2.8.1
 """
 Remote Procedure Call: to invoke Python functions outside of Rhino, in the context of the CPython interpreter.
 """
 
-# r: compas==2.8.1
 import Grasshopper
+import System
 
 from compas.rpc import Proxy
 
 
 class CompasRemoteProcedureCall(Grasshopper.Kernel.GH_ScriptInstance):
-    def RunScript(self, module, function, parameters, path, restart):
+    def RunScript(self, module: str, function: str, parameters: System.Collections.Generic.List[object], path: str, restart: bool):
         if not (module and function):
             return
 

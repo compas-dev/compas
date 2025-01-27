@@ -1,15 +1,17 @@
+# r: compas>=2.8.1
 """
 Serializes COMPAS objects to JSON.
 """
 
-# r: compas==2.8.1
+from typing import Any
+
 import Grasshopper
 
 import compas
 
 
 class CompasDumpToJson(Grasshopper.Kernel.GH_ScriptInstance):
-    def RunScript(self, data, filepath, pretty):
+    def RunScript(self, data: Any, filepath: str, pretty: bool):
         json = filepath
 
         if filepath:
