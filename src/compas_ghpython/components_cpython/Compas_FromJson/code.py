@@ -17,4 +17,5 @@ class CompasLoadFromJson(Grasshopper.Kernel.GH_ScriptInstance):
         try:
             return compas.json_load(json)
         except Exception:
+            ghenv.Component.AddRuntimeMessage(Grasshopper.Kernel.GH_RuntimeMessageLevel.Warning, f"Failed to load JSON from path: {json}, Trying as string.")
             return compas.json_loads(json)

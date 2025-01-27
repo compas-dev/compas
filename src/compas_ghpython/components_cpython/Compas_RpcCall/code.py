@@ -21,12 +21,6 @@ class CompasRemoteProcedureCall(Grasshopper.Kernel.GH_ScriptInstance):
         fn = getattr(proxy, function)
         parameters = parameters or []
 
-        try:
-            result = fn(*parameters)
-        except Exception:
-            self.Message = "Error! Check details in stacktrace"
-            raise
-
-        self.Message = ""
+        result = fn(*parameters)
 
         return result
