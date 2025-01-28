@@ -125,7 +125,7 @@ class DevTools(object):
                 self.watcher.Changed
                 self.watcher.Dispose()
                 del self.watcher
-        except: # noqa : E722
+        except:  # noqa : E722
             pass
         self.watcher = None
 
