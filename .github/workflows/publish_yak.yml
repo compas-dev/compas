@@ -25,21 +25,31 @@ jobs:
     - name: Create Rhino7 Yak package
       shell: pwsh
       run: |
-        invoke yakerize -m $COMPAS_GH_PATH\yak_template\manifest.yml -l $COMPAS_GH_PATH\yak_template\icon.png -g $COMPAS_GH_PATH\components\ghuser -t rh7
+        invoke yakerize -m $YAK_TEMPLATE\manifest.yml -l $YAK_TEMPLATE\icon.png -g $USER_OBJECTS -t rh7
       env:
-        COMPAS_GH_PATH: src\compas_ghpython
+        USER_OBJECTS: src\compas_ghpython\components\ghuser
+        YAK_TEMPLATE: src\compas_ghpython\yak_template
 
     - name: Create Rhino8 Yak package
       shell: pwsh
       run: |
-        invoke yakerize -m $COMPAS_GH_PATH\yak_template\manifest.yml -l $COMPAS_GH_PATH\yak_template\icon.png -g $COMPAS_GH_PATH\components_cpython\ghuser -t rh8
+        invoke yakerize -m $YAK_TEMPLATE\manifest.yml -l $YAK_TEMPLATE\icon.png -g $USER_OBJECTS -t rh8
       env:
-          COMPAS_GH_PATH: src\compas_ghpython
+        USER_OBJECTS: src\compas_ghpython\components_cpython\ghuser
+        YAK_TEMPLATE: src\compas_ghpython\yak_template
 
     - name: Publish to Yak test server (Rhino 7)
       shell: pwsh
       run: |
         $file = Get-ChildItem -Path dist\yak_package\*rh7*.yak -File | Select-Object -ExpandProperty Name
+        invoke publish-yak --test-server -y $file
+      env:
+        YAK_TOKEN: ${{ secrets.YAK_DF_TOKEN }}
+
+    - name: Publish to Yak test server (Rhino 8)
+      shell: pwsh
+      run: |
+        $file = Get-ChildItem -Path dist\yak_package\*rh8*.yak -File | Select-Object -ExpandProperty Name
         invoke publish-yak --test-server -y $file
       env:
         YAK_TOKEN: ${{ secrets.YAK_DF_TOKEN }}
