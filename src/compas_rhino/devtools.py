@@ -71,11 +71,9 @@ class DevTools(object):
     def ensure_path():
         """Ensures the current folder is in the system path."""
         # Not sure why we need to import sys inside this method but GH complains otherwise
-        # import sys
         import scriptcontext
 
         # First ensure the current folder is in the system path
-        #filepath = self.ghenv.Component.OnPingDocument().FilePath
         filepath = scriptcontext.doc.Component.OnPingDocument().FilePath
 
         if not filepath:
@@ -103,7 +101,7 @@ class DevTools(object):
         # Setup file system watcher on python files
         self.watcher = FileSystemWatcher()
         self.watcher.Path = dirname
-        self.watcher.NotifyFilter = NotifyFilters.LastWrite  #| NotifyFilters.FileName | NotifyFilters.Size
+        self.watcher.NotifyFilter = NotifyFilters.LastWrite
         self.watcher.IncludeSubdirectories = False
         self.watcher.Filter = "*.py"
         self.watcher.Changed += self.on_changed
