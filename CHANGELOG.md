@@ -9,10 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `DevTools` with support for automatic reloading of local python modules.
 * Added implementation for `compas_rhino.geometry.RhinoBrep.from_step`.
 
 ### Changed
 
+* Moved `unload_modules` to be a static method of `DevTools`. The `unload_modules` function is an alias to this. 
 * Fixed unexpected behavior in `compas.geometry.bbox_numpy.minimum_area_rectangle_xy`.
 * Changed `requirements.txt` to allow `numpy>=2`.
 * Fixed bug in `compas.geometry.Polygon.points` setter by removing duplicate points if they exist.

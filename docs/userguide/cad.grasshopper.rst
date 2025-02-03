@@ -49,14 +49,14 @@ Reloading changed libraries
 If you change a Python library during a running Rhino application, which is
 imported in a GhPython component (e.g. via ``import compas_fab``),
 it is necessary to reload the library so that the GhPython interpreter
-recognizes the changes. To avoid restarting Rhino, you can use the function
-``unload_modules``. The following example reloads the library ``compas_fab``.
+recognizes the changes. To avoid restarting Rhino, you can use the method
+``unload_modules`` of ``DevTools``. The following example reloads the library ``compas_fab``.
 
 .. code-block:: python
 
-    from compas_ghpython import unload_modules
+    from compas_rhino import DevTools
 
-    unload_modules('compas_fab')
+    DevTools.unload_modules('compas_fab')
 
 .. note::
 
@@ -64,4 +64,51 @@ recognizes the changes. To avoid restarting Rhino, you can use the function
     workflow. Re-loading modules later might result, for example,
     in COMPAS not being able to find a `SceneObject` as well as other issues
     related to a mid-workflow re-definition of Python types.
+
+
+Python Scripting Outside Rhino/Grasshopper with Auto-Reloading
+==============================================================
+
+Developing Python scripts outside of Rhino/Grasshopper allows you to take advantage of
+modern code editors. However, this workflow requires two key steps: ensuring the Python
+interpreter can access your script's location and enabling automatic reloading of the
+script when changes are made in your external editor.
+If the scripts or modules you are working on are located in the same folder as the Rhino/Grasshopper file you are editing, the ``DevTools`` class can be used to make them importable and reload them automatically when modified.
+
+This approach provides a seamless workflow for developing Python scripts in modern IDEs,
+such as Visual Studio Code, while running and testing the code inside Rhino/Grasshopper
+with minimal interruptions.
+
+Enabling Auto-Reloading
+-----------------------
+
+To enable this feature, use the ``enable_reloader`` method of the ``DevTools`` class.
+This makes all Python scripts in the same folder as the Grasshopper file importable
+and ensures they automatically reload when changes are applied.
+
+.. code-block:: python
+
+    from compas_rhino import DevTools
+    DevTools.enable_reloader()
+
+.. note::
+
+    Call this method early in your script to start the monitoring service immediately.
+
+Importing Local Modules
+-----------------------
+
+Once auto-reloading is enabled, any script component that needs to use local modules can include the following at the top of the script:
+
+.. code-block:: python
+
+    from compas_rhino import DevTools
+    DevTools.ensure_path()
+
+This ensures local modules are accessible. For instance, if a file named ``my_module.py`` is in
+the same folder as your Grasshopper file, you can import it in a script component like this:
+
+.. code-block:: python
+
+    import my_module
 
