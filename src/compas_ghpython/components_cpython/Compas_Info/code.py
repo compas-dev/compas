@@ -2,6 +2,7 @@
 """
 Displays information about the active COMPAS environment.
 """
+
 import Grasshopper
 
 import os
@@ -12,6 +13,7 @@ class CompasInfo(Grasshopper.Kernel.GH_ScriptInstance):
     def RunScript(self):
         try:
             import compas_bootstrapper
+
             environment_name = compas_bootstrapper.ENVIRONMENT_NAME
         except ImportError:
             environment_name = os.path.dirname(compas.__file__)
