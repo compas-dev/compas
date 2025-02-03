@@ -570,11 +570,11 @@ the INFO component.</p>
 <p>If you change a Python library during a running Rhino application, which is
 imported in a GhPython component (e.g. via <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">compas_fab</span></code>),
 it is necessary to reload the library so that the GhPython interpreter
-recognizes the changes. To avoid restarting Rhino, you can use the function
-<code class="docutils literal notranslate"><span class="pre">unload_modules</span></code>. The following example reloads the library <code class="docutils literal notranslate"><span class="pre">compas_fab</span></code>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">compas_ghpython</span><span class="w"> </span><span class="kn">import</span> <span class="n">unload_modules</span>
+recognizes the changes. To avoid restarting Rhino, you can use the method
+<code class="docutils literal notranslate"><span class="pre">unload_modules</span></code> of <code class="docutils literal notranslate"><span class="pre">DevTools</span></code>. The following example reloads the library <code class="docutils literal notranslate"><span class="pre">compas_fab</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">compas_rhino</span><span class="w"> </span><span class="kn">import</span> <span class="n">DevTools</span>
 
-<span class="n">unload_modules</span><span class="p">(</span><span class="s1">&#39;compas_fab&#39;</span><span class="p">)</span>
+<span class="n">DevTools</span><span class="o">.</span><span class="n">unload_modules</span><span class="p">(</span><span class="s1">&#39;compas_fab&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -584,6 +584,44 @@ workflow. Re-loading modules later might result, for example,
 in COMPAS not being able to find a <cite>SceneObject</cite> as well as other issues
 related to a mid-workflow re-definition of Python types.</p>
 </div>
+</section>
+<section id="python-scripting-outside-rhino-grasshopper-with-auto-reloading">
+<h2>Python Scripting Outside Rhino/Grasshopper with Auto-Reloading</h2>
+<p>Developing Python scripts outside of Rhino/Grasshopper allows you to take advantage of
+modern code editors. However, this workflow requires two key steps: ensuring the Python
+interpreter can access your script’s location and enabling automatic reloading of the
+script when changes are made in your external editor.
+If the scripts or modules you are working on are located in the same folder as the Rhino/Grasshopper file you are editing, the <code class="docutils literal notranslate"><span class="pre">DevTools</span></code> class can be used to make them importable and reload them automatically when modified.</p>
+<p>This approach provides a seamless workflow for developing Python scripts in modern IDEs,
+such as Visual Studio Code, while running and testing the code inside Rhino/Grasshopper
+with minimal interruptions.</p>
+<section id="enabling-auto-reloading">
+<h3>Enabling Auto-Reloading</h3>
+<p>To enable this feature, use the <code class="docutils literal notranslate"><span class="pre">enable_reloader</span></code> method of the <code class="docutils literal notranslate"><span class="pre">DevTools</span></code> class.
+This makes all Python scripts in the same folder as the Grasshopper file importable
+and ensures they automatically reload when changes are applied.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">compas_rhino</span><span class="w"> </span><span class="kn">import</span> <span class="n">DevTools</span>
+<span class="n">DevTools</span><span class="o">.</span><span class="n">enable_reloader</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Call this method early in your script to start the monitoring service immediately.</p>
+</div>
+</section>
+<section id="importing-local-modules">
+<h3>Importing Local Modules</h3>
+<p>Once auto-reloading is enabled, any script component that needs to use local modules can include the following at the top of the script:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">compas_rhino</span><span class="w"> </span><span class="kn">import</span> <span class="n">DevTools</span>
+<span class="n">DevTools</span><span class="o">.</span><span class="n">ensure_path</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This ensures local modules are accessible. For instance, if a file named <code class="docutils literal notranslate"><span class="pre">my_module.py</span></code> is in
+the same folder as your Grasshopper file, you can import it in a script component like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">my_module</span>
+</pre></div>
+</div>
+</section>
 </section>
 </section>
 
@@ -611,6 +649,11 @@ related to a mid-workflow re-definition of Python types.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verify-setup">Verify setup</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#grasshopper-components-for-compas">Grasshopper components for COMPAS</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reloading-changed-libraries">Reloading changed libraries</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-scripting-outside-rhino-grasshopper-with-auto-reloading">Python Scripting Outside Rhino/Grasshopper with Auto-Reloading</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#enabling-auto-reloading">Enabling Auto-Reloading</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#importing-local-modules">Importing Local Modules</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
