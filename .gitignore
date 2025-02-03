@@ -139,6 +139,7 @@ data/ctralie
 
 # Grasshopper generated objects
 src/compas_ghpython/components/**/*.ghuser
+src/compas_ghpython/components_cpython/**/*.ghuser
 
 dev
 
