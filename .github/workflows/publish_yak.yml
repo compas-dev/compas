@@ -35,14 +35,6 @@ jobs:
         USER_OBJECTS: src\compas_ghpython\components\ghuser
         YAK_TEMPLATE: src\compas_ghpython\yak_template
 
-    - name: Create Rhino8 Yak package
-      shell: pwsh
-      run: |
-        invoke yakerize -m $Env:YAK_TEMPLATE\manifest.yml -l $Env:YAK_TEMPLATE\icon.png -g $Env:USER_OBJECTS -t rh8
-      env:
-        USER_OBJECTS: src\compas_ghpython\components_cpython\ghuser
-        YAK_TEMPLATE: src\compas_ghpython\yak_template
-
     - name: Publish to Yak test server (Rhino 7)
       shell: pwsh
       run: |
@@ -50,6 +42,14 @@ jobs:
         invoke publish-yak --test-server -y $file
       env:
         YAK_TOKEN: ${{ secrets.YAK_DF_TOKEN }}
+
+    - name: Create Rhino8 Yak package
+      shell: pwsh
+      run: |
+        invoke yakerize -m $Env:YAK_TEMPLATE\manifest.yml -l $Env:YAK_TEMPLATE\icon.png -g $Env:USER_OBJECTS -t rh8
+      env:
+        USER_OBJECTS: src\compas_ghpython\components_cpython\ghuser
+        YAK_TEMPLATE: src\compas_ghpython\yak_template
 
     - name: Publish to Yak test server (Rhino 8)
       shell: pwsh
