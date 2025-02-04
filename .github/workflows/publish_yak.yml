@@ -1,6 +1,15 @@
 name: publish_yak
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Choose deployment environment"
+        required: true
+        type: choice
+        options:
+          - test
+          - prod
 
 jobs:
 
@@ -8,6 +17,16 @@ jobs:
     runs-on: windows-latest
 
     steps:
+
+    - name: Set test flag based on input
+      shell: pwsh
+      run: |
+        if ("${{ github.event.inputs.environment }}" -eq "test") {
+          echo "TEST_FLAG=--test-server" | Out-File -FilePath $env:GITHUB_ENV -Append
+        }
+        else {
+          echo "TEST_FLAG=" | Out-File -FilePath $env:GITHUB_ENV -Append
+        }
 
     - name: Checkout repo
       uses: actions/checkout@v4
@@ -55,6 +74,6 @@ jobs:
       shell: pwsh
       run: |
         $file = Get-ChildItem -Path dist\yak_package\*rh8*.yak -File | Select-Object -ExpandProperty Name
-        invoke publish-yak --test-server -y dist\yak_package\$file
+        invoke publish-yak $Env:TEST_FLAG -y dist\yak_package\$file
       env:
         YAK_TOKEN: ${{ secrets.YAK_DF_TOKEN }}
