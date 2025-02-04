@@ -39,7 +39,7 @@ jobs:
       shell: pwsh
       run: |
         $file = Get-ChildItem -Path dist\yak_package\*rh7*.yak -File | Select-Object -ExpandProperty Name
-        invoke publish-yak --test-server -y $file
+        invoke publish-yak --test-server -y dist\yak_package\$file
       env:
         YAK_TOKEN: ${{ secrets.YAK_DF_TOKEN }}
 
@@ -55,6 +55,6 @@ jobs:
       shell: pwsh
       run: |
         $file = Get-ChildItem -Path dist\yak_package\*rh8*.yak -File | Select-Object -ExpandProperty Name
-        invoke publish-yak --test-server -y $file
+        invoke publish-yak --test-server -y dist\yak_package\$file
       env:
         YAK_TOKEN: ${{ secrets.YAK_DF_TOKEN }}
