@@ -9,8 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* Added method `frame_at` to `compas.geometry.BrepFace`,
-* Added method `frame_at` to `compas_rhino.geometry.RhinoBrepFace`,
+* Added method `frame_at` to `compas.geometry.BrepFace`.
+* Added method `frame_at` to `compas_rhino.geometry.RhinoBrepFace`.
+* Added property `is_reversed` to `compas.geometry.BrepFace`.
+* Added property `is_reversed` to `compas_rhino.geometry.RhinoBrepFace`.
 
 ### Changed
 
