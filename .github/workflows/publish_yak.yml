@@ -22,13 +22,12 @@ jobs:
       shell: pwsh
       run: |
         if ("${{ github.event.inputs.environment }}" -eq "test") {
-          echo "TEST_FLAG=--test-server" >> $GITHUB_ENV
+          echo "TEST_FLAG=--test-server" | Out-File -FilePath $env:GITHUB_ENV -Append
         }
         else {
-          echo "TEST_FLAG=" >> GITHUB_ENV
+          echo "TEST_FLAG=" | Out-File -FilePath $env:GITHUB_ENV -Append
         }
-
-        echo "TEST_FLAG=$Env:TEST_FLAG"
+        echo "Environment: $env:TEST_FLAG"
 
     - name: Checkout repo
       uses: actions/checkout@v4
