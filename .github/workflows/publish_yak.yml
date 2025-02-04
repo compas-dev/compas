@@ -25,7 +25,7 @@ jobs:
           echo "TEST_FLAG=--test-server" | Out-File -FilePath $env:GITHUB_ENV -Append
         }
         else {
-          echo "TEST_FLAG=" | Out-File -FilePath $env:GITHUB_ENV -Append
+          echo "TEST_FLAG=''" | Out-File -FilePath $env:GITHUB_ENV -Append
         }
 
     - name: Checkout repo
