@@ -300,4 +300,7 @@ class RhinoBrepFace(BrepFace):
             The frame at the given uv parameters.
 
         """
-        return plane_to_compas_frame(self._face.FrameAt(u, v))
+        success, rhino_plane = self._face.FrameAt(u, v)
+        if not success:
+            raise ValueError("Failed to get frame at uv parameters: ({},{}).".format(u, v))
+        return plane_to_compas_frame(rhino_plane)
