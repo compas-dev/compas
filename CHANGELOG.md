@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added method `frame_at` to `compas.geometry.BrepFace`,
+* Added method `frame_at` to `compas_rhino.geometry.RhinoBrepFace`,
+
 ### Changed
 
 * Fixed publish to YAK via CI workflow.

@@ -283,3 +283,24 @@ class RhinoBrepFace(BrepFace):
 
         """
         return Brep.from_native(self._face.ToBrep())
+
+    def frame_at(self, u, v):
+        """Returns the frame at the given uv parameters.
+
+        Parameters
+        ----------
+        u : float
+            The u parameter.
+        v : float
+            The v parameter.
+
+        Returns
+        -------
+        :class:`compas.geometry.Frame`
+            The frame at the given uv parameters.
+
+        """
+        success, rhino_plane = self._face.FrameAt(u, v)
+        if not success:
+            raise ValueError("Failed to get frame at uv parameters: ({},{}).".format(u, v))
+        return plane_to_compas_frame(rhino_plane)
