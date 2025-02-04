@@ -59,7 +59,7 @@ jobs:
       run: |
         $test_flag = if ($Env:TEST_FLAG) { $Env:TEST_FLAG } else { "" }
         $file = Get-ChildItem -Path dist\yak_package\*rh7*.yak -File | Select-Object -ExpandProperty Name
-        $command = "invoke publish-yak $test_flag -y dist\yak_package\$file"
+        $command = "invoke publish-yak -y dist\yak_package\$file $test_flag".Trim()
         echo "Executing: $command"
       env:
         YAK_TOKEN: ${{ secrets.YAK_DF_TOKEN }}
