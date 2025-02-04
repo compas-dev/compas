@@ -292,6 +292,24 @@ class BrepFace(Data):
         """
         raise NotImplementedError
 
+    def frame_at(self, u, v):
+        """Returns the frame at the given uv parameters.
+
+        Parameters
+        ----------
+        u : float
+            The u parameter.
+        v : float
+            The v parameter.
+
+        Returns
+        -------
+        :class:`compas.geometry.Frame`
+            The frame at the given uv parameters.
+
+        """
+        raise NotImplementedError
+
     def try_get_nurbssurface(
         self,
         precision,
