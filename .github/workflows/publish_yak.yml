@@ -54,7 +54,7 @@ jobs:
         USER_OBJECTS: src\compas_ghpython\components\ghuser
         YAK_TEMPLATE: src\compas_ghpython\yak_template
 
-    - name: Publish to Yak test server (Rhino 7)
+    - name: Publish to Yak server (Rhino 7)
       shell: pwsh
       run: |
         $file = Get-ChildItem -Path dist\yak_package\*rh7*.yak -File | Select-Object -ExpandProperty Name
@@ -70,7 +70,7 @@ jobs:
         USER_OBJECTS: src\compas_ghpython\components_cpython\ghuser
         YAK_TEMPLATE: src\compas_ghpython\yak_template
 
-    - name: Publish to Yak test server (Rhino 8)
+    - name: Publish to Yak server (Rhino 8)
       shell: pwsh
       run: |
         $file = Get-ChildItem -Path dist\yak_package\*rh8*.yak -File | Select-Object -ExpandProperty Name
