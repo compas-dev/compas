@@ -25,7 +25,7 @@ jobs:
           echo "TEST_FLAG=--test-server" | Out-File -FilePath $env:GITHUB_ENV -Append
         }
         else {
-          echo "TEST_FLAG=''" | Out-File -FilePath $env:GITHUB_ENV -Append
+          echo "TEST_FLAG=" | Out-File -FilePath $env:GITHUB_ENV -Append
         }
 
     - name: Checkout repo
@@ -57,8 +57,9 @@ jobs:
     - name: Publish to Yak server (Rhino 7)
       shell: pwsh
       run: |
+        $test_flag = if ($Env:TEST_FLAG) { $Env:TEST_FLAG } else { "" }
         $file = Get-ChildItem -Path dist\yak_package\*rh7*.yak -File | Select-Object -ExpandProperty Name
-        invoke publish-yak $Env:TEST_FLAG -y dist\yak_package\$file
+        invoke publish-yak $test_flag -y dist\yak_package\$file
       env:
         YAK_TOKEN: ${{ secrets.YAK_DF_TOKEN }}
 
@@ -73,7 +74,8 @@ jobs:
     - name: Publish to Yak server (Rhino 8)
       shell: pwsh
       run: |
+        $test_flag = if ($Env:TEST_FLAG) { $Env:TEST_FLAG } else { "" }
         $file = Get-ChildItem -Path dist\yak_package\*rh8*.yak -File | Select-Object -ExpandProperty Name
-        invoke publish-yak $Env:TEST_FLAG -y dist\yak_package\$file
+        invoke publish-yak $test_flag -y dist\yak_package\$file
       env:
         YAK_TOKEN: ${{ secrets.YAK_DF_TOKEN }}
