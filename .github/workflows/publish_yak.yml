@@ -60,23 +60,24 @@ jobs:
         $test_flag = if ($Env:TEST_FLAG) { $Env:TEST_FLAG } else { "" }
         $file = Get-ChildItem -Path dist\yak_package\*rh7*.yak -File | Select-Object -ExpandProperty Name
         $command = "invoke publish-yak -y dist\yak_package\$file $test_flag".Trim()
-        echo "Executing: $command"
+        Invoke-Expression $command
       env:
         YAK_TOKEN: ${{ secrets.YAK_DF_TOKEN }}
 
-    # - name: Create Rhino8 Yak package
-    #   shell: pwsh
-    #   run: |
-    #     invoke yakerize -m $Env:YAK_TEMPLATE\manifest.yml -l $Env:YAK_TEMPLATE\icon.png -g $Env:USER_OBJECTS -t rh8
-    #   env:
-    #     USER_OBJECTS: src\compas_ghpython\components_cpython\ghuser
-    #     YAK_TEMPLATE: src\compas_ghpython\yak_template
+    - name: Create Rhino8 Yak package
+      shell: pwsh
+      run: |
+        invoke yakerize -m $Env:YAK_TEMPLATE\manifest.yml -l $Env:YAK_TEMPLATE\icon.png -g $Env:USER_OBJECTS -t rh8
+      env:
+        USER_OBJECTS: src\compas_ghpython\components_cpython\ghuser
+        YAK_TEMPLATE: src\compas_ghpython\yak_template
 
-    # - name: Publish to Yak server (Rhino 8)
-    #   shell: pwsh
-    #   run: |
-    #     $test_flag = if ($Env:TEST_FLAG) { $Env:TEST_FLAG } else { "" }
-    #     $file = Get-ChildItem -Path dist\yak_package\*rh8*.yak -File | Select-Object -ExpandProperty Name
-    #     invoke publish-yak $test_flag -y dist\yak_package\$file
-    #   env:
-    #     YAK_TOKEN: ${{ secrets.YAK_DF_TOKEN }}
+    - name: Publish to Yak server (Rhino 8)
+      shell: pwsh
+      run: |
+        $test_flag = if ($Env:TEST_FLAG) { $Env:TEST_FLAG } else { "" }
+        $file = Get-ChildItem -Path dist\yak_package\*rh8*.yak -File | Select-Object -ExpandProperty Name
+        $command = "invoke publish-yak -y dist\yak_package\$file $test_flag".Trim()
+        Invoke-Expression $command
+      env:
+        YAK_TOKEN: ${{ secrets.YAK_DF_TOKEN }}
