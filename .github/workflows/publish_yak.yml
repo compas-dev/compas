@@ -57,8 +57,10 @@ jobs:
     - name: Publish to Yak server (Rhino 7)
       shell: pwsh
       run: |
+        $test_flag = if ($Env:TEST_FLAG) { $Env:TEST_FLAG } else { "" }
         $file = Get-ChildItem -Path dist\yak_package\*rh7*.yak -File | Select-Object -ExpandProperty Name
-        invoke publish-yak $Env:TEST_FLAG -y dist\yak_package\$file
+        $command = "invoke publish-yak -y dist\yak_package\$file $test_flag".Trim()
+        Invoke-Expression $command
       env:
         YAK_TOKEN: ${{ secrets.YAK_DF_TOKEN }}
 
@@ -73,7 +75,9 @@ jobs:
     - name: Publish to Yak server (Rhino 8)
       shell: pwsh
       run: |
+        $test_flag = if ($Env:TEST_FLAG) { $Env:TEST_FLAG } else { "" }
         $file = Get-ChildItem -Path dist\yak_package\*rh8*.yak -File | Select-Object -ExpandProperty Name
-        invoke publish-yak $Env:TEST_FLAG -y dist\yak_package\$file
+        $command = "invoke publish-yak -y dist\yak_package\$file $test_flag".Trim()
+        Invoke-Expression $command
       env:
         YAK_TOKEN: ${{ secrets.YAK_DF_TOKEN }}
