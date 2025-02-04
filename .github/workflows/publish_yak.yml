@@ -30,7 +30,7 @@ jobs:
     - name: Create Rhino7 Yak package
       shell: pwsh
       run: |
-        invoke yakerize -m $YAK_TEMPLATE\manifest.yml -l $YAK_TEMPLATE\icon.png -g $USER_OBJECTS -t rh7
+        invoke yakerize -m $Env:YAK_TEMPLATE\manifest.yml -l $Env:YAK_TEMPLATE\icon.png -g $Env:USER_OBJECTS -t rh7
       env:
         USER_OBJECTS: src\compas_ghpython\components\ghuser
         YAK_TEMPLATE: src\compas_ghpython\yak_template
@@ -38,7 +38,7 @@ jobs:
     - name: Create Rhino8 Yak package
       shell: pwsh
       run: |
-        invoke yakerize -m $YAK_TEMPLATE\manifest.yml -l $YAK_TEMPLATE\icon.png -g $USER_OBJECTS -t rh8
+        invoke yakerize -m $Env:YAK_TEMPLATE\manifest.yml -l $Env:YAK_TEMPLATE\icon.png -g $Env:USER_OBJECTS -t rh8
       env:
         USER_OBJECTS: src\compas_ghpython\components_cpython\ghuser
         YAK_TEMPLATE: src\compas_ghpython\yak_template
