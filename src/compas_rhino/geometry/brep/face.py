@@ -40,6 +40,8 @@ class RhinoBrepFace(BrepFace):
         The list of loops which comprise the holes of this brep, if any.
     is_plane : float, read-only
         True if the geometry of this face is a plane, False otherwise.
+    is_reversed : bool, read-only
+        True if the orientation of this face is reversed, False otherwise.
     native_face : :class:`Rhino.Geometry.BrepFace`
         The underlying BrepFace object.
 
@@ -151,6 +153,10 @@ class RhinoBrepFace(BrepFace):
     @property
     def is_torus(self):
         return self._face.UnderlyingSurface().IsTorus()
+
+    @property
+    def is_reversed(self):
+        return self._face.OrientationIsReversed
 
     @property
     def native_face(self):
