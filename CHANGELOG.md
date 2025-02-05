@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Fixed publish to YAK via CI workflow.
 * Added selector for `test` and `prod` to CI workflow.
+* Fixed `AttributeError` in `compas.data.DataEncoder.default` due to `np.float_` no longer being available in `numpy>=2`.
 
 ### Removed
 
