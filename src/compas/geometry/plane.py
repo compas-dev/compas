@@ -390,9 +390,7 @@ class Plane(Geometry):
         True
 
         """
-        is_parallel = TOL.is_close(self.normal.dot(other.normal), 1, rtol=0, atol=tol)
-        is_parallel_neg = TOL.is_close(self.normal.dot(other.normal), -1, rtol=0, atol=tol)
-        return is_parallel or is_parallel_neg
+        return TOL.is_close(abs(self.normal.dot(other.normal)), 1, rtol=0, atol=tol)
 
     def is_perpendicular(self, other, tol=None):
         """Verify if this plane is perpendicular to another plane.
