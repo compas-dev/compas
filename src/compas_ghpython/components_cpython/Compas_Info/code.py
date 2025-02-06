@@ -3,9 +3,10 @@
 Displays information about the active COMPAS environment.
 """
 
+import os
+
 import Grasshopper
 
-import os
 import compas
 
 
