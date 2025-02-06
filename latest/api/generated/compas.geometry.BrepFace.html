@@ -1121,7 +1121,7 @@ document.write(`
 <h1>BrepFace</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.BrepFace">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">BrepFace</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/e907f00/src/compas/geometry/brep/face.py#L21"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">BrepFace</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/961fdf8/src/compas/geometry/brep/face.py#L21"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.data.Data.html#compas.data.Data" title="compas.data.data.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">Data</span></code></a></p>
 <p>An interface for a Brep Face.</p>
 <dl class="field-list">
@@ -1144,6 +1144,8 @@ document.write(`
 <dt><strong>is_sphere</strong><span class="classifier">bool, read-only</span></dt><dd><p>Returns True if this face is a sphere, False otherwise.</p>
 </dd>
 <dt><strong>is_torus</strong><span class="classifier">bool, read-only</span></dt><dd><p>Returns True if this face is a torus, False otherwise.</p>
+</dd>
+<dt><strong>is_reversed</strong><span class="classifier">bool, read-only</span></dt><dd><p>True if the orientation of this face is reversed, False otherwise.</p>
 </dd>
 <dt><strong>is_valid</strong><span class="classifier">bool, read-only</span></dt><dd><p>Return True if this face is valid, False otherwise.</p>
 </dd>
@@ -1178,28 +1180,31 @@ BSPLINE_SURFACE, SURFACE_OF_REVOLUTION, SURFACE_OF_EXTRUSTION, OFFSET_SURFACE, O
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.BrepFace.as_brep.html#compas.geometry.BrepFace.as_brep" title="compas.geometry.BrepFace.as_brep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">as_brep</span></code></a></p></td>
 <td><p>Returns a Brep representation of this face.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.BrepFace.from_cone.html#compas.geometry.BrepFace.from_cone" title="compas.geometry.BrepFace.from_cone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_cone</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.BrepFace.frame_at.html#compas.geometry.BrepFace.frame_at" title="compas.geometry.BrepFace.frame_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">frame_at</span></code></a></p></td>
+<td><p>Returns the frame at the given uv parameters.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.BrepFace.from_cone.html#compas.geometry.BrepFace.from_cone" title="compas.geometry.BrepFace.from_cone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_cone</span></code></a></p></td>
 <td><p>Construct a face from a cone geometry.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.BrepFace.from_cylinder.html#compas.geometry.BrepFace.from_cylinder" title="compas.geometry.BrepFace.from_cylinder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_cylinder</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.BrepFace.from_cylinder.html#compas.geometry.BrepFace.from_cylinder" title="compas.geometry.BrepFace.from_cylinder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_cylinder</span></code></a></p></td>
 <td><p>Construct a face from a cylinder geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.BrepFace.from_plane.html#compas.geometry.BrepFace.from_plane" title="compas.geometry.BrepFace.from_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_plane</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.BrepFace.from_plane.html#compas.geometry.BrepFace.from_plane" title="compas.geometry.BrepFace.from_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_plane</span></code></a></p></td>
 <td><p>Construct a face from a plane geometry.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.BrepFace.from_sphere.html#compas.geometry.BrepFace.from_sphere" title="compas.geometry.BrepFace.from_sphere"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_sphere</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.BrepFace.from_sphere.html#compas.geometry.BrepFace.from_sphere" title="compas.geometry.BrepFace.from_sphere"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_sphere</span></code></a></p></td>
 <td><p>Construct a face from a sphere geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.BrepFace.from_surface.html#compas.geometry.BrepFace.from_surface" title="compas.geometry.BrepFace.from_surface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_surface</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.BrepFace.from_surface.html#compas.geometry.BrepFace.from_surface" title="compas.geometry.BrepFace.from_surface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_surface</span></code></a></p></td>
 <td><p>Construct a face from a surfaces geometry.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.BrepFace.from_torus.html#compas.geometry.BrepFace.from_torus" title="compas.geometry.BrepFace.from_torus"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_torus</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.BrepFace.from_torus.html#compas.geometry.BrepFace.from_torus" title="compas.geometry.BrepFace.from_torus"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_torus</span></code></a></p></td>
 <td><p>Construct a face from a torus geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.BrepFace.to_polygon.html#compas.geometry.BrepFace.to_polygon" title="compas.geometry.BrepFace.to_polygon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polygon</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.BrepFace.to_polygon.html#compas.geometry.BrepFace.to_polygon" title="compas.geometry.BrepFace.to_polygon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polygon</span></code></a></p></td>
 <td><p>Convert the face to a polygon without underlying geometry.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.BrepFace.try_get_nurbssurface.html#compas.geometry.BrepFace.try_get_nurbssurface" title="compas.geometry.BrepFace.try_get_nurbssurface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">try_get_nurbssurface</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.BrepFace.try_get_nurbssurface.html#compas.geometry.BrepFace.try_get_nurbssurface" title="compas.geometry.BrepFace.try_get_nurbssurface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">try_get_nurbssurface</span></code></a></p></td>
 <td><p>Returns the NURBS surface representation of this face.</p></td>
 </tr>
 </tbody>
