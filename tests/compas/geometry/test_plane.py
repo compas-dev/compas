@@ -76,3 +76,13 @@ def test_plane_from_three_points():
 
     result = Plane.from_three_points(pt1, pt2, pt3)
     assert result == ([0, 0, 0], [0, 0, 1])
+    
+def test_plane_is_parallel():
+    plane1 = Plane.worldXY()
+    plane2 = Plane([1.0, 1.0, 1.0], [0.0, 0.0, 1.0])
+    assert plane1.is_parallel(plane2)
+    
+    plane1 = Plane.worldXY()
+    plane2 = Plane([1.0, 1.0, 1.0], [0.0, 0.0, -1.0])
+    assert plane1.is_parallel(plane2)
+    
