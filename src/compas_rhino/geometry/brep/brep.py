@@ -392,8 +392,6 @@ class RhinoBrep(Brep):
         """
         brep = cls()
         brep._brep = rhino_brep
-        if brep.volume < 0:
-            brep.flip()
         return brep
 
     @classmethod
