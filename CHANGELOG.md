@@ -6,7 +6,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
-* Fixed unexpected behavior for method `Plane.is_parallel` for opposite normals.
 
 ### Added
 
@@ -14,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added implementation of `flip` to `compas_rhino.geometry.RhinoBrep`.
 
 ### Changed
+
+* Fixed unexpected behavior for method `Plane.is_parallel` for opposite normals.
 
 ### Removed
 
