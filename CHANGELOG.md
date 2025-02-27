@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `flip` to `compas.geometry.Brep`.
+* Added implementation of `flip` to `compas_rhino.geometry.RhinoBrep`.
+
 ### Changed
 
 ### Removed
