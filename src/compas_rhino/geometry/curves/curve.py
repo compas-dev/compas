@@ -401,6 +401,23 @@ class RhinoCurve(Curve):
     def split(self):
         raise NotImplementedError
 
+    def trim(self, t0, t1):
+        """Trim the curve to a specific domain.
+
+        Parameters
+        ----------
+        t0 : float
+            The start of the domain.
+        t1 : float
+            The end of the domain.
+
+        Returns
+        -------
+        None
+
+        """
+        self.native_curve = self.native_curve.Trim(t0, t1)
+
     def trimmed(self, t0, t1):
         """Trim the curve to a specific domain.
 
