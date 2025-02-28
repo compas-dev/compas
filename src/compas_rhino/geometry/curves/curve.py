@@ -375,7 +375,7 @@ class RhinoCurve(Curve):
         raise NotImplementedError
 
     def offset(self, distance, direction, tolerance=1e-3):
-        """Compute the length of the curve.
+        """Offset the curve.
 
         Parameters
         ----------
