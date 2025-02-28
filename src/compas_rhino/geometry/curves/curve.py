@@ -203,6 +203,22 @@ class RhinoCurve(Curve):
         point = self.native_curve.PointAt(t)  # type: ignore
         return point_to_compas(point)
 
+    def point_at_length(self, length):
+        """Compute a point on the curve at a specific length.
+
+        Parameters
+        ----------
+        length : float
+            The length along the curve.
+
+        Returns
+        -------
+        :class:`compas.geometry.Point`
+            The corresponding point on the curve.
+
+        """
+        return point_to_compas(self.native_curve.PointAtLength(length))  # type: ignore
+
     def tangent_at(self, t):
         """Compute the tangent vector at a point on the curve.
 
