@@ -217,7 +217,8 @@ class RhinoCurve(Curve):
             The corresponding point on the curve.
 
         """
-        return point_to_compas(self.native_curve.PointAtLength(length))  # type: ignore
+        point = self.native_curve.PointAtLength(length)  # type: ignore
+        return point_to_compas(point)
 
     def tangent_at(self, t):
         """Compute the tangent vector at a point on the curve.
@@ -432,7 +433,7 @@ class RhinoCurve(Curve):
         None
 
         """
-        self.native_curve = self.native_curve.Trim(t0, t1)
+        self.native_curve = self.native_curve.Trim(t0, t1) # type: ignore
 
     def trimmed(self, t0, t1):
         """Trim the curve to a specific domain.
@@ -450,7 +451,7 @@ class RhinoCurve(Curve):
             The trimmed curve.
         """
 
-        curve = self.native_curve.Trim(t0, t1)
+        curve = self.native_curve.Trim(t0, t1) # type: ignore
         return RhinoCurve.from_native(curve)
 
     def change_seam(self, t):
@@ -466,4 +467,4 @@ class RhinoCurve(Curve):
         None
 
         """
-        self.native_curve.ChangeClosedCurveSeam(t)
+        self.native_curve.ChangeClosedCurveSeam(t) # type: ignore
