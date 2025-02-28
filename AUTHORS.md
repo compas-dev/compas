@@ -41,3 +41,4 @@
 - Adam Anouar <<aanouar@student.ethz.ch>> [@AdamAnouar](https://github.com/AdamAnouar)
 - Joseph Kenny <<kenny@arch.ethz.ch>> [@jckenny59](https://github.com/jckenny59)
 - Panayiotis Papacharalambous <<papacharalambous@arch.ethz.ch>> [@papachap](https://github.com/papachap)
+- Ananya Kango <<kango@arch.ethz.ch>> [@kangoananya](https://github.com/kangoananya)

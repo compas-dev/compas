@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed unexpected behavior for method `Plane.is_parallel` for opposite normals.
 
 ### Added
+* Added `trim`, `trimmed`, `change_seam` and `point_at_length` methods to `RhinoCurve` class. 
 
 ### Changed
 
