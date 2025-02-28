@@ -401,5 +401,36 @@ class RhinoCurve(Curve):
     def split(self):
         raise NotImplementedError
 
-    def trim(self):
-        raise NotImplementedError
+    def trimmed(self, t0, t1):
+        """Trim the curve to a specific domain.
+
+        Parameters
+        ----------
+        t0 : float
+            The start of the domain.
+        t1 : float
+            The end of the domain.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoCurve`
+            The trimmed curve.
+        """
+
+        curve = self.native_curve.Trim(t0, t1)
+        return RhinoCurve.from_native(curve)
+
+    def change_seam(self, t):
+        """Change the seam of the curve to a specific parameter.
+
+        Parameters
+        ----------
+        t : float
+            The parameter at which to set the seam.
+
+        Returns
+        -------
+        None
+
+        """
+        self.native_curve.ChangeClosedCurveSeam(t)
