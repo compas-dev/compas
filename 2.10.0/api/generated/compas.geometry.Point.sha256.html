@@ -1,0 +1,1238 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="../../_static/compas.ico" type="image/x-icon">
+    <title>Point.sha256 &#8212; COMPAS</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/compas.css?v=617b33e2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script src="../../_static/documentation_options.js?v=467cdc0d"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/tabs.js?v=3ee01567"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/generated/compas.geometry.Point.sha256';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/compas-dev/compas/gh-pages/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '2.10';
+        </script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Point.to_json" href="compas.geometry.Point.to_json.html" />
+    <link rel="prev" title="Point.scaled" href="compas.geometry.Point.scaled.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+
+  <div class="bd-header-announcement container-fluid bd-header-announcement">
+    <div class="bd-header-announcement__content">This is the documentation of the first stable release of COMPAS 2. If you have feedback, please give it here: <a href='https://github.com/compas-dev/compas/issues'>COMPAS issue tracker</a>.</div>
+  </div>
+
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/compas_icon_white.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/compas_icon_white.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+    <p class="title logo__title">COMPAS docs</p>
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../userguide/index.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../devguide/index.html">
+                        Developer Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://compas.dev">
+                    COMPAS Framework
+                  </a>
+                </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown">
+      2.10  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/compas-dev/compas" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="http://forum.compas-framework.org/" title="Discourse" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-discourse"></i></span>
+            <label class="sr-only">Discourse</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/compas/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../userguide/index.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../devguide/index.html">
+                        Developer Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+
+                <li class="nav-item">
+                  <a class="nav-link nav-external" href="https://compas.dev">
+                    COMPAS Framework
+                  </a>
+                </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown">
+      2.10  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div class="version-switcher__menu dropdown-menu list-group-flush py-0">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/compas-dev/compas" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="http://forum.compas-framework.org/" title="Discourse" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-discourse"></i></span>
+            <label class="sr-only">Discourse</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/compas/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-python"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <!-- <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p> -->
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">compas</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../compas.colors.html">compas.colors</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="compas.colors.Color.html">Color</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.colors.ColorDict.html">ColorDict</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.colors.ColorMap.html">ColorMap</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../compas.data.html">compas.data</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="compas.data.Data.html">Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.data.DataDecoder.html">DataDecoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.data.DataEncoder.html">DataEncoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.data.DecoderError.html">DecoderError</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.data.compas_dataclasses.html">compas_dataclasses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.data.dataclass_dataschema.html">dataclass_dataschema</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.data.dataclass_jsonschema.html">dataclass_jsonschema</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.data.dataclass_typeschema.html">dataclass_typeschema</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.data.json_dump.html">json_dump</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.data.json_dumps.html">json_dumps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.data.json_dumpz.html">json_dumpz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.data.json_load.html">json_load</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.data.json_loads.html">json_loads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.data.json_loadz.html">json_loadz</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../compas.datastructures.html">compas.datastructures</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../compas.datastructures.Graph.html">Graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../compas.datastructures.Mesh.html">Mesh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../compas.datastructures.VolMesh.html">VolMesh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../compas.datastructures.CellNetwork.html">CellNetwork</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../compas.datastructures.Tree.html">Tree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../compas.datastructures.Assembly.html">Assembly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.datastructures.AssemblyError.html">AssemblyError</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.datastructures.FeatureError.html">FeatureError</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../compas.files.html">compas.files</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="compas.files.GLTF.html">GLTF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.files.OBJ.html">OBJ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.files.OFF.html">OFF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.files.PLY.html">PLY</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.files.STL.html">STL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.files.XML.html">XML</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.files.prettify_string.html">prettify_string</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../compas.geometry.html">compas.geometry</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.Arc.html">Arc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.Bezier.html">Bezier</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.Box.html">Box</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.Brep.html">Brep</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.BrepEdge.html">BrepEdge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.BrepError.html">BrepError</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.BrepFace.html">BrepFace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.BrepFilletError.html">BrepFilletError</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.BrepInvalidError.html">BrepInvalidError</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.BrepLoop.html">BrepLoop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.BrepOrientation.html">BrepOrientation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.BrepTrim.html">BrepTrim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.BrepTrimIsoStatus.html">BrepTrimIsoStatus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.BrepTrimmingError.html">BrepTrimmingError</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.BrepType.html">BrepType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.BrepVertex.html">BrepVertex</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.Capsule.html">Capsule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.Circle.html">Circle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.Cone.html">Cone</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.ConicalSurface.html">ConicalSurface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.Curve.html">Curve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.CurveType.html">CurveType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.Cylinder.html">Cylinder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.CylindricalSurface.html">CylindricalSurface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.Ellipse.html">Ellipse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.Frame.html">Frame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.Geometry.html">Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.Hyperbola.html">Hyperbola</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.KDTree.html">KDTree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.Line.html">Line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.NurbsCurve.html">NurbsCurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.NurbsSurface.html">NurbsSurface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.Parabola.html">Parabola</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.PlanarSurface.html">PlanarSurface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.Plane.html">Plane</a></li>
+<li class="toctree-l2 current active"><a class="reference internal" href="compas.geometry.Point.html">Point</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.Pointcloud.html">Pointcloud</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.Polygon.html">Polygon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.Polyhedron.html">Polyhedron</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.Polyline.html">Polyline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.Projection.html">Projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.Quaternion.html">Quaternion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.Reflection.html">Reflection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.Rotation.html">Rotation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.Scale.html">Scale</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.Shape.html">Shape</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.Shear.html">Shear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.Sphere.html">Sphere</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.SphericalSurface.html">SphericalSurface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.Surface.html">Surface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.SurfaceType.html">SurfaceType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.ToroidalSurface.html">ToroidalSurface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.Torus.html">Torus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.Transformation.html">Transformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.Translation.html">Translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.Vector.html">Vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.add_vectors.html">add_vectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.add_vectors_xy.html">add_vectors_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.angle_planes.html">angle_planes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.angle_points.html">angle_points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.angle_points_xy.html">angle_points_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.angle_vectors.html">angle_vectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.angle_vectors_signed.html">angle_vectors_signed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.angle_vectors_xy.html">angle_vectors_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.angles_points.html">angles_points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.angles_points_xy.html">angles_points_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.angles_vectors.html">angles_vectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.angles_vectors_xy.html">angles_vectors_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.area_polygon.html">area_polygon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.area_polygon_xy.html">area_polygon_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.area_triangle.html">area_triangle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.area_triangle_xy.html">area_triangle_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.argmax.html">argmax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.argmin.html">argmin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.axis_and_angle_from_matrix.html">axis_and_angle_from_matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.axis_angle_from_quaternion.html">axis_angle_from_quaternion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.axis_angle_vector_from_matrix.html">axis_angle_vector_from_matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.barycentric_coordinates.html">barycentric_coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.basis_vectors_from_matrix.html">basis_vectors_from_matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.bestfit_plane.html">bestfit_plane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.bounding_box.html">bounding_box</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.bounding_box_xy.html">bounding_box_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.centroid_points.html">centroid_points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.centroid_points_weighted.html">centroid_points_weighted</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.centroid_points_xy.html">centroid_points_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.centroid_polygon.html">centroid_polygon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.centroid_polygon_edges.html">centroid_polygon_edges</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.centroid_polygon_edges_xy.html">centroid_polygon_edges_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.centroid_polygon_vertices.html">centroid_polygon_vertices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.centroid_polygon_vertices_xy.html">centroid_polygon_vertices_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.centroid_polygon_xy.html">centroid_polygon_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.centroid_polyhedron.html">centroid_polyhedron</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.closest_line_to_point.html">closest_line_to_point</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.closest_point_in_cloud.html">closest_point_in_cloud</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.closest_point_in_cloud_xy.html">closest_point_in_cloud_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.closest_point_on_line.html">closest_point_on_line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.closest_point_on_line_xy.html">closest_point_on_line_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.closest_point_on_plane.html">closest_point_on_plane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.closest_point_on_polygon_xy.html">closest_point_on_polygon_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.closest_point_on_polyline.html">closest_point_on_polyline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.closest_point_on_polyline_xy.html">closest_point_on_polyline_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.closest_point_on_segment.html">closest_point_on_segment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.closest_point_on_segment_xy.html">closest_point_on_segment_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.compose_matrix.html">compose_matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.compute_basisfuncs.html">compute_basisfuncs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.compute_basisfuncsderivs.html">compute_basisfuncsderivs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.construct_knotvector.html">construct_knotvector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.convex_hull.html">convex_hull</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.convex_hull_xy.html">convex_hull_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.cross_vectors.html">cross_vectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.cross_vectors_xy.html">cross_vectors_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.decompose_matrix.html">decompose_matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.dehomogenize_vectors.html">dehomogenize_vectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.discrete_coons_patch.html">discrete_coons_patch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.distance_line_line.html">distance_line_line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.distance_point_line.html">distance_point_line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.distance_point_line_sqrd.html">distance_point_line_sqrd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.distance_point_line_sqrd_xy.html">distance_point_line_sqrd_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.distance_point_line_xy.html">distance_point_line_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.distance_point_plane.html">distance_point_plane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.distance_point_plane_signed.html">distance_point_plane_signed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.distance_point_point.html">distance_point_point</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.distance_point_point_sqrd.html">distance_point_point_sqrd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.distance_point_point_sqrd_xy.html">distance_point_point_sqrd_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.distance_point_point_xy.html">distance_point_point_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.divide_vectors.html">divide_vectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.divide_vectors_xy.html">divide_vectors_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.dot_vectors.html">dot_vectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.dot_vectors_xy.html">dot_vectors_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.earclip_polygon.html">earclip_polygon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.euler_angles_from_matrix.html">euler_angles_from_matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.euler_angles_from_quaternion.html">euler_angles_from_quaternion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.find_span.html">find_span</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.homogenize_vectors.html">homogenize_vectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.identity_matrix.html">identity_matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.intersection_circle_circle_xy.html">intersection_circle_circle_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.intersection_ellipse_line_xy.html">intersection_ellipse_line_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.intersection_line_box_xy.html">intersection_line_box_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.intersection_line_line.html">intersection_line_line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.intersection_line_line_xy.html">intersection_line_line_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.intersection_line_plane.html">intersection_line_plane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.intersection_line_segment.html">intersection_line_segment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.intersection_line_segment_xy.html">intersection_line_segment_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.intersection_line_triangle.html">intersection_line_triangle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.intersection_plane_circle.html">intersection_plane_circle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.intersection_plane_plane.html">intersection_plane_plane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.intersection_plane_plane_plane.html">intersection_plane_plane_plane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.intersection_polyline_box_xy.html">intersection_polyline_box_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.intersection_polyline_plane.html">intersection_polyline_plane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.intersection_segment_plane.html">intersection_segment_plane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.intersection_segment_polyline.html">intersection_segment_polyline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.intersection_segment_polyline_xy.html">intersection_segment_polyline_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.intersection_segment_segment.html">intersection_segment_segment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.intersection_segment_segment_xy.html">intersection_segment_segment_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.intersection_sphere_line.html">intersection_sphere_line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.intersection_sphere_sphere.html">intersection_sphere_sphere</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_ccw_xy.html">is_ccw_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_colinear.html">is_colinear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_colinear_line_line.html">is_colinear_line_line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_colinear_xy.html">is_colinear_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_coplanar.html">is_coplanar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_matrix_square.html">is_matrix_square</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_parallel_line_line.html">is_parallel_line_line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_parallel_vector_vector.html">is_parallel_vector_vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_behind_plane.html">is_point_behind_plane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_in_circle.html">is_point_in_circle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_in_circle_xy.html">is_point_in_circle_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_in_convex_polygon_xy.html">is_point_in_convex_polygon_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_in_polygon_xy.html">is_point_in_polygon_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_in_polyhedron.html">is_point_in_polyhedron</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_in_triangle.html">is_point_in_triangle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_in_triangle_xy.html">is_point_in_triangle_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_infrontof_plane.html">is_point_infrontof_plane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_on_line.html">is_point_on_line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_on_line_xy.html">is_point_on_line_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_on_plane.html">is_point_on_plane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_on_polyline.html">is_point_on_polyline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_on_polyline_xy.html">is_point_on_polyline_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_on_segment.html">is_point_on_segment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_point_on_segment_xy.html">is_point_on_segment_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_polygon_convex.html">is_polygon_convex</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_polygon_convex_xy.html">is_polygon_convex_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.is_polygon_in_polygon_xy.html">is_polygon_in_polygon_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.knots_and_mults_to_knotvector.html">knots_and_mults_to_knotvector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.knotvector_to_knots_and_mults.html">knotvector_to_knots_and_mults</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.length_vector.html">length_vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.length_vector_sqrd.html">length_vector_sqrd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.length_vector_sqrd_xy.html">length_vector_sqrd_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.length_vector_xy.html">length_vector_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.local_axes.html">local_axes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.local_to_world_coordinates.html">local_to_world_coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.matrix_determinant.html">matrix_determinant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.matrix_from_axis_and_angle.html">matrix_from_axis_and_angle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.matrix_from_axis_angle_vector.html">matrix_from_axis_angle_vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.matrix_from_basis_vectors.html">matrix_from_basis_vectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.matrix_from_change_of_basis.html">matrix_from_change_of_basis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.matrix_from_euler_angles.html">matrix_from_euler_angles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.matrix_from_frame.html">matrix_from_frame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.matrix_from_frame_to_frame.html">matrix_from_frame_to_frame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.matrix_from_orthogonal_projection.html">matrix_from_orthogonal_projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.matrix_from_parallel_projection.html">matrix_from_parallel_projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.matrix_from_perspective_entries.html">matrix_from_perspective_entries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.matrix_from_perspective_projection.html">matrix_from_perspective_projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.matrix_from_quaternion.html">matrix_from_quaternion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.matrix_from_scale_factors.html">matrix_from_scale_factors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.matrix_from_shear.html">matrix_from_shear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.matrix_from_shear_entries.html">matrix_from_shear_entries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.matrix_from_translation.html">matrix_from_translation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.matrix_inverse.html">matrix_inverse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.matrix_minor.html">matrix_minor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.midpoint_line.html">midpoint_line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.midpoint_line_xy.html">midpoint_line_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.midpoint_point_point.html">midpoint_point_point</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.midpoint_point_point_xy.html">midpoint_point_point_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.mirror_point_plane.html">mirror_point_plane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.mirror_points_line.html">mirror_points_line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.mirror_points_line_xy.html">mirror_points_line_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.mirror_points_plane.html">mirror_points_plane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.mirror_points_point.html">mirror_points_point</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.mirror_points_point_xy.html">mirror_points_point_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.mirror_vector_vector.html">mirror_vector_vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.multiply_matrices.html">multiply_matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.multiply_matrix_vector.html">multiply_matrix_vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.multiply_vectors.html">multiply_vectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.multiply_vectors_xy.html">multiply_vectors_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.norm_vector.html">norm_vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.norm_vectors.html">norm_vectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.normal_polygon.html">normal_polygon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.normal_triangle.html">normal_triangle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.normal_triangle_xy.html">normal_triangle_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.normalize_vector.html">normalize_vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.normalize_vector_xy.html">normalize_vector_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.normalize_vectors.html">normalize_vectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.normalize_vectors_xy.html">normalize_vectors_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.offset_line.html">offset_line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.offset_polygon.html">offset_polygon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.offset_polyline.html">offset_polyline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.orient_points.html">orient_points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.orthonormalize_axes.html">orthonormalize_axes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.orthonormalize_vectors.html">orthonormalize_vectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.power_vector.html">power_vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.power_vectors.html">power_vectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.project_point_line.html">project_point_line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.project_point_line_xy.html">project_point_line_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.project_point_plane.html">project_point_plane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.project_points_line.html">project_points_line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.project_points_line_xy.html">project_points_line_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.project_points_plane.html">project_points_plane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.quaternion_canonize.html">quaternion_canonize</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.quaternion_conjugate.html">quaternion_conjugate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.quaternion_from_axis_angle.html">quaternion_from_axis_angle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.quaternion_from_euler_angles.html">quaternion_from_euler_angles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.quaternion_from_matrix.html">quaternion_from_matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.quaternion_is_unit.html">quaternion_is_unit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.quaternion_multiply.html">quaternion_multiply</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.quaternion_norm.html">quaternion_norm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.quaternion_unitize.html">quaternion_unitize</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.reflect_line_plane.html">reflect_line_plane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.reflect_line_triangle.html">reflect_line_triangle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.rotate_points.html">rotate_points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.rotate_points_xy.html">rotate_points_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.scale_points.html">scale_points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.scale_points_xy.html">scale_points_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.scale_vector.html">scale_vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.scale_vector_xy.html">scale_vector_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.scale_vectors.html">scale_vectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.scale_vectors_xy.html">scale_vectors_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.sort_points.html">sort_points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.sort_points_xy.html">sort_points_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.square_vector.html">square_vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.square_vectors.html">square_vectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.subtract_vectors.html">subtract_vectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.subtract_vectors_xy.html">subtract_vectors_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.sum_vectors.html">sum_vectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.tangent_points_to_circle_xy.html">tangent_points_to_circle_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.transform_frames.html">transform_frames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.transform_points.html">transform_points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.transform_vectors.html">transform_vectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.translate_points.html">translate_points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.translate_points_xy.html">translate_points_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.translation_from_matrix.html">translation_from_matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.transpose_matrix.html">transpose_matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.tween_points.html">tween_points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.tween_points_distance.html">tween_points_distance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.vector_average.html">vector_average</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.vector_component.html">vector_component</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.vector_component_xy.html">vector_component_xy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.vector_standard_deviation.html">vector_standard_deviation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.vector_variance.html">vector_variance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.volume_polyhedron.html">volume_polyhedron</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.world_to_local_coordinates.html">world_to_local_coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.bestfit_circle_numpy.html">bestfit_circle_numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.bestfit_frame_numpy.html">bestfit_frame_numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.bestfit_line_numpy.html">bestfit_line_numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.bestfit_plane_numpy.html">bestfit_plane_numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.bestfit_sphere_numpy.html">bestfit_sphere_numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.closest_points_in_cloud_numpy.html">closest_points_in_cloud_numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.convex_hull_numpy.html">convex_hull_numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.convex_hull_xy_numpy.html">convex_hull_xy_numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.dehomogenize_and_unflatten_frames_numpy.html">dehomogenize_and_unflatten_frames_numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.dehomogenize_numpy.html">dehomogenize_numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.homogenize_and_flatten_frames_numpy.html">homogenize_and_flatten_frames_numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.homogenize_numpy.html">homogenize_numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.icp_numpy.html">icp_numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.local_to_world_coordinates_numpy.html">local_to_world_coordinates_numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.oriented_bounding_box_numpy.html">oriented_bounding_box_numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.oriented_bounding_box_xy_numpy.html">oriented_bounding_box_xy_numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.pca_numpy.html">pca_numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.transform_points_numpy.html">transform_points_numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.transform_vectors_numpy.html">transform_vectors_numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.trimesh_descent_numpy.html">trimesh_descent_numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.trimesh_gradient_numpy.html">trimesh_gradient_numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.world_to_local_coordinates_numpy.html">world_to_local_coordinates_numpy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.boolean_difference_mesh_mesh.html">boolean_difference_mesh_mesh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.boolean_difference_polygon_polygon.html">boolean_difference_polygon_polygon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.boolean_intersection_mesh_mesh.html">boolean_intersection_mesh_mesh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.boolean_intersection_polygon_polygon.html">boolean_intersection_polygon_polygon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.boolean_symmetric_difference_polygon_polygon.html">boolean_symmetric_difference_polygon_polygon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.boolean_union_mesh_mesh.html">boolean_union_mesh_mesh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.boolean_union_polygon_polygon.html">boolean_union_polygon_polygon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.conforming_delaunay_triangulation.html">conforming_delaunay_triangulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.constrained_delaunay_triangulation.html">constrained_delaunay_triangulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.delaunay_triangulation.html">delaunay_triangulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.intersection_mesh_mesh.html">intersection_mesh_mesh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.intersection_ray_mesh.html">intersection_ray_mesh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.oriented_bounding_box.html">oriented_bounding_box</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.quadmesh_planarize.html">quadmesh_planarize</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.trimesh_gaussian_curvature.html">trimesh_gaussian_curvature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.trimesh_geodistance.html">trimesh_geodistance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.trimesh_harmonic.html">trimesh_harmonic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.trimesh_isolines.html">trimesh_isolines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.trimesh_lscm.html">trimesh_lscm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.trimesh_massmatrix.html">trimesh_massmatrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.trimesh_mean_curvature.html">trimesh_mean_curvature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.trimesh_principal_curvature.html">trimesh_principal_curvature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.trimesh_remesh.html">trimesh_remesh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.trimesh_remesh_along_isoline.html">trimesh_remesh_along_isoline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.trimesh_remesh_constrained.html">trimesh_remesh_constrained</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.geometry.trimesh_slice.html">trimesh_slice</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../compas.itertools.html">compas.itertools</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="compas.itertools.normalize_values.html">normalize_values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.itertools.remap_values.html">remap_values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.itertools.meshgrid.html">meshgrid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.itertools.linspace.html">linspace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.itertools.flatten.html">flatten</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.itertools.reshape.html">reshape</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.itertools.pairwise.html">pairwise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.itertools.window.html">window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.itertools.iterable_like.html">iterable_like</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../compas.plugins.html">compas.plugins</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="compas.plugins.IncompletePluginImplError.html">IncompletePluginImplError</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.plugins.PluginDefaultNotAvailableError.html">PluginDefaultNotAvailableError</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.plugins.PluginManager.html">PluginManager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.plugins.PluginNotInstalledError.html">PluginNotInstalledError</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.plugins.PluginValidator.html">PluginValidator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.plugins.pluggable.html">pluggable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.plugins.plugin.html">plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.plugins.plugin_manager.html">plugin_manager</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../compas.rpc.html">compas.rpc</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="compas.rpc.Dispatcher.html">Dispatcher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.rpc.Proxy.html">Proxy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.rpc.RPCClientError.html">RPCClientError</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.rpc.RPCServerError.html">RPCServerError</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.rpc.Server.html">Server</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../compas.scene.html">compas.scene</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="compas.scene.GeometryObject.html">GeometryObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.scene.MeshObject.html">MeshObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.scene.GraphObject.html">GraphObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.scene.Scene.html">Scene</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.scene.SceneObject.html">SceneObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.scene.SceneObjectNotRegisteredError.html">SceneObjectNotRegisteredError</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.scene.VolMeshObject.html">VolMeshObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.scene.get_sceneobject_cls.html">get_sceneobject_cls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.scene.register.html">register</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.scene.clear.html">clear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.scene.before_draw.html">before_draw</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.scene.after_draw.html">after_draw</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.scene.register_scene_objects.html">register_scene_objects</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../compas.tolerance.html">compas.tolerance</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="compas.tolerance.Tolerance.html">Tolerance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas.tolerance.TOL.html">TOL</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">compas_blender</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../compas_blender.conversions.html">compas_blender.conversions</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.conversions.bmesh_to_compas.html">bmesh_to_compas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.conversions.circle_to_blender_curve.html">circle_to_blender_curve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.conversions.color_to_blender_material.html">color_to_blender_material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.conversions.cylinder_to_blender_mesh.html">cylinder_to_blender_mesh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.conversions.line_to_blender_curve.html">line_to_blender_curve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.conversions.mesh_to_blender.html">mesh_to_blender</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.conversions.mesh_to_compas.html">mesh_to_compas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.conversions.meshobj_to_compas.html">meshobj_to_compas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.conversions.monkey_to_compas.html">monkey_to_compas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.conversions.nurbscurve_to_blender_curve.html">nurbscurve_to_blender_curve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.conversions.nurbssurface_to_blender_surface.html">nurbssurface_to_blender_surface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.conversions.pointcloud_to_blender.html">pointcloud_to_blender</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.conversions.polygon_to_blender_mesh.html">polygon_to_blender_mesh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.conversions.polyline_to_blender_curve.html">polyline_to_blender_curve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.conversions.sphere_to_blender_mesh.html">sphere_to_blender_mesh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.conversions.transformation_to_blender.html">transformation_to_blender</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.conversions.transformation_to_compas.html">transformation_to_compas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.conversions.vertices_and_faces_to_blender_mesh.html">vertices_and_faces_to_blender_mesh</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../compas_blender.geometry.html">compas_blender.geometry</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.geometry.boolean_difference_mesh_mesh.html">boolean_difference_mesh_mesh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.geometry.boolean_intersection_mesh_mesh.html">boolean_intersection_mesh_mesh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.geometry.boolean_union_mesh_mesh.html">boolean_union_mesh_mesh</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../compas_blender.scene.html">compas_blender.scene</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.BlenderSceneObject.html">BlenderSceneObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.BoxObject.html">BoxObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.CircleObject.html">CircleObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.CurveObject.html">CurveObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.FrameObject.html">FrameObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.LineObject.html">LineObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.MeshObject.html">MeshObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.GraphObject.html">GraphObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.PointObject.html">PointObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.PointcloudObject.html">PointcloudObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.PolygonObject.html">PolygonObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.PolyhedronObject.html">PolyhedronObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.PolylineObject.html">PolylineObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.SurfaceObject.html">SurfaceObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.VectorObject.html">VectorObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_blender.scene.VolMeshObject.html">VolMeshObject</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">compas_ghpython</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../compas_ghpython.components.html">compas_ghpython.components</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-14"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="compas_ghpython.components.install_userobjects.html">install_userobjects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_ghpython.components.uninstall_userobjects.html">uninstall_userobjects</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../compas_ghpython.scene.html">compas_ghpython.scene</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-15"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="compas_ghpython.scene.BoxObject.html">BoxObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_ghpython.scene.CapsuleObject.html">CapsuleObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_ghpython.scene.CircleObject.html">CircleObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_ghpython.scene.ConeObject.html">ConeObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_ghpython.scene.CurveObject.html">CurveObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_ghpython.scene.CylinderObject.html">CylinderObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_ghpython.scene.EllipseObject.html">EllipseObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_ghpython.scene.FrameObject.html">FrameObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_ghpython.scene.GHSceneObject.html">GHSceneObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_ghpython.scene.LineObject.html">LineObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_ghpython.scene.MeshObject.html">MeshObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_ghpython.scene.GraphObject.html">GraphObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_ghpython.scene.PointObject.html">PointObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_ghpython.scene.PolygonObject.html">PolygonObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_ghpython.scene.PolyhedronObject.html">PolyhedronObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_ghpython.scene.PolylineObject.html">PolylineObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_ghpython.scene.SphereObject.html">SphereObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_ghpython.scene.SurfaceObject.html">SurfaceObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_ghpython.scene.TorusObject.html">TorusObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_ghpython.scene.VectorObject.html">VectorObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_ghpython.scene.VolMeshObject.html">VolMeshObject</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">compas_rhino</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../compas_rhino.conversions.html">compas_rhino.conversions</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-16"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.ConversionError.html">ConversionError</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.arc_to_compas.html">arc_to_compas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.arc_to_rhino.html">arc_to_rhino</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.box_to_compas.html">box_to_compas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.box_to_rhino.html">box_to_rhino</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.brep_to_compas_box.html">brep_to_compas_box</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.brep_to_compas_cone.html">brep_to_compas_cone</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.brep_to_compas_cylinder.html">brep_to_compas_cylinder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.brep_to_compas_sphere.html">brep_to_compas_sphere</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.brep_to_rhino.html">brep_to_rhino</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.capsule_to_rhino_brep.html">capsule_to_rhino_brep</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.circle_to_compas.html">circle_to_compas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.circle_to_rhino.html">circle_to_rhino</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.circle_to_rhino_curve.html">circle_to_rhino_curve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.cone_to_compas.html">cone_to_compas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.cone_to_rhino.html">cone_to_rhino</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.cone_to_rhino_brep.html">cone_to_rhino_brep</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.curve_to_compas_circle.html">curve_to_compas_circle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.curve_to_compas_ellipse.html">curve_to_compas_ellipse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.curve_to_compas_line.html">curve_to_compas_line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.curve_to_compas_polyline.html">curve_to_compas_polyline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.curve_to_rhino.html">curve_to_rhino</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.cylinder_to_compas.html">cylinder_to_compas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.cylinder_to_rhino.html">cylinder_to_rhino</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.cylinder_to_rhino_brep.html">cylinder_to_rhino_brep</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.ellipse_to_compas.html">ellipse_to_compas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.ellipse_to_rhino.html">ellipse_to_rhino</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.ellipse_to_rhino_curve.html">ellipse_to_rhino_curve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.extrusion_to_compas_box.html">extrusion_to_compas_box</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.extrusion_to_compas_cylinder.html">extrusion_to_compas_cylinder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.extrusion_to_compas_torus.html">extrusion_to_compas_torus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.frame_to_rhino.html">frame_to_rhino</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.frame_to_rhino_plane.html">frame_to_rhino_plane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.line_to_compas.html">line_to_compas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.line_to_rhino.html">line_to_rhino</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.line_to_rhino_curve.html">line_to_rhino_curve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.mesh_to_compas.html">mesh_to_compas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.mesh_to_rhino.html">mesh_to_rhino</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.plane_to_compas.html">plane_to_compas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.plane_to_compas_frame.html">plane_to_compas_frame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.plane_to_rhino.html">plane_to_rhino</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.point_to_compas.html">point_to_compas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.point_to_rhino.html">point_to_rhino</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.polygon_to_compas.html">polygon_to_compas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.polygon_to_rhino.html">polygon_to_rhino</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.polyhedron_to_rhino.html">polyhedron_to_rhino</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.polyline_to_compas.html">polyline_to_compas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.polyline_to_rhino.html">polyline_to_rhino</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.polyline_to_rhino_curve.html">polyline_to_rhino_curve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.sphere_to_compas.html">sphere_to_compas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.sphere_to_rhino.html">sphere_to_rhino</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.surface_to_compas.html">surface_to_compas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.surface_to_compas_mesh.html">surface_to_compas_mesh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.surface_to_rhino.html">surface_to_rhino</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.torus_to_rhino.html">torus_to_rhino</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.torus_to_rhino_brep.html">torus_to_rhino_brep</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.transformation_matrix_to_rhino.html">transformation_matrix_to_rhino</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.transformation_to_rhino.html">transformation_to_rhino</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.vector_to_compas.html">vector_to_compas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.vector_to_rhino.html">vector_to_rhino</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.conversions.vertices_and_faces_to_rhino.html">vertices_and_faces_to_rhino</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../compas_rhino.geometry.html">compas_rhino.geometry</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-17"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.html">RhinoBrep</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.geometry.RhinoBrepEdge.html">RhinoBrepEdge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.geometry.RhinoBrepFace.html">RhinoBrepFace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.geometry.RhinoBrepLoop.html">RhinoBrepLoop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.geometry.RhinoBrepTrim.html">RhinoBrepTrim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.geometry.RhinoBrepVertex.html">RhinoBrepVertex</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsCurve.html">RhinoNurbsCurve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.geometry.RhinoNurbsSurface.html">RhinoNurbsSurface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.geometry.boolean_difference_mesh_mesh.html">boolean_difference_mesh_mesh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.geometry.boolean_intersection_mesh_mesh.html">boolean_intersection_mesh_mesh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.geometry.boolean_union_mesh_mesh.html">boolean_union_mesh_mesh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.geometry.trimesh_gaussian_curvature.html">trimesh_gaussian_curvature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.geometry.trimesh_mean_curvature.html">trimesh_mean_curvature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.geometry.trimesh_principal_curvature.html">trimesh_principal_curvature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.geometry.trimesh_slice.html">trimesh_slice</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../compas_rhino.scene.html">compas_rhino.scene</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-18"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.scene.RhinoBoxObject.html">RhinoBoxObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.scene.RhinoBrepObject.html">RhinoBrepObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.scene.RhinoCapsuleObject.html">RhinoCapsuleObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.scene.RhinoCircleObject.html">RhinoCircleObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.scene.RhinoConeObject.html">RhinoConeObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.scene.RhinoCurveObject.html">RhinoCurveObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.scene.RhinoCylinderObject.html">RhinoCylinderObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.scene.RhinoEllipseObject.html">RhinoEllipseObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.scene.RhinoFrameObject.html">RhinoFrameObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.scene.RhinoLineObject.html">RhinoLineObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.scene.RhinoMeshObject.html">RhinoMeshObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.scene.RhinoGraphObject.html">RhinoGraphObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.scene.RhinoPlaneObject.html">RhinoPlaneObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.scene.RhinoPointObject.html">RhinoPointObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.scene.RhinoPolygonObject.html">RhinoPolygonObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.scene.RhinoPolyhedronObject.html">RhinoPolyhedronObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.scene.RhinoPolylineObject.html">RhinoPolylineObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.scene.RhinoSceneObject.html">RhinoSceneObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.scene.RhinoSphereObject.html">RhinoSphereObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.scene.RhinoSurfaceObject.html">RhinoSurfaceObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.scene.RhinoTorusObject.html">RhinoTorusObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.scene.RhinoVectorObject.html">RhinoVectorObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compas_rhino.scene.RhinoVolMeshObject.html">RhinoVolMeshObject</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">API Reference</a></li>
+    
+    
+    <li class="breadcrumb-item"><i class="fa-solid fa-ellipsis"></i></li>
+    
+    
+    <li class="breadcrumb-item"><a href="compas.geometry.Point.html" class="nav-link">Point</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Point.sha256</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="point-sha256">
+<h1>Point.sha256</h1>
+<dl class="py method">
+<dt class="sig sig-object py" id="compas.geometry.Point.sha256">
+<span class="sig-prename descclassname"><span class="pre">Point.</span></span><span class="sig-name descname"><span class="pre">sha256</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">as_string</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/87a75d4/src/compas/data/data.py#L301"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>as_string</strong><span class="classifier">bool, optional</span></dt><dd><p>If True, return the digest in hexadecimal format rather than as bytes.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>bytes | str</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">compas.datastructures</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mesh</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;faces.obj&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v1</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">sha256</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v2</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">sha256</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_attribute</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_sample</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v3</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">sha256</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v1</span> <span class="o">==</span> <span class="n">v2</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v2</span> <span class="o">==</span> <span class="n">v3</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compas.geometry.Point.sha256"><code class="docutils literal notranslate"><span class="pre">Point.sha256()</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright COMPAS Association.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
