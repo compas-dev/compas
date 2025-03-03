@@ -664,3 +664,13 @@ class RhinoBrep(Brep):
         if not resulting_breps:
             raise BrepFilletError("Fillet operation ended with no result")
         return RhinoBrep.from_native(resulting_breps[0])
+
+    def flip(self):
+        """Flip the orientation of all faces of the Brep.
+
+        Returns
+        -------
+        None
+
+        """
+        self._brep.Flip()

@@ -1080,6 +1080,16 @@ class Brep(Geometry):
         """
         raise NotImplementedError
 
+    def flip(self):
+        """Flip the orientation of all faces of the Brep.
+
+        Returns
+        -------
+        None
+
+        """
+        raise NotImplementedError
+
     def slice(self, plane):
         """Slice through the BRep with a plane.
 
