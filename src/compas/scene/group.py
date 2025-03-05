@@ -1,4 +1,5 @@
 from compas.data import Data
+
 from .sceneobject import SceneObject
 
 
