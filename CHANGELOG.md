@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Changed `SceneObject.worldtransformation` to the multiplication of all transformations from the scene object to the root of the scene tree.
+* Changed `SceneObject.frame` to read-only result of `Frame.from_transformation(SceneObject.worldtransformation)`, representing the local coordinate system of the scene object in world coordinates.
+
 ### Removed
 
 
