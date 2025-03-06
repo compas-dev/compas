@@ -23,6 +23,7 @@ if not compas.IPY:
     from compas.datastructures import Mesh
     from compas.datastructures import Graph
     from compas.datastructures import VolMesh
+    from compas.scene import Group
 
     @pytest.fixture
     def items():
@@ -45,6 +46,7 @@ if not compas.IPY:
         mesh = Mesh.from_polyhedron(8)
         graph = Graph.from_nodes_and_edges([(0, 0, 0), (0, -1.5, 0), (-1, 1, 0), (1, 1, 0)], [(0, 1), (0, 2), (0, 3)])
         volmesh = VolMesh.from_meshgrid(1, 1, 1, 2, 2, 2)
+        group = Group(name="My Group")
 
         return [
             box,
@@ -66,6 +68,7 @@ if not compas.IPY:
             mesh,
             graph,
             volmesh,
+            group,
         ]
 
     def assert_is_data_equal(obj1, obj2, path=""):
