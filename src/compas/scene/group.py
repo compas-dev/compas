@@ -1,5 +1,3 @@
-from compas.data import Data
-
 from .sceneobject import SceneObject
 
 
@@ -30,8 +28,14 @@ class Group(SceneObject):
     """
 
     def __new__(cls, *args, **kwargs):
+        # overwriting __new__ to revert to the default behavior of normal object, So an instance can be created directly without providing a registered item.
         return object.__new__(cls)
 
-    def __init__(self, **kwargs):
-        name = kwargs.pop("name", "Group")
-        super(Group, self).__init__(item=Data(name=name), **kwargs)
+    @property
+    def __data__(self):
+        # type: () -> dict
+        data = {
+            "settings": self.settings,
+            "children": [child.__data__ for child in self.children],
+        }
+        return data
