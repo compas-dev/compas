@@ -1126,7 +1126,7 @@ document.write(`
 <h1>Plane.is_parallel</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.geometry.Plane.is_parallel">
-<span class="sig-prename descclassname"><span class="pre">Plane.</span></span><span class="sig-name descname"><span class="pre">is_parallel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/333d0a8/src/compas/geometry/plane.py#L364"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Plane.</span></span><span class="sig-name descname"><span class="pre">is_parallel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/8fb5ecb/src/compas/geometry/plane.py#L364"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Verify if this plane is parallel to another plane.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1149,6 +1149,10 @@ Default is <code class="xref py py-attr docutils literal notranslate"><span clas
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plane1</span> <span class="o">=</span> <span class="n">Plane</span><span class="o">.</span><span class="n">worldXY</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plane2</span> <span class="o">=</span> <span class="n">Plane</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plane1</span><span class="o">.</span><span class="n">is_parallel</span><span class="p">(</span><span class="n">plane2</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plane1</span> <span class="o">=</span> <span class="n">Plane</span><span class="o">.</span><span class="n">worldXY</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plane2</span> <span class="o">=</span> <span class="n">Plane</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plane1</span><span class="o">.</span><span class="n">is_parallel</span><span class="p">(</span><span class="n">plane2</span><span class="p">)</span>
 <span class="go">True</span>
 </pre></div>
