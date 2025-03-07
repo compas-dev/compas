@@ -169,8 +169,9 @@ class SceneObject(TreeNode):
     @property
     def worldtransformation(self):
         # type: () -> compas.geometry.Transformation
+        # NOTE: Behaviour change from 2.11.0, there will no longer be the option of additional transformation in relation to the object's frame
         transformations = [self.transformation] if self.transformation else []
-        parent: SceneObject = self.parent
+        parent = self.parent
         while parent and not parent.is_root:
             if parent.transformation:
                 transformations.append(parent.transformation)
