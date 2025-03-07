@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `Group` to `compas.scene`.
+
 ### Changed
 
 * Changed `SceneObject.worldtransformation` to the multiplication of all transformations from the scene object to the root of the scene tree.

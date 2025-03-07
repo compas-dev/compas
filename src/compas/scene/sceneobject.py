@@ -100,7 +100,7 @@ class SceneObject(TreeNode):
         **kwargs  # type: dict
     ):  # fmt: skip
         # type: (...) -> None
-        if not isinstance(item, Data):
+        if item and not isinstance(item, Data):
             raise ValueError("The item assigned to this scene object should be a data object: {}".format(type(item)))
 
         name = name or item.name
