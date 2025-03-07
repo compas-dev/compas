@@ -54,12 +54,13 @@ class SceneObject(TreeNode):
         The node in the scene tree which represents the scene object.
     guids : list[object]
         The GUIDs of the items drawn in the visualization context.
-    frame : :class:`compas.geometry.Frame`
-        The frame of the local coordinate system of the scene object.
     transformation : :class:`compas.geometry.Transformation`
         The local transformation of the scene object in relation to its parent object.
     worldtransformation : :class:`compas.geometry.Transformation`
-        The transformation of the scene object in world coordinates.
+        The global transformation of the scene object in world coordinates, computed by multiplying all transformations from the scene object to the root of the scene tree.
+        (NOTE: Changed from 2.11.0, there will no longer be the option of additional transformation in relation to the object's frame)
+    frame : :class:`compas.geometry.Frame`
+        The frame of the local coordinate system of the scene object, derived from the `worldtransformation`.
     color : :class:`compas.colors.Color`
         The color of the object.
     contrastcolor : :class:`compas.colors.Color`, readon-only
@@ -169,7 +170,6 @@ class SceneObject(TreeNode):
     @property
     def worldtransformation(self):
         # type: () -> compas.geometry.Transformation
-        # NOTE: Behaviour change from 2.11.0, there will no longer be the option of additional transformation in relation to the object's frame
         transformations = [self.transformation] if self.transformation else []
         parent = self.parent
         while parent and not parent.is_root:
