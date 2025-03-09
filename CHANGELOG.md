@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Fixed call to `astar_shortest_path` in `Graph.shortest_path`.
+
 ### Removed
 
 
