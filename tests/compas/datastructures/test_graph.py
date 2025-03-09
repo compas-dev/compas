@@ -117,6 +117,38 @@ def test_graph_data2():
         assert Graph.validate_data(other.__data__)
 
 
+def test_shortest_path():
+    graph = Graph()
+    graph.add_edge(1, 2)
+    graph.add_edge(2, 3)
+    graph.add_edge(3, 4)
+    graph.add_edge(5, 6)
+
+    # Test shortest path from node 1 to node 4
+    path = graph.shortest_path(1, 4)
+    assert path == [1, 2, 3, 4]
+
+    # Test shortest path from node 1 to node 3
+    path = graph.shortest_path(1, 3)
+    assert path == [1, 2, 3]
+
+    # Test shortest path from node 2 to node 4
+    path = graph.shortest_path(2, 4)
+    assert path == [2, 3, 4]
+
+    # Test shortest path from node 4 to node 1
+    path = graph.shortest_path(4, 1)
+    assert path == [4, 3, 2, 1]
+
+    # Test shortest path from node 5 to node 6
+    path = graph.shortest_path(5, 6)
+    assert path == [5, 6]
+
+    # Test shortest path from node 3 to node 5 (should be None)
+    path = graph.shortest_path(3, 5)
+    assert path is None
+
+
 # ==============================================================================
 # Properties
 # ==============================================================================
