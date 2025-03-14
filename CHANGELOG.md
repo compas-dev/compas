@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Added `Group` to `compas.scene`.
+* Added implementation of `make_solid` to `compas_rhino.geometry.RhinoBrep`.
 
 ### Changed
 
