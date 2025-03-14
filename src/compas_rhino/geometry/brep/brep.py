@@ -684,9 +684,9 @@ class RhinoBrep(Brep):
         None
 
         """
-        if not self._brep.IsSolid:
-            capped_brep = self._brep.CapPlanarHoles(TOL.absolute)
-            if capped_brep:
-                self._brep = capped_brep
+        if not self.is_solid:
+            result = self._brep.CapPlanarHoles(TOL.absolute)
+            if result:
+                self._brep = result
             else:
                 raise BrepInvalidError("Failed to convert Brep to solid")
