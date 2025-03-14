@@ -923,6 +923,11 @@ class Brep(Geometry):
         -------
         None
 
+        Raises
+        ------
+        :class:`~compas.geometry.BrepInvalidError`
+            If the operation fails.
+
         """
         raise NotImplementedError
 
