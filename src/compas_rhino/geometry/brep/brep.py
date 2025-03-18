@@ -9,7 +9,6 @@ import compas_rhino.objects
 from compas.geometry import Brep
 from compas.geometry import BrepError
 from compas.geometry import BrepFilletError
-from compas.geometry import BrepInvalidError
 from compas.geometry import BrepTrimmingError
 from compas.geometry import Frame
 from compas.geometry import Plane
@@ -676,17 +675,27 @@ class RhinoBrep(Brep):
         """
         self._brep.Flip()
 
-    def make_solid(self):
-        """Convert the current shape to a solid if it is a shell.
+    def cap_planar_holes(self, tolerance=None):
+        """Cap all planar holes in the Brep.
+
+        Parameters
+        ----------
+        tolerance : float, optional
+            The precision to use for the operation. Defaults to `TOL.absolute`.
 
         Returns
         -------
         None
 
+        Raises
+        ------
+        BrepError
+            If the operation fails.
+
         """
-        if not self.is_solid:
-            result = self._brep.CapPlanarHoles(TOL.absolute)
-            if result:
-                self._brep = result
-            else:
-                raise BrepInvalidError("Failed to convert Brep to solid")
+        tolerance = tolerance or TOL.absolute
+        result = self._brep.CapPlanarHoles(tolerance)
+        if result:
+            self._brep = result
+        else:
+            raise BrepError("Failed to cap planar holes")
