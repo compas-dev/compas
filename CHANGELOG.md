@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Added `Group` to `compas.scene`.
+* Added `compas.geometry.Brep.cap_planar_holes`.
+* Added `compas_rhino.geometry.RhinoBrep.cap_planar_holes`.
 
 ### Changed
 

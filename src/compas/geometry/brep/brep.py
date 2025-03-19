@@ -1139,3 +1139,23 @@ class Brep(Geometry):
 
         """
         raise NotImplementedError
+
+    def cap_planar_holes(self, tolerance=None):
+        """Cap all planar holes in the Brep.
+
+        Parameters
+        ----------
+        tolerance : float, optional
+            The precision to use for the operation. Defaults to `TOL.absolute`.
+
+        Returns
+        -------
+        None
+
+        Raises
+        ------
+        BrepError
+            If the operation fails.
+
+        """
+        raise NotImplementedError
