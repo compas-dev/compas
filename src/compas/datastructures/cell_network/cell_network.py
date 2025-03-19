@@ -4080,8 +4080,7 @@ class CellNetwork(Datastructure):
 
         nbrs = []
         for key, mesh in meshes.items():
-            print(key)
-            print(mesh)
+            print(check_adjacent_meshes(first_mesh, mesh))
             if mesh != first_mesh and check_adjacent_meshes(first_mesh, mesh):
                 nbrs.append(key)
 
