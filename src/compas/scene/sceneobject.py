@@ -13,6 +13,7 @@ import compas.scene  # noqa: F401
 from compas.colors import Color
 from compas.data import Data
 from compas.datastructures import TreeNode
+from compas.geometry import Frame
 from compas.geometry import Transformation
 
 from .context import clear
@@ -36,10 +37,8 @@ class SceneObject(TreeNode):
         The opacity of the object.
     show : bool, optional
         Flag for showing or hiding the object. Default is ``True``.
-    frame : :class:`compas.geometry.Frame`, optional
-        The local frame of the scene object, in relation to its parent frame.
     transformation : :class:`compas.geometry.Transformation`, optional
-        The local transformation of the scene object in relation to its frame.
+        The local transformation of the scene object in relation to its parent object.
     context : str, optional
         The context in which the scene object is created.
     **kwargs : dict
@@ -55,12 +54,13 @@ class SceneObject(TreeNode):
         The node in the scene tree which represents the scene object.
     guids : list[object]
         The GUIDs of the items drawn in the visualization context.
-    frame : :class:`compas.geometry.Frame`
-        The local frame of the scene object, in relation to its parent frame.
     transformation : :class:`compas.geometry.Transformation`
-        The local transformation of the scene object in relation to its frame.
+        The local transformation of the scene object in relation to its parent object.
     worldtransformation : :class:`compas.geometry.Transformation`
-        The transformation of the scene object in world coordinates.
+        The global transformation of the scene object in world coordinates, computed by multiplying all transformations from the scene object to the root of the scene tree.
+        (NOTE: Changed from 2.11.0, there will no longer be the option of additional transformation in relation to the object's frame)
+    frame : :class:`compas.geometry.Frame`
+        The frame of the local coordinate system of the scene object, derived from the `worldtransformation`.
     color : :class:`compas.colors.Color`
         The color of the object.
     contrastcolor : :class:`compas.colors.Color`, readon-only
@@ -113,7 +113,6 @@ class SceneObject(TreeNode):
         self._item = item
         self._guids = []
         self._node = None
-        self._frame = frame
         self._transformation = transformation
         self._contrastcolor = None
         self.color = color or self.color
@@ -156,12 +155,7 @@ class SceneObject(TreeNode):
     @property
     def frame(self):
         # type: () -> compas.geometry.Frame | None
-        return self._frame
-
-    @frame.setter
-    def frame(self, frame):
-        # type: (compas.geometry.Frame) -> None
-        self._frame = frame
+        return Frame.from_transformation(self.worldtransformation)
 
     @property
     def transformation(self):
@@ -176,20 +170,16 @@ class SceneObject(TreeNode):
     @property
     def worldtransformation(self):
         # type: () -> compas.geometry.Transformation
-        frame_stack = [self.frame] if self.frame else []
+        transformations = [self.transformation] if self.transformation else []
         parent = self.parent
         while parent and not parent.is_root:
-            if parent.frame:
-                frame_stack.append(parent.frame)
+            if parent.transformation:
+                transformations.append(parent.transformation)
             parent = parent.parent
-        matrices = [Transformation.from_frame(f) for f in frame_stack]
-        if matrices:
-            worldtransformation = reduce(mul, matrices[::-1])
+        if transformations:
+            worldtransformation = reduce(mul, transformations[::-1])
         else:
             worldtransformation = Transformation()
-
-        if self.transformation:
-            worldtransformation *= self.transformation
 
         return worldtransformation
 
