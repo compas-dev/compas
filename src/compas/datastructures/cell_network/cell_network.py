@@ -4070,9 +4070,9 @@ class CellNetwork(Datastructure):
             return False
         
         meshes = {}
-        for cell in self.cells():
-            mesh = self.cell_to_mesh(cell)
-            meshes[cell] = mesh
+        for cell_ in self.cells():
+            mesh = self.cell_to_mesh(cell_)
+            meshes[cell_] = mesh
 
         print(meshes)
 
