@@ -4049,11 +4049,38 @@ class CellNetwork(Datastructure):
         --------
         :meth:`cell_face_neighbors`
         """
+
+        def check_adjacent_meshes(mesh1, mesh2) -> bool:
+            for face1 in mesh1.faces():
+                plane1 = mesh1.face_plane(face1)
+                
+                for face2 in mesh2.faces():
+                    plane2 = mesh2.face_plane(face2)
+                    
+                    if plane1.is_parallel(plane2):
+                        face1_vertices = mesh1.face_vertices(face1)
+                        random_point_of_a_first_plane = Point(*mesh1.vertex_coordinates(face1_vertices[0]))
+                        
+                        if plane2.contains_point(random_point_of_a_first_plane):
+                            mesh1_vertices_set = set(tuple(mesh1.vertex_coordinates(vertex)) for vertex in mesh1.vertices())
+                            mesh2_vertices_set = set(tuple(mesh2.vertex_coordinates(vertex)) for vertex in mesh2.vertices())
+                            
+                            if mesh1_vertices_set & mesh2_vertices_set:
+                                return True
+            return False
+        
+        meshes = {}
+        for cell in self.cells():
+            mesh = self.cell_to_mesh(cell)
+            meshes[cell] = mesh
+
+        first_mesh = meshes[cell]
+
         nbrs = []
-        for face in self.cell_faces(cell):
-            for nbr in self.face_cells(face):
-                if nbr != cell:
-                    nbrs.append(nbr)
+        for key, mesh in meshes.items():
+            if mesh != first_mesh and check_adjacent_meshes(first_mesh, mesh):
+                nbrs.append(key)
+
         return list(set(nbrs))
 
     def is_cell_on_boundary(self, cell):
