@@ -87,18 +87,21 @@ if not compas.IPY:
         assert sceneobj1.worldtransformation == sceneobj1.transformation
         assert sceneobj1.worldtransformation == Translation.from_vector([10.0, 0.0, 0.0])
         assert sceneobj1.frame == Frame([10.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0])
+        assert sceneobj1.frame.to_transformation() == Translation.from_vector([10.0, 0.0, 0.0])
 
         sceneobj2 = scene.add(Box(), parent=sceneobj1)
         sceneobj2.transformation = Translation.from_vector([10.0, 10.0, 0.0])
         assert sceneobj2.worldtransformation == sceneobj1.transformation * sceneobj2.transformation
         assert sceneobj2.worldtransformation == Translation.from_vector([20.0, 10.0, 0.0])
         assert sceneobj2.frame == Frame([20.0, 10.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0])
+        assert sceneobj2.frame.to_transformation() == Translation.from_vector([20.0, 10.0, 0.0])
 
         sceneobj3 = scene.add(Box(), parent=sceneobj2)
         sceneobj3.transformation = Translation.from_vector([10.0, 10.0, 10.0])
         assert sceneobj3.worldtransformation == sceneobj1.transformation * sceneobj2.transformation * sceneobj3.transformation
         assert sceneobj3.worldtransformation == Translation.from_vector([30.0, 20.0, 10.0])
         assert sceneobj3.frame == Frame([30.0, 20.0, 10.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0])
+        assert sceneobj3.frame.to_transformation() == Translation.from_vector([30.0, 20.0, 10.0])
 
     def test_scene_clear():
         scene = Scene()
