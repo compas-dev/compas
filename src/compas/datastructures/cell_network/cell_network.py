@@ -4050,7 +4050,7 @@ class CellNetwork(Datastructure):
         :meth:`cell_face_neighbors`
         """
 
-        def check_adjacent_meshes(mesh1, mesh2) -> bool:
+        def check_adjacent_meshes(mesh1: Mesh, mesh2: Mesh) -> bool:
             for face1 in mesh1.faces():
                 plane1 = mesh1.face_plane(face1)
                 
@@ -4074,10 +4074,14 @@ class CellNetwork(Datastructure):
             mesh = self.cell_to_mesh(cell)
             meshes[cell] = mesh
 
+        print(meshes)
+
         first_mesh = meshes[cell]
 
         nbrs = []
         for key, mesh in meshes.items():
+            print(key)
+            print(mesh)
             if mesh != first_mesh and check_adjacent_meshes(first_mesh, mesh):
                 nbrs.append(key)
 
