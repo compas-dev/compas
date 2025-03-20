@@ -37,6 +37,8 @@ from compas.geometry import volume_polyhedron
 from compas.itertools import pairwise
 from compas.tolerance import TOL
 
+from shapely.geometry import Polygon as ShapelyPolygon
+
 
 class CellNetwork(Datastructure):
     """Geometric implementation of a data structure for a collection of mixed topologic entities such as cells, faces, edges and nodes.
@@ -4060,13 +4062,13 @@ class CellNetwork(Datastructure):
                     if plane1.is_parallel(plane2):
                         face1_vertices = mesh1.face_vertices(face1)
                         random_point_of_a_first_plane = Point(*mesh1.vertex_coordinates(face1_vertices[0]))
-                        
+
                         if plane2.contains_point(random_point_of_a_first_plane):
                             mesh1_face_coordinates = [mesh1.vertex_coordinates(face) for face in mesh1.face_vertices(face1)]
-                            mesh1_polygon = Polygon(mesh1_face_coordinates)
+                            mesh1_polygon = ShapelyPolygon(mesh1_face_coordinates)
                     
                             mesh2_face_coordinates = [mesh2.vertex_coordinates(face) for face in mesh2.face_vertices(face2)]
-                            mesh2_polygon = Polygon(mesh2_face_coordinates)
+                            mesh2_polygon = ShapelyPolygon(mesh2_face_coordinates)
                     
                             if mesh1_polygon.intersects(mesh2_polygon):
                                 return True
