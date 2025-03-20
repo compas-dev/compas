@@ -4062,10 +4062,13 @@ class CellNetwork(Datastructure):
                         random_point_of_a_first_plane = Point(*mesh1.vertex_coordinates(face1_vertices[0]))
                         
                         if plane2.contains_point(random_point_of_a_first_plane):
-                            mesh1_vertices_set = set(tuple(mesh1.vertex_coordinates(vertex)) for vertex in mesh1.vertices())
-                            mesh2_vertices_set = set(tuple(mesh2.vertex_coordinates(vertex)) for vertex in mesh2.vertices())
-                            
-                            if mesh1_vertices_set & mesh2_vertices_set:
+                            mesh1_face_coordinates = [mesh1.vertex_coordinates(face) for face in mesh1.face_vertices(face1)]
+                            mesh1_polygon = Polygon(mesh1_face_coordinates)
+                    
+                            mesh2_face_coordinates = [mesh2.vertex_coordinates(face) for face in mesh2.face_vertices(face2)]
+                            mesh2_polygon = Polygon(mesh2_face_coordinates)
+                    
+                            if mesh1_polygon.intersects(mesh2_polygon):
                                 return True
             return False
         

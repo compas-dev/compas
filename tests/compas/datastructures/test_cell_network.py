@@ -83,3 +83,7 @@ def test_cell_network_boundary(example_cell_network):
     assert set(ds.faces_without_cell()) == {11}
     assert set(ds.edges_without_face()) == {(15, 13), (14, 12)}
     assert set(ds.nonmanifold_edges()) == {(6, 7), (4, 5), (5, 6), (7, 4)}
+
+def test_cell_neighbors(example_cell_network):
+    ds = example_cell_network
+    assert ds.cell_neighbors(cell=0) == [1]
