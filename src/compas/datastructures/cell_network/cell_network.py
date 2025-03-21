@@ -4052,25 +4052,22 @@ class CellNetwork(Datastructure):
         """
 
         def check_adjacent_meshes(mesh1: Mesh, mesh2: Mesh) -> bool:
+            mesh1_vertices = set()
+            mesh2_vertices = set()
+    
             for face1 in mesh1.faces():
-                # plane1 = mesh1.face_plane(face1)
+                mesh1_face_coordinates = set([tuple(mesh1.vertex_coordinates(face)) for face in mesh1.face_vertices(face1)])
                 
-                for face2 in mesh2.faces():
-                    # plane2 = mesh2.face_plane(face2)
-                    
-                    # if plane1.is_parallel(plane2):
-                    #     face1_vertices = mesh1.face_vertices(face1)
-                    #     random_point_of_a_first_plane = Point(*mesh1.vertex_coordinates(face1_vertices[0]))
+                mesh1_vertices = mesh1_vertices | mesh1_face_coordinates
+            
+            for face2 in mesh2.faces():
+                mesh2_face_coordinates = set([tuple(mesh2.vertex_coordinates(face)) for face in mesh2.face_vertices(face2)])
 
-                    #     if plane2.contains_point(random_point_of_a_first_plane):
-                    mesh1_face_coordinates = [mesh1.vertex_coordinates(face) for face in mesh1.face_vertices(face1)]
-                    mesh1_polygon = ShapelyPolygon(mesh1_face_coordinates)
-                    
-                    mesh2_face_coordinates = [mesh2.vertex_coordinates(face) for face in mesh2.face_vertices(face2)]
-                    mesh2_polygon = ShapelyPolygon(mesh2_face_coordinates)
-                    
-                    if mesh1_polygon.intersects(mesh2_polygon):
-                        return True
+                mesh2_vertices = mesh2_vertices | mesh2_face_coordinates
+
+            if len(mesh1_vertices & mesh2_vertices) > 2:
+                return True
+            
             return False
         
         meshes = {}
