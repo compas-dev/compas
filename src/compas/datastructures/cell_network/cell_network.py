@@ -729,7 +729,6 @@ class CellNetwork(Datastructure):
                 self._cell[ckey][u][v] = fkey
 
         return ckey
-
     # --------------------------------------------------------------------------
     # Modifiers
     # --------------------------------------------------------------------------
@@ -4054,24 +4053,24 @@ class CellNetwork(Datastructure):
 
         def check_adjacent_meshes(mesh1: Mesh, mesh2: Mesh) -> bool:
             for face1 in mesh1.faces():
-                plane1 = mesh1.face_plane(face1)
+                # plane1 = mesh1.face_plane(face1)
                 
                 for face2 in mesh2.faces():
-                    plane2 = mesh2.face_plane(face2)
+                    # plane2 = mesh2.face_plane(face2)
                     
-                    if plane1.is_parallel(plane2):
-                        face1_vertices = mesh1.face_vertices(face1)
-                        random_point_of_a_first_plane = Point(*mesh1.vertex_coordinates(face1_vertices[0]))
+                    # if plane1.is_parallel(plane2):
+                    #     face1_vertices = mesh1.face_vertices(face1)
+                    #     random_point_of_a_first_plane = Point(*mesh1.vertex_coordinates(face1_vertices[0]))
 
-                        if plane2.contains_point(random_point_of_a_first_plane):
-                            mesh1_face_coordinates = [mesh1.vertex_coordinates(face) for face in mesh1.face_vertices(face1)]
-                            mesh1_polygon = ShapelyPolygon(mesh1_face_coordinates)
+                    #     if plane2.contains_point(random_point_of_a_first_plane):
+                    mesh1_face_coordinates = [mesh1.vertex_coordinates(face) for face in mesh1.face_vertices(face1)]
+                    mesh1_polygon = ShapelyPolygon(mesh1_face_coordinates)
                     
-                            mesh2_face_coordinates = [mesh2.vertex_coordinates(face) for face in mesh2.face_vertices(face2)]
-                            mesh2_polygon = ShapelyPolygon(mesh2_face_coordinates)
+                    mesh2_face_coordinates = [mesh2.vertex_coordinates(face) for face in mesh2.face_vertices(face2)]
+                    mesh2_polygon = ShapelyPolygon(mesh2_face_coordinates)
                     
-                            if mesh1_polygon.intersects(mesh2_polygon):
-                                return True
+                    if mesh1_polygon.intersects(mesh2_polygon):
+                        return True
             return False
         
         meshes = {}
@@ -4079,13 +4078,10 @@ class CellNetwork(Datastructure):
             mesh = self.cell_to_mesh(cell_)
             meshes[cell_] = mesh
 
-        print(meshes)
-
         first_mesh = meshes[cell]
 
         nbrs = []
         for key, mesh in meshes.items():
-            print(check_adjacent_meshes(first_mesh, mesh))
             if mesh != first_mesh and check_adjacent_meshes(first_mesh, mesh):
                 nbrs.append(key)
 
