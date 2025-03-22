@@ -4059,7 +4059,7 @@ class CellNetwork(Datastructure):
                         nbrs.append(nbr)
         return nbrs
 
-    def cell_neighbors(self, cell):
+    def cell_neighbors(self, cell_ind):
         """Find the neighbors of a given cell based on common vertices.
 
         Parameters
@@ -4079,16 +4079,16 @@ class CellNetwork(Datastructure):
 
        
         cells_vertices = {}
-        for cell in self.cells():
+        for cell_ in self.cells():
             vertices_of_a_cell = []
-            for vertex in self.cell_vertices(cell):
+            for vertex in self.cell_vertices(cell_):
                 vertices_of_a_cell.append(tuple(self.vertex_coordinates(vertex)))
 
-            cells_vertices[cell] = set(vertices_of_a_cell)
+            cells_vertices[cell_] = set(vertices_of_a_cell)
 
         nbrs = []
         for key in cells_vertices.keys():
-            if key != cell and len(cells_vertices[cell] & cells_vertices[key]) > 2:
+            if key != cell_ind and len((cells_vertices[cell_ind] & cells_vertices[key])) > 2:
                 nbrs.append(key)
 
         return list(set(nbrs))
