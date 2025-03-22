@@ -37,8 +37,6 @@ from compas.geometry import volume_polyhedron
 from compas.itertools import pairwise
 from compas.tolerance import TOL
 
-from shapely.geometry import Polygon as ShapelyPolygon
-
 
 class CellNetwork(Datastructure):
     """Geometric implementation of a data structure for a collection of mixed topologic entities such as cells, faces, edges and nodes.
@@ -4089,7 +4087,7 @@ class CellNetwork(Datastructure):
             cells_vertices[cell] = set(vertices_of_a_cell)
 
         nbrs = []
-        for key in cells_vertices.values():
+        for key in cells_vertices.keys():
             if key != cell and len(cells_vertices[cell] & cells_vertices[key]) > 2:
                 nbrs.append(key)
 
