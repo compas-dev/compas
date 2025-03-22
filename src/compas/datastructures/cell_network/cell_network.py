@@ -4062,7 +4062,7 @@ class CellNetwork(Datastructure):
         return nbrs
 
     def cell_neighbors(self, cell):
-        """Find the neighbors of a given cell.
+        """Find the neighbors of a given cell based on common vertices.
 
         Parameters
         ----------
@@ -4079,35 +4079,18 @@ class CellNetwork(Datastructure):
         :meth:`cell_face_neighbors`
         """
 
-        def check_adjacent_meshes(mesh1: Mesh, mesh2: Mesh) -> bool:
-            mesh1_vertices = set()
-            mesh2_vertices = set()
-    
-            for face1 in mesh1.faces():
-                mesh1_face_coordinates = set([tuple(mesh1.vertex_coordinates(face)) for face in mesh1.face_vertices(face1)])
-                
-                mesh1_vertices = mesh1_vertices | mesh1_face_coordinates
-            
-            for face2 in mesh2.faces():
-                mesh2_face_coordinates = set([tuple(mesh2.vertex_coordinates(face)) for face in mesh2.face_vertices(face2)])
+       
+        cells_vertices = {}
+        for cell in self.cells():
+            vertices_of_a_cell = []
+            for vertex in self.cell_vertices(cell):
+                vertices_of_a_cell.append(tuple(self.vertex_coordinates(vertex)))
 
-                mesh2_vertices = mesh2_vertices | mesh2_face_coordinates
-
-            if len(mesh1_vertices & mesh2_vertices) > 2:
-                return True
-            
-            return False
-        
-        meshes = {}
-        for cell_ in self.cells():
-            mesh = self.cell_to_mesh(cell_)
-            meshes[cell_] = mesh
-
-        first_mesh = meshes[cell]
+            cells_vertices[cell] = set(vertices_of_a_cell)
 
         nbrs = []
-        for key, mesh in meshes.items():
-            if mesh != first_mesh and check_adjacent_meshes(first_mesh, mesh):
+        for key in cells_vertices.values():
+            if key != cell and len(cells_vertices[cell] & cells_vertices[key]) > 2:
                 nbrs.append(key)
 
         return list(set(nbrs))
