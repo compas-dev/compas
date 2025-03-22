@@ -729,6 +729,34 @@ class CellNetwork(Datastructure):
                 self._cell[ckey][u][v] = fkey
 
         return ckey
+
+
+    def add_mesh_to_cell_network(self, input_mesh: Mesh):
+        if input_mesh.is_manifold():
+            # mesh.unify_cycles()
+            unpacked_mesh = input_mesh.to_vertices_and_faces()
+        
+            if self._max_vertex == -1:
+                vertex_diff = 0
+            else:
+                vertex_diff = self._max_vertex + 1
+    
+            for num, vertex in enumerate(unpacked_mesh[0]):
+                self.add_vertex(attr_dict = {"x": vertex[0], "y": vertex[1], "z":vertex[2]})
+    
+                faces_for_cell_lst = []
+    
+    
+            for num, face in enumerate(unpacked_mesh[1]):
+                new_face = [vertex + vertex_diff for vertex in face]
+                self.add_face(new_face)
+                faces_for_cell_lst.append(self._max_face)
+
+            self.add_cell(faces_for_cell_lst)
+
+        else:
+            raise ValueError("Mesh is not manifold to be added as a cell")
+    
     # --------------------------------------------------------------------------
     # Modifiers
     # --------------------------------------------------------------------------
