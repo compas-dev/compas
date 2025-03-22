@@ -51,6 +51,10 @@ def example_cell_network():
     [network.add_cell(fkeys) for fkeys in cells]
     return network
 
+@pytest.fixture
+def HVAC_cell_network():
+    network = CellNetwork.from_json("fixtures/cell_network_HVAC.json")
+    return network
 
 def test_cell_network_data(example_cell_network):
     ds = example_cell_network
@@ -84,6 +88,9 @@ def test_cell_network_boundary(example_cell_network):
     assert set(ds.edges_without_face()) == {(15, 13), (14, 12)}
     assert set(ds.nonmanifold_edges()) == {(6, 7), (4, 5), (5, 6), (7, 4)}
 
-def test_cell_neighbors(example_cell_network):
-    ds = example_cell_network
-    assert ds.cell_neighbors(cell=0) == [1]
+def test_cell_neighbors(HVAC_cell_network):
+    ds = HVAC_cell_network
+    assert list(ds.cells()) == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+
+    # print(ds.cell_neighbors(0))
+    assert ds.cell_neighbors(cell=0) == [11, 6]
