@@ -4077,7 +4077,6 @@ class CellNetwork(Datastructure):
         :meth:`cell_face_neighbors`
         """
 
-       
         cells_vertices = {}
         for cell_ in self.cells():
             vertices_of_a_cell = []

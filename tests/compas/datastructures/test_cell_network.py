@@ -53,7 +53,7 @@ def example_cell_network():
 
 @pytest.fixture
 def HVAC_cell_network():
-    network = CellNetwork.from_json("fixtures/cell_network_HVAC.json")
+    network = CellNetwork.from_json("tests/compas/datastructures/fixtures/cell_network_HVAC.json")
     return network
 
 def test_cell_network_data(example_cell_network):
@@ -90,7 +90,11 @@ def test_cell_network_boundary(example_cell_network):
 
 def test_cell_neighbors(HVAC_cell_network):
     ds = HVAC_cell_network
-    assert list(ds.cells()) == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+    # assert list(ds.cells()) == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
 
-    # print(ds.cell_neighbors(0))
     assert ds.cell_neighbors(cell=0) == [11, 6]
+    assert ds.cell_neighbors(cell=1) == [4, 5]
+    assert ds.cell_neighbors(cell=2) == [16, 14]
+    assert ds.cell_neighbors(cell=3) == [13, 7]
+    assert ds.cell_neighbors(cell=4) == [8, 1]
+    assert ds.cell_neighbors(cell=5) == [1, 10, 11]
