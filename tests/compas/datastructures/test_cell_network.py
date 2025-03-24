@@ -88,7 +88,18 @@ def test_cell_network_boundary(example_cell_network):
     assert set(ds.edges_without_face()) == {(15, 13), (14, 12)}
     assert set(ds.nonmanifold_edges()) == {(6, 7), (4, 5), (5, 6), (7, 4)}
 
-# def test_cell_neighbors(HVAC_cell_network):
+
+def test_cell_neighbors_1(example_cell_network):
+    ds = example_cell_network
+    assert ds.cell_neighbors(0) == [1]
+
+
+def test_add_mesh_function():
+    ds = CellNetwork()
+    ds.add_mesh()
+    pass
+
+# def test_cell_neighbors_2(HVAC_cell_network):
 #     ds = HVAC_cell_network
 #     # assert list(ds.cells()) == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
 
