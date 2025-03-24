@@ -263,6 +263,7 @@
       "angle_points_xy",
       "angle_vectors",
       "angle_vectors_signed",
+      "angle_vectors_projected",
       "angle_vectors_xy",
       "angles_points",
       "angles_points_xy",

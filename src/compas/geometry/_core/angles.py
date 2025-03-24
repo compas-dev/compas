@@ -147,7 +147,7 @@ def angle_vectors_projected(u, v, normal, deg=False, tol=None):
     Examples
     --------
     >>> normal = [0.0, 0.0, 1.0]
-    >>> angle_vectors_signed([0.0, 1.0, 0.0], [1.0, 0.0, 0.0], normal)
+    >>> angle_vectors_projected([0.0, 1.0, -1.0], [1.0, 0.0, 1.0], normal)
     -1.57079
 
     """
