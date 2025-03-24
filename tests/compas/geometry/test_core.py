@@ -147,6 +147,8 @@ def test_angle_vectors_signed(u, v, normal, result):
 )
 def test_angle_vectors_projected(u, v, normal, result):
     assert TOL.is_close(angle_vectors_projected(u, v, normal), result)
+
+
 # ==============================================================================
 # average
 # ==============================================================================
