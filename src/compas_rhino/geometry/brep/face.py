@@ -40,6 +40,8 @@ class RhinoBrepFace(BrepFace):
         The list of loops which comprise the holes of this brep, if any.
     is_plane : float, read-only
         True if the geometry of this face is a plane, False otherwise.
+    is_reversed : bool, read-only
+        True if the orientation of this face is reversed, False otherwise.
     native_face : :class:`Rhino.Geometry.BrepFace`
         The underlying BrepFace object.
 
@@ -151,6 +153,10 @@ class RhinoBrepFace(BrepFace):
     @property
     def is_torus(self):
         return self._face.UnderlyingSurface().IsTorus()
+
+    @property
+    def is_reversed(self):
+        return self._face.OrientationIsReversed
 
     @property
     def native_face(self):
@@ -283,3 +289,24 @@ class RhinoBrepFace(BrepFace):
 
         """
         return Brep.from_native(self._face.ToBrep())
+
+    def frame_at(self, u, v):
+        """Returns the frame at the given uv parameters.
+
+        Parameters
+        ----------
+        u : float
+            The u parameter.
+        v : float
+            The v parameter.
+
+        Returns
+        -------
+        :class:`compas.geometry.Frame`
+            The frame at the given uv parameters.
+
+        """
+        success, rhino_plane = self._face.FrameAt(u, v)
+        if not success:
+            raise ValueError("Failed to get frame at uv parameters: ({},{}).".format(u, v))
+        return plane_to_compas_frame(rhino_plane)

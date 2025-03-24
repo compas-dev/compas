@@ -1,0 +1,35 @@
+{
+    "name": "To JSON",
+    "nickname": "To JSON",
+    "category": "COMPAS",
+    "subcategory": "Data",
+    "description": "Serializes COMPAS objects to JSON.",
+    "exposure": 2,
+
+    "ghpython": {
+        "isAdvancedMode": true,
+        "iconDisplay": 2,
+        "inputParameters": [
+            {
+                "name": "data",
+                "description": "COMPAS data objects to serialize."
+            },
+            {
+                "name": "filepath",
+                "description": "File path where to store the JSON file. If empty, it will not store to disk but instead return the JSON string.",
+                "typeHintID": "str"
+            },
+            {
+                "name": "pretty",
+                "description": "If True, JSON data will be formatted with indentation and key sorting.",
+                "typeHintID": "bool"
+            }
+        ],
+        "outputParameters": [
+            {
+                "name": "json",
+                "description": "JSON file path or JSON string."
+            }
+        ]
+    }
+}

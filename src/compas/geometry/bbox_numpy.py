@@ -250,11 +250,10 @@ def minimum_area_rectangle_xy(points, return_size=False):
     """
     boxes = []
 
-    n = len(points)
     points = points[:, :2]
     hull = ConvexHull(points)
     xy = points[hull.vertices, :2]
-    mean = sum(xy, axis=0) / n
+    hull_centroid = sum(xy, axis=0) / len(xy)
 
     for simplex in hull.simplices:
         p0 = points[simplex[0]]
@@ -288,7 +287,7 @@ def minimum_area_rectangle_xy(points, return_size=False):
         a = w * h
 
         # other box corners
-        if dot(t, mean - p0) < 0:
+        if dot(t, hull_centroid - p0) < 0:
             b3 = b0 - h * tu
             b2 = b1 - h * tu
         else:

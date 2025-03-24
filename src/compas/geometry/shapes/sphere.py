@@ -176,7 +176,7 @@ class Sphere(Shape):
     # Discretisation
     # ==========================================================================
 
-    def compute_vertices(self):  # type: () -> list[float]
+    def compute_vertices(self):  # type: () -> list[list[float]]
         """Compute the vertices of the discrete representation of the sphere.
 
         Returns

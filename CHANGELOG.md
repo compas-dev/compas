@@ -9,7 +9,71 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `Group` to `compas.scene`.
+* Added `compas.geometry.Brep.cap_planar_holes`.
+* Added `compas_rhino.geometry.RhinoBrep.cap_planar_holes`.
+
 ### Changed
+
+* Changed `SceneObject.frame` to read-only result of `Frame.from_transformation(SceneObject.worldtransformation)`, representing the local coordinate system of the scene object in world coordinates.
+* Changed `SceneObject.worldtransformation` to the multiplication of all transformations from the scene object to the root of the scene tree, there will no longer be an additional transformation in relation to the object's frame.
+* Fixed call to `astar_shortest_path` in `Graph.shortest_path`.
+
+### Removed
+
+
+## [2.10.0] 2025-03-03
+
+### Added
+
+* Added `flip` to `compas.geometry.Brep`.
+* Added implementation of `flip` to `compas_rhino.geometry.RhinoBrep`.
+
+### Changed
+
+* Fixed unexpected behavior for method `Plane.is_parallel` for opposite normals.
+
+### Removed
+
+
+## [2.9.1] 2025-02-06
+
+### Added
+
+* Added method `frame_at` to `compas.geometry.BrepFace`.
+* Added method `frame_at` to `compas_rhino.geometry.RhinoBrepFace`.
+* Added property `is_reversed` to `compas.geometry.BrepFace`.
+* Added property `is_reversed` to `compas_rhino.geometry.RhinoBrepFace`.
+
+### Changed
+
+* Fixed publish to YAK via CI workflow.
+* Added selector for `test` and `prod` to CI workflow.
+* Fixed `AttributeError` in `compas.data.DataEncoder.default` due to `np.float_` no longer being available in `numpy>=2`.
+
+### Removed
+
+
+## [2.9.0] 2025-02-04
+
+### Added
+
+* Added `DevTools` with support for automatic reloading of local python modules.
+* Added implementation for `compas_rhino.geometry.RhinoBrep.from_step`.
+* Added CPython implementations of GH components for Rhino8.
+* Added import to new `yakerize` task from `compas_invocations2`.
+* Added import to new `publish_yak` task from `compas_invocations2`.
+
+### Changed
+
+* Moved `unload_modules` to be a static method of `DevTools`. The `unload_modules` function is an alias to this. 
+* Fixed unexpected behavior in `compas.geometry.bbox_numpy.minimum_area_rectangle_xy`.
+* Changed `requirements.txt` to allow `numpy>=2`.
+* Fixed bug in `compas.geometry.Polygon.points` setter by removing duplicate points if they exist.
+* Fixed bug in `compas.geometry.Polygon.plane` by aligning the normal of the bestfit plane with the approximate normal of the polygon faces.
+* Changed the order of face vertices in `compas.geometry.Surface.to_vertices_and_faces` to a counter clockwise cycling direction and outward facing normals for curved surfaces.
+* Deprecated the `-v8.0` flag in `compas_rhino.install`. Install to Rhino8 by following: https://compas.dev/compas/latest/userguide/cad.rhino8.html.
+* Fixed `Info` Grasshopper component for cpython to handle non-bootstrapped environments.
 
 ### Removed
 
