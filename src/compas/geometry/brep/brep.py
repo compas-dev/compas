@@ -358,7 +358,7 @@ class Brep(Geometry):
 
     @classmethod
     def from_curves(cls, curves):
-        """Construct a Brep from a set of curves.
+        """Construct a Brep from a set of closed, planar curves.
 
         Parameters
         ----------
@@ -366,7 +366,7 @@ class Brep(Geometry):
 
         Returns
         -------
-        :class:`compas.geometry.Brep`
+        list [:class:`compas.geometry.Brep`]
 
         """
         return from_curves(curves)
