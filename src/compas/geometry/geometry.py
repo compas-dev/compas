@@ -4,7 +4,7 @@ from __future__ import print_function
 
 try:
     from typing import TypeVar  # noqa: F401
-except ImportError:
+except (ImportError, AttributeError):
     pass
 else:
     G = TypeVar("G", bound="Geometry")

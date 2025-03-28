@@ -6,7 +6,7 @@ try:
     from typing import TypeVar  # noqa: F401
 
     D = TypeVar("D", bound="Data")
-except ImportError:
+except (ImportError, AttributeError):
     pass
 
 import hashlib
