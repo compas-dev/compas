@@ -1,6 +1,7 @@
 import compas.data  # noqa: F401
 import compas.datastructures  # noqa: F401
 import compas.geometry  # noqa: F401
+from compas.datastructures import Datastructure
 from compas.datastructures import Tree
 from compas.datastructures import TreeNode
 
@@ -13,7 +14,7 @@ from .sceneobject import SceneObject
 from .sceneobject import SceneObjectFactory
 
 
-class Scene(Tree):
+class Scene(Datastructure):
     """A scene is a container for hierarchical scene objects which are to be visualised in a given context.
 
     Parameters
@@ -44,49 +45,42 @@ class Scene(Tree):
     @property
     def __data__(self):
         # type: () -> dict
-        items = {str(object.item.guid): object.item for object in self.objects if object.item is not None}
         return {
             "name": self.name,
-            "root": self.root.__data__,  # type: ignore
-            "items": list(items.values()),
+            "items": list(self.items.values()),
+            "objects": list(self.objects.values()),
+            "tree": self.tree,
         }
-
-    @classmethod
-    def __from_data__(cls, data):
-        # type: (dict) -> Scene
-        scene = cls(data["name"])
-        items = {str(item.guid): item for item in data["items"]}
-
-        def add(node, parent, items):
-            for child_node in node.get("children", []):
-                settings = child_node["settings"]
-                if "item" in child_node:
-                    guid = child_node["item"]
-                    sceneobject = parent.add(items[guid], **settings)
-                else:
-                    sceneobject = parent.add(Group(**settings))
-                add(child_node, sceneobject, items)
-
-        add(data["root"], scene, items)
-
-        return scene
 
     def __init__(self, name="Scene", context=None):
         # type: (str, str | None) -> None
         super(Scene, self).__init__(name=name)
-        super(Scene, self).add(TreeNode(name="ROOT"))
+
+        # TODO: deal with context
         self.context = context or detect_current_context()
 
-    @property
-    def objects(self):
-        # type: () -> list[SceneObject]
-        return [node for node in self.nodes if not node.is_root]  # type: ignore
+        self.tree = Tree()
+        self.tree.add(TreeNode(name="ROOT"))
+        self.items = {}
+        self.objects = {}
+
+    def __repr__(self):
+        # type: () -> str
+
+        def node_repr(node):
+            if node.name == "ROOT":
+                return self.name
+
+            sceneobject = self.objects[node.name]
+            return str(sceneobject)
+
+        return self.tree.get_hierarchy_string(node_repr=node_repr)
 
     @property
     def context_objects(self):
         # type: () -> list
         guids = []
-        for obj in self.objects:
+        for obj in self.objects.values():
             guids += obj.guids
         return guids
 
@@ -109,20 +103,22 @@ class Scene(Tree):
             The scene object associated with the item.
         """
 
-        parent = parent or self.root
+        # Create a corresponding new scene object
+        sceneobject = SceneObjectFactory.create(item=item, context=self.context, scene=self, **kwargs)
 
-        if isinstance(item, SceneObject):
-            sceneobject = item
+        # Add the scene object and item to the data store
+        self.objects[str(sceneobject.guid)] = sceneobject
+        self.items[str(item.guid)] = item
+
+        # Add the scene object to the hierarchical tree
+        if parent is None:
+            parent_node = self.tree.root
         else:
-            if "context" in kwargs:
-                if kwargs["context"] != self.context:
-                    raise Exception("Object context should be the same as scene context: {} != {}".format(kwargs["context"], self.context))
-                del kwargs["context"]  # otherwist the SceneObject receives "context" twice, which results in an error
-            
-            # Use the factory to create the scene object
-            sceneobject = SceneObjectFactory.create(item=item, context=self.context, **kwargs)
-            
-        super(Scene, self).add(sceneobject, parent=parent)
+            print(parent.guid)
+            parent_node = self.tree.get_node_by_name(parent.guid)
+
+        self.tree.add(TreeNode(name=str(sceneobject.guid)), parent=parent_node)
+
         return sceneobject
 
     def clear_context(self, guids=None):

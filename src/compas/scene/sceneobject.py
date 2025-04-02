@@ -24,27 +24,27 @@ from .descriptors.protocol import DescriptorProtocol
 
 class SceneObjectFactory:
     """Factory class for creating appropriate SceneObject instances based on input item type.
-    
+
     This factory encapsulates the logic for selecting the right SceneObject subclass
     for a given data item, making the creation process more explicit and easier to understand.
     """
-    
+
     @staticmethod
-    def create(item=None, **kwargs):
+    def create(item=None, scene=None, **kwargs):
         """Create appropriate SceneObject instance based on item type.
-        
+
         Parameters
         ----------
         item : :class:`compas.data.Data`
             The data item to create a scene object for.
         **kwargs : dict
             Additional keyword arguments to pass to the SceneObject constructor.
-            
+
         Returns
         -------
         :class:`compas.scene.SceneObject`
             A SceneObject instance of the appropriate subclass for the given item.
-            
+
         Raises
         ------
         ValueError
@@ -55,13 +55,16 @@ class SceneObjectFactory:
         if item is None:
             raise ValueError("Cannot create a scene object for None. Please ensure you pass an instance of a supported class.")
 
+        if scene is None:
+            raise ValueError("Cannot create a scene object without a scene.")
+
         sceneobject_cls = get_sceneobject_cls(item, **kwargs)
-        
+
         # Create and return an instance of the appropriate scene object class
-        return sceneobject_cls(item=item, **kwargs)
+        return sceneobject_cls(item=item, scene=scene, **kwargs)
 
 
-class SceneObject(TreeNode):
+class SceneObject(Data):
     """Base class for all scene objects.
 
     Parameters
@@ -130,9 +133,9 @@ class SceneObject(TreeNode):
         color=None,  # type: compas.colors.Color | None
         opacity=1.0,  # type: float
         show=True,  # type: bool
-        frame=None,  # type: compas.geometry.Frame | None
         transformation=None,  # type: compas.geometry.Transformation | None
         context=None,  # type: str | None
+        scene=None,  # type: compas.scene.Scene | None
         **kwargs  # type: dict
     ):  # fmt: skip
         # type: (...) -> None
@@ -145,7 +148,8 @@ class SceneObject(TreeNode):
         # because it has no access to the tree and/or the scene before it is added
         # which means that adding child objects will be added in context "None"
         self.context = context
-        self._item = item
+        self._scene = scene
+        self._item = item.guid
         self._guids = []
         self._node = None
         self._transformation = transformation
@@ -158,15 +162,13 @@ class SceneObject(TreeNode):
     def __data__(self):
         # type: () -> dict
         return {
-            "item": str(self.item.guid),
-            "settings": self.settings,
-            "children": [child.__data__ for child in self.children],
+            "item": str(self._item),
+            "name": self.name,
+            "color": self.color,
+            "opacity": self.opacity,
+            "show": self.show,
+            "transformation": self.transformation,
         }
-
-    @classmethod
-    def __from_data__(cls, data):
-        # type: (dict) -> None
-        raise TypeError("Serialisation outside Scene not allowed.")
 
     def __repr__(self):
         # type: () -> str
@@ -175,12 +177,17 @@ class SceneObject(TreeNode):
     @property
     def scene(self):
         # type: () -> compas.scene.Scene | None
-        return self.tree
+        return self._scene
 
     @property
     def item(self):
         # type: () -> compas.data.Data
-        return self._item
+        return self.scene.items[self._item]
+
+    @property
+    def node(self):
+        # type: () -> compas.datastructures.TreeNode
+        return self.scene.tree.get_object_node(self.guid)
 
     @property
     def guids(self):
@@ -233,58 +240,6 @@ class SceneObject(TreeNode):
     def contrastcolor(self, color):
         # type: (compas.colors.Color) -> None
         self._contrastcolor = Color.coerce(color)
-
-    @property
-    def settings(self):
-        # type: () -> dict
-        settings = {
-            "name": self.name,
-            "color": self.color,
-            "opacity": self.opacity,
-            "show": self.show,
-        }
-
-        if self.frame:
-            settings["frame"] = self.frame
-        if self.transformation:
-            settings["transformation"] = self.transformation
-
-        return settings
-
-    def add(self, item, **kwargs):
-        # type: (compas.data.Data, dict) -> SceneObject
-        """Add a child item to the scene object.
-
-        Parameters
-        ----------
-        item : :class:`compas.data.Data`
-            The item to add.
-        **kwargs : dict
-            Additional keyword arguments to create the scene object for the item.
-
-        Returns
-        -------
-        :class:`compas.scene.SceneObject`
-            The scene object associated with the added item.
-
-        Raises
-        ------
-        ValueError
-            If the scene object does not have an associated scene node.
-        """
-        if isinstance(item, SceneObject):
-            sceneobject = item
-        else:
-            if "context" in kwargs:
-                if kwargs["context"] != self.context:
-                    raise Exception("Child context should be the same as parent context: {} != {}".format(kwargs["context"], self.context))
-                del kwargs["context"]  # otherwist the SceneObject receives "context" twice, which results in an error
-            
-            # Use the factory to create the scene object
-            sceneobject = SceneObjectFactory.create(item=item, context=self.context, **kwargs)
-
-        super(SceneObject, self).add(sceneobject)
-        return sceneobject
 
     def draw(self):
         """The main drawing method."""
