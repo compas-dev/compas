@@ -412,7 +412,7 @@ class Tree(Datastructure):
 
         """
         for node in self.nodes:
-            if node.name == name:
+            if str(node.name) == str(name):
                 return node
 
     def get_nodes_by_name(self, name):
@@ -436,7 +436,7 @@ class Tree(Datastructure):
                 nodes.append(node)
         return nodes
 
-    def get_hierarchy_string(self, max_depth=None):
+    def get_hierarchy_string(self, max_depth=None, node_repr=None):
         """
         Return string representation for the spatial hierarchy of the tree.
 
@@ -445,6 +445,10 @@ class Tree(Datastructure):
         max_depth : int, optional
             The maximum depth of the hierarchy to print.
             Default is ``None``, in which case the entire hierarchy is printed.
+        node_repr : callable, optional
+            A callable to represent the node string.
+            Default is ``None``, in which case the node.__repr__() is used.
+
 
         Returns
         -------
@@ -455,17 +459,22 @@ class Tree(Datastructure):
 
         hierarchy = []
 
-        def traverse(node, hierarchy, prefix="", last=True, depth=0):
+        def traverse(node, hierarchy, prefix="", last=True, depth=0, node_repr=None):
             if max_depth is not None and depth > max_depth:
                 return
 
+            if node_repr is None:
+                node_string = node.__repr__()
+            else:
+                node_string = node_repr(node)
+
             connector = "└── " if last else "├── "
-            hierarchy.append("{}{}{}".format(prefix, connector, node))
+            hierarchy.append("{}{}{}".format(prefix, connector, node_string))
             prefix += "    " if last else "│   "
             for i, child in enumerate(node.children):
-                traverse(child, hierarchy, prefix, i == len(node.children) - 1, depth + 1)
+                traverse(child, hierarchy, prefix, i == len(node.children) - 1, depth + 1, node_repr)
 
-        traverse(self.root, hierarchy)
+        traverse(self.root, hierarchy, node_repr=node_repr)
 
         return "\n".join(hierarchy)
 
