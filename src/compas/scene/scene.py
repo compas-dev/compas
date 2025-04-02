@@ -10,6 +10,7 @@ from .context import clear
 from .context import detect_current_context
 from .group import Group
 from .sceneobject import SceneObject
+from .sceneobject import SceneObjectFactory
 
 
 class Scene(Tree):
@@ -117,7 +118,10 @@ class Scene(Tree):
                 if kwargs["context"] != self.context:
                     raise Exception("Object context should be the same as scene context: {} != {}".format(kwargs["context"], self.context))
                 del kwargs["context"]  # otherwist the SceneObject receives "context" twice, which results in an error
-            sceneobject = SceneObject(item=item, context=self.context, **kwargs)  # type: ignore
+            
+            # Use the factory to create the scene object
+            sceneobject = SceneObjectFactory.create(item=item, context=self.context, **kwargs)
+            
         super(Scene, self).add(sceneobject, parent=parent)
         return sceneobject
 

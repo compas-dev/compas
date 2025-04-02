@@ -22,6 +22,45 @@ from .descriptors.color import ColorAttribute
 from .descriptors.protocol import DescriptorProtocol
 
 
+class SceneObjectFactory:
+    """Factory class for creating appropriate SceneObject instances based on input item type.
+    
+    This factory encapsulates the logic for selecting the right SceneObject subclass
+    for a given data item, making the creation process more explicit and easier to understand.
+    """
+    
+    @staticmethod
+    def create(item=None, **kwargs):
+        """Create appropriate SceneObject instance based on item type.
+        
+        Parameters
+        ----------
+        item : :class:`compas.data.Data`
+            The data item to create a scene object for.
+        **kwargs : dict
+            Additional keyword arguments to pass to the SceneObject constructor.
+            
+        Returns
+        -------
+        :class:`compas.scene.SceneObject`
+            A SceneObject instance of the appropriate subclass for the given item.
+            
+        Raises
+        ------
+        ValueError
+            If item is None.
+        SceneObjectNotRegisteredError
+            If no scene object is registered for the item type in the current context.
+        """
+        if item is None:
+            raise ValueError("Cannot create a scene object for None. Please ensure you pass an instance of a supported class.")
+
+        sceneobject_cls = get_sceneobject_cls(item, **kwargs)
+        
+        # Create and return an instance of the appropriate scene object class
+        return sceneobject_cls(item=item, **kwargs)
+
+
 class SceneObject(TreeNode):
     """Base class for all scene objects.
 
@@ -83,10 +122,6 @@ class SceneObject(TreeNode):
     __metaclass__ = DescriptorProtocol
 
     color = ColorAttribute()
-
-    def __new__(cls, item=None, **kwargs):
-        sceneobject_cls = get_sceneobject_cls(item, **kwargs)
-        return super(SceneObject, cls).__new__(sceneobject_cls)
 
     def __init__(
         self,
@@ -244,7 +279,9 @@ class SceneObject(TreeNode):
                 if kwargs["context"] != self.context:
                     raise Exception("Child context should be the same as parent context: {} != {}".format(kwargs["context"], self.context))
                 del kwargs["context"]  # otherwist the SceneObject receives "context" twice, which results in an error
-            sceneobject = SceneObject(item=item, context=self.context, **kwargs)  # type: ignore
+            
+            # Use the factory to create the scene object
+            sceneobject = SceneObjectFactory.create(item=item, context=self.context, **kwargs)
 
         super(SceneObject, self).add(sceneobject)
         return sceneobject
