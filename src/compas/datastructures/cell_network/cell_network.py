@@ -728,6 +728,32 @@ class CellNetwork(Datastructure):
 
         return ckey
 
+
+    def add_mesh(self, input_mesh: Mesh):
+        if input_mesh.is_manifold():
+            # mesh.unify_cycles()
+            unpacked_mesh = input_mesh.to_vertices_and_faces()
+        
+            if self._max_vertex == -1:
+                vertex_diff = 0
+            else:
+                vertex_diff = self._max_vertex + 1
+    
+            for vertex in unpacked_mesh[0]:
+                self.add_vertex(attr_dict = {"x": vertex[0], "y": vertex[1], "z":vertex[2]})
+    
+            faces_lst = []
+    
+            for face in unpacked_mesh[1]:
+                new_face = [vertex + vertex_diff for vertex in face]
+                self.add_face(new_face)
+                faces_lst.append(self._max_face)
+
+            self.add_cell(faces_lst)
+
+        else:
+            raise ValueError("Mesh is not manifold to be added as a cell")
+    
     # --------------------------------------------------------------------------
     # Modifiers
     # --------------------------------------------------------------------------
@@ -4033,7 +4059,7 @@ class CellNetwork(Datastructure):
         return nbrs
 
     def cell_neighbors(self, cell):
-        """Find the neighbors of a given cell.
+        """Find the neighbors of a given cell based on common vertices.
 
         Parameters
         ----------
@@ -4049,11 +4075,20 @@ class CellNetwork(Datastructure):
         --------
         :meth:`cell_face_neighbors`
         """
+
+        cells_vertices = {}
+        for cell_ in self.cells():
+            vertices_of_a_cell = []
+            for vertex in self.cell_vertices(cell_):
+                vertices_of_a_cell.append(tuple(self.vertex_coordinates(vertex)))
+
+            cells_vertices[cell_] = set(vertices_of_a_cell)
+
         nbrs = []
-        for face in self.cell_faces(cell):
-            for nbr in self.face_cells(face):
-                if nbr != cell:
-                    nbrs.append(nbr)
+        for key in cells_vertices.keys():
+            if key != cell and len((cells_vertices[cell] & cells_vertices[key])) > 2:
+                nbrs.append(key)
+
         return list(set(nbrs))
 
     def is_cell_on_boundary(self, cell):
