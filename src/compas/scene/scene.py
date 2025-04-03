@@ -8,6 +8,7 @@ from .context import after_draw
 from .context import before_draw
 from .context import clear
 from .context import detect_current_context
+from .group import Group
 from .sceneobject import SceneObject
 
 
@@ -42,7 +43,7 @@ class Scene(Tree):
     @property
     def __data__(self):
         # type: () -> dict
-        items = {str(object.item.guid): object.item for object in self.objects}
+        items = {str(object.item.guid): object.item for object in self.objects if object.item is not None}
         return {
             "name": self.name,
             "root": self.root.__data__,  # type: ignore
@@ -57,9 +58,12 @@ class Scene(Tree):
 
         def add(node, parent, items):
             for child_node in node.get("children", []):
-                guid = child_node["item"]
                 settings = child_node["settings"]
-                sceneobject = parent.add(items[guid], **settings)
+                if "item" in child_node:
+                    guid = child_node["item"]
+                    sceneobject = parent.add(items[guid], **settings)
+                else:
+                    sceneobject = parent.add(Group(**settings))
                 add(child_node, sceneobject, items)
 
         add(data["root"], scene, items)

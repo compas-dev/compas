@@ -1080,6 +1080,16 @@ class Brep(Geometry):
         """
         raise NotImplementedError
 
+    def flip(self):
+        """Flip the orientation of all faces of the Brep.
+
+        Returns
+        -------
+        None
+
+        """
+        raise NotImplementedError
+
     def slice(self, plane):
         """Slice through the BRep with a plane.
 
@@ -1126,6 +1136,26 @@ class Brep(Geometry):
         Returns
         -------
         tuple[list[:class:`compas.geometry.BrepFace`]]
+
+        """
+        raise NotImplementedError
+
+    def cap_planar_holes(self, tolerance=None):
+        """Cap all planar holes in the Brep.
+
+        Parameters
+        ----------
+        tolerance : float, optional
+            The precision to use for the operation. Defaults to `TOL.absolute`.
+
+        Returns
+        -------
+        None
+
+        Raises
+        ------
+        BrepError
+            If the operation fails.
 
         """
         raise NotImplementedError

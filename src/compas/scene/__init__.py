@@ -14,6 +14,7 @@ from .meshobject import MeshObject
 from .graphobject import GraphObject
 from .geometryobject import GeometryObject
 from .volmeshobject import VolMeshObject
+from .group import Group
 
 from .context import clear
 from .context import before_draw
@@ -53,4 +54,5 @@ __all__ = [
     "register_scene_objects",
     "get_sceneobject_cls",
     "register",
+    "Group",
 ]

@@ -664,3 +664,38 @@ class RhinoBrep(Brep):
         if not resulting_breps:
             raise BrepFilletError("Fillet operation ended with no result")
         return RhinoBrep.from_native(resulting_breps[0])
+
+    def flip(self):
+        """Flip the orientation of all faces of the Brep.
+
+        Returns
+        -------
+        None
+
+        """
+        self._brep.Flip()
+
+    def cap_planar_holes(self, tolerance=None):
+        """Cap all planar holes in the Brep.
+
+        Parameters
+        ----------
+        tolerance : float, optional
+            The precision to use for the operation. Defaults to `TOL.absolute`.
+
+        Returns
+        -------
+        None
+
+        Raises
+        ------
+        BrepError
+            If the operation fails.
+
+        """
+        tolerance = tolerance or TOL.absolute
+        result = self._brep.CapPlanarHoles(tolerance)
+        if result:
+            self._brep = result
+        else:
+            raise BrepError("Failed to cap planar holes")
