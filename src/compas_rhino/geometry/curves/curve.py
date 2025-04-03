@@ -203,6 +203,23 @@ class RhinoCurve(Curve):
         point = self.native_curve.PointAt(t)  # type: ignore
         return point_to_compas(point)
 
+    def point_at_length(self, length):
+        """Compute a point on the curve at a specific length.
+
+        Parameters
+        ----------
+        length : float
+            The length along the curve.
+
+        Returns
+        -------
+        :class:`compas.geometry.Point`
+            The corresponding point on the curve.
+
+        """
+        point = self.native_curve.PointAtLength(length)  # type: ignore
+        return point_to_compas(point)
+
     def tangent_at(self, t):
         """Compute the tangent vector at a point on the curve.
 
@@ -375,7 +392,7 @@ class RhinoCurve(Curve):
         raise NotImplementedError
 
     def offset(self, distance, direction, tolerance=1e-3):
-        """Compute the length of the curve.
+        """Offset the curve.
 
         Parameters
         ----------
@@ -401,5 +418,53 @@ class RhinoCurve(Curve):
     def split(self):
         raise NotImplementedError
 
-    def trim(self):
-        raise NotImplementedError
+    def trim(self, t0, t1):
+        """Trim the curve to a specific domain.
+
+        Parameters
+        ----------
+        t0 : float
+            The start of the domain.
+        t1 : float
+            The end of the domain.
+
+        Returns
+        -------
+        None
+
+        """
+        self.native_curve = self.native_curve.Trim(t0, t1) # type: ignore
+
+    def trimmed(self, t0, t1):
+        """Trim the curve to a specific domain.
+
+        Parameters
+        ----------
+        t0 : float
+            The start of the domain.
+        t1 : float
+            The end of the domain.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoCurve`
+            The trimmed curve.
+        """
+
+        curve = self.native_curve.Trim(t0, t1) # type: ignore
+        return RhinoCurve.from_native(curve)
+
+    def change_seam(self, t):
+        """Change the seam of the curve to a specific parameter.
+
+        Parameters
+        ----------
+        t : float
+            The parameter at which to set the seam.
+
+        Returns
+        -------
+        None
+
+        """
+        self.native_curve.ChangeClosedCurveSeam(t) # type: ignore
