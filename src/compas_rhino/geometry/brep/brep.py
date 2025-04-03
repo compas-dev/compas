@@ -324,10 +324,10 @@ class RhinoBrep(Brep):
                 rhino_curve = polyline_to_rhino_curve(curve)
             else:
                 rhino_curve = curve_to_rhino(curve)
-            face = Rhino.Geometry.Brep.CreatePlanarBreps(rhino_curve)
+            face = Rhino.Geometry.Brep.CreatePlanarBreps(rhino_curve, TOL.absolute)
             if face is None:
                 raise BrepError("Failed to create face from curve: {} ".format(curve))
-            if isinstance(face, list) and len(face) > 1:
+            if len(face) > 1:
                 raise BrepError("Failed to create single face from curve: {} ".format(curve))
             faces.append(face[0])
         rhino_brep = Rhino.Geometry.Brep.JoinBreps(faces, TOL.absolute)
