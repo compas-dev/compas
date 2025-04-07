@@ -2,12 +2,12 @@ from __future__ import absolute_import
 
 import io
 import os
-import sys
 
 import compas
 import compas._os
+from compas_rhino.devtools import DevTools
 
-__version__ = "2.8.1"
+__version__ = "2.10.0"
 
 
 PURGE_ON_DELETE = True
@@ -23,6 +23,7 @@ IRONPYTHON_PLUGIN_GUID = "814d908a-e25c-493d-97e9-ee3861957f49"
 GRASSHOPPER_PLUGIN_GUID = "b45a29b1-4343-4035-989e-044e8580d9cf"
 RHINOCYCLES_PLUGIN_GUID = "9bc28e9e-7a6c-4b8f-a0c6-3d05e02d1b97"
 
+unload_modules = DevTools.unload_modules
 
 __all__ = [
     "PURGE_ON_DELETE",
@@ -35,6 +36,7 @@ __all__ = [
     "RHINOCYCLES_PLUGIN_GUID",
     "clear",
     "redraw",
+    "unload_modules",
 ]
 
 __all_plugins__ = [
@@ -57,30 +59,6 @@ __all_plugins__ = [
 # =============================================================================
 # =============================================================================
 # =============================================================================
-
-
-def unload_modules(top_level_module_name):
-    """Unloads all modules named starting with the specified string.
-
-    This function eases the development workflow when editing a library that is
-    used from Rhino/Grasshopper.
-
-    Parameters
-    ----------
-    top_level_module_name : :obj:`str`
-        Name of the top-level module to unload.
-
-    Returns
-    -------
-    list
-        List of unloaded module names.
-    """
-    to_remove = [name for name in sys.modules if name.startswith(top_level_module_name)]
-
-    for module in to_remove:
-        sys.modules.pop(module)
-
-    return to_remove
 
 
 def clear(guids=None):

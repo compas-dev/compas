@@ -36,6 +36,9 @@ you can now simply add the packages as requirements in a comment.
 
 More information is available here: <https://developer.rhino3d.com/guides/scripting/scripting-command>
 
+.. note::
+
+    This also works in the Python 3 Script node in Grasshopper.
 
 Alternative Method
 ==================

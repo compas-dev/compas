@@ -41,6 +41,8 @@ class BrepFace(Data):
         Returns True if this face is a sphere, False otherwise.
     is_torus : bool, read-only
         Returns True if this face is a torus, False otherwise.
+    is_reversed : bool, read-only
+        True if the orientation of this face is reversed, False otherwise.
     is_valid : bool, read-only
         Return True if this face is valid, False otherwise.
     loops : list[:class:`compas.geometry.BrepLoop`], read-only
@@ -117,6 +119,10 @@ class BrepFace(Data):
 
     @property
     def centroid(self):
+        raise NotImplementedError
+
+    @property
+    def is_reversed(self):
         raise NotImplementedError
 
     @property
@@ -288,6 +294,24 @@ class BrepFace(Data):
         Notes
         -----
         Any additional arguments may be backend specific.
+
+        """
+        raise NotImplementedError
+
+    def frame_at(self, u, v):
+        """Returns the frame at the given uv parameters.
+
+        Parameters
+        ----------
+        u : float
+            The u parameter.
+        v : float
+            The v parameter.
+
+        Returns
+        -------
+        :class:`compas.geometry.Frame`
+            The frame at the given uv parameters.
 
         """
         raise NotImplementedError

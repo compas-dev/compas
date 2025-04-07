@@ -30,6 +30,11 @@ if "ironpython" == platform.python_implementation().lower():
 try:
     import numpy as np
 
+    try:
+        np_float = np.float_
+    except AttributeError:
+        np_float = np.float64
+
     numpy_support = True
 except (ImportError, SyntaxError):
     numpy_support = False
@@ -143,7 +148,7 @@ class DataEncoder(json.JSONEncoder):
                 ),  # type: ignore
             ):
                 return int(o)
-            if isinstance(o, (np.float_, np.float16, np.float32, np.float64)):  # type: ignore
+            if isinstance(o, (np_float, np.float16, np.float32, np.float64)):  # type: ignore
                 return float(o)
             if isinstance(o, np.bool_):
                 return bool(o)

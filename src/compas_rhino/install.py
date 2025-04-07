@@ -17,7 +17,7 @@ def install(version=None, packages=None, clean=False):
 
     Parameters
     ----------
-    version : {'5.0', '6.0', '7.0', '8.0'}, optional
+    version : {'5.0', '6.0', '7.0'}, optional
         The version number of Rhino.
         Default is ``'7.0'``.
     packages : list of str, optional
@@ -47,9 +47,8 @@ def install(version=None, packages=None, clean=False):
     # instead of directly as IPy module.
     # scripts_path = compas_rhino._get_rhino_scripts_path(version)
 
-    # In Rhino 8 there is no scripts folder
     if version == "8.0":
-        installation_path = compas_rhino._get_default_rhino_ironpython_sitepackages_path(version)
+        raise ValueError("Installing to Rhino8 using this script is no longer supported. See https://compas.dev/compas/latest/userguide/cad.rhino8.html")
     else:
         installation_path = compas_rhino._get_rhino_scripts_path(version)
 

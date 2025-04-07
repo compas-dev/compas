@@ -1204,7 +1204,7 @@ class Graph(Datastructure):
         :meth:`compas.topology.astar_shortest_path`
 
         """
-        return astar_shortest_path(self.adjacency, u, v)
+        return astar_shortest_path(self, u, v)
 
     # --------------------------------------------------------------------------
     # Default attributes

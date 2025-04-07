@@ -1,0 +1,83 @@
+name: publish_yak
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Choose deployment environment"
+        required: true
+        type: choice
+        options:
+          - test
+          - prod
+
+jobs:
+
+  publish_test_yak:
+    runs-on: windows-latest
+
+    steps:
+
+    - name: Set test flag based on input
+      shell: pwsh
+      run: |
+        if ("${{ github.event.inputs.environment }}" -eq "test") {
+          echo "TEST_FLAG=--test-server" | Out-File -FilePath $env:GITHUB_ENV -Append
+        }
+        else {
+          echo "TEST_FLAG=" | Out-File -FilePath $env:GITHUB_ENV -Append
+        }
+
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install .[dev]
+
+    - name: Create CPython Grasshopper user objects
+      run: |
+        invoke build-cpython-ghuser-components
+
+    - name: Create IronPython Grasshopper user objects
+      run: |
+        choco install ironpython --version=2.7.8.1
+        invoke clean
+        invoke build-ghuser-components
+
+    - name: Create Rhino7 Yak package
+      shell: pwsh
+      run: |
+        invoke yakerize -m $Env:YAK_TEMPLATE\manifest.yml -l $Env:YAK_TEMPLATE\icon.png -g $Env:USER_OBJECTS -t rh7
+      env:
+        USER_OBJECTS: src\compas_ghpython\components\ghuser
+        YAK_TEMPLATE: src\compas_ghpython\yak_template
+
+    - name: Publish to Yak server (Rhino 7)
+      shell: pwsh
+      run: |
+        $test_flag = if ($Env:TEST_FLAG) { $Env:TEST_FLAG } else { "" }
+        $file = Get-ChildItem -Path dist\yak_package\*rh7*.yak -File | Select-Object -ExpandProperty Name
+        $command = "invoke publish-yak -y dist\yak_package\$file $test_flag".Trim()
+        Invoke-Expression $command
+      env:
+        YAK_TOKEN: ${{ secrets.YAK_DF_TOKEN }}
+
+    - name: Create Rhino8 Yak package
+      shell: pwsh
+      run: |
+        invoke yakerize -m $Env:YAK_TEMPLATE\manifest.yml -l $Env:YAK_TEMPLATE\icon.png -g $Env:USER_OBJECTS -t rh8
+      env:
+        USER_OBJECTS: src\compas_ghpython\components_cpython\ghuser
+        YAK_TEMPLATE: src\compas_ghpython\yak_template
+
+    - name: Publish to Yak server (Rhino 8)
+      shell: pwsh
+      run: |
+        $test_flag = if ($Env:TEST_FLAG) { $Env:TEST_FLAG } else { "" }
+        $file = Get-ChildItem -Path dist\yak_package\*rh8*.yak -File | Select-Object -ExpandProperty Name
+        $command = "invoke publish-yak -y dist\yak_package\$file $test_flag".Trim()
+        Invoke-Expression $command
+      env:
+        YAK_TOKEN: ${{ secrets.YAK_DF_TOKEN }}
