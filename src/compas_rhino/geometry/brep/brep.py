@@ -308,7 +308,7 @@ class RhinoBrep(Brep):
 
         Parameters
         ----------
-        curves : : list of :class:`~compas.geometry.Curve` or :class:`~compas.geometry.Polyline`
+        curves : list of :class:`~compas.geometry.Curve` or :class:`~compas.geometry.Polyline`
             The planar curves that make up the face borders of brep faces.
 
         Returns
