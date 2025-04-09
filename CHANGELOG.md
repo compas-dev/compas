@@ -20,6 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `SceneObject.worldtransformation` to the multiplication of all transformations from the scene object to the root of the scene tree, there will no longer be an additional transformation in relation to the object's frame.
 * Fixed call to `astar_shortest_path` in `Graph.shortest_path`.
 * Fixed a bug when printing an empty `Tree`.
+* Fixed a bug in `Group` for IronPython where the decoding declaration was missing.
+* Fixed a bug where a `Group` without name could not be added to the scene.
 
 ### Removed
 
