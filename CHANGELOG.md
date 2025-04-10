@@ -15,6 +15,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.geometry.angle_vectors_projected`.
 * Added `compas.geometry.Brep.from_curves`.
 * Added `compas_rhino.geometry.RhinoBrep.from_curves`.
+* Added missing property `centroid` in `compas_rhino.geometry.RhinoBrep`.
+* Added missing property `curves` in `compas_rhino.geometry.RhinoBrep`.
+* Added missing property `is_closed` in `compas_rhino.geometry.RhinoBrep`.
+* Added missing property `is_compound` in `compas_rhino.geometry.RhinoBrep`.
+* Added missing property `is_compoundsolid` in `compas_rhino.geometry.RhinoBrep`.
+* Added missing property `is_orientable` in `compas_rhino.geometry.RhinoBrep`.
+* Added missing property `is_surface` in `compas_rhino.geometry.RhinoBrep`.
+* Added missing property `is_valid` in `compas_rhino.geometry.RhinoBrep`.
+* Added missing property `orientation` in `compas_rhino.geometry.RhinoBrep`.
+* Added missing property `surfaces` in `compas_rhino.geometry.RhinoBrep`.
 
 ### Changed
 

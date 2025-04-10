@@ -27,6 +27,8 @@ from compas_rhino.conversions import polyline_to_rhino_curve
 from compas_rhino.conversions import sphere_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
 from compas_rhino.conversions import vector_to_rhino
+from compas_rhino.geometry import RhinoNurbsCurve
+from compas_rhino.geometry import RhinoNurbsSurface
 
 from .builder import _RhinoBrepBuilder
 from .edge import RhinoBrepEdge
@@ -62,6 +64,36 @@ class RhinoBrep(Brep):
         The calculated area of this brep.
     volume : float, read-only
         The calculated volume of this brep.
+    centroid : :class:`compas.geometry.Point`, read-only
+        The calculated centroid of this brep.
+    curves : list[:class:`compas_rhino.geometry.RhinoNurbsCurve`], read-only
+        The list of curves which comprise this brep.
+    is_closed : bool, read-only
+        True if this brep is closed, False otherwise.
+    is_compound : bool, read-only
+        True if this brep is compound, False otherwise.
+    is_compoundsolid : bool, read-only
+        True if this brep is compound solid, False otherwise.
+    is_convex : bool, read-only
+        True if this brep is convex, False otherwise.
+    is_infinite : bool, read-only
+        True if this brep is infinite, False otherwise.
+    is_orientable : bool, read-only
+        True if this brep is orientable, False otherwise.
+    is_shell : bool, read-only
+        True if this brep is a shell, False otherwise.
+    is_surface : bool, read-only
+        True if this brep is a surface, False otherwise.
+    is_valid : bool, read-only
+        True if this brep is valid, False otherwise.
+    orientation : literal(:class:`~compas.geometry.BrepOrientation`), read-only
+        The orientation of this brep. One of: FORWARD, REVERSED, INTERNAL, EXTERNAL.
+    shells : list[:class:`compas_rhino.geometry.RhinoBrep`], read-only
+        The list of shells which comprise this brep.
+    solids : list[:class:`compas_rhino.geometry.RhinoBrep`], read-only
+        The list of solids which comprise this brep.
+    surfaces : list[:class:`compas_rhino.geometry.RhinoNurbsSurface`], read-only
+        The list of surfaces which comprise this brep.
 
     """
 
@@ -182,6 +214,87 @@ class RhinoBrep(Brep):
     def volume(self):
         if self._brep:
             return self._brep.GetVolume()
+
+    @property
+    def centroid(self):
+        assert self._brep
+        centroid = Rhino.Geometry.AreaMassProperties.Compute(self._brep).Centroid
+        return Point(*centroid)
+
+    @property
+    def curves(self):
+        assert self._brep
+        return [RhinoNurbsCurve.from_native(c.ToNurbsCurve()) for c in self._brep.Curves3D]
+
+    @property
+    def is_closed(self):
+        assert self._brep
+        return self._brep.IsSolid
+
+    @property
+    def is_compound(self):
+        # TODO: clarify. according to the internets compound brep is actually a container for several breps, not sure that's possible with a Rhino Brep.
+        return False
+
+    @property
+    def is_compoundsolid(self):
+        # TODO: see above
+        return False
+
+    @property
+    def is_convex(self):
+        raise NotImplementedError("Convexity check is not implemented for Rhino Breps.")
+
+    @property
+    def is_infinite(self):
+        pass
+
+    @property
+    def is_orientable(self):
+        assert self._brep
+        return self._brep.SolidOrientation in (Rhino.Geometry.BrepSolidOrientation.Inward, Rhino.Geometry.BrepSolidOrientation.Outward)
+
+    @property
+    def is_shell(self):
+        # not sure how to get this one
+        raise NotImplementedError
+
+    @property
+    def is_surface(self):
+        assert self._brep
+        return self._brep.IsSurface
+
+    @property
+    def is_valid(self):
+        assert self._brep
+        return self.IsValid
+
+    @property
+    def orientation(self):
+        assert self._brep
+        # TODO: align this with compas.geometry.BrepOrientation
+        return self._brep.SolidOrientation
+
+    @property
+    def shells(self):
+        # TODO: can create shell from brep but have to specify which faces to eliminate in order to hollow out the brep, doesn't seem like the intention.
+        # TODO: is this about traversing a compound brep?
+        raise NotImplementedError("Shells are not implemented for Rhino Breps.")
+
+    @property
+    def solids(self):
+        # TODO: same as above
+        raise NotImplementedError("Solids are not implemented for Rhino Breps.")
+
+    @property
+    def surfaces(self):
+        assert self._brep
+        return [[RhinoNurbsSurface.from_native(s.ToNurbsSurface()) for s in self._brep.Surfaces]]
+
+    @property
+    def type(self):
+        # TODO: seems like an OCC specific thinh, rename to occ_type and remove from interface?
+        raise NotImplementedError("Type is not implemented for Rhino Breps.")
 
     # ==============================================================================
     # Constructors
