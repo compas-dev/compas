@@ -342,7 +342,7 @@ class Brep(Geometry):
         raise NotImplementedError
 
     @classmethod
-    def from_cone(cls, cone):
+    def from_cone(cls, cone, *args, **kwargs):
         """Construct a Brep from a COMPAS cone.
 
         Parameters
@@ -354,7 +354,7 @@ class Brep(Geometry):
         :class:`compas.geometry.Brep`
 
         """
-        return from_cone(cone)
+        return from_cone(cone, *args, **kwargs)
 
     @classmethod
     def from_curves(cls, curves):

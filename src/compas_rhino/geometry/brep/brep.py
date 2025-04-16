@@ -17,6 +17,7 @@ from compas.geometry import Point
 from compas.geometry import Polyline
 from compas.tolerance import TOL
 from compas_rhino.conversions import box_to_rhino
+from compas_rhino.conversions import cone_to_rhino
 from compas_rhino.conversions import curve_to_compas
 from compas_rhino.conversions import curve_to_rhino
 from compas_rhino.conversions import cylinder_to_rhino
@@ -399,6 +400,23 @@ class RhinoBrep(Brep):
         """
         rhino_box = box_to_rhino(box)
         return cls.from_native(rhino_box.ToBrep())
+
+    @classmethod
+    def from_cone(cls, cone, cap_bottom=True):
+        """Create a RhinoBrep from a cone.
+
+        Parameters
+        ----------
+        cone : :class:`compas.geometry.Cone`
+            The cone geometry of the brep.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoBrep`
+
+        """
+        rhino_cone = cone_to_rhino(cone)
+        return cls.from_native(rhino_cone.ToBrep(cap_bottom))
 
     @classmethod
     def from_cylinder(cls, cylinder):
