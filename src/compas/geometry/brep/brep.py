@@ -569,7 +569,7 @@ class Brep(Geometry):
         return from_step(filename)
 
     @classmethod
-    def from_sweep(cls, profile, path):
+    def from_sweep(cls, profile, path, *args, **kwargs):
         """Construct a BRep by sweeping a profile along a path.
 
         Parameters
@@ -584,7 +584,7 @@ class Brep(Geometry):
         :class:`compas.geometry.Brep`
 
         """
-        return from_sweep(profile, path)
+        return from_sweep(profile, path, *args, **kwargs)
 
     @classmethod
     def from_torus(cls, torus):

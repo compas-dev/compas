@@ -11,6 +11,7 @@ from compas.geometry import BrepError
 from compas.geometry import BrepFilletError
 from compas.geometry import BrepTrimmingError
 from compas.geometry import Frame
+from compas.geometry import Line
 from compas.geometry import Plane
 from compas.geometry import Point
 from compas.geometry import Polyline
@@ -19,6 +20,7 @@ from compas_rhino.conversions import box_to_rhino
 from compas_rhino.conversions import curve_to_compas
 from compas_rhino.conversions import curve_to_rhino
 from compas_rhino.conversions import cylinder_to_rhino
+from compas_rhino.conversions import line_to_rhino_curve
 from compas_rhino.conversions import mesh_to_compas
 from compas_rhino.conversions import mesh_to_rhino
 from compas_rhino.conversions import plane_to_rhino
@@ -577,6 +579,51 @@ class RhinoBrep(Brep):
         geometry = obj.Geometry.Duplicate()
         compas_rhino.objects.delete_object(guid)
         return cls.from_native(geometry)
+
+    @classmethod
+    def from_sweep(cls, profile, path, is_closed=False, tolerance=None):
+        """Construct one or more RhinoBrep(s) from a sweep operation.
+
+        Parameters
+        ----------
+        profile : :class:`compas.geometry.Curve`
+            Curve describing the cross-section of the surface created by the sweep operation.
+        path : :class:`compas.geometry.Curve`
+            Curve describing the edge of the sweep surface. The profile curve is sweeped along this curve.
+        is_closed : bool, optional
+            If True, the resulting surface will be closed, if possible. Defaults to False.
+        tolerance : float, optional
+            The precision to use for the operation. Defaults to `TOL.absolute`.
+
+        Returns
+        -------
+        list of :class:`compas_rhino.geometry.RhinoBrep`
+
+        """
+        tolerance = tolerance or TOL.absolute
+        if hasattr(profile, "native_curve"):
+            profile = curve_to_rhino(profile)
+        elif isinstance(profile, Polyline):
+            profile = polyline_to_rhino_curve(profile)
+        elif isinstance(profile, Line):
+            profile = line_to_rhino_curve(profile)
+        else:
+            raise TypeError("Unsupported profile type: {}".format(type(profile)))
+
+        if hasattr(path, "native_curve"):
+            path = curve_to_rhino(path)
+        elif isinstance(path, Polyline):
+            path = polyline_to_rhino_curve(path)
+        elif isinstance(path, Line):
+            path = line_to_rhino_curve(path)
+        else:
+            raise TypeError("Unsupported path type: {}".format(type(path)))
+
+        results = Rhino.Geometry.Brep.CreateFromSweep(path, profile, is_closed, tolerance)
+        if not results:
+            raise BrepError("Sweep operation ended with no result")
+
+        return [cls.from_native(result) for result in results]
 
     # ==============================================================================
     # Conversions

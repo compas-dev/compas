@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added missing property `is_valid` in `compas_rhino.geometry.RhinoBrep`.
 * Added missing property `orientation` in `compas_rhino.geometry.RhinoBrep`.
 * Added missing property `surfaces` in `compas_rhino.geometry.RhinoBrep`.
+* Added implementation for `Brep.from_sweep` in `compas_rhino.geometry.RhinoBrep`.
 
 ### Changed
 

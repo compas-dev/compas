@@ -66,5 +66,10 @@ def from_step(*args, **kwargs):
 
 
 @plugin(category="factories", requires=["Rhino"])
+def from_sweep(*args, **kwargs):
+    return RhinoBrep.from_sweep(*args, **kwargs)
+
+
+@plugin(category="factories", requires=["Rhino"])
 def new_brep(*args, **kwargs):
     return object.__new__(RhinoBrep)
