@@ -29,6 +29,7 @@ from compas_rhino.conversions import plane_to_rhino
 from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import polyline_to_rhino_curve
 from compas_rhino.conversions import sphere_to_rhino
+from compas_rhino.conversions import torus_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
 from compas_rhino.conversions import vector_to_rhino
 from compas_rhino.geometry import RhinoNurbsCurve
@@ -711,6 +712,22 @@ class RhinoBrep(Brep):
             raise BrepError("Sweep operation ended with no result")
 
         return [cls.from_native(result) for result in results]
+
+    @classmethod
+    def from_torus(cls, torus):
+        """Construct a RhinoBrep from a COMPAS torus.
+
+        Parameters
+        ----------
+        torus : :class:`compas.geometry.Torus`
+
+        Returns
+        -------
+        :class:`compas.geometry.BRep`
+
+        """
+        rhino_torus = torus_to_rhino(torus)
+        return cls.from_native(rhino_torus.ToBrep())
 
     # ==============================================================================
     # Conversions

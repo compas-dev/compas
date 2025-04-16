@@ -91,5 +91,10 @@ def from_sweep(*args, **kwargs):
 
 
 @plugin(category="factories", requires=["Rhino"])
+def from_torus(*args, **kwargs):
+    return RhinoBrep.from_torus(*args, **kwargs)
+
+
+@plugin(category="factories", requires=["Rhino"])
 def new_brep(*args, **kwargs):
     return object.__new__(RhinoBrep)
