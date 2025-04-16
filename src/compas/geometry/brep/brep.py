@@ -5,6 +5,7 @@ from . import from_boolean_intersection
 from . import from_boolean_union
 from . import from_box
 from . import from_brepfaces
+from . import from_breps
 from . import from_cone
 from . import from_curves
 from . import from_cylinder
@@ -327,19 +328,19 @@ class Brep(Geometry):
         return from_brepfaces(faces)
 
     @classmethod
-    def from_breps(cls, breps):
+    def from_breps(cls, breps, *args, **kwargs):
         """Construct one compound Brep from a list of other Breps.
 
         Parameters
         ----------
-        breps : list[:class:`compas.geometry.Brep`]
+        breps : list of :class:`compas.geometry.Brep`
 
         Returns
         -------
-        :class:`compas.geometry.Brep`
+        list of :class:`compas.geometry.Brep`
 
         """
-        raise NotImplementedError
+        return from_breps(breps, *args, **kwargs)
 
     @classmethod
     def from_cone(cls, cone, *args, **kwargs):

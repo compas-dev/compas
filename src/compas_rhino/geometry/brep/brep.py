@@ -421,6 +421,24 @@ class RhinoBrep(Brep):
         return cls.from_native(brep)
 
     @classmethod
+    def from_breps(cls, breps, tolerance=None):
+        """Joins the breps at any overlapping edges to form as few as possible resulting breps. There may be more than one brep in the result array.
+
+        Parameters
+        ----------
+        breps : list of :class:`compas.geometry.Brep`
+
+        Returns
+        -------
+        list of :class:`compas.geometry.Brep`
+
+        """
+        tolerance = tolerance or TOL
+        rhino_breps = [b.native_brep for b in breps]
+        resulting_breps = Rhino.Geometry.Brep.JoinBreps(rhino_breps, tolerance.absolute, tolerance.angular)
+        return [cls.from_native(brep) for brep in resulting_breps]
+
+    @classmethod
     def from_cone(cls, cone, cap_bottom=True):
         """Create a RhinoBrep from a cone.
 

@@ -31,6 +31,11 @@ def from_brepfaces(*args, **kwargs):
 
 
 @plugin(category="factories", requires=["Rhino"])
+def from_breps(*args, **kwargs):
+    return RhinoBrep.from_breps(*args, **kwargs)
+
+
+@plugin(category="factories", requires=["Rhino"])
 def from_cone(*args, **kwargs):
     return RhinoBrep.from_cone(*args, **kwargs)
 
