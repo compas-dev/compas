@@ -21,6 +21,7 @@ from compas_rhino.conversions import cone_to_rhino
 from compas_rhino.conversions import curve_to_compas
 from compas_rhino.conversions import curve_to_rhino
 from compas_rhino.conversions import cylinder_to_rhino
+from compas_rhino.conversions import frame_to_rhino_plane
 from compas_rhino.conversions import line_to_rhino_curve
 from compas_rhino.conversions import mesh_to_compas
 from compas_rhino.conversions import mesh_to_rhino
@@ -559,6 +560,38 @@ class RhinoBrep(Brep):
         brep = cls()
         brep._brep = rhino_brep
         return brep
+
+    @classmethod
+    def from_plane(cls, plane, domain_u=(-1, +1), domain_v=(-1, +1)):
+        """Create a RhinoBrep from a plane.
+
+        Parameters
+        ----------
+        plane : :class:`compas.geometry.Plane` or :class:`compas.geometry.Frame`
+            The source plane.
+        domain_u : tuple of float, optional
+            The U domain of the plane. Defaults to (-1, +1).
+        domain_v : tuple of float, optional
+            The V domain of the plane. Defaults to (-1, +1).
+
+        Notes
+        -----
+        When using a Rhino Plane, to maintain the original orientation data
+        use :meth:`~compas_rhino.conversions.plane_to_compas_frame` and :meth:`~compas_rhino.conversions.frame_to_rhino_plane`.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoBrep`
+
+        """
+        if isinstance(plane, Frame):
+            rhino_plane = frame_to_rhino_plane(plane)
+        else:
+            rhino_plane = plane_to_rhino(plane)
+        u = Rhino.Geometry.Interval(domain_u[0], domain_u[1])
+        v = Rhino.Geometry.Interval(domain_v[0], domain_v[1])
+        surface = Rhino.Geometry.PlaneSurface(rhino_plane, u, v)
+        return cls.from_native(surface.ToBrep())
 
     @classmethod
     def from_sphere(cls, sphere):

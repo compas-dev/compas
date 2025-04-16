@@ -61,6 +61,11 @@ def from_native(*args, **kwargs):
 
 
 @plugin(category="factories", requires=["Rhino"])
+def from_plane(*args, **kwargs):
+    return RhinoBrep.from_plane(*args, **kwargs)
+
+
+@plugin(category="factories", requires=["Rhino"])
 def from_sphere(*args, **kwargs):
     return RhinoBrep.from_sphere(*args, **kwargs)
 
