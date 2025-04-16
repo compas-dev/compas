@@ -403,6 +403,24 @@ class RhinoBrep(Brep):
         return cls.from_native(rhino_box.ToBrep())
 
     @classmethod
+    def from_brepfaces(cls, faces):
+        """Create a Brep from a list of Brep faces forming an open or closed shell.
+
+        Parameters
+        ----------
+        faces : list[:class:`compas.geometry.BrepFace`]
+
+        Returns
+        -------
+        :class:`compas.geometry.Brep`
+
+        """
+        brep = Rhino.Geometry.Brep()
+        for face in faces:
+            brep.Faces.Add(face.native_face.UnderlyingSurface())
+        return cls.from_native(brep)
+
+    @classmethod
     def from_cone(cls, cone, cap_bottom=True):
         """Create a RhinoBrep from a cone.
 

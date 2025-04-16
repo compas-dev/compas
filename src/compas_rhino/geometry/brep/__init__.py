@@ -26,6 +26,11 @@ def from_box(*args, **kwargs):
 
 
 @plugin(category="factories", requires=["Rhino"])
+def from_brepfaces(*args, **kwargs):
+    return RhinoBrep.from_brepfaces(*args, **kwargs)
+
+
+@plugin(category="factories", requires=["Rhino"])
 def from_cone(*args, **kwargs):
     return RhinoBrep.from_cone(*args, **kwargs)
 
