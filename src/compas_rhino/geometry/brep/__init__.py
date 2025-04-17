@@ -56,6 +56,11 @@ def from_curves(*args, **kwargs):
 
 
 @plugin(category="factories", requires=["Rhino"])
+def from_iges(*args, **kwargs):
+    return RhinoBrep.from_iges(*args, **kwargs)
+
+
+@plugin(category="factories", requires=["Rhino"])
 def from_loft(*args, **kwargs):
     return RhinoBrep.from_loft(*args, **kwargs)
 

@@ -540,6 +540,24 @@ class RhinoBrep(Brep):
         return cls.from_native(rhino_brep)
 
     @classmethod
+    def from_iges(cls, filepath):
+        """Construct a RhinoBrep from a IGES file.
+
+        Parameters
+        ----------
+        filepath : str
+            The path to the step file.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoBrep`
+
+        """
+        if not filepath.endswith(".igs"):
+            raise ValueError("Expected file with .igs extension")
+        return cls._import_brep_from_file(filepath)
+
+    @classmethod
     def from_loft(cls, curves):
         """Construct a Brep by lofting a set of curves.
 
@@ -729,12 +747,18 @@ class RhinoBrep(Brep):
         :class:`compas_rhino.geometry.RhinoBrep`
 
         """
+        if not not filepath.endswith(".step"):
+            raise ValueError("Expected file with .igs extension")
+        return cls._import_brep_from_file(filepath)
+
+    @staticmethod
+    def _import_brep_from_file(filepath):
         rs.Command('_-Import "' + filepath + '" _Enter', False)
-        guid = rs.LastCreatedObjects()[0]
+        guid = rs.LastCreatedObjects()[0]  # this fails, could be Rhino bug
         obj = compas_rhino.objects.find_object(guid)
         geometry = obj.Geometry.Duplicate()
         compas_rhino.objects.delete_object(guid)
-        return cls.from_native(geometry)
+        return RhinoBrep.from_native(geometry)
 
     @classmethod
     def from_sweep(cls, profile, path, is_closed=False, tolerance=None):
