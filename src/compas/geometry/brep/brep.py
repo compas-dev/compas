@@ -525,7 +525,7 @@ class Brep(Geometry):
         return from_planes(planes)
 
     @classmethod
-    def from_polygons(cls, polygons):
+    def from_polygons(cls, polygons, *args, **kwargs):
         """Construct a Brep from a set of polygons.
 
         Parameters
@@ -537,7 +537,7 @@ class Brep(Geometry):
         :class:`compas.geometry.Brep`
 
         """
-        return from_polygons(polygons)
+        return from_polygons(polygons, *args, **kwargs)
 
     @classmethod
     def from_sphere(cls, sphere):

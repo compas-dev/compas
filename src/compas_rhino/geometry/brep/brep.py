@@ -474,7 +474,7 @@ class RhinoBrep(Brep):
         return cls.from_native(rhino_cylinder.ToBrep(True, True))
 
     @classmethod
-    def from_curves(cls, curves):
+    def from_curves(cls, curves, tolerance=None):
         """Create a RhinoBreps from a list of planar face boundary curves.
 
         Parameters
@@ -487,6 +487,7 @@ class RhinoBrep(Brep):
         list of :class:`~compas_rhino.geometry.RhinoBrep`
 
         """
+        tolerance = tolerance or TOL.absolute
         if not isinstance(curves, list):
             curves = [curves]
         faces = []
@@ -495,13 +496,13 @@ class RhinoBrep(Brep):
                 rhino_curve = polyline_to_rhino_curve(curve)
             else:
                 rhino_curve = curve_to_rhino(curve)
-            face = Rhino.Geometry.Brep.CreatePlanarBreps(rhino_curve, TOL.absolute)
+            face = Rhino.Geometry.Brep.CreatePlanarBreps(rhino_curve, tolerance)
             if face is None:
                 raise BrepError("Failed to create face from curve: {} ".format(curve))
             if len(face) > 1:
                 raise BrepError("Failed to create single face from curve: {} ".format(curve))
             faces.append(face[0])
-        rhino_brep = Rhino.Geometry.Brep.JoinBreps(faces, TOL.absolute)
+        rhino_brep = Rhino.Geometry.Brep.JoinBreps(faces, tolerance)
         if rhino_brep is None:
             raise BrepError("Failed to create Brep from faces: {} ".format(faces))
         return [cls.from_native(brep) for brep in rhino_brep]
@@ -629,6 +630,27 @@ class RhinoBrep(Brep):
         v = Rhino.Geometry.Interval(domain_v[0], domain_v[1])
         surface = Rhino.Geometry.PlaneSurface(rhino_plane, u, v)
         return cls.from_native(surface.ToBrep())
+
+    @classmethod
+    def from_polygons(cls, polygons, tolerance=None, *args, **kwargs):
+        """Create a RhinoBrep from a list of polygons.
+
+        Parameters
+        ----------
+        polygons : list of :class:`compas.geometry.Polygon`
+            The source polygons.
+
+        Returns
+        -------
+        list of :class:`compas_rhino.geometry.RhinoBrep`
+
+        """
+        tolerance = tolerance or TOL.absolute
+        polylines = []
+        for polygon in polygons:
+            points = polygon.points + [polygon.points[0]]  # make a closed polyline from the polygon
+            polylines.append(Polyline(points=[*points]))
+        return cls.from_curves(polylines, tolerance)
 
     @classmethod
     def from_sphere(cls, sphere):

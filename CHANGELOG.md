@@ -31,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added implementation for `Brep.from_brepfaces` in `compas_rhino.geometry.RhinoBrep`.
 * Added implementation for `Brep.from_breps` in `compas_rhino.geometry.RhinoBrep`.
 * Added implementation for `Brep.from_torus` in `compas_rhino.geometry.RhinoBrep`.
+* Added implementation for `Brep.from_polygons` in `compas_rhino.geometry.RhinoBrep`.
 
 ### Changed
 
