@@ -252,7 +252,8 @@ class RhinoBrep(Brep):
 
     @property
     def is_infinite(self):
-        pass
+        # TODO: what does this exactly mean? couldn't find in the Rhino API
+        raise NotImplementedError
 
     @property
     def is_orientable(self):
