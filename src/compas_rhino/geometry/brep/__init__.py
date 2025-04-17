@@ -81,6 +81,11 @@ def from_polygons(*args, **kwargs):
 
 
 @plugin(category="factories", requires=["Rhino"])
+def from_pipe(*args, **kwargs):
+    return RhinoBrep.from_pipe(*args, **kwargs)
+
+
+@plugin(category="factories", requires=["Rhino"])
 def from_sphere(*args, **kwargs):
     return RhinoBrep.from_sphere(*args, **kwargs)
 

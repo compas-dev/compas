@@ -468,8 +468,8 @@ class Brep(Geometry):
         return from_native(native_brep)
 
     @classmethod
-    def from_pipe(cls, curve, radius, thickness=None):
-        """Construct a Brep by extruding a closed curve along a path curve.
+    def from_pipe(cls, path, radius, *args, **kwargs):
+        """Construct a Brep by extruding a circle curve along the path curve.
 
         Parameters
         ----------
@@ -477,16 +477,13 @@ class Brep(Geometry):
             The curve to extrude
         radius : float
             The radius of the pipe.
-        thickness : float, optional
-            The thickness of the pipe.
-            The thickness should be smaller than the radius.
 
         Returns
         -------
         :class:`compas.geometry.Brep`
 
         """
-        return from_pipe(curve, radius, thickness=thickness)
+        return from_pipe(path, radius, *args, **kwargs)
 
     @classmethod
     def from_plane(cls, plane, domain_u=(-1, +1), domain_v=(-1, +1)):

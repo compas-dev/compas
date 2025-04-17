@@ -600,6 +600,52 @@ class RhinoBrep(Brep):
         return brep
 
     @classmethod
+    def from_pipe(cls, path, radius, cap_mode="none", tolerance=None, *args, **kwargs):
+        """Construct a Brep by extruding a circle curve along the path curve.
+
+        Parameters
+        ----------
+        curve : :class:`compas.geometry.Curve`
+            The curve to extrude
+        radius : float
+            The radius of the pipe.
+        cap_mode : literal('none', 'flat', 'round'), optional
+            The type of end caps to create. Defaults to 'none'.
+        tolerance : :class:`~compas.tolerance.Tolerance`, optional
+            A Tolerance instance to use for the operation. Defaults to `TOL`.
+
+        Returns
+        -------
+        :class:`compas.geometry.Brep`
+
+        """
+        tolerance = tolerance or TOL
+
+        if cap_mode == "none":
+            cap_mode = Rhino.Geometry.PipeCapMode.NONE
+        elif cap_mode == "flat":
+            cap_mode = Rhino.Geometry.PipeCapMode.Flat
+        elif cap_mode == "round":
+            cap_mode = Rhino.Geometry.PipeCapMode.Round
+        else:
+            raise ValueError("Invalid cap_ends value. Must be 'none', 'flat' or 'round'.")
+
+        if hasattr(path, "native_curve"):
+            path = curve_to_rhino(path)
+        elif isinstance(path, Polyline):
+            path = polyline_to_rhino_curve(path)
+        elif isinstance(path, Line):
+            path = line_to_rhino_curve(path)
+        else:
+            raise TypeError("Unsupported path curve type: {}".format(type(path)))
+
+        result = Rhino.Geometry.Brep.CreatePipe(path, radius, False, cap_mode, True, tolerance.absolute, tolerance.angular)
+        if result is None:
+            raise BrepError("Failed to create pipe from curve: {} and radius: {}".format(path, radius))
+
+        return [cls.from_native(brep) for brep in result]
+
+    @classmethod
     def from_plane(cls, plane, domain_u=(-1, +1), domain_v=(-1, +1)):
         """Create a RhinoBrep from a plane.
 
