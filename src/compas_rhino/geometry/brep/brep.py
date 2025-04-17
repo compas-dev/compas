@@ -747,7 +747,7 @@ class RhinoBrep(Brep):
         :class:`compas_rhino.geometry.RhinoBrep`
 
         """
-        if not not filepath.endswith(".step"):
+        if not filepath.endswith(".step"):
             raise ValueError("Expected file with .igs extension")
         return cls._import_brep_from_file(filepath)
 
