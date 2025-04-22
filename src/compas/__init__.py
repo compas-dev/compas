@@ -20,7 +20,7 @@ __author__ = "Tom Van Mele and many others (see AUTHORS.md)"
 __copyright__ = "Copyright 2014-2022 - ETH Zurich, Copyright 2023 - COMPAS Association"
 __license__ = "MIT License"
 __email__ = "tom.v.mele@gmail.com"
-__version__ = "2.10.0"
+__version__ = "2.11.0"
 
 
 HERE = compas._os.realpath(os.path.dirname(__file__))
