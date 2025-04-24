@@ -36,6 +36,11 @@ def from_extrusion(*args, **kwargs):
 
 
 @plugin(category="factories", requires=["Rhino"])
+def from_curves(*args, **kwargs):
+    return RhinoBrep.from_curves(*args, **kwargs)
+
+
+@plugin(category="factories", requires=["Rhino"])
 def from_loft(*args, **kwargs):
     return RhinoBrep.from_loft(*args, **kwargs)
 
