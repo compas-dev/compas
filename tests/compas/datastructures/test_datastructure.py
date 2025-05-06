@@ -1,5 +1,7 @@
 import pytest
+import compas
 from compas.datastructures import Datastructure
+from compas.datastructures import Mesh
 from compas.data import json_dumps, json_loads
 
 
@@ -84,7 +86,34 @@ def level3():
     return Level3(name="test")
 
 
+@pytest.fixture
+def custom_mesh():
+    class CustomMesh(Mesh):
+        def __init__(self, *args, **kwargs):
+            super(CustomMesh, self).__init__(*args, **kwargs)
+            self.custom_mesh_attr = "custom_mesh"
+
+        @property
+        def __data__(self):
+            data = super(CustomMesh, self).__data__
+            data["custom_mesh_attr"] = self.custom_mesh_attr
+            return data
+
+        @classmethod
+        def __from_data__(cls, data):
+            obj = super(CustomMesh, cls).__from_data__(data)
+            obj.custom_mesh_attr = data.get("custom_mesh_attr", "")
+            return obj
+
+    return CustomMesh(name="test")
+
+
 def test_mro_fallback(level2):
+    if compas.IPY:
+        # IronPython is not able to deserialize a class that is defined in a local scope like Level1.
+        # We skip this tests for IronPython.
+        return
+
     assert level2.__jsondump__()["dtype"] == "test_datastructure/Level2"
     # Level2 should serialize Level1 into the mro
     assert level2.__jsondump__()["mro"] == ["test_datastructure/Level1"]
@@ -104,6 +133,11 @@ def test_mro_fallback(level2):
 
 
 def test_mro_fallback_multi_level(level3):
+    if compas.IPY:
+        # IronPython is not able to deserialize a class that is defined in a local scope like Level1.
+        # We skip this tests for IronPython.
+        return
+
     assert level3.__jsondump__()["dtype"] == "test_datastructure/Level3"
     # Level3 should serialize Level2 and Level1 into the mro
     assert level3.__jsondump__()["mro"] == ["test_datastructure/Level2", "test_datastructure/Level1"]
@@ -122,3 +156,18 @@ def test_mro_fallback_multi_level(level3):
     # level2 and 3 attributes will be discarded
     assert not hasattr(loaded, "level2_attr")
     assert not hasattr(loaded, "level3_attr")
+
+
+def test_custom_mesh(custom_mesh):
+    # This test should pass both Python and IronPython
+    assert custom_mesh.__jsondump__()["dtype"].endswith("CustomMesh")
+    assert custom_mesh.__jsondump__()["mro"] == ["compas.datastructures/Mesh"]
+    assert custom_mesh.__jsondump__()["data"]["custom_mesh_attr"] == "custom_mesh"
+
+    dumped = json_dumps(custom_mesh)
+    loaded = json_loads(dumped)
+
+    assert loaded.__class__ == Mesh
+    assert loaded.__jsondump__()["dtype"] == "compas.datastructures/Mesh"
+    assert loaded.__jsondump__()["mro"] == []
+    assert not hasattr(loaded, "custom_mesh_attr")
