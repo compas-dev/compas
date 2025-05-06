@@ -40,7 +40,7 @@ except (ImportError, SyntaxError):
     numpy_support = False
 
 
-def cls_from_dtype(dtype):  # type: (...) -> Type[Data]
+def cls_from_dtype(dtype, mro=None):  # type: (...) -> Type[Data]
     """Get the class object corresponding to a COMPAS data type specification.
 
     Parameters
@@ -48,6 +48,8 @@ def cls_from_dtype(dtype):  # type: (...) -> Type[Data]
     dtype : str
         The data type of the COMPAS object in the following format:
         '{}/{}'.format(o.__class__.__module__, o.__class__.__name__).
+    mro : list[str], optional
+        The MRO of the class, all superclasses of the class that can be used if given dtype is not found.
 
     Returns
     -------
@@ -63,9 +65,23 @@ def cls_from_dtype(dtype):  # type: (...) -> Type[Data]
         If the module doesn't contain the specified data type.
 
     """
-    mod_name, attr_name = dtype.split("/")
-    module = __import__(mod_name, fromlist=[attr_name])
-    return getattr(module, attr_name)
+
+    if mro is None:
+        full_mro = [dtype]
+    else:
+        full_mro = [dtype] + mro
+
+    for dtype in full_mro:
+        mod_name, attr_name = dtype.split("/")
+        try:
+            module = __import__(mod_name, fromlist=[attr_name])
+            return getattr(module, attr_name)
+        except ImportError:
+            continue
+        except AttributeError:
+            continue
+
+    raise ValueError("No class found in MRO: {}".format(mro))
 
 
 class DataEncoder(json.JSONEncoder):
@@ -220,7 +236,7 @@ class DataDecoder(json.JSONDecoder):
             return o
 
         try:
-            cls = cls_from_dtype(o["dtype"])
+            cls = cls_from_dtype(o["dtype"], o.get("mro", None))
 
         except ValueError:
             raise DecoderError(

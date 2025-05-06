@@ -21,6 +21,41 @@ class Datastructure(Data):
         self._aabb = None
         self._obb = None
 
+    def __get_mro__(self):
+        mro = []
+        for cls in self.__class__.__mro__:
+            if cls == self.__class__:
+                continue
+            if cls == Datastructure:
+                break
+            mro.append(cls.__cls_dtype__())
+        return mro
+
+    def __jsondump__(self, minimal=False):
+        """Return the required information for serialization with the COMPAS JSON serializer.
+
+        Parameters
+        ----------
+        minimal : bool, optional
+            If True, exclude the GUID from the dump dict.
+
+        Returns
+        -------
+        dict
+
+        """
+        state = {
+            "dtype": self.__dtype__,
+            "data": self.__data__,
+            "mro": self.__get_mro__(),
+        }
+        if minimal:
+            return state
+        if self._name is not None:
+            state["name"] = self._name
+        state["guid"] = str(self.guid)
+        return state
+
     @property
     def aabb(self):
         if self._aabb is None:
