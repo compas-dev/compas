@@ -108,7 +108,7 @@ def custom_mesh():
     return CustomMesh(name="test")
 
 
-def test_mro_fallback(level2):
+def test_inheritance_fallback(level2):
     if compas.IPY:
         # IronPython is not able to deserialize a class that is defined in a local scope like Level1.
         # We skip this tests for IronPython.
@@ -132,7 +132,7 @@ def test_mro_fallback(level2):
     assert not hasattr(loaded, "level2_attr")
 
 
-def test_mro_fallback_multi_level(level3):
+def test_inheritance_fallback_multi_level(level3):
     if compas.IPY:
         # IronPython is not able to deserialize a class that is defined in a local scope like Level1.
         # We skip this tests for IronPython.
