@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `inheritance` field to `__jsondump__` of `compas.datastructures.Datastructure` to allow for deserialization to closest available superclass of custom datastructures.
+
 ### Changed
 
 ### Removed
