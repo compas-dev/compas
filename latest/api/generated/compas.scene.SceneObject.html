@@ -1121,7 +1121,7 @@ document.write(`
 <h1>SceneObject</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.scene.SceneObject">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.scene.</span></span><span class="sig-name descname"><span class="pre">SceneObject</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/d773b3e/src/compas/scene/sceneobject.py#L24"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.scene.</span></span><span class="sig-name descname"><span class="pre">SceneObject</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/c1ac434/src/compas/scene/sceneobject.py#L25"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TreeNode</span></code></p>
 <p>Base class for all scene objects.</p>
 <dl class="field-list">
@@ -1137,9 +1137,7 @@ document.write(`
 </dd>
 <dt><strong>show</strong><span class="classifier">bool, optional</span></dt><dd><p>Flag for showing or hiding the object. Default is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
 </dd>
-<dt><strong>frame</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code></a>, optional</span></dt><dd><p>The local frame of the scene object, in relation to its parent frame.</p>
-</dd>
-<dt><strong>transformation</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Transformation.html#compas.geometry.Transformation" title="compas.geometry.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Transformation</span></code></a>, optional</span></dt><dd><p>The local transformation of the scene object in relation to its frame.</p>
+<dt><strong>transformation</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Transformation.html#compas.geometry.Transformation" title="compas.geometry.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Transformation</span></code></a>, optional</span></dt><dd><p>The local transformation of the scene object in relation to its parent object.</p>
 </dd>
 <dt><strong>context</strong><span class="classifier">str, optional</span></dt><dd><p>The context in which the scene object is created.</p>
 </dd>
@@ -1157,11 +1155,12 @@ document.write(`
 </dd>
 <dt><strong>guids</strong><span class="classifier">list[object]</span></dt><dd><p>The GUIDs of the items drawn in the visualization context.</p>
 </dd>
-<dt><strong>frame</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code></a></span></dt><dd><p>The local frame of the scene object, in relation to its parent frame.</p>
+<dt><strong>transformation</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Transformation.html#compas.geometry.Transformation" title="compas.geometry.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Transformation</span></code></a></span></dt><dd><p>The local transformation of the scene object in relation to its parent object.</p>
 </dd>
-<dt><strong>transformation</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Transformation.html#compas.geometry.Transformation" title="compas.geometry.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Transformation</span></code></a></span></dt><dd><p>The local transformation of the scene object in relation to its frame.</p>
+<dt><strong>worldtransformation</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Transformation.html#compas.geometry.Transformation" title="compas.geometry.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Transformation</span></code></a></span></dt><dd><p>The global transformation of the scene object in world coordinates, computed by multiplying all transformations from the scene object to the root of the scene tree.
+(NOTE: Changed from 2.11.0, there will no longer be the option of additional transformation in relation to the object’s frame)</p>
 </dd>
-<dt><strong>worldtransformation</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Transformation.html#compas.geometry.Transformation" title="compas.geometry.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Transformation</span></code></a></span></dt><dd><p>The transformation of the scene object in world coordinates.</p>
+<dt><strong>frame</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code></a></span></dt><dd><p>The frame of the local coordinate system of the scene object, derived from the <cite>worldtransformation</cite>.</p>
 </dd>
 <dt><strong>color</strong><span class="classifier"><a class="reference internal" href="compas.colors.Color.html#compas.colors.Color" title="compas.colors.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.colors.Color</span></code></a></span></dt><dd><p>The color of the object.</p>
 </dd>

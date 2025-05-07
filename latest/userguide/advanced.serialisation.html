@@ -673,6 +673,44 @@ which will help with IntelliSense and code completion.</p>
 </pre></div>
 </div>
 </section>
+<section id="inheritance">
+<h2>Inheritance</h2>
+<p>When working with custom classes that inherit from COMPAS datastructures, COMPAS will encode the inheritance chain in the serialized data. This allows the object to be reconstructed using the closest available superclass if the custom class is not available in the environment where the data is loaded.
+For example, a user can create a custom mesh class and serialize it to JSON:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">compas.datastructures</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">compas</span><span class="w"> </span><span class="kn">import</span> <span class="n">json_dump</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">CustomMesh</span><span class="p">(</span><span class="n">Mesh</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">CustomMesh</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">custom_mesh_attr</span> <span class="o">=</span> <span class="s2">&quot;custom_mesh&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__data__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">CustomMesh</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__data__</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;custom_mesh_attr&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">custom_mesh_attr</span>
+        <span class="k">return</span> <span class="n">data</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__from_data__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">CustomMesh</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="n">__from_data__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">custom_mesh_attr</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;custom_mesh_attr&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">obj</span>
+
+<span class="c1"># Create and serialize a custom mesh</span>
+<span class="n">custom_mesh</span> <span class="o">=</span> <span class="n">CustomMesh</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+<span class="n">json_dump</span><span class="p">(</span><span class="n">custom_mesh</span><span class="p">,</span> <span class="s1">&#39;custom_mesh.json&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If another user loads “custom_mesh.json” in an environment where the CustomMesh class is not available, COMPAS will reconstruct the object as an instance of its closest available superclass, which in this case is the regular Mesh class:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">compas.datastructures</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">compas</span><span class="w"> </span><span class="kn">import</span> <span class="n">json_load</span>
+
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">json_load</span><span class="p">(</span><span class="s1">&#39;custom_mesh.json&#39;</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">Mesh</span><span class="p">)</span> <span class="c1"># This will be True</span>
+</pre></div>
+</div>
+</section>
 <section id="validation">
 <h2>Validation</h2>
 <p>A somewhat experimental feature of the data package is data validation.
@@ -734,6 +772,7 @@ of the available data with the object type.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interface">Interface</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#json-serialization">JSON Serialization</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#working-sessions">Working Sessions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inheritance">Inheritance</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validation">Validation</a></li>
 </ul>
   </nav></div>

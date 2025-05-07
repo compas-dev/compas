@@ -59,7 +59,7 @@
         </script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Brep.contains" href="compas.geometry.Brep.contains.html" />
+    <link rel="next" title="Brep.cap_planar_holes" href="compas.geometry.Brep.cap_planar_holes.html" />
     <link rel="prev" title="Box.validate_data" href="compas.geometry.Box.validate_data.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -1121,7 +1121,7 @@ document.write(`
 <h1>Brep</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.geometry.Brep">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Brep</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/d773b3e/src/compas/geometry/brep/brep.py#L71"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.geometry.</span></span><span class="sig-name descname"><span class="pre">Brep</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/c1ac434/src/compas/geometry/brep/brep.py#L71"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.geometry.Geometry.html#compas.geometry.Geometry" title="compas.geometry.geometry.Geometry"><code class="xref py py-class docutils literal notranslate"><span class="pre">Geometry</span></code></a></p>
 <p>Contains the topological and geometrical information of a Brep shape.</p>
 <p>This class serves as an interface for a Brep and allows instantiating a Brep object depending on the available Backend.
@@ -1191,160 +1191,163 @@ Note: this is not a full implementation of Brep and rather relies on COMPAS’s 
 <p class="rubric">Methods</p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.contains.html#compas.geometry.Brep.contains" title="compas.geometry.Brep.contains"><code class="xref py py-obj docutils literal notranslate"><span class="pre">contains</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.cap_planar_holes.html#compas.geometry.Brep.cap_planar_holes" title="compas.geometry.Brep.cap_planar_holes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cap_planar_holes</span></code></a></p></td>
+<td><p>Cap all planar holes in the Brep.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.contains.html#compas.geometry.Brep.contains" title="compas.geometry.Brep.contains"><code class="xref py py-obj docutils literal notranslate"><span class="pre">contains</span></code></a></p></td>
 <td><p>Check if the Brep contains a given geometric primitive.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.contours.html#compas.geometry.Brep.contours" title="compas.geometry.Brep.contours"><code class="xref py py-obj docutils literal notranslate"><span class="pre">contours</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.contours.html#compas.geometry.Brep.contours" title="compas.geometry.Brep.contours"><code class="xref py py-obj docutils literal notranslate"><span class="pre">contours</span></code></a></p></td>
 <td><p>Generate contour lines by slicing the Brep shape with a series of planes.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.cull_unused_edges.html#compas.geometry.Brep.cull_unused_edges" title="compas.geometry.Brep.cull_unused_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cull_unused_edges</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.cull_unused_edges.html#compas.geometry.Brep.cull_unused_edges" title="compas.geometry.Brep.cull_unused_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cull_unused_edges</span></code></a></p></td>
 <td><p>Remove all unused edges.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.cull_unused_faces.html#compas.geometry.Brep.cull_unused_faces" title="compas.geometry.Brep.cull_unused_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cull_unused_faces</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.cull_unused_faces.html#compas.geometry.Brep.cull_unused_faces" title="compas.geometry.Brep.cull_unused_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cull_unused_faces</span></code></a></p></td>
 <td><p>Remove all unused faces.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.cull_unused_loops.html#compas.geometry.Brep.cull_unused_loops" title="compas.geometry.Brep.cull_unused_loops"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cull_unused_loops</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.cull_unused_loops.html#compas.geometry.Brep.cull_unused_loops" title="compas.geometry.Brep.cull_unused_loops"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cull_unused_loops</span></code></a></p></td>
 <td><p>Remove all unused loops.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.cull_unused_vertices.html#compas.geometry.Brep.cull_unused_vertices" title="compas.geometry.Brep.cull_unused_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cull_unused_vertices</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.cull_unused_vertices.html#compas.geometry.Brep.cull_unused_vertices" title="compas.geometry.Brep.cull_unused_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cull_unused_vertices</span></code></a></p></td>
 <td><p>Remove all unused vertices.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.edge_faces.html#compas.geometry.Brep.edge_faces" title="compas.geometry.Brep.edge_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_faces</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.edge_faces.html#compas.geometry.Brep.edge_faces" title="compas.geometry.Brep.edge_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_faces</span></code></a></p></td>
 <td><p>Identify the faces connected to a given edge.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.edge_loop.html#compas.geometry.Brep.edge_loop" title="compas.geometry.Brep.edge_loop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_loop</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.edge_loop.html#compas.geometry.Brep.edge_loop" title="compas.geometry.Brep.edge_loop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_loop</span></code></a></p></td>
 <td><p>Identify the parent loops of the a given edge.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.fillet.html#compas.geometry.Brep.fillet" title="compas.geometry.Brep.fillet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fillet</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.fillet.html#compas.geometry.Brep.fillet" title="compas.geometry.Brep.fillet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fillet</span></code></a></p></td>
 <td><p>Fillet the edges of the Brep.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.filleted.html#compas.geometry.Brep.filleted" title="compas.geometry.Brep.filleted"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filleted</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.filleted.html#compas.geometry.Brep.filleted" title="compas.geometry.Brep.filleted"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filleted</span></code></a></p></td>
 <td><p>Construct a filleted copy of the Brep.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.fix.html#compas.geometry.Brep.fix" title="compas.geometry.Brep.fix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fix</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.fix.html#compas.geometry.Brep.fix" title="compas.geometry.Brep.fix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fix</span></code></a></p></td>
 <td><p>Fix the shell.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.flip.html#compas.geometry.Brep.flip" title="compas.geometry.Brep.flip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flip</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.flip.html#compas.geometry.Brep.flip" title="compas.geometry.Brep.flip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flip</span></code></a></p></td>
 <td><p>Flip the orientation of all faces of the Brep.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_boolean_difference.html#compas.geometry.Brep.from_boolean_difference" title="compas.geometry.Brep.from_boolean_difference"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_boolean_difference</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_boolean_difference.html#compas.geometry.Brep.from_boolean_difference" title="compas.geometry.Brep.from_boolean_difference"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_boolean_difference</span></code></a></p></td>
 <td><p>Construct a Brep from the boolean difference of two other Breps.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_boolean_intersection.html#compas.geometry.Brep.from_boolean_intersection" title="compas.geometry.Brep.from_boolean_intersection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_boolean_intersection</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_boolean_intersection.html#compas.geometry.Brep.from_boolean_intersection" title="compas.geometry.Brep.from_boolean_intersection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_boolean_intersection</span></code></a></p></td>
 <td><p>Construct a BRep from the boolean intersection of two other Breps.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_boolean_union.html#compas.geometry.Brep.from_boolean_union" title="compas.geometry.Brep.from_boolean_union"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_boolean_union</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_boolean_union.html#compas.geometry.Brep.from_boolean_union" title="compas.geometry.Brep.from_boolean_union"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_boolean_union</span></code></a></p></td>
 <td><p>Construct a Brep from the boolean union of two other Breps.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_box.html#compas.geometry.Brep.from_box" title="compas.geometry.Brep.from_box"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_box</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_box.html#compas.geometry.Brep.from_box" title="compas.geometry.Brep.from_box"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_box</span></code></a></p></td>
 <td><p>Construct a Brep from a COMPAS box.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_brepfaces.html#compas.geometry.Brep.from_brepfaces" title="compas.geometry.Brep.from_brepfaces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_brepfaces</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_brepfaces.html#compas.geometry.Brep.from_brepfaces" title="compas.geometry.Brep.from_brepfaces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_brepfaces</span></code></a></p></td>
 <td><p>Make a Brep from a list of Brep faces forming an open or closed shell.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_breps.html#compas.geometry.Brep.from_breps" title="compas.geometry.Brep.from_breps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_breps</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_breps.html#compas.geometry.Brep.from_breps" title="compas.geometry.Brep.from_breps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_breps</span></code></a></p></td>
 <td><p>Construct one compound Brep from a list of other Breps.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_cone.html#compas.geometry.Brep.from_cone" title="compas.geometry.Brep.from_cone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_cone</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_cone.html#compas.geometry.Brep.from_cone" title="compas.geometry.Brep.from_cone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_cone</span></code></a></p></td>
 <td><p>Construct a Brep from a COMPAS cone.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_curves.html#compas.geometry.Brep.from_curves" title="compas.geometry.Brep.from_curves"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_curves</span></code></a></p></td>
-<td><p>Construct a Brep from a set of curves.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_curves.html#compas.geometry.Brep.from_curves" title="compas.geometry.Brep.from_curves"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_curves</span></code></a></p></td>
+<td><p>Construct a Brep from a set of closed, planar curves.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_cylinder.html#compas.geometry.Brep.from_cylinder" title="compas.geometry.Brep.from_cylinder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_cylinder</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_cylinder.html#compas.geometry.Brep.from_cylinder" title="compas.geometry.Brep.from_cylinder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_cylinder</span></code></a></p></td>
 <td><p>Construct a Brep from a COMPAS cylinder.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_extrusion.html#compas.geometry.Brep.from_extrusion" title="compas.geometry.Brep.from_extrusion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_extrusion</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_extrusion.html#compas.geometry.Brep.from_extrusion" title="compas.geometry.Brep.from_extrusion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_extrusion</span></code></a></p></td>
 <td><p>Construct a Brep by extruding a closed curve along a direction vector.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_iges.html#compas.geometry.Brep.from_iges" title="compas.geometry.Brep.from_iges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_iges</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_iges.html#compas.geometry.Brep.from_iges" title="compas.geometry.Brep.from_iges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_iges</span></code></a></p></td>
 <td><p>Construct a Brep from the data contained in an IGES file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_loft.html#compas.geometry.Brep.from_loft" title="compas.geometry.Brep.from_loft"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_loft</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_loft.html#compas.geometry.Brep.from_loft" title="compas.geometry.Brep.from_loft"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_loft</span></code></a></p></td>
 <td><p>Construct a Brep by lofting a set of curves.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_mesh.html#compas.geometry.Brep.from_mesh" title="compas.geometry.Brep.from_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_mesh</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_mesh.html#compas.geometry.Brep.from_mesh" title="compas.geometry.Brep.from_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_mesh</span></code></a></p></td>
 <td><p>Construct a Brep from a COMPAS mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_native.html#compas.geometry.Brep.from_native" title="compas.geometry.Brep.from_native"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_native</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_native.html#compas.geometry.Brep.from_native" title="compas.geometry.Brep.from_native"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_native</span></code></a></p></td>
 <td><p>Creates a Brep from an instance of a native backend Brep type.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_pipe.html#compas.geometry.Brep.from_pipe" title="compas.geometry.Brep.from_pipe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_pipe</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_pipe.html#compas.geometry.Brep.from_pipe" title="compas.geometry.Brep.from_pipe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_pipe</span></code></a></p></td>
 <td><p>Construct a Brep by extruding a closed curve along a path curve.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_plane.html#compas.geometry.Brep.from_plane" title="compas.geometry.Brep.from_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_plane</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_plane.html#compas.geometry.Brep.from_plane" title="compas.geometry.Brep.from_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_plane</span></code></a></p></td>
 <td><p>Construct a Brep from one plane and its u and v domains.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_planes.html#compas.geometry.Brep.from_planes" title="compas.geometry.Brep.from_planes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_planes</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_planes.html#compas.geometry.Brep.from_planes" title="compas.geometry.Brep.from_planes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_planes</span></code></a></p></td>
 <td><p>Construct a Brep from a set of planes.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_polygons.html#compas.geometry.Brep.from_polygons" title="compas.geometry.Brep.from_polygons"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_polygons</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_polygons.html#compas.geometry.Brep.from_polygons" title="compas.geometry.Brep.from_polygons"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_polygons</span></code></a></p></td>
 <td><p>Construct a Brep from a set of polygons.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_sphere.html#compas.geometry.Brep.from_sphere" title="compas.geometry.Brep.from_sphere"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_sphere</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_sphere.html#compas.geometry.Brep.from_sphere" title="compas.geometry.Brep.from_sphere"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_sphere</span></code></a></p></td>
 <td><p>Construct a Brep from a COMPAS sphere.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_step.html#compas.geometry.Brep.from_step" title="compas.geometry.Brep.from_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_step</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_step.html#compas.geometry.Brep.from_step" title="compas.geometry.Brep.from_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_step</span></code></a></p></td>
 <td><p>Conctruct a Brep from the data contained in a STEP file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_sweep.html#compas.geometry.Brep.from_sweep" title="compas.geometry.Brep.from_sweep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_sweep</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_sweep.html#compas.geometry.Brep.from_sweep" title="compas.geometry.Brep.from_sweep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_sweep</span></code></a></p></td>
 <td><p>Construct a BRep by sweeping a profile along a path.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.from_torus.html#compas.geometry.Brep.from_torus" title="compas.geometry.Brep.from_torus"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_torus</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.from_torus.html#compas.geometry.Brep.from_torus" title="compas.geometry.Brep.from_torus"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_torus</span></code></a></p></td>
 <td><p>Construct a Brep from a COMPAS torus.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.heal.html#compas.geometry.Brep.heal" title="compas.geometry.Brep.heal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">heal</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.heal.html#compas.geometry.Brep.heal" title="compas.geometry.Brep.heal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">heal</span></code></a></p></td>
 <td><p>Heal the shape.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.make_solid.html#compas.geometry.Brep.make_solid" title="compas.geometry.Brep.make_solid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_solid</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.make_solid.html#compas.geometry.Brep.make_solid" title="compas.geometry.Brep.make_solid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_solid</span></code></a></p></td>
 <td><p>Convert the current shape to a solid if it is a shell.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.overlap.html#compas.geometry.Brep.overlap" title="compas.geometry.Brep.overlap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">overlap</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.overlap.html#compas.geometry.Brep.overlap" title="compas.geometry.Brep.overlap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">overlap</span></code></a></p></td>
 <td><p>Compute the overlap between this BRep and another.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.sew.html#compas.geometry.Brep.sew" title="compas.geometry.Brep.sew"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sew</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.sew.html#compas.geometry.Brep.sew" title="compas.geometry.Brep.sew"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sew</span></code></a></p></td>
 <td><p>Sew together the individual parts of the shape.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.slice.html#compas.geometry.Brep.slice" title="compas.geometry.Brep.slice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">slice</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.slice.html#compas.geometry.Brep.slice" title="compas.geometry.Brep.slice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">slice</span></code></a></p></td>
 <td><p>Slice through the BRep with a plane.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.split.html#compas.geometry.Brep.split" title="compas.geometry.Brep.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.split.html#compas.geometry.Brep.split" title="compas.geometry.Brep.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a></p></td>
 <td><p>Slice through the BRep with a plane.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.to_iges.html#compas.geometry.Brep.to_iges" title="compas.geometry.Brep.to_iges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_iges</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.to_iges.html#compas.geometry.Brep.to_iges" title="compas.geometry.Brep.to_iges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_iges</span></code></a></p></td>
 <td><p>Write the Brep shape to an IGES file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.to_meshes.html#compas.geometry.Brep.to_meshes" title="compas.geometry.Brep.to_meshes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_meshes</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.to_meshes.html#compas.geometry.Brep.to_meshes" title="compas.geometry.Brep.to_meshes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_meshes</span></code></a></p></td>
 <td><p>Convert the faces of this Brep shape to meshes.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.to_polygons.html#compas.geometry.Brep.to_polygons" title="compas.geometry.Brep.to_polygons"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polygons</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.to_polygons.html#compas.geometry.Brep.to_polygons" title="compas.geometry.Brep.to_polygons"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polygons</span></code></a></p></td>
 <td><p>Convert the faces of this Brep shape to polygons.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.to_step.html#compas.geometry.Brep.to_step" title="compas.geometry.Brep.to_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_step</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.to_step.html#compas.geometry.Brep.to_step" title="compas.geometry.Brep.to_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_step</span></code></a></p></td>
 <td><p>Write the Brep shape to a STEP file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.to_stl.html#compas.geometry.Brep.to_stl" title="compas.geometry.Brep.to_stl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_stl</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.to_stl.html#compas.geometry.Brep.to_stl" title="compas.geometry.Brep.to_stl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_stl</span></code></a></p></td>
 <td><p>Write the Brep shape to an STL file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.to_tesselation.html#compas.geometry.Brep.to_tesselation" title="compas.geometry.Brep.to_tesselation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_tesselation</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.to_tesselation.html#compas.geometry.Brep.to_tesselation" title="compas.geometry.Brep.to_tesselation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_tesselation</span></code></a></p></td>
 <td><p>Create a tesselation of the shape for visualisation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.to_viewmesh.html#compas.geometry.Brep.to_viewmesh" title="compas.geometry.Brep.to_viewmesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_viewmesh</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.to_viewmesh.html#compas.geometry.Brep.to_viewmesh" title="compas.geometry.Brep.to_viewmesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_viewmesh</span></code></a></p></td>
 <td><p>Convert this Brep to a view mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.trim.html#compas.geometry.Brep.trim" title="compas.geometry.Brep.trim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trim</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.trim.html#compas.geometry.Brep.trim" title="compas.geometry.Brep.trim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trim</span></code></a></p></td>
 <td><p>Trim this Brep using the given trimming plane.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.trimmed.html#compas.geometry.Brep.trimmed" title="compas.geometry.Brep.trimmed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trimmed</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.trimmed.html#compas.geometry.Brep.trimmed" title="compas.geometry.Brep.trimmed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trimmed</span></code></a></p></td>
 <td><p>Returns a trimmed copy of this Brep using the given trimming plane.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.vertex_edges.html#compas.geometry.Brep.vertex_edges" title="compas.geometry.Brep.vertex_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_edges</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.vertex_edges.html#compas.geometry.Brep.vertex_edges" title="compas.geometry.Brep.vertex_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_edges</span></code></a></p></td>
 <td><p>Identify the edges connected to a given vertex.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.vertex_faces.html#compas.geometry.Brep.vertex_faces" title="compas.geometry.Brep.vertex_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_faces</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.vertex_faces.html#compas.geometry.Brep.vertex_faces" title="compas.geometry.Brep.vertex_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_faces</span></code></a></p></td>
 <td><p>Identify the faces connected to a vertex.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Brep.vertex_neighbors.html#compas.geometry.Brep.vertex_neighbors" title="compas.geometry.Brep.vertex_neighbors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_neighbors</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Brep.vertex_neighbors.html#compas.geometry.Brep.vertex_neighbors" title="compas.geometry.Brep.vertex_neighbors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_neighbors</span></code></a></p></td>
 <td><p>Identify the neighbouring vertices of a given vertex.</p></td>
 </tr>
 </tbody>

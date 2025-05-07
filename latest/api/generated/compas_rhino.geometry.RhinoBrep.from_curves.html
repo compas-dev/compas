@@ -59,8 +59,8 @@
         </script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="RhinoBrep.from_iges" href="compas_rhino.geometry.RhinoBrep.from_iges.html" />
-    <link rel="prev" title="RhinoBrep.from_cone" href="compas_rhino.geometry.RhinoBrep.from_cone.html" />
+    <link rel="next" title="RhinoBrep.from_cylinder" href="compas_rhino.geometry.RhinoBrep.from_cylinder.html" />
+    <link rel="prev" title="RhinoBrep.from_box" href="compas_rhino.geometry.RhinoBrep.from_box.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -1126,17 +1126,18 @@ document.write(`
 <h1>RhinoBrep.from_curves</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_rhino.geometry.RhinoBrep.from_curves">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RhinoBrep.</span></span><span class="sig-name descname"><span class="pre">from_curves</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">curves</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/d773b3e/src/compas/geometry/brep/brep.py#L359"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Construct a Brep from a set of curves.</p>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RhinoBrep.</span></span><span class="sig-name descname"><span class="pre">from_curves</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">curves</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/c1ac434/src/compas/../compas_rhino/geometry/brep/brep.py#L305"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Create a RhinoBreps from a list of planar face boundary curves.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>curves</strong><span class="classifier">list[<a class="reference internal" href="compas.geometry.NurbsCurve.html#compas.geometry.NurbsCurve" title="compas.geometry.NurbsCurve"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.NurbsCurve</span></code></a>]</span></dt><dd></dd>
+<dt><strong>curves</strong><span class="classifier">list of <a class="reference internal" href="compas.geometry.Curve.html#compas.geometry.Curve" title="compas.geometry.Curve"><code class="xref py py-class docutils literal notranslate"><span class="pre">Curve</span></code></a> or <a class="reference internal" href="compas.geometry.Polyline.html#compas.geometry.Polyline" title="compas.geometry.Polyline"><code class="xref py py-class docutils literal notranslate"><span class="pre">Polyline</span></code></a></span></dt><dd><p>The planar curves that make up the face borders of brep faces.</p>
+</dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt><a class="reference internal" href="compas.geometry.Brep.html#compas.geometry.Brep" title="compas.geometry.Brep"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Brep</span></code></a></dt><dd></dd>
+<dt>list of <a class="reference internal" href="compas_rhino.geometry.RhinoBrep.html#compas_rhino.geometry.RhinoBrep" title="compas_rhino.geometry.RhinoBrep"><code class="xref py py-class docutils literal notranslate"><span class="pre">RhinoBrep</span></code></a></dt><dd></dd>
 </dl>
 </dd>
 </dl>
