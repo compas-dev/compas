@@ -115,8 +115,8 @@ def test_mro_fallback(level2):
         return
 
     assert level2.__jsondump__()["dtype"] == "test_datastructure/Level2"
-    # Level2 should serialize Level1 into the mro
-    assert level2.__jsondump__()["mro"] == ["test_datastructure/Level1"]
+    # Level2 should serialize Level1 into the inheritance
+    assert level2.__jsondump__()["inheritance"] == ["test_datastructure/Level1"]
 
     dumped = json_dumps(level2)
     loaded = json_loads(dumped)
@@ -124,7 +124,7 @@ def test_mro_fallback(level2):
     # The loaded object should be deserialized as the closes available class: Level1
     assert loaded.__class__ == Level1
     assert loaded.__jsondump__()["dtype"] == "test_datastructure/Level1"
-    assert loaded.__jsondump__()["mro"] == []
+    assert loaded.__jsondump__()["inheritance"] == []
 
     # level1 attributes should still be available
     assert loaded.level1_attr == "level1"
@@ -139,8 +139,8 @@ def test_mro_fallback_multi_level(level3):
         return
 
     assert level3.__jsondump__()["dtype"] == "test_datastructure/Level3"
-    # Level3 should serialize Level2 and Level1 into the mro
-    assert level3.__jsondump__()["mro"] == ["test_datastructure/Level2", "test_datastructure/Level1"]
+    # Level3 should serialize Level2 and Level1 into the inheritance
+    assert level3.__jsondump__()["inheritance"] == ["test_datastructure/Level2", "test_datastructure/Level1"]
 
     dumped = json_dumps(level3)
     loaded = json_loads(dumped)
@@ -148,7 +148,7 @@ def test_mro_fallback_multi_level(level3):
     # The loaded object should be deserialized as the closes available class: Level1
     assert loaded.__class__ == Level1
     assert loaded.__jsondump__()["dtype"] == "test_datastructure/Level1"
-    assert loaded.__jsondump__()["mro"] == []
+    assert loaded.__jsondump__()["inheritance"] == []
 
     # level1 attributes should still be available
     assert loaded.level1_attr == "level1"
@@ -161,7 +161,7 @@ def test_mro_fallback_multi_level(level3):
 def test_custom_mesh(custom_mesh):
     # This test should pass both Python and IronPython
     assert custom_mesh.__jsondump__()["dtype"].endswith("CustomMesh")
-    assert custom_mesh.__jsondump__()["mro"] == ["compas.datastructures/Mesh"]
+    assert custom_mesh.__jsondump__()["inheritance"] == ["compas.datastructures/Mesh"]
     assert custom_mesh.__jsondump__()["data"]["custom_mesh_attr"] == "custom_mesh"
 
     dumped = json_dumps(custom_mesh)
@@ -169,5 +169,5 @@ def test_custom_mesh(custom_mesh):
 
     assert loaded.__class__ == Mesh
     assert loaded.__jsondump__()["dtype"] == "compas.datastructures/Mesh"
-    assert loaded.__jsondump__()["mro"] == []
+    assert loaded.__jsondump__()["inheritance"] == []
     assert not hasattr(loaded, "custom_mesh_attr")

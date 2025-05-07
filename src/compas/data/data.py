@@ -76,7 +76,7 @@ class Data(object):
         return "{}/{}".format(".".join(self.__class__.__module__.split(".")[:2]), self.__class__.__name__)
 
     @classmethod
-    def __cls_dtype__(cls):
+    def __clstype__(cls):
         return "{}/{}".format(".".join(cls.__module__.split(".")[:2]), cls.__name__)
 
     @property
