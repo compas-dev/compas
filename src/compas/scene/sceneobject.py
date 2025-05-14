@@ -280,6 +280,11 @@ class SceneObject(Data):
                     self._contrastcolor = self.color.lightened(50)
         return self._contrastcolor
 
+    @contrastcolor.setter
+    def contrastcolor(self, color):
+        # type: (compas.colors.Color) -> None
+        self._contrastcolor = Color.coerce(color)
+
     def add(self, item, **kwargs):
         """Add a scene object to the scene.
 
