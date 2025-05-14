@@ -78,17 +78,17 @@ class Scene(Datastructure):
 
     @property
     def items(self):
-        # type: () -> list
+        # type: () -> list[compas.data.Data]
         return list(self.datastore.values())
 
     @property
     def objects(self):
-        # type: () -> list
+        # type: () -> list[SceneObject]
         return list(self.objectstore.values())
 
     @property
     def context_objects(self):
-        # type: () -> list
+        # type: () -> list[SceneObject]
         guids = []
         for obj in self.objects:
             guids += obj.guids
@@ -112,6 +112,11 @@ class Scene(Datastructure):
         :class:`compas.scene.SceneObject`
             The scene object associated with the item.
         """
+
+        if "context" in kwargs:
+            if kwargs["context"] != self.context:
+                raise Exception("Object context should be the same as scene context: {} != {}".format(kwargs["context"], self.context))
+            del kwargs["context"]  # otherwist the SceneObject receives "context" twice, which results in an error
 
         # Create a corresponding new scene object
         sceneobject = SceneObjectFactory.create(item=item, context=self.context, scene=self, **kwargs)
