@@ -142,7 +142,7 @@ class SceneObject(Data):
         if item and not isinstance(item, Data):
             raise ValueError("The item assigned to this scene object should be a data object: {}".format(type(item)))
 
-        name = name or item.name
+        name = name or getattr(item, "name", None)
         super(SceneObject, self).__init__(name=name, **kwargs)
         # the scene object needs to store the context
         # because it has no access to the tree and/or the scene before it is added

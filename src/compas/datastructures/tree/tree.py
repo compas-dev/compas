@@ -474,7 +474,8 @@ class Tree(Datastructure):
             for i, child in enumerate(node.children):
                 traverse(child, hierarchy, prefix, i == len(node.children) - 1, depth + 1, node_repr)
 
-        traverse(self.root, hierarchy, node_repr=node_repr)
+        if self.root:
+            traverse(self.root, hierarchy, node_repr=node_repr)
 
         return "\n".join(hierarchy)
 

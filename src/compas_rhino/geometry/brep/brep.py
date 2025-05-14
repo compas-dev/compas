@@ -303,6 +303,39 @@ class RhinoBrep(Brep):
         return cls.from_native(rhino_cylinder.ToBrep(True, True))
 
     @classmethod
+    def from_curves(cls, curves):
+        """Create a RhinoBreps from a list of planar face boundary curves.
+
+        Parameters
+        ----------
+        curves : list of :class:`~compas.geometry.Curve` or :class:`~compas.geometry.Polyline`
+            The planar curves that make up the face borders of brep faces.
+
+        Returns
+        -------
+        list of :class:`~compas_rhino.geometry.RhinoBrep`
+
+        """
+        if not isinstance(curves, list):
+            curves = [curves]
+        faces = []
+        for curve in curves:
+            if isinstance(curve, Polyline):
+                rhino_curve = polyline_to_rhino_curve(curve)
+            else:
+                rhino_curve = curve_to_rhino(curve)
+            face = Rhino.Geometry.Brep.CreatePlanarBreps(rhino_curve, TOL.absolute)
+            if face is None:
+                raise BrepError("Failed to create face from curve: {} ".format(curve))
+            if len(face) > 1:
+                raise BrepError("Failed to create single face from curve: {} ".format(curve))
+            faces.append(face[0])
+        rhino_brep = Rhino.Geometry.Brep.JoinBreps(faces, TOL.absolute)
+        if rhino_brep is None:
+            raise BrepError("Failed to create Brep from faces: {} ".format(faces))
+        return [cls.from_native(brep) for brep in rhino_brep]
+
+    @classmethod
     def from_extrusion(cls, curve, vector, cap_ends=True):
         """Create a RhinoBrep from an extrusion.
 
