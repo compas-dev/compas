@@ -48,17 +48,17 @@ class Scene(Datastructure):
             "name": self.name,
             "attributes": self.attributes,
             "datastore": self.datastore,
-            "objects": self.objects,
+            "objectstore": self.objectstore,
             "tree": self.tree,
         }
 
-    def __init__(self, context=None, datastore=None, objects=None, tree=None, **kwargs):
+    def __init__(self, context=None, datastore=None, objectstore=None, tree=None, **kwargs):
         # type: (str | None, dict | None, dict | None, Tree | None, **kwargs) -> None
         super(Scene, self).__init__(**kwargs)
 
         self.context = context or detect_current_context()
         self.datastore = datastore or {}
-        self.objects = objects or {}
+        self.objectstore = objectstore or {}
         self.tree = tree or Tree()
         if self.tree.root is None:
             self.tree.add(TreeNode(name=self.name))
@@ -71,16 +71,26 @@ class Scene(Datastructure):
             if node.is_root:
                 return node.name
             else:
-                sceneobject = self.objects[node.name]
+                sceneobject = self.objectstore[node.name]
                 return str(sceneobject)
 
         return self.tree.get_hierarchy_string(node_repr=node_repr)
 
     @property
+    def items(self):
+        # type: () -> list
+        return list(self.datastore.values())
+
+    @property
+    def objects(self):
+        # type: () -> list
+        return list(self.objectstore.values())
+
+    @property
     def context_objects(self):
         # type: () -> list
         guids = []
-        for obj in self.objects.values():
+        for obj in self.objects:
             guids += obj.guids
         return guids
 
@@ -107,7 +117,7 @@ class Scene(Datastructure):
         sceneobject = SceneObjectFactory.create(item=item, context=self.context, scene=self, **kwargs)
 
         # Add the scene object and item to the data store
-        self.objects[str(sceneobject.guid)] = sceneobject
+        self.objectstore[str(sceneobject.guid)] = sceneobject
         self.datastore[str(item.guid)] = item
 
         # Add the scene object to the hierarchical tree
@@ -134,11 +144,11 @@ class Scene(Datastructure):
         """
         # type: (SceneObject) -> None
         guid = str(sceneobject.guid)
-        self.objects.pop(guid, None)
+        self.objectstore.pop(guid, None)
         node = self.tree.get_node_by_name(guid)
         if node:
             for descendant in node.descendants:
-                self.objects.pop(descendant.name, None)
+                self.objectstore.pop(descendant.name, None)
             self.tree.remove(node)
 
     def clear_context(self, guids=None):
@@ -193,7 +203,7 @@ class Scene(Datastructure):
         """
         guids = []
 
-        for sceneobject in list(self.objects.values()):
+        for sceneobject in self.objects:
             guids += sceneobject.guids
             sceneobject._guids = None
 
@@ -266,7 +276,7 @@ class Scene(Datastructure):
         :class:`SceneObject` or None
 
         """
-        for obj in self.objects.values():
+        for obj in self.objects:
             if isinstance(obj.item, itemtype):
                 return obj
 
@@ -285,7 +295,7 @@ class Scene(Datastructure):
 
         """
         sceneobjects = []
-        for obj in self.objects.values():
+        for obj in self.objects:
             if isinstance(obj.item, itemtype):
                 sceneobjects.append(obj)
         return sceneobjects

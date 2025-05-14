@@ -225,13 +225,13 @@ class SceneObject(Data):
     def parent(self):
         # type: () -> compas.scene.SceneObject | None
         if self.parentnode and not self.parentnode.is_root:
-            return self.scene.objects[self.parentnode.name]
+            return self.scene.objectstore[self.parentnode.name]
         return None
 
     @property
     def children(self):
         # type: () -> list[compas.scene.SceneObject]
-        return [self.scene.objects[child.name] for child in self.childnodes]
+        return [self.scene.objectstore[child.name] for child in self.childnodes]
 
     @property
     def guids(self):
