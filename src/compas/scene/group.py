@@ -27,16 +27,3 @@ class Group(SceneObject):
             └── <GeometryObject: Point>
 
     """
-
-    def __new__(cls, *args, **kwargs):
-        # overwriting __new__ to revert to the default behavior of normal object, So an instance can be created directly without providing a registered item.
-        return object.__new__(cls)
-
-    @property
-    def __data__(self):
-        # type: () -> dict
-        data = {
-            "settings": self.settings,
-            "children": [child.__data__ for child in self.children],
-        }
-        return data

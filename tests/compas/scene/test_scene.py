@@ -6,6 +6,7 @@ if not compas.IPY:
     from compas.scene import register
     from compas.scene import Scene
     from compas.scene import SceneObject
+    from compas.scene import SceneObjectFactory
     from compas.scene import SceneObjectNotRegisteredError
     from compas.data import Data
     from compas.geometry import Box
@@ -46,29 +47,29 @@ if not compas.IPY:
         register(FakeItem, FakeSceneObject, context="fake")
         register(FakeSubItem, FakeSubSceneObject, context="fake")
         item = FakeItem()
-        sceneobject = SceneObject(item, context="fake")
+        sceneobject = SceneObjectFactory.create(item, context="fake")
         assert isinstance(sceneobject, FakeSceneObject)
 
         item = FakeSubItem()
-        sceneobject = SceneObject(item, context="fake")
+        sceneobject = SceneObjectFactory.create(item, context="fake")
         assert isinstance(sceneobject, FakeSubSceneObject)
 
     def test_get_sceneobject_cls_with_out_of_order_registration():
         register(FakeSubItem, FakeSubSceneObject, context="fake")
         register(FakeItem, FakeSceneObject, context="fake")
         item = FakeItem()
-        sceneobject = SceneObject(item, context="fake")
+        sceneobject = SceneObjectFactory.create(item, context="fake")
         assert isinstance(sceneobject, FakeSceneObject)
 
         item = FakeSubItem()
-        sceneobject = SceneObject(item, context="fake")
+        sceneobject = SceneObjectFactory.create(item, context="fake")
         assert isinstance(sceneobject, FakeSubSceneObject)
 
         def test_sceneobject_auto_context_discovery(mocker):
             register_fake_context()
 
             item = FakeItem()
-            sceneobject = SceneObject(item)
+            sceneobject = SceneObjectFactory.create(item)
 
             assert isinstance(sceneobject, FakeSceneObject)
 
@@ -78,7 +79,7 @@ if not compas.IPY:
 
             with pytest.raises(SceneObjectNotRegisteredError):
                 item = FakeSubItem()
-                _ = SceneObject(item)
+                _ = SceneObjectFactory.create(item)
 
     def test_sceneobject_transform():
         scene = Scene()

@@ -9,7 +9,6 @@ from .context import after_draw
 from .context import before_draw
 from .context import clear
 from .context import detect_current_context
-from .group import Group
 from .sceneobject import SceneObject
 from .sceneobject import SceneObjectFactory
 
@@ -47,32 +46,33 @@ class Scene(Datastructure):
         # type: () -> dict
         return {
             "name": self.name,
-            "items": list(self.items.values()),
-            "objects": list(self.objects.values()),
+            "attributes": self.attributes,
+            "datastore": self.datastore,
+            "objects": self.objects,
             "tree": self.tree,
         }
 
-    def __init__(self, name="Scene", context=None):
-        # type: (str, str | None) -> None
-        super(Scene, self).__init__(name=name)
+    def __init__(self, context=None, datastore=None, objects=None, tree=None, **kwargs):
+        # type: (str | None, dict | None, dict | None, Tree | None, **kwargs) -> None
+        super(Scene, self).__init__(**kwargs)
 
-        # TODO: deal with context
         self.context = context or detect_current_context()
-
-        self.tree = Tree()
-        self.tree.add(TreeNode(name="ROOT"))
-        self.items = {}
-        self.objects = {}
+        self.datastore = datastore or {}
+        self.objects = objects or {}
+        self.tree = tree or Tree()
+        if self.tree.root is None:
+            self.tree.add(TreeNode(name=self.name))
 
     def __repr__(self):
         # type: () -> str
 
         def node_repr(node):
-            if node.name == "ROOT":
-                return self.name
-
-            sceneobject = self.objects[node.name]
-            return str(sceneobject)
+            # type: (TreeNode) -> str
+            if node.is_root:
+                return node.name
+            else:
+                sceneobject = self.objects[node.name]
+                return str(sceneobject)
 
         return self.tree.get_hierarchy_string(node_repr=node_repr)
 
@@ -108,18 +108,38 @@ class Scene(Datastructure):
 
         # Add the scene object and item to the data store
         self.objects[str(sceneobject.guid)] = sceneobject
-        self.items[str(item.guid)] = item
+        self.datastore[str(item.guid)] = item
 
         # Add the scene object to the hierarchical tree
         if parent is None:
             parent_node = self.tree.root
         else:
-            print(parent.guid)
+            if not isinstance(parent, SceneObject):
+                raise ValueError("Parent is not a SceneObject.", parent)
             parent_node = self.tree.get_node_by_name(parent.guid)
+            if parent_node is None:
+                raise ValueError("Parent is not part of the scene.", parent)
 
         self.tree.add(TreeNode(name=str(sceneobject.guid)), parent=parent_node)
 
         return sceneobject
+
+    def remove(self, sceneobject):
+        """Remove a scene object along with all its descendants from the scene.
+
+        Parameters
+        ----------
+        sceneobject : :class:`compas.scene.SceneObject`
+            The scene object to remove.
+        """
+        # type: (SceneObject) -> None
+        guid = str(sceneobject.guid)
+        self.objects.pop(guid, None)
+        node = self.tree.get_node_by_name(guid)
+        if node:
+            for descendant in node.descendants:
+                self.objects.pop(descendant.name, None)
+            self.tree.remove(node)
 
     def clear_context(self, guids=None):
         # type: (list | None) -> None
@@ -173,7 +193,7 @@ class Scene(Datastructure):
         """
         guids = []
 
-        for sceneobject in self.objects:
+        for sceneobject in list(self.objects.values()):
             guids += sceneobject.guids
             sceneobject._guids = None
 
@@ -233,7 +253,7 @@ class Scene(Datastructure):
         return self.get_node_by_name(name=name)
 
     def find_by_itemtype(self, itemtype):
-        # type: (...) -> SceneObject | None
+        # type: (type) -> SceneObject | None
         """Find the first scene object with a data item of the given type.
 
         Parameters
@@ -246,12 +266,12 @@ class Scene(Datastructure):
         :class:`SceneObject` or None
 
         """
-        for obj in self.objects:
+        for obj in self.objects.values():
             if isinstance(obj.item, itemtype):
                 return obj
 
     def find_all_by_itemtype(self, itemtype):
-        # type: (...) -> list[SceneObject]
+        # type: (type) -> list[SceneObject]
         """Find all scene objects with a data item of the given type.
 
         Parameters
@@ -265,7 +285,7 @@ class Scene(Datastructure):
 
         """
         sceneobjects = []
-        for obj in self.objects:
+        for obj in self.objects.values():
             if isinstance(obj.item, itemtype):
                 sceneobjects.append(obj)
         return sceneobjects

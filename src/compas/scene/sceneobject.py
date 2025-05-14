@@ -12,7 +12,6 @@ import compas.geometry  # noqa: F401
 import compas.scene  # noqa: F401
 from compas.colors import Color
 from compas.data import Data
-from compas.datastructures import TreeNode
 from compas.geometry import Frame
 from compas.geometry import Transformation
 
@@ -55,8 +54,9 @@ class SceneObjectFactory:
         if item is None:
             raise ValueError("Cannot create a scene object for None. Please ensure you pass an instance of a supported class.")
 
-        if scene is None:
-            raise ValueError("Cannot create a scene object without a scene.")
+        if isinstance(item, SceneObject):
+            item._scene = scene
+            return item
 
         sceneobject_cls = get_sceneobject_cls(item, **kwargs)
 
@@ -139,17 +139,24 @@ class SceneObject(Data):
         **kwargs  # type: dict
     ):  # fmt: skip
         # type: (...) -> None
-        if item and not isinstance(item, Data):
-            raise ValueError("The item assigned to this scene object should be a data object: {}".format(type(item)))
 
         name = name or getattr(item, "name", None)
         super(SceneObject, self).__init__(name=name, **kwargs)
         # the scene object needs to store the context
         # because it has no access to the tree and/or the scene before it is added
         # which means that adding child objects will be added in context "None"
+
+        if isinstance(item, Data):
+            self._item = str(item.guid)
+        elif isinstance(item, str):
+            self._item = item
+        elif item is None:
+            self._item = None
+        else:
+            raise ValueError("The item assigned to this scene object should be a data object or a str guid: {}".format(item))
+
         self.context = context
         self._scene = scene
-        self._item = item.guid
         self._guids = []
         self._node = None
         self._transformation = transformation
@@ -162,7 +169,7 @@ class SceneObject(Data):
     def __data__(self):
         # type: () -> dict
         return {
-            "item": str(self._item),
+            "item": self._item,
             "name": self.name,
             "color": self.color,
             "opacity": self.opacity,
@@ -187,7 +194,44 @@ class SceneObject(Data):
     @property
     def node(self):
         # type: () -> compas.datastructures.TreeNode
-        return self.scene.tree.get_object_node(self.guid)
+        return self.scene.tree.get_node_by_name(self.guid)
+
+    @property
+    def is_root(self):
+        # type: () -> bool
+        return self.node.is_root
+
+    @property
+    def is_leaf(self):
+        # type: () -> bool
+        return self.node.is_leaf
+
+    @property
+    def is_branch(self):
+        # type: () -> bool
+        return self.node.is_branch
+
+    @property
+    def parentnode(self):
+        # type: () -> compas.datastructures.Node | None
+        return self.node.parent
+
+    @property
+    def childnodes(self):
+        # type: () -> list[compas.datastructures.Node]
+        return self.node.children
+
+    @property
+    def parent(self):
+        # type: () -> compas.scene.SceneObject | None
+        if self.parentnode and not self.parentnode.is_root:
+            return self.scene.objects[self.parentnode.name]
+        return None
+
+    @property
+    def children(self):
+        # type: () -> list[compas.scene.SceneObject]
+        return [self.scene.objects[child.name] for child in self.childnodes]
 
     @property
     def guids(self):
@@ -235,6 +279,28 @@ class SceneObject(Data):
                 else:
                     self._contrastcolor = self.color.lightened(50)
         return self._contrastcolor
+
+    def add(self, item, **kwargs):
+        """Add a scene object to the scene.
+
+        Parameters
+        ----------
+        item : :class:`compas.data.Data`
+            The item to add to the scene.
+        **kwargs : dict
+            Additional keyword arguments to pass to the SceneObject constructor.
+
+        Returns
+        -------
+        :class:`compas.scene.SceneObject`
+            The added scene object.
+        """
+        # type: (compas.data.Data, dict) -> compas.scene.SceneObject
+        return self.scene.add(item, parent=self, **kwargs)
+
+    def remove(self):
+        """Remove this scene object along with all its descendants from the scene."""
+        self.scene.remove(self)
 
     @contrastcolor.setter
     def contrastcolor(self, color):
