@@ -119,36 +119,57 @@ def detect_current_context():
     return None
 
 
-def _get_sceneobject_cls(data, **kwargs):
-    # in any case user gets to override the choice
-    context_name = kwargs.get("context") or detect_current_context()
+def get_sceneobject_cls(item, context=None, **kwargs):
+    """Get the scene object class for a given item in the current context. If no context is provided, the current context is detected.
+    If the exact item type is not registered, a closest match in its inheritance hierarchy is used.
 
-    dtype = type(data)
+    Parameters
+    ----------
+    item : :class:`~compas.data.Data`
+        The item to get the scene object class for.
+    context : Literal['Viewer', 'Rhino', 'Grasshopper', 'Blender'], optional
+        The visualization context in which the pair should be registered.
+    **kwargs : dict
+        Additional keyword arguments.
+
+    Raises
+    ------
+    ValueError
+        If the item is None.
+    SceneObjectNotRegisteredError
+        If no scene object is registered for the item type in the current context.
+
+    Returns
+    -------
+    :class:`~compas.scene.SceneObject`
+        The scene object class for the given item.
+
+    """
+
+    if item is None:
+        raise ValueError("Cannot create a scene object for None. Please ensure you pass a instance of a supported class.")
+
+    if not ITEM_SCENEOBJECT:
+        register_scene_objects()
+
+    if context is None:
+        context = detect_current_context()
+
+    itemtype = type(item)
     cls = None
 
     if "sceneobject_type" in kwargs:
         cls = kwargs["sceneobject_type"]
     else:
-        context = ITEM_SCENEOBJECT[context_name]
+        context = ITEM_SCENEOBJECT[context]
 
-        for type_ in inspect.getmro(dtype):
-            cls = context.get(type_, None)
+        for inheritancetype in inspect.getmro(itemtype):
+            cls = context.get(inheritancetype, None)
             if cls is not None:
                 break
 
     if cls is None:
-        raise SceneObjectNotRegisteredError("No scene object is registered for this data type: {} in this context: {}".format(dtype, context_name))
+        raise SceneObjectNotRegisteredError("No scene object is registered for this data type: {} in this context: {}".format(itemtype, context))
 
-    return cls
-
-
-def get_sceneobject_cls(item, **kwargs):
-    if not ITEM_SCENEOBJECT:
-        register_scene_objects()
-
-    if item is None:
-        raise ValueError("Cannot create a scene object for None. Please ensure you pass a instance of a supported class.")
-
-    cls = _get_sceneobject_cls(item, **kwargs)
     PluginValidator.ensure_implementations(cls)
     return cls
