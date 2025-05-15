@@ -119,7 +119,7 @@ class Scene(Datastructure):
             del kwargs["context"]  # otherwist the SceneObject receives "context" twice, which results in an error
 
         # Create a corresponding new scene object
-        sceneobject = SceneObjectFactory.create(item=item, context=self.context, scene=self, **kwargs)
+        sceneobject = SceneObjectFactory(item=item, context=self.context, scene=self, **kwargs)
 
         # Add the scene object and item to the data store
         self.objectstore[str(sceneobject.guid)] = sceneobject

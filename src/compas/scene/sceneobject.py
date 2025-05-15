@@ -21,47 +21,39 @@ from .descriptors.color import ColorAttribute
 from .descriptors.protocol import DescriptorProtocol
 
 
-class SceneObjectFactory:
-    """Factory class for creating appropriate SceneObject instances based on input item type.
+def SceneObjectFactory(item=None, scene=None, **kwargs):
+    """Create appropriate SceneObject instance based on item type.
 
-    This factory encapsulates the logic for selecting the right SceneObject subclass
-    for a given data item, making the creation process more explicit and easier to understand.
+    Parameters
+    ----------
+    item : :class:`compas.data.Data`
+        The data item to create a scene object for.
+    **kwargs : dict
+        Additional keyword arguments to pass to the SceneObject constructor.
+
+    Returns
+    -------
+    :class:`compas.scene.SceneObject`
+        A SceneObject instance of the appropriate subclass for the given item.
+
+    Raises
+    ------
+    ValueError
+        If item is None.
+    SceneObjectNotRegisteredError
+        If no scene object is registered for the item type in the current context.
     """
+    if item is None:
+        raise ValueError("Cannot create a scene object for None. Please ensure you pass an instance of a supported class.")
 
-    @staticmethod
-    def create(item=None, scene=None, **kwargs):
-        """Create appropriate SceneObject instance based on item type.
+    if isinstance(item, SceneObject):
+        item._scene = scene
+        return item
 
-        Parameters
-        ----------
-        item : :class:`compas.data.Data`
-            The data item to create a scene object for.
-        **kwargs : dict
-            Additional keyword arguments to pass to the SceneObject constructor.
+    sceneobject_cls = get_sceneobject_cls(item, **kwargs)
 
-        Returns
-        -------
-        :class:`compas.scene.SceneObject`
-            A SceneObject instance of the appropriate subclass for the given item.
-
-        Raises
-        ------
-        ValueError
-            If item is None.
-        SceneObjectNotRegisteredError
-            If no scene object is registered for the item type in the current context.
-        """
-        if item is None:
-            raise ValueError("Cannot create a scene object for None. Please ensure you pass an instance of a supported class.")
-
-        if isinstance(item, SceneObject):
-            item._scene = scene
-            return item
-
-        sceneobject_cls = get_sceneobject_cls(item, **kwargs)
-
-        # Create and return an instance of the appropriate scene object class
-        return sceneobject_cls(item=item, scene=scene, **kwargs)
+    # Create and return an instance of the appropriate scene object class
+    return sceneobject_cls(item=item, scene=scene, **kwargs)
 
 
 class SceneObject(Data):

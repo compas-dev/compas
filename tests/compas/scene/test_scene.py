@@ -47,29 +47,29 @@ if not compas.IPY:
         register(FakeItem, FakeSceneObject, context="fake")
         register(FakeSubItem, FakeSubSceneObject, context="fake")
         item = FakeItem()
-        sceneobject = SceneObjectFactory.create(item, context="fake")
+        sceneobject = SceneObjectFactory(item=item, context="fake")
         assert isinstance(sceneobject, FakeSceneObject)
 
         item = FakeSubItem()
-        sceneobject = SceneObjectFactory.create(item, context="fake")
+        sceneobject = SceneObjectFactory(item=item, context="fake")
         assert isinstance(sceneobject, FakeSubSceneObject)
 
     def test_get_sceneobject_cls_with_out_of_order_registration():
         register(FakeSubItem, FakeSubSceneObject, context="fake")
         register(FakeItem, FakeSceneObject, context="fake")
         item = FakeItem()
-        sceneobject = SceneObjectFactory.create(item, context="fake")
+        sceneobject = SceneObjectFactory(item=item, context="fake")
         assert isinstance(sceneobject, FakeSceneObject)
 
         item = FakeSubItem()
-        sceneobject = SceneObjectFactory.create(item, context="fake")
+        sceneobject = SceneObjectFactory(item=item, context="fake")
         assert isinstance(sceneobject, FakeSubSceneObject)
 
         def test_sceneobject_auto_context_discovery(mocker):
             register_fake_context()
 
             item = FakeItem()
-            sceneobject = SceneObjectFactory.create(item)
+            sceneobject = SceneObjectFactory(item=item)
 
             assert isinstance(sceneobject, FakeSceneObject)
 
@@ -79,7 +79,7 @@ if not compas.IPY:
 
             with pytest.raises(SceneObjectNotRegisteredError):
                 item = FakeSubItem()
-                _ = SceneObjectFactory.create(item)
+                _ = SceneObjectFactory(item=item)
 
     def test_sceneobject_transform():
         scene = Scene()
