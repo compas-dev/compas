@@ -119,6 +119,7 @@ def angle_vectors_signed(u, v, normal, deg=False, tol=None):
     else:
         return angle
 
+
 def angle_vectors_projected(u, v, normal, deg=False, tol=None):
     """Computes the signed angle between two vectors.
 
@@ -147,12 +148,12 @@ def angle_vectors_projected(u, v, normal, deg=False, tol=None):
     Examples
     --------
     >>> normal = [0.0, 0.0, 1.0]
-    >>> angle_vectors_signed([0.0, 1.0, 0.0], [1.0, 0.0, 0.0], normal)
+    >>> angle_vectors_projected([0.0, 1.0, -1.0], [1.0, 0.0, 1.0], normal)
     -1.57079
 
     """
-    u_cross = cross_vectors(u,normal)
-    v_cross = cross_vectors(v,normal)
+    u_cross = cross_vectors(u, normal)
+    v_cross = cross_vectors(v, normal)
 
     return angle_vectors_signed(u_cross, v_cross, normal, deg, tol)
 

@@ -22,6 +22,51 @@ class Datastructure(Data):
         self._obb = None
 
     @property
+    def __inheritance__(self):
+        """Get the inheritance chain of the datastructure.
+        Until one level above the Datastructure class (eg. Mesh, Graph, ...).
+
+        Returns
+        -------
+        list[str]
+            The inheritance chain of the datastructure.
+
+        """
+        inheritance = []
+        for cls in self.__class__.__mro__:
+            if cls == self.__class__:
+                continue
+            if cls == Datastructure:
+                break
+            inheritance.append(cls.__clstype__())
+        return inheritance
+
+    def __jsondump__(self, minimal=False):
+        """Return the required information for serialization with the COMPAS JSON serializer.
+
+        Parameters
+        ----------
+        minimal : bool, optional
+            If True, exclude the GUID from the dump dict.
+
+        Returns
+        -------
+        dict
+
+        """
+        state = {
+            "dtype": self.__dtype__,
+            "data": self.__data__,
+            "inheritance": self.__inheritance__,
+        }
+        if minimal:
+            return state
+        if self._name is not None:
+            state["name"] = self._name
+        state["guid"] = str(self.guid)
+        return state
+
+    @property
     def aabb(self):
         if self._aabb is None:
             self._aabb = self.compute_aabb()
