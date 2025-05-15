@@ -278,6 +278,7 @@ class SceneObject(Data):
         self._contrastcolor = Color.coerce(color)
 
     def add(self, item, **kwargs):
+        # type: (compas.data.Data, dict) -> compas.scene.SceneObject
         """Add a child item to the scene object.
 
         Parameters
@@ -292,7 +293,6 @@ class SceneObject(Data):
         :class:`compas.scene.SceneObject`
             The added scene object.
         """
-        # type: (compas.data.Data, dict) -> compas.scene.SceneObject
         return self.scene.add(item, parent=self, **kwargs)
 
     def remove(self):
