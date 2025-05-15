@@ -35,6 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed a bug when printing an empty `Tree`.
 * Fixed a bug in `Group` for IronPython where the decoding declaration was missing.
 * Fixed a bug where a `Group` without name could not be added to the scene.
+* Fixed a bug where `angle_vectors_projected` returned a 0 when an input vector was parallel to projection normal. Now returns `None`.
 
 ### Removed
 
