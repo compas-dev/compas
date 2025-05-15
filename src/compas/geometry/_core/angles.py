@@ -155,6 +155,9 @@ def angle_vectors_projected(u, v, normal, deg=False, tol=None):
     u_cross = cross_vectors(u, normal)
     v_cross = cross_vectors(v, normal)
 
+    if TOL.is_allclose(u_cross, [0.0, 0.0, 0.0]) or TOL.is_allclose(v_cross, [0.0, 0.0, 0.0]):
+        return None
+
     return angle_vectors_signed(u_cross, v_cross, normal, deg, tol)
 
 
