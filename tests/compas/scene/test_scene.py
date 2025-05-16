@@ -212,7 +212,7 @@ if not compas.IPY:
     def test_scene_initialization(mocker):
         # Mock context detection at the correct import path
         mocker.patch("compas.scene.scene.detect_current_context", return_value="fake")
-        
+
         # Test default initialization
         scene = Scene()
         assert scene.context == "fake"
@@ -259,13 +259,13 @@ if not compas.IPY:
         mocker.patch("compas.scene.scene.detect_current_context", return_value="fake")
         scene = Scene(context="fake")
         register(FakeItem, FakeSceneObject, context="fake")
-        
+
         item = FakeItem()
         sceneobj = scene.add(item)
-        
+
         # Mock the _guids attribute to return test guids
         sceneobj._guids = ["guid1", "guid2"]
-        
+
         context_objects = scene.context_objects
         assert len(context_objects) == 2
         assert "guid1" in context_objects
@@ -290,26 +290,22 @@ if not compas.IPY:
         scene = Scene(context="fake")
         register(FakeItem, FakeSceneObject, context="fake")
         register(FakeSubItem, FakeSubSceneObject, context="fake")
-        
+
         # Create items and add them to the scene
         item1 = FakeItem()
         item2 = FakeSubItem()
-        sceneobj1 = scene.add(item1)
-        sceneobj2 = scene.add(item2)
-        
-        # Ensure the datastore is properly set up
-        scene.datastore[str(item1.guid)] = item1
-        scene.datastore[str(item2.guid)] = item2
-        
+        scene.add(item1)
+        scene.add(item2)
+
         # Find objects by type
         found = scene.find_by_itemtype(FakeItem)
         assert found is not None
         assert found._item == str(item1.guid)
-        
+
         found = scene.find_by_itemtype(FakeSubItem)
         assert found is not None
         assert found._item == str(item2.guid)
-        
+
         not_found = scene.find_by_itemtype(str)  # type that doesn't exist in scene
         assert not_found is None
 
@@ -318,29 +314,24 @@ if not compas.IPY:
         scene = Scene(context="fake")
         register(FakeItem, FakeSceneObject, context="fake")
         register(FakeSubItem, FakeSubSceneObject, context="fake")
-        
+
         # Create items and add them to the scene
         item1 = FakeItem()
         item2 = FakeSubItem()
         item3 = FakeItem()
-        sceneobj1 = scene.add(item1)
-        sceneobj2 = scene.add(item2)
-        sceneobj3 = scene.add(item3)
-        
-        # Ensure the datastore is properly set up
-        scene.datastore[str(item1.guid)] = item1
-        scene.datastore[str(item2.guid)] = item2
-        scene.datastore[str(item3.guid)] = item3
-        
+        scene.add(item1)
+        scene.add(item2)
+        scene.add(item3)
+
         # Find all objects by type
         found = scene.find_all_by_itemtype(FakeItem)
         assert len(found) == 3
         assert all(obj._item in [str(item1.guid), str(item2.guid), str(item3.guid)] for obj in found)
-        
+
         found = scene.find_all_by_itemtype(FakeSubItem)
         assert len(found) == 1
         assert all(obj._item == str(item2.guid) for obj in found)
-        
+
         not_found = scene.find_all_by_itemtype(str)  # type that doesn't exist in scene
         assert len(not_found) == 0
 
