@@ -131,7 +131,7 @@ class Scene(Datastructure):
         else:
             if not isinstance(parent, SceneObject):
                 raise ValueError("Parent is not a SceneObject.", parent)
-            parent_node = self.tree.get_node_by_name(parent.guid)
+            parent_node = self.get_sceneobject_node(parent)
             if parent_node is None:
                 raise ValueError("Parent is not part of the scene.", parent)
 
@@ -148,13 +148,12 @@ class Scene(Datastructure):
             The scene object to remove.
         """
         # type: (SceneObject) -> None
-        guid = str(sceneobject.guid)
-        self.objectstore.pop(guid, None)
-        node = self.tree.get_node_by_name(guid)
+        node = self.get_sceneobject_node(sceneobject)
         if node:
             for descendant in node.descendants:
                 self.objectstore.pop(descendant.name, None)
             self.tree.remove(node)
+        self.objectstore.pop(str(sceneobject.guid), None)
 
     def clear_context(self, guids=None):
         # type: (list | None) -> None
@@ -265,7 +264,7 @@ class Scene(Datastructure):
         :class:`SceneObject`
 
         """
-        return self.get_node_by_name(name=name)
+        return next((obj for obj in self.objects if obj.name == name), None)
 
     def find_by_itemtype(self, itemtype):
         # type: (type) -> SceneObject | None
@@ -304,3 +303,30 @@ class Scene(Datastructure):
             if isinstance(obj.item, itemtype):
                 sceneobjects.append(obj)
         return sceneobjects
+
+    def get_sceneobject_node(self, sceneobject):
+        # type: (SceneObject) -> TreeNode
+        """Get the TreeNode that corresponds to a scene object.
+
+        Parameters
+        ----------
+        sceneobject : :class:`compas.scene.SceneObject`
+
+        Returns
+        -------
+        :class:`compas.datastructures.TreeNode`
+
+        Raises
+        ------
+        TypeError
+            If the scene object is not a :class:`compas.scene.SceneObject`.
+        ValueError
+            If the scene object is not part of this scene.
+        """
+
+        if not isinstance(sceneobject, SceneObject):
+            raise TypeError("SceneObject expected.", sceneobject)
+        if sceneobject.scene is not self:
+            raise ValueError("SceneObject not part of this scene.", sceneobject)
+
+        return self.tree.get_node_by_name(sceneobject.guid)

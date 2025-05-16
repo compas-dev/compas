@@ -186,7 +186,7 @@ class SceneObject(Data):
     @property
     def node(self):
         # type: () -> compas.datastructures.TreeNode
-        return self.scene.tree.get_node_by_name(self.guid)
+        return self.scene.get_sceneobject_node(self)
 
     @property
     def is_root(self):
