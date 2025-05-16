@@ -120,14 +120,14 @@ if not compas.IPY:
     def test_scene_context_validation():
         # Register the fake context first
         register(FakeItem, FakeSceneObject, context="fake")
-        
+
         scene = Scene(context="fake")
         item = FakeItem()
-        
+
         # This should work since the context matches
         sceneobj = scene.add(item, context="fake")
         assert isinstance(sceneobj, FakeSceneObject)
-        
+
         # This should raise an exception since the context doesn't match
         with pytest.raises(Exception) as excinfo:
             scene.add(item, context="different")
@@ -141,7 +141,7 @@ if not compas.IPY:
     def test_get_sceneobject_cls_auto_registration():
         # Clear the registration
         context.ITEM_SCENEOBJECT.clear()
-        
+
         # This should trigger auto-registration
         item = FakeItem()
         register(FakeItem, FakeSceneObject, context="fake")
@@ -151,7 +151,7 @@ if not compas.IPY:
     def test_get_sceneobject_cls_inheritance():
         # Register base class
         register(FakeItem, FakeSceneObject, context="fake")
-        
+
         # Test that subclass uses base class's scene object
         item = FakeSubItem()
         cls = get_sceneobject_cls(item, context="fake")
@@ -165,7 +165,7 @@ if not compas.IPY:
     def test_get_sceneobject_cls_no_registration():
         # Clear the registration
         context.ITEM_SCENEOBJECT.clear()
-        
+
         # Try to get scene object for unregistered item
         item = FakeItem()
         with pytest.raises(SceneObjectNotRegisteredError) as excinfo:

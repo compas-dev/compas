@@ -217,12 +217,16 @@ def test_tree_to_graph(simple_tree):
 def test_treenode_representation(simple_tree):
     def node_repr(node):
         return node.name + "  CUSTOM STRING"
+
     print(simple_tree.get_hierarchy_string(node_repr=node_repr))
 
-    assert simple_tree.get_hierarchy_string(node_repr=node_repr) == """└── root  CUSTOM STRING
+    assert (
+        simple_tree.get_hierarchy_string(node_repr=node_repr)
+        == """└── root  CUSTOM STRING
     ├── branch1  CUSTOM STRING
     │   ├── leaf1_1  CUSTOM STRING
     │   └── leaf1_2  CUSTOM STRING
     └── branch2  CUSTOM STRING
         ├── leaf2_1  CUSTOM STRING
         └── leaf2_2  CUSTOM STRING"""
+    )
