@@ -159,11 +159,6 @@ if not compas.IPY:
         cls = get_sceneobject_cls(item, context="fake")
         assert cls == FakeSceneObject
 
-    def test_get_sceneobject_cls_custom_type():
-        item = FakeItem()
-        cls = get_sceneobject_cls(item, context="fake", sceneobject_type=FakeSubSceneObject)
-        assert cls == FakeSubSceneObject
-
     def test_get_sceneobject_cls_no_registration():
         # Clear the registration
         context.ITEM_SCENEOBJECT.clear()

@@ -21,13 +21,17 @@ from .descriptors.color import ColorAttribute
 from .descriptors.protocol import DescriptorProtocol
 
 
-def SceneObjectFactory(item=None, scene=None, **kwargs):
+def SceneObjectFactory(item=None, scene=None, context=None, **kwargs):
     """Create appropriate SceneObject instance based on item type.
 
     Parameters
     ----------
     item : :class:`compas.data.Data`
         The data item to create a scene object for.
+    scene : :class:`compas.scene.Scene`, optional
+        The scene in which the scene object is created.
+    context : str, optional
+        The context in which the scene object is created.
     **kwargs : dict
         Additional keyword arguments to pass to the SceneObject constructor.
 
@@ -50,10 +54,10 @@ def SceneObjectFactory(item=None, scene=None, **kwargs):
         item._scene = scene
         return item
 
-    sceneobject_cls = get_sceneobject_cls(item, **kwargs)
+    sceneobject_cls = get_sceneobject_cls(item, context=context)
 
     # Create and return an instance of the appropriate scene object class
-    return sceneobject_cls(item=item, scene=scene, **kwargs)
+    return sceneobject_cls(item=item, scene=scene, context=context, **kwargs)
 
 
 class SceneObject(Data):

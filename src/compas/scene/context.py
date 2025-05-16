@@ -119,7 +119,7 @@ def detect_current_context():
     return None
 
 
-def get_sceneobject_cls(item, context=None, sceneobject_type=None):
+def get_sceneobject_cls(item, context=None):
     """Get the scene object class for a given item in the current context. If no context is provided, the current context is detected.
     If the exact item type is not registered, a closest match in its inheritance hierarchy is used.
 
@@ -129,8 +129,6 @@ def get_sceneobject_cls(item, context=None, sceneobject_type=None):
         The item to get the scene object class for.
     context : Literal['Viewer', 'Rhino', 'Grasshopper', 'Blender'], optional
         The visualization context in which the pair should be registered.
-    sceneobject_type : :class:`~compas.scene.SceneObject`, optional
-        The scene object type to use.
 
     Raises
     ------
@@ -156,17 +154,15 @@ def get_sceneobject_cls(item, context=None, sceneobject_type=None):
         context = detect_current_context()
 
     itemtype = type(item)
+
+    context = ITEM_SCENEOBJECT[context]
+
     cls = None
 
-    if sceneobject_type is not None:
-        cls = sceneobject_type
-    else:
-        context = ITEM_SCENEOBJECT[context]
-
-        for inheritancetype in inspect.getmro(itemtype):
-            cls = context.get(inheritancetype, None)
-            if cls is not None:
-                break
+    for inheritancetype in inspect.getmro(itemtype):
+        cls = context.get(inheritancetype, None)
+        if cls is not None:
+            break
 
     if cls is None:
         raise SceneObjectNotRegisteredError("No scene object is registered for this data type: {} in this context: {}".format(itemtype, context))
