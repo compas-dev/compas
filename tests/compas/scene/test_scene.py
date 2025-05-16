@@ -13,6 +13,7 @@ if not compas.IPY:
     from compas.geometry import Frame
     from compas.geometry import Translation
     from compas.scene import get_sceneobject_cls
+    from compas.datastructures import Tree
 
     @pytest.fixture(autouse=True)
     def reset_sceneobjects_registration():
@@ -75,8 +76,8 @@ if not compas.IPY:
             assert isinstance(sceneobject, FakeSceneObject)
 
         def test_sceneobject_auto_context_discovery_no_context(mocker):
-            mocker.patch("compas.scene.context.compas.is_grasshopper", return_value=False)
-            mocker.patch("compas.scene.context.compas.is_rhino", return_value=False)
+            mocker.patch("compas.scene.scene.detect_current_context", return_value=False)
+            mocker.patch("compas.scene.scene.detect_current_context", return_value=False)
 
             with pytest.raises(SceneObjectNotRegisteredError):
                 item = FakeSubItem()
@@ -207,3 +208,163 @@ if not compas.IPY:
         # Compare each line
         for expected, actual in zip(expected_lines, scene_repr.split("\n")):
             assert expected == actual
+
+    def test_scene_initialization(mocker):
+        # Mock context detection at the correct import path
+        mocker.patch("compas.scene.scene.detect_current_context", return_value="fake")
+        
+        # Test default initialization
+        scene = Scene()
+        assert scene.context == "fake"
+        assert scene.datastore == {}
+        assert scene.objectstore == {}
+        assert scene.tree is not None
+        assert scene.tree.root is not None
+        assert scene.tree.root.name == scene.name
+
+        # Test initialization with custom parameters
+        custom_tree = Tree()
+        custom_datastore = {"test": "data"}
+        custom_objectstore = {"test": "object"}
+        scene = Scene(context="test", tree=custom_tree, datastore=custom_datastore, objectstore=custom_objectstore)
+        assert scene.context == "test"
+        assert scene.tree == custom_tree
+        assert scene.datastore == custom_datastore
+        assert scene.objectstore == custom_objectstore
+
+    def test_scene_data():
+        scene = Scene()
+        data = scene.__data__
+        assert "name" in data
+        assert "attributes" in data
+        assert "datastore" in data
+        assert "objectstore" in data
+        assert "tree" in data
+
+    def test_scene_items():
+        scene = Scene(context="fake")
+        register(FakeItem, FakeSceneObject, context="fake")
+
+        item1 = FakeItem()
+        item2 = FakeItem()
+        scene.add(item1)
+        scene.add(item2)
+
+        items = scene.items
+        assert len(items) == 2
+        assert item1 in items
+        assert item2 in items
+
+    def test_scene_context_objects(mocker):
+        mocker.patch("compas.scene.scene.detect_current_context", return_value="fake")
+        scene = Scene(context="fake")
+        register(FakeItem, FakeSceneObject, context="fake")
+        
+        item = FakeItem()
+        sceneobj = scene.add(item)
+        
+        # Mock the _guids attribute to return test guids
+        sceneobj._guids = ["guid1", "guid2"]
+        
+        context_objects = scene.context_objects
+        assert len(context_objects) == 2
+        assert "guid1" in context_objects
+        assert "guid2" in context_objects
+
+    def test_scene_find_by_name():
+        scene = Scene(context="fake")
+        register(FakeItem, FakeSceneObject, context="fake")
+
+        item = FakeItem()
+        sceneobj = scene.add(item)
+        sceneobj.name = "test_object"
+
+        found = scene.find_by_name("test_object")
+        assert found == sceneobj
+
+        not_found = scene.find_by_name("nonexistent")
+        assert not_found is None
+
+    def test_scene_find_by_itemtype(mocker):
+        mocker.patch("compas.scene.scene.detect_current_context", return_value="fake")
+        scene = Scene(context="fake")
+        register(FakeItem, FakeSceneObject, context="fake")
+        register(FakeSubItem, FakeSubSceneObject, context="fake")
+        
+        # Create items and add them to the scene
+        item1 = FakeItem()
+        item2 = FakeSubItem()
+        sceneobj1 = scene.add(item1)
+        sceneobj2 = scene.add(item2)
+        
+        # Ensure the datastore is properly set up
+        scene.datastore[str(item1.guid)] = item1
+        scene.datastore[str(item2.guid)] = item2
+        
+        # Find objects by type
+        found = scene.find_by_itemtype(FakeItem)
+        assert found is not None
+        assert found._item == str(item1.guid)
+        
+        found = scene.find_by_itemtype(FakeSubItem)
+        assert found is not None
+        assert found._item == str(item2.guid)
+        
+        not_found = scene.find_by_itemtype(str)  # type that doesn't exist in scene
+        assert not_found is None
+
+    def test_scene_find_all_by_itemtype(mocker):
+        mocker.patch("compas.scene.scene.detect_current_context", return_value="fake")
+        scene = Scene(context="fake")
+        register(FakeItem, FakeSceneObject, context="fake")
+        register(FakeSubItem, FakeSubSceneObject, context="fake")
+        
+        # Create items and add them to the scene
+        item1 = FakeItem()
+        item2 = FakeSubItem()
+        item3 = FakeItem()
+        sceneobj1 = scene.add(item1)
+        sceneobj2 = scene.add(item2)
+        sceneobj3 = scene.add(item3)
+        
+        # Ensure the datastore is properly set up
+        scene.datastore[str(item1.guid)] = item1
+        scene.datastore[str(item2.guid)] = item2
+        scene.datastore[str(item3.guid)] = item3
+        
+        # Find all objects by type
+        found = scene.find_all_by_itemtype(FakeItem)
+        assert len(found) == 3
+        assert all(obj._item in [str(item1.guid), str(item2.guid), str(item3.guid)] for obj in found)
+        
+        found = scene.find_all_by_itemtype(FakeSubItem)
+        assert len(found) == 1
+        assert all(obj._item == str(item2.guid) for obj in found)
+        
+        not_found = scene.find_all_by_itemtype(str)  # type that doesn't exist in scene
+        assert len(not_found) == 0
+
+    def test_scene_get_sceneobject_node():
+        scene = Scene(context="fake")
+        register(FakeItem, FakeSceneObject, context="fake")
+
+        item = FakeItem()
+        sceneobj = scene.add(item)
+
+        # Test successful case
+        node = scene.get_sceneobject_node(sceneobj)
+        assert node is not None
+        assert node.name == str(sceneobj.guid)
+
+        # Test TypeError for non-SceneObject
+        with pytest.raises(TypeError) as excinfo:
+            scene.get_sceneobject_node("not a scene object")
+        assert "SceneObject expected" in str(excinfo.value)
+
+        # Test ValueError for SceneObject from different scene
+        other_scene = Scene(context="fake")
+        other_item = FakeItem()
+        other_sceneobj = other_scene.add(other_item)
+        with pytest.raises(ValueError) as excinfo:
+            scene.get_sceneobject_node(other_sceneobj)
+        assert "SceneObject not part of this scene" in str(excinfo.value)

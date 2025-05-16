@@ -181,7 +181,7 @@ class SceneObject(Data):
     @property
     def item(self):
         # type: () -> compas.data.Data
-        return self.scene.items[self._item]
+        return self.scene.datastore[self._item]
 
     @property
     def node(self):
