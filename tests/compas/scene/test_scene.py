@@ -171,3 +171,39 @@ if not compas.IPY:
         with pytest.raises(SceneObjectNotRegisteredError) as excinfo:
             get_sceneobject_cls(item, context="fake")
         assert "No scene object is registered for this data type" in str(excinfo.value)
+
+    def test_scene_representation():
+        # Create a scene with a hierarchy of objects
+        scene = Scene(context="fake")
+        register(FakeItem, FakeSceneObject, context="fake")
+
+        # Create items and add them to the scene
+        root_item = FakeItem()
+        child1_item = FakeItem()
+        child2_item = FakeItem()
+        grandchild1_item = FakeItem()
+        grandchild2_item = FakeItem()
+
+        # Add objects to create a hierarchy
+        root = scene.add(root_item)
+        child1 = scene.add(child1_item, parent=root)
+        scene.add(child2_item, parent=root)
+        scene.add(grandchild1_item, parent=child1)
+        scene.add(grandchild2_item, parent=child1)
+
+        # Get the string representation
+        scene_repr = str(scene)
+
+        # The representation should show the hierarchy with scene objects
+        expected_lines = [
+            "└── Scene",
+            "    └── <FakeSceneObject: FakeItem>",
+            "        ├── <FakeSceneObject: FakeItem>",
+            "        │   ├── <FakeSceneObject: FakeItem>",
+            "        │   └── <FakeSceneObject: FakeItem>",
+            "        └── <FakeSceneObject: FakeItem>",
+        ]
+
+        # Compare each line
+        for expected, actual in zip(expected_lines, scene_repr.split("\n")):
+            assert expected == actual
