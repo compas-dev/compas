@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import compas
 
 if not compas.IPY:

@@ -10,10 +10,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Added `inheritance` field to `__jsondump__` of `compas.datastructures.Datastructure` to allow for deserialization to closest available superclass of custom datastructures.
+* Added `compas.scene.Scene.get_sceneobject_node` to get the TreeNode that corresponds to a scene object.
+* Added `compas.scene.SceneObjectFactory` method to create appropriate scene objects from data.
 
 ### Changed
 
+* Changed `compas.scene.Scene` to use underlying `datastore`, `objectstore` and `tree` attributes for more transparent serialization and deserialization processes.
+* Changed `compas.scene.SceneObject` to use object `guid` to retrieve the corresponding TreeNode from the scene tree, and use item `guid` to retrieve the corresponding data item from the scene datastore.
+
 ### Removed
+
+* Removed `compas.scene.SceneObject.__new__` method, explicitly use `compas.scene.SceneObjectFactory` instead.
 
 
 ## [2.11.0] 2025-04-22
