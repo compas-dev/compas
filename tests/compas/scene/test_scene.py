@@ -12,6 +12,7 @@ if not compas.IPY:
     from compas.geometry import Box
     from compas.geometry import Frame
     from compas.geometry import Translation
+    from compas.scene import get_sceneobject_cls
 
     @pytest.fixture(autouse=True)
     def reset_sceneobjects_registration():
@@ -115,3 +116,58 @@ if not compas.IPY:
         scene.clear(clear_context=False, clear_scene=True)
 
         assert len(scene.objects) == 0
+
+    def test_scene_context_validation():
+        # Register the fake context first
+        register(FakeItem, FakeSceneObject, context="fake")
+        
+        scene = Scene(context="fake")
+        item = FakeItem()
+        
+        # This should work since the context matches
+        sceneobj = scene.add(item, context="fake")
+        assert isinstance(sceneobj, FakeSceneObject)
+        
+        # This should raise an exception since the context doesn't match
+        with pytest.raises(Exception) as excinfo:
+            scene.add(item, context="different")
+        assert "Object context should be the same as scene context" in str(excinfo.value)
+
+    def test_get_sceneobject_cls_none_item():
+        with pytest.raises(ValueError) as excinfo:
+            get_sceneobject_cls(None)
+        assert "Cannot create a scene object for None" in str(excinfo.value)
+
+    def test_get_sceneobject_cls_auto_registration():
+        # Clear the registration
+        context.ITEM_SCENEOBJECT.clear()
+        
+        # This should trigger auto-registration
+        item = FakeItem()
+        register(FakeItem, FakeSceneObject, context="fake")
+        cls = get_sceneobject_cls(item, context="fake")
+        assert cls == FakeSceneObject
+
+    def test_get_sceneobject_cls_inheritance():
+        # Register base class
+        register(FakeItem, FakeSceneObject, context="fake")
+        
+        # Test that subclass uses base class's scene object
+        item = FakeSubItem()
+        cls = get_sceneobject_cls(item, context="fake")
+        assert cls == FakeSceneObject
+
+    def test_get_sceneobject_cls_custom_type():
+        item = FakeItem()
+        cls = get_sceneobject_cls(item, context="fake", sceneobject_type=FakeSubSceneObject)
+        assert cls == FakeSubSceneObject
+
+    def test_get_sceneobject_cls_no_registration():
+        # Clear the registration
+        context.ITEM_SCENEOBJECT.clear()
+        
+        # Try to get scene object for unregistered item
+        item = FakeItem()
+        with pytest.raises(SceneObjectNotRegisteredError) as excinfo:
+            get_sceneobject_cls(item, context="fake")
+        assert "No scene object is registered for this data type" in str(excinfo.value)

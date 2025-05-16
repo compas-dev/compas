@@ -119,7 +119,7 @@ def detect_current_context():
     return None
 
 
-def get_sceneobject_cls(item, context=None, **kwargs):
+def get_sceneobject_cls(item, context=None, sceneobject_type=None):
     """Get the scene object class for a given item in the current context. If no context is provided, the current context is detected.
     If the exact item type is not registered, a closest match in its inheritance hierarchy is used.
 
@@ -129,8 +129,8 @@ def get_sceneobject_cls(item, context=None, **kwargs):
         The item to get the scene object class for.
     context : Literal['Viewer', 'Rhino', 'Grasshopper', 'Blender'], optional
         The visualization context in which the pair should be registered.
-    **kwargs : dict
-        Additional keyword arguments.
+    sceneobject_type : :class:`~compas.scene.SceneObject`, optional
+        The scene object type to use.
 
     Raises
     ------
@@ -158,8 +158,8 @@ def get_sceneobject_cls(item, context=None, **kwargs):
     itemtype = type(item)
     cls = None
 
-    if "sceneobject_type" in kwargs:
-        cls = kwargs["sceneobject_type"]
+    if sceneobject_type is not None:
+        cls = sceneobject_type
     else:
         context = ITEM_SCENEOBJECT[context]
 

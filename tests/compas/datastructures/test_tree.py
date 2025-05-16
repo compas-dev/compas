@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import pytest
 import compas
 import json
@@ -206,3 +207,22 @@ def test_tree_to_graph(simple_tree):
     assert graph2.has_edge(("root", "branch2"))
     assert graph2.has_edge(("branch2", "leaf2_1"))
     assert graph2.has_edge(("branch2", "leaf2_2"))
+
+
+# =============================================================================
+# TreeNode Representation
+# =============================================================================
+
+
+def test_treenode_representation(simple_tree):
+    def node_repr(node):
+        return node.name + "  CUSTOM STRING"
+    print(simple_tree.get_hierarchy_string(node_repr=node_repr))
+
+    assert simple_tree.get_hierarchy_string(node_repr=node_repr) == """└── root  CUSTOM STRING
+    ├── branch1  CUSTOM STRING
+    │   ├── leaf1_1  CUSTOM STRING
+    │   └── leaf1_2  CUSTOM STRING
+    └── branch2  CUSTOM STRING
+        ├── leaf2_1  CUSTOM STRING
+        └── leaf2_2  CUSTOM STRING"""
