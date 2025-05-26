@@ -10,7 +10,7 @@ from __future__ import division
 
 from .exceptions import SceneObjectNotRegisteredError
 from .sceneobject import SceneObject
-from .sceneobject import SceneObjectFactory
+from .sceneobject import sceneobject_factory
 from .meshobject import MeshObject
 from .graphobject import GraphObject
 from .geometryobject import GeometryObject
@@ -44,7 +44,7 @@ def register_scene_objects_base():
 __all__ = [
     "SceneObjectNotRegisteredError",
     "SceneObject",
-    "SceneObjectFactory",
+    "sceneobject_factory",
     "MeshObject",
     "GraphObject",
     "GeometryObject",

@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added `inheritance` field to `__jsondump__` of `compas.datastructures.Datastructure` to allow for deserialization to closest available superclass of custom datastructures.
 * Added `compas.scene.Scene.get_sceneobject_node` to get the TreeNode that corresponds to a scene object.
-* Added `compas.scene.SceneObjectFactory` method to create appropriate scene objects from data.
+* Added `compas.scene.sceneobject_factory` method to create appropriate scene objects from data.
 
 ### Changed
 
@@ -20,7 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-* Removed `compas.scene.SceneObject.__new__` method, explicitly use `compas.scene.SceneObjectFactory` instead.
+* Removed `compas.scene.SceneObject.__new__` method, explicitly use `compas.scene.sceneobject_factory` instead.
+* Removed `frame` kwarg from `compas.scene.SceneObject` constructor, since it is now computed from the `worldtransformation` attribute.
 
 
 ## [2.11.0] 2025-04-22

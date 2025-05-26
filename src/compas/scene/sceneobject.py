@@ -21,7 +21,7 @@ from .descriptors.color import ColorAttribute
 from .descriptors.protocol import DescriptorProtocol
 
 
-def SceneObjectFactory(item=None, scene=None, context=None, **kwargs):
+def sceneobject_factory(item=None, scene=None, context=None, **kwargs):
     """Create appropriate SceneObject instance based on item type.
 
     Parameters
@@ -190,7 +190,9 @@ class SceneObject(Data):
     @property
     def node(self):
         # type: () -> compas.datastructures.TreeNode
-        return self.scene.get_sceneobject_node(self)
+        if self._node is None:
+            self._node = self.scene.get_sceneobject_node(self)
+        return self._node
 
     @property
     def is_root(self):

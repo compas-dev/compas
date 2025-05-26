@@ -10,7 +10,7 @@ from .context import before_draw
 from .context import clear
 from .context import detect_current_context
 from .sceneobject import SceneObject
-from .sceneobject import SceneObjectFactory
+from .sceneobject import sceneobject_factory
 
 
 class Scene(Datastructure):
@@ -88,7 +88,7 @@ class Scene(Datastructure):
 
     @property
     def context_objects(self):
-        # type: () -> list[SceneObject]
+        # type: () -> list
         guids = []
         for obj in self.objects:
             guids += obj.guids
@@ -119,7 +119,7 @@ class Scene(Datastructure):
             del kwargs["context"]  # otherwist the SceneObject receives "context" twice, which results in an error
 
         # Create a corresponding new scene object
-        sceneobject = SceneObjectFactory(item=item, context=self.context, scene=self, **kwargs)
+        sceneobject = sceneobject_factory(item=item, context=self.context, scene=self, **kwargs)
 
         # Add the scene object and item to the data store
         self.objectstore[str(sceneobject.guid)] = sceneobject
@@ -251,7 +251,7 @@ class Scene(Datastructure):
         self.draw()
 
     def find_by_name(self, name):
-        # type: (str) -> SceneObject
+        # type: (str) -> SceneObject | None
         """Find the first scene object with the given name.
 
         Parameters
@@ -261,7 +261,7 @@ class Scene(Datastructure):
 
         Returns
         -------
-        :class:`SceneObject`
+        :class:`SceneObject` | None
 
         """
         return next((obj for obj in self.objects if obj.name == name), None)
@@ -277,7 +277,7 @@ class Scene(Datastructure):
 
         Returns
         -------
-        :class:`SceneObject` or None
+        :class:`SceneObject` | None
 
         """
         for obj in self.objects:

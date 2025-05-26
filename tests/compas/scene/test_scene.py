@@ -7,7 +7,7 @@ if not compas.IPY:
     from compas.scene import register
     from compas.scene import Scene
     from compas.scene import SceneObject
-    from compas.scene import SceneObjectFactory
+    from compas.scene import sceneobject_factory
     from compas.scene import SceneObjectNotRegisteredError
     from compas.data import Data
     from compas.geometry import Box
@@ -50,29 +50,29 @@ if not compas.IPY:
         register(FakeItem, FakeSceneObject, context="fake")
         register(FakeSubItem, FakeSubSceneObject, context="fake")
         item = FakeItem()
-        sceneobject = SceneObjectFactory(item=item, context="fake")
+        sceneobject = sceneobject_factory(item=item, context="fake")
         assert isinstance(sceneobject, FakeSceneObject)
 
         item = FakeSubItem()
-        sceneobject = SceneObjectFactory(item=item, context="fake")
+        sceneobject = sceneobject_factory(item=item, context="fake")
         assert isinstance(sceneobject, FakeSubSceneObject)
 
     def test_get_sceneobject_cls_with_out_of_order_registration():
         register(FakeSubItem, FakeSubSceneObject, context="fake")
         register(FakeItem, FakeSceneObject, context="fake")
         item = FakeItem()
-        sceneobject = SceneObjectFactory(item=item, context="fake")
+        sceneobject = sceneobject_factory(item=item, context="fake")
         assert isinstance(sceneobject, FakeSceneObject)
 
         item = FakeSubItem()
-        sceneobject = SceneObjectFactory(item=item, context="fake")
+        sceneobject = sceneobject_factory(item=item, context="fake")
         assert isinstance(sceneobject, FakeSubSceneObject)
 
         def test_sceneobject_auto_context_discovery(mocker):
             register_fake_context()
 
             item = FakeItem()
-            sceneobject = SceneObjectFactory(item=item)
+            sceneobject = sceneobject_factory(item=item)
 
             assert isinstance(sceneobject, FakeSceneObject)
 
@@ -82,7 +82,7 @@ if not compas.IPY:
 
             with pytest.raises(SceneObjectNotRegisteredError):
                 item = FakeSubItem()
-                _ = SceneObjectFactory(item=item)
+                _ = sceneobject_factory(item=item)
 
     def test_sceneobject_transform():
         scene = Scene()

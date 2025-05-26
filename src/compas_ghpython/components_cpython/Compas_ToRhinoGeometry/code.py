@@ -7,7 +7,7 @@ from typing import Any
 
 import Grasshopper
 
-from compas.scene import SceneObject
+from compas.scene import sceneobject_factory
 
 
 class CompasToRhinoGeometry(Grasshopper.Kernel.GH_ScriptInstance):
@@ -15,4 +15,4 @@ class CompasToRhinoGeometry(Grasshopper.Kernel.GH_ScriptInstance):
         if not cg:
             return None
 
-        return SceneObject(item=cg).draw()
+        return sceneobject_factory(item=cg).draw()
