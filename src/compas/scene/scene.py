@@ -13,6 +13,27 @@ from .sceneobject import SceneObject
 from .sceneobject import sceneobject_factory
 
 
+class SceneObjectNode(TreeNode):
+    def __init__(self, name=None, sceneobject=None, **kwargs):
+        super(SceneObjectNode, self).__init__(name=name, **kwargs)
+        self.sceneobject = sceneobject
+
+    def __repr__(self):
+        return self.sceneobject.name
+
+    @property
+    def __data__(self):
+        data = self.sceneobject.__data__
+        if self.children:
+            data["children"] = [child.__data__ for child in self.children]
+        return data
+
+    @classmethod
+    def __from_data__(cls, data):
+        # TODO: reconstruct the sceneobject from the data in this context
+        raise NotImplementedError
+
+
 class Scene(Datastructure):
     """A scene is a container for hierarchical scene objects which are to be visualised in a given context.
 
@@ -48,33 +69,22 @@ class Scene(Datastructure):
             "name": self.name,
             "attributes": self.attributes,
             "datastore": self.datastore,
-            "objectstore": self.objectstore,
             "tree": self.tree,
         }
 
-    def __init__(self, context=None, datastore=None, objectstore=None, tree=None, **kwargs):
+    def __init__(self, context=None, datastore=None, tree=None, **kwargs):
         # type: (str | None, dict | None, dict | None, Tree | None, **kwargs) -> None
         super(Scene, self).__init__(**kwargs)
 
         self.context = context or detect_current_context()
         self.datastore = datastore or {}
-        self.objectstore = objectstore or {}
         self.tree = tree or Tree()
         if self.tree.root is None:
             self.tree.add(TreeNode(name=self.name))
 
     def __repr__(self):
         # type: () -> str
-
-        def node_repr(node):
-            # type: (TreeNode) -> str
-            if node.is_root:
-                return node.name
-            else:
-                sceneobject = self.objectstore[node.name]
-                return str(sceneobject)
-
-        return self.tree.get_hierarchy_string(node_repr=node_repr)
+        return self.tree.get_hierarchy_string()
 
     @property
     def items(self):
@@ -122,7 +132,6 @@ class Scene(Datastructure):
         sceneobject = sceneobject_factory(item=item, context=self.context, scene=self, **kwargs)
 
         # Add the scene object and item to the data store
-        self.objectstore[str(sceneobject.guid)] = sceneobject
         self.datastore[str(item.guid)] = item
 
         # Add the scene object to the hierarchical tree
@@ -135,7 +144,7 @@ class Scene(Datastructure):
             if parent_node is None:
                 raise ValueError("Parent is not part of the scene.", parent)
 
-        self.tree.add(TreeNode(name=str(sceneobject.guid)), parent=parent_node)
+        self.tree.add(SceneObjectNode(name=sceneobject.name, sceneobject=sceneobject), parent=parent_node)
 
         return sceneobject
 
@@ -329,4 +338,8 @@ class Scene(Datastructure):
         if sceneobject.scene is not self:
             raise ValueError("SceneObject not part of this scene.", sceneobject)
 
-        return self.tree.get_node_by_name(sceneobject.guid)
+        for node in self.tree.nodes:
+            if isinstance(node, SceneObjectNode) and node.sceneobject == sceneobject:
+                return node
+
+        return None
