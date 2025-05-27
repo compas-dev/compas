@@ -18,12 +18,6 @@ The framework consists of a general-purpose core library, written in pure Python
 
 COMPAS has dedicated packages for working with Rhino, Grasshopper, and Blender, but it can be used in any environment that supports Python scripting. It is available on PyPI and conda-forge and can be easily installed using popular package managers on multiple platforms.
 
-## COMPAS 2.0!
-
-We are working on a new major release of the framework, COMPAS 2.0!
-Therefore, be aware that the current version of the repository already contains some changes that are incompatible with the version 1 releases.
-The documentation of the latest stable version (COMPAS 1.17.9) [is available here](https://compas.dev/compas/1.17.9).
-
 ## Installation
 
 The recommended way to install **COMPAS** is to use [Anaconda/conda](https://conda.io/docs/):
