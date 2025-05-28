@@ -77,7 +77,11 @@ class RhinoBrepTrim(BrepTrim):
         """
         instance = cls()
         curve = RhinoNurbsCurve.__from_data__(data["curve"]).rhino_curve
-        iso_status = getattr(Rhino.Geometry.IsoStatus, data["iso"])
+        try:
+            iso_status = getattr(Rhino.Geometry.IsoStatus, data["iso"])
+        except AttributeError:
+            # due to discrepency in how IsoStatus.None looks like in Rhino7 vs Rhino8 (`IsoStatus.NONE`)
+            iso_status = Rhino.Geometry.IsoStatus.NONE
         is_reversed = True if data["is_reversed"] == "true" else False
         instance.native_trim = builder.add_trim(curve, data["edge"], is_reversed, iso_status, data["start_vertex"])
         return instance
