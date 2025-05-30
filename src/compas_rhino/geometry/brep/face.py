@@ -208,7 +208,7 @@ class RhinoBrepFace(BrepFace):
         if isinstance(surface, Rhino.Geometry.NurbsSurface):
             _, plane = surface.FrameAt(0.0, 0.0)
             return "nurbs", RhinoNurbsSurface.from_rhino(surface), uv_domain, plane
-        if isinstance(surface, Rhino.Geometry.Rhino.Geometry.RevSurface):
+        if isinstance(surface, Rhino.Geometry.RevSurface):
             success, cast_surface = surface.TryGetSphere()
             if success:
                 return "sphere", sphere_to_compas(cast_surface), uv_domain, cast_surface.EquatorialPlane
