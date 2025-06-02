@@ -95,7 +95,6 @@ class SceneObject(TreeNode):
         color=None,  # type: compas.colors.Color | None
         opacity=1.0,  # type: float
         show=True,  # type: bool
-        frame=None,  # type: compas.geometry.Frame | None
         transformation=None,  # type: compas.geometry.Transformation | None
         context=None,  # type: str | None
         **kwargs  # type: dict
@@ -110,7 +109,7 @@ class SceneObject(TreeNode):
         # because it has no access to the tree and/or the scene before it is added
         # which means that adding child objects will be added in context "None"
         self.context = context
-        self._item = item
+        self._item = str(item.guid) if item else None
         self._guids = []
         self._node = None
         self._transformation = transformation
@@ -123,7 +122,7 @@ class SceneObject(TreeNode):
     def __data__(self):
         # type: () -> dict
         return {
-            "item": str(self.item.guid),
+            "item": self._item,
             "settings": self.settings,
             "children": [child.__data__ for child in self.children],
         }
@@ -145,7 +144,7 @@ class SceneObject(TreeNode):
     @property
     def item(self):
         # type: () -> compas.data.Data
-        return self._item
+        return self.scene.datastore[self._item]
 
     @property
     def guids(self):
@@ -209,8 +208,6 @@ class SceneObject(TreeNode):
             "show": self.show,
         }
 
-        if self.frame:
-            settings["frame"] = self.frame
         if self.transformation:
             settings["transformation"] = self.transformation
 
@@ -245,6 +242,7 @@ class SceneObject(TreeNode):
                     raise Exception("Child context should be the same as parent context: {} != {}".format(kwargs["context"], self.context))
                 del kwargs["context"]  # otherwist the SceneObject receives "context" twice, which results in an error
             sceneobject = SceneObject(item=item, context=self.context, **kwargs)  # type: ignore
+            self.scene.datastore[str(item.guid)] = item
 
         super(SceneObject, self).add(sceneobject)
         return sceneobject

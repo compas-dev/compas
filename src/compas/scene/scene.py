@@ -43,38 +43,36 @@ class Scene(Tree):
     @property
     def __data__(self):
         # type: () -> dict
-        items = {str(object.item.guid): object.item for object in self.objects if object.item is not None}
         return {
             "name": self.name,
             "root": self.root.__data__,  # type: ignore
-            "items": list(items.values()),
+            "datastore": self.datastore,
         }
 
     @classmethod
     def __from_data__(cls, data):
         # type: (dict) -> Scene
-        scene = cls(data["name"])
-        items = {str(item.guid): item for item in data["items"]}
-
-        def add(node, parent, items):
+        scene = cls(data["name"], datastore=data["datastore"])
+        def add(node, parent):
             for child_node in node.get("children", []):
                 settings = child_node["settings"]
                 if "item" in child_node:
                     guid = child_node["item"]
-                    sceneobject = parent.add(items[guid], **settings)
+                    sceneobject = scene.add(scene.datastore[guid], parent=parent, **settings)
                 else:
-                    sceneobject = parent.add(Group(**settings))
-                add(child_node, sceneobject, items)
+                    sceneobject = scene.add_group(parent=parent, **settings)
+                add(child_node, sceneobject)
 
-        add(data["root"], scene, items)
+        add(data["root"], scene.root)
 
         return scene
 
-    def __init__(self, name="Scene", context=None):
-        # type: (str, str | None) -> None
+    def __init__(self, name="Scene", context=None, datastore=None):
+        # type: (str, str | None, dict | None) -> None
         super(Scene, self).__init__(name=name)
         super(Scene, self).add(TreeNode(name="ROOT"))
         self.context = context or detect_current_context()
+        self.datastore = datastore or {}
 
     @property
     def objects(self):
@@ -108,6 +106,9 @@ class Scene(Tree):
             The scene object associated with the item.
         """
 
+        if isinstance(item, Group):
+            raise Exception("Use Scene.add_group to add a group to the scene.")
+
         parent = parent or self.root
 
         if isinstance(item, SceneObject):
@@ -118,8 +119,18 @@ class Scene(Tree):
                     raise Exception("Object context should be the same as scene context: {} != {}".format(kwargs["context"], self.context))
                 del kwargs["context"]  # otherwist the SceneObject receives "context" twice, which results in an error
             sceneobject = SceneObject(item=item, context=self.context, **kwargs)  # type: ignore
+
+        self.datastore[str(item.guid)] = item
         super(Scene, self).add(sceneobject, parent=parent)
+
         return sceneobject
+    
+    def add_group(self, name=None, parent=None, **kwargs):
+        # type: (str, SceneObject | TreeNode | None, dict) -> Group
+        parent = parent or self.root
+        group = Group(name=name, **kwargs)
+        super(Scene, self).add(group, parent=parent)
+        return group
 
     def clear_context(self, guids=None):
         # type: (list | None) -> None
