@@ -9,10 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `compas.scene.Scene.add_group()` for adding group.
+* Added `compas.scene.Group.add_from_list()` for adding a list of items to a group.
+
 ### Changed
 
 * Fixed error in `circle_to_compas` from Rhino.
 * Fixed Rhino to Rhino brep serialization.
+* Upated `compas.scene.Group.add()` to pass on group kwargs as default for child items.
 
 ### Removed
 

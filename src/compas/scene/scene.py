@@ -119,7 +119,7 @@ class Scene(Tree):
                 del kwargs["context"]  # otherwist the SceneObject receives "context" twice, which results in an error
             if isinstance(parent, Group):
                 # Use the kwargs of the parent group as default values for the child sceneobject
-                group_kwargs = parent.group_kwargs.copy()
+                group_kwargs = parent.kwargs.copy()
                 group_kwargs.update(kwargs)
                 kwargs = group_kwargs
             sceneobject = SceneObject(item=item, context=self.context, **kwargs)  # type: ignore

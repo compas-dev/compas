@@ -11,6 +11,13 @@ class Group(SceneObject):
     ----------
     name : str, optional
         The name of the group.
+    **kwargs : dict, optional
+        Additional keyword arguments to pass on to the child sceneobjects as default values.
+
+    Attributes
+    ----------
+    kwargs : dict
+        The keyword arguments to pass on to the child sceneobjects as default values.
 
     Examples
     --------
@@ -36,7 +43,7 @@ class Group(SceneObject):
 
     def __init__(self, name, **kwargs):
         super(Group, self).__init__(name=name, **kwargs)
-        self.group_kwargs = kwargs
+        self.kwargs = kwargs
 
     @property
     def __data__(self):
@@ -68,7 +75,7 @@ class Group(SceneObject):
         ValueError
             If the scene object does not have an associated scene node.
         """
-        group_kwargs = self.group_kwargs.copy()
+        group_kwargs = self.kwargs.copy()
         group_kwargs.update(kwargs)
         kwargs = group_kwargs
         return super(Group, self).add(item, **kwargs)
