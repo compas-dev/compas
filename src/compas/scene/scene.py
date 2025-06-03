@@ -1,6 +1,7 @@
 import compas.data  # noqa: F401
 import compas.datastructures  # noqa: F401
 import compas.geometry  # noqa: F401
+from compas.datastructures import Datastructure
 from compas.datastructures import Tree
 from compas.datastructures import TreeNode
 
@@ -8,11 +9,11 @@ from .context import after_draw
 from .context import before_draw
 from .context import clear
 from .context import detect_current_context
-from .group import Group
 from .sceneobject import SceneObject
+from .sceneobject import sceneobject_factory
 
 
-class Scene(Tree):
+class Scene(Datastructure):
     """A scene is a container for hierarchical scene objects which are to be visualised in a given context.
 
     Parameters
@@ -43,43 +44,47 @@ class Scene(Tree):
     @property
     def __data__(self):
         # type: () -> dict
-        items = {str(object.item.guid): object.item for object in self.objects if object.item is not None}
         return {
             "name": self.name,
-            "root": self.root.__data__,  # type: ignore
-            "items": list(items.values()),
+            "attributes": self.attributes,
+            "datastore": self.datastore,
+            "objectstore": self.objectstore,
+            "tree": self.tree,
         }
 
-    @classmethod
-    def __from_data__(cls, data):
-        # type: (dict) -> Scene
-        scene = cls(data["name"])
-        items = {str(item.guid): item for item in data["items"]}
+    def __init__(self, context=None, datastore=None, objectstore=None, tree=None, **kwargs):
+        # type: (str | None, dict | None, dict | None, Tree | None, **kwargs) -> None
+        super(Scene, self).__init__(**kwargs)
 
-        def add(node, parent, items):
-            for child_node in node.get("children", []):
-                settings = child_node["settings"]
-                if "item" in child_node:
-                    guid = child_node["item"]
-                    sceneobject = parent.add(items[guid], **settings)
-                else:
-                    sceneobject = parent.add(Group(**settings))
-                add(child_node, sceneobject, items)
-
-        add(data["root"], scene, items)
-
-        return scene
-
-    def __init__(self, name="Scene", context=None):
-        # type: (str, str | None) -> None
-        super(Scene, self).__init__(name=name)
-        super(Scene, self).add(TreeNode(name="ROOT"))
         self.context = context or detect_current_context()
+        self.datastore = datastore or {}
+        self.objectstore = objectstore or {}
+        self.tree = tree or Tree()
+        if self.tree.root is None:
+            self.tree.add(TreeNode(name=self.name))
+
+    def __repr__(self):
+        # type: () -> str
+
+        def node_repr(node):
+            # type: (TreeNode) -> str
+            if node.is_root:
+                return node.name
+            else:
+                sceneobject = self.objectstore[node.name]
+                return str(sceneobject)
+
+        return self.tree.get_hierarchy_string(node_repr=node_repr)
+
+    @property
+    def items(self):
+        # type: () -> list[compas.data.Data]
+        return list(self.datastore.values())
 
     @property
     def objects(self):
         # type: () -> list[SceneObject]
-        return [node for node in self.nodes if not node.is_root]  # type: ignore
+        return list(self.objectstore.values())
 
     @property
     def context_objects(self):
@@ -108,18 +113,47 @@ class Scene(Tree):
             The scene object associated with the item.
         """
 
-        parent = parent or self.root
+        if "context" in kwargs:
+            if kwargs["context"] != self.context:
+                raise Exception("Object context should be the same as scene context: {} != {}".format(kwargs["context"], self.context))
+            del kwargs["context"]  # otherwist the SceneObject receives "context" twice, which results in an error
 
-        if isinstance(item, SceneObject):
-            sceneobject = item
+        # Create a corresponding new scene object
+        sceneobject = sceneobject_factory(item=item, context=self.context, scene=self, **kwargs)
+
+        # Add the scene object and item to the data store
+        self.objectstore[str(sceneobject.guid)] = sceneobject
+        self.datastore[str(item.guid)] = item
+
+        # Add the scene object to the hierarchical tree
+        if parent is None:
+            parent_node = self.tree.root
         else:
-            if "context" in kwargs:
-                if kwargs["context"] != self.context:
-                    raise Exception("Object context should be the same as scene context: {} != {}".format(kwargs["context"], self.context))
-                del kwargs["context"]  # otherwist the SceneObject receives "context" twice, which results in an error
-            sceneobject = SceneObject(item=item, context=self.context, **kwargs)  # type: ignore
-        super(Scene, self).add(sceneobject, parent=parent)
+            if not isinstance(parent, SceneObject):
+                raise ValueError("Parent is not a SceneObject.", parent)
+            parent_node = self.get_sceneobject_node(parent)
+            if parent_node is None:
+                raise ValueError("Parent is not part of the scene.", parent)
+
+        self.tree.add(TreeNode(name=str(sceneobject.guid)), parent=parent_node)
+
         return sceneobject
+
+    def remove(self, sceneobject):
+        """Remove a scene object along with all its descendants from the scene.
+
+        Parameters
+        ----------
+        sceneobject : :class:`compas.scene.SceneObject`
+            The scene object to remove.
+        """
+        # type: (SceneObject) -> None
+        node = self.get_sceneobject_node(sceneobject)
+        if node:
+            for descendant in node.descendants:
+                self.objectstore.pop(descendant.name, None)
+            self.tree.remove(node)
+        self.objectstore.pop(str(sceneobject.guid), None)
 
     def clear_context(self, guids=None):
         # type: (list | None) -> None
@@ -217,7 +251,7 @@ class Scene(Tree):
         self.draw()
 
     def find_by_name(self, name):
-        # type: (str) -> SceneObject
+        # type: (str) -> SceneObject | None
         """Find the first scene object with the given name.
 
         Parameters
@@ -227,13 +261,13 @@ class Scene(Tree):
 
         Returns
         -------
-        :class:`SceneObject`
+        :class:`SceneObject` | None
 
         """
-        return self.get_node_by_name(name=name)
+        return next((obj for obj in self.objects if obj.name == name), None)
 
     def find_by_itemtype(self, itemtype):
-        # type: (...) -> SceneObject | None
+        # type: (type) -> SceneObject | None
         """Find the first scene object with a data item of the given type.
 
         Parameters
@@ -243,7 +277,7 @@ class Scene(Tree):
 
         Returns
         -------
-        :class:`SceneObject` or None
+        :class:`SceneObject` | None
 
         """
         for obj in self.objects:
@@ -251,7 +285,7 @@ class Scene(Tree):
                 return obj
 
     def find_all_by_itemtype(self, itemtype):
-        # type: (...) -> list[SceneObject]
+        # type: (type) -> list[SceneObject]
         """Find all scene objects with a data item of the given type.
 
         Parameters
@@ -269,3 +303,30 @@ class Scene(Tree):
             if isinstance(obj.item, itemtype):
                 sceneobjects.append(obj)
         return sceneobjects
+
+    def get_sceneobject_node(self, sceneobject):
+        # type: (SceneObject) -> TreeNode
+        """Get the TreeNode that corresponds to a scene object.
+
+        Parameters
+        ----------
+        sceneobject : :class:`compas.scene.SceneObject`
+
+        Returns
+        -------
+        :class:`compas.datastructures.TreeNode`
+
+        Raises
+        ------
+        TypeError
+            If the scene object is not a :class:`compas.scene.SceneObject`.
+        ValueError
+            If the scene object is not part of this scene.
+        """
+
+        if not isinstance(sceneobject, SceneObject):
+            raise TypeError("SceneObject expected.", sceneobject)
+        if sceneobject.scene is not self:
+            raise ValueError("SceneObject not part of this scene.", sceneobject)
+
+        return self.tree.get_node_by_name(sceneobject.guid)
