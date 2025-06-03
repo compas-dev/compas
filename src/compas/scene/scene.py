@@ -61,12 +61,12 @@ class Scene(Tree):
                 settings = child_node["settings"]
                 if "item" in child_node:
                     guid = child_node["item"]
-                    sceneobject = parent.add(items[guid], **settings)
+                    sceneobject = scene.add(items[guid], parent=parent, **settings)
                 else:
-                    sceneobject = parent.add(Group(**settings))
+                    sceneobject = scene.add_group(parent=parent, **settings)
                 add(child_node, sceneobject, items)
 
-        add(data["root"], scene, items)
+        add(data["root"], scene.root, items)
 
         return scene
 
@@ -117,9 +117,20 @@ class Scene(Tree):
                 if kwargs["context"] != self.context:
                     raise Exception("Object context should be the same as scene context: {} != {}".format(kwargs["context"], self.context))
                 del kwargs["context"]  # otherwist the SceneObject receives "context" twice, which results in an error
+            if isinstance(parent, Group):
+                # Use the kwargs of the parent group as default values for the child sceneobject
+                group_kwargs = parent.group_kwargs.copy()
+                group_kwargs.update(kwargs)
+                kwargs = group_kwargs
             sceneobject = SceneObject(item=item, context=self.context, **kwargs)  # type: ignore
         super(Scene, self).add(sceneobject, parent=parent)
         return sceneobject
+
+    def add_group(self, name, parent=None, **kwargs):
+        # type: (str, SceneObject | TreeNode | None, dict) -> SceneObject
+        group = Group(name=name, **kwargs)
+        self.add(group, parent=parent)
+        return group
 
     def clear_context(self, guids=None):
         # type: (list | None) -> None
