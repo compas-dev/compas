@@ -319,9 +319,7 @@ class Polyhedron(Geometry):
 
     @property
     def polygons(self):
-        return [
-            Polygon([self.vertices[index] for index in face]) for face in self.faces
-        ]
+        return [Polygon([self.vertices[index] for index in face]) for face in self.faces]
 
     @property
     def planes(self):
@@ -390,9 +388,7 @@ class Polyhedron(Geometry):
         elif f == 20:
             vertices, faces = icosahedron()
         else:
-            raise ValueError(
-                "The number of sides of a platonic solid must be one of: 4, 6, 8, 12, 20."
-            )
+            raise ValueError("The number of sides of a platonic solid must be one of: 4, 6, 8, 12, 20.")
         solid = cls(vertices, faces)
         return solid
 
@@ -443,9 +439,7 @@ class Polyhedron(Geometry):
         interior_point = asarray(interior_point, dtype=float)
         hsi = HalfspaceIntersection(halfspaces, interior_point)
         hull = ConvexHull(hsi.intersections)
-        mesh = Mesh.from_vertices_and_faces(
-            [hsi.intersections[i] for i in hull.vertices], hull.simplices
-        )
+        mesh = Mesh.from_vertices_and_faces([hsi.intersections[i] for i in hull.vertices], hull.simplices)
         mesh.unify_cycles()
         to_merge = []
         for a, b in combinations(mesh.faces(), 2):
