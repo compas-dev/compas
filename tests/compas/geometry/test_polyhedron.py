@@ -12,6 +12,6 @@ def test_polyhedron():
     assert polyhedron.faces == faces
     assert polyhedron.name == name
     assert polyhedron.points == vertices
-    assert polyhedron.lines == [(a, b) for a, b in pairwise(vertices + vertices[:1])]
+    assert polyhedron.lines == [(a, b) for a, b in pairwise(vertices[-1:] + vertices)]
     assert polyhedron.points[0] == vertices[0]
     assert polyhedron.points[-1] != polyhedron.points[0]
