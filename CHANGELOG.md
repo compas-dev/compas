@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed error in `circle_to_compas` from Rhino.
 * Fixed Rhino to Rhino brep serialization.
 * Upated `compas.scene.Group.add()` to pass on group kwargs as default for child items.
+* Fixed bug in context detection, which wrongly defaults to `Viewer` instead of `None`.
 
 ### Removed
 
