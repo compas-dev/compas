@@ -166,8 +166,8 @@ class Graph(Datastructure):
         default_node_attributes=None,
         default_edge_attributes=None,
         name=None,
-        **kwargs,
-    ):
+        **kwargs
+    ):  # fmt: skip
         super(Graph, self).__init__(kwargs, name=name)
         self._max_node = -1
         self.node = {}
