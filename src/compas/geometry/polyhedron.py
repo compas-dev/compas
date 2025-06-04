@@ -301,7 +301,9 @@ class Polyhedron(Geometry):
     def edges(self):
         seen = set()
         for face in self.faces:
-            for u, v in pairwise(face + face[:1]):
+            for i in range(-1, len(face) - 1):
+                u = face[i]
+                v = face[i + 1]
                 if (u, v) not in seen:
                     seen.add((u, v))
                     seen.add((v, u))

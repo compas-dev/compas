@@ -83,7 +83,7 @@ def test_graph_from_pointcloud():
     graph = Graph.from_pointcloud(cloud=cloud, degree=3)
     assert graph.number_of_nodes() == len(cloud)
     for node in graph.nodes():
-        assert graph.degree(node) >= 3
+        assert graph.degree(node) <= 3
 
 
 # ==============================================================================

@@ -11,12 +11,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added `compas.scene.Scene.add_group()` for adding group.
 * Added `compas.scene.Group.add_from_list()` for adding a list of items to a group.
+* Added implementation for `compas.geometry.SphericalSurface.isocurve_u`.
+* Added implementation for `compas.geometry.SphericalSurface.isocurve_v`.
+* Added implementation for `compas.geometry.CylindricalSurface.isocurve_u`.
+* Added implementation for `compas.geometry.CylindricalSurface.isocurve_v`.
 
 ### Changed
 
 * Fixed error in `circle_to_compas` from Rhino.
 * Fixed Rhino to Rhino brep serialization.
 * Upated `compas.scene.Group.add()` to pass on group kwargs as default for child items.
+* Fixed bug in context detection, which wrongly defaults to `Viewer` instead of `None`.
+* Fixed bug in calculation of `compas.geometry.Polyhedron.edges` if geometry is computed using numpy.
+* Fixed bug in `Grpah.from_pointcloud` which uses degree parameter wrongly.
 
 ### Removed
 

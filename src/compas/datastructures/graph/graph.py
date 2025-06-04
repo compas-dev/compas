@@ -5,6 +5,8 @@ from __future__ import print_function
 from ast import literal_eval
 from itertools import combinations
 from random import sample
+from random import choice
+from random import shuffle
 
 import compas
 
@@ -159,7 +161,13 @@ class Graph(Datastructure):
         graph._max_node = data.get("max_node", graph._max_node)
         return graph
 
-    def __init__(self, default_node_attributes=None, default_edge_attributes=None, name=None, **kwargs):
+    def __init__(
+        self,
+        default_node_attributes=None,
+        default_edge_attributes=None,
+        name=None,
+        **kwargs
+    ):  # fmt: skip
         super(Graph, self).__init__(kwargs, name=name)
         self._max_node = -1
         self.node = {}
@@ -375,8 +383,16 @@ class Graph(Datastructure):
         graph = cls()
         for x, y, z in cloud:
             graph.add_node(x=x, y=y, z=z)
+        nodes = list(graph.nodes())
         for u in graph.nodes():
-            for v in graph.node_sample(size=degree):
+            shuffle(nodes)
+            for v in nodes:
+                if v == u:
+                    continue
+                if graph.degree(v) == degree:
+                    continue
+                if graph.degree(u) == degree:
+                    break
                 graph.add_edge(u, v)
         return graph
 

@@ -474,7 +474,7 @@ class Surface(Geometry):
 
         Returns
         -------
-        :class:`compas_occ.geometry.Curve`
+        :class:`compas.geometry.Curve`
 
         """
         raise NotImplementedError
