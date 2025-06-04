@@ -8,7 +8,6 @@ from compas.geometry import Line
 from compas.geometry import Point
 from compas.geometry import Polygon
 from compas.geometry import transform_points
-from compas.itertools import pairwise
 from compas.tolerance import TOL
 
 from .geometry import Geometry

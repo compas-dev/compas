@@ -5,7 +5,6 @@ from __future__ import print_function
 from ast import literal_eval
 from itertools import combinations
 from random import sample
-from random import choice
 from random import shuffle
 
 import compas
