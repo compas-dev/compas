@@ -275,7 +275,7 @@ def get_bunny(localstorage=None):
     return bunny
 
 
-def devday(year, *, open):
+def devday(year, open=True):
     import zlib
     import base64
 
