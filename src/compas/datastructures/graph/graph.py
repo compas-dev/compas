@@ -5,6 +5,8 @@ from __future__ import print_function
 from ast import literal_eval
 from itertools import combinations
 from random import sample
+from random import choice
+from random import shuffle
 
 import compas
 
@@ -132,7 +134,10 @@ class Graph(Datastructure):
 
     def __before_json_dump__(self, data):
         data["node"] = {repr(key): attr for key, attr in data["node"].items()}
-        data["edge"] = {repr(u): {repr(v): attr for v, attr in nbrs.items()} for u, nbrs in data["edge"].items()}
+        data["edge"] = {
+            repr(u): {repr(v): attr for v, attr in nbrs.items()}
+            for u, nbrs in data["edge"].items()
+        }
         return data
 
     def __after_json_load__(self, data):
@@ -140,7 +145,10 @@ class Graph(Datastructure):
         nodes = data["node"] or {}
         edges = data["edge"] or {}
         data["node"] = {l_e(node): attr for node, attr in nodes.items()}
-        data["edge"] = {l_e(u): {l_e(v): attr for v, attr in nbrs.items()} for u, nbrs in edges.items()}
+        data["edge"] = {
+            l_e(u): {l_e(v): attr for v, attr in nbrs.items()}
+            for u, nbrs in edges.items()
+        }
         return data
 
     @classmethod
@@ -159,7 +167,13 @@ class Graph(Datastructure):
         graph._max_node = data.get("max_node", graph._max_node)
         return graph
 
-    def __init__(self, default_node_attributes=None, default_edge_attributes=None, name=None, **kwargs):
+    def __init__(
+        self,
+        default_node_attributes=None,
+        default_edge_attributes=None,
+        name=None,
+        **kwargs,
+    ):
         super(Graph, self).__init__(kwargs, name=name)
         self._max_node = -1
         self.node = {}
@@ -375,8 +389,16 @@ class Graph(Datastructure):
         graph = cls()
         for x, y, z in cloud:
             graph.add_node(x=x, y=y, z=z)
+        nodes = list(graph.nodes())
         for u in graph.nodes():
-            for v in graph.node_sample(size=degree):
+            shuffle(nodes)
+            for v in nodes:
+                if v == u:
+                    continue
+                if graph.degree(v) == degree:
+                    continue
+                if graph.degree(u) == degree:
+                    break
                 graph.add_edge(u, v)
         return graph
 
@@ -1952,7 +1974,9 @@ class Graph(Datastructure):
         u, v = edge
         if directed:
             return u in self.edge and v in self.edge[u]
-        return (u in self.edge and v in self.edge[u]) or (v in self.edge and u in self.edge[v])
+        return (u in self.edge and v in self.edge[u]) or (
+            v in self.edge and u in self.edge[v]
+        )
 
     # --------------------------------------------------------------------------
     # Node geometry
@@ -2040,7 +2064,11 @@ class Graph(Datastructure):
         :meth:`node_coordinates`, :meth:`node_point`, :meth:`node_laplacian`
 
         """
-        return Point(*centroid_points([self.node_coordinates(nbr) for nbr in self.neighbors(key)]))
+        return Point(
+            *centroid_points(
+                [self.node_coordinates(nbr) for nbr in self.neighbors(key)]
+            )
+        )
 
     # --------------------------------------------------------------------------
     # Edge geometry
@@ -2320,7 +2348,10 @@ class Graph(Datastructure):
         :meth:`connected_nodes`
 
         """
-        return [[(u, v) for u in nodes for v in self.neighbors(u) if u < v] for nodes in self.connected_nodes()]
+        return [
+            [(u, v) for u in nodes for v in self.neighbors(u) if u < v]
+            for nodes in self.connected_nodes()
+        ]
 
     def exploded(self):
         """Explode the graph into its connected components.
@@ -2407,7 +2438,9 @@ class Graph(Datastructure):
         from compas.matrices import adjacency_matrix
 
         node_index = self.node_index()
-        adjacency = [[node_index[nbr] for nbr in self.neighbors(key)] for key in self.nodes()]
+        adjacency = [
+            [node_index[nbr] for nbr in self.neighbors(key)] for key in self.nodes()
+        ]
         return adjacency_matrix(adjacency, rtype=rtype)
 
     def connectivity_matrix(self, rtype="array"):
@@ -2447,7 +2480,9 @@ class Graph(Datastructure):
         from compas.matrices import degree_matrix
 
         node_index = self.node_index()
-        adjacency = [[node_index[nbr] for nbr in self.neighbors(key)] for key in self.nodes()]
+        adjacency = [
+            [node_index[nbr] for nbr in self.neighbors(key)] for key in self.nodes()
+        ]
         return degree_matrix(adjacency, rtype=rtype)
 
     def laplacian_matrix(self, normalize=False, rtype="array"):
