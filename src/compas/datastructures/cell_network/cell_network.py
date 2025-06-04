@@ -728,6 +728,22 @@ class CellNetwork(Datastructure):
 
         return ckey
 
+
+    def add_mesh(self, input_mesh: Mesh):
+        if input_mesh.is_manifold():
+            vertices, faces = input_mesh.to_vertices_and_faces()
+            vertex_offset = self._max_vertex + 1
+            for vertex in vertices:
+                self.add_vertex(x=vertex[0], y=vertex[1], z=vertex[2])
+            faces_lst = []
+            for face in faces:
+                new_face = [vertex + vertex_offset for vertex in face]
+                fkey = self.add_face(new_face)
+                faces_lst.append(fkey)         
+            self.add_cell(faces_lst)
+        else:
+            raise ValueError("Mesh is not manifold to be added as a cell")
+    
     # --------------------------------------------------------------------------
     # Modifiers
     # --------------------------------------------------------------------------

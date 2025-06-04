@@ -71,6 +71,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 
+## [2.10.1] 2025-03-24
+
+### Added
+
+* Added `add_mesh` to `compas.datastructures.CellNetwork`.
+
+### Changed
+
+* Fixed logic for method `CellNetwork.cell_neighbors` from common faces search to common 3+ vertices search.
+
+### Removed
+
 ## [2.10.0] 2025-03-03
 
 ### Added
