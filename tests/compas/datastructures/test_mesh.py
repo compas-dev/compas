@@ -340,6 +340,23 @@ def test_to_lines():
     assert len(lines) == mesh.number_of_edges()
 
 
+def test_to_points():
+    # tri
+    mesh = Mesh.from_shape(Polyhedron.from_platonicsolid(4))
+    points = mesh.to_points()
+    assert len(points) == 4
+
+    # quad
+    mesh = Mesh.from_shape(Polyhedron.from_platonicsolid(6))
+    points = mesh.to_points()
+    assert len(points) == 8
+
+    # ngon
+    mesh = Mesh.from_shape(Polyhedron.from_platonicsolid(12))
+    points = mesh.to_points()
+    assert len(points) == 20
+
+
 # --------------------------------------------------------------------------
 # helpers
 # --------------------------------------------------------------------------
