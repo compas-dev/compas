@@ -1289,6 +1289,9 @@ def test_face_attributes_includes_all_defaults(box):
 
 
 def test_compute_aabb():
+    if compas.IPY:
+        pytest.skip("Skipping test under IronPython.")
+
     mesh = Mesh.from_obj(compas.get("tubemesh.obj"))
     aabb = mesh.compute_aabb()
 
@@ -1298,6 +1301,9 @@ def test_compute_aabb():
 
 
 def test_compute_obb():
+    if compas.IPY:
+        pytest.skip("Skipping test under IronPython.")
+
     mesh = Mesh.from_obj(compas.get("tubemesh.obj"))
     obb = mesh.compute_obb()
 
