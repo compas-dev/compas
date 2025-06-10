@@ -559,6 +559,17 @@ class VolMesh(Datastructure):
             cells.append(faces)
         return vertices, cells
 
+    def to_points(self):
+        """Convert the volmesh to a collection of points.
+
+        Returns
+        -------
+        list[float[float]]
+            The points representing the vertices of the volmesh.
+
+        """
+        return [self.vertex_coordinates(vertex) for vertex in self.vertices()]
+
     def cell_to_mesh(self, cell):
         # type: (int) -> Mesh
         """Construct a mesh object from from a cell of a volmesh.
