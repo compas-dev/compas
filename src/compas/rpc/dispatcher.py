@@ -122,7 +122,7 @@ class Dispatcher(object):
                 try:
                     idict = json.loads(args[0], cls=DataDecoder)
                 except (IndexError, TypeError):
-                    odict["error"] = "API methods require a single JSON encoded dictionary as input.\n" "For example: input = json.dumps({'param_1': 1, 'param_2': [2, 3]})"
+                    odict["error"] = "API methods require a single JSON encoded dictionary as input.\nFor example: input = json.dumps({'param_1': 1, 'param_2': [2, 3]})"
 
                 else:
                     self._call(function, idict, odict)

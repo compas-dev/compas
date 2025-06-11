@@ -86,7 +86,10 @@ class Datastructure(Data):
         :class:`compas.geometry.Box`
 
         """
-        raise NotImplementedError
+        from compas.geometry import Box
+        from compas.geometry.bbox import bounding_box
+
+        return Box.from_bounding_box(bounding_box(self.to_points()))
 
     def compute_obb(self):
         """Compute the oriented bounding box of the datastructure.
@@ -96,7 +99,10 @@ class Datastructure(Data):
         :class:`compas.geometry.Box`
 
         """
-        raise NotImplementedError
+        from compas.geometry import Box
+        from compas.geometry.bbox_numpy import oriented_bounding_box_numpy
+
+        return Box.from_bounding_box(oriented_bounding_box_numpy(self.to_points()))
 
     def transform(self, transformation):
         """Transforms the data structure.

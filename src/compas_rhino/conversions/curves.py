@@ -215,7 +215,7 @@ def circle_to_compas(circle):
     :class:`compas.geometry.Circle`
 
     """
-    frame = plane_to_compas(circle.Plane)
+    frame = plane_to_compas_frame(circle.Plane)
     return Circle(circle.Radius, frame=frame)
 
 
