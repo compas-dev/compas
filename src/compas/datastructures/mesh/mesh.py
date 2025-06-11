@@ -229,7 +229,14 @@ class Mesh(Datastructure):
 
         return mesh
 
-    def __init__(self, default_vertex_attributes=None, default_edge_attributes=None, default_face_attributes=None, name=None, **kwargs):  # fmt: skip
+    def __init__(
+            self,
+            default_vertex_attributes=None,
+            default_edge_attributes=None,
+            default_face_attributes=None,
+            name=None,
+            **kwargs
+        ):  # fmt: skip
         super(Mesh, self).__init__(kwargs, name=name)
         self._max_vertex = -1
         self._max_face = -1
@@ -725,7 +732,7 @@ class Mesh(Datastructure):
             The points representing the vertices of the mesh.
 
         """
-        raise NotImplementedError
+        return [self.vertex_coordinates(vertex) for vertex in self.vertices()]
 
     def to_polygons(self):
         """Convert the mesh to a collection of polygons.

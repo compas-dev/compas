@@ -83,7 +83,7 @@ def test_graph_from_pointcloud():
     graph = Graph.from_pointcloud(cloud=cloud, degree=3)
     assert graph.number_of_nodes() == len(cloud)
     for node in graph.nodes():
-        assert graph.degree(node) >= 3
+        assert graph.degree(node) <= 3
 
 
 # ==============================================================================
@@ -274,6 +274,20 @@ def test_graph_to_networkx():
     assert g2.edge_attribute((0, 1), "attr_value") == 10
     assert g2.name == "DiGraph", "Graph attributes must be preserved"
     # assert g2.attributes["val"] == (0, 0, 0), "Graph attributes must be preserved"
+
+
+@pytest.mark.parametrize(
+    "filepath",
+    [
+        compas.get("lines.obj"),
+        compas.get("grid_irregular.obj"),
+    ],
+)
+def test_to_points(filepath):
+    graph = Graph.from_obj(filepath)
+    points = graph.to_points()
+
+    assert len(points) == graph.number_of_nodes(), "Number of points must match number of nodes"
 
 
 # ==============================================================================

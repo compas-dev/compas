@@ -8,6 +8,47 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Added
+* Implemented `to_points` method in `compas.datastructures.Mesh`, which before raised a `NotImplementedError`.
+* Implemented `compute_aabb` method in `compas.datastructures.Datastructure`, which before raised a `NotImplementedError`. Made use of the `compas.geometry.bbox.bounding_box` function.
+* Implemented `compute_obb` method in `compas.datastructures.Datastructure`, which before raised a `NotImplementedError`. Made use of the `compas.geometry.bbox_numpy.oriented_bounding_box_numpy` function.
+* Added `vertices_to_points` method in `compas.datastructures.CellNetwork`.
+* Added `to_points` method in `compas.datastructures.VolMesh`.
+* Added test function `test_vertices_to_points`in `test_cell_network.py`.
+* Added test function `test_to_points` in `test_graph.py`.
+* Added test function `test_to_points` in `test_volmesh.py`.
+* Added test functions `test_to_points`, `test_compute_aabb`, and `test_compute_obb` in `test_mesh.py`.
+
+### Changed
+
+### Removed
+
+
+## [2.13.0] 2025-06-04
+
+### Added
+
+* Added `compas.scene.Scene.add_group()` for adding group.
+* Added `compas.scene.Group.add_from_list()` for adding a list of items to a group.
+* Added implementation for `compas.geometry.SphericalSurface.isocurve_u`.
+* Added implementation for `compas.geometry.SphericalSurface.isocurve_v`.
+* Added implementation for `compas.geometry.CylindricalSurface.isocurve_u`.
+* Added implementation for `compas.geometry.CylindricalSurface.isocurve_v`.
+
+### Changed
+
+* Fixed error in `circle_to_compas` from Rhino.
+* Fixed Rhino to Rhino brep serialization.
+* Upated `compas.scene.Group.add()` to pass on group kwargs as default for child items.
+* Fixed bug in context detection, which wrongly defaults to `Viewer` instead of `None`.
+* Fixed bug in calculation of `compas.geometry.Polyhedron.edges` if geometry is computed using numpy.
+* Fixed bug in `Grpah.from_pointcloud` which uses degree parameter wrongly.
+
+### Removed
+
+
+## [2.12.0] 2025-05-28
+
+### Added
 
 * Added `inheritance` field to `__jsondump__` of `compas.datastructures.Datastructure` to allow for deserialization to closest available superclass of custom datastructures.
 

@@ -11,6 +11,7 @@ if not compas.IPY:
     from compas.geometry import Box
     from compas.geometry import Frame
     from compas.geometry import Translation
+    from compas.scene import Group
 
     @pytest.fixture(autouse=True)
     def reset_sceneobjects_registration():
@@ -114,3 +115,47 @@ if not compas.IPY:
         scene.clear(clear_context=False, clear_scene=True)
 
         assert len(scene.objects) == 0
+
+    def test_group_creation():
+        scene = Scene()
+        group = scene.add_group("TestGroup")
+        assert isinstance(group, Group)
+        assert group.name == "TestGroup"
+        assert group.parent == scene.root
+
+    def test_group_add_item():
+        scene = Scene()
+        group = scene.add_group("TestGroup")
+        box = Box()
+        box_obj = group.add(box)
+        assert isinstance(box_obj, SceneObject)
+        assert box_obj.parent is group
+        assert box_obj.item is box
+
+    def test_group_add_from_list():
+        scene = Scene()
+        group = scene.add_group("TestGroup")
+        boxes = [Box() for _ in range(3)]
+        box_objs = group.add_from_list(boxes)
+        assert len(box_objs) == 3
+        for box_obj in box_objs:
+            assert isinstance(box_obj, SceneObject)
+            assert box_obj.parent is group
+
+    def test_group_kwargs_inheritance():
+        scene = Scene()
+        group = scene.add_group("TestGroup", show=False)
+        box = Box()
+        box_obj = group.add(box)
+        assert not box_obj.show  # Should inherit show=False from group
+
+    def test_group_hierarchy():
+        scene = Scene()
+        parent_group = scene.add_group("ParentGroup")
+        child_group = parent_group.add(Group("ChildGroup"))
+        box = Box()
+        box_obj = child_group.add(box)
+
+        assert box_obj.parent is child_group
+        assert child_group.parent is parent_group
+        assert parent_group.parent is scene.root
