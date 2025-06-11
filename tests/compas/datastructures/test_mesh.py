@@ -340,6 +340,23 @@ def test_to_lines():
     assert len(lines) == mesh.number_of_edges()
 
 
+def test_to_points():
+    # tri
+    mesh = Mesh.from_shape(Polyhedron.from_platonicsolid(4))
+    points = mesh.to_points()
+    assert len(points) == 4
+
+    # quad
+    mesh = Mesh.from_shape(Polyhedron.from_platonicsolid(6))
+    points = mesh.to_points()
+    assert len(points) == 8
+
+    # ngon
+    mesh = Mesh.from_shape(Polyhedron.from_platonicsolid(12))
+    points = mesh.to_points()
+    assert len(points) == 20
+
+
 # --------------------------------------------------------------------------
 # helpers
 # --------------------------------------------------------------------------
@@ -1264,3 +1281,26 @@ def test_face_attributes_includes_all_defaults(box):
     ]
 
     assert box.face_attribute(random_fkey, "attr3") == "value3"
+
+
+# --------------------------------------------------------------------------
+# bounding volumes
+# --------------------------------------------------------------------------
+
+if not compas.IPY:
+
+    def test_compute_aabb():
+        mesh = Mesh.from_obj(compas.get("tubemesh.obj"))
+        aabb = mesh.compute_aabb()
+
+        assert isinstance(aabb, Box)
+        assert len(aabb.points) == 8
+        assert aabb.contains_points(mesh.to_points())
+
+    def test_compute_obb():
+        mesh = Mesh.from_obj(compas.get("tubemesh.obj"))
+        obb = mesh.compute_obb()
+
+        assert isinstance(obb, Box)
+        assert len(obb.points) == 8
+        assert obb.contains_points(mesh.to_points())

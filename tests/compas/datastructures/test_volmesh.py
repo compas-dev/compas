@@ -346,6 +346,13 @@ def test_cells_where_predicate():
 # Conversion
 # ==============================================================================
 
+
+def test_to_points():
+    vmesh = VolMesh.from_obj(compas.get("boxes.obj"))
+    points = vmesh.to_points()
+    assert len(points) == 27
+
+
 # ==============================================================================
 # Methods
 # ==============================================================================
