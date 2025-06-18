@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added test function `test_to_points` in `test_graph.py`.
 * Added test function `test_to_points` in `test_volmesh.py`.
 * Added test functions `test_to_points`, `test_compute_aabb`, and `test_compute_obb` in `test_mesh.py`.
+* Added `to_step` method to `RhinoBrep`.
 
 ### Changed
 

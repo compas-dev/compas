@@ -749,11 +749,12 @@ class RhinoBrep(Brep):
 
         """
         if not filepath.endswith(".step"):
-            raise ValueError("Expected file with .igs extension")
+            raise ValueError("Expected file with .step extension")
         return cls._import_brep_from_file(filepath)
 
     @staticmethod
     def _import_brep_from_file(filepath):
+        # TODO: this only seems to work in ScriptEditor (AKA rhino, not GH)
         rs.Command('_-Import "' + filepath + '" _Enter', False)
         guid = rs.LastCreatedObjects()[0]  # this fails, could be Rhino bug
         obj = compas_rhino.objects.find_object(guid)
@@ -877,6 +878,20 @@ class RhinoBrep(Brep):
         rg_meshes = Rhino.Geometry.Mesh.CreateFromBrep(self._brep, Rhino.Geometry.MeshingParameters.Default)
         meshes = [mesh_to_compas(m) for m in rg_meshes]
         return meshes
+
+    def to_step(self, filepath):
+        if not filepath.endswith(".step"):
+            raise ValueError("Attempted to export STEP but file ends with {} extension".format(filepath.split(".")[-1]))
+        self._export_brep_to_file(filepath, self._brep)
+
+    @staticmethod
+    def _export_brep_to_file(filepath, brep):
+        objects = Rhino.RhinoDoc.ActiveDoc.Objects
+        obj_id = objects.Add(brep)
+        obj = objects.Find(obj_id)
+        obj.Select(True)
+        rs.Command('_-Export "' + filepath + '" _Enter', False)
+        objects.Delete(obj_id, True)
 
     def transform(self, matrix):
         """Transform this Brep by given transformation matrix
