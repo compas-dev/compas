@@ -124,3 +124,66 @@ if not compas.IPY:
         scene = compas.json_loads(compas.json_dumps(scene))
 
         assert isinstance(scene, Scene)
+
+    def test_group_serialisation():
+        scene1 = Scene()
+        group = scene1.add_group("TestGroup", show=False)
+        box = Box.from_width_height_depth(1, 1, 1)
+        group.add(box)
+
+        scene2 = Scene.from_jsonstring(scene1.to_jsonstring())
+
+        # Check if group was serialized correctly
+        group2 = scene2.find_by_name("TestGroup")
+        assert isinstance(group2, Group)
+        assert group2.name == "TestGroup"
+        assert not group2.show
+
+        # Check if box was serialized correctly
+        box2 = group2.children[0]
+        assert isinstance(box2.item, Box)
+        assert box2.parent is group2
+
+    def test_nested_group_serialisation():
+        scene1 = Scene()
+        parent_group = scene1.add_group("ParentGroup", show=False)
+        child_group = parent_group.add(Group("ChildGroup", show=True))
+        box = Box.from_width_height_depth(1, 1, 1)
+        child_group.add(box)
+
+        scene2 = Scene.from_jsonstring(scene1.to_jsonstring())
+
+        # Check parent group
+        parent2 = scene2.find_by_name("ParentGroup")
+        assert isinstance(parent2, Group)
+        assert not parent2.show
+
+        # Check child group
+        child2 = parent2.children[0]
+        assert isinstance(child2, Group)
+        assert child2.name == "ChildGroup"
+        assert child2.show
+        assert child2.parent is parent2
+
+        # Check box
+        box2 = child2.children[0]
+        assert isinstance(box2.item, Box)
+        assert box2.parent is child2
+
+    def test_group_kwargs_serialisation():
+        scene1 = Scene()
+        group = scene1.add_group("TestGroup", show=False, opacity=0.5)
+        box = Box.from_width_height_depth(1, 1, 1)
+        group.add(box)
+
+        scene2 = Scene.from_jsonstring(scene1.to_jsonstring())
+
+        # Check if group kwargs were serialized correctly
+        group2 = scene2.find_by_name("TestGroup")
+        assert not group2.show
+        assert group2.opacity == 0.5
+
+        # Check if box inherited kwargs correctly
+        box2 = group2.children[0]
+        assert not box2.show
+        assert box2.opacity == 0.5

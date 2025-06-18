@@ -1171,6 +1171,17 @@ class CellNetwork(Datastructure):
                 mesh.add_face(vertices, fkey=fkey)
         return mesh
 
+    def vertices_to_points(self):
+        """Convert the vertices of the cell network to a collection of points.
+
+        Returns
+        -------
+        list[list[float]]
+            The points representing the vertices of the cell network.
+
+        """
+        return [self.vertex_coordinates(vertex) for vertex in self.vertices()]
+
     # --------------------------------------------------------------------------
     # General
     # --------------------------------------------------------------------------

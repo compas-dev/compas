@@ -40,7 +40,7 @@ except (ImportError, SyntaxError):
     numpy_support = False
 
 
-def cls_from_dtype(dtype):  # type: (...) -> Type[Data]
+def cls_from_dtype(dtype, inheritance=None):  # type: (...) -> Type[Data]
     """Get the class object corresponding to a COMPAS data type specification.
 
     Parameters
@@ -48,6 +48,8 @@ def cls_from_dtype(dtype):  # type: (...) -> Type[Data]
     dtype : str
         The data type of the COMPAS object in the following format:
         '{}/{}'.format(o.__class__.__module__, o.__class__.__name__).
+    inheritance : list[str], optional
+        The inheritance chain of this class, a list of superclasses that can be used if given dtype is not found.
 
     Returns
     -------
@@ -63,9 +65,23 @@ def cls_from_dtype(dtype):  # type: (...) -> Type[Data]
         If the module doesn't contain the specified data type.
 
     """
-    mod_name, attr_name = dtype.split("/")
-    module = __import__(mod_name, fromlist=[attr_name])
-    return getattr(module, attr_name)
+
+    if inheritance is None:
+        full_inheritance = [dtype]
+    else:
+        full_inheritance = [dtype] + inheritance
+
+    for dtype in full_inheritance:
+        mod_name, attr_name = dtype.split("/")
+        try:
+            module = __import__(mod_name, fromlist=[attr_name])
+            return getattr(module, attr_name)
+        except ImportError:
+            continue
+        except AttributeError:
+            continue
+
+    raise ValueError("No class found in inheritance chain: {}".format(full_inheritance))
 
 
 class DataEncoder(json.JSONEncoder):
@@ -220,7 +236,7 @@ class DataDecoder(json.JSONDecoder):
             return o
 
         try:
-            cls = cls_from_dtype(o["dtype"])
+            cls = cls_from_dtype(o["dtype"], o.get("inheritance", None))
 
         except ValueError:
             raise DecoderError(
