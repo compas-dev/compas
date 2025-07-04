@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Added
+
 * Implemented `to_points` method in `compas.datastructures.Mesh`, which before raised a `NotImplementedError`.
 * Implemented `compute_aabb` method in `compas.datastructures.Datastructure`, which before raised a `NotImplementedError`. Made use of the `compas.geometry.bbox.bounding_box` function.
 * Implemented `compute_obb` method in `compas.datastructures.Datastructure`, which before raised a `NotImplementedError`. Made use of the `compas.geometry.bbox_numpy.oriented_bounding_box_numpy` function.
@@ -17,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added test function `test_to_points` in `test_graph.py`.
 * Added test function `test_to_points` in `test_volmesh.py`.
 * Added test functions `test_to_points`, `test_compute_aabb`, and `test_compute_obb` in `test_mesh.py`.
+* Added setters for `SceneObject.worldtransformation` and `SceneObject.frame`, which automatically handles the parent transformations.
 
 ### Changed
 
