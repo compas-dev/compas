@@ -11,6 +11,7 @@ if not compas.IPY:
     from compas.geometry import Box
     from compas.geometry import Frame
     from compas.geometry import Translation
+    from compas.geometry import Transformation
     from compas.scene import Group
 
     @pytest.fixture(autouse=True)
@@ -103,6 +104,42 @@ if not compas.IPY:
         assert sceneobj3.worldtransformation == Translation.from_vector([30.0, 20.0, 10.0])
         assert sceneobj3.frame == Frame([30.0, 20.0, 10.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0])
         assert sceneobj3.frame.to_transformation() == Translation.from_vector([30.0, 20.0, 10.0])
+
+    def test_sceneobject_frame_and_worldtransformation_setters():
+        """Test that frame and worldtransformation setters work correctly."""
+        scene = Scene()
+
+        # Test on root object
+        root_obj = scene.add(Box())
+        test_frame = Frame([10.0, 20.0, 30.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0])
+        root_obj.frame = test_frame
+        assert root_obj.frame == test_frame
+        assert root_obj.worldtransformation == Transformation.from_frame(test_frame)
+
+        # Test worldtransformation setter on root object
+        test_transform = Translation.from_vector([5.0, 10.0, 15.0])
+        root_obj.worldtransformation = test_transform
+        assert root_obj.worldtransformation == test_transform
+        assert root_obj.transformation == test_transform
+
+        # Test with parent-child relationship
+        parent_obj = scene.add(Box())
+        child_obj = scene.add(Box(), parent=parent_obj)
+        parent_obj.transformation = Translation.from_vector([10.0, 0.0, 0.0])
+
+        # Test frame setter with parent
+        child_frame = Frame([30.0, 20.0, 10.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0])
+        child_obj.frame = child_frame
+        assert child_obj.frame == child_frame
+        expected_local = parent_obj.worldtransformation.inverse() * Transformation.from_frame(child_frame)
+        assert child_obj.transformation == expected_local
+
+        # Test worldtransformation setter with parent
+        child_world_transform = Translation.from_vector([50.0, 30.0, 20.0])
+        child_obj.worldtransformation = child_world_transform
+        assert child_obj.worldtransformation == child_world_transform
+        expected_local = parent_obj.worldtransformation.inverse() * child_world_transform
+        assert child_obj.transformation == expected_local
 
     def test_scene_clear():
         scene = Scene()
