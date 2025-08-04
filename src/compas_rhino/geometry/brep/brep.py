@@ -42,6 +42,25 @@ from .loop import RhinoBrepLoop
 from .vertex import RhinoBrepVertex
 
 
+def _export_brep_to_file(brep, filepath):
+    objects = Rhino.RhinoDoc.ActiveDoc.Objects
+    obj_id = objects.Add(brep)
+    obj = objects.Find(obj_id)
+    obj.Select(True)
+    rs.Command('_-Export "' + filepath + '" _Enter', False)
+    objects.Delete(obj_id, True)
+
+
+def _import_brep_from_file(filepath):
+    # TODO: this only seems to work in ScriptEditor (AKA rhino, not GH)
+    rs.Command('_-Import "' + filepath + '" _Enter', False)
+    guid = rs.LastCreatedObjects()[0]  # this fails, could be Rhino bug
+    obj = compas_rhino.objects.find_object(guid)
+    geometry = obj.Geometry.Duplicate()
+    compas_rhino.objects.delete_object(guid)
+    return RhinoBrep.from_native(geometry)
+
+
 class RhinoBrep(Brep):
     """Rhino Brep backend class.
 
@@ -275,7 +294,6 @@ class RhinoBrep(Brep):
     def surfaces(self):
         assert self._brep
         return [[RhinoNurbsSurface.from_native(s.ToNurbsSurface()) for s in self._brep.Surfaces]]
-
 
     # ==============================================================================
     # Constructors
@@ -531,7 +549,7 @@ class RhinoBrep(Brep):
         """
         if not filepath.endswith(".igs"):
             raise ValueError("Expected file with .igs extension")
-        return cls._import_brep_from_file(filepath)
+        return _import_brep_from_file(filepath)
 
     @classmethod
     def from_loft(cls, curves):
@@ -725,17 +743,7 @@ class RhinoBrep(Brep):
         """
         if not filepath.endswith(".step"):
             raise ValueError("Expected file with .step extension")
-        return cls._import_brep_from_file(filepath)
-
-    @staticmethod
-    def _import_brep_from_file(filepath):
-        # TODO: this only seems to work in ScriptEditor (AKA rhino, not GH)
-        rs.Command('_-Import "' + filepath + '" _Enter', False)
-        guid = rs.LastCreatedObjects()[0]  # this fails, could be Rhino bug
-        obj = compas_rhino.objects.find_object(guid)
-        geometry = obj.Geometry.Duplicate()
-        compas_rhino.objects.delete_object(guid)
-        return RhinoBrep.from_native(geometry)
+        return _import_brep_from_file(filepath)
 
     @classmethod
     def from_sweep(cls, profile, path, is_closed=False, tolerance=None):
@@ -857,16 +865,7 @@ class RhinoBrep(Brep):
     def to_step(self, filepath):
         if not filepath.endswith(".step"):
             raise ValueError("Attempted to export STEP but file ends with {} extension".format(filepath.split(".")[-1]))
-        self._export_brep_to_file(filepath, self._brep)
-
-    @staticmethod
-    def _export_brep_to_file(filepath, brep):
-        objects = Rhino.RhinoDoc.ActiveDoc.Objects
-        obj_id = objects.Add(brep)
-        obj = objects.Find(obj_id)
-        obj.Select(True)
-        rs.Command('_-Export "' + filepath + '" _Enter', False)
-        objects.Delete(obj_id, True)
+        _export_brep_to_file(self._brep, filepath)
 
     def transform(self, matrix):
         """Transform this Brep by given transformation matrix
