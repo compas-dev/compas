@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added test function `test_to_points` in `test_graph.py`.
 * Added test function `test_to_points` in `test_volmesh.py`.
 * Added test functions `test_to_points`, `test_compute_aabb`, and `test_compute_obb` in `test_mesh.py`.
+* Added setters for `SceneObject.worldtransformation` and `SceneObject.frame`, which automatically handles the parent transformations.
 * Added missing property `centroid` in `compas_rhino.geometry.RhinoBrep`.
 * Added missing property `curves` in `compas_rhino.geometry.RhinoBrep`.
 * Added missing property `is_closed` in `compas_rhino.geometry.RhinoBrep`.

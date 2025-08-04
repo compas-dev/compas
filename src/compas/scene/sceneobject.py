@@ -95,7 +95,6 @@ class SceneObject(TreeNode):
         color=None,  # type: compas.colors.Color | None
         opacity=1.0,  # type: float
         show=True,  # type: bool
-        frame=None,  # type: compas.geometry.Frame | None
         transformation=None,  # type: compas.geometry.Transformation | None
         context=None,  # type: str | None
         **kwargs  # type: dict
@@ -157,6 +156,11 @@ class SceneObject(TreeNode):
         # type: () -> compas.geometry.Frame | None
         return Frame.from_transformation(self.worldtransformation)
 
+    @frame.setter
+    def frame(self, frame):
+        # type: (compas.geometry.Frame) -> None
+        self.worldtransformation = Transformation.from_frame(frame)
+
     @property
     def transformation(self):
         # type: () -> compas.geometry.Transformation | None
@@ -182,6 +186,14 @@ class SceneObject(TreeNode):
             worldtransformation = Transformation()
 
         return worldtransformation
+
+    @worldtransformation.setter
+    def worldtransformation(self, worldtransformation):
+        # type: (compas.geometry.Transformation) -> None
+        if isinstance(self.parent, SceneObject):
+            self.transformation = self.parent.worldtransformation.inverse() * worldtransformation
+        else:
+            self.transformation = worldtransformation
 
     @property
     def contrastcolor(self):
