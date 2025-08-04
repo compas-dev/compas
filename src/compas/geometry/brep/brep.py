@@ -178,27 +178,7 @@ class Brep(Geometry):
         raise NotImplementedError
 
     @property
-    def type(self):
-        raise NotImplementedError
-
-    @property
     def is_valid(self):
-        raise NotImplementedError
-
-    @property
-    def is_shell(self):
-        raise NotImplementedError
-
-    @property
-    def is_solid(self):
-        raise NotImplementedError
-
-    @property
-    def is_compound(self):
-        raise NotImplementedError
-
-    @property
-    def is_compoundsolid(self):
         raise NotImplementedError
 
     @property

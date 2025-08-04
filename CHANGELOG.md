@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Added
+
 * Implemented `to_points` method in `compas.datastructures.Mesh`, which before raised a `NotImplementedError`.
 * Implemented `compute_aabb` method in `compas.datastructures.Datastructure`, which before raised a `NotImplementedError`. Made use of the `compas.geometry.bbox.bounding_box` function.
 * Implemented `compute_obb` method in `compas.datastructures.Datastructure`, which before raised a `NotImplementedError`. Made use of the `compas.geometry.bbox_numpy.oriented_bounding_box_numpy` function.
@@ -20,8 +21,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added missing property `centroid` in `compas_rhino.geometry.RhinoBrep`.
 * Added missing property `curves` in `compas_rhino.geometry.RhinoBrep`.
 * Added missing property `is_closed` in `compas_rhino.geometry.RhinoBrep`.
-* Added missing property `is_compound` in `compas_rhino.geometry.RhinoBrep`.
-* Added missing property `is_compoundsolid` in `compas_rhino.geometry.RhinoBrep`.
 * Added missing property `is_orientable` in `compas_rhino.geometry.RhinoBrep`.
 * Added missing property `is_surface` in `compas_rhino.geometry.RhinoBrep`.
 * Added missing property `is_valid` in `compas_rhino.geometry.RhinoBrep`.
@@ -42,6 +41,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+* Removed property `is_compound` from `compas.geometry.Brep` as OCC specific.
+* Removed property `is_compoundsolid` from `compas.geometry.Brep` as OCC specific.
+* Removed property `solids` from `compas.geometry.Brep` as OCC specific.
+* Removed property `shells` from `compas.geometry.Brep` as OCC specific.
 
 ## [2.13.0] 2025-06-04
 

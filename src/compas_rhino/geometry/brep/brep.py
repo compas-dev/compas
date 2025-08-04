@@ -237,16 +237,6 @@ class RhinoBrep(Brep):
         return self._brep.IsSolid
 
     @property
-    def is_compound(self):
-        # TODO: clarify. according to the internets compound brep is actually a container for several breps, not sure that's possible with a Rhino Brep.
-        return False
-
-    @property
-    def is_compoundsolid(self):
-        # TODO: see above
-        return False
-
-    @property
     def is_convex(self):
         raise NotImplementedError("Convexity check is not implemented for Rhino Breps.")
 
@@ -282,25 +272,10 @@ class RhinoBrep(Brep):
         return self._brep.SolidOrientation
 
     @property
-    def shells(self):
-        # TODO: can create shell from brep but have to specify which faces to eliminate in order to hollow out the brep, doesn't seem like the intention.
-        # TODO: is this about traversing a compound brep?
-        raise NotImplementedError("Shells are not implemented for Rhino Breps.")
-
-    @property
-    def solids(self):
-        # TODO: same as above
-        raise NotImplementedError("Solids are not implemented for Rhino Breps.")
-
-    @property
     def surfaces(self):
         assert self._brep
         return [[RhinoNurbsSurface.from_native(s.ToNurbsSurface()) for s in self._brep.Surfaces]]
 
-    @property
-    def type(self):
-        # TODO: seems like an OCC specific thinh, rename to occ_type and remove from interface?
-        raise NotImplementedError("Type is not implemented for Rhino Breps.")
 
     # ==============================================================================
     # Constructors
