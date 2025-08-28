@@ -6,6 +6,7 @@ import Rhino  # type: ignore
 import rhinoscriptsyntax as rs  # type: ignore
 
 import compas_rhino.objects
+from compas.datastructures import Mesh
 from compas.geometry import Brep
 from compas.geometry import BrepError
 from compas.geometry import BrepFilletError
@@ -59,6 +60,13 @@ def _import_brep_from_file(filepath):
     geometry = obj.Geometry.Duplicate()
     compas_rhino.objects.delete_object(guid)
     return RhinoBrep.from_native(geometry)
+
+
+def _join_meshes(meshes):
+    result = Mesh()
+    for mesh in meshes:
+        result.join(mesh)
+    return result
 
 
 class RhinoBrep(Brep):
@@ -861,6 +869,26 @@ class RhinoBrep(Brep):
         rg_meshes = Rhino.Geometry.Mesh.CreateFromBrep(self._brep, Rhino.Geometry.MeshingParameters.Default)
         meshes = [mesh_to_compas(m) for m in rg_meshes]
         return meshes
+
+    def to_viewmesh(self, linear_deflection: float = 0.001):
+        """
+        Convert the Brep to a single view mesh.
+
+        Note
+        ----
+        Edges as polylines is not currently implemented for RhinoBrep. Therefore, an empty list will be returned.
+
+        Parameters
+        ----------
+        linear_deflection : float, optional
+            The maximum linear deflection between the geometry and its discrete representation.
+
+        Returns
+        -------
+        tuple[:class:`compas.datastructures.Mesh`, list[:class:`compas.geometry.Polyline`]]
+
+        """
+        return _join_meshes(self.to_meshes()), []
 
     def to_step(self, filepath):
         if not filepath.endswith(".step"):
