@@ -5,6 +5,7 @@ from . import from_boolean_intersection
 from . import from_boolean_union
 from . import from_box
 from . import from_brepfaces
+from . import from_breps
 from . import from_cone
 from . import from_curves
 from . import from_cylinder
@@ -177,27 +178,7 @@ class Brep(Geometry):
         raise NotImplementedError
 
     @property
-    def type(self):
-        raise NotImplementedError
-
-    @property
     def is_valid(self):
-        raise NotImplementedError
-
-    @property
-    def is_shell(self):
-        raise NotImplementedError
-
-    @property
-    def is_solid(self):
-        raise NotImplementedError
-
-    @property
-    def is_compound(self):
-        raise NotImplementedError
-
-    @property
-    def is_compoundsolid(self):
         raise NotImplementedError
 
     @property
@@ -327,22 +308,22 @@ class Brep(Geometry):
         return from_brepfaces(faces)
 
     @classmethod
-    def from_breps(cls, breps):
+    def from_breps(cls, breps, *args, **kwargs):
         """Construct one compound Brep from a list of other Breps.
 
         Parameters
         ----------
-        breps : list[:class:`compas.geometry.Brep`]
+        breps : list of :class:`compas.geometry.Brep`
 
         Returns
         -------
-        :class:`compas.geometry.Brep`
+        list of :class:`compas.geometry.Brep`
 
         """
-        raise NotImplementedError
+        return from_breps(breps, *args, **kwargs)
 
     @classmethod
-    def from_cone(cls, cone):
+    def from_cone(cls, cone, *args, **kwargs):
         """Construct a Brep from a COMPAS cone.
 
         Parameters
@@ -354,7 +335,7 @@ class Brep(Geometry):
         :class:`compas.geometry.Brep`
 
         """
-        return from_cone(cone)
+        return from_cone(cone, *args, **kwargs)
 
     @classmethod
     def from_curves(cls, curves):
@@ -467,8 +448,8 @@ class Brep(Geometry):
         return from_native(native_brep)
 
     @classmethod
-    def from_pipe(cls, curve, radius, thickness=None):
-        """Construct a Brep by extruding a closed curve along a path curve.
+    def from_pipe(cls, path, radius, *args, **kwargs):
+        """Construct a Brep by extruding a circle curve along the path curve.
 
         Parameters
         ----------
@@ -476,16 +457,13 @@ class Brep(Geometry):
             The curve to extrude
         radius : float
             The radius of the pipe.
-        thickness : float, optional
-            The thickness of the pipe.
-            The thickness should be smaller than the radius.
 
         Returns
         -------
         :class:`compas.geometry.Brep`
 
         """
-        return from_pipe(curve, radius, thickness=thickness)
+        return from_pipe(path, radius, *args, **kwargs)
 
     @classmethod
     def from_plane(cls, plane, domain_u=(-1, +1), domain_v=(-1, +1)):
@@ -524,7 +502,7 @@ class Brep(Geometry):
         return from_planes(planes)
 
     @classmethod
-    def from_polygons(cls, polygons):
+    def from_polygons(cls, polygons, *args, **kwargs):
         """Construct a Brep from a set of polygons.
 
         Parameters
@@ -536,7 +514,7 @@ class Brep(Geometry):
         :class:`compas.geometry.Brep`
 
         """
-        return from_polygons(polygons)
+        return from_polygons(polygons, *args, **kwargs)
 
     @classmethod
     def from_sphere(cls, sphere):
@@ -569,7 +547,7 @@ class Brep(Geometry):
         return from_step(filename)
 
     @classmethod
-    def from_sweep(cls, profile, path):
+    def from_sweep(cls, profile, path, *args, **kwargs):
         """Construct a BRep by sweeping a profile along a path.
 
         Parameters
@@ -584,7 +562,7 @@ class Brep(Geometry):
         :class:`compas.geometry.Brep`
 
         """
-        return from_sweep(profile, path)
+        return from_sweep(profile, path, *args, **kwargs)
 
     @classmethod
     def from_torus(cls, torus):

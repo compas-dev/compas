@@ -26,6 +26,21 @@ def from_box(*args, **kwargs):
 
 
 @plugin(category="factories", requires=["Rhino"])
+def from_brepfaces(*args, **kwargs):
+    return RhinoBrep.from_brepfaces(*args, **kwargs)
+
+
+@plugin(category="factories", requires=["Rhino"])
+def from_breps(*args, **kwargs):
+    return RhinoBrep.from_breps(*args, **kwargs)
+
+
+@plugin(category="factories", requires=["Rhino"])
+def from_cone(*args, **kwargs):
+    return RhinoBrep.from_cone(*args, **kwargs)
+
+
+@plugin(category="factories", requires=["Rhino"])
 def from_cylinder(*args, **kwargs):
     return RhinoBrep.from_cylinder(*args, **kwargs)
 
@@ -38,6 +53,11 @@ def from_extrusion(*args, **kwargs):
 @plugin(category="factories", requires=["Rhino"])
 def from_curves(*args, **kwargs):
     return RhinoBrep.from_curves(*args, **kwargs)
+
+
+@plugin(category="factories", requires=["Rhino"])
+def from_iges(*args, **kwargs):
+    return RhinoBrep.from_iges(*args, **kwargs)
 
 
 @plugin(category="factories", requires=["Rhino"])
@@ -56,6 +76,21 @@ def from_native(*args, **kwargs):
 
 
 @plugin(category="factories", requires=["Rhino"])
+def from_plane(*args, **kwargs):
+    return RhinoBrep.from_plane(*args, **kwargs)
+
+
+@plugin(category="factories", requires=["Rhino"])
+def from_polygons(*args, **kwargs):
+    return RhinoBrep.from_polygons(*args, **kwargs)
+
+
+@plugin(category="factories", requires=["Rhino"])
+def from_pipe(*args, **kwargs):
+    return RhinoBrep.from_pipe(*args, **kwargs)
+
+
+@plugin(category="factories", requires=["Rhino"])
 def from_sphere(*args, **kwargs):
     return RhinoBrep.from_sphere(*args, **kwargs)
 
@@ -63,6 +98,16 @@ def from_sphere(*args, **kwargs):
 @plugin(category="factories", requires=["Rhino"])
 def from_step(*args, **kwargs):
     return RhinoBrep.from_step(*args, **kwargs)
+
+
+@plugin(category="factories", requires=["Rhino"])
+def from_sweep(*args, **kwargs):
+    return RhinoBrep.from_sweep(*args, **kwargs)
+
+
+@plugin(category="factories", requires=["Rhino"])
+def from_torus(*args, **kwargs):
+    return RhinoBrep.from_torus(*args, **kwargs)
 
 
 @plugin(category="factories", requires=["Rhino"])

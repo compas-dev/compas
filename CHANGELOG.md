@@ -19,11 +19,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added test function `test_to_points` in `test_volmesh.py`.
 * Added test functions `test_to_points`, `test_compute_aabb`, and `test_compute_obb` in `test_mesh.py`.
 * Added setters for `SceneObject.worldtransformation` and `SceneObject.frame`, which automatically handles the parent transformations.
+* Added missing property `centroid` in `compas_rhino.geometry.RhinoBrep`.
+* Added missing property `curves` in `compas_rhino.geometry.RhinoBrep`.
+* Added missing property `is_closed` in `compas_rhino.geometry.RhinoBrep`.
+* Added missing property `is_orientable` in `compas_rhino.geometry.RhinoBrep`.
+* Added missing property `is_surface` in `compas_rhino.geometry.RhinoBrep`.
+* Added missing property `is_valid` in `compas_rhino.geometry.RhinoBrep`.
+* Added missing property `orientation` in `compas_rhino.geometry.RhinoBrep`.
+* Added missing property `surfaces` in `compas_rhino.geometry.RhinoBrep`.
+* Added implementation for `Brep.from_sweep` in `compas_rhino.geometry.RhinoBrep`.
+* Added implementation for `Brep.from_cone` in `compas_rhino.geometry.RhinoBrep`.
+* Added implementation for `Brep.from_plane` in `compas_rhino.geometry.RhinoBrep`.
+* Added implementation for `Brep.from_brepfaces` in `compas_rhino.geometry.RhinoBrep`.
+* Added implementation for `Brep.from_breps` in `compas_rhino.geometry.RhinoBrep`.
+* Added implementation for `Brep.from_torus` in `compas_rhino.geometry.RhinoBrep`.
+* Added implementation for `Brep.from_polygons` in `compas_rhino.geometry.RhinoBrep`.
+* Added implementation for `Brep.from_pipe` in `compas_rhino.geometry.RhinoBrep`.
+* Added implementation for `Brep.from_iges` in `compas_rhino.geometry.RhinoBrep`.
+* Added implementation for `Brep.to_step` in `compas_rhino.geometry.RhinoBrep`.
+* Added implementation for `Brep.to_viewmesh()` in `compas_rhino.geometry.RhinoBrep`.
 
 ### Changed
 
 ### Removed
 
+* Removed property `is_compound` from `compas.geometry.Brep` as OCC specific.
+* Removed property `is_compoundsolid` from `compas.geometry.Brep` as OCC specific.
+* Removed property `solids` from `compas.geometry.Brep` as OCC specific.
+* Removed property `shells` from `compas.geometry.Brep` as OCC specific.
 
 ## [2.13.0] 2025-06-04
 

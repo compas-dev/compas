@@ -6,33 +6,67 @@ import Rhino  # type: ignore
 import rhinoscriptsyntax as rs  # type: ignore
 
 import compas_rhino.objects
+from compas.datastructures import Mesh
 from compas.geometry import Brep
 from compas.geometry import BrepError
 from compas.geometry import BrepFilletError
 from compas.geometry import BrepTrimmingError
 from compas.geometry import Frame
+from compas.geometry import Line
 from compas.geometry import Plane
 from compas.geometry import Point
 from compas.geometry import Polyline
 from compas.tolerance import TOL
 from compas_rhino.conversions import box_to_rhino
+from compas_rhino.conversions import cone_to_rhino
 from compas_rhino.conversions import curve_to_compas
 from compas_rhino.conversions import curve_to_rhino
 from compas_rhino.conversions import cylinder_to_rhino
+from compas_rhino.conversions import frame_to_rhino_plane
+from compas_rhino.conversions import line_to_rhino_curve
 from compas_rhino.conversions import mesh_to_compas
 from compas_rhino.conversions import mesh_to_rhino
 from compas_rhino.conversions import plane_to_rhino
 from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import polyline_to_rhino_curve
 from compas_rhino.conversions import sphere_to_rhino
+from compas_rhino.conversions import torus_to_rhino
 from compas_rhino.conversions import transformation_to_rhino
 from compas_rhino.conversions import vector_to_rhino
+from compas_rhino.geometry import RhinoNurbsCurve
+from compas_rhino.geometry import RhinoNurbsSurface
 
 from .builder import _RhinoBrepBuilder
 from .edge import RhinoBrepEdge
 from .face import RhinoBrepFace
 from .loop import RhinoBrepLoop
 from .vertex import RhinoBrepVertex
+
+
+def _export_brep_to_file(brep, filepath):
+    objects = Rhino.RhinoDoc.ActiveDoc.Objects
+    obj_id = objects.Add(brep)
+    obj = objects.Find(obj_id)
+    obj.Select(True)
+    rs.Command('_-Export "' + filepath + '" _Enter', False)
+    objects.Delete(obj_id, True)
+
+
+def _import_brep_from_file(filepath):
+    # TODO: this only seems to work in ScriptEditor (AKA rhino, not GH)
+    rs.Command('_-Import "' + filepath + '" _Enter', False)
+    guid = rs.LastCreatedObjects()[0]  # this fails, could be Rhino bug
+    obj = compas_rhino.objects.find_object(guid)
+    geometry = obj.Geometry.Duplicate()
+    compas_rhino.objects.delete_object(guid)
+    return RhinoBrep.from_native(geometry)
+
+
+def _join_meshes(meshes):
+    result = Mesh()
+    for mesh in meshes:
+        result.join(mesh)
+    return result
 
 
 class RhinoBrep(Brep):
@@ -62,6 +96,36 @@ class RhinoBrep(Brep):
         The calculated area of this brep.
     volume : float, read-only
         The calculated volume of this brep.
+    centroid : :class:`compas.geometry.Point`, read-only
+        The calculated centroid of this brep.
+    curves : list[:class:`compas_rhino.geometry.RhinoNurbsCurve`], read-only
+        The list of curves which comprise this brep.
+    is_closed : bool, read-only
+        True if this brep is closed, False otherwise.
+    is_compound : bool, read-only
+        True if this brep is compound, False otherwise.
+    is_compoundsolid : bool, read-only
+        True if this brep is compound solid, False otherwise.
+    is_convex : bool, read-only
+        True if this brep is convex, False otherwise.
+    is_infinite : bool, read-only
+        True if this brep is infinite, False otherwise.
+    is_orientable : bool, read-only
+        True if this brep is orientable, False otherwise.
+    is_shell : bool, read-only
+        True if this brep is a shell, False otherwise.
+    is_surface : bool, read-only
+        True if this brep is a surface, False otherwise.
+    is_valid : bool, read-only
+        True if this brep is valid, False otherwise.
+    orientation : literal(:class:`~compas.geometry.BrepOrientation`), read-only
+        The orientation of this brep. One of: FORWARD, REVERSED, INTERNAL, EXTERNAL.
+    shells : list[:class:`compas_rhino.geometry.RhinoBrep`], read-only
+        The list of shells which comprise this brep.
+    solids : list[:class:`compas_rhino.geometry.RhinoBrep`], read-only
+        The list of solids which comprise this brep.
+    surfaces : list[:class:`compas_rhino.geometry.RhinoNurbsSurface`], read-only
+        The list of surfaces which comprise this brep.
 
     """
 
@@ -183,6 +247,62 @@ class RhinoBrep(Brep):
         if self._brep:
             return self._brep.GetVolume()
 
+    @property
+    def centroid(self):
+        assert self._brep
+        centroid = Rhino.Geometry.AreaMassProperties.Compute(self._brep).Centroid
+        return Point(*centroid)
+
+    @property
+    def curves(self):
+        assert self._brep
+        return [RhinoNurbsCurve.from_native(c.ToNurbsCurve()) for c in self._brep.Curves3D]
+
+    @property
+    def is_closed(self):
+        assert self._brep
+        return self._brep.IsSolid
+
+    @property
+    def is_convex(self):
+        raise NotImplementedError("Convexity check is not implemented for Rhino Breps.")
+
+    @property
+    def is_infinite(self):
+        # TODO: what does this exactly mean? couldn't find in the Rhino API
+        raise NotImplementedError
+
+    @property
+    def is_orientable(self):
+        assert self._brep
+        return self._brep.SolidOrientation in (Rhino.Geometry.BrepSolidOrientation.Inward, Rhino.Geometry.BrepSolidOrientation.Outward)
+
+    @property
+    def is_shell(self):
+        # not sure how to get this one
+        raise NotImplementedError
+
+    @property
+    def is_surface(self):
+        assert self._brep
+        return self._brep.IsSurface
+
+    @property
+    def is_valid(self):
+        assert self._brep
+        return self.IsValid
+
+    @property
+    def orientation(self):
+        assert self._brep
+        # TODO: align this with compas.geometry.BrepOrientation
+        return self._brep.SolidOrientation
+
+    @property
+    def surfaces(self):
+        assert self._brep
+        return [[RhinoNurbsSurface.from_native(s.ToNurbsSurface()) for s in self._brep.Surfaces]]
+
     # ==============================================================================
     # Constructors
     # ==============================================================================
@@ -286,6 +406,59 @@ class RhinoBrep(Brep):
         return cls.from_native(rhino_box.ToBrep())
 
     @classmethod
+    def from_brepfaces(cls, faces):
+        """Create a Brep from a list of Brep faces forming an open or closed shell.
+
+        Parameters
+        ----------
+        faces : list[:class:`compas.geometry.BrepFace`]
+
+        Returns
+        -------
+        :class:`compas.geometry.Brep`
+
+        """
+        brep = Rhino.Geometry.Brep()
+        for face in faces:
+            brep.Faces.Add(face.native_face.UnderlyingSurface())
+        return cls.from_native(brep)
+
+    @classmethod
+    def from_breps(cls, breps, tolerance=None):
+        """Joins the breps at any overlapping edges to form as few as possible resulting breps. There may be more than one brep in the result array.
+
+        Parameters
+        ----------
+        breps : list of :class:`compas.geometry.Brep`
+
+        Returns
+        -------
+        list of :class:`compas.geometry.Brep`
+
+        """
+        tolerance = tolerance or TOL
+        rhino_breps = [b.native_brep for b in breps]
+        resulting_breps = Rhino.Geometry.Brep.JoinBreps(rhino_breps, tolerance.absolute, tolerance.angular)
+        return [cls.from_native(brep) for brep in resulting_breps]
+
+    @classmethod
+    def from_cone(cls, cone, cap_bottom=True):
+        """Create a RhinoBrep from a cone.
+
+        Parameters
+        ----------
+        cone : :class:`compas.geometry.Cone`
+            The cone geometry of the brep.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoBrep`
+
+        """
+        rhino_cone = cone_to_rhino(cone)
+        return cls.from_native(rhino_cone.ToBrep(cap_bottom))
+
+    @classmethod
     def from_cylinder(cls, cylinder):
         """Create a RhinoBrep from a box.
 
@@ -303,7 +476,7 @@ class RhinoBrep(Brep):
         return cls.from_native(rhino_cylinder.ToBrep(True, True))
 
     @classmethod
-    def from_curves(cls, curves):
+    def from_curves(cls, curves, tolerance=None):
         """Create a RhinoBreps from a list of planar face boundary curves.
 
         Parameters
@@ -316,6 +489,7 @@ class RhinoBrep(Brep):
         list of :class:`~compas_rhino.geometry.RhinoBrep`
 
         """
+        tolerance = tolerance or TOL.absolute
         if not isinstance(curves, list):
             curves = [curves]
         faces = []
@@ -324,13 +498,13 @@ class RhinoBrep(Brep):
                 rhino_curve = polyline_to_rhino_curve(curve)
             else:
                 rhino_curve = curve_to_rhino(curve)
-            face = Rhino.Geometry.Brep.CreatePlanarBreps(rhino_curve, TOL.absolute)
+            face = Rhino.Geometry.Brep.CreatePlanarBreps(rhino_curve, tolerance)
             if face is None:
                 raise BrepError("Failed to create face from curve: {} ".format(curve))
             if len(face) > 1:
                 raise BrepError("Failed to create single face from curve: {} ".format(curve))
             faces.append(face[0])
-        rhino_brep = Rhino.Geometry.Brep.JoinBreps(faces, TOL.absolute)
+        rhino_brep = Rhino.Geometry.Brep.JoinBreps(faces, tolerance)
         if rhino_brep is None:
             raise BrepError("Failed to create Brep from faces: {} ".format(faces))
         return [cls.from_native(brep) for brep in rhino_brep]
@@ -366,6 +540,24 @@ class RhinoBrep(Brep):
             if capped:
                 rhino_brep = capped
         return cls.from_native(rhino_brep)
+
+    @classmethod
+    def from_iges(cls, filepath):
+        """Construct a RhinoBrep from a IGES file.
+
+        Parameters
+        ----------
+        filepath : str
+            The path to the step file.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoBrep`
+
+        """
+        if not filepath.endswith(".igs"):
+            raise ValueError("Expected file with .igs extension")
+        return _import_brep_from_file(filepath)
 
     @classmethod
     def from_loft(cls, curves):
@@ -428,6 +620,105 @@ class RhinoBrep(Brep):
         return brep
 
     @classmethod
+    def from_pipe(cls, path, radius, cap_mode="none", tolerance=None, *args, **kwargs):
+        """Construct a Brep by extruding a circle curve along the path curve.
+
+        Parameters
+        ----------
+        curve : :class:`compas.geometry.Curve`
+            The curve to extrude
+        radius : float
+            The radius of the pipe.
+        cap_mode : literal('none', 'flat', 'round'), optional
+            The type of end caps to create. Defaults to 'none'.
+        tolerance : :class:`~compas.tolerance.Tolerance`, optional
+            A Tolerance instance to use for the operation. Defaults to `TOL`.
+
+        Returns
+        -------
+        :class:`compas.geometry.Brep`
+
+        """
+        tolerance = tolerance or TOL
+
+        if cap_mode == "none":
+            cap_mode = Rhino.Geometry.PipeCapMode.NONE
+        elif cap_mode == "flat":
+            cap_mode = Rhino.Geometry.PipeCapMode.Flat
+        elif cap_mode == "round":
+            cap_mode = Rhino.Geometry.PipeCapMode.Round
+        else:
+            raise ValueError("Invalid cap_ends value. Must be 'none', 'flat' or 'round'.")
+
+        if hasattr(path, "native_curve"):
+            path = curve_to_rhino(path)
+        elif isinstance(path, Polyline):
+            path = polyline_to_rhino_curve(path)
+        elif isinstance(path, Line):
+            path = line_to_rhino_curve(path)
+        else:
+            raise TypeError("Unsupported path curve type: {}".format(type(path)))
+
+        result = Rhino.Geometry.Brep.CreatePipe(path, radius, False, cap_mode, True, tolerance.absolute, tolerance.angular)
+        if result is None:
+            raise BrepError("Failed to create pipe from curve: {} and radius: {}".format(path, radius))
+
+        return [cls.from_native(brep) for brep in result]
+
+    @classmethod
+    def from_plane(cls, plane, domain_u=(-1, +1), domain_v=(-1, +1)):
+        """Create a RhinoBrep from a plane.
+
+        Parameters
+        ----------
+        plane : :class:`compas.geometry.Plane` or :class:`compas.geometry.Frame`
+            The source plane.
+        domain_u : tuple of float, optional
+            The U domain of the plane. Defaults to (-1, +1).
+        domain_v : tuple of float, optional
+            The V domain of the plane. Defaults to (-1, +1).
+
+        Notes
+        -----
+        When using a Rhino Plane, to maintain the original orientation data
+        use :meth:`~compas_rhino.conversions.plane_to_compas_frame` and :meth:`~compas_rhino.conversions.frame_to_rhino_plane`.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoBrep`
+
+        """
+        if isinstance(plane, Frame):
+            rhino_plane = frame_to_rhino_plane(plane)
+        else:
+            rhino_plane = plane_to_rhino(plane)
+        u = Rhino.Geometry.Interval(domain_u[0], domain_u[1])
+        v = Rhino.Geometry.Interval(domain_v[0], domain_v[1])
+        surface = Rhino.Geometry.PlaneSurface(rhino_plane, u, v)
+        return cls.from_native(surface.ToBrep())
+
+    @classmethod
+    def from_polygons(cls, polygons, tolerance=None, *args, **kwargs):
+        """Create a RhinoBrep from a list of polygons.
+
+        Parameters
+        ----------
+        polygons : list of :class:`compas.geometry.Polygon`
+            The source polygons.
+
+        Returns
+        -------
+        list of :class:`compas_rhino.geometry.RhinoBrep`
+
+        """
+        tolerance = tolerance or TOL.absolute
+        polylines = []
+        for polygon in polygons:
+            points = polygon.points + [polygon.points[0]]  # make a closed polyline from the polygon
+            polylines.append(Polyline(points=[*points]))
+        return cls.from_curves(polylines, tolerance)
+
+    @classmethod
     def from_sphere(cls, sphere):
         """Create a RhinoBrep from a sphere.
 
@@ -458,12 +749,70 @@ class RhinoBrep(Brep):
         :class:`compas_rhino.geometry.RhinoBrep`
 
         """
-        rs.Command('_-Import "' + filepath + '" _Enter', False)
-        guid = rs.LastCreatedObjects()[0]
-        obj = compas_rhino.objects.find_object(guid)
-        geometry = obj.Geometry.Duplicate()
-        compas_rhino.objects.delete_object(guid)
-        return cls.from_native(geometry)
+        if not filepath.endswith(".step"):
+            raise ValueError("Expected file with .step extension")
+        return _import_brep_from_file(filepath)
+
+    @classmethod
+    def from_sweep(cls, profile, path, is_closed=False, tolerance=None):
+        """Construct one or more RhinoBrep(s) from a sweep operation.
+
+        Parameters
+        ----------
+        profile : :class:`compas.geometry.Curve`
+            Curve describing the cross-section of the surface created by the sweep operation.
+        path : :class:`compas.geometry.Curve`
+            Curve describing the edge of the sweep surface. The profile curve is sweeped along this curve.
+        is_closed : bool, optional
+            If True, the resulting surface will be closed, if possible. Defaults to False.
+        tolerance : float, optional
+            The precision to use for the operation. Defaults to `TOL.absolute`.
+
+        Returns
+        -------
+        list of :class:`compas_rhino.geometry.RhinoBrep`
+
+        """
+        tolerance = tolerance or TOL.absolute
+        if hasattr(profile, "native_curve"):
+            profile = curve_to_rhino(profile)
+        elif isinstance(profile, Polyline):
+            profile = polyline_to_rhino_curve(profile)
+        elif isinstance(profile, Line):
+            profile = line_to_rhino_curve(profile)
+        else:
+            raise TypeError("Unsupported profile type: {}".format(type(profile)))
+
+        if hasattr(path, "native_curve"):
+            path = curve_to_rhino(path)
+        elif isinstance(path, Polyline):
+            path = polyline_to_rhino_curve(path)
+        elif isinstance(path, Line):
+            path = line_to_rhino_curve(path)
+        else:
+            raise TypeError("Unsupported path type: {}".format(type(path)))
+
+        results = Rhino.Geometry.Brep.CreateFromSweep(path, profile, is_closed, tolerance)
+        if not results:
+            raise BrepError("Sweep operation ended with no result")
+
+        return [cls.from_native(result) for result in results]
+
+    @classmethod
+    def from_torus(cls, torus):
+        """Construct a RhinoBrep from a COMPAS torus.
+
+        Parameters
+        ----------
+        torus : :class:`compas.geometry.Torus`
+
+        Returns
+        -------
+        :class:`compas.geometry.BRep`
+
+        """
+        rhino_torus = torus_to_rhino(torus)
+        return cls.from_native(rhino_torus.ToBrep())
 
     # ==============================================================================
     # Conversions
@@ -520,6 +869,31 @@ class RhinoBrep(Brep):
         rg_meshes = Rhino.Geometry.Mesh.CreateFromBrep(self._brep, Rhino.Geometry.MeshingParameters.Default)
         meshes = [mesh_to_compas(m) for m in rg_meshes]
         return meshes
+
+    def to_viewmesh(self, linear_deflection: float = 0.001):
+        """
+        Convert the Brep to a single view mesh.
+
+        Note
+        ----
+        Edges as polylines is not currently implemented for RhinoBrep. Therefore, an empty list will be returned.
+
+        Parameters
+        ----------
+        linear_deflection : float, optional
+            The maximum linear deflection between the geometry and its discrete representation.
+
+        Returns
+        -------
+        tuple[:class:`compas.datastructures.Mesh`, list[:class:`compas.geometry.Polyline`]]
+
+        """
+        return _join_meshes(self.to_meshes()), []
+
+    def to_step(self, filepath):
+        if not filepath.endswith(".step"):
+            raise ValueError("Attempted to export STEP but file ends with {} extension".format(filepath.split(".")[-1]))
+        _export_brep_to_file(self._brep, filepath)
 
     def transform(self, matrix):
         """Transform this Brep by given transformation matrix
