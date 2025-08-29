@@ -10,7 +10,7 @@ from compas import _iotools
 BASE_FOLDER = os.path.dirname(__file__)
 IMAGE_FILE_SIZE = 252391
 TEXT_FILE_SIZE = 747
-REMOTE_IMAGE_FILE_SIZE = 2734
+REMOTE_IMAGE_FILE_SIZE = 6518
 
 
 @pytest.fixture
@@ -30,7 +30,7 @@ def url_text():
 
 @pytest.fixture
 def url_image():
-    return "https://en.wikipedia.org/favicon.ico"
+    return "https://github.com/favicon.ico"
 
 
 def test_open_file_path_binary(path_image):
