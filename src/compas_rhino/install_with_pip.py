@@ -38,11 +38,53 @@ def ensure_site_env(name: str) -> str:
 @click.option("--env", default="default", help="Name of the site env, without the random suffix...")
 @click.option("--upgrade/--no-upgrade", default=False)
 @click.option("--deps/--no-deps", default=True)
-def install_package(package, env, upgrade, deps):
+def install_package(
+    package: str,
+    env: str = "default",
+    upgrade: bool = False,
+    deps: bool = True,
+):
+    """Install a package with Rhino's CPython pip.
+
+    Parameters
+    ----------
+    package : str
+        If a package name is provided, the package will be installed from PyPI.
+        If `.` or `..` is specified, the package will be installed from the source in the current or parent folder, respectively.
+    env : str, optional
+        The name of the virtual (site) environment in Rhino, without the random suffix.
+        If no environment name is provided, the default environment will be used.
+        If the environment doesn't exist, it will be created automatically.
+    upgrade : bool, optional
+        Attempt to upgrade packages that were already installed.
+        The default is False.
+    deps : bool, optional
+        Attempt to install the package dependencies.
+        Default is True.
+
+    Returns
+    -------
+    str
+        The output of the call to pip.
+
+    Examples
+    --------
+    When COMPAS is installed, the function is registered as an executable command with the name `install_in_rhino`.
+
+    $ cd path/to/local/compas/repo
+    $ install_in_rhino .
+
+    $ cd path/to/local/compas/repo
+    $ install_in_rhino . --env=compas-dev
+
+    $ cd path/to/local/compas/repo
+    $ install_in_rhino . --env=compas-dev --upgrade --no-deps
+
+    """
     if package == ".":
-        package = pathlib.Path().cwd()
+        package = str(pathlib.Path().cwd())
     elif package == "..":
-        package = pathlib.Path().cwd().parent
+        package = str(pathlib.Path().cwd().parent)
 
     target = site_envs / ensure_site_env(env or "default")
     target.mkdir(exist_ok=True)
