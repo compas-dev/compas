@@ -58,6 +58,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added implementation for `Brep.from_iges` in `compas_rhino.geometry.RhinoBrep`.
 * Added implementation for `Brep.to_step` in `compas_rhino.geometry.RhinoBrep`.
 * Added implementation for `Brep.to_viewmesh()` in `compas_rhino.geometry.RhinoBrep`.
+* Added `compas_rhino.install_with_pip` with corresponding executable command `install_in_rhino`.
 
 ### Changed
 
