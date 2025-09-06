@@ -9,7 +9,7 @@ import compas_rhino
 from compas_rhino import unload_modules  # noqa: F401
 
 
-__version__ = "2.13.0"
+__version__ = "2.14.0"
 
 __all__ = [
     "get_grasshopper_managedplugin_path",
