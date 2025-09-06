@@ -56,7 +56,9 @@ def test_open_file_object_text(path_text):
 
 
 def test_open_file_memory_stream():
-    text = b"All Gaul is divided into three parts, one of which the Belgae inhabit, the Aquitani another, those who in their own language are called Celts, in our Gauls, the third."  # noqa: E501
+    text = (
+        b"All Gaul is divided into three parts, one of which the Belgae inhabit, the Aquitani another, those who in their own language are called Celts, in our Gauls, the third."  # noqa: E501
+    )
     data = io.BytesIO(text)
     with _iotools.open_file(data, mode="rb") as f:
         assert f.read() == text
