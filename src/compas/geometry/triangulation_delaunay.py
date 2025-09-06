@@ -12,8 +12,8 @@ def delaunay_triangulation(points):
 
     Returns
     -------
-    (list, list)
-        The vertices of the triangulation, and the faces of the triangulation.
+    list[list[int]]
+        The faces of the triangulation.
 
     Examples
     --------
@@ -25,7 +25,7 @@ def delaunay_triangulation(points):
 
     xyz = asarray(points)
     d = Delaunay(xyz[:, 0:2])
-    return xyz, d.simplices
+    return d.simplices
 
 
 delaunay_triangulation.__pluggable__ = True

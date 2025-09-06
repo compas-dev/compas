@@ -41,6 +41,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Fixed bug (inconsistency) in return value of `compas.geometry.triangulation_delaunay.delaunay_triangulation`. Only the faces of the triangulation should be returned.
+
 ### Removed
 
 * Removed property `is_compound` from `compas.geometry.Brep` as OCC specific.
