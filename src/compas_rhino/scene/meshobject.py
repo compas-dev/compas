@@ -135,7 +135,7 @@ class RhinoMeshObject(RhinoSceneObject, MeshObject):
         self._guids = []
 
         if self.show_faces is True:
-            attr = self.compile_attributes()
+            attr = self.compile_attributes(name=self.name)
 
             vertexcolors = []
             if len(self.vertexcolor):  # type: ignore
