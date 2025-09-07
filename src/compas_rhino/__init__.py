@@ -7,7 +7,7 @@ import compas
 import compas._os
 from compas_rhino.devtools import DevTools
 
-__version__ = "2.14.0"
+__version__ = "2.14.1"
 
 
 PURGE_ON_DELETE = True
