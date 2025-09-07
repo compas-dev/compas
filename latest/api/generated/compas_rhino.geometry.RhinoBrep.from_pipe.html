@@ -60,7 +60,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="RhinoBrep.from_plane" href="compas_rhino.geometry.RhinoBrep.from_plane.html" />
-    <link rel="prev" title="RhinoBrep.from_jsonstring" href="compas_rhino.geometry.RhinoBrep.from_jsonstring.html" />
+    <link rel="prev" title="RhinoBrep.from_native" href="compas_rhino.geometry.RhinoBrep.from_native.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -1126,8 +1126,8 @@ document.write(`
 <h1>RhinoBrep.from_pipe</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_rhino.geometry.RhinoBrep.from_pipe">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RhinoBrep.</span></span><span class="sig-name descname"><span class="pre">from_pipe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">curve</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thickness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/2a855d1/src/compas/geometry/brep/brep.py#L469"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Construct a Brep by extruding a closed curve along a path curve.</p>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RhinoBrep.</span></span><span class="sig-name descname"><span class="pre">from_pipe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cap_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'none'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolerance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/d9be60a/src/compas/../compas_rhino/geometry/brep/brep.py#L622"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Construct a Brep by extruding a circle curve along the path curve.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -1135,8 +1135,9 @@ document.write(`
 </dd>
 <dt><strong>radius</strong><span class="classifier">float</span></dt><dd><p>The radius of the pipe.</p>
 </dd>
-<dt><strong>thickness</strong><span class="classifier">float, optional</span></dt><dd><p>The thickness of the pipe.
-The thickness should be smaller than the radius.</p>
+<dt><strong>cap_mode</strong><span class="classifier">literal(‘none’, ‘flat’, ‘round’), optional</span></dt><dd><p>The type of end caps to create. Defaults to ‘none’.</p>
+</dd>
+<dt><strong>tolerance</strong><span class="classifier"><a class="reference internal" href="compas.tolerance.Tolerance.html#compas.tolerance.Tolerance" title="compas.tolerance.Tolerance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tolerance</span></code></a>, optional</span></dt><dd><p>A Tolerance instance to use for the operation. Defaults to <cite>TOL</cite>.</p>
 </dd>
 </dl>
 </dd>

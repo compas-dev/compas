@@ -59,7 +59,7 @@
         </script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="RhinoBrep.from_planes" href="compas_rhino.geometry.RhinoBrep.from_planes.html" />
+    <link rel="next" title="RhinoBrep.from_polygons" href="compas_rhino.geometry.RhinoBrep.from_polygons.html" />
     <link rel="prev" title="RhinoBrep.from_pipe" href="compas_rhino.geometry.RhinoBrep.from_pipe.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -1126,25 +1126,28 @@ document.write(`
 <h1>RhinoBrep.from_plane</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_rhino.geometry.RhinoBrep.from_plane">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RhinoBrep.</span></span><span class="sig-name descname"><span class="pre">from_plane</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plane</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_u</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(-1,</span> <span class="pre">1)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(-1,</span> <span class="pre">1)</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/2a855d1/src/compas/geometry/brep/brep.py#L490"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Construct a Brep from one plane and its u and v domains.</p>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RhinoBrep.</span></span><span class="sig-name descname"><span class="pre">from_plane</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plane</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_u</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(-1,</span> <span class="pre">1)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(-1,</span> <span class="pre">1)</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/d9be60a/src/compas/../compas_rhino/geometry/brep/brep.py#L668"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Create a RhinoBrep from a plane.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>plane</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Plane.html#compas.geometry.Plane" title="compas.geometry.Plane"><code class="xref py py-class docutils literal notranslate"><span class="pre">Plane</span></code></a></span></dt><dd><p>A plane.</p>
+<dt><strong>plane</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Plane.html#compas.geometry.Plane" title="compas.geometry.Plane"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Plane</span></code></a> or <a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code></a></span></dt><dd><p>The source plane.</p>
 </dd>
-<dt><strong>domain_u</strong><span class="classifier">tuple[float, float], optional</span></dt><dd><p>The surface domain in the u direction.</p>
+<dt><strong>domain_u</strong><span class="classifier">tuple of float, optional</span></dt><dd><p>The U domain of the plane. Defaults to (-1, +1).</p>
 </dd>
-<dt><strong>domain_v</strong><span class="classifier">tuple[float, float], optional</span></dt><dd><p>The surface domain in the v direction.</p>
+<dt><strong>domain_v</strong><span class="classifier">tuple of float, optional</span></dt><dd><p>The V domain of the plane. Defaults to (-1, +1).</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt><a class="reference internal" href="compas.geometry.Brep.html#compas.geometry.Brep" title="compas.geometry.Brep"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Brep</span></code></a></dt><dd></dd>
+<dt><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.html#compas_rhino.geometry.RhinoBrep" title="compas_rhino.geometry.RhinoBrep"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoBrep</span></code></a></dt><dd></dd>
 </dl>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>When using a Rhino Plane, to maintain the original orientation data
+use <a class="reference internal" href="compas_rhino.conversions.plane_to_compas_frame.html#compas_rhino.conversions.plane_to_compas_frame" title="compas_rhino.conversions.plane_to_compas_frame"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plane_to_compas_frame()</span></code></a> and <a class="reference internal" href="compas_rhino.conversions.frame_to_rhino_plane.html#compas_rhino.conversions.frame_to_rhino_plane" title="compas_rhino.conversions.frame_to_rhino_plane"><code class="xref py py-meth docutils literal notranslate"><span class="pre">frame_to_rhino_plane()</span></code></a>.</p>
 </dd></dl>
 
 </section>

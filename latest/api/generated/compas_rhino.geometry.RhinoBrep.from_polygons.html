@@ -59,8 +59,8 @@
         </script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="RhinoBrep.from_sweep" href="compas_rhino.geometry.RhinoBrep.from_sweep.html" />
-    <link rel="prev" title="RhinoBrep.from_planes" href="compas_rhino.geometry.RhinoBrep.from_planes.html" />
+    <link rel="next" title="RhinoBrep.from_sphere" href="compas_rhino.geometry.RhinoBrep.from_sphere.html" />
+    <link rel="prev" title="RhinoBrep.from_plane" href="compas_rhino.geometry.RhinoBrep.from_plane.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -1126,17 +1126,18 @@ document.write(`
 <h1>RhinoBrep.from_polygons</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_rhino.geometry.RhinoBrep.from_polygons">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RhinoBrep.</span></span><span class="sig-name descname"><span class="pre">from_polygons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">polygons</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/2a855d1/src/compas/geometry/brep/brep.py#L526"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Construct a Brep from a set of polygons.</p>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RhinoBrep.</span></span><span class="sig-name descname"><span class="pre">from_polygons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">polygons</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolerance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/d9be60a/src/compas/../compas_rhino/geometry/brep/brep.py#L700"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Create a RhinoBrep from a list of polygons.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>polygons</strong><span class="classifier">list[<a class="reference internal" href="compas.geometry.Polygon.html#compas.geometry.Polygon" title="compas.geometry.Polygon"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Polygon</span></code></a>]</span></dt><dd></dd>
+<dt><strong>polygons</strong><span class="classifier">list of <a class="reference internal" href="compas.geometry.Polygon.html#compas.geometry.Polygon" title="compas.geometry.Polygon"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Polygon</span></code></a></span></dt><dd><p>The source polygons.</p>
+</dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt><a class="reference internal" href="compas.geometry.Brep.html#compas.geometry.Brep" title="compas.geometry.Brep"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Brep</span></code></a></dt><dd></dd>
+<dt>list of <a class="reference internal" href="compas_rhino.geometry.RhinoBrep.html#compas_rhino.geometry.RhinoBrep" title="compas_rhino.geometry.RhinoBrep"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoBrep</span></code></a></dt><dd></dd>
 </dl>
 </dd>
 </dl>

@@ -59,8 +59,8 @@
         </script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="RhinoBrep.from_json" href="compas_rhino.geometry.RhinoBrep.from_json.html" />
-    <link rel="prev" title="RhinoBrep.from_cone" href="compas_rhino.geometry.RhinoBrep.from_cone.html" />
+    <link rel="next" title="RhinoBrep.from_loft" href="compas_rhino.geometry.RhinoBrep.from_loft.html" />
+    <link rel="prev" title="RhinoBrep.from_extrusion" href="compas_rhino.geometry.RhinoBrep.from_extrusion.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -1126,17 +1126,18 @@ document.write(`
 <h1>RhinoBrep.from_iges</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_rhino.geometry.RhinoBrep.from_iges">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RhinoBrep.</span></span><span class="sig-name descname"><span class="pre">from_iges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/2a855d1/src/compas/geometry/brep/brep.py#L409"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Construct a Brep from the data contained in an IGES file.</p>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RhinoBrep.</span></span><span class="sig-name descname"><span class="pre">from_iges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/d9be60a/src/compas/../compas_rhino/geometry/brep/brep.py#L544"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Construct a RhinoBrep from a IGES file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>filename</strong><span class="classifier">str</span></dt><dd></dd>
+<dt><strong>filepath</strong><span class="classifier">str</span></dt><dd><p>The path to the step file.</p>
+</dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt><a class="reference internal" href="compas.geometry.Brep.html#compas.geometry.Brep" title="compas.geometry.Brep"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Brep</span></code></a></dt><dd></dd>
+<dt><a class="reference internal" href="compas_rhino.geometry.RhinoBrep.html#compas_rhino.geometry.RhinoBrep" title="compas_rhino.geometry.RhinoBrep"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoBrep</span></code></a></dt><dd></dd>
 </dl>
 </dd>
 </dl>

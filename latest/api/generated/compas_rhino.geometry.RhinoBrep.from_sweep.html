@@ -60,7 +60,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="RhinoBrep.from_torus" href="compas_rhino.geometry.RhinoBrep.from_torus.html" />
-    <link rel="prev" title="RhinoBrep.from_polygons" href="compas_rhino.geometry.RhinoBrep.from_polygons.html" />
+    <link rel="prev" title="RhinoBrep.from_step" href="compas_rhino.geometry.RhinoBrep.from_step.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -1126,20 +1126,24 @@ document.write(`
 <h1>RhinoBrep.from_sweep</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_rhino.geometry.RhinoBrep.from_sweep">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RhinoBrep.</span></span><span class="sig-name descname"><span class="pre">from_sweep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">profile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/2a855d1/src/compas/geometry/brep/brep.py#L571"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Construct a BRep by sweeping a profile along a path.</p>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RhinoBrep.</span></span><span class="sig-name descname"><span class="pre">from_sweep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">profile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_closed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolerance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/d9be60a/src/compas/../compas_rhino/geometry/brep/brep.py#L756"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Construct one or more RhinoBrep(s) from a sweep operation.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>profile</strong><span class="classifier"><a class="reference internal" href="compas.geometry.BrepEdge.html#compas.geometry.BrepEdge" title="compas.geometry.BrepEdge"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.BrepEdge</span></code></a> or <a class="reference internal" href="compas.geometry.BrepFace.html#compas.geometry.BrepFace" title="compas.geometry.BrepFace"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.BrepFace</span></code></a></span></dt><dd><p>the profile to sweep. Either an edge or a face.</p>
+<dt><strong>profile</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Curve.html#compas.geometry.Curve" title="compas.geometry.Curve"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Curve</span></code></a></span></dt><dd><p>Curve describing the cross-section of the surface created by the sweep operation.</p>
 </dd>
-<dt><strong>path</strong><span class="classifier"><a class="reference internal" href="compas.geometry.BrepLoop.html#compas.geometry.BrepLoop" title="compas.geometry.BrepLoop"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.BrepLoop</span></code></a></span></dt><dd><p>the path to sweep along</p>
+<dt><strong>path</strong><span class="classifier"><a class="reference internal" href="compas.geometry.Curve.html#compas.geometry.Curve" title="compas.geometry.Curve"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Curve</span></code></a></span></dt><dd><p>Curve describing the edge of the sweep surface. The profile curve is sweeped along this curve.</p>
+</dd>
+<dt><strong>is_closed</strong><span class="classifier">bool, optional</span></dt><dd><p>If True, the resulting surface will be closed, if possible. Defaults to False.</p>
+</dd>
+<dt><strong>tolerance</strong><span class="classifier">float, optional</span></dt><dd><p>The precision to use for the operation. Defaults to <cite>TOL.absolute</cite>.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt><a class="reference internal" href="compas.geometry.Brep.html#compas.geometry.Brep" title="compas.geometry.Brep"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Brep</span></code></a></dt><dd></dd>
+<dt>list of <a class="reference internal" href="compas_rhino.geometry.RhinoBrep.html#compas_rhino.geometry.RhinoBrep" title="compas_rhino.geometry.RhinoBrep"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.geometry.RhinoBrep</span></code></a></dt><dd></dd>
 </dl>
 </dd>
 </dl>
