@@ -1,5 +1,6 @@
 import pathlib
 import random
+import shutil
 import string
 import subprocess
 
@@ -38,11 +39,13 @@ def ensure_site_env(name: str) -> str:
 @click.option("--env", default="default", help="Name of the site env, without the random suffix...")
 @click.option("--upgrade/--no-upgrade", default=False)
 @click.option("--deps/--no-deps", default=True)
+@click.option("--clear/--no-clear", default=False)
 def install_package(
     package: str,
     env: str = "default",
     upgrade: bool = False,
     deps: bool = True,
+    clear: bool = False,
 ):
     """Install a package with Rhino's CPython pip.
 
@@ -86,7 +89,18 @@ def install_package(
     elif package == "..":
         package = str(pathlib.Path().cwd().parent)
 
-    target = site_envs / ensure_site_env(env or "default")
+    env = env or "default"
+
+    if clear:
+        try:
+            fullname = find_full_env_name(env)
+        except ValueError:
+            pass
+        else:
+            target = site_envs / fullname
+            shutil.rmtree(target, ignore_errors=True)
+
+    target = site_envs / ensure_site_env(env)
     target.mkdir(exist_ok=True)
 
     args = [
