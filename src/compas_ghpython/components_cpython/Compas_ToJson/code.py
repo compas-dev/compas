@@ -1,4 +1,4 @@
-# r: compas>=2.8.1
+# r: compas>=2.14.1
 """
 Serializes COMPAS objects to JSON.
 """
