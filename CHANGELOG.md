@@ -11,7 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-Updated minimum library version to `2.14.1` in Rhino8 GH components.
+* Updated minimum library version to `2.14.1` in Rhino8 GH components.
+* Changed name of YAK package from `bluejay` to `compas`.
 
 ### Removed
 
