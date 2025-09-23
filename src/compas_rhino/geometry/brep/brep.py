@@ -749,8 +749,8 @@ class RhinoBrep(Brep):
         :class:`compas_rhino.geometry.RhinoBrep`
 
         """
-        if not filepath.endswith(".step"):
-            raise ValueError("Expected file with .step extension")
+        if not (filepath.endswith(".step") or filepath.endswith(".stp")):
+            raise ValueError("Expected file with .step or .stp extension")
         return _import_brep_from_file(filepath)
 
     @classmethod
@@ -891,7 +891,7 @@ class RhinoBrep(Brep):
         return _join_meshes(self.to_meshes()), []
 
     def to_step(self, filepath):
-        if not filepath.endswith(".step"):
+        if not (filepath.endswith(".step") or filepath.endswith(".stp")):
             raise ValueError("Attempted to export STEP but file ends with {} extension".format(filepath.split(".")[-1]))
         _export_brep_to_file(self._brep, filepath)
 
