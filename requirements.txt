@@ -2,5 +2,7 @@
 jsonschema
 networkx >= 3.0
 numpy >= 1.15.4
+pint >= 0.20
 scipy >= 1.1
+uncertainties >= 3.1
 watchdog; sys_platform != 'emscripten'

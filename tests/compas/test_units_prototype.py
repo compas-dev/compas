@@ -1,13 +1,14 @@
 """
 Test suite for units and uncertainties support in COMPAS.
 
-This test suite validates the prototype implementation and ensures
+This test suite validates the units functionality and ensures
 backward compatibility is maintained.
 """
 
 import pytest
-import math
+import json
 from compas.units import units, UNITS_AVAILABLE, UNCERTAINTIES_AVAILABLE
+from compas.data.encoders import DataEncoder, DataDecoder
 
 
 class TestUnitsModule:
@@ -50,217 +51,117 @@ class TestUnitsModule:
         assert val.std_dev == 0.1
 
 
-class TestUnitAwarePoint:
-    """Test the unit-aware Point implementation."""
-    
-    def setup_method(self):
-        """Set up test fixtures."""
-        # Import the prototype
-        import sys
-        import os
-        sys.path.insert(0, '/tmp/units_analysis')
-        from point_prototype import UnitAwarePoint
-        self.Point = UnitAwarePoint
-    
-    def test_traditional_usage(self):
-        """Test that traditional Point usage is unchanged."""
-        p1 = self.Point(1.0, 2.0, 3.0)
-        p2 = self.Point(4.0, 5.0, 6.0)
-        
-        # Coordinates should be plain floats
-        assert isinstance(p1.x, float)
-        assert isinstance(p1.y, float) 
-        assert isinstance(p1.z, float)
-        
-        # Values should be correct
-        assert p1.x == 1.0
-        assert p1.y == 2.0
-        assert p1.z == 3.0
-        
-        # Distance calculation should work
-        distance = p1.distance_to(p2)
-        assert isinstance(distance, float)
-        assert distance == pytest.approx(5.196, abs=1e-3)
-    
-    def test_point_arithmetic(self):
-        """Test point arithmetic operations."""
-        p1 = self.Point(1.0, 2.0, 3.0)
-        
-        # Addition
-        p2 = p1 + [1.0, 1.0, 1.0]
-        assert p2.x == 2.0
-        assert p2.y == 3.0
-        assert p2.z == 4.0
-        
-        # Subtraction
-        p3 = p2 - [1.0, 1.0, 1.0]
-        assert p3.x == 1.0
-        assert p3.y == 2.0
-        assert p3.z == 3.0
-        
-        # Scalar multiplication
-        p4 = p1 * 2.0
-        assert p4.x == 2.0
-        assert p4.y == 4.0
-        assert p4.z == 6.0
-    
-    def test_point_indexing(self):
-        """Test point indexing behavior."""
-        p = self.Point(1.0, 2.0, 3.0)
-        
-        # Index access
-        assert p[0] == 1.0
-        assert p[1] == 2.0
-        assert p[2] == 3.0
-        
-        # Iteration
-        coords = list(p)
-        assert coords == [1.0, 2.0, 3.0]
-    
-    def test_data_serialization(self):
-        """Test data serialization compatibility."""
-        p1 = self.Point(1.0, 2.0, 3.0)
-        
-        # Should be serializable
-        data = p1.__data__
-        assert data == [1.0, 2.0, 3.0]
-        
-        # Should be reconstructible
-        p2 = self.Point.__from_data__(data)
-        assert p2.x == p1.x
-        assert p2.y == p1.y
-        assert p2.z == p1.z
+class TestUnitsIntegration:
+    """Test units integration with COMPAS components."""
     
     @pytest.mark.skipif(not UNITS_AVAILABLE, reason="pint not available")
-    def test_unit_aware_usage(self):
-        """Test unit-aware Point functionality."""
-        p1 = self.Point(1.0 * units.meter, 2.0 * units.meter, 3.0 * units.meter)
+    def test_serialization_with_units(self):
+        """Test JSON serialization of units."""
+        # Create a quantity
+        length = units.Quantity(5.0, 'meter')
         
-        # Coordinates should be pint quantities
-        assert hasattr(p1.x, 'magnitude')
-        assert hasattr(p1.x, 'units')
-        assert p1.x.magnitude == 1.0
-        
-        # Mixed units should work
-        p2 = self.Point(1000 * units.millimeter, 2000 * units.millimeter, 3000 * units.millimeter)
-        
-        # Distance should be calculated correctly with units
-        distance = p1.distance_to(p2)
-        assert hasattr(distance, 'magnitude')
-        assert distance.magnitude == pytest.approx(0.0, abs=1e-10)
-    
-    @pytest.mark.skipif(not UNITS_AVAILABLE, reason="pint not available")
-    def test_unit_arithmetic(self):
-        """Test arithmetic with units."""
-        p1 = self.Point(1.0 * units.meter, 2.0 * units.meter, 3.0 * units.meter)
-        
-        # Addition with compatible units should work
-        p2 = p1 + [1.0 * units.meter, 1.0 * units.meter, 1.0 * units.meter]
-        assert hasattr(p2.x, 'magnitude')
-        assert p2.x.magnitude == 2.0
-        
-        # Scalar multiplication should preserve units
-        p3 = p1 * 2.0
-        assert hasattr(p3.x, 'magnitude')
-        assert p3.x.magnitude == 2.0
-    
-    @pytest.mark.skipif(not UNCERTAINTIES_AVAILABLE, reason="uncertainties not available")
-    def test_uncertainty_usage(self):
-        """Test Point with uncertainties."""
-        import uncertainties
-        
-        p1 = self.Point(
-            uncertainties.ufloat(1.0, 0.1),
-            uncertainties.ufloat(2.0, 0.1),
-            uncertainties.ufloat(3.0, 0.1)
-        )
-        
-        # Coordinates should have uncertainties
-        assert hasattr(p1.x, 'nominal_value')
-        assert hasattr(p1.x, 'std_dev')
-        assert p1.x.nominal_value == 1.0
-        assert p1.x.std_dev == 0.1
-        
-        # Distance calculation should propagate uncertainties
-        p2 = self.Point(4.0, 5.0, 6.0)
-        distance = p1.distance_to(p2)
-        
-        assert hasattr(distance, 'nominal_value')
-        assert hasattr(distance, 'std_dev')
-        assert distance.nominal_value == pytest.approx(5.196, abs=1e-3)
-        assert distance.std_dev > 0  # Should have some uncertainty
-
-
-class TestEnhancedSerialization:
-    """Test enhanced JSON serialization."""
-    
-    def setup_method(self):
-        """Set up test fixtures."""
-        import sys
-        sys.path.insert(0, '/tmp/units_analysis')
-        from enhanced_encoders import EnhancedDataEncoder, EnhancedDataDecoder
-        from point_prototype import UnitAwarePoint
-        
-        self.encoder = EnhancedDataEncoder
-        self.decoder = EnhancedDataDecoder
-        self.Point = UnitAwarePoint
-    
-    def test_plain_serialization(self):
-        """Test that plain objects serialize correctly."""
-        import json
-        
-        p = self.Point(1.0, 2.0, 3.0)
-        
-        # Should serialize without errors
-        json_str = json.dumps(p, cls=self.encoder)
-        assert isinstance(json_str, str)
-        assert len(json_str) > 0
-        
-        # Should deserialize correctly
-        p_reconstructed = json.loads(json_str, cls=self.decoder)
-        assert p_reconstructed.x == p.x
-        assert p_reconstructed.y == p.y
-        assert p_reconstructed.z == p.z
-    
-    @pytest.mark.skipif(not UNITS_AVAILABLE, reason="pint not available")
-    def test_unit_serialization(self):
-        """Test serialization of unit-aware objects."""
-        import json
-        
-        p = self.Point(1.0 * units.meter, 2.0 * units.meter, 3.0 * units.meter)
-        
-        # Should serialize without errors
-        json_str = json.dumps(p, cls=self.encoder)
-        assert isinstance(json_str, str)
+        # Serialize
+        json_str = json.dumps(length, cls=DataEncoder)
         assert '__pint_quantity__' in json_str
         
-        # Should deserialize correctly
-        p_reconstructed = json.loads(json_str, cls=self.decoder)
-        assert hasattr(p_reconstructed.x, 'magnitude')
-        assert p_reconstructed.x.magnitude == p.x.magnitude
+        # Deserialize
+        reconstructed = json.loads(json_str, cls=DataDecoder)
+        
+        # Should be equivalent
+        assert hasattr(reconstructed, 'magnitude')
+        assert reconstructed.magnitude == 5.0
+        assert str(reconstructed.units) == 'meter'
     
     @pytest.mark.skipif(not UNCERTAINTIES_AVAILABLE, reason="uncertainties not available")
-    def test_uncertainty_serialization(self):
-        """Test serialization of uncertainty objects."""
-        import json
+    def test_serialization_with_uncertainties(self):
+        """Test JSON serialization of uncertainties."""
         import uncertainties
         
-        p = self.Point(
-            uncertainties.ufloat(1.0, 0.1),
-            uncertainties.ufloat(2.0, 0.1),
-            uncertainties.ufloat(3.0, 0.1)
-        )
+        # Create an uncertain value
+        value = uncertainties.ufloat(3.14, 0.01)
         
-        # Should serialize without errors
-        json_str = json.dumps(p, cls=self.encoder)
-        assert isinstance(json_str, str)
+        # Serialize
+        json_str = json.dumps(value, cls=DataEncoder)
         assert '__uncertainties_ufloat__' in json_str
         
-        # Should deserialize correctly
-        p_reconstructed = json.loads(json_str, cls=self.decoder)
-        assert hasattr(p_reconstructed.x, 'nominal_value')
-        assert p_reconstructed.x.nominal_value == p.x.nominal_value
-        assert p_reconstructed.x.std_dev == p.x.std_dev
+        # Deserialize
+        reconstructed = json.loads(json_str, cls=DataDecoder)
+        
+        # Should be equivalent
+        assert hasattr(reconstructed, 'nominal_value')
+        assert reconstructed.nominal_value == 3.14
+        assert reconstructed.std_dev == 0.01
+    
+    def test_serialization_graceful_degradation_units(self):
+        """Test that serialization works even without units available."""
+        # Create a mock object that looks like a pint quantity
+        mock_quantity = {'__pint_quantity__': True, 'magnitude': 2.5, 'units': 'meter'}
+        
+        # Serialize and deserialize
+        json_str = json.dumps(mock_quantity)
+        reconstructed = json.loads(json_str, cls=DataDecoder)
+        
+        if UNITS_AVAILABLE:
+            # Should reconstruct as a pint quantity
+            assert hasattr(reconstructed, 'magnitude')
+        else:
+            # Should fallback to magnitude only
+            assert reconstructed == 2.5
+    
+    def test_serialization_graceful_degradation_uncertainties(self):
+        """Test that serialization works even without uncertainties available."""
+        # Create a mock object that looks like an uncertainties value
+        mock_ufloat = {'__uncertainties_ufloat__': True, 'nominal_value': 1.23, 'std_dev': 0.05}
+        
+        # Serialize and deserialize
+        json_str = json.dumps(mock_ufloat)
+        reconstructed = json.loads(json_str, cls=DataDecoder)
+        
+        if UNCERTAINTIES_AVAILABLE:
+            # Should reconstruct as an uncertainties value
+            assert hasattr(reconstructed, 'nominal_value')
+        else:
+            # Should fallback to nominal value only
+            assert reconstructed == 1.23
+    
+    def test_backward_compatibility(self):
+        """Test that existing serialization still works."""
+        # Test with a simple dictionary
+        test_data = {'x': 1.0, 'y': 2.0, 'z': 3.0}
+        
+        # Should serialize and deserialize normally
+        json_str = json.dumps(test_data, cls=DataEncoder)
+        reconstructed = json.loads(json_str, cls=DataDecoder)
+        
+        assert reconstructed == test_data
+    
+    @pytest.mark.skipif(not UNITS_AVAILABLE, reason="pint not available")
+    def test_mixed_data_with_units(self):
+        """Test serialization of mixed data containing units."""
+        # Create mixed data
+        mixed_data = {
+            'plain_value': 42.0,
+            'length': units.Quantity(10.0, 'meter'),
+            'width': units.Quantity(5.0, 'meter'),
+            'nested': {
+                'height': units.Quantity(3.0, 'meter')
+            }
+        }
+        
+        # Serialize
+        json_str = json.dumps(mixed_data, cls=DataEncoder)
+        
+        # Deserialize
+        reconstructed = json.loads(json_str, cls=DataDecoder)
+        
+        # Check all values
+        assert reconstructed['plain_value'] == 42.0
+        assert hasattr(reconstructed['length'], 'magnitude')
+        assert reconstructed['length'].magnitude == 10.0
+        assert hasattr(reconstructed['width'], 'magnitude')
+        assert reconstructed['width'].magnitude == 5.0
+        assert hasattr(reconstructed['nested']['height'], 'magnitude')
+        assert reconstructed['nested']['height'].magnitude == 3.0
 
 
 # Run basic tests if executed directly
