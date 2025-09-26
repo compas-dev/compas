@@ -10,13 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Added support for `.stp` file extension in addition to `.step` for `RhinoBrep.from_step()` and `RhinoBrep.to_step()` methods.
-* Added optional units and uncertainties support using `pint` and `uncertainties` libraries.
-  - Added `compas.units` module with `UnitRegistry` for managing physical units with graceful degradation.
-  - Added proper JSON serialization/deserialization for `pint.Quantity` and `uncertainties.UFloat` objects using COMPAS dtype/data pattern.
-  - Added `PintQuantityEncoder` and `UncertaintiesUFloatEncoder` for clean integration with COMPAS data serialization framework.
-  - Added comprehensive test suite covering units functionality, serialization, and backward compatibility.
-  - Maintains 100% backward compatibility - existing code works unchanged.
-  - Supports gradual typing approach where unit-aware inputs produce unit-aware outputs.
+* Added optional support for units and uncertainties (via `pint.Quantity` and `uncertainties.UFloat`) including data serialization/deserialization support. Support is built around gradual typing, where unit-aware inputs produce unit-aware outputs.
+* Added `compas.units.UnitRegistry` for managing physical units with graceful degradation.
 
 ### Changed
 

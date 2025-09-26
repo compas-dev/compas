@@ -14,7 +14,6 @@ from compas.geometry import Point, Vector, Frame, distance_point_point
 from compas.datastructures import Mesh
 
 
-@pytest.mark.skipif(not UNITS_AVAILABLE, reason="pint not available")
 class TestUnitsWithGeometryFunctions:
     """Test how units work with geometry functions."""
     
@@ -24,17 +23,17 @@ class TestUnitsWithGeometryFunctions:
         p1 = [1.0 * units.meter, 2.0 * units.meter, 3.0 * units.meter]
         p2 = [4.0 * units.meter, 5.0 * units.meter, 6.0 * units.meter]
         
-        # Distance function should handle units
-        try:
-            distance = distance_point_point(p1, p2)
-            # If this works, distance should have units
-            if hasattr(distance, 'magnitude'):
-                assert distance.magnitude == pytest.approx(5.196, abs=1e-3)
-                assert 'meter' in str(distance.units)
-        except Exception:
-            # If geometry functions don't handle units yet, that's expected
-            # This test documents the current state
-            pass
+        # Convert to plain coordinates for geometry functions (current limitation)
+        p1_plain = [coord.magnitude for coord in p1]
+        p2_plain = [coord.magnitude for coord in p2]
+        
+        # Distance function works with plain coordinates
+        distance = distance_point_point(p1_plain, p2_plain)
+        
+        # We can then add units back to the result
+        distance_with_units = distance * units.meter
+        assert distance_with_units.magnitude == pytest.approx(5.196, abs=1e-3)
+        assert 'meter' in str(distance_with_units.units)
     
     def test_mixed_units_conversion(self):
         """Test distance with mixed units."""
@@ -42,14 +41,13 @@ class TestUnitsWithGeometryFunctions:
         p1 = [1.0 * units.meter, 0.0 * units.meter, 0.0 * units.meter]
         p2 = [1000.0 * units.millimeter, 0.0 * units.millimeter, 0.0 * units.millimeter]
         
-        try:
-            distance = distance_point_point(p1, p2)
-            # Should be zero distance (same point in different units)
-            if hasattr(distance, 'magnitude'):
-                assert distance.magnitude == pytest.approx(0.0, abs=1e-10)
-        except Exception:
-            # If geometry functions don't handle units yet, that's expected
-            pass
+        # Convert units to same base and extract magnitudes
+        p1_plain = [coord.to('meter').magnitude for coord in p1]
+        p2_plain = [coord.to('meter').magnitude for coord in p2]
+        
+        distance = distance_point_point(p1_plain, p2_plain)
+        # Should be zero distance (same point in different units)
+        assert distance == pytest.approx(0.0, abs=1e-10)
     
     def test_units_serialization_in_geometry_data(self):
         """Test serialization of data structures containing units."""
@@ -73,7 +71,6 @@ class TestUnitsWithGeometryFunctions:
         assert reconstructed['distance'].magnitude == 5.0
 
 
-@pytest.mark.skipif(not UNITS_AVAILABLE, reason="pint not available")
 class TestGeometryObjectsSerialization:
     """Test geometry objects serialization when they contain unit data."""
     
@@ -138,68 +135,84 @@ class TestGeometryObjectsSerialization:
         assert reconstructed['scale'].magnitude == 1.0
 
 
-@pytest.mark.skipif(not UNITS_AVAILABLE, reason="pint not available")
 class TestMeshWithUnitsWorkflow:
     """Test Mesh in unit-aware workflows."""
     
-    def test_mesh_with_unit_metadata(self):
-        """Test Mesh with unit metadata."""
+    def test_mesh_with_unit_attributes(self):
+        """Test Mesh with unit-aware custom attributes."""
         # Create simple mesh
         vertices = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0]]
         faces = [[0, 1, 2]]
         mesh = Mesh.from_vertices_and_faces(vertices, faces)
         
-        # Add unit-aware metadata
-        mesh_data = {
-            'mesh': mesh,
-            'units': 'meter',
-            'scale_factor': 1.0 * units.meter,
-            'material_thickness': 0.1 * units.meter,
-            'area': 0.5 * units.Quantity(1.0, 'meter^2')
-        }
+        # Add unit-aware attributes to the mesh itself
+        mesh.attributes['units'] = 'meter'
+        mesh.attributes['scale_factor'] = 1.0 * units.meter
+        mesh.attributes['material_thickness'] = 0.1 * units.meter
+        mesh.attributes['area'] = 0.5 * units.Quantity(1.0, 'meter^2')
         
         # Should serialize correctly
-        json_str = json.dumps(mesh_data, cls=DataEncoder)
+        json_str = json.dumps(mesh, cls=DataEncoder)
         reconstructed = json.loads(json_str, cls=DataDecoder)
         
-        assert isinstance(reconstructed['mesh'], Mesh)
-        assert reconstructed['units'] == 'meter'
-        assert hasattr(reconstructed['scale_factor'], 'magnitude')
-        assert reconstructed['scale_factor'].magnitude == 1.0
-        assert hasattr(reconstructed['material_thickness'], 'magnitude')
-        assert reconstructed['material_thickness'].magnitude == 0.1
+        assert isinstance(reconstructed, Mesh)
+        assert reconstructed.attributes['units'] == 'meter'
+        assert hasattr(reconstructed.attributes['scale_factor'], 'magnitude')
+        assert reconstructed.attributes['scale_factor'].magnitude == 1.0
+        assert hasattr(reconstructed.attributes['material_thickness'], 'magnitude')
+        assert reconstructed.attributes['material_thickness'].magnitude == 0.1
     
     def test_mesh_processing_workflow(self):
-        """Test mesh in processing workflow with units."""
-        # Create mesh with unit-aware attributes
+        """Test mesh processing workflow with unit-aware attributes."""
+        # Create mesh 
         mesh = Mesh()
         
-        # Add vertices (plain coordinates)
+        # Add vertices with unit-aware vertex attributes
         v1 = mesh.add_vertex(x=0.0, y=0.0, z=0.0)
         v2 = mesh.add_vertex(x=1.0, y=0.0, z=0.0)
         v3 = mesh.add_vertex(x=0.0, y=1.0, z=0.0)
         
         # Add face
-        mesh.add_face([v1, v2, v3])
+        face = mesh.add_face([v1, v2, v3])
         
-        # Add unit-aware attributes
-        mesh_analysis = {
-            'mesh': mesh,
-            'vertex_loads': [10.0 * units.Quantity(1.0, 'newton') for _ in mesh.vertices()],
-            'edge_lengths': [1.0 * units.meter for _ in mesh.edges()],
-            'face_areas': [0.5 * units.Quantity(1.0, 'meter^2') for _ in mesh.faces()]
-        }
+        # Add unit-aware attributes to vertices
+        mesh.vertex_attribute(v1, 'load', 10.0 * units.Quantity(1.0, 'newton'))
+        mesh.vertex_attribute(v2, 'load', 15.0 * units.Quantity(1.0, 'newton'))
+        mesh.vertex_attribute(v3, 'load', 12.0 * units.Quantity(1.0, 'newton'))
+        
+        # Add unit-aware attributes to edges
+        for edge in mesh.edges():
+            mesh.edge_attribute(edge, 'length', 1.0 * units.meter)
+        
+        # Add unit-aware attributes to faces
+        mesh.face_attribute(face, 'area', 0.5 * units.Quantity(1.0, 'meter^2'))
         
         # Should serialize correctly
-        json_str = json.dumps(mesh_analysis, cls=DataEncoder)
+        json_str = json.dumps(mesh, cls=DataEncoder)
         reconstructed = json.loads(json_str, cls=DataDecoder)
         
-        assert isinstance(reconstructed['mesh'], Mesh)
-        assert len(reconstructed['vertex_loads']) == 3
-        assert all(hasattr(load, 'magnitude') for load in reconstructed['vertex_loads'])
+        assert isinstance(reconstructed, Mesh)
+        assert len(list(reconstructed.vertices())) == 3
+        
+        # Check vertex attributes
+        for vertex in reconstructed.vertices():
+            load = reconstructed.vertex_attribute(vertex, 'load')
+            assert hasattr(load, 'magnitude')
+            assert load.magnitude in [10.0, 15.0, 12.0]
+        
+        # Check edge attributes
+        for edge in reconstructed.edges():
+            length = reconstructed.edge_attribute(edge, 'length')
+            assert hasattr(length, 'magnitude')
+            assert length.magnitude == 1.0
+        
+        # Check face attributes
+        for face in reconstructed.faces():
+            area = reconstructed.face_attribute(face, 'area')
+            assert hasattr(area, 'magnitude')
+            assert area.magnitude == 0.5
 
 
-@pytest.mark.skipif(not UNCERTAINTIES_AVAILABLE, reason="uncertainties not available")
 class TestGeometryWithUncertainties:
     """Test geometry objects with measurement uncertainties."""
     
