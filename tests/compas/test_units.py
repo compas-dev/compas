@@ -183,8 +183,3 @@ class TestGracefulDegradation:
         
         # Should fallback to nominal value only
         assert reconstructed == 1.23
-
-
-# Run basic tests if executed directly
-if __name__ == "__main__":
-    pytest.main([__file__, "-v"])
