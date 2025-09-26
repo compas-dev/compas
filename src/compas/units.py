@@ -11,7 +11,10 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from typing import Union
+try:
+    from typing import Union
+except ImportError:
+    pass
 
 __all__ = ['UnitRegistry', 'units', 'NumericType', 'UNITS_AVAILABLE', 'UNCERTAINTIES_AVAILABLE', 'PintQuantityEncoder', 'UncertaintiesUFloatEncoder']
 
@@ -31,11 +34,15 @@ except ImportError:
     uncertainties = None
 
 # Define numeric type union
-NumericType = Union[float, int]
-if UNITS_AVAILABLE:
-    NumericType = Union[NumericType, pint.Quantity]
-if UNCERTAINTIES_AVAILABLE:
-    NumericType = Union[NumericType, uncertainties.UFloat]
+try:
+    NumericType = Union[float, int]
+    if UNITS_AVAILABLE:
+        NumericType = Union[NumericType, pint.Quantity]
+    if UNCERTAINTIES_AVAILABLE:
+        NumericType = Union[NumericType, uncertainties.UFloat]
+except NameError:
+    # typing.Union not available, just use documentation comment
+    NumericType = float  # Union[float, int, pint.Quantity, uncertainties.UFloat] when available
 
 
 class PintQuantityEncoder:
