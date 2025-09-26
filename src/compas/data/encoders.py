@@ -194,22 +194,16 @@ class DataEncoder(json.JSONEncoder):
         if isinstance(o, AttributeView):
             return dict(o)
 
-        # Handle units and uncertainties
-        if units_support and hasattr(o, 'magnitude') and hasattr(o, 'units'):
-            # This is a pint.Quantity
-            return {
-                '__pint_quantity__': True,
-                'magnitude': o.magnitude,
-                'units': str(o.units)
-            }
+        # Handle units and uncertainties using proper encoders
+        if units_support and pint and isinstance(o, pint.Quantity):
+            # Use the proper encoder from units module
+            from compas.units import PintQuantityEncoder
+            return PintQuantityEncoder.__jsondump__(o)
         
-        if uncertainties_support and hasattr(o, 'nominal_value') and hasattr(o, 'std_dev'):
-            # This is an uncertainties.UFloat
-            return {
-                '__uncertainties_ufloat__': True,
-                'nominal_value': o.nominal_value,
-                'std_dev': o.std_dev
-            }
+        if uncertainties_support and uncertainties and isinstance(o, uncertainties.UFloat):
+            # Use the proper encoder from units module
+            from compas.units import UncertaintiesUFloatEncoder
+            return UncertaintiesUFloatEncoder.__jsondump__(o)
 
         return super(DataEncoder, self).default(o)
 
@@ -265,29 +259,6 @@ class DataDecoder(json.JSONDecoder):
             A (reconstructed), deserialized object.
 
         """
-        # Handle pint quantities
-        if o.get('__pint_quantity__'):
-            if units_support:
-                # Import units registry from compas.units
-                try:
-                    from compas.units import units as compas_units
-                    return compas_units.ureg.Quantity(o['magnitude'], o['units'])
-                except ImportError:
-                    # Fallback: create a basic pint registry
-                    ureg = pint.UnitRegistry()
-                    return ureg.Quantity(o['magnitude'], o['units'])
-            else:
-                # Graceful degradation - return just the magnitude
-                return o['magnitude']
-        
-        # Handle uncertainties
-        if o.get('__uncertainties_ufloat__'):
-            if uncertainties_support:
-                return uncertainties.ufloat(o['nominal_value'], o['std_dev'])
-            else:
-                # Graceful degradation - return just the nominal value
-                return o['nominal_value']
-
         if "dtype" not in o:
             return o
 

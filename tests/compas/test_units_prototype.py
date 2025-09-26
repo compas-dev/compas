@@ -62,7 +62,7 @@ class TestUnitsIntegration:
         
         # Serialize
         json_str = json.dumps(length, cls=DataEncoder)
-        assert '__pint_quantity__' in json_str
+        assert 'compas.units/PintQuantityEncoder' in json_str
         
         # Deserialize
         reconstructed = json.loads(json_str, cls=DataDecoder)
@@ -82,7 +82,7 @@ class TestUnitsIntegration:
         
         # Serialize
         json_str = json.dumps(value, cls=DataEncoder)
-        assert '__uncertainties_ufloat__' in json_str
+        assert 'compas.units/UncertaintiesUFloatEncoder' in json_str
         
         # Deserialize
         reconstructed = json.loads(json_str, cls=DataDecoder)
@@ -94,8 +94,11 @@ class TestUnitsIntegration:
     
     def test_serialization_graceful_degradation_units(self):
         """Test that serialization works even without units available."""
-        # Create a mock object that looks like a pint quantity
-        mock_quantity = {'__pint_quantity__': True, 'magnitude': 2.5, 'units': 'meter'}
+        # Create a mock COMPAS-style object that looks like our encoder output
+        mock_quantity = {
+            'dtype': 'compas.units/PintQuantityEncoder', 
+            'data': {'magnitude': 2.5, 'units': 'meter'}
+        }
         
         # Serialize and deserialize
         json_str = json.dumps(mock_quantity)
@@ -104,14 +107,18 @@ class TestUnitsIntegration:
         if UNITS_AVAILABLE:
             # Should reconstruct as a pint quantity
             assert hasattr(reconstructed, 'magnitude')
+            assert reconstructed.magnitude == 2.5
         else:
             # Should fallback to magnitude only
             assert reconstructed == 2.5
     
     def test_serialization_graceful_degradation_uncertainties(self):
         """Test that serialization works even without uncertainties available."""
-        # Create a mock object that looks like an uncertainties value
-        mock_ufloat = {'__uncertainties_ufloat__': True, 'nominal_value': 1.23, 'std_dev': 0.05}
+        # Create a mock COMPAS-style object that looks like our encoder output
+        mock_ufloat = {
+            'dtype': 'compas.units/UncertaintiesUFloatEncoder',
+            'data': {'nominal_value': 1.23, 'std_dev': 0.05}
+        }
         
         # Serialize and deserialize
         json_str = json.dumps(mock_ufloat)
@@ -120,6 +127,7 @@ class TestUnitsIntegration:
         if UNCERTAINTIES_AVAILABLE:
             # Should reconstruct as an uncertainties value
             assert hasattr(reconstructed, 'nominal_value')
+            assert reconstructed.nominal_value == 1.23
         else:
             # Should fallback to nominal value only
             assert reconstructed == 1.23
@@ -150,6 +158,7 @@ class TestUnitsIntegration:
         
         # Serialize
         json_str = json.dumps(mixed_data, cls=DataEncoder)
+        assert 'compas.units/PintQuantityEncoder' in json_str
         
         # Deserialize
         reconstructed = json.loads(json_str, cls=DataDecoder)
