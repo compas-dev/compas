@@ -8,6 +8,7 @@ and demonstrates the integration points for units in COMPAS.
 import pytest
 import json
 import math
+import compas
 from compas.units import units, UNITS_AVAILABLE, UNCERTAINTIES_AVAILABLE
 from compas.data.encoders import DataEncoder, DataDecoder
 from compas.geometry import Point, Vector, Frame, distance_point_point
@@ -19,6 +20,9 @@ class TestUnitsWithGeometryFunctions:
     
     def test_distance_with_units(self):
         """Test distance calculation with unit-aware coordinates."""
+        if compas.IPY or not UNITS_AVAILABLE:
+            return  # Skip on IronPython or when pint not available
+            
         # Create points with unit coordinates as lists
         p1 = [1.0 * units.meter, 2.0 * units.meter, 3.0 * units.meter]
         p2 = [4.0 * units.meter, 5.0 * units.meter, 6.0 * units.meter]
@@ -37,6 +41,9 @@ class TestUnitsWithGeometryFunctions:
     
     def test_mixed_units_conversion(self):
         """Test distance with mixed units."""
+        if compas.IPY or not UNITS_AVAILABLE:
+            return  # Skip on IronPython or when pint not available
+            
         # Different units should be automatically converted
         p1 = [1.0 * units.meter, 0.0 * units.meter, 0.0 * units.meter]
         p2 = [1000.0 * units.millimeter, 0.0 * units.millimeter, 0.0 * units.millimeter]
@@ -51,6 +58,9 @@ class TestUnitsWithGeometryFunctions:
     
     def test_units_serialization_in_geometry_data(self):
         """Test serialization of data structures containing units."""
+        if compas.IPY or not UNITS_AVAILABLE:
+            return  # Skip on IronPython or when pint not available
+            
         # Create mixed data that might be used in geometry contexts
         geometry_data = {
             'coordinates': [1.0 * units.meter, 2.0 * units.meter, 3.0 * units.meter],
@@ -76,6 +86,9 @@ class TestGeometryObjectsSerialization:
     
     def test_point_serialization_integration(self):
         """Test Point serialization in unit-aware workflows."""
+        if compas.IPY or not UNITS_AVAILABLE:
+            return  # Skip on IronPython or when pint not available
+            
         # Points are created with plain coordinates (current behavior)
         p = Point(1.0, 2.0, 3.0)
         
@@ -97,6 +110,9 @@ class TestGeometryObjectsSerialization:
     
     def test_vector_workflow_with_units(self):
         """Test Vector in unit-aware workflows."""
+        if compas.IPY or not UNITS_AVAILABLE:
+            return  # Skip on IronPython or when pint not available
+            
         # Vectors are created with plain coordinates
         v = Vector(1.0, 2.0, 3.0)
         
@@ -117,6 +133,9 @@ class TestGeometryObjectsSerialization:
     
     def test_frame_with_unit_context(self):
         """Test Frame in unit-aware context."""
+        if compas.IPY or not UNITS_AVAILABLE:
+            return  # Skip on IronPython or when pint not available
+            
         frame = Frame([1.0, 2.0, 3.0])
         
         # Frame can be part of unit-aware design data
@@ -140,6 +159,9 @@ class TestMeshWithUnitsWorkflow:
     
     def test_mesh_with_unit_attributes(self):
         """Test Mesh with unit-aware custom attributes."""
+        if compas.IPY or not UNITS_AVAILABLE:
+            return  # Skip on IronPython or when pint not available
+            
         # Create simple mesh
         vertices = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0]]
         faces = [[0, 1, 2]]
@@ -164,6 +186,9 @@ class TestMeshWithUnitsWorkflow:
     
     def test_mesh_processing_workflow(self):
         """Test mesh processing workflow with unit-aware attributes."""
+        if compas.IPY or not UNITS_AVAILABLE:
+            return  # Skip on IronPython or when pint not available
+            
         # Create mesh 
         mesh = Mesh()
         
@@ -218,6 +243,9 @@ class TestGeometryWithUncertainties:
     
     def test_measurement_data_with_uncertainties(self):
         """Test geometry data with measurement uncertainties."""
+        if compas.IPY or not UNCERTAINTIES_AVAILABLE:
+            return  # Skip on IronPython or when uncertainties not available
+            
         import uncertainties as unc
         
         # Survey/measurement data with uncertainties

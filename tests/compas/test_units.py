@@ -7,6 +7,7 @@ backward compatibility is maintained.
 
 import pytest
 import json
+import compas
 from compas.units import units, UNITS_AVAILABLE, UNCERTAINTIES_AVAILABLE
 from compas.data.encoders import DataEncoder, DataDecoder
 
@@ -38,12 +39,14 @@ class TestUnitsModule:
         assert (cm is None) == (not UNITS_AVAILABLE)
 
 
-@pytest.mark.skipif(not UNITS_AVAILABLE, reason="pint not available")
 class TestUnitsWithPint:
     """Test units functionality when pint is available."""
     
     def test_unit_conversions(self):
         """Test basic unit conversions work correctly."""
+        if compas.IPY or not UNITS_AVAILABLE:
+            return  # Skip on IronPython or when pint not available
+            
         meter = units.Quantity(1.0, 'meter')
         millimeter = units.Quantity(1000.0, 'millimeter')
         
@@ -53,6 +56,9 @@ class TestUnitsWithPint:
     
     def test_serialization_with_units(self):
         """Test JSON serialization of units."""
+        if compas.IPY or not UNITS_AVAILABLE:
+            return  # Skip on IronPython or when pint not available
+            
         # Create a quantity
         length = units.Quantity(5.0, 'meter')
         
@@ -70,6 +76,9 @@ class TestUnitsWithPint:
     
     def test_mixed_data_with_units(self):
         """Test serialization of mixed data containing units."""
+        if compas.IPY or not UNITS_AVAILABLE:
+            return  # Skip on IronPython or when pint not available
+            
         # Create mixed data
         mixed_data = {
             'plain_value': 42.0,
@@ -97,12 +106,14 @@ class TestUnitsWithPint:
         assert reconstructed['nested']['height'].magnitude == 3.0
 
 
-@pytest.mark.skipif(not UNCERTAINTIES_AVAILABLE, reason="uncertainties not available")
 class TestUncertaintiesWithUncertainties:
     """Test uncertainties functionality when uncertainties is available."""
     
     def test_uncertainty_creation(self):
         """Test uncertainty creation."""
+        if compas.IPY or not UNCERTAINTIES_AVAILABLE:
+            return  # Skip on IronPython or when uncertainties not available
+            
         import uncertainties
         
         val = uncertainties.ufloat(1.0, 0.1)
@@ -111,6 +122,9 @@ class TestUncertaintiesWithUncertainties:
     
     def test_serialization_with_uncertainties(self):
         """Test JSON serialization of uncertainties."""
+        if compas.IPY or not UNCERTAINTIES_AVAILABLE:
+            return  # Skip on IronPython or when uncertainties not available
+            
         import uncertainties
         
         # Create an uncertain value
