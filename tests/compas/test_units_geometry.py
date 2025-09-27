@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Test suite for units integration with COMPAS geometry objects.
 
