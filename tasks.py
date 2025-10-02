@@ -7,7 +7,7 @@ from compas_invocations2 import docs
 from compas_invocations2 import style
 from compas_invocations2 import tests
 from compas_invocations2 import grasshopper
-from invoke import Collection
+from invoke.collection import Collection
 
 ns = Collection(
     docs.help,
@@ -26,7 +26,6 @@ ns = Collection(
     build.build_cpython_ghuser_components,
     grasshopper.yakerize,
     grasshopper.publish_yak,
-    grasshopper.update_gh_header,
 )
 ns.configure(
     {
