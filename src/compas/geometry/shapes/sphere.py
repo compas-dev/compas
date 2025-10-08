@@ -280,6 +280,24 @@ class Sphere(Shape):
         """
         self.radius *= factor
 
+    def scaled(self, factor):
+        """Returns a scaled copy of the sphere.
+
+        Parameters
+        ----------
+        factor : float
+            The scaling factor.
+
+        Returns
+        -------
+        :class:`compas.geometry.Sphere`
+            The scaled sphere.
+
+        """
+        sphere = self.copy()
+        sphere.scale(factor)
+        return sphere
+
     # =============================================================================
     # Methods
     # =============================================================================
