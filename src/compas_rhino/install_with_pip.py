@@ -33,7 +33,7 @@ def ensure_site_env(name: str) -> str:
     return fullname
 
 
-def install_package(
+def install_in_rhino_with_pip(
     packages: list[str],
     requirements: Optional[str] = None,
     env: str = "default",
@@ -41,7 +41,55 @@ def install_package(
     deps: bool = True,
     clear: bool = False,
 ):
-    """Install a package with Rhino's CPython pip."""
+    """Install a package with Rhino's CPython pip.
+
+    Parameters
+    ----------
+    packages : list of str
+        The package(s) to install (PyPI names or local package paths).
+    requirements : str, optional
+        Path to a requirements file.
+    env : str, optional
+        Name of the site env, without the random suffix.
+    upgrade : bool, optional
+        Attempt to upgrade packages already installed.
+    deps : bool, optional
+        If False, do not install dependencies.
+    clear : bool, optional
+        If True, clear the environment before installing.
+
+    Returns
+    -------
+    int
+        The return code from the pip install command.
+
+    Raises
+    ------
+    ValueError
+        If both packages and requirements are provided, or if neither are provided.
+
+    Examples
+    --------
+    >>> install_in_rhino_with_pip(packages=["requests"], env="myenv", upgrade=True)
+    >>> install_in_rhino_with_pip(requirements="requirements.txt", env="myenv")
+    >>> install_in_rhino_with_pip(packages=["."], env="myenv")
+    >>> install_in_rhino_with_pip(packages=[".."], env="myenv")
+
+    Notes
+    -----
+    This function is made available as a command line script under the name `install_in_rhino`.
+    On the command line you can use the following syntax
+
+    .. code-block:: bash
+
+        install_in_rhino requests numpy
+        install_in_rhino -r requirements.txt --env myenv --upgrade
+        install_in_rhino . --env myenv
+        install_in_rhino .. --env myenv
+        install_in_rhino -r requirements.txt --env myenv --no-deps
+        install_in_rhino requests --env myenv --clear
+
+    """
 
     if requirements and packages:
         raise ValueError("You must provide either packages or a requirements file, not both.")
@@ -103,7 +151,7 @@ def main():
     parser.set_defaults(deps=True)
     args = parser.parse_args()
 
-    install_package(
+    install_in_rhino_with_pip(
         packages=args.packages,
         requirements=args.requirements,
         env=args.env,
@@ -112,6 +160,10 @@ def main():
         clear=args.clear,
     )
 
+
+# =============================================================================
+# Main
+# =============================================================================
 
 if __name__ == "__main__":
     main()
