@@ -347,11 +347,9 @@ class Shape(Geometry):
     def transform(self, transformation):
         """Transform the shape.
 
-        Transformations of a shape are performed by applying the transformation to the frame of the shape,
-        and by extracting and applying any scale component to the shape's dimensional parameters.
-        
-        The base implementation in the Shape class only transforms the frame.
-        Subclasses override this method to also handle scale components appropriately for their geometry.
+        The base implementation transforms only the frame of the shape.
+        Subclasses override this method to also extract and apply scale components
+        from the transformation to their dimensional parameters.
 
         Parameters
         ----------
@@ -361,6 +359,13 @@ class Shape(Geometry):
         Returns
         -------
         None
+        
+        Notes
+        -----
+        The base Shape class only transforms the frame. Shape subclasses (Box, Sphere, 
+        Cylinder, Cone, Capsule, Torus) override this method to decompose the transformation,
+        extract the scale component, and apply it appropriately to their dimensions before
+        transforming the frame.
 
         See Also
         --------
