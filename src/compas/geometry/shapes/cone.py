@@ -300,6 +300,22 @@ class Cone(Shape):
     # Transformations
     # ==========================================================================
 
+    def scale(self, factor):
+        """Scale the cone by multiplying the radius and height by a factor.
+
+        Parameters
+        ----------
+        factor : float
+            The scaling factor.
+
+        Returns
+        -------
+        None
+
+        """
+        self.radius *= factor
+        self.height *= factor
+
     # ==========================================================================
     # Methods
     # ==========================================================================

@@ -1,4 +1,4 @@
-name: bluejay
+name: compas
 version: {{ version }}
 authors:
   - tom van mele et. al.
