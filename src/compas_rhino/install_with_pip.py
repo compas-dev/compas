@@ -1,13 +1,16 @@
+import argparse
 import pathlib
 import random
 import shutil
 import string
 import subprocess
+from typing import Optional
 
-import click
+import compas
 
+executable = "python" if compas.WINDOWS else "python3.9"
 rhinocode = pathlib.Path().home() / ".rhinocode"
-rhinopython = rhinocode / "py39-rh8" / "python3.9"
+rhinopython = rhinocode / "py39-rh8" / executable
 site_envs = rhinocode / "py39-rh8" / "site-envs"
 
 
@@ -22,10 +25,6 @@ def find_full_env_name(name: str) -> str:
     raise ValueError(f"No environment with this name exists: {name}")
 
 
-def default_env_name() -> str:
-    return find_full_env_name("default")
-
-
 def ensure_site_env(name: str) -> str:
     try:
         fullname = find_full_env_name(name)
@@ -34,60 +33,31 @@ def ensure_site_env(name: str) -> str:
     return fullname
 
 
-@click.command()
-@click.argument("package")
-@click.option("--env", default="default", help="Name of the site env, without the random suffix...")
-@click.option("--upgrade/--no-upgrade", default=False)
-@click.option("--deps/--no-deps", default=True)
-@click.option("--clear/--no-clear", default=False)
 def install_package(
-    package: str,
+    packages: list[str],
+    requirements: Optional[str] = None,
     env: str = "default",
     upgrade: bool = False,
     deps: bool = True,
     clear: bool = False,
 ):
-    """Install a package with Rhino's CPython pip.
+    """Install a package with Rhino's CPython pip."""
 
-    Parameters
-    ----------
-    package : str
-        If a package name is provided, the package will be installed from PyPI.
-        If `.` or `..` is specified, the package will be installed from the source in the current or parent folder, respectively.
-    env : str, optional
-        The name of the virtual (site) environment in Rhino, without the random suffix.
-        If no environment name is provided, the default environment will be used.
-        If the environment doesn't exist, it will be created automatically.
-    upgrade : bool, optional
-        Attempt to upgrade packages that were already installed.
-        The default is False.
-    deps : bool, optional
-        Attempt to install the package dependencies.
-        Default is True.
+    if requirements and packages:
+        raise ValueError("You must provide either packages or a requirements file, not both.")
 
-    Returns
-    -------
-    str
-        The output of the call to pip.
-
-    Examples
-    --------
-    When COMPAS is installed, the function is registered as an executable command with the name `install_in_rhino`.
-
-    $ cd path/to/local/compas/repo
-    $ install_in_rhino .
-
-    $ cd path/to/local/compas/repo
-    $ install_in_rhino . --env=compas-dev
-
-    $ cd path/to/local/compas/repo
-    $ install_in_rhino . --env=compas-dev --upgrade --no-deps
-
-    """
-    if package == ".":
-        package = str(pathlib.Path().cwd())
-    elif package == "..":
-        package = str(pathlib.Path().cwd().parent)
+    if requirements:
+        params = ["-r", str(pathlib.Path(requirements).resolve())]
+    elif packages:
+        params = []
+        for p in packages:
+            if p == ".":
+                p = str(pathlib.Path().cwd())
+            elif p == "..":
+                p = str(pathlib.Path().cwd().parent)
+            params.append(p)
+    else:
+        raise ValueError("You must provide either packages or a requirements file.")
 
     env = env or "default"
 
@@ -108,24 +78,40 @@ def install_package(
         "-m",
         "pip",
         "install",
-        package,
+        *params,
         "--target",
-        target,
+        str(target),
         "--no-warn-script-location",
     ]
 
     if upgrade:
         args.append("--upgrade")
-
     if not deps:
         args.append("--no-deps")
 
     return subprocess.check_call(args)
 
 
-# =============================================================================
-# Main
-# =============================================================================
+def main():
+    parser = argparse.ArgumentParser(description="Install a package with Rhino's CPython pip.")
+    parser.add_argument("packages", help="The package(s) to install (PyPI names or local package paths)", nargs="*")
+    parser.add_argument("-r", "--requirements", help="Path to a requirements file")
+    parser.add_argument("--env", default="default", help="Name of the site env, without the random suffix")
+    parser.add_argument("--upgrade", action="store_true", help="Attempt to upgrade packages already installed")
+    parser.add_argument("--no-deps", dest="deps", action="store_false", help="Do not install dependencies")
+    parser.add_argument("--clear", action="store_true", help="Clear the environment before installing")
+    parser.set_defaults(deps=True)
+    args = parser.parse_args()
+
+    install_package(
+        packages=args.packages,
+        requirements=args.requirements,
+        env=args.env,
+        upgrade=args.upgrade,
+        deps=args.deps,
+        clear=args.clear,
+    )
+
 
 if __name__ == "__main__":
-    install_package()
+    main()
