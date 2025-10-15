@@ -14,7 +14,6 @@ from compas.geometry import Point
 from compas.geometry import Scale
 from compas.geometry import Sphere
 from compas.geometry import Torus
-from compas.geometry import Transformation
 from compas.geometry import Translation
 
 
@@ -52,7 +51,6 @@ def test_box_transform_with_translation_and_scale():
     S = Scale.from_factors([2.0, 3.0, 4.0])
     combined = T * S
     
-    original_center = box.frame.point
     box.transform(combined)
     
     # Check dimensions are scaled
@@ -89,8 +87,6 @@ def test_box_transform_preserves_frame_orientation():
     """Test that Box.transform() preserves frame orientation when scaling."""
     box = Box(1.0, 2.0, 3.0, frame=Frame([1, 1, 1], [1, 0, 0], [0, 1, 0]))
     original_xaxis = box.frame.xaxis.copy()
-    original_yaxis = box.frame.yaxis.copy()
-    original_zaxis = box.frame.zaxis.copy()
     
     S = Scale.from_factors([2.0, 2.0, 2.0])
     box.transform(S)
