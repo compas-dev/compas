@@ -68,6 +68,52 @@ To create an editable install, you should update `pip` itself, first.
     $ ~/.rhinocode/py39-rh8/python3.9 -m pip install -e .
 
 
+Experimental Method
+===================
+
+COMPAS now makes the `install_in_rhino` command line utility available to simplify the installation of Python packages in Rhino 8 CPython.
+This utility is available after installing the main `compas` package:
+
+Install any Python package from PyPI
+
+.. code-block:: bash
+
+    install_in_rhino requests numpy
+
+Install from the current directory
+
+.. code-block:: bash
+
+    install_in_rhino .
+
+Install from a local path
+
+.. code-block:: bash
+
+    install_in_rhino path/to/package
+
+Install from a requirements file
+
+.. code-block:: bash
+
+    install_in_rhino -r requirements.txt
+
+Install in a specific site environment.
+
+.. code-block:: bash
+
+    install_in_rhino compas --env compas-dev
+
+Clear the site environment before installing
+
+.. code-block:: bash
+
+    install_in_rhino compas --env compas-dev --clear
+
+
+For more information, see :func:`compas_rhino.install_with_pip.install_in_rhino_with_pip`.
+
+
 Verification
 ============
 
