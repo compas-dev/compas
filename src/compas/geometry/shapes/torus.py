@@ -278,3 +278,20 @@ class Torus(Shape):
 
         """
         self.frame.transform(transformation)
+
+    def scale(self, factor):
+        """Scale the torus by multiplying the axis radius and pipe radius by a factor.
+
+        Parameters
+        ----------
+        factor : float
+            The scaling factor.
+
+        Returns
+        -------
+        None
+
+        """
+        self.radius_axis *= factor
+        self.radius_pipe *= factor
+
