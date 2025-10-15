@@ -588,6 +588,36 @@ $<span class="w"> </span>~/.rhinocode/py39-rh8/python3.9<span class="w"> </span>
 </pre></div>
 </div>
 </section>
+<section id="experimental-method">
+<h2>Experimental Method</h2>
+<p>COMPAS now makes the <cite>install_in_rhino</cite> command line utility available to simplify the installation of Python packages in Rhino 8 CPython.
+This utility is available after installing the main <cite>compas</cite> package:</p>
+<p>Install any Python package from PyPI</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>install_in_rhino<span class="w"> </span>requests<span class="w"> </span>numpy
+</pre></div>
+</div>
+<p>Install from the current directory</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>install_in_rhino<span class="w"> </span>.
+</pre></div>
+</div>
+<p>Install from a local path</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>install_in_rhino<span class="w"> </span>path/to/package
+</pre></div>
+</div>
+<p>Install from a requirements file</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>install_in_rhino<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</pre></div>
+</div>
+<p>Install in a specific site environment.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>install_in_rhino<span class="w"> </span>compas<span class="w"> </span>--env<span class="w"> </span>compas-dev
+</pre></div>
+</div>
+<p>Clear the site environment before installing</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>install_in_rhino<span class="w"> </span>compas<span class="w"> </span>--env<span class="w"> </span>compas-dev<span class="w"> </span>--clear
+</pre></div>
+</div>
+<p>For more information, see <code class="xref py py-func docutils literal notranslate"><span class="pre">compas_rhino.install_with_pip.install_in_rhino_with_pip()</span></code>.</p>
+</section>
 <section id="verification">
 <h2>Verification</h2>
 <p>In Rhino 8, open the Python editor (just type <code class="docutils literal notranslate"><span class="pre">ScriptEditor</span></code>), open an new <code class="docutils literal notranslate"><span class="pre">Python</span> <span class="pre">3</span></code> edito tab, and type the following:</p>
@@ -622,6 +652,7 @@ $<span class="w"> </span>~/.rhinocode/py39-rh8/python3.9<span class="w"> </span>
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#alternative-method">Alternative Method</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#experimental-method">Experimental Method</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verification">Verification</a></li>
 </ul>
   </nav></div>
