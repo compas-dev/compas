@@ -270,11 +270,33 @@ class Torus(Shape):
         --------
         >>> from compas.geometry import Frame
         >>> from compas.geometry import Transformation
+        >>> from compas.geometry import Scale
         >>> from compas.geometry import Torus
         >>> torus = Torus(5, 2)
         >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> T = Transformation.from_frame(frame)
         >>> torus.transform(T)
+        >>> torus = Torus(5, 2)
+        >>> S = Scale.from_factors([2.0, 2.0, 3.0])
+        >>> torus.transform(S)
+        >>> torus.radius_axis
+        10.0
+        >>> torus.radius_pipe
+        6.0
 
         """
+        # Extract scale component from the transformation
+        Sc, _, _, _, _ = transformation.decomposed()
+        scale_x = Sc.matrix[0][0]
+        scale_y = Sc.matrix[1][1]
+        scale_z = Sc.matrix[2][2]
+        
+        # For a torus in the XY plane:
+        # - axis radius is affected by X and Y scaling (use average)
+        # - pipe radius is affected by Z scaling
+        average_planar_scale = (scale_x + scale_y) / 2.0
+        self.radius_axis *= average_planar_scale
+        self.radius_pipe *= scale_z
+        
+        # Apply transformation to frame
         self.frame.transform(transformation)

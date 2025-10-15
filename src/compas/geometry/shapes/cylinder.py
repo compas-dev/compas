@@ -302,6 +302,46 @@ class Cylinder(Shape):
     # Transformations
     # =============================================================================
 
+    def transform(self, transformation):
+        """Transform the cylinder.
+
+        Parameters
+        ----------
+        transformation : :class:`Transformation`
+            The transformation used to transform the cylinder.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        >>> from compas.geometry import Frame, Scale
+        >>> cylinder = Cylinder(radius=2.0, height=5.0)
+        >>> S = Scale.from_factors([2.0, 2.0, 3.0])
+        >>> cylinder.transform(S)
+        >>> cylinder.radius
+        4.0
+        >>> cylinder.height
+        15.0
+
+        """
+        # Extract scale component from the transformation
+        Sc, _, _, _, _ = transformation.decomposed()
+        scale_x = Sc.matrix[0][0]
+        scale_y = Sc.matrix[1][1]
+        scale_z = Sc.matrix[2][2]
+        
+        # For a cylinder aligned with Z-axis:
+        # - radius is affected by X and Y scaling (use average)
+        # - height is affected by Z scaling
+        average_radial_scale = (scale_x + scale_y) / 2.0
+        self.radius *= average_radial_scale
+        self.height *= scale_z
+        
+        # Apply transformation to frame
+        self.frame.transform(transformation)
+
     def scale(self, factor):
         """Scale the cylinder by multiplying the radius and height by a factor.
 
