@@ -318,24 +318,6 @@ class Cylinder(Shape):
         self.radius *= factor
         self.height *= factor
 
-    def scaled(self, factor):
-        """Returns a scaled copy of the cylinder.
-
-        Parameters
-        ----------
-        factor : float
-            The scaling factor.
-
-        Returns
-        -------
-        :class:`compas.geometry.Cylinder`
-            The scaled cylinder.
-
-        """
-        cylinder = self.copy()
-        cylinder.scale(factor)
-        return cylinder
-
     # =============================================================================
     # Methods
     # =============================================================================
