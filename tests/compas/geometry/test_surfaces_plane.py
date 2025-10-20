@@ -40,6 +40,32 @@ def test_plane(xsize, ysize):
 
 
 @pytest.mark.parametrize(
+    "xsize,ysize",
+    [
+        (0, 0),
+        (1, 0),
+        (0, 1),
+        (1, 1),
+        (10, 1),
+        (1, 10),
+        (2, 3),
+        (3, 2),
+        (random(), random()),
+    ],
+)
+def test_plane_size(xsize, ysize):
+    plane = PlanarSurface(xsize=xsize, ysize=ysize)
+
+    assert plane.point_at(1, 0) == Point(xsize, 0, 0)
+    assert plane.point_at(0, 1) == Point(0, ysize, 0)
+    assert plane.point_at(1, 1) == Point(xsize, ysize, 0)
+
+    assert plane.point_at(0.5, 0) == Point(0.5 * xsize, 0, 0)
+    assert plane.point_at(0, 0.5) == Point(0, 0.5 * ysize, 0)
+    assert plane.point_at(0.5, 0.5) == Point(0.5 * xsize, 0.5 * ysize, 0)
+
+
+@pytest.mark.parametrize(
     "frame",
     [
         Frame.worldXY(),
@@ -107,3 +133,37 @@ def test_plane_data():
 # =============================================================================
 # Other Methods
 # =============================================================================
+
+# =============================================================================
+# Conversions
+# =============================================================================
+
+
+@pytest.mark.parametrize(
+    "xsize,ysize",
+    [
+        (0, 0),
+        (1, 0),
+        (0, 1),
+        (1, 1),
+        (10, 1),
+        (1, 10),
+        (2, 3),
+        (3, 2),
+        (random(), random()),
+    ],
+)
+def test_plane_conversion_to_mesh(xsize, ysize):
+    plane = PlanarSurface(xsize=xsize, ysize=ysize)
+
+    area = plane.xsize * plane.ysize
+
+    mesh = plane.to_mesh(1, 1)
+    assert mesh.number_of_vertices() == 4
+    assert mesh.number_of_faces() == 1
+    assert TOL.is_close(mesh.area(), area)
+
+    mesh = plane.to_mesh(10, 10)
+    assert mesh.number_of_vertices() == 121
+    assert mesh.number_of_faces() == 100
+    assert TOL.is_close(mesh.area(), area)

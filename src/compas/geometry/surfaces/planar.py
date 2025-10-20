@@ -167,11 +167,10 @@ class PlanarSurface(Surface):
             A point on the sphere.
 
         """
-        point = Point(u, v, 0)
+        point = Point(u * self.xsize, v * self.ysize, 0)
         if world:
             point.transform(self.transformation)
         return point
-        # return self.frame.point + self.frame.xaxis * u + self.frame.yaxis * v
 
     def normal_at(self, u=None, v=None, world=True):
         """Construct the normal at a point on the planar surface.
