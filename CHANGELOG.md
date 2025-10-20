@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added `compas_rhino.install_with_pip` with corresponding command line utility `install_in_rhino`.
 * Added support for `.stp` file extension in addition to `.step` for `RhinoBrep.from_step()` and `RhinoBrep.to_step()` methods.
+* Added optional support for units and uncertainties (via `pint.Quantity` and `uncertainties.UFloat`) including data serialization/deserialization support. Support is built around gradual typing, where unit-aware inputs produce unit-aware outputs.
+* Added `compas.units.UnitRegistry` for managing physical units with graceful degradation.
 
 ### Changed
 

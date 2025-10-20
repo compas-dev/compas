@@ -39,6 +39,22 @@ try:
 except (ImportError, SyntaxError):
     numpy_support = False
 
+# Check for units and uncertainties support
+units_support = False
+uncertainties_support = False
+
+try:
+    import pint
+    units_support = True
+except ImportError:
+    pint = None
+
+try:
+    import uncertainties
+    uncertainties_support = True
+except ImportError:
+    uncertainties = None
+
 
 def cls_from_dtype(dtype, inheritance=None):  # type: (...) -> Type[Data]
     """Get the class object corresponding to a COMPAS data type specification.
@@ -177,6 +193,17 @@ class DataEncoder(json.JSONEncoder):
 
         if isinstance(o, AttributeView):
             return dict(o)
+
+        # Handle units and uncertainties using proper encoders
+        if units_support and pint and isinstance(o, pint.Quantity):
+            # Use the proper encoder from units module
+            from compas.units import PintQuantityEncoder
+            return PintQuantityEncoder.__jsondump__(o)
+        
+        if uncertainties_support and uncertainties and isinstance(o, uncertainties.UFloat):
+            # Use the proper encoder from units module
+            from compas.units import UncertaintiesUFloatEncoder
+            return UncertaintiesUFloatEncoder.__jsondump__(o)
 
         return super(DataEncoder, self).default(o)
 
