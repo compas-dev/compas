@@ -2,6 +2,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import Rhino  # type: ignore
+
 from compas.geometry import Curve
 from compas.geometry import Plane
 from compas_rhino.conversions import box_to_compas
@@ -393,7 +395,8 @@ class RhinoCurve(Curve):
         point = self.point_at(self.domain[0])  # type: ignore
         plane = Plane(point, direction)
         plane = plane_to_rhino(plane)
-        self.native_curve = self.native_curve.Offset(plane, distance, tolerance, 0)[0]  # type: ignore
+        corner_style = getattr(Rhino.Geometry.CurveOffsetCornerStyle, "None")
+        self.native_curve = self.native_curve.Offset(plane, distance, tolerance, corner_style)[0]  # type: ignore
 
     def smooth(self):
         raise NotImplementedError
