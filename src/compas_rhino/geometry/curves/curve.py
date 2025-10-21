@@ -395,7 +395,7 @@ class RhinoCurve(Curve):
         point = self.point_at(self.domain[0])  # type: ignore
         plane = Plane(point, direction)
         plane = plane_to_rhino(plane)
-        corner_style = getattr(Rhino.Geometry.CurveOffsetCornerStyle, "None")
+        corner_style = Rhino.Geometry.CurveOffsetCornerStyle.NONE
         self.native_curve = self.native_curve.Offset(plane, distance, tolerance, corner_style)[0]  # type: ignore
 
     def smooth(self):
