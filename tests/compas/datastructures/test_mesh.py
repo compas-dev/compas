@@ -1069,6 +1069,32 @@ def test_normal():
     )
 
 
+def test_volume():
+    # Test with a cube
+    mesh = Mesh.from_stl(compas.get("cube_binary.stl"))
+    volume = mesh.volume()
+    assert volume is not None
+    # The cube in cube_binary.stl has side length 1, so volume should be 1
+    assert TOL.is_close(volume, 1.0)
+
+    # Test with a tetrahedron
+    tet = Mesh.from_polyhedron(4)
+    volume = tet.volume()
+    assert volume is not None
+    assert volume > 0
+
+    # Test with a cube from polyhedron
+    cube = Mesh.from_polyhedron(6)
+    volume = cube.volume()
+    assert volume is not None
+    assert volume > 0
+
+    # Test with an open mesh (should return None)
+    mesh = Mesh.from_obj(compas.get("faces.obj"))
+    volume = mesh.volume()
+    assert volume is None
+
+
 # --------------------------------------------------------------------------
 # vertex geometry
 # --------------------------------------------------------------------------

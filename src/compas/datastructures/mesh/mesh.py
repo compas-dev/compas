@@ -39,6 +39,7 @@ from compas.geometry import bounding_box
 from compas.geometry import centroid_points
 from compas.geometry import centroid_polygon
 from compas.geometry import cross_vectors
+from compas.geometry import dot_vectors
 from compas.geometry import distance_line_line
 from compas.geometry import distance_point_plane
 from compas.geometry import distance_point_point
@@ -3881,6 +3882,63 @@ class Mesh(Datastructure):
 
         """
         return sum(self.face_area(fkey) for fkey in self.faces())
+
+    def volume(self):
+        """Calculate the volume of the mesh.
+
+        Returns
+        -------
+        float | None
+            The volume of the mesh if the mesh is closed, None otherwise.
+
+        Notes
+        -----
+        The volume is computed using the signed volume of tetrahedra formed by each
+        triangulated face and the origin. This method works for both convex and
+        non-convex meshes, as long as they are closed and properly oriented.
+
+        The volume is only meaningful for closed meshes. For open meshes, this method
+        returns None.
+
+        Examples
+        --------
+        >>> from compas.datastructures import Mesh
+        >>> mesh = Mesh.from_polyhedron(6)  # Create a cube
+        >>> volume = mesh.volume()
+        >>> volume is not None
+        True
+
+        """
+        if not self.is_closed():
+            return None
+
+        volume = 0.0
+        for fkey in self.faces():
+            vertices = self.face_vertices(fkey)
+            # Get coordinates for all vertices of the face
+            coords = [self.vertex_coordinates(v) for v in vertices]
+            
+            # Triangulate the face if it has more than 3 vertices
+            if len(coords) == 3:
+                triangles = [coords]
+            else:
+                # Use simple fan triangulation from first vertex
+                triangles = []
+                for i in range(1, len(coords) - 1):
+                    triangles.append([coords[0], coords[i], coords[i + 1]])
+            
+            # Calculate signed volume contribution from each triangle
+            for triangle in triangles:
+                # Signed volume of tetrahedron formed by triangle and origin
+                # V = (1/6) * |a · (b × c)| where a, b, c are the vertices
+                a, b, c = triangle
+                # Calculate cross product of b and c
+                bc = cross_vectors(b, c)
+                # Calculate dot product with a
+                vol = dot_vectors(a, bc) / 6.0
+                volume += vol
+
+        return abs(volume)
 
     def centroid(self):
         """Calculate the mesh centroid.
