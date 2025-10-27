@@ -39,10 +39,10 @@ from compas.geometry import bounding_box
 from compas.geometry import centroid_points
 from compas.geometry import centroid_polygon
 from compas.geometry import cross_vectors
-from compas.geometry import dot_vectors
 from compas.geometry import distance_line_line
 from compas.geometry import distance_point_plane
 from compas.geometry import distance_point_point
+from compas.geometry import dot_vectors
 from compas.geometry import length_vector
 from compas.geometry import midpoint_line
 from compas.geometry import normal_polygon
@@ -3917,7 +3917,7 @@ class Mesh(Datastructure):
             vertices = self.face_vertices(fkey)
             # Get coordinates for all vertices of the face
             coords = [self.vertex_coordinates(v) for v in vertices]
-            
+
             # Triangulate the face if it has more than 3 vertices
             if len(coords) == 3:
                 triangles = [coords]
@@ -3926,7 +3926,7 @@ class Mesh(Datastructure):
                 triangles = []
                 for i in range(1, len(coords) - 1):
                     triangles.append([coords[0], coords[i], coords[i + 1]])
-            
+
             # Calculate signed volume contribution from each triangle
             for triangle in triangles:
                 # Signed volume of tetrahedron formed by triangle and origin
