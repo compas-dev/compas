@@ -3900,6 +3900,9 @@ class Mesh(Datastructure):
         The volume is only meaningful for closed meshes. For open meshes, this method
         returns None.
 
+        The mesh is copied internally and face cycles are unified to ensure correct
+        orientation before computing the volume.
+
         Examples
         --------
         >>> from compas.datastructures import Mesh
@@ -3912,7 +3915,16 @@ class Mesh(Datastructure):
         if not self.is_closed():
             return None
 
-        vertices, faces = self.to_vertices_and_faces()
+        # Make a copy to avoid modifying the original mesh
+        mesh_copy = self.copy()
+        # Unify cycles to ensure consistent face orientation
+        mesh_copy.unify_cycles()
+
+        # Get vertices and faces from the unified copy
+        # Make a copy of vertices list since volume_polyhedron modifies it in place
+        vertices, faces = mesh_copy.to_vertices_and_faces()
+        vertices = [v[:] for v in vertices]  # Deep copy of vertex coordinates
+
         return abs(volume_polyhedron((vertices, faces)))
 
     def centroid(self):
