@@ -1070,6 +1070,8 @@ def test_normal():
 
 
 def test_volume():
+    import math
+    
     # Test with a cube
     mesh = Mesh.from_stl(compas.get("cube_binary.stl"))
     volume = mesh.volume()
@@ -1088,6 +1090,14 @@ def test_volume():
     volume = cube.volume()
     assert volume is not None
     assert volume > 0
+
+    # Test with a sphere approximation
+    sphere_mesh = Mesh.from_shape(Sphere(radius=1.0), u=32, v=32)
+    volume = sphere_mesh.volume()
+    assert volume is not None
+    expected_sphere_volume = (4.0/3.0) * math.pi * (1.0 ** 3)
+    # Allow for ~1% error due to discretization
+    assert TOL.is_close(volume, expected_sphere_volume, rtol=0.02)
 
     # Test with an open mesh (should return None)
     mesh = Mesh.from_obj(compas.get("faces.obj"))
