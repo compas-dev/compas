@@ -1095,7 +1095,7 @@ def test_volume():
     sphere_mesh = Mesh.from_shape(Sphere(radius=1.0), u=32, v=32)
     volume = sphere_mesh.volume()
     assert volume is not None
-    expected_sphere_volume = (4.0 / 3.0) * math.pi * (1.0**3)
+    expected_sphere_volume = (4.0 / 3.0) * math.pi
     # Allow for ~1% error due to discretization
     assert TOL.is_close(volume, expected_sphere_volume, rtol=0.02)
 
