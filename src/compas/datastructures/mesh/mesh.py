@@ -3928,7 +3928,7 @@ class Mesh(Datastructure):
             # Each face is now a triangle (3 vertices)
             a, b, c = [vertices[i] for i in face]
             # Signed volume of tetrahedron formed by triangle and origin
-            # V = (1/6) * (a · (b × c)) where a, b, c are the vertices
+            # V = (1/6) * (a dot (b cross c)) where a, b, c are the vertices
             bc = cross_vectors(b, c)
             vol = dot_vectors(a, bc) / 6.0
             volume += vol
