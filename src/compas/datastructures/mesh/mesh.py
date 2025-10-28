@@ -42,6 +42,7 @@ from compas.geometry import cross_vectors
 from compas.geometry import distance_line_line
 from compas.geometry import distance_point_plane
 from compas.geometry import distance_point_point
+from compas.geometry import dot_vectors
 from compas.geometry import length_vector
 from compas.geometry import midpoint_line
 from compas.geometry import normal_polygon
@@ -52,7 +53,6 @@ from compas.geometry import subtract_vectors
 from compas.geometry import sum_vectors
 from compas.geometry import transform_points
 from compas.geometry import vector_average
-from compas.geometry import volume_polyhedron
 from compas.itertools import linspace
 from compas.itertools import pairwise
 from compas.itertools import window
@@ -3920,12 +3920,33 @@ class Mesh(Datastructure):
         # Unify cycles to ensure consistent face orientation
         mesh_copy.unify_cycles()
 
-        # Get vertices and faces from the unified copy
-        # Make a copy of vertices list since volume_polyhedron modifies it in place
-        vertices, faces = mesh_copy.to_vertices_and_faces()
-        vertices = [v[:] for v in vertices]  # Deep copy of vertex coordinates
+        volume = 0.0
+        for fkey in mesh_copy.faces():
+            vertices = mesh_copy.face_vertices(fkey)
+            # Get coordinates for all vertices of the face
+            coords = [mesh_copy.vertex_coordinates(v) for v in vertices]
 
-        return abs(volume_polyhedron((vertices, faces)))
+            # Triangulate the face if it has more than 3 vertices
+            if len(coords) == 3:
+                triangles = [coords]
+            else:
+                # Use simple fan triangulation from first vertex
+                triangles = []
+                for i in range(1, len(coords) - 1):
+                    triangles.append([coords[0], coords[i], coords[i + 1]])
+
+            # Calculate signed volume contribution from each triangle
+            for triangle in triangles:
+                # Signed volume of tetrahedron formed by triangle and origin
+                # V = (1/6) * (a · (b × c)) where a, b, c are the vertices
+                a, b, c = triangle
+                # Calculate cross product of b and c
+                bc = cross_vectors(b, c)
+                # Calculate dot product with a
+                vol = dot_vectors(a, bc) / 6.0
+                volume += vol
+
+        return abs(volume)
 
     def centroid(self):
         """Calculate the mesh centroid.

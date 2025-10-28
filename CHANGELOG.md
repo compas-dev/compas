@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added `compas_rhino.install_with_pip` with corresponding command line utility `install_in_rhino`.
 * Added support for `.stp` file extension in addition to `.step` for `RhinoBrep.from_step()` and `RhinoBrep.to_step()` methods.
+* Added `volume()` method to `compas.datastructures.Mesh` for computing the volume of closed meshes using signed volume of triangles.
 
 ### Changed
 
