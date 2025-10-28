@@ -3920,31 +3920,18 @@ class Mesh(Datastructure):
         # Unify cycles to ensure consistent face orientation
         mesh_copy.unify_cycles()
 
+        # Use built-in triangulation to get triangulated faces
+        vertices, faces = mesh_copy.to_vertices_and_faces(triangulated=True)
+
         volume = 0.0
-        for fkey in mesh_copy.faces():
-            vertices = mesh_copy.face_vertices(fkey)
-            # Get coordinates for all vertices of the face
-            coords = [mesh_copy.vertex_coordinates(v) for v in vertices]
-
-            # Triangulate the face if it has more than 3 vertices
-            if len(coords) == 3:
-                triangles = [coords]
-            else:
-                # Use simple fan triangulation from first vertex
-                triangles = []
-                for i in range(1, len(coords) - 1):
-                    triangles.append([coords[0], coords[i], coords[i + 1]])
-
-            # Calculate signed volume contribution from each triangle
-            for triangle in triangles:
-                # Signed volume of tetrahedron formed by triangle and origin
-                # V = (1/6) * (a · (b × c)) where a, b, c are the vertices
-                a, b, c = triangle
-                # Calculate cross product of b and c
-                bc = cross_vectors(b, c)
-                # Calculate dot product with a
-                vol = dot_vectors(a, bc) / 6.0
-                volume += vol
+        for face in faces:
+            # Each face is now a triangle (3 vertices)
+            a, b, c = [vertices[i] for i in face]
+            # Signed volume of tetrahedron formed by triangle and origin
+            # V = (1/6) * (a · (b × c)) where a, b, c are the vertices
+            bc = cross_vectors(b, c)
+            vol = dot_vectors(a, bc) / 6.0
+            volume += vol
 
         return abs(volume)
 
