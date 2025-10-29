@@ -196,3 +196,67 @@ if not compas.IPY:
         assert box_obj.parent is child_group
         assert child_group.parent is parent_group
         assert parent_group.parent is scene.root
+
+    def test_detect_current_context_returns_none_by_default(mocker):
+        """Test that detect_current_context returns None when not in a specific CAD environment."""
+        from compas.scene.context import detect_current_context
+
+        # Mock all CAD environment checks to return False
+        mocker.patch("compas.scene.context.compas.is_grasshopper", return_value=False)
+        mocker.patch("compas.scene.context.compas.is_rhino", return_value=False)
+        mocker.patch("compas.scene.context.compas.is_blender", return_value=False)
+
+        context_name = detect_current_context()
+        assert context_name is None
+
+    def test_detect_current_context_grasshopper(mocker):
+        """Test that detect_current_context returns 'Grasshopper' when in Grasshopper."""
+        from compas.scene.context import detect_current_context
+
+        mocker.patch("compas.scene.context.compas.is_grasshopper", return_value=True)
+        mocker.patch("compas.scene.context.compas.is_rhino", return_value=False)
+        mocker.patch("compas.scene.context.compas.is_blender", return_value=False)
+
+        context_name = detect_current_context()
+        assert context_name == "Grasshopper"
+
+    def test_detect_current_context_rhino(mocker):
+        """Test that detect_current_context returns 'Rhino' when in Rhino."""
+        from compas.scene.context import detect_current_context
+
+        mocker.patch("compas.scene.context.compas.is_grasshopper", return_value=False)
+        mocker.patch("compas.scene.context.compas.is_rhino", return_value=True)
+        mocker.patch("compas.scene.context.compas.is_blender", return_value=False)
+
+        context_name = detect_current_context()
+        assert context_name == "Rhino"
+
+    def test_detect_current_context_blender(mocker):
+        """Test that detect_current_context returns 'Blender' when in Blender."""
+        from compas.scene.context import detect_current_context
+
+        mocker.patch("compas.scene.context.compas.is_grasshopper", return_value=False)
+        mocker.patch("compas.scene.context.compas.is_rhino", return_value=False)
+        mocker.patch("compas.scene.context.compas.is_blender", return_value=True)
+
+        context_name = detect_current_context()
+        assert context_name == "Blender"
+
+    def test_scene_with_none_context_uses_base_sceneobject(mocker):
+        """Test that Scene with None context uses base SceneObject types."""
+        from compas.scene import GeometryObject
+
+        # Mock all CAD environment checks to return False
+        mocker.patch("compas.scene.context.compas.is_grasshopper", return_value=False)
+        mocker.patch("compas.scene.context.compas.is_rhino", return_value=False)
+        mocker.patch("compas.scene.context.compas.is_blender", return_value=False)
+
+        scene = Scene()
+        assert scene.context is None
+
+        box = Box(1, 1, 1)
+        box_obj = scene.add(box)
+
+        # Should be a GeometryObject (base type) not a context-specific type
+        assert isinstance(box_obj, GeometryObject)
+        assert type(box_obj).__name__ == "GeometryObject"
