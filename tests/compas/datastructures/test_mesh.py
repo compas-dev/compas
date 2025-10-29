@@ -1087,11 +1087,12 @@ def test_volume():
     assert TOL.is_close(volume2, expected_volume2)
 
     # Test with a tetrahedron from polyhedron
-    # Platonic tetrahedron has known volume based on edge length
+    # Regular tetrahedron with edge length ~1.633 has volume = edge^3 / (6*sqrt(2))
     tet = Mesh.from_polyhedron(4)
     volume = tet.volume()
-    assert volume is not None
-    assert volume > 0
+    # Expected volume for the platonic tetrahedron from polyhedron(4)
+    expected_tet_volume = 0.5132002392796675
+    assert TOL.is_close(volume, expected_tet_volume)
 
     # Test with a sphere approximation
     sphere_mesh = Mesh.from_shape(Sphere(radius=1.0), u=32, v=32)
