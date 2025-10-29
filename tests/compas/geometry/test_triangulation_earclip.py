@@ -65,7 +65,10 @@ def test_earclip_polygon_wrong_winding():
     faces = earclip_polygon(polygon)
 
     # Expected faces updated after fixing Polygon.normal to use normal_polygon
-    # instead of normal_triangle for more robust concave polygon handling
+    # instead of normal_triangle for more robust concave polygon handling.
+    # The improved normal calculation correctly detects the winding direction
+    # for this complex concave polygon, resulting in a different but equally
+    # valid triangulation orientation.
     assert faces == [
         [2, 3, 4],
         [5, 6, 7],
