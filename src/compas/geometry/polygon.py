@@ -181,7 +181,7 @@ class Polygon(Geometry):
     @property
     def plane(self):
         # by just taking the bestfit plane,
-        # the normal might not be aligned with the winding direciton of the polygon
+        # the normal might not be aligned with the winding direction of the polygon
         # this can be solved by comparing the plane normal with the normal of the polygon
         # using normal_polygon is more robust than normal_triangle for concave polygons
         # as it considers all vertices instead of just a triangle formed by the centroid and first two points
