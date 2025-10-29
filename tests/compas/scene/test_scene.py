@@ -66,21 +66,47 @@ if not compas.IPY:
         sceneobject = SceneObject(item, context="fake")
         assert isinstance(sceneobject, FakeSubSceneObject)
 
-        def test_sceneobject_auto_context_discovery(mocker):
-            register_fake_context()
+    def test_sceneobject_requires_explicit_context_when_registered(mocker):
+        """Test that when a context is registered, it must be explicitly specified."""
+        register_fake_context()
 
-            item = FakeItem()
+        item = FakeItem()
+        # Without explicit context, should fail since context is None and FakeItem is not registered for None
+        with pytest.raises(SceneObjectNotRegisteredError):
             sceneobject = SceneObject(item)
+        
+        # With explicit context, should work
+        sceneobject = SceneObject(item, context="fake")
+        assert isinstance(sceneobject, FakeSceneObject)
 
-            assert isinstance(sceneobject, FakeSceneObject)
+    def test_sceneobject_auto_context_discovery_no_context(mocker):
+        mocker.patch("compas.scene.context.compas.is_grasshopper", return_value=False)
+        mocker.patch("compas.scene.context.compas.is_rhino", return_value=False)
+        mocker.patch("compas.scene.context.compas.is_blender", return_value=False)
 
-        def test_sceneobject_auto_context_discovery_no_context(mocker):
-            mocker.patch("compas.scene.context.compas.is_grasshopper", return_value=False)
-            mocker.patch("compas.scene.context.compas.is_rhino", return_value=False)
+        with pytest.raises(SceneObjectNotRegisteredError):
+            item = FakeSubItem()
+            _ = SceneObject(item)
 
-            with pytest.raises(SceneObjectNotRegisteredError):
-                item = FakeSubItem()
-                _ = SceneObject(item)
+    def test_detect_current_context_returns_none_by_default(mocker):
+        """Test that detect_current_context returns None when no explicit context is detected."""
+        from compas.scene.context import detect_current_context
+        
+        mocker.patch("compas.scene.context.compas.is_grasshopper", return_value=False)
+        mocker.patch("compas.scene.context.compas.is_rhino", return_value=False)
+        mocker.patch("compas.scene.context.compas.is_blender", return_value=False)
+        
+        context = detect_current_context()
+        assert context is None
+
+    def test_scene_default_context_is_none(mocker):
+        """Test that Scene has context=None when no explicit context is detected."""
+        mocker.patch("compas.scene.context.compas.is_grasshopper", return_value=False)
+        mocker.patch("compas.scene.context.compas.is_rhino", return_value=False)
+        mocker.patch("compas.scene.context.compas.is_blender", return_value=False)
+        
+        scene = Scene()
+        assert scene.context is None
 
     def test_sceneobject_transform():
         scene = Scene()
