@@ -74,7 +74,7 @@ if not compas.IPY:
         # Without explicit context, should fail since context is None and FakeItem is not registered for None
         with pytest.raises(SceneObjectNotRegisteredError):
             sceneobject = SceneObject(item)
-        
+
         # With explicit context, should work
         sceneobject = SceneObject(item, context="fake")
         assert isinstance(sceneobject, FakeSceneObject)
@@ -91,11 +91,11 @@ if not compas.IPY:
     def test_detect_current_context_returns_none_by_default(mocker):
         """Test that detect_current_context returns None when no explicit context is detected."""
         from compas.scene.context import detect_current_context
-        
+
         mocker.patch("compas.scene.context.compas.is_grasshopper", return_value=False)
         mocker.patch("compas.scene.context.compas.is_rhino", return_value=False)
         mocker.patch("compas.scene.context.compas.is_blender", return_value=False)
-        
+
         context = detect_current_context()
         assert context is None
 
@@ -104,7 +104,7 @@ if not compas.IPY:
         mocker.patch("compas.scene.context.compas.is_grasshopper", return_value=False)
         mocker.patch("compas.scene.context.compas.is_rhino", return_value=False)
         mocker.patch("compas.scene.context.compas.is_blender", return_value=False)
-        
+
         scene = Scene()
         assert scene.context is None
 
