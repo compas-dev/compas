@@ -1072,22 +1072,24 @@ def test_normal():
 def test_volume():
     import math
 
-    # Test with a cube
-    mesh = Mesh.from_stl(compas.get("cube_binary.stl"))
+    # Test with a box (3x4x5)
+    box = Box.from_width_height_depth(3, 4, 5)
+    mesh = Mesh.from_shape(box)
     volume = mesh.volume()
-    assert volume is not None
-    # The cube in cube_binary.stl has side length 1, so volume should be 1
-    assert TOL.is_close(volume, 1.0)
+    expected_volume = 3 * 4 * 5  # 60
+    assert TOL.is_close(volume, expected_volume)
 
-    # Test with a tetrahedron
+    # Test with a smaller box (2x2x2)
+    box2 = Box.from_width_height_depth(2, 2, 2)
+    mesh2 = Mesh.from_shape(box2)
+    volume2 = mesh2.volume()
+    expected_volume2 = 2 * 2 * 2  # 8
+    assert TOL.is_close(volume2, expected_volume2)
+
+    # Test with a tetrahedron from polyhedron
+    # Platonic tetrahedron has known volume based on edge length
     tet = Mesh.from_polyhedron(4)
     volume = tet.volume()
-    assert volume is not None
-    assert volume > 0
-
-    # Test with a cube from polyhedron
-    cube = Mesh.from_polyhedron(6)
-    volume = cube.volume()
     assert volume is not None
     assert volume > 0
 
@@ -1103,6 +1105,15 @@ def test_volume():
     mesh = Mesh.from_obj(compas.get("faces.obj"))
     volume = mesh.volume()
     assert volume is None
+
+    # Test optional parameters
+    box3 = Box.from_width_height_depth(2, 3, 4)
+    mesh3 = Mesh.from_shape(box3)
+
+    # Test with copy=False and unify_cycles=False (should still work for well-oriented mesh)
+    volume3 = mesh3.volume(copy=False, unify_cycles=False)
+    expected_volume3 = 2 * 3 * 4  # 24
+    assert TOL.is_close(volume3, expected_volume3)
 
 
 # --------------------------------------------------------------------------

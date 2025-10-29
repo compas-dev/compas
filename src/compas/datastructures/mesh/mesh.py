@@ -3883,8 +3883,17 @@ class Mesh(Datastructure):
         """
         return sum(self.face_area(fkey) for fkey in self.faces())
 
-    def volume(self):
+    def volume(self, copy=True, unify_cycles=True):
         """Calculate the volume of the mesh.
+
+        Parameters
+        ----------
+        copy : bool, optional
+            If True, a copy of the mesh is made before computation to avoid modifying the original.
+            Default is True.
+        unify_cycles : bool, optional
+            If True, face cycles are unified to ensure consistent orientation.
+            Default is True.
 
         Returns
         -------
@@ -3900,8 +3909,14 @@ class Mesh(Datastructure):
         The volume is only meaningful for closed meshes. For open meshes, this method
         returns None.
 
-        The mesh is copied internally and face cycles are unified to ensure correct
-        orientation before computing the volume.
+        When faces are non-convex, the triangulation might not be correct, since it uses
+        the centroid of the face. For accurate results with non-convex faces, consider
+        using a mesh with triangulated faces.
+
+        By default, the mesh is copied internally and face cycles are unified to ensure
+        correct orientation before computing the volume. These operations can be disabled
+        by setting ``copy=False`` and ``unify_cycles=False`` for performance in cases where
+        the mesh is already correctly oriented or when the original mesh can be modified.
 
         Examples
         --------
@@ -3916,12 +3931,14 @@ class Mesh(Datastructure):
             return None
 
         # Make a copy to avoid modifying the original mesh
-        mesh_copy = self.copy()
+        mesh_to_use = self.copy() if copy else self
+
         # Unify cycles to ensure consistent face orientation
-        mesh_copy.unify_cycles()
+        if unify_cycles:
+            mesh_to_use.unify_cycles()
 
         # Use built-in triangulation to get triangulated faces
-        vertices, faces = mesh_copy.to_vertices_and_faces(triangulated=True)
+        vertices, faces = mesh_to_use.to_vertices_and_faces(triangulated=True)
 
         volume = 0.0
         for face in faces:
