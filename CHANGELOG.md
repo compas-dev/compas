@@ -95,7 +95,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed error in `circle_to_compas` from Rhino.
 * Fixed Rhino to Rhino brep serialization.
 * Upated `compas.scene.Group.add()` to pass on group kwargs as default for child items.
-* Fixed bug in context detection, which wrongly defaults to `Viewer` instead of `None`.
+* Fixed `compas.scene.context.detect_current_context()` to return `None` by default instead of randomly selecting the first registered context, ensuring predictable behavior when creating scene objects without an explicit context.
 * Fixed bug in calculation of `compas.geometry.Polyhedron.edges` if geometry is computed using numpy.
 * Fixed bug in `Grpah.from_pointcloud` which uses degree parameter wrongly.
 
