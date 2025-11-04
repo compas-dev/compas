@@ -8,6 +8,10 @@ import compas_rhino
 
 from compas_rhino import unload_modules  # noqa: F401
 
+try:
+    import Grasshopper
+except ImportError:
+    pass
 
 __version__ = "2.14.1"
 
@@ -16,6 +20,11 @@ __all__ = [
     "get_grasshopper_library_path",
     "get_grasshopper_userobjects_path",
     "fetch_ghio_lib",
+    "create_id",
+    "warning",
+    "error",
+    "remark",
+    "message",
 ]
 __all_plugins__ = [
     "compas_ghpython.install",
@@ -54,6 +63,58 @@ def create_id(component, name):
 
     """
     return "{}_{}".format(name, component.InstanceGuid)
+
+
+def warning(component, message):
+    """Add a warning message to the component.
+
+    Parameters
+    ----------
+    component : Grasshopper.Kernel.IGH_Component
+        The component instance. Pre-Rhino8 use `self`. Post-Rhino8 use `ghenv.Component`.
+    message : str
+        The message to display.
+    """
+    component.AddRuntimeMessage(Grasshopper.Kernel.GH_RuntimeMessageLevel.Warning, message)
+
+
+def error(component, message):
+    """Add an error message to the component.
+
+    Parameters
+    ----------
+    component : Grasshopper.Kernel.IGH_Component
+        The component instance. Pre-Rhino8 use `self`. Post-Rhino8 use `ghenv.Component`.
+    message : str
+        The message to display.
+    """
+    component.AddRuntimeMessage(Grasshopper.Kernel.GH_RuntimeMessageLevel.Error, message)
+
+
+def remark(component, message):
+    """Add a remark message to the component.
+
+    Parameters
+    ----------
+    component : Grasshopper.Kernel.IGH_Component
+        The component instance. Pre-Rhino8 use `self`. Post-Rhino8 use `ghenv.Component`.
+    message : str
+        The message to display.
+    """
+    component.AddRuntimeMessage(Grasshopper.Kernel.GH_RuntimeMessageLevel.Remark, message)
+
+
+def message(component, message):
+    """Add a text that will appear under the component.
+
+    Parameters
+    ----------
+    component : Grasshopper.Kernel.IGH_Component
+        The component instance. Pre-Rhino8 use `self`. Post-Rhino8 use `ghenv.Component`.
+    message : str
+        The message to display.
+    """
+    component.Message = message
 
 
 # =============================================================================
