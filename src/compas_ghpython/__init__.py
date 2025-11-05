@@ -11,6 +11,7 @@ from compas_rhino import unload_modules  # noqa: F401
 try:
     import Grasshopper
 except ImportError:
+    # We're not running inside Grasshopper, fail silently
     pass
 
 __version__ = "2.14.1"
