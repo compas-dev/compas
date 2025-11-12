@@ -139,7 +139,6 @@ html_theme_options = {
         "image_dark": "_static/compas_icon_white.png",
         "text": "COMPAS docs",
     },
-    "announcement": "This is the documentation of the first stable release of COMPAS 2. If you have feedback, please give it here: <a href='https://github.com/compas-dev/compas/issues'>COMPAS issue tracker</a>.",
     "navigation_depth": 2,
 }
 
