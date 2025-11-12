@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - main
+      - '*.LTS'
   pull_request:
     branches:
       - main
+      - '*.LTS'
 
 jobs:
   coverage:
