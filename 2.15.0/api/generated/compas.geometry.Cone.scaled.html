@@ -60,7 +60,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Cone.sha256" href="compas.geometry.Cone.sha256.html" />
-    <link rel="prev" title="Cone.scale" href="compas.geometry.Cone.scale.html" />
+    <link rel="prev" title="Cone.rotated" href="compas.geometry.Cone.rotated.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -1120,24 +1120,18 @@ document.write(`
 <h1>Cone.scaled</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.geometry.Cone.scaled">
-<span class="sig-prename descclassname"><span class="pre">Cone.</span></span><span class="sig-name descname"><span class="pre">scaled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/7bacdd5/src/compas/geometry/geometry.py#L145"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Returns a scaled copy of this geometry.</p>
+<span class="sig-prename descclassname"><span class="pre">Cone.</span></span><span class="sig-name descname"><span class="pre">scaled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factor</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/7bacdd5/src/compas/geometry/shapes/shape.py#L443"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Returns a scaled copy of the shape.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>x</strong><span class="classifier">float</span></dt><dd><p>The scaling factor in the x-direction.</p>
-</dd>
-<dt><strong>y</strong><span class="classifier">float, optional</span></dt><dd><p>The scaling factor in the y-direction.
-Defaults to <code class="docutils literal notranslate"><span class="pre">x</span></code>.</p>
-</dd>
-<dt><strong>z</strong><span class="classifier">float, optional</span></dt><dd><p>The scaling factor in the z-direction.
-Defaults to <code class="docutils literal notranslate"><span class="pre">x</span></code>.</p>
+<dt><strong>factor</strong><span class="classifier">float</span></dt><dd><p>The scaling factor.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt><a class="reference internal" href="compas.geometry.Geometry.html#compas.geometry.Geometry" title="compas.geometry.Geometry"><code class="xref py py-class docutils literal notranslate"><span class="pre">Geometry</span></code></a></dt><dd><p>The scaled geometry.</p>
+<dt><a class="reference internal" href="compas.geometry.Shape.html#compas.geometry.Shape" title="compas.geometry.Shape"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Shape</span></code></a></dt><dd><p>The scaled shape.</p>
 </dd>
 </dl>
 </dd>
@@ -1146,9 +1140,6 @@ Defaults to <code class="docutils literal notranslate"><span class="pre">x</span
 <p class="admonition-title">See also</p>
 <dl class="simple">
 <dt><a class="reference internal" href="compas.geometry.Cone.scale.html#compas.geometry.Cone.scale" title="compas.geometry.Cone.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a></dt><dd></dd>
-<dt><a class="reference internal" href="compas.geometry.Cone.translated.html#compas.geometry.Cone.translated" title="compas.geometry.Cone.translated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translated</span></code></a></dt><dd></dd>
-<dt><a class="reference internal" href="compas.geometry.Cone.rotated.html#compas.geometry.Cone.rotated" title="compas.geometry.Cone.rotated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotated</span></code></a></dt><dd></dd>
-<dt><a class="reference internal" href="compas.geometry.Cone.transformed.html#compas.geometry.Cone.transformed" title="compas.geometry.Cone.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></dt><dd></dd>
 </dl>
 </div>
 </dd></dl>

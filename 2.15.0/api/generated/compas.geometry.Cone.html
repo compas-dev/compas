@@ -1191,7 +1191,10 @@ The normal of the plane is in the direction of the z-axis of the local coordinat
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.from_line_and_radius.html#compas.geometry.Cone.from_line_and_radius" title="compas.geometry.Cone.from_line_and_radius"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_line_and_radius</span></code></a></p></td>
 <td><p>Construct a cone from a line and a radius.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.to_brep.html#compas.geometry.Cone.to_brep" title="compas.geometry.Cone.to_brep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_brep</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.scale.html#compas.geometry.Cone.scale" title="compas.geometry.Cone.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a></p></td>
+<td><p>Scale the cone by multiplying the radius and height by a factor.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.to_brep.html#compas.geometry.Cone.to_brep" title="compas.geometry.Cone.to_brep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_brep</span></code></a></p></td>
 <td><p>Returns a BRep representation of the cone.</p></td>
 </tr>
 </tbody>
@@ -1235,43 +1238,40 @@ The normal of the plane is in the direction of the z-axis of the local coordinat
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.rotated.html#compas.geometry.Cone.rotated" title="compas.geometry.Cone.rotated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotated</span></code></a></p></td>
 <td><p>Returns a rotated copy of this geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.scale.html#compas.geometry.Cone.scale" title="compas.geometry.Cone.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a></p></td>
-<td><p>Scale the shape.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.scaled.html#compas.geometry.Cone.scaled" title="compas.geometry.Cone.scaled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scaled</span></code></a></p></td>
+<td><p>Returns a scaled copy of the shape.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.scaled.html#compas.geometry.Cone.scaled" title="compas.geometry.Cone.scaled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scaled</span></code></a></p></td>
-<td><p>Returns a scaled copy of this geometry.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.sha256.html#compas.geometry.Cone.sha256" title="compas.geometry.Cone.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.sha256.html#compas.geometry.Cone.sha256" title="compas.geometry.Cone.sha256"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sha256</span></code></a></p></td>
 <td><p>Compute a hash of the data for comparison during version control using the sha256 algorithm.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.to_json.html#compas.geometry.Cone.to_json" title="compas.geometry.Cone.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.to_json.html#compas.geometry.Cone.to_json" title="compas.geometry.Cone.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a></p></td>
 <td><p>Convert an object to its native data representation and save it to a JSON file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.to_jsonstring.html#compas.geometry.Cone.to_jsonstring" title="compas.geometry.Cone.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.to_jsonstring.html#compas.geometry.Cone.to_jsonstring" title="compas.geometry.Cone.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a></p></td>
 <td><p>Convert an object to its native data representation and save it to a JSON string.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.to_mesh.html#compas.geometry.Cone.to_mesh" title="compas.geometry.Cone.to_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_mesh</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.to_mesh.html#compas.geometry.Cone.to_mesh" title="compas.geometry.Cone.to_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_mesh</span></code></a></p></td>
 <td><p>Returns a mesh representation of the box.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.to_polyhedron.html#compas.geometry.Cone.to_polyhedron" title="compas.geometry.Cone.to_polyhedron"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polyhedron</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.to_polyhedron.html#compas.geometry.Cone.to_polyhedron" title="compas.geometry.Cone.to_polyhedron"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polyhedron</span></code></a></p></td>
 <td><p>Convert the shape to a polyhedron.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.to_vertices_and_faces.html#compas.geometry.Cone.to_vertices_and_faces" title="compas.geometry.Cone.to_vertices_and_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_vertices_and_faces</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.to_vertices_and_faces.html#compas.geometry.Cone.to_vertices_and_faces" title="compas.geometry.Cone.to_vertices_and_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_vertices_and_faces</span></code></a></p></td>
 <td><p>Convert the shape to a list of vertices and faces.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.transform.html#compas.geometry.Cone.transform" title="compas.geometry.Cone.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.transform.html#compas.geometry.Cone.transform" title="compas.geometry.Cone.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
 <td><p>Transform the shape.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.transformed.html#compas.geometry.Cone.transformed" title="compas.geometry.Cone.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.transformed.html#compas.geometry.Cone.transformed" title="compas.geometry.Cone.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a></p></td>
 <td><p>Returns a transformed copy of this geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.translate.html#compas.geometry.Cone.translate" title="compas.geometry.Cone.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.translate.html#compas.geometry.Cone.translate" title="compas.geometry.Cone.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a></p></td>
 <td><p>Translate the shape.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.translated.html#compas.geometry.Cone.translated" title="compas.geometry.Cone.translated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translated</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.translated.html#compas.geometry.Cone.translated" title="compas.geometry.Cone.translated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translated</span></code></a></p></td>
 <td><p>Returns a translated copy of this geometry.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Cone.validate_data.html#compas.geometry.Cone.validate_data" title="compas.geometry.Cone.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Cone.validate_data.html#compas.geometry.Cone.validate_data" title="compas.geometry.Cone.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a></p></td>
 <td><p>Validate the data against the object's data schema.</p></td>
 </tr>
 </tbody>

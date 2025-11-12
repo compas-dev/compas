@@ -59,8 +59,8 @@
         </script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Cone.scaled" href="compas.geometry.Cone.scaled.html" />
-    <link rel="prev" title="Cone.rotated" href="compas.geometry.Cone.rotated.html" />
+    <link rel="next" title="Cone.to_brep" href="compas.geometry.Cone.to_brep.html" />
+    <link rel="prev" title="Cone.from_line_and_radius" href="compas.geometry.Cone.from_line_and_radius.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -1120,14 +1120,12 @@ document.write(`
 <h1>Cone.scale</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.geometry.Cone.scale">
-<span class="sig-prename descclassname"><span class="pre">Cone.</span></span><span class="sig-name descname"><span class="pre">scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scale</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/7bacdd5/src/compas/geometry/shapes/shape.py#L418"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Scale the shape.</p>
-<p>Scale transformations are applied to the parameters of a shape rahter than to its frame.
-Only uniform scaling is supported.</p>
+<span class="sig-prename descclassname"><span class="pre">Cone.</span></span><span class="sig-name descname"><span class="pre">scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factor</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/7bacdd5/src/compas/geometry/shapes/cone.py#L303"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Scale the cone by multiplying the radius and height by a factor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>scale</strong><span class="classifier">float</span></dt><dd><p>The scaling factor.</p>
+<dt><strong>factor</strong><span class="classifier">float</span></dt><dd><p>The scaling factor.</p>
 </dd>
 </dl>
 </dd>
@@ -1137,14 +1135,6 @@ Only uniform scaling is supported.</p>
 </dl>
 </dd>
 </dl>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<dl class="simple">
-<dt><a class="reference internal" href="compas.geometry.Cone.translate.html#compas.geometry.Cone.translate" title="compas.geometry.Cone.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a></dt><dd></dd>
-<dt><a class="reference internal" href="compas.geometry.Cone.rotate.html#compas.geometry.Cone.rotate" title="compas.geometry.Cone.rotate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate</span></code></a></dt><dd></dd>
-<dt><a class="reference internal" href="compas.geometry.Cone.transform.html#compas.geometry.Cone.transform" title="compas.geometry.Cone.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></dt><dd></dd>
-</dl>
-</div>
 </dd></dl>
 
 </section>
