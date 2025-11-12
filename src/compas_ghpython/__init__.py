@@ -14,7 +14,7 @@ except ImportError:
     # We're not running inside Grasshopper, fail silently
     pass
 
-__version__ = "2.14.1"
+__version__ = "2.15.0"
 
 __all__ = [
     "get_grasshopper_managedplugin_path",
