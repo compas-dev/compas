@@ -110,3 +110,37 @@ def test_polygon_normal_direction():
 def test_polygon_duplicate_removal(points):
     polygon = Polygon(points)
     assert len(polygon.points) == 4
+
+
+def test_polygon_normal_concave():
+    """Test that polygon normal works correctly for concave polygons."""
+    # L-shape concave polygon
+    points = [
+        [0, 0, 0],
+        [2, 0, 0],
+        [2, 1, 0],
+        [1, 1, 0],
+        [1, 2, 0],
+        [0, 2, 0]
+    ]
+    polygon = Polygon(points)
+    # Normal should point in positive Z direction for CCW winding
+    assert polygon.normal.dot([0, 0, 1]) > 0.99
+    
+    # Arrow/chevron shape concave polygon
+    points = [
+        [0, 1, 0],
+        [0, 0, 0],
+        [2, 0, 0],
+        [3, 1, 0],
+        [2, 2, 0],
+        [0, 2, 0],
+    ]
+    polygon = Polygon(points)
+    # Normal should point in positive Z direction for CCW winding
+    assert polygon.normal.dot([0, 0, 1]) > 0.99
+    
+    # Reverse winding should give opposite normal
+    points_reversed = list(reversed(points))
+    polygon_reversed = Polygon(points_reversed)
+    assert polygon_reversed.normal.dot([0, 0, -1]) > 0.99
