@@ -347,10 +347,6 @@ class Shape(Geometry):
     def transform(self, transformation):
         """Transform the shape.
 
-        The base implementation transforms only the frame of the shape.
-        Subclasses override this method to also extract and apply scale components
-        from the transformation to their dimensional parameters.
-
         Parameters
         ----------
         transformation : :class:`Transformation`
@@ -362,10 +358,9 @@ class Shape(Geometry):
         
         Notes
         -----
-        The base Shape class only transforms the frame. Shape subclasses (Box, Sphere, 
-        Cylinder, Cone, Capsule, Torus) override this method to decompose the transformation,
-        extract the scale component, and apply it appropriately to their dimensions before
-        transforming the frame.
+        Subclasses must override this method to decompose the transformation,
+        extract the scale component, and apply it appropriately to their dimensions
+        before transforming the frame.
 
         See Also
         --------
@@ -374,7 +369,7 @@ class Shape(Geometry):
         scale
 
         """
-        self.frame.transform(transformation)
+        raise NotImplementedError
 
     def translate(self, vector):
         """Translate the shape.

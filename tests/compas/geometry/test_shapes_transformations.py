@@ -410,3 +410,71 @@ def test_cylinder_volume_after_transform():
     # Volume should scale by factor^3 = 8
     expected_volume = original_volume * 8
     assert cylinder.volume == pytest.approx(expected_volume)
+
+
+# =============================================================================
+# PlanarSurface Tests
+# =============================================================================
+
+
+def test_planarsurface_transform_with_uniform_scale():
+    """Test that PlanarSurface.transform() applies uniform scaling correctly."""
+    from compas.geometry import PlanarSurface
+    
+    surface = PlanarSurface(xsize=1.0, ysize=2.0)
+    S = Scale.from_factors([2.0, 2.0, 2.0])
+    surface.transform(S)
+    
+    assert surface.xsize == pytest.approx(2.0)
+    assert surface.ysize == pytest.approx(4.0)
+
+
+def test_planarsurface_transform_with_non_uniform_scale():
+    """Test that PlanarSurface.transform() applies non-uniform scaling correctly."""
+    from compas.geometry import PlanarSurface
+    
+    surface = PlanarSurface(xsize=1.0, ysize=2.0)
+    S = Scale.from_factors([2.0, 3.0, 1.0])
+    surface.transform(S)
+    
+    assert surface.xsize == pytest.approx(2.0)
+    assert surface.ysize == pytest.approx(6.0)
+
+
+def test_planarsurface_transform_with_translation_and_scale():
+    """Test that PlanarSurface.transform() applies combined translation and scaling."""
+    from compas.geometry import PlanarSurface
+    
+    surface = PlanarSurface(xsize=1.0, ysize=2.0)
+    T = Translation.from_vector([5, 5, 5])
+    S = Scale.from_factors([2.0, 3.0, 1.0])
+    combined = T * S
+    
+    surface.transform(combined)
+    
+    # Check dimensions are scaled
+    assert surface.xsize == pytest.approx(2.0)
+    assert surface.ysize == pytest.approx(6.0)
+    
+    # Check position is translated
+    assert surface.frame.point.x == pytest.approx(5.0)
+    assert surface.frame.point.y == pytest.approx(5.0)
+    assert surface.frame.point.z == pytest.approx(5.0)
+
+
+def test_planarsurface_transformed_with_scale():
+    """Test that PlanarSurface.transformed() returns a scaled copy."""
+    from compas.geometry import PlanarSurface
+    
+    surface = PlanarSurface(xsize=1.0, ysize=2.0)
+    S = Scale.from_factors([2.0, 3.0, 1.0])
+    
+    transformed_surface = surface.transformed(S)
+    
+    # Original surface should be unchanged
+    assert surface.xsize == pytest.approx(1.0)
+    assert surface.ysize == pytest.approx(2.0)
+    
+    # Transformed surface should be scaled
+    assert transformed_surface.xsize == pytest.approx(2.0)
+    assert transformed_surface.ysize == pytest.approx(6.0)

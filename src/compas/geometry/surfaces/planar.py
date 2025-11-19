@@ -146,6 +146,46 @@ class PlanarSurface(Surface):
         return Plane(self.frame.point, self.frame.zaxis)
 
     # =============================================================================
+    # Transformations
+    # =============================================================================
+
+    def transform(self, transformation):
+        """Transform the planar surface.
+
+        Parameters
+        ----------
+        transformation : :class:`Transformation`
+            The transformation used to transform the planar surface.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        >>> from compas.geometry import Frame, PlanarSurface, Scale
+        >>> surface = PlanarSurface(xsize=1.0, ysize=2.0)
+        >>> S = Scale.from_factors([2.0, 3.0, 1.0])
+        >>> surface.transform(S)
+        >>> surface.xsize
+        2.0
+        >>> surface.ysize
+        6.0
+
+        """
+        # Extract scale component from the transformation
+        Sc, _, _, _, _ = transformation.decomposed()
+        scale_x = Sc.matrix[0][0]
+        scale_y = Sc.matrix[1][1]
+        
+        # Apply scaling to dimensions
+        self.xsize *= scale_x
+        self.ysize *= scale_y
+        
+        # Apply transformation to frame
+        self.frame.transform(transformation)
+
+    # =============================================================================
     # Methods
     # =============================================================================
 
