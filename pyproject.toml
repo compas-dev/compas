@@ -39,6 +39,7 @@ Forum = "https://forum.compas-framework.org/"
 
 [project.scripts]
 compas_rpc = "compas.rpc.__main__:main"
+install_in_rhino = "compas_rhino.install_with_pip:main"
 
 # ============================================================================
 # setuptools config
@@ -84,7 +85,7 @@ doctest_optionflags = [
 # ============================================================================
 
 [tool.bumpversion]
-current_version = "2.14.1"
+current_version = "2.15.0"
 message = "Bump version to {new_version}"
 commit = true
 tag = true

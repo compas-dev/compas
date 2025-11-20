@@ -9,12 +9,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+### Removed
+
+
+## [2.15.0] 2025-11-12
+
+### Added
+
+* Added `compas_rhino.install_with_pip` with corresponding command line utility `install_in_rhino`.
 * Added support for `.stp` file extension in addition to `.step` for `RhinoBrep.from_step()` and `RhinoBrep.to_step()` methods.
+* Added `volume()` method to `compas.datastructures.Mesh` for computing the volume of closed meshes using signed volume of triangles.
+* Added functions `warning`, `message`, `error` and `remark` to `compas_ghpython`.
 
 ### Changed
 
 * Updated minimum library version to `2.14.1` in Rhino8 GH components.
 * Changed name of YAK package from `bluejay` to `compas`.
+* Fixed broken `scaled()` method in `Sphere`, `Cylinder`, and `Capsule` classes by overriding to accept uniform scaling factor.
+* Fixed bug in `compas.geometry.PlanarSurface`.
+* Fixed bug in `Curve.offset()` in `compas_rhino`.
 
 ### Removed
 

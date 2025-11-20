@@ -1,5 +1,5 @@
+from pathlib import Path
 import math
-
 import numpy
 import pytest
 
@@ -7,18 +7,17 @@ import compas
 from compas.geometry import allclose
 
 
-def pytest_ignore_collect(path):
-    if "rhino" in str(path):
+def pytest_ignore_collect(collection_path: Path, config):
+    # Skip anything under rhino/blender/ghpython, or files ending with _cli.py
+    parts_lower = {p.lower() for p in collection_path.parts}
+    if {"rhino", "blender", "ghpython"} & parts_lower:
         return True
 
-    if "blender" in str(path):
+    if collection_path.name.endswith("_cli.py"):
         return True
 
-    if "ghpython" in str(path):
-        return True
-
-    if str(path).endswith("_cli.py"):
-        return True
+    # return None -> don't ignore
+    return None
 
 
 @pytest.fixture(autouse=True)

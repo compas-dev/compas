@@ -42,6 +42,7 @@ from compas.geometry import cross_vectors
 from compas.geometry import distance_line_line
 from compas.geometry import distance_point_plane
 from compas.geometry import distance_point_point
+from compas.geometry import dot_vectors
 from compas.geometry import length_vector
 from compas.geometry import midpoint_line
 from compas.geometry import normal_polygon
@@ -3881,6 +3882,75 @@ class Mesh(Datastructure):
 
         """
         return sum(self.face_area(fkey) for fkey in self.faces())
+
+    def volume(self, copy=True, unify_cycles=True):
+        """Calculate the volume of the mesh.
+
+        Parameters
+        ----------
+        copy : bool, optional
+            If True, a copy of the mesh is made before computation to avoid modifying the original.
+            Default is True.
+        unify_cycles : bool, optional
+            If True, face cycles are unified to ensure consistent orientation.
+            Default is True.
+
+        Returns
+        -------
+        float | None
+            The volume of the mesh if the mesh is closed, None otherwise.
+
+        Notes
+        -----
+        The volume is computed using the signed volume of tetrahedra formed by each
+        triangulated face and the origin. This method works for both convex and
+        non-convex meshes, as long as they are closed and properly oriented.
+
+        The volume is only meaningful for closed meshes. For open meshes, this method
+        returns None.
+
+        When faces are non-convex, the triangulation might not be correct, since it uses
+        the centroid of the face. For accurate results with non-convex faces, consider
+        using a mesh with triangulated faces.
+
+        By default, the mesh is copied internally and face cycles are unified to ensure
+        correct orientation before computing the volume. These operations can be disabled
+        by setting ``copy=False`` and ``unify_cycles=False`` for performance in cases where
+        the mesh is already correctly oriented or when the original mesh can be modified.
+
+        Examples
+        --------
+        >>> from compas.datastructures import Mesh
+        >>> mesh = Mesh.from_polyhedron(6)  # Create a cube
+        >>> volume = mesh.volume()
+        >>> volume is not None
+        True
+
+        """
+        if not self.is_closed():
+            return None
+
+        # Make a copy to avoid modifying the original mesh
+        mesh_to_use = self.copy() if copy else self
+
+        # Unify cycles to ensure consistent face orientation
+        if unify_cycles:
+            mesh_to_use.unify_cycles()
+
+        # Use built-in triangulation to get triangulated faces
+        vertices, faces = mesh_to_use.to_vertices_and_faces(triangulated=True)
+
+        volume = 0.0
+        for face in faces:
+            # Each face is now a triangle (3 vertices)
+            a, b, c = [vertices[i] for i in face]
+            # Signed volume of tetrahedron formed by triangle and origin
+            # V = (1/6) * (a dot (b cross c)) where a, b, c are the vertices
+            bc = cross_vectors(b, c)
+            vol = dot_vectors(a, bc) / 6.0
+            volume += vol
+
+        return abs(volume)
 
     def centroid(self):
         """Calculate the mesh centroid.
