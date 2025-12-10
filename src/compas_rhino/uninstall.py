@@ -27,15 +27,15 @@ def uninstall(version=None, packages=None):
 
     Examples
     --------
-    .. code-block:: python
+    ```python
+    import compas_rhino
 
-        import compas_rhino
+    compas_rhino.uninstall()
+    ```
 
-        compas_rhino.uninstall()
-
-    .. code-block:: bash
-
-        python -m compas_rhino.uninstall
+    ```bash
+    python -m compas_rhino.uninstall
+    ```
 
     """
     version = compas_rhino._check_rhino_version(version)

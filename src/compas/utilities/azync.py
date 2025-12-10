@@ -73,23 +73,23 @@ def await_callback(async_func, callback_name="callback", errback_name=None, *arg
     The following example shows how to await an async function (``do_async_stuff`` in
     the example), using this utility:
 
-    .. code-block:: python
-
-        from compas.utilities import await_callback
-
-
-        def do_async_stuff(callback):
-            from threading import Thread
-
-            def runner(cb):
-                print("doing async stuff")
-                # ..
-                cb("done")
-
-            Thread(target=runner, args=(callback,)).start()
+    ```python
+    from compas.utilities import await_callback
 
 
-        result = await_callback(do_async_stuff)
+    def do_async_stuff(callback):
+        from threading import Thread
+
+        def runner(cb):
+            print("doing async stuff")
+            # ..
+            cb("done")
+
+        Thread(target=runner, args=(callback,)).start()
+
+
+    result = await_callback(do_async_stuff)
+    ```
 
     """
     wait_event = threading.Event()

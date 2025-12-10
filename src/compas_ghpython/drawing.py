@@ -64,11 +64,11 @@ def draw_points(points):
 
     Notes
     -----
-    .. code-block:: python
-
-        Schema({
-            'pos': lambda x: len(x) == 3)
-        })
+    ```python
+    Schema({
+        'pos': lambda x: len(x) == 3)
+    })
+    ```
 
     """
     rg_points = []
@@ -92,12 +92,12 @@ def draw_lines(lines):
 
     Notes
     -----
-    .. code-block:: python
-
-        Schema({
-            'start': lambda x: len(x) == 3),
-            'end': lambda x: len(x) == 3),
-        })
+    ```python
+    Schema({
+        'start': lambda x: len(x) == 3),
+        'end': lambda x: len(x) == 3),
+    })
+    ```
 
     """
     rg_lines = []
@@ -122,13 +122,13 @@ def draw_geodesics(geodesics):
 
     Notes
     -----
-    .. code-block:: python
-
-        Schema({
-            'start': lambda x: len(x) == 3),
-            'end': lambda x: len(x) == 3),
-            'srf': str
-        })
+    ```python
+    Schema({
+        'start': lambda x: len(x) == 3),
+        'end': lambda x: len(x) == 3),
+        'srf': str
+    })
+    ```
 
     """
     rg_geodesics = []
@@ -155,9 +155,9 @@ def draw_polylines(polylines):
 
     Notes
     -----
-    .. code-block:: python
-
-        Schema({"points": lambda x: all(len(y) == 3 for y in x)})
+    ```python
+    Schema({"points": lambda x: all(len(y) == 3 for y in x)})
+    ```
 
     """
     rg_polylines = []
@@ -184,9 +184,9 @@ def draw_faces(faces):
 
     Notes
     -----
-    .. code-block:: python
-
-        Schema({"points": lambda x: all(len(y) == 3 for y in x), Optional("vertexcolors", default=None): lambda x: all(len(y) == 3 for y in x)})
+    ```python
+    Schema({"points": lambda x: all(len(y) == 3 for y in x), Optional("vertexcolors", default=None): lambda x: all(len(y) == 3 for y in x)})
+    ```
 
     """
     meshes = []
@@ -235,9 +235,9 @@ def draw_cylinders(cylinders, cap=False):
 
     Notes
     -----
-    .. code-block:: python
-
-        Schema({"start": lambda x: len(x) == 3, "end": lambda x: len(x) == 3, "radius": And(Or(int, float), lambda x: x > 0)})
+    ```python
+    Schema({"start": lambda x: len(x) == 3, "end": lambda x: len(x) == 3, "radius": And(Or(int, float), lambda x: x > 0)})
+    ```
 
     """
     rg_cylinders = []
@@ -281,9 +281,9 @@ def draw_pipes(pipes, cap=2, fit=1.0):
 
     Notes
     -----
-    .. code-block:: python
-
-        Schema({"points": lambda x: all(len(y) == 3 for y in x), "radius": And(Or(int, float), lambda x: x > 0)})
+    ```python
+    Schema({"points": lambda x: all(len(y) == 3 for y in x), "radius": And(Or(int, float), lambda x: x > 0)})
+    ```
 
     """
     abs_tol = TOL
@@ -317,9 +317,9 @@ def draw_spheres(spheres):
 
     Notes
     -----
-    .. code-block:: python
-
-        Schema({"pos": lambda x: len(x) == 3, "radius": And(Or(int, float), lambda x: x > 0)})
+    ```python
+    Schema({"pos": lambda x: len(x) == 3, "radius": And(Or(int, float), lambda x: x > 0)})
+    ```
 
     """
     rg_sheres = []
@@ -432,9 +432,9 @@ def draw_circles(circles):
 
     Notes
     -----
-    .. code-block:: python
-
-        Schema({"plane": lambda x: len(x[0]) == 3 and len(x[1]) == 3, "radius": And(Or(int, float), lambda x: x > 0)})
+    ```python
+    Schema({"plane": lambda x: len(x[0]) == 3 and len(x[1]) == 3, "radius": And(Or(int, float), lambda x: x > 0)})
+    ```
 
     """
     rg_circles = []

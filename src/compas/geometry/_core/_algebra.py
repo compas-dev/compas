@@ -2227,12 +2227,12 @@ def matrix_from_basis_vectors(xaxis, yaxis):
 
     Notes
     -----
-    .. code-block:: none
-
-        [ x0  y0  z0  0 ]
-        [ x1  y1  z1  0 ]
-        [ x2  y2  z2  0 ]
-        [  0   0   0  1 ]
+    ```
+    [ x0  y0  z0  0 ]
+    [ x1  y1  z1  0 ]
+    [ x2  y2  z2  0 ]
+    [  0   0   0  1 ]
+    ```
 
     Examples
     --------
@@ -2306,12 +2306,12 @@ def matrix_from_translation(translation):
 
     Notes
     -----
-    .. code-block:: none
-
-        [ .  .  .  0 ]
-        [ .  .  .  1 ]
-        [ .  .  .  2 ]
-        [ .  .  .  . ]
+    ```
+    [ .  .  .  0 ]
+    [ .  .  .  1 ]
+    [ .  .  .  2 ]
+    [ .  .  .  . ]
+    ```
 
     Examples
     --------
@@ -2472,12 +2472,12 @@ def matrix_from_perspective_entries(perspective):
 
     Notes
     -----
-    .. code-block:: none
-
-        [ .  .  .  . ]
-        [ .  .  .  . ]
-        [ .  .  .  . ]
-        [ 0  1  2  3 ]
+    ```
+    [ .  .  .  . ]
+    [ .  .  .  . ]
+    [ .  .  .  . ]
+    [ 0  1  2  3 ]
+    ```
 
     """
     M = identity_matrix(4)
@@ -2503,12 +2503,12 @@ def matrix_from_shear_entries(shear_entries):
 
     Notes
     -----
-    .. code-block:: none
-
-        [ .  0  1  . ]
-        [ .  .  2  . ]
-        [ .  .  .  . ]
-        [ .  .  .  . ]
+    ```
+    [ .  0  1  . ]
+    [ .  .  2  . ]
+    [ .  .  .  . ]
+    [ .  .  .  . ]
+    ```
 
     Examples
     --------
@@ -2597,12 +2597,12 @@ def matrix_from_scale_factors(scale_factors):
 
     Notes
     -----
-    .. code-block:: python
-
-        [ 0  .  .  . ]
-        [ .  1  .  . ]
-        [ .  .  2  . ]
-        [ .  .  .  . ]
+    ```
+    [ 0  .  .  . ]
+    [ .  1  .  . ]
+    [ .  .  2  . ]
+    [ .  .  .  . ]
+    ```
 
     Examples
     --------

@@ -30,15 +30,15 @@ def install(version=None, packages=None, clean=False):
 
     Examples
     --------
-    .. code-block:: python
+    ```python
+    import compas_rhino.install
 
-        import compas_rhino.install
+    compas_rhino.install.install()
+    ```
 
-        compas_rhino.install.install()
-
-    .. code-block:: bash
-
-        python -m compas_rhino.install
+    ```bash
+    python -m compas_rhino.install
+    ```
 
     """
     version = compas_rhino._check_rhino_version(version)

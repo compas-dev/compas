@@ -41,19 +41,19 @@ class LinesConduit(BaseConduit):
 
     Examples
     --------
-    .. code-block:: python
+    ```python
+    from random import randint
 
-        from random import randint
+    points = [(1.0 * randint(0, 30), 1.0 * randint(0, 30), 0.0) for _ in range(100)]
+    lines = [(points[i], points[i + 1]) for i in range(99)]
+    conduit = LinesConduit(lines)
 
-        points = [(1.0 * randint(0, 30), 1.0 * randint(0, 30), 0.0) for _ in range(100)]
-        lines = [(points[i], points[i + 1]) for i in range(99)]
-        conduit = LinesConduit(lines)
-
-        with conduit.enabled():
-            for i in range(100):
-                points = [(1.0 * randint(0, 30), 1.0 * randint(0, 30), 0.0) for _ in range(100)]
-                conduit.lines = [(points[i], points[i + 1]) for i in range(99)]
-                conduit.redraw(pause=0.1)
+    with conduit.enabled():
+        for i in range(100):
+            points = [(1.0 * randint(0, 30), 1.0 * randint(0, 30), 0.0) for _ in range(100)]
+            conduit.lines = [(points[i], points[i + 1]) for i in range(99)]
+            conduit.redraw(pause=0.1)
+    ```
 
     """
 

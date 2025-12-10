@@ -81,19 +81,19 @@ def draw_labels(labels, **kwargs):
     -----
     A label dict has the following schema:
 
-    .. code-block:: python
-
-        Schema(
-            {
-                "pos": And(list, lambda x: len(x) == 3),
-                "text": And(str, len),
-                Optional("name", default=""): str,
-                Optional("color", default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
-                Optional("layer", default=None): str,
-                Optional("fontsize", default=10): Or(int, float),
-                Optional("font", default="Arial Regular"): str,
-            }
-        )
+    ```python
+    Schema(
+        {
+            "pos": And(list, lambda x: len(x) == 3),
+            "text": And(str, len),
+            Optional("name", default=""): str,
+            Optional("color", default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
+            Optional("layer", default=None): str,
+            Optional("fontsize", default=10): Or(int, float),
+            Optional("font", default="Arial Regular"): str,
+        }
+    )
+    ```
 
     """
     guids = []
@@ -148,16 +148,16 @@ def draw_points(points, **kwargs):
     -----
     A point dict has the following schema:
 
-    .. code-block:: python
-
-        Schema(
-            {
-                "pos": And(list, lambda x: len(x) == 3),
-                Optional("name", default=""): str,
-                Optional("color", default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
-                Optional("layer", default=None): str,
-            }
-        )
+    ```python
+    Schema(
+        {
+            "pos": And(list, lambda x: len(x) == 3),
+            Optional("name", default=""): str,
+            Optional("color", default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
+            Optional("layer", default=None): str,
+        }
+    )
+    ```
 
     """
     guids = []
@@ -207,19 +207,19 @@ def draw_lines(lines, **kwargs):
     -----
     A line dict has the following schema:
 
-    .. code-block:: python
-
-        Schema(
-            {
-                "start": And(list, lambda x: len(x) == 3),
-                "end": And(list, lambda x: len(x) == 3),
-                Optional("name", default=""): str,
-                Optional("color", default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
-                Optional("layer", default=None): str,
-                Optional("arrow", default=None): str,
-                Optional("width", default=None): Or(int, float),
-            }
-        )
+    ```python
+    Schema(
+        {
+            "start": And(list, lambda x: len(x) == 3),
+            "end": And(list, lambda x: len(x) == 3),
+            Optional("name", default=""): str,
+            Optional("color", default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
+            Optional("layer", default=None): str,
+            Optional("arrow", default=None): str,
+            Optional("width", default=None): Or(int, float),
+        }
+    )
+    ```
 
     """
     guids = []
@@ -279,19 +279,19 @@ def draw_geodesics(geodesics, **kwargs):
     -----
     A geodesic dict has the following schema:
 
-    .. code-block:: python
-
-        Schema(
-            {
-                "start": And(list, lambda x: len(x) == 3),
-                "end": And(list, lambda x: len(x) == 3),
-                "srf": Or(str, System.Guid),
-                Optional("name", default=""): str,
-                Optional("color", default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
-                Optional("layer", default=None): str,
-                Optional("arrow", default=None): str,
-            }
-        )
+    ```python
+    Schema(
+        {
+            "start": And(list, lambda x: len(x) == 3),
+            "end": And(list, lambda x: len(x) == 3),
+            "srf": Or(str, System.Guid),
+            Optional("name", default=""): str,
+            Optional("color", default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
+            Optional("layer", default=None): str,
+            Optional("arrow", default=None): str,
+        }
+    )
+    ```
 
     """
     guids = []
@@ -349,15 +349,15 @@ def draw_polylines(polylines, **kwargs):
     -----
     A polyline dict has the following schema:
 
-    .. code-block:: python
-
-        Schema({
-            'points': And(list, lambda x: all(len(point) == 3 for point in x),
-            Optional('name', default=''): str,
-            Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
-            Optional('layer', default=None): str,
-            Optional('arrow', default=None): str
-        })
+    ```python
+    Schema({
+        'points': And(list, lambda x: all(len(point) == 3 for point in x),
+        Optional('name', default=''): str,
+        Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
+        Optional('layer', default=None): str,
+        Optional('arrow', default=None): str
+    })
+    ```
 
     """
     guids = []
@@ -420,14 +420,14 @@ def draw_breps(faces, u=10, v=10, join=False, **kwargs):
     -----
     A brep dict has the following schema:
 
-    .. code-block:: python
-
-        Schema({
-            'points': And(list, lambda x: len(x) > 3 and all(len(point) == 3 for point in x),
-            Optional('name', default=''): str,
-            Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
-            Optional('layer', default=None): str,
-        })
+    ```python
+    Schema({
+        'points': And(list, lambda x: len(x) > 3 and all(len(point) == 3 for point in x),
+        Optional('name', default=''): str,
+        Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
+        Optional('layer', default=None): str,
+    })
+    ```
 
     Examples
     --------
@@ -528,18 +528,18 @@ def draw_cylinders(cylinders, cap=False, **kwargs):
     -----
     A cylinder dict has the following schema:
 
-    .. code-block:: python
-
-        Schema(
-            {
-                "start": And(list, lambda x: len(x) == 3),
-                "end": And(list, lambda x: len(x) == 3),
-                "radius": And(Or(int, float), lambda x: x > 0.0),
-                Optional("name", default=""): str,
-                Optional("color", default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
-                Optional("layer", default=None): str,
-            }
-        )
+    ```python
+    Schema(
+        {
+            "start": And(list, lambda x: len(x) == 3),
+            "end": And(list, lambda x: len(x) == 3),
+            "radius": And(Or(int, float), lambda x: x > 0.0),
+            Optional("name", default=""): str,
+            Optional("color", default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
+            Optional("layer", default=None): str,
+        }
+    )
+    ```
 
     """
     guids = []
@@ -609,17 +609,17 @@ def draw_pipes(pipes, cap=2, fit=1.0, **kwargs):
     -----
     A pipe dict has the following schema:
 
-    .. code-block:: python
-
-        Schema(
-            {
-                "points": And(list, lambda x: all(len(y) == 3 for y in x)),
-                "radius": And(Or(int, float), lambda x: x > 0.0),
-                Optional("name", default=""): str,
-                Optional("color", default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
-                Optional("layer", default=None): str,
-            }
-        )
+    ```python
+    Schema(
+        {
+            "points": And(list, lambda x: all(len(y) == 3 for y in x)),
+            "radius": And(Or(int, float), lambda x: x > 0.0),
+            Optional("name", default=""): str,
+            Optional("color", default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
+            Optional("layer", default=None): str,
+        }
+    )
+    ```
 
     """
     guids = []
@@ -680,17 +680,17 @@ def draw_spheres(spheres, **kwargs):
     -----
     A sphere dict has the following schema:
 
-    .. code-block:: python
-
-        Schema(
-            {
-                "pos": And(list, lambda x: len(x) == 3),
-                "radius": And(Or(int, float), lambda x: x > 0.0),
-                Optional("name", default=""): str,
-                Optional("color", default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
-                Optional("layer", default=None): str,
-            }
-        )
+    ```python
+    Schema(
+        {
+            "pos": And(list, lambda x: len(x) == 3),
+            "radius": And(Or(int, float), lambda x: x > 0.0),
+            Optional("name", default=""): str,
+            Optional("color", default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
+            Optional("layer", default=None): str,
+        }
+    )
+    ```
 
     """
     guids = []
@@ -816,16 +816,16 @@ def draw_faces(faces, **kwargs):
     -----
     A face dict has the following schema:
 
-    .. code-block:: python
-
-        Schema(
-            {
-                "points": And(len, lambda x: all(len(y) == 3 for y in x)),
-                Optional("name", default=""): str,
-                Optional("color", default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
-                Optional("vertexcolors", default=None): And(len, lambda x: all(0 <= y <= 255 for y in x)),
-            }
-        )
+    ```python
+    Schema(
+        {
+            "points": And(len, lambda x: all(len(y) == 3 for y in x)),
+            Optional("name", default=""): str,
+            Optional("color", default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
+            Optional("vertexcolors", default=None): And(len, lambda x: all(0 <= y <= 255 for y in x)),
+        }
+    )
+    ```
 
     """
     guids = []
@@ -896,17 +896,17 @@ def draw_circles(circles, **kwargs):
     -----
     A circle dict has the following schema:
 
-    .. code-block:: python
-
-        Schema(
-            {
-                "plane": lambda x: len(x[0]) == 3 and len(x[1]) == 3,
-                "radius": And(Or(int, float), lambda x: x > 0),
-                Optional("name", default=""): str,
-                Optional("color", default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
-                Optional("layer", default=None): str,
-            }
-        )
+    ```python
+    Schema(
+        {
+            "plane": lambda x: len(x[0]) == 3 and len(x[1]) == 3,
+            "radius": And(Or(int, float), lambda x: x > 0),
+            Optional("name", default=""): str,
+            Optional("color", default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
+            Optional("layer", default=None): str,
+        }
+    )
+    ```
 
     """
     guids = []
@@ -958,16 +958,16 @@ def draw_curves(curves, **kwargs):
     -----
     A curve dict has the following schema:
 
-    .. code-block:: python
-
-        Schema(
-            {
-                "curve": compas.geometry.Rhino.Geometry.Curve,
-                Optional("name", default=""): str,
-                Optional("color", default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
-                Optional("layer", default=None): str,
-            }
-        )
+    ```python
+    Schema(
+        {
+            "curve": compas.geometry.Rhino.Geometry.Curve,
+            Optional("name", default=""): str,
+            Optional("color", default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
+            Optional("layer", default=None): str,
+        }
+    )
+    ```
 
     """
     guids = []
@@ -1016,16 +1016,16 @@ def draw_surfaces(surfaces, **kwargs):
     -----
     A surface dict has the following schema:
 
-    .. code-block:: python
-
-        Schema(
-            {
-                "surface": compas.geometry.Surface,
-                Optional("name", default=""): str,
-                Optional("color", default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
-                Optional("layer", default=None): str,
-            }
-        )
+    ```python
+    Schema(
+        {
+            "surface": compas.geometry.Surface,
+            Optional("name", default=""): str,
+            Optional("color", default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
+            Optional("layer", default=None): str,
+        }
+    )
+    ```
 
     """
     guids = []

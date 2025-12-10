@@ -42,19 +42,19 @@ class LabelsConduit(BaseConduit):
 
     Examples
     --------
-    .. code-block:: python
+    ```python
+    from random import randint
+    from compas_rhino.conduits import LabelsConduit
 
-        from random import randint
-        from compas_rhino.conduits import LabelsConduit
+    labels = [([1.0 * randint(0, 100), 1.0 * randint(0, 100), 0.0], str(i)) for i in range(100)]
 
-        labels = [([1.0 * randint(0, 100), 1.0 * randint(0, 100), 0.0], str(i)) for i in range(100)]
+    conduit = LabelsConduit(labels)
 
-        conduit = LabelsConduit(labels)
-
-        with conduit.enabled():
-            for i in range(100):
-                conduit.labels = [([1.0 * randint(0, 100), 1.0 * randint(0, 100), 0.0], str(i)) for i in range(100)]
-                conduit.redraw(pause=0.1)
+    with conduit.enabled():
+        for i in range(100):
+            conduit.labels = [([1.0 * randint(0, 100), 1.0 * randint(0, 100), 0.0], str(i)) for i in range(100)]
+            conduit.redraw(pause=0.1)
+    ```
 
     """
 

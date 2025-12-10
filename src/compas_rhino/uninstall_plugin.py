@@ -25,9 +25,9 @@ def uninstall_plugin(plugin, version=None):
 
     Examples
     --------
-    .. code-block:: bash
-
-        python -m compas_rhino.uninstall_plugin XXX
+    ```bash
+    python -m compas_rhino.uninstall_plugin XXX
+    ```
 
     """
     version = compas_rhino._check_rhino_version(version)

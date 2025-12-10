@@ -36,16 +36,16 @@ class FacesConduit(BaseConduit):
 
     Examples
     --------
-    .. code-block:: python
+    ```python
+    from compas.geometry import Polyhedron
+    from compas_rhino.conduits import FacesConduit
 
-        from compas.geometry import Polyhedron
-        from compas_rhino.conduits import FacesConduit
+    polyhedron = Polyhedron.generate(6)
+    conduit = FacesConduit(polyhedron.vertices, polyhedron.faces)
 
-        polyhedron = Polyhedron.generate(6)
-        conduit = FacesConduit(polyhedron.vertices, polyhedron.faces)
-
-        with conduit.enabled():
-            conduit.redraw(pause=5.0)
+    with conduit.enabled():
+        conduit.redraw(pause=5.0)
+    ```
 
     """
 

@@ -168,12 +168,12 @@ def get(filename):
     The ``compas.get`` function is meant to be used in combination with the static
     constructors of the data structures.
 
-    .. code-block:: python
+    ```python
+    import compas
+    from compas.datastructures import Mesh
 
-        import compas
-        from compas.datastructures import Mesh
-
-        mesh = Mesh.from_obj(compas.get("faces.obj"))
+    mesh = Mesh.from_obj(compas.get("faces.obj"))
+    ```
 
     """
     filename = filename.strip("/")
@@ -210,12 +210,12 @@ def get_bunny(localstorage=None):
     Therefore, the returned path should be used in combination with the ``PLY``
     file reader, or with the ``from_ply`` constructor function for meshes.
 
-    .. code-block:: python
+    ```python
+    import compas
+    from compas.datastructures import Mesh
 
-        import compas
-        from compas.datastructures import Mesh
-
-        mesh = Mesh.from_ply(compas.get_bunny())
+    mesh = Mesh.from_ply(compas.get_bunny())
+    ```
 
     """
     import tarfile

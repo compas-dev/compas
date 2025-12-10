@@ -80,14 +80,14 @@ def install_in_rhino_with_pip(
     This function is made available as a command line script under the name `install_in_rhino`.
     On the command line you can use the following syntax
 
-    .. code-block:: bash
-
-        install_in_rhino requests numpy
-        install_in_rhino -r requirements.txt --env myenv --upgrade
-        install_in_rhino . --env myenv
-        install_in_rhino .. --env myenv
-        install_in_rhino -r requirements.txt --env myenv --no-deps
-        install_in_rhino requests --env myenv --clear
+    ```bash
+    install_in_rhino requests numpy
+    install_in_rhino -r requirements.txt --env myenv --upgrade
+    install_in_rhino . --env myenv
+    install_in_rhino .. --env myenv
+    install_in_rhino -r requirements.txt --env myenv --no-deps
+    install_in_rhino requests --env myenv --clear
+    ```
 
     """
 
