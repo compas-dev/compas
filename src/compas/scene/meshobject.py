@@ -162,8 +162,7 @@ class MeshObject(SceneObject):
     def draw_mesh(self, *args, **kwargs):
         """Draw the mesh of the mesh.
 
-        .. deprecated:: 1.14.1
-            Use :meth:`~MeshObject.draw` instead.
+        Deprecated since version 1.14.1. Use `draw` instead.
 
         Returns
         -------

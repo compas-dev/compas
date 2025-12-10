@@ -32,9 +32,9 @@ def install_plugin(plugin, version=None):
     --------
     Assuming the plugin folder is at the following location on your computer
 
-    .. code-block:: none
-
-        ~/Code/compas_xxx/ui/Rhino/XXX
+    ```
+    ~/Code/compas_xxx/ui/Rhino/XXX
+    ```
 
     and contains at least a "dev" folder with a ``__plugin__.py`` file with
 
@@ -43,17 +43,17 @@ def install_plugin(plugin, version=None):
 
     it can be installed with the following command,
 
-    .. code-block:: bash
-
-        cd ~/Code/compas_xxx
-        python -m compas_rhino.install_plugin ui/Rhino/XXX
+    ```bash
+    cd ~/Code/compas_xxx
+    python -m compas_rhino.install_plugin ui/Rhino/XXX
+    ```
 
     or the following, if the plugin should be installed for Rhino 7.
 
-    .. code-block:: bash
-
-        cd ~/Code/compas_xxx
-        python -m compas_rhino.install_plugin -v 7.0 ui/Rhino/XXX
+    ```bash
+    cd ~/Code/compas_xxx
+    python -m compas_rhino.install_plugin -v 7.0 ui/Rhino/XXX
+    ```
 
     """
     if not os.path.isdir(plugin):

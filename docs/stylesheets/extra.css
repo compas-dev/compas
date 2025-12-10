@@ -1,0 +1,28 @@
+/* Custom COMPAS styling */
+
+/* Lead text styling */
+.lead {
+    font-size: 1.2em;
+    font-weight: 300;
+    color: var(--md-default-fg-color--light);
+}
+
+/* Better code block styling */
+.highlight code {
+    font-size: 0.85em;
+}
+
+/* API documentation styling */
+.doc-heading {
+    font-weight: 600;
+}
+
+/* Better table styling */
+.md-typeset table:not([class]) {
+    font-size: 0.85em;
+}
+
+/* Admonition tweaks */
+.md-typeset .admonition {
+    font-size: 0.9em;
+}

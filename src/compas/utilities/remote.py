@@ -24,16 +24,16 @@ def download_file_from_remote(source, target, overwrite=True):
 
     Examples
     --------
-    .. code-block:: python
+    ```python
+    import os
+    import compas
+    from compas.utilities.remote import download_file_from_remote
 
-        import os
-        import compas
-        from compas.utilities.remote import download_file_from_remote
+    source = "https://raw.githubusercontent.com/compas-dev/compas/main/data/faces.obj"
+    target = os.path.join(compas.APPDATA, "data", "faces.obj")
 
-        source = "https://raw.githubusercontent.com/compas-dev/compas/main/data/faces.obj"
-        target = os.path.join(compas.APPDATA, "data", "faces.obj")
-
-        download_file_from_remote(source, target)
+    download_file_from_remote(source, target)
+    ```
 
     """
     parent = os.path.abspath(os.path.dirname(target))

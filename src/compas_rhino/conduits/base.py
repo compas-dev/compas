@@ -39,11 +39,11 @@ class BaseConduit(Rhino.Display.DisplayConduit):
 
         Examples
         --------
-        .. code-block:: python
-
-            with conduit.enabled():
-                for i in range(10):
-                    conduit.redraw(k=1)
+        ```python
+        with conduit.enabled():
+            for i in range(10):
+                conduit.redraw(k=1)
+        ```
 
         """
         self.enable()

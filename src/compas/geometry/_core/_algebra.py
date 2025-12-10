@@ -2227,12 +2227,12 @@ def matrix_from_basis_vectors(xaxis, yaxis):
 
     Notes
     -----
-    .. code-block:: none
-
-        [ x0  y0  z0  0 ]
-        [ x1  y1  z1  0 ]
-        [ x2  y2  z2  0 ]
-        [  0   0   0  1 ]
+    ```
+    [ x0  y0  z0  0 ]
+    [ x1  y1  z1  0 ]
+    [ x2  y2  z2  0 ]
+    [  0   0   0  1 ]
+    ```
 
     Examples
     --------
@@ -2306,12 +2306,12 @@ def matrix_from_translation(translation):
 
     Notes
     -----
-    .. code-block:: none
-
-        [ .  .  .  0 ]
-        [ .  .  .  1 ]
-        [ .  .  .  2 ]
-        [ .  .  .  . ]
+    ```
+    [ .  .  .  0 ]
+    [ .  .  .  1 ]
+    [ .  .  .  2 ]
+    [ .  .  .  . ]
+    ```
 
     Examples
     --------
@@ -2472,12 +2472,12 @@ def matrix_from_perspective_entries(perspective):
 
     Notes
     -----
-    .. code-block:: none
-
-        [ .  .  .  . ]
-        [ .  .  .  . ]
-        [ .  .  .  . ]
-        [ 0  1  2  3 ]
+    ```
+    [ .  .  .  . ]
+    [ .  .  .  . ]
+    [ .  .  .  . ]
+    [ 0  1  2  3 ]
+    ```
 
     """
     M = identity_matrix(4)
@@ -2503,12 +2503,12 @@ def matrix_from_shear_entries(shear_entries):
 
     Notes
     -----
-    .. code-block:: none
-
-        [ .  0  1  . ]
-        [ .  .  2  . ]
-        [ .  .  .  . ]
-        [ .  .  .  . ]
+    ```
+    [ .  0  1  . ]
+    [ .  .  2  . ]
+    [ .  .  .  . ]
+    [ .  .  .  . ]
+    ```
 
     Examples
     --------
@@ -2597,12 +2597,12 @@ def matrix_from_scale_factors(scale_factors):
 
     Notes
     -----
-    .. code-block:: python
-
-        [ 0  .  .  . ]
-        [ .  1  .  . ]
-        [ .  .  2  . ]
-        [ .  .  .  . ]
+    ```
+    [ 0  .  .  . ]
+    [ .  1  .  . ]
+    [ .  .  2  . ]
+    [ .  .  .  . ]
+    ```
 
     Examples
     --------
@@ -2760,13 +2760,12 @@ def close(value1, value2, tol=1e-05):
 
     Warnings
     --------
-    .. deprecated:: 2.0
-        Will be removed in 2.1
-        Use :func:`TOL.is_close` instead.
+    Deprecated since version 2.0. Will be removed in 2.1.
+    Use `TOL.is_close` instead.
 
     The tolerance value used by this function is an absolute tolerance.
     It is more accurate to use a combination of absolute and relative tolerance.
-    Therefor, use :func:`TOL.is_close` instead.
+    Therefore, use `TOL.is_close` instead.
 
     """
     return TOL.is_close(value1, value2, rtol=0.0, atol=tol)
@@ -2793,13 +2792,12 @@ def allclose(l1, l2, tol=None):
 
     Warnings
     --------
-    .. deprecated:: 2.0
-        Will be removed in 2.1
-        Use :func:`TOL.is_close` instead.
+    Deprecated since version 2.0. Will be removed in 2.1.
+    Use `TOL.is_allclose` instead.
 
     The tolerance value used by this function is an absolute tolerance.
     It is more accurate to use a combination of absolute and relative tolerance.
-    Therefor, use :func:`TOL.is_allclose` instead.
+    Therefore, use `TOL.is_allclose` instead.
 
     Notes
     -----

@@ -4,9 +4,11 @@ build
 bump-my-version
 compas_invocations2
 invoke >=0.14
+mkdocs >=1.6
+mkdocs-material >=9.5
+mkdocstrings[python] >=0.27
 pytest-cov
 pythonnet
 ruff
-sphinx_compas2_theme
 twine
 wheel

@@ -20,25 +20,25 @@ class Server(SimpleXMLRPCServer):
 
     Examples
     --------
-    .. code-block:: python
+    ```python
+    # service.py
 
-        # service.py
-
-        from compas.rpc import Server
-        from compas.rpc import Dispatcher
-
-
-        class DefaultService(Dispatcher):
-            pass
+    from compas.rpc import Server
+    from compas.rpc import Dispatcher
 
 
-        if __name__ == "__main__":
-            server = Server(("localhost", 8888))
+    class DefaultService(Dispatcher):
+        pass
 
-            server.register_function(server.ping)
-            server.register_function(server.remote_shutdown)
-            server.register_instance(DefaultService())
-            server.serve_forever()
+
+    if __name__ == "__main__":
+        server = Server(("localhost", 8888))
+
+        server.register_function(server.ping)
+        server.register_function(server.remote_shutdown)
+        server.register_instance(DefaultService())
+        server.serve_forever()
+    ```
 
     """
 

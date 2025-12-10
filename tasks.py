@@ -3,19 +3,31 @@ from __future__ import print_function
 import os
 
 from compas_invocations2 import build
-from compas_invocations2 import docs
 from compas_invocations2 import style
 from compas_invocations2 import tests
 from compas_invocations2 import grasshopper
+from invoke import task
 from invoke.collection import Collection
 
+
+@task
+def docs(ctx):
+    """Build documentation with MkDocs."""
+    ctx.run("mkdocs build --strict")
+
+
+@task
+def serve(ctx):
+    """Serve documentation locally with live reload."""
+    ctx.run("mkdocs serve")
+
+
 ns = Collection(
-    docs.help,
+    docs,
+    serve,
     style.check,
     style.lint,
     style.format,
-    docs.docs,
-    docs.linkcheck,
     tests.test,
     tests.testdocs,
     tests.testcodeblocks,

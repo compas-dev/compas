@@ -41,18 +41,18 @@ class PointsConduit(BaseConduit):
 
     Examples
     --------
-    .. code-block:: python
+    ```python
+    from random import randint
+    from compas_rhino.conduits import PointsConduit
 
-        from random import randint
-        from compas_rhino.conduits import PointsConduit
+    points = [(1.0 * randint(0, 30), 1.0 * randint(0, 30), 0.0) for _ in range(100)]
+    conduit = PointsConduit(points)
 
-        points = [(1.0 * randint(0, 30), 1.0 * randint(0, 30), 0.0) for _ in range(100)]
-        conduit = PointsConduit(points)
-
-        with conduit.enabled():
-            for i in range(100):
-                conduit.points = [(1.0 * randint(0, 30), 1.0 * randint(0, 30), 0.0) for _ in range(100)]
-                conduit.redraw(pause=0.1)
+    with conduit.enabled():
+        for i in range(100):
+            conduit.points = [(1.0 * randint(0, 30), 1.0 * randint(0, 30), 0.0) for _ in range(100)]
+            conduit.redraw(pause=0.1)
+    ```
 
     """
 

@@ -112,8 +112,7 @@ class RhinoSurface(Surface):
 
         Warnings
         --------
-        .. deprecated:: 2.3
-            Use `from_native` instead.
+        Deprecated since version 2.3. Use `from_native` instead.
 
         """
         return cls(native_surface)

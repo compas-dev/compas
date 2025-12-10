@@ -104,15 +104,15 @@ def print_profile(func):
 
     Examples
     --------
-    .. code-block:: python
+    ```python
+    @print_profile
+    def f(n):
+        return sum(for i in range(n))
 
-        @print_profile
-        def f(n):
-            return sum(for i in range(n))
-
-        print(f(100))
-        print(f.__doc__)
-        print(f.__name__)
+    print(f(100))
+    print(f.__doc__)
+    print(f.__name__)
+    ```
 
     """
 

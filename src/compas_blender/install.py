@@ -28,15 +28,15 @@ def install(version=None, packages=None, clean=False):
 
     Examples
     --------
-    .. code-block:: python
+    ```python
+    import compas_blender.install
 
-        import compas_blender.install
+    compas_blender.install.install()
+    ```
 
-        compas_blender.install.install()
-
-    .. code-block:: bash
-
-        python -m compas_blender.install
+    ```bash
+    python -m compas_blender.install
+    ```
 
     """
     version = compas_blender._check_blender_version(version)

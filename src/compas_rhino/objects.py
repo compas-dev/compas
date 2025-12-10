@@ -38,8 +38,7 @@ def get_point_coordinates(guids):
 
     Warnings
     --------
-    .. deprecated:: 2.3
-        Use `compas_rhino.conversions` instead.
+    Deprecated since version 2.3. Use `compas_rhino.conversions` instead.
 
     """
     warnings.warn("This function will be removed in v2.3. Please use `compas_rhino.conversions` instead.", DeprecationWarning, stacklevel=2)
@@ -67,8 +66,7 @@ def get_line_coordinates(guids):
 
     Warnings
     --------
-    .. deprecated:: 2.3
-        Use `compas_rhino.conversions` instead.
+    Deprecated since version 2.3. Use `compas_rhino.conversions` instead.
 
     """
     warnings.warn("This function will be removed in v2.3. Please use `compas_rhino.conversions` instead.", DeprecationWarning, stacklevel=2)
@@ -100,8 +98,7 @@ def get_polyline_coordinates(guids):
 
     Warnings
     --------
-    .. deprecated:: 2.3
-        Use `compas_rhino.conversions` instead.
+    Deprecated since version 2.3. Use `compas_rhino.conversions` instead.
 
     """
     warnings.warn("This function will be removed in v2.3. Please use `compas_rhino.conversions` instead.", DeprecationWarning, stacklevel=2)
@@ -137,8 +134,7 @@ def get_polygon_coordinates(guids):
 
     Warnings
     --------
-    .. deprecated:: 2.3
-        Use `compas_rhino.conversions` instead.
+    Deprecated since version 2.3. Use `compas_rhino.conversions` instead.
 
     """
     warnings.warn("This function will be removed in v2.3. Please use `compas_rhino.conversions` instead.", DeprecationWarning, stacklevel=2)

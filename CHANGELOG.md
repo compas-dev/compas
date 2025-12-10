@@ -9,10 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- MkDocs + Material theme based docs
+
 ### Changed
+
+- update CI workflow for mkdocs gh-deploy
+- update invoke tasks for mkdocs commands
 
 ### Removed
 
+- replace Sphinx with MkDocs + Material theme
+- use mkdocstrings for API docs from NumPy docstrings
+- convert 73 RST files to Markdown
+- remove RST directives from Python docstrings
 
 ## [2.15.0] 2025-11-12
 
