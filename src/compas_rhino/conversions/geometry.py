@@ -57,7 +57,7 @@ def plane_to_rhino(plane):
     :rhino:`Rhino.Geometry.Plane`
 
     """
-    return Rhino.Geometry.Plane(point_to_rhino(plane[0]), vector_to_rhino(plane[1]))
+    return Rhino.Geometry.Plane(point_to_rhino(plane[0]), vector_to_rhino(plane[1]), vector_to_rhino(plane[2]))
 
 
 def frame_to_rhino_plane(frame):
