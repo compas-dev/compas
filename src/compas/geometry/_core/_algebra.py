@@ -2760,13 +2760,12 @@ def close(value1, value2, tol=1e-05):
 
     Warnings
     --------
-    .. deprecated:: 2.0
-        Will be removed in 2.1
-        Use :func:`TOL.is_close` instead.
+    Deprecated since version 2.0. Will be removed in 2.1.
+    Use `TOL.is_close` instead.
 
     The tolerance value used by this function is an absolute tolerance.
     It is more accurate to use a combination of absolute and relative tolerance.
-    Therefor, use :func:`TOL.is_close` instead.
+    Therefore, use `TOL.is_close` instead.
 
     """
     return TOL.is_close(value1, value2, rtol=0.0, atol=tol)
@@ -2793,13 +2792,12 @@ def allclose(l1, l2, tol=None):
 
     Warnings
     --------
-    .. deprecated:: 2.0
-        Will be removed in 2.1
-        Use :func:`TOL.is_close` instead.
+    Deprecated since version 2.0. Will be removed in 2.1.
+    Use `TOL.is_allclose` instead.
 
     The tolerance value used by this function is an absolute tolerance.
     It is more accurate to use a combination of absolute and relative tolerance.
-    Therefor, use :func:`TOL.is_allclose` instead.
+    Therefore, use `TOL.is_allclose` instead.
 
     Notes
     -----

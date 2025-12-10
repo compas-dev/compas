@@ -1,0 +1,205 @@
+site_name: COMPAS
+site_description: An open-source framework for computational research in Architecture, Engineering, Fabrication, and Construction
+site_url: https://compas.dev/compas
+repo_url: https://github.com/compas-dev/compas
+repo_name: compas-dev/compas
+edit_uri: edit/main/docs/
+copyright: Copyright &copy; COMPAS Association
+
+theme:
+  name: material
+  logo: images/COMPAS.png
+  favicon: images/COMPAS.png
+  palette:
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: deep purple
+      accent: deep purple
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: deep purple
+      accent: deep purple
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+  features:
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.indexes
+    - navigation.top
+    - navigation.footer
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.code.annotate
+    - content.action.edit
+    - content.tabs.link
+  icon:
+    repo: fontawesome/brands/github
+
+plugins:
+  - search
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          paths: [src]
+          options:
+            docstring_style: numpy
+            docstring_section_style: spacy
+            show_source: true
+            show_root_heading: true
+            show_root_full_path: false
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
+            members_order: source
+            merge_init_into_class: true
+            separate_signature: true
+            signature_crossrefs: true
+            show_signature_annotations: true
+            inherited_members: false
+            filters:
+              - "!^_"
+              - "^__init__$"
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - tables
+  - attr_list
+  - md_in_html
+  - def_list
+  - footnotes
+  - toc:
+      permalink: true
+      toc_depth: 3
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/compas-dev/compas
+      name: COMPAS on GitHub
+    - icon: fontawesome/brands/discourse
+      link: https://forum.compas-framework.org/
+      name: COMPAS Forum
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/compas/
+      name: COMPAS on PyPI
+  generator: false
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+
+extra_css:
+  - stylesheets/extra.css
+
+nav:
+  - Home: index.md
+  - User Guide:
+      - userguide/index.md
+      - Getting Started:
+          - Introduction: userguide/introduction.md
+          - Installation: userguide/installation.md
+          - First Steps: userguide/firststeps.md
+          - What's Next: userguide/whatsnext.md
+      - "Basics: Geometry":
+          - Overview: userguide/basics.geometry.md
+          - Points and Vectors: userguide/basics.geometry.points_and_vectors.md
+          - Planes and Frames: userguide/basics.geometry.planes_and_frames.md
+          - Transformations: userguide/basics.geometry.transformations.md
+          - Polygons and Polyhedrons: userguide/basics.geometry.polygons_and_polyhedrons.md
+          - Curves and Surfaces: userguide/basics.geometry.curves_and_surfaces.md
+          - Breps: userguide/basics.geometry.breps.md
+          - Intersections: userguide/basics.geometry.intersections.md
+          - Distance and Membership: userguide/basics.geometry.distance_and_membership.md
+          - Solids: userguide/basics.geometry.solids.md
+      - "Basics: Data Structures":
+          - Overview: userguide/basics.datastructures.md
+          - Graphs: userguide/basics.datastructures.graphs.md
+          - Meshes: userguide/basics.datastructures.meshes.md
+          - Cells: userguide/basics.datastructures.cells.md
+          - VolMeshes: userguide/basics.datastructures.volmeshes.md
+          - CellNetworks: userguide/basics.datastructures.cellnetwork.md
+          - Trees: userguide/basics.datastructures.trees.md
+      - "Basics: Visualisation": userguide/basics.visualisation.md
+      - "Basics: Colors": userguide/basics.colors.md
+      - "Advanced: Tolerance": userguide/advanced.tolerance.md
+      - "Advanced: Serialisation": userguide/advanced.serialisation.md
+      - "Advanced: RPC": userguide/advanced.rpc.md
+      - "Advanced: Hash Trees": userguide/advanced.hashtree.md
+      - "Advanced: Pluggables": userguide/advanced.pluggables.md
+      - "CAD: Rhino": userguide/cad.rhino.md
+      - "CAD: Rhino 8": userguide/cad.rhino8.md
+      - "CAD: Grasshopper": userguide/cad.grasshopper.md
+      - "CAD: Blender": userguide/cad.blender.md
+      - "CAD: Other": userguide/cad.other.md
+      - Releases: userguide/releases.md
+      - Citing: userguide/citing.md
+      - License: userguide/license.md
+  - Developer Guide:
+      - devguide/index.md
+      - Development Basics:
+          - Setup: devguide/setup.md
+          - Workflow: devguide/workflow.md
+          - Code Style: devguide/code.md
+          - Documentation: devguide/documentation.md
+      - Advanced Topics:
+          - Extensions: devguide/extensions.md
+          - Plugins: devguide/plugins.md
+          - GH Components: devguide/ghcomponent.md
+          - Data Types: devguide/dtypes.md
+  - API Reference:
+      - api/index.md
+      - compas:
+          - compas.colors: api/compas.colors.md
+          - compas.data: api/compas.data.md
+          - compas.datastructures: api/compas.datastructures.md
+          - compas.files: api/compas.files.md
+          - compas.geometry: api/compas.geometry.md
+          - compas.itertools: api/compas.itertools.md
+          - compas.plugins: api/compas.plugins.md
+          - compas.rpc: api/compas.rpc.md
+          - compas.scene: api/compas.scene.md
+          - compas.tolerance: api/compas.tolerance.md
+      - compas_blender:
+          - compas_blender.conversions: api/compas_blender.conversions.md
+          - compas_blender.geometry: api/compas_blender.geometry.md
+          - compas_blender.scene: api/compas_blender.scene.md
+      - compas_ghpython:
+          - compas_ghpython.components: api/compas_ghpython.components.md
+          - compas_ghpython.scene: api/compas_ghpython.scene.md
+      - compas_rhino:
+          - compas_rhino.conversions: api/compas_rhino.conversions.md
+          - compas_rhino.geometry: api/compas_rhino.geometry.md
+          - compas_rhino.scene: api/compas_rhino.scene.md
