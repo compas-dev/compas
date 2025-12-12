@@ -22,7 +22,7 @@ except ImportError:
 try:
     import bpy
 except ImportError:
-    pass
+    bpy = None
 
 try:
     import compas_blender.data
@@ -455,105 +455,104 @@ def _install_thread_target():
     except Exception as e:
         install_queue.put(("RESULT", (False, str(e))))
 
+if bpy is not None:
+    class COMPAS_OT_install_dependencies(bpy.types.Operator):
+        bl_idname = "compas.install_dependencies"
+        bl_label = "Install Dependencies"
+        bl_description = "Install COMPAS and required dependencies (scipy, etc.)"
 
-class COMPAS_OT_install_dependencies(bpy.types.Operator):
-    bl_idname = "compas.install_dependencies"
-    bl_label = "Install Dependencies"
-    bl_description = "Install COMPAS and required dependencies (scipy, etc.)"
+        _timer = None
+        _thread = None
 
-    _timer = None
-    _thread = None
+        def modal(self, context, event):
+            if event.type == 'TIMER':
+                while not install_queue.empty():
+                    try:
+                        msg_type, data = install_queue.get_nowait()
+                    except queue.Empty:
+                        break
 
-    def modal(self, context, event):
-        if event.type == 'TIMER':
-            while not install_queue.empty():
-                try:
-                    msg_type, data = install_queue.get_nowait()
-                except queue.Empty:
-                    break
-
-                if msg_type == "LOG":
-                    _log_to_text_block(data)
-                    context.workspace.status_text_set(data)
-                elif msg_type == "RESULT":
-                    success, msg = data
-                    
-                    # Clear status text
-                    context.workspace.status_text_set(None)
-                    
-                    if success:
-                        self.report({'INFO'}, "COMPAS dependencies installed. Please restart Blender.")
-                        # Invalidate import caches so find_spec works immediately
-                        importlib.invalidate_caches()
-                    else:
-                        self.report({'ERROR'}, msg)
-                        self.report({'WARNING'}, "Check the 'COMPAS_INSTALL_LOG' in the Text Editor for details.")
-                    
-                    context.window_manager.event_timer_remove(self._timer)
-                    
-                    # Force redraw of the preferences area if possible
-                    if context.area:
-                        context.area.tag_redraw()
+                    if msg_type == "LOG":
+                        _log_to_text_block(data)
+                        context.workspace.status_text_set(data)
+                    elif msg_type == "RESULT":
+                        success, msg = data
                         
-                    return {'FINISHED'}
-        
-        return {'PASS_THROUGH'}
+                        # Clear status text
+                        context.workspace.status_text_set(None)
+                        
+                        if success:
+                            self.report({'INFO'}, "COMPAS dependencies installed. Please restart Blender.")
+                            # Invalidate import caches so find_spec works immediately
+                            importlib.invalidate_caches()
+                        else:
+                            self.report({'ERROR'}, msg)
+                            self.report({'WARNING'}, "Check the 'COMPAS_INSTALL_LOG' in the Text Editor for details.")
+                        
+                        context.window_manager.event_timer_remove(self._timer)
+                        
+                        # Force redraw of the preferences area if possible
+                        if context.area:
+                            context.area.tag_redraw()
+                            
+                        return {'FINISHED'}
+            
+            return {'PASS_THROUGH'}
 
-    def execute(self, context):
-        self.report({'INFO'}, "Installation started. Check COMPAS_INSTALL_LOG for progress...")
-        
-        # Start thread
-        self._thread = threading.Thread(target=_install_thread_target)
-        self._thread.start()
-        
-        self._timer = context.window_manager.event_timer_add(0.1, window=context.window)
-        context.window_manager.modal_handler_add(self)
-        return {'RUNNING_MODAL'}
+        def execute(self, context):
+            self.report({'INFO'}, "Installation started. Check COMPAS_INSTALL_LOG for progress...")
+            
+            # Start thread
+            self._thread = threading.Thread(target=_install_thread_target)
+            self._thread.start()
+            
+            self._timer = context.window_manager.event_timer_add(0.1, window=context.window)
+            context.window_manager.modal_handler_add(self)
+            return {'RUNNING_MODAL'}
 
+    class COMPAS_PT_preferences(bpy.types.AddonPreferences):
+        bl_idname = __package__
 
-class COMPAS_PT_preferences(bpy.types.AddonPreferences):
-    bl_idname = __package__
+        def draw(self, context):
+            layout = self.layout
 
-    def draw(self, context):
-        layout = self.layout
+            compas_spec = importlib.util.find_spec("compas")
 
-        compas_spec = importlib.util.find_spec("compas")
-
-        if compas_spec:
-            if compas:
-                layout.label(text="COMPAS {} is installed.".format(compas.__version__), icon='CHECKMARK')
+            if compas_spec:
+                if compas:
+                    layout.label(text="COMPAS {} is installed.".format(compas.__version__), icon='CHECKMARK')
+                else:
+                    layout.label(text="COMPAS is installed (Restart Blender to load).", icon='CHECKMARK')
+                layout.operator("compas.install_dependencies", text="Reinstall / Update Dependencies")
             else:
-                layout.label(text="COMPAS is installed (Restart Blender to load).", icon='CHECKMARK')
-            layout.operator("compas.install_dependencies", text="Reinstall / Update Dependencies")
-        else:
-            layout.label(text="COMPAS is NOT installed.", icon='ERROR')
-            layout.operator("compas.install_dependencies", text="Install Dependencies")
+                layout.label(text="COMPAS is NOT installed.", icon='ERROR')
+                layout.operator("compas.install_dependencies", text="Install Dependencies")
 
-        if importlib.util.find_spec("scipy"):
-            layout.label(text="Dependencies are installed.", icon='CHECKMARK')
-        else:
-            layout.label(text="Dependencies are NOT installed.", icon='ERROR')
+            if importlib.util.find_spec("scipy"):
+                layout.label(text="Dependencies are installed.", icon='CHECKMARK')
+            else:
+                layout.label(text="Dependencies are NOT installed.", icon='ERROR')
 
 
-def register():
-    if "bpy" in sys.modules:
-        print("COMPAS: Registering classes...")
-        try:
-            bpy.utils.register_class(COMPAS_OT_install_dependencies)
-            bpy.utils.register_class(COMPAS_PT_preferences)
-            print("COMPAS: Classes registered.")
-        except Exception as e:
-            print("COMPAS: Failed to register classes: {}".format(e))
-            import traceback
-            traceback.print_exc()
-        
-        # Auto-install is disabled to prevent UI blocking/crashing.
-        # User should use the button in Preferences.
-        if compas is None or importlib.util.find_spec("scipy") is None:
-             print("COMPAS: Dependencies missing. Please use the 'Install Dependencies' button in the COMPAS preferences.")
+    def register():
+        if "bpy" in sys.modules:
+            print("COMPAS: Registering classes...")
+            try:
+                bpy.utils.register_class(COMPAS_OT_install_dependencies)
+                bpy.utils.register_class(COMPAS_PT_preferences)
+                print("COMPAS: Classes registered.")
+            except Exception as e:
+                print("COMPAS: Failed to register classes: {}".format(e))
+                import traceback
+                traceback.print_exc()
+            
+            # Auto-install is disabled to prevent UI blocking/crashing.
+            # User should use the button in Preferences.
+            if compas is None or importlib.util.find_spec("scipy") is None:
+                print("COMPAS: Dependencies missing. Please use the 'Install Dependencies' button in the COMPAS preferences.")
 
 
-def unregister():
-    if "bpy" in sys.modules:
-        bpy.utils.unregister_class(COMPAS_OT_install_dependencies)
-        bpy.utils.unregister_class(COMPAS_PT_preferences)
+    def unregister():
+        if "bpy" in sys.modules:
+            bpy.utils.unregister_class(COMPAS_OT_install_dependencies)
+            bpy.utils.unregister_class(COMPAS_PT_preferences)
