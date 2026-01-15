@@ -2,8 +2,6 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from compas.tolerance import Tolerance
-
 import Rhino  # type: ignore
 
 from compas.geometry import Brep
@@ -12,6 +10,7 @@ from compas.geometry import Cylinder
 from compas.geometry import Frame
 from compas.geometry import Sphere
 from compas.geometry import SurfaceType
+from compas.tolerance import Tolerance
 from compas_rhino.conversions import cylinder_to_compas
 from compas_rhino.conversions import cylinder_to_rhino
 from compas_rhino.conversions import frame_to_rhino_plane
@@ -373,9 +372,8 @@ class RhinoBrepFace(BrepFace):
             return True
         if relation == Rhino.Geometry.PointFaceRelation.Boundary:
             return True
-        if relation == Rhino.Geometry.PointFaceRelation.Exterior
+        if relation == Rhino.Geometry.PointFaceRelation.Exterior:
             return False
-
 
     def is_point_on_boundary(self, u, v):
         """Returns True if the point is on the boundary of the face.
