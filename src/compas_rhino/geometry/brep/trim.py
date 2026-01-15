@@ -6,6 +6,7 @@ import Rhino  # type: ignore
 
 from compas.geometry import BrepTrim
 from compas_rhino.geometry import RhinoNurbsCurve
+from compas_rhino.geometry.brep.edge import RhinoBrepEdge
 
 from .vertex import RhinoBrepVertex
 
@@ -117,6 +118,10 @@ class RhinoBrepTrim(BrepTrim):
     @property
     def native_trim(self):
         return self._trim
+
+    @property
+    def edge(self):
+        return RhinoBrepEdge(self._trim.Edge)
 
     @native_trim.setter
     def native_trim(self, rhino_trim):

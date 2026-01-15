@@ -27,6 +27,7 @@ from compas_rhino.conversions import line_to_rhino_curve
 from compas_rhino.conversions import mesh_to_compas
 from compas_rhino.conversions import mesh_to_rhino
 from compas_rhino.conversions import plane_to_rhino
+from compas_rhino.conversions import point_to_compas
 from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import polyline_to_rhino_curve
 from compas_rhino.conversions import sphere_to_rhino
@@ -1106,3 +1107,21 @@ class RhinoBrep(Brep):
             self._brep = result
         else:
             raise BrepError("Failed to cap planar holes")
+
+    def closest_point(self, point):
+        """
+        Returns the closest point on the Brep to the given point.
+
+        Parameters
+        ----------
+        point : :class:`compas.geometry.Point`
+            The point to find the closest point on the Brep to.
+
+        Returns
+        -------
+        :class:`compas.geometry.Point`
+            The closest point on the Brep to the given point.
+
+        """
+        rgpoint = self._brep.ClosestPoint(point_to_rhino(point))
+        return point_to_compas(rgpoint)

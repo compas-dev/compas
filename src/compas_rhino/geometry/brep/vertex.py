@@ -67,6 +67,10 @@ class RhinoBrepVertex(BrepVertex):
         return self._point
 
     @property
+    def index(self):
+        return self._vertex.VertexIndex
+
+    @property
     def native_vertex(self):
         return self._vertex
 
