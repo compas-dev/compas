@@ -5,6 +5,7 @@ from __future__ import print_function
 import Rhino  # type: ignore
 
 from compas.geometry import BrepLoop
+from compas.geometry import Curve
 
 from .edge import RhinoBrepEdge
 from .trim import RhinoBrepTrim
@@ -127,3 +128,8 @@ class RhinoBrepLoop(BrepLoop):
         self._loop = rhino_loop
         self._type = int(self._loop.LoopType)
         self._trims = [RhinoBrepTrim(trim) for trim in self._loop.Trims]
+
+    def to_curve(self):
+        curve = self._loop.To3dCurve()
+        curve = Curve.from_native(curve)
+        return curve
