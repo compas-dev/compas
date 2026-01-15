@@ -49,6 +49,10 @@ class RhinoBrepEdge(BrepEdge):
         True if the geometry of this edge is a line, False otherwise.
     native_edge : :class:`Rhino.Geometry.BrepEdge`
         The underlying BrepEdge object.
+    domain : tuple
+        The domain of the edge.
+    index : int
+        The index of the edge.
 
     """
 

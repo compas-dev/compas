@@ -30,7 +30,8 @@ class RhinoBrepTrim(BrepTrim):
         The end vertex of this trim.
     vertices : list[:class:`compas_rhino.geometry.RhinoBrepVertex`], read-only
         The list of vertices which comprise this trim (start and end).
-
+    edge : :class:compas_rhino.geometry.RhinoBrepEdge
+        The edge associated with this trim.
     """
 
     def __init__(self, rhino_trim=None):
