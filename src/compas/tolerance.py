@@ -1,11 +1,38 @@
 """
 The tolerance module provides functionality to deal with tolerances consistently across all other COMPAS packages.
+
+The module provides:
+- :class:`Tolerance`: A class for tolerance settings that can be instantiated independently.
+- :obj:`TOL`: The global tolerance instance used throughout COMPAS (in-process).
+
+To modify global tolerance settings, use the explicit methods on `TOL`:
+- ``TOL.update(...)`` - Update specific tolerance values
+- ``TOL.reset()`` - Reset to default values
+- ``TOL.temporary(...)`` - Context manager for temporary changes
+
+Example
+-------
+>>> from compas.tolerance import TOL, Tolerance
+>>> # Create an independent tolerance instance
+>>> my_tol = Tolerance(absolute=0.01)
+>>> my_tol.absolute
+0.01
+>>> # Global TOL is unchanged
+>>> TOL.absolute
+1e-09
+>>> # To modify global state, use update()
+>>> TOL.update(absolute=0.001)
+>>> TOL.absolute
+0.001
+>>> TOL.reset()
+
 """
 
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from contextlib import contextmanager
 from decimal import Decimal
 
 import compas
@@ -21,6 +48,21 @@ class Tolerance(Data):
     ----------
     unit : {"M", "MM"}, optional
         The unit of the tolerance settings.
+    absolute : float, optional
+        The absolute tolerance. Default is :attr:`ABSOLUTE`.
+    relative : float, optional
+        The relative tolerance. Default is :attr:`RELATIVE`.
+    angular : float, optional
+        The angular tolerance. Default is :attr:`ANGULAR`.
+    approximation : float, optional
+        The tolerance used in approximation processes. Default is :attr:`APPROXIMATION`.
+    precision : int, optional
+        The precision used when converting numbers to strings. Default is :attr:`PRECISION`.
+    lineardeflection : float, optional
+        The maximum distance between a curve/surface and its polygonal approximation.
+        Default is :attr:`LINEARDEFLECTION`.
+    angulardeflection : float, optional
+        The maximum curvature deviation. Default is :attr:`ANGULARDEFLECTION`.
     name : str, optional
         The name of the tolerance settings.
 
@@ -53,25 +95,35 @@ class Tolerance(Data):
     This value is called the "true value".
     By convention, the second value is considered the "true value" by the comparison functions of this class.
 
-    The :class:`compas.tolerance.Tolerance` class is implemented using a "singleton" pattern and can therefore have only 1 (one) instance per context.
-    Usage of :attr:`compas.tolerance.TOL` outside of :mod:`compas` internals is therefore deprecated.
+    Each call to ``Tolerance(...)`` creates an independent instance. To modify the global
+    tolerance settings used throughout COMPAS, use the explicit methods on :obj:`TOL`:
+
+    - ``TOL.update(...)`` - Update specific tolerance values
+    - ``TOL.reset()`` - Reset all values to defaults
+    - ``TOL.temporary(...)`` - Context manager for temporary changes
 
     Examples
     --------
-    >>> tol = Tolerance()
-    >>> tol.unit
-    'M'
+    Create an independent tolerance instance:
+
+    >>> tol = Tolerance(absolute=0.01)
     >>> tol.absolute
+    0.01
+
+    The global TOL is separate:
+
+    >>> from compas.tolerance import TOL
+    >>> TOL.absolute  # unchanged
     1e-09
-    >>> tol.relative
-    1e-06
-    >>> tol.angular
-    1e-06
+
+    Modify global state explicitly:
+
+    >>> TOL.update(absolute=0.001)
+    >>> TOL.absolute
+    0.001
+    >>> TOL.reset()
 
     """
-
-    _instance = None
-    _is_inited = False
 
     SUPPORTED_UNITS = ["M", "MM"]
     """{"M", "MM"}: Default tolerances are defined in relation to length units.
@@ -120,12 +172,6 @@ class Tolerance(Data):
 
     """
 
-    def __new__(cls, *args, **kwargs):
-        if not cls._instance:
-            cls._instance = object.__new__(cls, *args, **kwargs)
-            cls._is_inited = False
-        return cls._instance
-
     @property
     def __data__(self):
         return {
@@ -160,22 +206,19 @@ class Tolerance(Data):
         angular=None,
         approximation=None,
         precision=None,
-        lineardflection=None,
-        angulardflection=None,
+        lineardeflection=None,
+        angulardeflection=None,
         name=None,
     ):
         super(Tolerance, self).__init__(name=name)
-        if not self._is_inited:
-            self._unit = None
-            self._absolute = None
-            self._relative = None
-            self._angular = None
-            self._approximation = None
-            self._precision = None
-            self._lineardeflection = None
-            self._angulardeflection = None
-
-        self._is_inited = True
+        self._unit = None
+        self._absolute = None
+        self._relative = None
+        self._angular = None
+        self._approximation = None
+        self._precision = None
+        self._lineardeflection = None
+        self._angulardeflection = None
 
         if unit is not None:
             self.unit = unit
@@ -189,13 +232,10 @@ class Tolerance(Data):
             self.approximation = approximation
         if precision is not None:
             self.precision = precision
-        if lineardflection is not None:
-            self.lineardeflection = lineardflection
-        if angulardflection is not None:
-            self.angulardeflection = angulardflection
-
-    # this can be autogenerated if we use slots
-    # __repr__: return f"{__class__.__name__}({', '.join(f'{k}={v!r}' for k, v in self.__dict__.items())})}"
+        if lineardeflection is not None:
+            self.lineardeflection = lineardeflection
+        if angulardeflection is not None:
+            self.angulardeflection = angulardeflection
 
     def __repr__(self):
         return "Tolerance(unit='{}', absolute={}, relative={}, angular={}, approximation={}, precision={}, lineardeflection={}, angulardeflection={})".format(
@@ -220,7 +260,7 @@ class Tolerance(Data):
         self._angulardeflection = None
 
     def update_from_dict(self, tolerance):
-        """Update the tolerance singleton from the key-value pairs found in a dict.
+        """Update the tolerance from the key-value pairs found in a dict.
 
         Parameters
         ----------
@@ -235,6 +275,161 @@ class Tolerance(Data):
         for name in tolerance:
             if hasattr(self, name):
                 setattr(self, name, tolerance[name])
+
+    def update(
+        self,
+        unit=None,
+        absolute=None,
+        relative=None,
+        angular=None,
+        approximation=None,
+        precision=None,
+        lineardeflection=None,
+        angulardeflection=None,
+    ):
+        """Update tolerance settings.
+
+        Only the provided parameters will be updated; others remain unchanged.
+        Use this method to explicitly modify tolerance settings.
+
+        Parameters
+        ----------
+        unit : {"M", "MM"}, optional
+            The unit of the tolerance settings.
+        absolute : float, optional
+            The absolute tolerance.
+        relative : float, optional
+            The relative tolerance.
+        angular : float, optional
+            The angular tolerance.
+        approximation : float, optional
+            The tolerance used in approximation processes.
+        precision : int, optional
+            The precision used when converting numbers to strings.
+        lineardeflection : float, optional
+            The maximum distance between a curve/surface and its polygonal approximation.
+        angulardeflection : float, optional
+            The maximum curvature deviation.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        >>> from compas.tolerance import TOL
+        >>> TOL.update(absolute=0.001, precision=6)
+        >>> TOL.absolute
+        0.001
+        >>> TOL.precision
+        6
+        >>> TOL.reset()
+
+        """
+        if unit is not None:
+            self.unit = unit
+        if absolute is not None:
+            self.absolute = absolute
+        if relative is not None:
+            self.relative = relative
+        if angular is not None:
+            self.angular = angular
+        if approximation is not None:
+            self.approximation = approximation
+        if precision is not None:
+            self.precision = precision
+        if lineardeflection is not None:
+            self.lineardeflection = lineardeflection
+        if angulardeflection is not None:
+            self.angulardeflection = angulardeflection
+
+    @contextmanager
+    def temporary(
+        self,
+        unit=None,
+        absolute=None,
+        relative=None,
+        angular=None,
+        approximation=None,
+        precision=None,
+        lineardeflection=None,
+        angulardeflection=None,
+    ):
+        """Context manager for temporarily changing tolerance settings.
+
+        The original settings are automatically restored when the context exits,
+        even if an exception occurs.
+
+        Parameters
+        ----------
+        unit : {"M", "MM"}, optional
+            The unit of the tolerance settings.
+        absolute : float, optional
+            The absolute tolerance.
+        relative : float, optional
+            The relative tolerance.
+        angular : float, optional
+            The angular tolerance.
+        approximation : float, optional
+            The tolerance used in approximation processes.
+        precision : int, optional
+            The precision used when converting numbers to strings.
+        lineardeflection : float, optional
+            The maximum distance between a curve/surface and its polygonal approximation.
+        angulardeflection : float, optional
+            The maximum curvature deviation.
+
+        Yields
+        ------
+        :class:`Tolerance`
+            The tolerance instance with temporary settings applied.
+
+        Examples
+        --------
+        >>> from compas.tolerance import TOL
+        >>> TOL.absolute
+        1e-09
+        >>> with TOL.temporary(absolute=0.01):
+        ...     TOL.absolute
+        0.01
+        >>> TOL.absolute
+        1e-09
+
+        """
+        # Save current state
+        saved = {
+            "unit": self._unit,
+            "absolute": self._absolute,
+            "relative": self._relative,
+            "angular": self._angular,
+            "approximation": self._approximation,
+            "precision": self._precision,
+            "lineardeflection": self._lineardeflection,
+            "angulardeflection": self._angulardeflection,
+        }
+        try:
+            # Apply temporary changes
+            self.update(
+                unit=unit,
+                absolute=absolute,
+                relative=relative,
+                angular=angular,
+                approximation=approximation,
+                precision=precision,
+                lineardeflection=lineardeflection,
+                angulardeflection=angulardeflection,
+            )
+            yield self
+        finally:
+            # Restore original state
+            self._unit = saved["unit"]
+            self._absolute = saved["absolute"]
+            self._relative = saved["relative"]
+            self._angular = saved["angular"]
+            self._approximation = saved["approximation"]
+            self._precision = saved["precision"]
+            self._lineardeflection = saved["lineardeflection"]
+            self._angulardeflection = saved["angulardeflection"]
 
     @property
     def units(self):
