@@ -398,14 +398,14 @@ class Tolerance(Data):
         """
         # Save current state
         saved = {
-            "unit": self._unit,
-            "absolute": self._absolute,
-            "relative": self._relative,
-            "angular": self._angular,
-            "approximation": self._approximation,
-            "precision": self._precision,
-            "lineardeflection": self._lineardeflection,
-            "angulardeflection": self._angulardeflection,
+            "unit": self.unit,
+            "absolute": self.absolute,
+            "relative": self.relative,
+            "angular": self.angular,
+            "approximation": self.approximation,
+            "precision": self.precision,
+            "lineardeflection": self.lineardeflection,
+            "angulardeflection": self.angulardeflection,
         }
         try:
             # Apply temporary changes

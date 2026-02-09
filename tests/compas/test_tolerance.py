@@ -62,6 +62,16 @@ def test_tolerance_temporary_restores_on_exception():
     assert TOL.absolute == original
 
 
+def test_tolerance_temporary_restores_unit():
+    """Test that temporary() restores values even if an exception occurs."""
+    original = TOL.unit
+
+    with TOL.temporary(unit="MM"):
+        assert TOL.unit == "MM"
+
+    assert TOL.unit == original
+
+
 def test_tolerance_format_number():
     assert TOL.format_number(0, precision=3) == "0.000"
     assert TOL.format_number(0.5, precision=3) == "0.500"
