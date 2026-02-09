@@ -34,6 +34,7 @@ from __future__ import print_function
 
 from contextlib import contextmanager
 from decimal import Decimal
+from warnings import warn
 
 import compas
 from compas.data import Data
@@ -442,6 +443,16 @@ class Tolerance(Data):
         if value not in ["M", "MM"]:
             raise ValueError("Invalid unit: {}".format(value))
         self._unit = value
+
+    @property
+    def units(self):
+        warn("The 'units' property is deprecated. Use 'unit' instead.", DeprecationWarning)
+        return self.unit
+
+    @units.setter
+    def units(self, value):
+        warn("The 'units' property is deprecated. Use 'unit' instead.", DeprecationWarning)
+        self.unit = value
 
     @property
     def absolute(self):
