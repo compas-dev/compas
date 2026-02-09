@@ -432,11 +432,13 @@ class Tolerance(Data):
             self._angulardeflection = saved["angulardeflection"]
 
     @property
-    def units(self):
+    def unit(self):
+        if not self._unit:
+            return "M"
         return self._unit
 
-    @units.setter
-    def units(self, value):
+    @unit.setter
+    def unit(self, value):
         if value not in ["M", "MM"]:
             raise ValueError("Invalid unit: {}".format(value))
         self._unit = value
