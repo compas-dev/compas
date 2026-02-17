@@ -1,12 +1,8 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 import json
 import os
 
 
-def dataclass_dataschema(cls):  # type: (...) -> dict
+def dataclass_dataschema(cls) -> dict:
     """Generate a JSON schema for a COMPAS object class.
 
     Parameters
@@ -23,7 +19,7 @@ def dataclass_dataschema(cls):  # type: (...) -> dict
     return cls.DATASCHEMA
 
 
-def dataclass_typeschema(cls):  # type: (...) -> dict
+def dataclass_typeschema(cls) -> dict:
     """Generate a JSON schema for the data type of a COMPAS object class.
 
     Parameters
@@ -43,7 +39,7 @@ def dataclass_typeschema(cls):  # type: (...) -> dict
     }
 
 
-def dataclass_jsonschema(cls, filepath=None, draft=None):  # type: (...) -> dict
+def dataclass_jsonschema(cls, filepath=None, draft=None) -> dict:
     """Generate a JSON schema for a COMPAS object class.
 
     Parameters
@@ -85,7 +81,7 @@ def dataclass_jsonschema(cls, filepath=None, draft=None):  # type: (...) -> dict
     return schema
 
 
-def compas_jsonschema(dirname=None):  # type: (...) -> list
+def compas_jsonschema(dirname=None) -> list:
     """Generate a JSON schema for the COMPAS data model.
 
     Parameters
@@ -110,7 +106,7 @@ def compas_jsonschema(dirname=None):  # type: (...) -> list
     return schemas
 
 
-def compas_dataclasses():  # type: (...) -> list
+def compas_dataclasses() -> list:
     """Find all classes in the COMPAS data model.
 
     Returns

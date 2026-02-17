@@ -1,12 +1,7 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 import json
 import zipfile
 
 from compas import _iotools
-from compas.data import Data  # noqa: F401
 from compas.data import DataDecoder
 from compas.data import DataEncoder
 
@@ -66,7 +61,7 @@ def json_dump(data, fp, pretty=False, compact=False, minimal=False):
         return json.dump(data, f, cls=DataEncoder, **kwargs)
 
 
-def json_dumps(data, pretty=False, compact=False, minimal=False):  # type: (...) -> str
+def json_dumps(data, pretty=False, compact=False, minimal=False) -> str:
     """Write a collection of COMPAS objects to a JSON string.
 
     Parameters
@@ -173,7 +168,7 @@ def json_loadz(zip_file):
     return json_loads(json_str)
 
 
-def json_load(fp):  # type: (...) -> dict
+def json_load(fp) -> dict:
     """Read COMPAS object data from a JSON file.
 
     Parameters
@@ -207,7 +202,7 @@ def json_load(fp):  # type: (...) -> dict
         return json.load(f, cls=DataDecoder)
 
 
-def json_loads(s):  # type: (...) -> dict
+def json_loads(s) -> dict:
     """Read COMPAS object data from a JSON string.
 
     Parameters

@@ -1,34 +1,15 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
-try:
-    from typing import TypeVar  # noqa: F401
-
-    D = TypeVar("D", bound="Data")
-except ImportError:
-    pass
-
 import hashlib
 from copy import deepcopy
+from typing import TypeVar
 from uuid import UUID
 from uuid import uuid4
 
 import compas
 
-# ==============================================================================
-# If you ever feel tempted to use ABCMeta in your code: don't, just DON'T.
-# Assigning __metaclass__ = ABCMeta to a class causes a severe memory leak/performance
-# degradation on IronPython 2.7.
-
-# See these issues for more details:
-# - https://github.com/compas-dev/compas/issues/562
-# - https://github.com/compas-dev/compas/issues/649
-
-# ==============================================================================
+D = TypeVar("D", bound="Data")
 
 
-class Data(object):
+class Data:
     """Abstract base class for all COMPAS data objects.
 
     Parameters
@@ -145,7 +126,7 @@ class Data(object):
             self.name = state["name"]
 
     @classmethod
-    def __from_data__(cls, data):  # type: (dict) -> Data
+    def __from_data__(cls, data) -> "Data":
         """Construct an object of this type from the provided data.
 
         Parameters
@@ -190,7 +171,7 @@ class Data(object):
         self._name = name
 
     @classmethod
-    def from_json(cls, filepath):  # type: (...) -> Data
+    def from_json(cls, filepath) -> "Data":
         """Construct an object of this type from a JSON file.
 
         Parameters
@@ -232,7 +213,7 @@ class Data(object):
         compas.json_dump(self, filepath, pretty=pretty, compact=compact, minimal=minimal)
 
     @classmethod
-    def from_jsonstring(cls, string):  # type: (...) -> Data
+    def from_jsonstring(cls, string) -> "Data":
         """Construct an object of this type from a JSON string.
 
         Parameters
@@ -276,7 +257,7 @@ class Data(object):
         """
         return compas.json_dumps(self, pretty=pretty, compact=compact, minimal=minimal)
 
-    def copy(self, cls=None, copy_guid=False):  # type: (...) -> D
+    def copy(self, cls=None, copy_guid=False) -> D:  # type: ignore
         """Make an independent copy of the data object.
 
         Parameters

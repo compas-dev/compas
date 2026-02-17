@@ -1,16 +1,10 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
-try:
-    from typing import Type  # noqa: F401
-except ImportError:
-    pass
-
 import json
 import platform
+from typing import Type
 
-from .data import Data  # noqa: F401
+import numpy as np
+
+from .data import Data
 from .exceptions import DecoderError
 
 IDictionary = None
@@ -27,20 +21,8 @@ if "ironpython" == platform.python_implementation().lower():
     except:  # noqa: E722
         pass
 
-try:
-    import numpy as np
 
-    try:
-        np_float = np.float_
-    except AttributeError:
-        np_float = np.float64
-
-    numpy_support = True
-except (ImportError, SyntaxError):
-    numpy_support = False
-
-
-def cls_from_dtype(dtype, inheritance=None):  # type: (...) -> Type[Data]
+def cls_from_dtype(dtype, inheritance=None) -> Type[Data]:
     """Get the class object corresponding to a COMPAS data type specification.
 
     Parameters
@@ -144,32 +126,31 @@ class DataEncoder(json.JSONEncoder):
         if hasattr(o, "__next__"):
             return list(o)
 
-        if numpy_support:
-            if isinstance(o, np.ndarray):
-                return o.tolist()
-            if isinstance(
-                o,
-                (
-                    np.int_,
-                    np.intc,
-                    np.intp,
-                    np.int8,
-                    np.int16,
-                    np.int32,
-                    np.int64,
-                    np.uint8,
-                    np.uint16,
-                    np.uint32,
-                    np.uint64,
-                ),  # type: ignore
-            ):
-                return int(o)
-            if isinstance(o, (np_float, np.float16, np.float32, np.float64)):  # type: ignore
-                return float(o)
-            if isinstance(o, np.bool_):
-                return bool(o)
-            if isinstance(o, np.void):
-                return None
+        if isinstance(o, np.ndarray):
+            return o.tolist()
+        if isinstance(
+            o,
+            (
+                np.int_,
+                np.intc,
+                np.intp,
+                np.int8,
+                np.int16,
+                np.int32,
+                np.int64,
+                np.uint8,
+                np.uint16,
+                np.uint32,
+                np.uint64,
+            ),  # type: ignore
+        ):
+            return int(o)
+        if isinstance(o, (np.float_, np.float16, np.float32, np.float64)):  # type: ignore
+            return float(o)
+        if isinstance(o, np.bool_):
+            return bool(o)
+        if isinstance(o, np.void):
+            return None
 
         if dotnet_support:
             if isinstance(o, (System.Decimal, System.Double, System.Single)):
@@ -217,7 +198,7 @@ class DataDecoder(json.JSONDecoder):
     """
 
     def __init__(self, *args, **kwargs):
-        super(DataDecoder, self).__init__(object_hook=self.object_hook, *args, **kwargs)
+        super().__init__(object_hook=self.object_hook, *args, **kwargs)
 
     def object_hook(self, o):
         """Reconstruct a deserialized object.
