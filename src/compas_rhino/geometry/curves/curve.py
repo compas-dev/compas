@@ -14,7 +14,7 @@ from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import polyline_to_compas
 from compas_rhino.conversions import transformation_to_rhino
 from compas_rhino.conversions import vector_to_compas
-from compas_rhino.conversions.exceptions import ConversionError
+from compas_rhino.conversions import ConversionError
 
 
 class RhinoCurve(Curve):
