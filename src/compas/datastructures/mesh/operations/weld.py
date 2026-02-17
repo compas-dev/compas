@@ -1,7 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 from compas.itertools import pairwise
 from compas.topology import connected_components
 from compas.topology import vertex_adjacency_from_edges

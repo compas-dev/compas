@@ -1,16 +1,6 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
+from collections.abc import Mapping
 from itertools import product
 from random import sample
-
-import compas
-
-if compas.PY2:
-    from collections import Mapping  # type: ignore
-else:
-    from collections.abc import Mapping
 
 from compas.datastructures import Mesh
 from compas.datastructures.attributes import CellAttributeView

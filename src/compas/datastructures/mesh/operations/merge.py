@@ -1,8 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
-
 def mesh_merge_faces(mesh, faces):
     """Merge two faces of a mesh over their shared edge.
 
