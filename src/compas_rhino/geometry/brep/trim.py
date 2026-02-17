@@ -5,9 +5,10 @@ from __future__ import print_function
 import Rhino  # type: ignore
 
 from compas.geometry import BrepTrim
-from compas_rhino.geometry import RhinoNurbsCurve
-from compas_rhino.geometry.brep.edge import RhinoBrepEdge
 
+from .edge import RhinoBrepEdge
+
+# from compas_rhino.geometry import RhinoBrepEdge
 from .vertex import RhinoBrepVertex
 
 
