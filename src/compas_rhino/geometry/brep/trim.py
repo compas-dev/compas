@@ -5,6 +5,7 @@ from __future__ import print_function
 import Rhino  # type: ignore
 
 from compas.geometry import BrepTrim
+from compas_rhino.geometry import RhinoNurbsCurve
 
 from .edge import RhinoBrepEdge
 

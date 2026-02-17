@@ -367,9 +367,7 @@ class RhinoBrepFace(BrepFace):
             True if the point is on the face (inside or on the boundary), False otherwise.
         """
         relation = self._face.IsPointOnFace(u, v)
-        if relation == Rhino.Geometry.PointFaceRelation.Interior:
-            return True
-        if relation == Rhino.Geometry.PointFaceRelation.Boundary:
+        if relation in (Rhino.Geometry.PointFaceRelation.Interior, Rhino.Geometry.PointFaceRelation.Boundary):
             return True
         if relation == Rhino.Geometry.PointFaceRelation.Exterior:
             return False
