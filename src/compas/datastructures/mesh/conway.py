@@ -1,8 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
-
 def mesh_conway_dual(mesh):
     """Generates the dual mesh from a seed mesh.
 

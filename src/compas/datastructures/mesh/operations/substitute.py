@@ -1,8 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
-
 def mesh_substitute_vertex_in_faces(mesh, old_vkey, new_vkey, fkeys=None):
     """Substitute in a mesh a vertex by another one.
     In all faces by default or in a given set of faces.

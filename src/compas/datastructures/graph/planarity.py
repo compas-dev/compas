@@ -1,7 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 from itertools import product
 from math import cos
 from math import pi
@@ -11,14 +7,6 @@ from compas.geometry import angle_vectors_xy
 from compas.geometry import is_ccw_xy
 from compas.geometry import subtract_vectors_xy
 from compas.geometry._core.predicates_2 import is_intersection_segment_segment_xy
-
-
-def graph_embed_in_plane_proxy(data, fixed=None):
-    from compas.datastructures import Graph
-
-    graph = Graph.__from_data__(data)
-    graph_embed_in_plane(graph, fixed=fixed)
-    return graph.to_data()
 
 
 def graph_is_crossed(graph):

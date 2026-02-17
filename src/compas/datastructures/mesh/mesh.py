@@ -1,17 +1,7 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
+from collections.abc import Mapping
 from itertools import product
 from math import pi
 from random import sample
-
-import compas
-
-if compas.PY2:
-    from collections import Mapping
-else:
-    from collections.abc import Mapping
 
 from compas.datastructures.attributes import EdgeAttributeView
 from compas.datastructures.attributes import FaceAttributeView
@@ -554,7 +544,7 @@ class Mesh(Datastructure):
             A mesh object.
 
         """
-        vertices, faces = shape.to_vertices_and_faces(**kwargs)
+        vertices, faces = shape.to_vertices_and_faces(**kwargs)  # type: ignore
         mesh = cls.from_vertices_and_faces(vertices, faces)
         mesh.name = shape.name
         return mesh
