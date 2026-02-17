@@ -1,13 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
-try:
-    basestring  # type: ignore
-except NameError:
-    basestring = str
-
-
 def is_sequence_of_str(items):
     """Verify that the sequence contains only items of type str.
 
@@ -23,7 +13,7 @@ def is_sequence_of_str(items):
         False otherwise.
 
     """
-    return all(isinstance(item, basestring) for item in items)
+    return all(isinstance(item, str) for item in items)
 
 
 def is_sequence_of_int(items):
