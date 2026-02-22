@@ -16,17 +16,6 @@ except ImportError:
 
 __version__ = "2.15.0"
 
-__all__ = [
-    "get_grasshopper_managedplugin_path",
-    "get_grasshopper_library_path",
-    "get_grasshopper_userobjects_path",
-    "fetch_ghio_lib",
-    "create_id",
-    "warning",
-    "error",
-    "remark",
-    "message",
-]
 __all_plugins__ = [
     "compas_ghpython.install",
     "compas_ghpython.uninstall",

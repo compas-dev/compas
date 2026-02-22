@@ -1,7 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 import rhinoscriptsyntax as rs  # type: ignore
 import scriptcontext as sc  # type: ignore
 

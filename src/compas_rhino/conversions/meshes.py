@@ -1,11 +1,4 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
-try:
-    from itertools import zip_longest
-except ImportError:
-    from itertools import izip_longest as zip_longest  # type: ignore
+from itertools import zip_longest
 
 import Rhino  # type: ignore
 import System  # type: ignore
