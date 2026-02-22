@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import compas.data  # noqa: F401
 
 from .sceneobject import SceneObject
