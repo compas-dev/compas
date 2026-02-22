@@ -3,10 +3,7 @@ This package defines sceneobjects for visualising COMPAS items (geometry & datas
 Every item type is paired with a corresponding scene object type that is capable of visualizing the data of the object.
 The scene objects are implemented as pluggables, and automatically switch between plugins depending on the contexct in which they are used.
 """
-
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
+# ruff: noqa: F401
 
 from .exceptions import SceneObjectNotRegisteredError
 from .sceneobject import SceneObject
@@ -38,21 +35,3 @@ def register_scene_objects_base():
     register(Mesh, MeshObject, context=None)
     register(Graph, GraphObject, context=None)
     register(VolMesh, VolMeshObject, context=None)
-
-
-__all__ = [
-    "SceneObjectNotRegisteredError",
-    "SceneObject",
-    "MeshObject",
-    "GraphObject",
-    "GeometryObject",
-    "VolMeshObject",
-    "Scene",
-    "clear",
-    "before_draw",
-    "after_draw",
-    "register_scene_objects",
-    "get_sceneobject_cls",
-    "register",
-    "Group",
-]
