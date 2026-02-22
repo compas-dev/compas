@@ -1,7 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 COMPONENT_TYPE_BYTE = 5120
 COMPONENT_TYPE_UNSIGNED_BYTE = 5121
 COMPONENT_TYPE_SHORT = 5122

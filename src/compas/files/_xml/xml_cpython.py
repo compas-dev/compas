@@ -1,7 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 import xml.etree.ElementTree as ET
 from http.client import HTTPResponse
 from xml.dom import minidom

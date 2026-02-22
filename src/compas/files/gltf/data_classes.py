@@ -1,15 +1,10 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
-
 class AlphaMode(object):
     BLEND = "BLEND"
     MASK = "MASK"
     OPAQUE = "OPAQUE"
 
 
-class MineType(object):
+class MimeType(object):
     JPEG = "image/jpeg"
     PNG = "image/png"
 

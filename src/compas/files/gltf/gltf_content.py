@@ -1,7 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 from compas.files.gltf.data_classes import TextureInfoData
 from compas.files.gltf.gltf_mesh import GLTFMesh
 from compas.files.gltf.gltf_node import GLTFNode
@@ -499,7 +495,7 @@ if __name__ == "__main__":
     from compas.datastructures import Mesh
     from compas.files.gltf.data_classes import ImageData
     from compas.files.gltf.data_classes import MaterialData
-    from compas.files.gltf.data_classes import MineType
+    from compas.files.gltf.data_classes import MimeType
     from compas.files.gltf.data_classes import PBRMetallicRoughnessData
     from compas.files.gltf.data_classes import TextureData
     from compas.files.gltf.extensions import KHR_materials_pbrSpecularGlossiness
@@ -529,7 +525,7 @@ if __name__ == "__main__":
     # and the gltf only makes sense when bundled with these external files.
     image_data = ImageData(
         name=image_uri,
-        mime_type=MineType.PNG,
+        mime_type=MimeType.PNG,
         uri=image_file,
     )
     image_idx = cnt.add_image(image_data)
