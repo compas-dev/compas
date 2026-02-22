@@ -2,8 +2,7 @@
 This package provides scene object plugins for visualising COMPAS objects in Rhino.
 When working in Rhino, :class:`compas.scene.SceneObject` will automatically use the corresponding Rhino scene object for each COMPAS object type.
 """
-
-from __future__ import absolute_import
+# ruff: noqa: F401
 
 from compas.plugins import plugin
 from compas.scene import register
@@ -95,30 +94,3 @@ def register_scene_objects():
     register(Brep, RhinoBrepObject, context="Rhino")
 
     # print("Rhino SceneObjects registered.")
-
-
-__all__ = [
-    "RhinoSceneObject",
-    "RhinoCircleObject",
-    "RhinoEllipseObject",
-    "RhinoFrameObject",
-    "RhinoLineObject",
-    "RhinoPlaneObject",
-    "RhinoPointObject",
-    "RhinoPolygonObject",
-    "RhinoPolylineObject",
-    "RhinoVectorObject",
-    "RhinoBoxObject",
-    "RhinoCapsuleObject",
-    "RhinoConeObject",
-    "RhinoCylinderObject",
-    "RhinoPolyhedronObject",
-    "RhinoSphereObject",
-    "RhinoTorusObject",
-    "RhinoMeshObject",
-    "RhinoGraphObject",
-    "RhinoVolMeshObject",
-    "RhinoCurveObject",
-    "RhinoSurfaceObject",
-    "RhinoBrepObject",
-]

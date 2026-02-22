@@ -20,15 +20,6 @@ DEFAULT_VERSION = "4.2"
 
 INSTALLATION_ARGUMENTS = None
 
-
-__all__ = [
-    "INSTALLABLE_PACKAGES",
-    "SUPPORTED_VERSIONS",
-    "DEFAULT_VERSION",
-    "clear",
-    "redraw",
-]
-
 __all_plugins__ = [
     "compas_blender.geometry.booleans",
     "compas_blender.install",
