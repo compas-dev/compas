@@ -1,5 +1,3 @@
-# -*- coding: UTF-8 -*-
-#
 # This module has been adapted from aglyph.compat.ipyetree
 #
 # MIT license
@@ -32,10 +30,6 @@ parser to parse an XML document.
 :mod:`xml.parsers.expat` module, and so the default parser used by
 ElementTree does not exist is most releases.
 """
-
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
 import xml.etree.ElementTree as ET
 from urllib import addinfourl
@@ -170,7 +164,7 @@ class CLRXMLTreeParser(ET.XMLParser):
             The root element of the XML document
         """
         xml_string = "".join(self._buffer)
-        self._buffer = None
+        self._buffer = []
         reader = XmlReader.Create(StringReader(xml_string), self.settings)
         while reader.Read():
             if reader.IsStartElement():

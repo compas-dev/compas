@@ -1,7 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 from compas.files.gltf.data_classes import AnimationData
 from compas.files.gltf.data_classes import AnimationSamplerData
 from compas.files.gltf.data_classes import CameraData

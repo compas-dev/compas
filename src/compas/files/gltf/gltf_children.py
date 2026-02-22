@@ -1,8 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
-
 class GLTFChildren(object):
     def __init__(self, context, values):
         self._values = list(values)
