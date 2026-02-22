@@ -1,13 +1,5 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 import os
-
-try:
-    from urllib.request import urlretrieve
-except ImportError:
-    from urllib import urlretrieve
+from urllib.request import urlretrieve
 
 
 def download_file_from_remote(source, target, overwrite=True):
