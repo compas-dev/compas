@@ -28,18 +28,12 @@ Example
 
 """
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 from contextlib import contextmanager
 from decimal import Decimal
 from warnings import warn
 
 import compas
 from compas.data import Data
-
-__all__ = ["Tolerance", "TOL"]
 
 
 class Tolerance(Data):
