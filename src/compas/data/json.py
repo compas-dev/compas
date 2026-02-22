@@ -8,7 +8,7 @@ from compas.data import DataEncoder
 _JSON_CONTENT_FILENAME = "content.json"
 
 
-def json_dump(data, fp, pretty=False, compact=False, minimal=False):
+def json_dump(data, fp, pretty: bool = False, compact: bool = False, minimal: bool = False) -> None:
     """Write a collection of COMPAS object data to a JSON file.
 
     Parameters
@@ -61,7 +61,7 @@ def json_dump(data, fp, pretty=False, compact=False, minimal=False):
         return json.dump(data, f, cls=DataEncoder, **kwargs)
 
 
-def json_dumps(data, pretty=False, compact=False, minimal=False) -> str:
+def json_dumps(data, pretty: bool = False, compact: bool = False, minimal: bool = False) -> str:
     """Write a collection of COMPAS objects to a JSON string.
 
     Parameters
@@ -109,7 +109,7 @@ def json_dumps(data, pretty=False, compact=False, minimal=False) -> str:
     return json.dumps(data, cls=DataEncoder, **kwargs)
 
 
-def json_dumpz(data, zip_filename, pretty=False, compact=False, minimal=False):
+def json_dumpz(data, zip_filename, pretty: bool = False, compact: bool = False, minimal: bool = False) -> None:
     """Write a collection of COMPAS objects to a compressed JSON file (using ZIP compression).
 
     Parameters
@@ -126,7 +126,7 @@ def json_dumpz(data, zip_filename, pretty=False, compact=False, minimal=False):
 
     Returns
     -------
-    str
+    None
 
     See Also
     --------

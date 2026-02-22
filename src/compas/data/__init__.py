@@ -1,7 +1,3 @@
-"""
-This package defines the core infrastructure for data serialisation in the COMPAS framework.
-It provides a base class for data objects, a JSON encoder and decoder, serialisers and deserialisers, and schema validation.
-"""
 # ruff: noqa: F401
 
 from .exceptions import DecoderError

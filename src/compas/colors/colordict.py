@@ -1,3 +1,7 @@
+from typing import Iterator
+from typing import Optional
+from typing import Union
+
 from compas.data import Data
 
 from .color import Color
@@ -27,57 +31,57 @@ class ColorDict(Data):
     }
 
     @property
-    def __data__(self):
+    def __data__(self) -> dict:
         return {
             "default": self.default,
             "dict": self._dict,
         }
 
     @classmethod
-    def __from_data__(cls, data):
+    def __from_data__(cls, data: dict) -> "ColorDict":
         colordict = cls(data["default"])
         colordict.update(data["dict"])
         return colordict
 
-    def __init__(self, default, name=None):
-        super(ColorDict, self).__init__(name=name)
+    def __init__(self, default: Color, name: Optional[str] = None):
+        super().__init__(name=name)
         self._default = None
         self.default = default
         self._dict = {}
 
     @property
-    def default(self):
+    def default(self) -> Color:
         if not self._default:
             self._default = Color(0, 0, 0)
         return self._default
 
     @default.setter
-    def default(self, default):
+    def default(self, default: Color) -> None:
         if default and not isinstance(default, Color):
             default = Color.coerce(default)
         self._default = default
 
-    def keymapper(self, key):
+    def keymapper(self, key: Union[int, tuple, list, str]) -> str:
         if key.__class__ in self.KEYMAP:
             return self.KEYMAP[key.__class__](key)
-        return key
+        return key  # type: ignore
 
-    def __getitem__(self, key):
+    def __getitem__(self, key: Union[int, tuple, list, str]) -> Color:
         return self._dict.get(self.keymapper(key), self.default)
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key: Union[int, tuple, list, str], value: Color) -> None:
         self._dict[self.keymapper(key)] = Color.coerce(value)
 
-    def __delitem__(self, key):
+    def __delitem__(self, key: Union[int, tuple, list, str]) -> None:
         del self._dict[self.keymapper(key)]
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[str]:
         return iter(self._dict)
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self._dict)
 
-    def __contains__(self, key):
+    def __contains__(self, key: Union[int, tuple, list, str]) -> bool:
         return self.keymapper(key) in self._dict
 
     def items(self):
@@ -89,10 +93,10 @@ class ColorDict(Data):
     def values(self):
         return self._dict.values()
 
-    def get(self, key, default=None):
+    def get(self, key: Union[int, tuple, list, str], default=None) -> Color:
         return self._dict.get(self.keymapper(key), default or self.default)
 
-    def clear(self):
+    def clear(self) -> None:
         """Clear the previously stored items.
 
         Returns
@@ -102,7 +106,7 @@ class ColorDict(Data):
         """
         self._dict = {}
 
-    def update(self, other):
+    def update(self, other: Union[dict, "ColorDict"]) -> None:
         """Update the dictionary with the items from another dictionary.
 
         Parameters

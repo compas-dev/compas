@@ -1,7 +1,9 @@
+from typing import Sequence
+
 from .validators import is_item_iterable
 
 
-def coerce_sequence_of_tuple(sequence):
+def coerce_sequence_of_tuple(sequence: Sequence) -> list[tuple]:
     """Make sure all items of a sequence are of type tuple.
 
     Parameters
@@ -28,7 +30,7 @@ def coerce_sequence_of_tuple(sequence):
     return items
 
 
-def coerce_sequence_of_list(sequence):
+def coerce_sequence_of_list(sequence: Sequence) -> list[list]:
     """Make sure all items of a sequence are of type list.
 
     Parameters

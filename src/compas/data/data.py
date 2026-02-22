@@ -1,6 +1,9 @@
 import hashlib
 from copy import deepcopy
+from typing import Optional
+from typing import Type
 from typing import TypeVar
+from typing import Union
 from uuid import UUID
 from uuid import uuid4
 
@@ -46,25 +49,25 @@ class Data:
 
     DATASCHEMA = {}
 
-    def __init__(self, name=None):
+    def __init__(self, name: Optional[str] = None):
         self._guid = None
         self._name = None
         if name:
             self.name = name
 
     @property
-    def __dtype__(self):
+    def __dtype__(self) -> str:
         return "{}/{}".format(".".join(self.__class__.__module__.split(".")[:2]), self.__class__.__name__)
 
     @classmethod
-    def __clstype__(cls):
+    def __clstype__(cls) -> str:
         return "{}/{}".format(".".join(cls.__module__.split(".")[:2]), cls.__name__)
 
     @property
-    def __data__(self):
+    def __data__(self) -> dict:
         raise NotImplementedError
 
-    def __jsondump__(self, minimal=False):
+    def __jsondump__(self, minimal: bool = False) -> dict:
         """Return the required information for serialization with the COMPAS JSON serializer.
 
         Parameters
@@ -89,7 +92,7 @@ class Data:
         return state
 
     @classmethod
-    def __jsonload__(cls, data, guid=None, name=None):
+    def __jsonload__(cls, data, guid: Optional[str] = None, name: Optional[str] = None) -> "Data":
         """Construct an object of this type from the provided data to support COMPAS JSON serialization.
 
         Parameters
@@ -113,12 +116,12 @@ class Data:
             obj.name = name
         return obj
 
-    def __getstate__(self):
+    def __getstate__(self) -> dict:
         state = self.__jsondump__()
         state["__dict__"] = self.__dict__
         return state
 
-    def __setstate__(self, state):
+    def __setstate__(self, state: dict) -> None:
         self.__dict__.update(state["__dict__"])
         if "guid" in state:
             self._guid = UUID(state["guid"])
@@ -126,7 +129,7 @@ class Data:
             self.name = state["name"]
 
     @classmethod
-    def __from_data__(cls, data) -> "Data":
+    def __from_data__(cls, data: dict) -> "Data":
         """Construct an object of this type from the provided data.
 
         Parameters
@@ -142,7 +145,7 @@ class Data:
         """
         return cls(**data)
 
-    def ToString(self):
+    def ToString(self) -> str:
         """Converts the instance to a string.
 
         This method exists for .NET compatibility. When using IronPython,
@@ -157,21 +160,21 @@ class Data:
         return str(self)
 
     @property
-    def guid(self):
+    def guid(self) -> UUID:
         if not self._guid:
             self._guid = uuid4()
         return self._guid
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self._name or self.__class__.__name__
 
     @name.setter
-    def name(self, name):
+    def name(self, name: str) -> None:
         self._name = name
 
     @classmethod
-    def from_json(cls, filepath) -> "Data":
+    def from_json(cls, filepath: str) -> "Data":
         """Construct an object of this type from a JSON file.
 
         Parameters
@@ -195,7 +198,7 @@ class Data:
             raise TypeError("The data in the file is not a {}.".format(cls))
         return data
 
-    def to_json(self, filepath, pretty=False, compact=False, minimal=False):
+    def to_json(self, filepath: str, pretty: bool = False, compact: bool = False, minimal: bool = False) -> None:
         """Convert an object to its native data representation and save it to a JSON file.
 
         Parameters
@@ -213,7 +216,7 @@ class Data:
         compas.json_dump(self, filepath, pretty=pretty, compact=compact, minimal=minimal)
 
     @classmethod
-    def from_jsonstring(cls, string) -> "Data":
+    def from_jsonstring(cls, string: str) -> "Data":
         """Construct an object of this type from a JSON string.
 
         Parameters
@@ -237,7 +240,7 @@ class Data:
             raise TypeError("The data in the string is not a {}.".format(cls))
         return data
 
-    def to_jsonstring(self, pretty=False, compact=False, minimal=False):
+    def to_jsonstring(self, pretty: bool = False, compact: bool = False, minimal: bool = False) -> str:
         """Convert an object to its native data representation and save it to a JSON string.
 
         Parameters
@@ -257,7 +260,7 @@ class Data:
         """
         return compas.json_dumps(self, pretty=pretty, compact=compact, minimal=minimal)
 
-    def copy(self, cls=None, copy_guid=False) -> D:  # type: ignore
+    def copy(self, cls: Optional[Type["Data"]] = None, copy_guid: bool = False) -> D:  # type: ignore
         """Make an independent copy of the data object.
 
         Parameters
@@ -283,7 +286,7 @@ class Data:
             obj._guid = self.guid
         return obj  # type: ignore
 
-    def sha256(self, as_string=False):
+    def sha256(self, as_string: bool = False) -> Union[str, bytes]:
         """Compute a hash of the data for comparison during version control using the sha256 algorithm.
 
         Parameters
@@ -316,19 +319,19 @@ class Data:
         return h.digest()
 
     @classmethod
-    def validate_data(cls, data):
+    def validate_data(cls, data: dict) -> dict:
         """Validate the data against the object's data schema.
 
         The data is the raw data that can be used to construct an object of this type with the classmethod ``__from_data__``.
 
         Parameters
         ----------
-        data : Any
+        data : dict
             The data for validation.
 
         Returns
         -------
-        Any
+        dict
 
         """
         from jsonschema import Draft202012Validator

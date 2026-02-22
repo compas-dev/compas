@@ -1,5 +1,5 @@
 import json
-import platform
+from typing import Optional
 from typing import Type
 
 import numpy as np
@@ -11,18 +11,8 @@ IDictionary = None
 numpy_support = False
 dotnet_support = False
 
-# We don't do this from `compas.IPY` to avoid circular imports
-if "ironpython" == platform.python_implementation().lower():
-    dotnet_support = True
 
-    try:
-        import System  # type: ignore
-        from System.Collections.Generic import IDictionary  # type: ignore
-    except:  # noqa: E722
-        pass
-
-
-def cls_from_dtype(dtype, inheritance=None) -> Type[Data]:
+def cls_from_dtype(dtype: str, inheritance: Optional[list[str]] = None) -> Type[Data]:
     """Get the class object corresponding to a COMPAS data type specification.
 
     Parameters
@@ -151,10 +141,6 @@ class DataEncoder(json.JSONEncoder):
             return bool(o)
         if isinstance(o, np.void):
             return None
-
-        if dotnet_support:
-            if isinstance(o, (System.Decimal, System.Double, System.Single)):
-                return float(o)
 
         if isinstance(o, AttributeView):
             return dict(o)
