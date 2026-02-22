@@ -1,7 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 from compas.geometry import closest_point_on_segment_xy
 from compas.geometry import distance_point_line_xy
 from compas.geometry import distance_point_point_xy

@@ -1,7 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 from compas.data.validators import is_item_iterable
 from compas.geometry import add_vectors
 from compas.geometry import centroid_points
