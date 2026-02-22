@@ -2,11 +2,7 @@
 
 import io
 from contextlib import contextmanager
-
-try:
-    from urllib.request import urlopen
-except ImportError:
-    from urllib2 import urlopen
+from urllib.request import urlopen
 
 
 @contextmanager
