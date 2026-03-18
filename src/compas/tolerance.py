@@ -526,6 +526,26 @@ class Tolerance(Data):
     def angulardeflection(self, value):
         self._angulardeflection = value
 
+    @property
+    def lineardflection(self):
+        warn("The 'lineardflection' property is deprecated. Use 'lineardeflection' instead.", DeprecationWarning)
+        return self.lineardeflection
+
+    @lineardflection.setter
+    def lineardflection(self, value):
+        warn("The 'lineardflection' property is deprecated. Use 'lineardeflection' instead.", DeprecationWarning)
+        self.lineardeflection = value
+
+    @property
+    def angulardflection(self):
+        warn("The 'angulardflection' property is deprecated. Use 'angulardeflection' instead.", DeprecationWarning)
+        return self.angulardeflection
+
+    @angulardflection.setter
+    def angulardflection(self, value):
+        warn("The 'angulardflection' property is deprecated. Use 'angulardeflection' instead.", DeprecationWarning)
+        self.angulardeflection = value
+
     def tolerance(self, truevalue, rtol, atol):
         """Compute the tolerance for a comparison.
 
