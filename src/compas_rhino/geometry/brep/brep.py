@@ -890,6 +890,16 @@ class RhinoBrep(Brep):
         """
         return _join_meshes(self.to_meshes()), []
 
+    def to_polygons(self):
+        """Convert the faces of this Brep shape to polygons.
+
+        Returns
+        -------
+        list[:class:`~compas.geometry.Polygon`]
+
+        """
+        return [face.to_polygon() for face in self.faces]
+
     def to_step(self, filepath):
         if not (filepath.endswith(".step") or filepath.endswith(".stp")):
             raise ValueError("Attempted to export STEP but file ends with {} extension".format(filepath.split(".")[-1]))
