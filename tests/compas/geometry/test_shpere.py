@@ -22,16 +22,16 @@ def test_sphere_discretization(sphere):
 def test_sphere_scaled():
     """Test that Sphere.scaled() returns a scaled copy without modifying the original."""
     sphere = Sphere(radius=10.0)
-    
+
     # Test uniform scaling
     scaled_sphere = sphere.scaled(0.5)
-    
+
     # Original should be unchanged
     assert sphere.radius == 10.0
-    
+
     # Scaled copy should have scaled radius
     assert scaled_sphere.radius == 5.0
-    
+
     # Test scaling with factor > 1
     scaled_sphere_2 = sphere.scaled(2.0)
     assert scaled_sphere_2.radius == 20.0
@@ -41,10 +41,9 @@ def test_sphere_scaled():
 def test_sphere_scale():
     """Test that Sphere.scale() modifies the sphere in place."""
     sphere = Sphere(radius=10.0)
-    
+
     # Test uniform scaling
     sphere.scale(0.5)
-    
+
     # Sphere should be modified
     assert sphere.radius == 5.0
-
