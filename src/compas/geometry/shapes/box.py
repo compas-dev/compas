@@ -529,35 +529,49 @@ class Box(Shape):
     # Transformations
     # ==========================================================================
 
-    # def transform(self, transformation):
-    #     """Transform the box.
+    def transform(self, transformation):
+        """Transform the box.
 
-    #     Parameters
-    #     ----------
-    #     transformation : :class:`Transformation`
-    #         The transformation used to transform the Box.
+        Parameters
+        ----------
+        transformation : :class:`Transformation`
+            The transformation used to transform the Box.
 
-    #     Returns
-    #     -------
-    #     None
+        Returns
+        -------
+        None
 
-    #     Examples
-    #     --------
-    #     >>> box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
-    #     >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-    #     >>> T = Transformation.from_frame(frame)
-    #     >>> box.transform(T)
+        Examples
+        --------
+        >>> from compas.geometry import Frame, Transformation, Scale
+        >>> box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
+        >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+        >>> T = Transformation.from_frame(frame)
+        >>> box.transform(T)
+        >>> S = Scale.from_factors([2.0, 3.0, 4.0])
+        >>> box = Box(1.0, 2.0, 3.0)
+        >>> box.transform(S)
+        >>> box.xsize
+        2.0
+        >>> box.ysize
+        6.0
+        >>> box.zsize
+        12.0
 
-    #     """
-    #     self.frame.transform(transformation)
-    #     # Always local scaling, non-uniform scaling based on frame not yet considered.
-    #     Sc, _, _, _, _ = transformation.decomposed()
-    #     scalex = Sc[0, 0]
-    #     scaley = Sc[1, 1]
-    #     scalez = Sc[2, 2]
-    #     self.xsize *= scalex
-    #     self.ysize *= scaley
-    #     self.zsize *= scalez
+        """
+        # Extract scale component from the transformation
+        Sc, _, _, _, _ = transformation.decomposed()
+        scale_x = Sc.matrix[0][0]
+        scale_y = Sc.matrix[1][1]
+        scale_z = Sc.matrix[2][2]
+        
+        # Apply scaling to dimensions
+        self.xsize *= scale_x
+        self.ysize *= scale_y
+        self.zsize *= scale_z
+        
+        # Apply transformation to frame
+        self.frame.transform(transformation)
 
     def scale(self, x, y=None, z=None):
         """Scale the box.
