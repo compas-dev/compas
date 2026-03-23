@@ -1115,13 +1115,28 @@ document.write(`
 <h1>Tolerance</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas.tolerance.Tolerance">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.tolerance.</span></span><span class="sig-name descname"><span class="pre">Tolerance</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/8fa70b8/src/compas/tolerance.py#L17"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas.tolerance.</span></span><span class="sig-name descname"><span class="pre">Tolerance</span></span><a class="reference external" href="https://github.com/compas-dev/compas/blob/19d53e0/src/compas/tolerance.py#L45"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Bases: <a class="reference internal" href="compas.data.Data.html#compas.data.Data" title="compas.data.data.Data"><code class="xref py py-class docutils literal notranslate"><span class="pre">Data</span></code></a></p>
 <p>Tolerance settings for geometric operations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>unit</strong><span class="classifier">{“M”, “MM”}, optional</span></dt><dd><p>The unit of the tolerance settings.</p>
+</dd>
+<dt><strong>absolute</strong><span class="classifier">float, optional</span></dt><dd><p>The absolute tolerance. Default is <code class="xref py py-attr docutils literal notranslate"><span class="pre">ABSOLUTE</span></code>.</p>
+</dd>
+<dt><strong>relative</strong><span class="classifier">float, optional</span></dt><dd><p>The relative tolerance. Default is <code class="xref py py-attr docutils literal notranslate"><span class="pre">RELATIVE</span></code>.</p>
+</dd>
+<dt><strong>angular</strong><span class="classifier">float, optional</span></dt><dd><p>The angular tolerance. Default is <code class="xref py py-attr docutils literal notranslate"><span class="pre">ANGULAR</span></code>.</p>
+</dd>
+<dt><strong>approximation</strong><span class="classifier">float, optional</span></dt><dd><p>The tolerance used in approximation processes. Default is <code class="xref py py-attr docutils literal notranslate"><span class="pre">APPROXIMATION</span></code>.</p>
+</dd>
+<dt><strong>precision</strong><span class="classifier">int, optional</span></dt><dd><p>The precision used when converting numbers to strings. Default is <code class="xref py py-attr docutils literal notranslate"><span class="pre">PRECISION</span></code>.</p>
+</dd>
+<dt><strong>lineardeflection</strong><span class="classifier">float, optional</span></dt><dd><p>The maximum distance between a curve/surface and its polygonal approximation.
+Default is <code class="xref py py-attr docutils literal notranslate"><span class="pre">LINEARDEFLECTION</span></code>.</p>
+</dd>
+<dt><strong>angulardeflection</strong><span class="classifier">float, optional</span></dt><dd><p>The maximum curvature deviation. Default is <code class="xref py py-attr docutils literal notranslate"><span class="pre">ANGULARDEFLECTION</span></code>.</p>
 </dd>
 <dt><strong>name</strong><span class="classifier">str, optional</span></dt><dd><p>The name of the tolerance settings.</p>
 </dd>
@@ -1156,18 +1171,31 @@ The relative tolerance determines the allowable deviation between two values for
 The relative tolerance is defined as a fraction of one of the two values.
 This value is called the “true value”.
 By convention, the second value is considered the “true value” by the comparison functions of this class.</p>
-<p>The <a class="reference internal" href="#compas.tolerance.Tolerance" title="compas.tolerance.Tolerance"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.tolerance.Tolerance</span></code></a> class is implemented using a “singleton” pattern and can therefore have only 1 (one) instance per context.
-Usage of <a class="reference internal" href="compas.tolerance.TOL.html#compas.tolerance.TOL" title="compas.tolerance.TOL"><code class="xref py py-attr docutils literal notranslate"><span class="pre">compas.tolerance.TOL</span></code></a> outside of <code class="xref py py-mod docutils literal notranslate"><span class="pre">compas</span></code> internals is therefore deprecated.</p>
+<p>Each call to <code class="docutils literal notranslate"><span class="pre">Tolerance(...)</span></code> creates an independent instance. To modify the global
+tolerance settings used throughout COMPAS, use the explicit methods on <a class="reference internal" href="compas.tolerance.TOL.html#compas.tolerance.TOL" title="compas.tolerance.TOL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TOL</span></code></a>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TOL.update(...)</span></code> - Update specific tolerance values</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TOL.reset()</span></code> - Reset all values to defaults</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TOL.temporary(...)</span></code> - Context manager for temporary changes</p></li>
+</ul>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span> <span class="o">=</span> <span class="n">Tolerance</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">unit</span>
-<span class="go">&#39;M&#39;</span>
+<p>Create an independent tolerance instance:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span> <span class="o">=</span> <span class="n">Tolerance</span><span class="p">(</span><span class="n">absolute</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">absolute</span>
+<span class="go">0.01</span>
+</pre></div>
+</div>
+<p>The global TOL is separate:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">compas.tolerance</span><span class="w"> </span><span class="kn">import</span> <span class="n">TOL</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">TOL</span><span class="o">.</span><span class="n">absolute</span>  <span class="c1"># unchanged</span>
 <span class="go">1e-09</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">relative</span>
-<span class="go">1e-06</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">angular</span>
-<span class="go">1e-06</span>
+</pre></div>
+</div>
+<p>Modify global state explicitly:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">TOL</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">absolute</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">TOL</span><span class="o">.</span><span class="n">absolute</span>
+<span class="go">0.001</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">TOL</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 </pre></div>
 </div>
 <p class="rubric">Methods</p>
@@ -1215,11 +1243,17 @@ Usage of <a class="reference internal" href="compas.tolerance.TOL.html#compas.to
 <tr class="row-even"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.reset.html#compas.tolerance.Tolerance.reset" title="compas.tolerance.Tolerance.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a></p></td>
 <td><p>Reset all precision settings to their default values.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.tolerance.html#compas.tolerance.Tolerance.tolerance" title="compas.tolerance.Tolerance.tolerance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tolerance</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.temporary.html#compas.tolerance.Tolerance.temporary" title="compas.tolerance.Tolerance.temporary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">temporary</span></code></a></p></td>
+<td><p>Context manager for temporarily changing tolerance settings.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.tolerance.html#compas.tolerance.Tolerance.tolerance" title="compas.tolerance.Tolerance.tolerance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tolerance</span></code></a></p></td>
 <td><p>Compute the tolerance for a comparison.</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.update.html#compas.tolerance.Tolerance.update" title="compas.tolerance.Tolerance.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a></p></td>
+<td><p>Update tolerance settings.</p></td>
+</tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.tolerance.Tolerance.update_from_dict.html#compas.tolerance.Tolerance.update_from_dict" title="compas.tolerance.Tolerance.update_from_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_from_dict</span></code></a></p></td>
-<td><p>Update the tolerance singleton from the key-value pairs found in a dict.</p></td>
+<td><p>Update the tolerance from the key-value pairs found in a dict.</p></td>
 </tr>
 </tbody>
 </table>
