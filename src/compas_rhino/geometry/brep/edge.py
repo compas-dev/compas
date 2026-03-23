@@ -49,6 +49,10 @@ class RhinoBrepEdge(BrepEdge):
         True if the geometry of this edge is a line, False otherwise.
     native_edge : :class:`Rhino.Geometry.BrepEdge`
         The underlying BrepEdge object.
+    domain : tuple
+        The domain of the edge.
+    index : int
+        The index of the edge.
 
     """
 
@@ -153,6 +157,17 @@ class RhinoBrepEdge(BrepEdge):
     def length(self):
         return self._mass_props.Length
 
+    @property
+    def domain(self):
+        rhino_domain = self._edge.Domain
+        min = rhino_domain.Min
+        max = rhino_domain.Max
+        return (min, max)
+
+    @property
+    def index(self):
+        return self._edge.EdgeIndex
+
     # ==============================================================================
     # Methods
     # ==============================================================================
@@ -200,3 +215,40 @@ class RhinoBrepEdge(BrepEdge):
             raise ValueError("Unknown curve type: {}".format(curve_type))
         curve.Domain = Rhino.Geometry.Interval(*domain)
         return curve
+
+    def closest_point(self, point):
+        """
+        Returns the parameter of the closest point on the edge to the given point.
+
+        Parameters
+        ----------
+        point : :class:`compas.geometry.Point`
+            The point to project onto the edge.
+
+        Returns
+        -------
+        float
+            The parameter of the closest point on the edge.
+        """
+        rgpoint = Rhino.Geometry.Point3d(point.x, point.y, point.z)
+        success, parameter = self._edge.ClosestPoint(rgpoint)
+        if not success:
+            raise ValueError("Failed to find closest point on edge")
+        return parameter
+
+    def point_at(self, parameter):
+        """
+        Returns the point on the edge at the given parameter.
+
+        Parameters
+        ----------
+        parameter : float
+            The parameter of the point on the edge.
+
+        Returns
+        -------
+        :class:`compas.geometry.Point`
+            The point on the edge at the given parameter.
+        """
+        rgpoint = self._edge.PointAt(parameter)
+        return point_to_compas(rgpoint)

@@ -16,6 +16,8 @@ class RhinoBrepVertex(BrepVertex):
         The underlying Rhino BrepBertex object.
     point : :class:`compas.geometry.Point`, read-only
         The geometry of this vertex as a point in 3D space.
+    index : int
+        The index of the vertex.
 
     """
 
@@ -65,6 +67,10 @@ class RhinoBrepVertex(BrepVertex):
     @property
     def point(self):
         return self._point
+
+    @property
+    def index(self):
+        return self._vertex.VertexIndex
 
     @property
     def native_vertex(self):

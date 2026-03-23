@@ -7,6 +7,8 @@ import Rhino  # type: ignore
 from compas.geometry import BrepTrim
 from compas_rhino.geometry import RhinoNurbsCurve
 
+from .edge import RhinoBrepEdge
+
 from .vertex import RhinoBrepVertex
 
 
@@ -29,7 +31,8 @@ class RhinoBrepTrim(BrepTrim):
         The end vertex of this trim.
     vertices : list[:class:`compas_rhino.geometry.RhinoBrepVertex`], read-only
         The list of vertices which comprise this trim (start and end).
-
+    edge : :class:compas_rhino.geometry.RhinoBrepEdge
+        The edge associated with this trim.
     """
 
     def __init__(self, rhino_trim=None):
@@ -117,6 +120,10 @@ class RhinoBrepTrim(BrepTrim):
     @property
     def native_trim(self):
         return self._trim
+
+    @property
+    def edge(self):
+        return RhinoBrepEdge(self._trim.Edge)
 
     @native_trim.setter
     def native_trim(self, rhino_trim):

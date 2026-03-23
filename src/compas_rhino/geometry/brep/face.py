@@ -14,6 +14,7 @@ from compas_rhino.conversions import cylinder_to_compas
 from compas_rhino.conversions import cylinder_to_rhino
 from compas_rhino.conversions import frame_to_rhino_plane
 from compas_rhino.conversions import plane_to_compas_frame
+from compas_rhino.conversions import point_to_compas
 from compas_rhino.conversions import sphere_to_compas
 from compas_rhino.conversions import sphere_to_rhino
 from compas_rhino.geometry import RhinoNurbsSurface
@@ -310,3 +311,84 @@ class RhinoBrepFace(BrepFace):
         if not success:
             raise ValueError("Failed to get frame at uv parameters: ({},{}).".format(u, v))
         return plane_to_compas_frame(rhino_plane)
+
+    def point_at(self, u, v):
+        """Returns the point at the given uv parameters.
+
+        Parameters
+        ----------
+        u : float
+            The u parameter.
+        v : float
+            The v parameter.
+
+        Returns
+        -------
+        :class:`compas.geometry.Point`
+            The point at the given uv parameters.
+        """
+        rgpoint = self._face.PointAt(u, v)
+        return point_to_compas(rgpoint)
+
+    def closest_point(self, point):
+        """Returns the closest point on the face to a give point.
+
+        Parameters
+        ----------
+        point :  :class:`compas.geometry.Point`
+            The point to find the closest point on the face to.
+
+        Returns
+        -------
+        tuple[float, float]
+            The u and v parameters of the closest point on the face.
+
+        """
+        rgpoint = Rhino.Geometry.Point3d(point.x, point.y, point.z)
+        success, u, v = self._face.ClosestPoint(rgpoint)
+        if success:
+            return (u, v)
+        else:
+            raise ValueError("Failed to find closest point on face.")
+
+    def is_point_on_face(self, u, v):
+        """Returns True if the point at the given uv parameters is on the face (inside or on the boundary).
+
+        Parameters
+        ----------
+        u : float
+            The u parameter.
+        v : float
+            The v parameter.
+
+        Returns
+        -------
+        bool
+            True if the point is on the face (inside or on the boundary), False otherwise.
+        """
+        relation = self._face.IsPointOnFace(u, v)
+        if relation in (Rhino.Geometry.PointFaceRelation.Interior, Rhino.Geometry.PointFaceRelation.Boundary):
+            return True
+        if relation == Rhino.Geometry.PointFaceRelation.Exterior:
+            return False
+
+    def is_point_on_boundary(self, u, v):
+        """Returns True if the point is on the boundary of the face.
+
+        Parameters
+        ----------
+        u : float
+            The u parameter.
+        v : float
+            The v parameter.
+
+        Returns
+        -------
+        bool
+            True if the point is on the boundary of the face, False otherwise.
+        """
+        relation = self._face.IsPointOnFace(u, v)
+        if relation == Rhino.Geometry.PointFaceRelation.Boundary:
+            return True
+        else:
+            return False

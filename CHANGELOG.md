@@ -30,6 +30,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added support for `.stp` file extension in addition to `.step` for `RhinoBrep.from_step()` and `RhinoBrep.to_step()` methods.
 * Added `volume()` method to `compas.datastructures.Mesh` for computing the volume of closed meshes using signed volume of triangles.
 * Added functions `warning`, `message`, `error` and `remark` to `compas_ghpython`.
+* Added method `RhinoBrep.closest_point()`.
+* Added attributes `RhinoBrepEdge.domain` and `RhinoBrepEdge.index` and methods `RhinoBrepEdge.closest_point()` and `RhinoBrepEdge.point_at`.
+* Added method `RhinoBrepFace.point_at()`, `RhinoBrepFace.closest_point()`, `RhinoBrepFace.is_point_on_face()` and `RhinoBrepFace.is_point_on_boundary()`.
+* Added method `RhinoBrepLoop.to_curve()`.
+* Added attribute `RhinoBrepTrim.edge`.
+* Added attribute `RhinoBrepVertex.index`.
+* Added method `RhinoCurve.to_polyline()`.
 
 ### Changed
 

@@ -294,4 +294,3 @@ class Torus(Shape):
         """
         self.radius_axis *= factor
         self.radius_pipe *= factor
-

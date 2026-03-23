@@ -43,3 +43,4 @@
 - Panayiotis Papacharalambous <<papacharalambous@arch.ethz.ch>> [@papachap](https://github.com/papachap)
 - Oliver Bucklin <<obucklin@arch.ethz.ch>> [@obucklin](https://github.com/obucklin)
 - Dominik Reisach <<reisach@arch.ethz.ch>> [@dominikreisach](https://github.com/dominikreisach)
+- Eric Gozzi <<eric.gozzi@arch.ethz.ch>> [@ericgozzi](https://github.com/ericgozzi)
