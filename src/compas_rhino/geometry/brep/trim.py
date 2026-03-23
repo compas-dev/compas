@@ -9,7 +9,6 @@ from compas_rhino.geometry import RhinoNurbsCurve
 
 from .edge import RhinoBrepEdge
 
-# from compas_rhino.geometry import RhinoBrepEdge
 from .vertex import RhinoBrepVertex
 
 
