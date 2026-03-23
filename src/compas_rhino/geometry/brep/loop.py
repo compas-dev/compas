@@ -103,6 +103,15 @@ class RhinoBrepLoop(BrepLoop):
         return [RhinoBrepEdge(trim.Edge) for trim in self._loop.Trims]
 
     @property
+    def vertices(self):
+        assert self.trims
+
+        vertices = [self.trims[0].start_vertex]
+        for trim in self.trims:
+            vertices.append(trim.end_vertex)
+        return vertices
+
+    @property
     def trims(self):
         return self._trims
 
