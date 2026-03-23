@@ -1,18 +1,8 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 from ast import literal_eval
+from collections.abc import Mapping
 from itertools import combinations
 from random import sample
 from random import shuffle
-
-import compas
-
-if compas.PY2:
-    from collections import Mapping
-else:
-    from collections.abc import Mapping
 
 from compas.datastructures.attributes import EdgeAttributeView
 from compas.datastructures.attributes import NodeAttributeView

@@ -1,12 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
-try:
-    basestring  # type: ignore
-except NameError:
-    basestring = str
-
 import colorsys
 import re
 
@@ -16,10 +7,7 @@ from compas.tolerance import TOL
 
 BASE16 = "0123456789abcdef"
 
-try:
-    HEX_DEC = {v: int(v, base=16) for v in [x + y for x in BASE16 for y in BASE16]}
-except Exception:
-    HEX_DEC = {v: int(v, 16) for v in [x + y for x in BASE16 for y in BASE16]}
+HEX_DEC = {v: int(v, base=16) for v in [x + y for x in BASE16 for y in BASE16]}
 
 
 class ColorError(Exception):
@@ -567,7 +555,7 @@ class Color(Data):
         if Color._is_rgb1(unknown):
             return cls(*list(unknown))
 
-        if isinstance(unknown, basestring):
+        if isinstance(unknown, str):
             return cls.from_name(unknown)
 
         raise ColorError
@@ -633,7 +621,7 @@ class Color(Data):
         bool
 
         """
-        if isinstance(color, basestring):
+        if isinstance(color, str):
             match = re.search(r"^#(?:[0-9a-fA-F]{3}){1,2}$", color)
             if match:
                 return True

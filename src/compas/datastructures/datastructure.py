@@ -1,15 +1,8 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
-try:
-    from typing import TypeVar  # noqa: F401
-except ImportError:
-    pass
-else:
-    G = TypeVar("G", bound="Datastructure")
+from typing import TypeVar  # noqa: F401
 
 from compas.data import Data
+
+G = TypeVar("G", bound="Datastructure")
 
 
 class Datastructure(Data):

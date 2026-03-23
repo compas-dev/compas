@@ -1,7 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 import itertools
 
 from compas.files.gltf.constants import VERTEX_COUNT_BY_MODE

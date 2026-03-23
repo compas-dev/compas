@@ -1,8 +1,5 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
-from compas.datastructures._mutablemapping import MutableMapping
+# from compas.datastructures._mutablemapping import MutableMapping
+from collections.abc import MutableMapping
 
 
 class AttributeView(MutableMapping):

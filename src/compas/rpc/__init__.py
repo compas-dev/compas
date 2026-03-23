@@ -8,13 +8,9 @@ Through RPC, COMPAS can be used as a server for remote clients, and as a client 
 A typical use case is to run algorithms that require packages like ``numpy`` or ``scipy`` on a remote server,
 when working in Rhino. Or to use COMPAS in a browser application.
 """
-
-from __future__ import absolute_import
+# ruff: noqa: F401
 
 from .errors import RPCClientError, RPCServerError
 from .proxy import Proxy
 from .server import Server
 from .dispatcher import Dispatcher
-
-
-__all__ = ["RPCClientError", "RPCServerError", "Proxy", "Server", "Dispatcher"]

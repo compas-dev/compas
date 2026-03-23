@@ -1,8 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
-
 def is_collapse_legal(mesh, edge, allow_boundary=False):
     """Verify if the requested collapse is legal for a triangle mesh.
 

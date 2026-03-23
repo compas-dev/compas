@@ -10,19 +10,10 @@ See these issues for more details:
  - https://github.com/compas-dev/compas/issues/649
 """
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
-import compas
-
-if compas.PY2:
-    import collections as stdlib_collections
-else:
-    import collections.abc as stdlib_collections
+import collections.abc as stdlib_collections
 
 
-class Mapping(object):
+class Mapping:
     __slots__ = ()
 
     """A Mapping is a generic container for associating key/value
