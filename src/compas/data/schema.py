@@ -1,13 +1,21 @@
 import json
 import os
+from typing import Any
+from typing import Optional
+from typing import Type
+from typing import Union
+
+from .data import Data
+
+JSONFile = Union[str, os.PathLike[str]]
 
 
-def dataclass_dataschema(cls) -> dict:
+def dataclass_dataschema(cls: Type[Data]) -> dict[str, Any]:
     """Generate a JSON schema for a COMPAS object class.
 
     Parameters
     ----------
-    cls : :class:`compas.data.Data`
+    cls
         The COMPAS object class.
 
     Returns
@@ -19,12 +27,12 @@ def dataclass_dataschema(cls) -> dict:
     return cls.DATASCHEMA
 
 
-def dataclass_typeschema(cls) -> dict:
+def dataclass_typeschema(cls: Type[Data]) -> dict[str, Any]:
     """Generate a JSON schema for the data type of a COMPAS object class.
 
     Parameters
     ----------
-    cls : :class:`compas.data.Data`
+    cls
         The COMPAS object class.
 
     Returns
@@ -39,16 +47,16 @@ def dataclass_typeschema(cls) -> dict:
     }
 
 
-def dataclass_jsonschema(cls, filepath=None, draft=None) -> dict:
+def dataclass_jsonschema(cls: Type[Data], filepath: Optional[JSONFile] = None, draft: Optional[str] = None) -> dict[str, Any]:
     """Generate a JSON schema for a COMPAS object class.
 
     Parameters
     ----------
-    cls : :class:`compas.data.Data`
+    cls
         The COMPAS object class.
-    filepath : str, optional
+    filepath
         The path to the file where the schema should be saved.
-    draft : str, optional
+    draft
         The JSON schema draft to use.
 
     Returns
@@ -81,12 +89,12 @@ def dataclass_jsonschema(cls, filepath=None, draft=None) -> dict:
     return schema
 
 
-def compas_jsonschema(dirname=None) -> list:
+def compas_jsonschema(dirname: Optional[JSONFile] = None) -> list[dict[str, Any]]:
     """Generate a JSON schema for the COMPAS data model.
 
     Parameters
     ----------
-    dirname : str, optional
+    dirname
         The path to the directory where the schemas should be saved.
 
     Returns
@@ -95,7 +103,7 @@ def compas_jsonschema(dirname=None) -> list:
         A list of JSON schemas.
 
     """
-    schemas = []
+    schemas: list[dict[str, Any]] = []
     dataclasses = compas_dataclasses()
     for cls in dataclasses:
         filepath = None
@@ -106,7 +114,7 @@ def compas_jsonschema(dirname=None) -> list:
     return schemas
 
 
-def compas_dataclasses() -> list:
+def compas_dataclasses() -> list[Type[Data]]:
     """Find all classes in the COMPAS data model.
 
     Returns
@@ -122,7 +130,7 @@ def compas_dataclasses() -> list:
     from compas.data import Data
 
     tovisit = deque([Data])
-    dataclasses = []
+    dataclasses: list[Type[Data]] = []
 
     while tovisit:
         cls = tovisit.popleft()

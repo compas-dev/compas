@@ -1,4 +1,5 @@
 import json
+from typing import Any
 from typing import Optional
 from typing import Type
 
@@ -17,15 +18,15 @@ def cls_from_dtype(dtype: str, inheritance: Optional[list[str]] = None) -> Type[
 
     Parameters
     ----------
-    dtype : str
+    dtype
         The data type of the COMPAS object in the following format:
         '{}/{}'.format(o.__class__.__module__, o.__class__.__name__).
-    inheritance : list[str], optional
+    inheritance
         The inheritance chain of this class, a list of superclasses that can be used if given dtype is not found.
 
     Returns
     -------
-    :class:`compas.data.Data`
+    Data
 
     Raises
     ------
@@ -63,7 +64,7 @@ class DataEncoder(json.JSONEncoder):
 
     * Numpy objects to their Python equivalents;
     * iterables to lists; and
-    * :class:`compas.data.Data` objects,
+    * `compas.data.Data` objects,
       such as geometric primitives and shapes, data structures, robots, ...,
       to a dict with the following structure: ``{'dtype': o.__dtype__, 'data': o.__data__}``
 
@@ -94,17 +95,17 @@ class DataEncoder(json.JSONEncoder):
 
     minimal = False
 
-    def default(self, o):
+    def default(self, o: Any) -> Any:
         """Return an object in serialized form.
 
         Parameters
         ----------
-        o : object
+        o
             The object to serialize.
 
         Returns
         -------
-        str
+        object
             The serialized object.
 
         """
@@ -152,7 +153,7 @@ class DataDecoder(json.JSONDecoder):
     """Data decoder for custom JSON serialization with support for COMPAS data structures and geometric primitives.
 
     The decoder hooks into the JSON deserialisation process
-    to reconstruct :class:`compas.data.Data` objects,
+    to reconstruct `compas.data.Data` objects,
     such as geometric primitives and shapes, data structures, robots, ...,
     from the serialized data when possible.
 
@@ -183,15 +184,16 @@ class DataDecoder(json.JSONDecoder):
 
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(object_hook=self.object_hook, *args, **kwargs)
 
-    def object_hook(self, o):
+    def object_hook(self, o: dict[str, Any]) -> Any:  # pyright: ignore[reportIncompatibleMethodOverride]
         """Reconstruct a deserialized object.
 
         Parameters
         ----------
-        o : object
+        o
+            The decoded JSON object.
 
         Returns
         -------
