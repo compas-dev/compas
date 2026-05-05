@@ -5,14 +5,15 @@ from typing import Iterator
 from typing import Optional
 from typing import Sequence
 from typing import Union
+from typing import cast
 
 from compas.colors.html_colors import HTML_TO_RGB255
 from compas.data import Data
 from compas.tolerance import TOL
 
-BASE16 = "0123456789abcdef"
+BASE16: str = "0123456789abcdef"
 
-HEX_DEC = {v: int(v, base=16) for v in [x + y for x in BASE16 for y in BASE16]}
+HEX_DEC: dict[str, int] = {v: int(v, base=16) for v in [x + y for x in BASE16 for y in BASE16]}
 
 
 class ColorError(Exception):
@@ -21,6 +22,7 @@ class ColorError(Exception):
 
 ColorLikeSequence = Union[Annotated[Sequence[int], 3], Annotated[Sequence[float], 3]]
 ColorLike = Union[str, ColorLikeSequence]
+ColorInput = Union["Color", ColorLike]
 
 
 class Color(Data):
@@ -28,67 +30,67 @@ class Color(Data):
 
     Parameters
     ----------
-    red : float
+    red
         The red component in the range ``[0.0, 1.0]``.
-    green : float
+    green
         The green component in the range of ``[0.0, 1.0]``.
-    blue : float
+    blue
         The blue component in the range of ``[0.0, 1.0]``.
-    alpha : float, optional
+    alpha
         Transparency setting.
         If ``alpha = 0.0``, the color is fully transparent.
         If ``alpha = 1.0``, the color is fully opaque.
-    name : str, optional
+    name
         The name of the color.
 
     Attributes
     ----------
-    r : float
+    r
         Red component of the color in RGB1 color space.
-    g : float
+    g
         Green component of the color in RGB1 color space.
-    b : float
+    b
         Blue component of the color in RGB1 color space.
-    a : float
+    a
         Transparency in RGB1 color space.
-    rgb : tuple[float, float, float]
+    rgb
         RGB1 color tuple, with components in the range ``[0.0, 1.0]``.
-    rgba : tuple[float, float, float, float]
+    rgba
         RGBA1 color tuple (including alpha), with components in the range ``[0.0, 1.0]``.
-    rgb255 : tuple[int, int, int]
+    rgb255
         RGB255 color tuple, with components in the range ``[0, 255]``.
-    rgba255 : tuple[int, int, int, int]
+    rgba255
         RGBA255 color tuple (including alpha), with components in the range ``[0, 255]``.
-    hex : str
+    hex
         Hexadecimal color string.
-    hls : tuple[float, float, float]
+    hls
         Hue, Lightness, Saturation.
-    hsv : tuple[float, float, float]
+    hsv
         Hue, Saturation, Value / Brightness.
-    lightness : float
+    lightness
         How much white the color appears to contain.
         This is the "Lightness" in HLS.
         Making a color "lighter" is like adding more white.
-    brightness : float
+    brightness
         How well-lit the color appears to be.
         This is the "Value" in HSV.
         Making a color "brighter" is like shining a stronger light on it, or illuminating it better.
-    yuv : tuple[float, float, float]
+    yuv
         Luma and chroma components, with chroma defined by the blue and red projections.
-    luma : float
+    luma
         The brightness of a yuv signal.
-    chroma : tuple[float, float]
+    chroma
         The color of a yuv signal.
         "How different from a grey of the same lightness the color appears to be."
-    luminance : float
+    luminance
         The amount of light that passes through, is emitted from, or is reflected from a particular area.
         Here, it expresses the preceived brightness of the color.
         Note that this is not the same as the "Lightness" of HLS or the "Value/Brightness" of HSV.
-    saturation : float
+    saturation
         The perceived freedom of whiteness.
-    is_light : bool
+    is_light
         If True, the color is considered light.
-    contrast : :class:`compas.colors.Color`
+    contrast
         The contrasting color to the current color.
 
     Examples
@@ -105,7 +107,7 @@ class Color(Data):
     ...
     ValueError: Components of an RGBA color should be in the range 0-1.
 
-    To create a color with components in the range ``[0, 255]``, use the :meth:`from_rgb255` constructor.
+    To create a color with components in the range ``[0, 255]``, use the `from_rgb255` constructor.
 
     >>> Color.from_rgb255(255, 0, 0)
     Color(red=1.0, green=0.0, blue=0.0, alpha=1.0)
@@ -139,11 +141,11 @@ class Color(Data):
 
     See Also
     --------
-    :class:`compas.colors.ColorMap`
+    compas.colors.ColorMap
 
     """
 
-    DATASCHEMA = {
+    DATASCHEMA: dict[str, object] = {
         "type": "object",
         "properties": {
             "red": {"type": "number", "minimum": 0.0, "maximum": 1.0},
@@ -155,15 +157,15 @@ class Color(Data):
     }
 
     @property
-    def __data__(self) -> dict:
+    def __data__(self) -> dict[str, float]:
         return {"red": self.r, "green": self.g, "blue": self.b, "alpha": self.a}
 
-    def __init__(self, red, green, blue, alpha=1.0, name=None):
+    def __init__(self, red: float, green: float, blue: float, alpha: float = 1.0, name: Optional[str] = None) -> None:
         super().__init__(name=name)
-        self._r = 1.0
-        self._g = 1.0
-        self._b = 1.0
-        self._a = 1.0
+        self._r: float = 1.0
+        self._g: float = 1.0
+        self._b: float = 1.0
+        self._a: float = 1.0
         self.r = red
         self.g = green
         self.b = blue
@@ -196,7 +198,8 @@ class Color(Data):
     def __iter__(self) -> Iterator[float]:
         return iter(self.rgb)
 
-    def __eq__(self, other: Union["Color", ColorLikeSequence]) -> bool:
+    def __eq__(self, other: object) -> bool:
+        other = cast(Union["Color", ColorLikeSequence], other)
         return all(a == b for a, b in zip(self, other))
 
     # --------------------------------------------------------------------------
@@ -334,16 +337,16 @@ class Color(Data):
 
         Parameters
         ----------
-        r : int & valuerange[0, 255]
-            Red component.
-        g : int & valuerange[0, 255]
-            Green component.
-        b : int & valuerange[0, 255]
-            Blue component.
+        r
+            Red component in the range ``[0, 255]``.
+        g
+            Green component in the range ``[0, 255]``.
+        b
+            Blue component in the range ``[0, 255]``.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(r / 255, g / 255, b / 255)
@@ -354,16 +357,16 @@ class Color(Data):
 
         Parameters
         ----------
-        hue : float
+        hue
             Hue.
-        lightness : float
+        luminance
             Lightness.
-        saturation : float
+        saturation
             Saturation.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         References
         ----------
@@ -379,16 +382,16 @@ class Color(Data):
 
         Parameters
         ----------
-        h : float
+        h
             Hue.
-        s : float
+        s
             Saturation.
-        v : float
+        v
             Value.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         References
         ----------
@@ -404,16 +407,16 @@ class Color(Data):
 
         Parameters
         ----------
-        y : float
+        y
             Luma.
-        i : float
+        i
             Orange-blue chroma.
-        q : float
+        q
             Purple-green chroma.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         References
         ----------
@@ -429,16 +432,16 @@ class Color(Data):
 
         Parameters
         ----------
-        y : float
+        y
             Luma.
-        u : float
+        u
             Blue projection chroma.
-        v : float
+        v
             Red projection chroma.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         References
         ----------
@@ -456,12 +459,12 @@ class Color(Data):
 
         Parameters
         ----------
-        number : float
+        number
             Number in the range 0-1, representing the color.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         if number == 0.0:
@@ -494,12 +497,12 @@ class Color(Data):
 
         Parameters
         ----------
-        value : str
+        value
             The hexadecimal color.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         value = value.lstrip("#").lower()
@@ -514,12 +517,12 @@ class Color(Data):
 
         Parameters
         ----------
-        name : str
+        name
             The color name. The name is case-insensitive.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         References
         ----------
@@ -532,21 +535,21 @@ class Color(Data):
         return cls.from_rgb255(*rgb255)
 
     @classmethod
-    def from_unknown(cls, unknown) -> Optional["Color"]:
+    def from_unknown(cls, unknown: ColorInput) -> Optional["Color"]:
         """Construct a color from an unknown input.
 
         Parameters
         ----------
-        unknown : str | tuple[int, int, int] | tuple[float, float, float] | :class:`compas.colors.Color`
+        unknown
             The color input.
 
         Returns
         -------
-        :class:`compas.colors.Color` | None
+        Color | None
 
         Raises
         ------
-        :class:`ColorError`
+        ColorError
 
         """
         if not unknown:
@@ -556,13 +559,15 @@ class Color(Data):
             return unknown
 
         if Color._is_rgb255(unknown):
-            return cls.from_rgb255(*list(unknown))
+            rgb255 = cast(tuple[int, int, int], list(cast(Sequence[int], unknown)))
+            return cls.from_rgb255(*rgb255)
 
         if Color._is_hex(unknown):
-            return cls.from_hex(unknown)
+            return cls.from_hex(cast(str, unknown))
 
         if Color._is_rgb1(unknown):
-            return cls(*list(unknown))
+            rgb1 = cast(tuple[float, float, float], list(cast(Sequence[float], unknown)))
+            return cls(*rgb1)
 
         if isinstance(unknown, str):
             return cls.from_name(unknown)
@@ -570,17 +575,17 @@ class Color(Data):
         raise ColorError
 
     @staticmethod
-    def coerce(color) -> Optional["Color"]:
+    def coerce(color: ColorInput) -> Optional["Color"]:
         """Coerce a color input into a color.
 
         Parameters
         ----------
-        color : str | tuple[int, int, int] | tuple[float, float, float] | :class:`compas.colors.Color`
+        color
             The color input.
 
         Returns
         -------
-        :class:`compas.colors.Color` | None
+        Color | None
 
         Raises
         ------
@@ -592,15 +597,17 @@ class Color(Data):
         if isinstance(color, Color):
             return color
         if Color._is_hex(color):
-            return Color.from_hex(color)
+            return Color.from_hex(cast(str, color))
         if Color._is_rgb1(color):
-            return Color(*color)
+            rgb1 = cast(tuple[float, float, float], color)
+            return Color(*rgb1)
         if Color._is_rgb255(color):
-            return Color.from_rgb255(*color)
+            rgb255 = cast(tuple[int, int, int], color)
+            return Color.from_rgb255(*rgb255)
         raise ColorError
 
     @staticmethod
-    def _is_rgb1(color: ColorLikeSequence) -> bool:
+    def _is_rgb1(color: object) -> bool:
         """Verify that the color is in the RGB 1 color space.
 
         Returns
@@ -610,10 +617,11 @@ class Color(Data):
         """
         if not color:
             return False
+        color = cast(ColorLikeSequence, color)
         return all(isinstance(c, float) and (c >= 0 and c <= 1) for c in color)
 
     @staticmethod
-    def _is_rgb255(color: ColorLikeSequence) -> bool:
+    def _is_rgb255(color: object) -> bool:
         """Verify that the color is in the RGB 255 color space.
 
         Returns
@@ -623,10 +631,11 @@ class Color(Data):
         """
         if not color:
             return False
+        color = cast(ColorLikeSequence, color)
         return all(isinstance(c, int) and (c >= 0 and c <= 255) for c in color)
 
     @staticmethod
-    def _is_hex(color: str) -> bool:
+    def _is_hex(color: object) -> bool:
         """Verify that the color is in hexadecimal format.
 
         Returns
@@ -651,7 +660,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(1.0, 1.0, 1.0)
@@ -662,7 +671,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(0.0, 0.0, 0.0)
@@ -673,7 +682,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(0.5, 0.5, 0.5)
@@ -684,7 +693,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(1.0, 0.0, 0.0)
@@ -695,7 +704,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(1.0, 0.5, 0.0)
@@ -706,7 +715,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(1.0, 1.0, 0.0)
@@ -717,7 +726,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(0.5, 1.0, 0.0)
@@ -728,7 +737,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(0.0, 1.0, 0.0)
@@ -739,7 +748,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(0.0, 1.0, 0.5)
@@ -750,7 +759,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(0.0, 1.0, 1.0)
@@ -761,7 +770,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(0.0, 0.5, 1.0)
@@ -772,7 +781,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(0.0, 0.0, 1.0)
@@ -783,7 +792,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(0.5, 0.0, 1.0)
@@ -794,7 +803,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(1.0, 0.0, 1.0)
@@ -805,7 +814,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(1.0, 0.0, 0.5)
@@ -817,9 +826,10 @@ class Color(Data):
     @classmethod
     def maroon(cls) -> "Color":
         """Construct the color maroon.
+
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(0.5, 0.0, 0.0)
@@ -830,7 +840,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(0.5, 0.25, 0.0)
@@ -841,7 +851,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(0.5, 0.5, 0.0)
@@ -852,7 +862,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(0.0, 0.5, 0.5)
@@ -863,7 +873,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(0.0, 0.0, 0.5)
@@ -874,7 +884,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(0.5, 0.0, 0.5)
@@ -885,7 +895,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(0.75, 0.75, 0.75)
@@ -907,7 +917,7 @@ class Color(Data):
 
         Parameters
         ----------
-        factor : float, optional
+        factor
             Percentage of lightness increase.
 
         Returns
@@ -936,12 +946,12 @@ class Color(Data):
 
         Parameters
         ----------
-        factor : float, optional
+        factor
             Percentage of lightness increase.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         Raises
         ------
@@ -958,7 +968,7 @@ class Color(Data):
 
         Parameters
         ----------
-        factor : float, optional
+        factor
             Percentage of lightness reduction.
 
         Returns
@@ -987,12 +997,12 @@ class Color(Data):
 
         Parameters
         ----------
-        factor : float, optional
+        factor
             Percentage of lightness reduction.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         Raises
         ------
@@ -1021,7 +1031,7 @@ class Color(Data):
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         color = self.copy()
@@ -1033,7 +1043,7 @@ class Color(Data):
 
         Parameters
         ----------
-        factor : float, optional
+        factor
             Percentage of saturation increase.
 
         Returns
@@ -1062,12 +1072,12 @@ class Color(Data):
 
         Parameters
         ----------
-        factor : float, optional
+        factor
             Percentage of saturation increase.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         Raises
         ------
@@ -1084,7 +1094,7 @@ class Color(Data):
 
         Parameters
         ----------
-        factor : float, optional
+        factor
             Percentage of saturation reduction.
 
         Returns
@@ -1113,12 +1123,12 @@ class Color(Data):
 
         Parameters
         ----------
-        factor : float, optional
+        factor
             Percentage of saturation reduction.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         Raises
         ------

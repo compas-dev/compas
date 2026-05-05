@@ -12,14 +12,14 @@ class ColorDict(Data):
 
     Parameters
     ----------
-    default : :class:`compas.colors.Color`
+    default
         The default color to use if the requested key is not in the dictionary.
-    name : str, optional
+    name
         The name of the color dictionary.
 
     Attributes
     ----------
-    default : :class:`compas.colors.Color`
+    default
         The default color to use if the requested key is not in the dictionary.
 
     """
@@ -111,7 +111,7 @@ class ColorDict(Data):
 
         Parameters
         ----------
-        other : dict or :class:`compas.scene.ColorDict`
+        other
             The other dictionary.
 
         Returns
