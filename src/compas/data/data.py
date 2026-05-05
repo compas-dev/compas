@@ -1,5 +1,8 @@
 import hashlib
+import os
 from copy import deepcopy
+from typing import IO
+from typing import Any
 from typing import Optional
 from typing import Type
 from typing import TypeVar
@@ -10,6 +13,7 @@ from uuid import uuid4
 import compas
 
 D = TypeVar("D", bound="Data")
+JSONFile = Union[str, os.PathLike[str], IO[str]]
 
 
 class Data:
@@ -17,62 +21,88 @@ class Data:
 
     Parameters
     ----------
-    name : str, optional
+    name
         The name of the object.
 
     Attributes
     ----------
-    guid : str, read-only
+    guid
         The globally unique identifier of the object.
         The guid is generated with ``uuid.uuid4()``.
-    name : str
+    name
         The name of the object.
         This name is not necessarily unique and can be set by the user.
         The default value is the object's class name: ``self.__class__.__name__``.
 
     See Also
     --------
-    :class:`compas.data.DataEncoder`
-    :class:`compas.data.DataDecoder`
+    compas.data.DataEncoder
+    compas.data.DataDecoder
 
     Notes
     -----
     Objects created from classes that implement this data class
     can be serialized to JSON and unserialized without loss of information using:
 
-    * :func:`compas.data.json_dump`
-    * :func:`compas.data.json_dumps`
-    * :func:`compas.data.json_load`
-    * :func:`compas.data.json_loads`
+    * `compas.data.json_dump`
+    * `compas.data.json_dumps`
+    * `compas.data.json_load`
+    * `compas.data.json_loads`
 
     """
 
-    DATASCHEMA = {}
+    DATASCHEMA: dict[str, Any] = {}
 
-    def __init__(self, name: Optional[str] = None):
-        self._guid = None
-        self._name = None
+    def __init__(self, name: Optional[str] = None) -> None:
+        self._guid: Optional[UUID] = None
+        self._name: Optional[str] = None
         if name:
             self.name = name
 
     @property
     def __dtype__(self) -> str:
+        """Return the data type identifier used by COMPAS JSON serialization.
+
+        Returns
+        -------
+        str
+
+        """
         return "{}/{}".format(".".join(self.__class__.__module__.split(".")[:2]), self.__class__.__name__)
 
     @classmethod
     def __clstype__(cls) -> str:
+        """Return the class type identifier used by COMPAS JSON serialization.
+
+        Returns
+        -------
+        str
+
+        """
         return "{}/{}".format(".".join(cls.__module__.split(".")[:2]), cls.__name__)
 
     @property
     def __data__(self) -> dict:
+        """Return the data representation used by COMPAS JSON serialization.
+
+        Returns
+        -------
+        dict
+
+        Raises
+        ------
+        NotImplementedError
+            If the subclass does not implement this property.
+
+        """
         raise NotImplementedError
 
-    def __jsondump__(self, minimal: bool = False) -> dict:
-        """Return the required information for serialization with the COMPAS JSON serializer.
+    def __jsondump__(self, minimal: bool = False) -> dict[str, Any]:
+        """Return the object state used by COMPAS JSON serialization.
 
         Parameters
         ----------
-        minimal : bool, optional
+        minimal
             If True, exclude the GUID from the dump dict.
 
         Returns
@@ -92,21 +122,21 @@ class Data:
         return state
 
     @classmethod
-    def __jsonload__(cls, data, guid: Optional[str] = None, name: Optional[str] = None) -> "Data":
-        """Construct an object of this type from the provided data to support COMPAS JSON serialization.
+    def __jsonload__(cls: Type[D], data: dict[str, Any], guid: Optional[str] = None, name: Optional[str] = None) -> D:
+        """Construct an object from COMPAS JSON serialization data.
 
         Parameters
         ----------
-        data : dict
+        data
             The raw Python data representing the object.
-        guid : str, optional
+        guid
             The GUID of the object.
-        name : str, optional
+        name
             The name of the object.
 
         Returns
         -------
-        object
+        Data
 
         """
         obj = cls.__from_data__(data)
@@ -116,12 +146,32 @@ class Data:
             obj.name = name
         return obj
 
-    def __getstate__(self) -> dict:
+    def __getstate__(self) -> dict[str, Any]:
+        """Return the state used by pickle.
+
+        Returns
+        -------
+        dict
+            The JSON dump extended with the object's instance dictionary.
+
+        """
         state = self.__jsondump__()
         state["__dict__"] = self.__dict__
         return state
 
-    def __setstate__(self, state: dict) -> None:
+    def __setstate__(self, state: dict[str, Any]) -> None:
+        """Set the object state from pickle data.
+
+        Parameters
+        ----------
+        state
+            The pickled state.
+
+        Returns
+        -------
+        None
+
+        """
         self.__dict__.update(state["__dict__"])
         if "guid" in state:
             self._guid = UUID(state["guid"])
@@ -129,24 +179,24 @@ class Data:
             self.name = state["name"]
 
     @classmethod
-    def __from_data__(cls, data: dict) -> "Data":
+    def __from_data__(cls: Type[D], data: dict[str, Any]) -> D:
         """Construct an object of this type from the provided data.
 
         Parameters
         ----------
-        data : dict
+        data
             The data dictionary.
 
         Returns
         -------
-        :class:`compas.data.Data`
+        Data
             An instance of this object type if the data contained in the dict has the correct schema.
 
         """
         return cls(**data)
 
     def ToString(self) -> str:
-        """Converts the instance to a string.
+        """Convert the instance to a string.
 
         This method exists for .NET compatibility. When using IronPython,
         the implicit string conversion that usually takes place in CPython
@@ -156,17 +206,36 @@ class Data:
         display proper string representations when the objects are printed or
         connected to a panel or other type of string output.
 
+        Returns
+        -------
+        str
+            The string representation of the object.
+
         """
         return str(self)
 
     @property
     def guid(self) -> UUID:
+        """Return the globally unique identifier of the object.
+
+        Returns
+        -------
+        UUID
+
+        """
         if not self._guid:
             self._guid = uuid4()
         return self._guid
 
     @property
     def name(self) -> str:
+        """Return the name of the object.
+
+        Returns
+        -------
+        str
+
+        """
         return self._name or self.__class__.__name__
 
     @name.setter
@@ -174,23 +243,23 @@ class Data:
         self._name = name
 
     @classmethod
-    def from_json(cls, filepath: str) -> "Data":
+    def from_json(cls: Type[D], filepath: JSONFile) -> D:
         """Construct an object of this type from a JSON file.
 
         Parameters
         ----------
-        filepath : str
-            The path to the JSON file.
+        filepath
+            The path to the JSON file, URL string, or readable file-like object.
 
         Returns
         -------
-        :class:`compas.data.Data`
+        Data
             An instance of this object type if the data contained in the file has the correct schema.
 
         Raises
         ------
         TypeError
-            If the data in the file is not a :class:`compas.data.Data`.
+            If the data in the file is not a Data object.
 
         """
         data = compas.json_load(filepath)
@@ -198,41 +267,54 @@ class Data:
             raise TypeError("The data in the file is not a {}.".format(cls))
         return data
 
-    def to_json(self, filepath: str, pretty: bool = False, compact: bool = False, minimal: bool = False) -> None:
+    def to_json(self, filepath: JSONFile, pretty: bool = False, compact: bool = False, minimal: bool = False) -> None:
         """Convert an object to its native data representation and save it to a JSON file.
 
         Parameters
         ----------
-        filepath : str
-            The path to the JSON file.
-        pretty : bool, optional
+        filepath
+            The path to the JSON file or writable file-like object.
+        pretty
             If True, format the output with newlines and indentation.
-        compact : bool, optional
+        compact
             If True, format the output without any whitespace.
-        minimal : bool, optional
+        minimal
             If True, exclude the GUID from the JSON output.
+
+        Returns
+        -------
+        None
 
         """
         compas.json_dump(self, filepath, pretty=pretty, compact=compact, minimal=minimal)
 
     @classmethod
-    def from_jsonstring(cls, string: str) -> "Data":
+    def from_jsonstring(cls: Type[D], string: str) -> D:
         """Construct an object of this type from a JSON string.
 
         Parameters
         ----------
-        string : str
+        string
             The JSON string.
 
         Returns
         -------
-        :class:`compas.data.Data`
+        Data
             An instance of this object type if the data contained in the string has the correct schema.
 
         Raises
         ------
         TypeError
-            If the data in the string is not a :class:`compas.data.Data`.
+            If the data in the string is not a Data object.
+
+        Examples
+        --------
+        >>> from compas.geometry import Point
+        >>> point = Point.from_jsonstring(Point(1, 2, 3).to_jsonstring())
+        >>> point.x
+        1.0
+        >>> isinstance(point, Point)
+        True
 
         """
         data = compas.json_loads(string)
@@ -245,11 +327,11 @@ class Data:
 
         Parameters
         ----------
-        pretty : bool, optional
+        pretty
             If True, format the output with newlines and indentation.
-        compact : bool, optional
+        compact
             If True, format the output without any whitespace.
-        minimal : bool, optional
+        minimal
             If True, exclude the GUID from the JSON output.
 
         Returns
@@ -257,24 +339,46 @@ class Data:
         str
             The JSON string.
 
+        Examples
+        --------
+        >>> class Example(Data):
+        ...     @property
+        ...     def __data__(self):
+        ...         return {}
+        >>> '"dtype": "compas.data/Example"' in Example().to_jsonstring()
+        True
+
         """
         return compas.json_dumps(self, pretty=pretty, compact=compact, minimal=minimal)
 
-    def copy(self, cls: Optional[Type["Data"]] = None, copy_guid: bool = False) -> D:  # type: ignore
+    def copy(self: D, cls: Optional[Type[D]] = None, copy_guid: bool = False) -> D:
         """Make an independent copy of the data object.
 
         Parameters
         ----------
-        cls : Type[:class:`compas.data.Data`], optional
+        cls
             The type of data object to return.
             Defaults to the type of the current data object.
-        copy_guid : bool, optional
+        copy_guid
             If True, the copy will have the same guid as the original.
 
         Returns
         -------
-        :class:`compas.data.Data`
+        Data
             An independent copy of this object.
+
+        Examples
+        --------
+        >>> class Example(Data):
+        ...     @property
+        ...     def __data__(self):
+        ...         return {}
+        >>> a = Example(name="A")
+        >>> b = a.copy()
+        >>> a is b
+        False
+        >>> b.name
+        'A'
 
         """
         if not cls:
@@ -284,14 +388,14 @@ class Data:
             obj._name = self.name
         if copy_guid:
             obj._guid = self.guid
-        return obj  # type: ignore
+        return obj
 
     def sha256(self, as_string: bool = False) -> Union[str, bytes]:
         """Compute a hash of the data for comparison during version control using the sha256 algorithm.
 
         Parameters
         ----------
-        as_string : bool, optional
+        as_string
             If True, return the digest in hexadecimal format rather than as bytes.
 
         Returns
@@ -300,16 +404,15 @@ class Data:
 
         Examples
         --------
-        >>> from compas.datastructures import Mesh
-        >>> mesh = Mesh.from_obj(compas.get("faces.obj"))
-        >>> v1 = mesh.sha256()
-        >>> v2 = mesh.sha256()
-        >>> mesh.vertex_attribute(mesh.vertex_sample(1)[0], "z", 1)
-        >>> v3 = mesh.sha256()
-        >>> v1 == v2
+        >>> class Example(Data):
+        ...     @property
+        ...     def __data__(self):
+        ...         return {}
+        >>> a = Example()
+        >>> a.sha256() == a.sha256()
         True
-        >>> v2 == v3
-        False
+        >>> isinstance(a.sha256(as_string=True), str)
+        True
 
         """
         h = hashlib.sha256()
@@ -319,14 +422,14 @@ class Data:
         return h.digest()
 
     @classmethod
-    def validate_data(cls, data: dict) -> dict:
+    def validate_data(cls, data: dict[str, Any]) -> dict[str, Any]:
         """Validate the data against the object's data schema.
 
         The data is the raw data that can be used to construct an object of this type with the classmethod ``__from_data__``.
 
         Parameters
         ----------
-        data : dict
+        data
             The data for validation.
 
         Returns
