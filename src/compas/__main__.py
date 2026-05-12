@@ -2,9 +2,9 @@
 import platform
 
 try:
-    import pkg_resources
+    from importlib.metadata import distributions
 except ImportError:
-    pkg_resources = None
+    distributions = None
 
 import compas
 
@@ -22,10 +22,9 @@ if __name__ == "__main__":
     print("COMPAS: {}".format(compas.__version__))
     print("Python: {} ({})".format(platform.python_version(), platform.python_implementation()))
 
-    if pkg_resources:
-        working_set = pkg_resources.working_set
-        packages = set([p.project_name for p in working_set]) - set(["COMPAS"])
-        compas_pkgs = [p for p in packages if p.lower().startswith("compas")]
+    if distributions:
+        names = {dist.metadata.get("Name") for dist in distributions()}
+        compas_pkgs = [p for p in names if p and p.lower().startswith("compas") and p != "COMPAS"]
 
         if compas_pkgs:
-            print("Extensions: {}".format([p for p in compas_pkgs]))
+            print("Extensions: {}".format(compas_pkgs))
