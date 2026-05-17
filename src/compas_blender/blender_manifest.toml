@@ -1,0 +1,13 @@
+schema_version = "1.0.0"
+id = "compas_blender"
+version = "2.15.0"
+name = "COMPAS"
+tagline = "The COMPAS framework for Blender"
+maintainer = "Tom Van Mele <tom.v.mele@gmail.com> et al"
+type = "add-on"
+website = "https://compas.dev"
+tags = ["Development", "Object", "Pipeline"]
+blender_version_min = "4.2.0"
+license = ["MIT"]
+copyright = ["2025 COMPAS Association"]
+permissions = ["network", "files"]

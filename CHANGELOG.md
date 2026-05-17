@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Fixed Blender installation process to support the new "Extensions" mechanism in Blender 4.2+.
+
 ### Removed
 
 
