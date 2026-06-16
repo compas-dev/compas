@@ -1,12 +1,3 @@
-import numpy as np
-from numpy import argmin
-from numpy import asarray
-from numpy.linalg import det
-from numpy.linalg import multi_dot
-from scipy.linalg import norm
-from scipy.linalg import svd
-from scipy.spatial.distance import cdist
-
 from compas.geometry import pca_numpy
 from compas.geometry import transform_points_numpy
 from compas.linalg import normrow
@@ -14,6 +5,10 @@ from compas.tolerance import TOL
 
 
 def bestfit_transform(A, B):
+    import numpy as np
+    from numpy.linalg import det
+    from scipy.linalg import svd
+
     n, m = A.shape
     Am = np.mean(A, axis=0)
     Bm = np.mean(B, axis=0)
@@ -76,6 +71,12 @@ def icp_numpy(source, target, tol=None, maxiter=100):
     The algorithm terminates when the alignment error is below a specified tolerance.
 
     """
+    from numpy import argmin
+    from numpy import asarray
+    from numpy.linalg import multi_dot
+    from scipy.linalg import norm
+    from scipy.spatial.distance import cdist
+
     from compas.geometry import Frame
     from compas.geometry import Transformation
 

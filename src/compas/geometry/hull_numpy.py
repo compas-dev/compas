@@ -1,7 +1,3 @@
-from numpy import asarray
-from scipy.spatial import ConvexHull
-
-
 def convex_hull_numpy(points):
     """Compute the convex hull of a set of points.
 
@@ -34,6 +30,9 @@ def convex_hull_numpy(points):
     with :func:`compas.topology.unify_cycles`.
 
     """
+    from numpy import asarray
+    from scipy.spatial import ConvexHull
+
     points = asarray(points)
     n, dim = points.shape
 
@@ -71,6 +70,9 @@ def convex_hull_xy_numpy(points):
     convex_hull_numpy
 
     """
+    from numpy import asarray
+    from scipy.spatial import ConvexHull
+
     points = asarray(points)
     n, dim = points.shape
 

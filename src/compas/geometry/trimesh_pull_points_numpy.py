@@ -1,7 +1,3 @@
-import numpy as np
-from scipy.linalg import solve
-from scipy.spatial import distance_matrix
-
 from compas.geometry import cross_vectors
 from compas.geometry import is_ccw_xy
 from compas.geometry import is_point_in_triangle
@@ -29,6 +25,9 @@ def trimesh_pull_points_numpy(M, points):
     It will just be treated as if it is...
 
     """
+    import numpy as np
+    from scipy.spatial import distance_matrix
+
     vertices, faces = M
     # preprocess
     vertices = np.array(vertices, dtype=np.float64).reshape((-1, 3))
@@ -65,6 +64,8 @@ def _is_point_in_edgezone(p, p0, p1):
 
 
 def _compute_point_on_segment(p, p0, p1):
+    import numpy as np
+
     a = p1[1] - p0[1]
     b = p0[0] - p1[0]
     c = p1[0] * p0[1] - p1[1] * p0[0]
@@ -75,6 +76,8 @@ def _compute_point_on_segment(p, p0, p1):
 
 
 def _triangle_xform(triangle):
+    import numpy as np
+
     o = triangle[0]
     u = triangle[1] - o
     v = triangle[2] - o
@@ -85,6 +88,9 @@ def _triangle_xform(triangle):
 
 
 def _find_closest_component(point, vertices, triangles, closest_tris, closest_vi):
+    import numpy as np
+    from scipy.linalg import solve
+
     distance = None
     projection = None
     component = None

@@ -1,13 +1,3 @@
-from numpy import abs
-from numpy import array
-from numpy import asarray
-from numpy import tile
-from scipy.sparse import coo_matrix  # type: ignore
-from scipy.sparse import csr_matrix  # type: ignore
-from scipy.sparse import diags  # type: ignore
-from scipy.sparse import vstack as svstack  # type: ignore
-
-
 def _return_matrix(M, rtype):
     if rtype == "list":
         return M.toarray().tolist()
@@ -43,6 +33,8 @@ def adjacency_matrix(adjacency, rtype="array"):
         Constructed adjacency matrix.
 
     """
+    from scipy.sparse import coo_matrix  # type: ignore
+
     a = [(1, i, j) for i in range(len(adjacency)) for j in adjacency[i]]
     data, rows, cols = zip(*a)
     A = coo_matrix((data, (rows, cols))).asfptype()
@@ -65,6 +57,9 @@ def face_matrix(face_vertices, rtype="array", normalize=False):
         Constructed face matrix.
 
     """
+    from numpy import array
+    from scipy.sparse import coo_matrix  # type: ignore
+
     if normalize:
         f = array([(i, j, 1.0 / len(vertices)) for i, vertices in enumerate(face_vertices) for j in vertices])
     else:
@@ -94,6 +89,8 @@ def degree_matrix(adjacency, rtype="array"):
         Constructed degree matrix.
 
     """
+    from scipy.sparse import coo_matrix  # type: ignore
+
     d = [(len(adjacency[i]), i, i) for i in range(len(adjacency))]
     data, rows, cols = zip(*d)
     D = coo_matrix((data, (rows, cols))).asfptype()
@@ -146,6 +143,9 @@ def connectivity_matrix(edges, rtype="array"):
            [-1.,  0.,  0.,  1.]])
 
     """
+    from numpy import array
+    from scipy.sparse import coo_matrix  # type: ignore
+
     m = len(edges)
     data = array([-1] * m + [1] * m)
     rows = array(list(range(m)) + list(range(m)))
@@ -195,6 +195,8 @@ def laplacian_matrix(edges, normalize=False, rtype="array"):
            [-1.,  0.,  0.,  1.]])
 
     """
+    from scipy.sparse import csr_matrix  # type: ignore
+
     C = connectivity_matrix(edges, rtype="csr")
     L = C.transpose().dot(C)  # type: ignore
     if normalize:
@@ -257,12 +259,17 @@ def equilibrium_matrix(C, xyz, free, rtype="array"):
            [-1.,  1.,  1.]])
 
     """
+    from numpy import asarray
+    from scipy.sparse import csr_matrix  # type: ignore
+    from scipy.sparse import diags  # type: ignore
+    from scipy.sparse import vstack as svstack  # type: ignore
+
     xyz = asarray(xyz, dtype=float)
     C = csr_matrix(C)
     xy = xyz[:, :2]
     uv = C.dot(xy)
-    U = diags([uv[:, 0].flatten()], [0])
-    V = diags([uv[:, 1].flatten()], [0])
+    U = diags([uv[:, 0].flatten()], [0])  # type: ignore
+    V = diags([uv[:, 1].flatten()], [0])  # type: ignore
     Ct = C.transpose()
     Cti = Ct[free, :]
     E = svstack((Cti.dot(U), Cti.dot(V)))
@@ -304,6 +311,9 @@ def mass_matrix(Ct, ks, q=0, c=1, tiled=True):
         (\mathbf{E} \circ \mathbf{A} \oslash \mathbf{l} + \mathbf{f} \oslash \mathbf{l})
 
     """
+    from numpy import abs
+    from numpy import tile
+
     m = c * abs(Ct).dot(ks + q)
     if tiled:
         return tile(m.reshape((-1, 1)), (1, 3))

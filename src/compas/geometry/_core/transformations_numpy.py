@@ -1,10 +1,3 @@
-from numpy import asarray
-from numpy import hstack
-from numpy import ones
-from numpy import tile
-from numpy import vectorize
-from scipy.linalg import solve  # type: ignore
-
 from ._algebra import cross_vectors
 
 
@@ -31,6 +24,8 @@ def transform_points_numpy(points, T):
     >>> points_transformed = transform_points_numpy(points, T)
 
     """
+    from numpy import asarray
+
     T = asarray(T)
     points = homogenize_numpy(points, w=1.0)
     return dehomogenize_numpy(points.dot(T.T))
@@ -59,6 +54,8 @@ def transform_vectors_numpy(vectors, T):
     >>> vectors_transformed = transform_vectors_numpy(vectors, T)
 
     """
+    from numpy import asarray
+
     T = asarray(T)
     vectors = homogenize_numpy(vectors, w=0.0)
     return dehomogenize_numpy(vectors.dot(T.T))
@@ -87,6 +84,8 @@ def transform_frames_numpy(frames, T):
     >>> transformed_frames = transform_frames_numpy(frames, T)
 
     """
+    from numpy import asarray
+
     T = asarray(T)
     points_and_vectors = homogenize_and_flatten_frames_numpy(frames)
     return dehomogenize_and_unflatten_frames_numpy(points_and_vectors.dot(T.T))
@@ -117,6 +116,9 @@ def world_to_local_coordinates_numpy(frame, xyz):
     True
 
     """
+    from numpy import asarray
+    from scipy.linalg import solve  # type: ignore
+
     origin = frame[0]
     uvw = [frame[1], frame[2], cross_vectors(frame[1], frame[2])]
     uvw = asarray(uvw).T
@@ -154,6 +156,8 @@ def local_to_world_coordinates_numpy(frame, rst):
     True
 
     """
+    from numpy import asarray
+
     origin = frame[0]
     uvw = [frame[1], frame[2], cross_vectors(frame[1], frame[2])]
 
@@ -191,6 +195,10 @@ def homogenize_numpy(data, w=1.0):
     True
 
     """
+    from numpy import asarray
+    from numpy import hstack
+    from numpy import ones
+
     data = asarray(data)
     data = hstack((data, w * ones((data.shape[0], 1))))
     return data
@@ -216,6 +224,8 @@ def dehomogenize_numpy(data):
     True
 
     """
+    from numpy import asarray
+    from numpy import vectorize
 
     def func(a):
         return a if a else 1.0
@@ -248,6 +258,10 @@ def homogenize_and_flatten_frames_numpy(frames):
     True
 
     """
+    from numpy import asarray
+    from numpy import hstack
+    from numpy import tile
+
     n = len(frames)
     frames = asarray(frames).reshape(n * 3, 3)
     extend = tile(asarray([1, 0, 0]).reshape(3, 1), (n, 1))
