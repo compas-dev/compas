@@ -1,14 +1,3 @@
-from numpy import array
-from numpy import clip
-from numpy import cross
-from numpy import finfo
-from numpy import float64
-from numpy import sqrt
-from numpy.linalg import norm
-from numpy.random import choice
-from numpy.random import rand
-
-
 def trimesh_samplepoints_numpy(M, num_points=1000, return_normals=False):
     """Compute sample points on a triangle mesh surface.
 
@@ -51,6 +40,16 @@ def trimesh_samplepoints_numpy(M, num_points=1000, return_normals=False):
     >>> X, Y, Z = x + pts_normals[:, 0], y + pts_normals[:, 1], z + pts_normals[:, 2]
 
     """
+    from numpy import array
+    from numpy import clip
+    from numpy import cross
+    from numpy import finfo
+    from numpy import float64
+    from numpy import sqrt
+    from numpy.linalg import norm
+    from numpy.random import choice
+    from numpy.random import rand
+
     # if mesh.is_empty():
     #     raise ValueError("Mesh is empty.")
     # if not mesh.is_trimesh():

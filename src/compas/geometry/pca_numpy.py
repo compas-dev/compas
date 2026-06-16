@@ -1,7 +1,3 @@
-from numpy import asarray
-from scipy.linalg import svd  # type: ignore
-
-
 def pca_numpy(data):
     """Compute the principle components of a set of data points.
 
@@ -37,6 +33,9 @@ def pca_numpy(data):
     --------
     >>>
     """
+    from numpy import asarray
+    from scipy.linalg import svd  # type: ignore
+
     X = asarray(data)
     n, dim = X.shape
 

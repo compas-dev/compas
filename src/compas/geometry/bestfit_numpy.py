@@ -1,9 +1,3 @@
-from numpy import asarray
-from numpy import sqrt
-from numpy import zeros
-from numpy.linalg import lstsq
-from scipy.optimize import leastsq
-
 from compas.geometry import local_to_world_coordinates_numpy
 from compas.geometry import pca_numpy
 from compas.geometry import world_to_local_coordinates_numpy
@@ -155,6 +149,9 @@ def bestfit_circle_numpy(points):
            Available at: http://scipy-cookbook.readthedocs.io/items/Least_Squares_Circle.html.
 
     """
+    from numpy import sqrt
+    from scipy.optimize import leastsq
+
     o, uvw, _ = pca_numpy(points)
     frame = [o, uvw[0], uvw[1]]
 
@@ -237,6 +234,10 @@ def bestfit_sphere_numpy(points):
            Available at: https://jekel.me/2015/Least-Squares-Sphere-Fit/.
 
     """
+    from numpy import asarray
+    from numpy import sqrt
+    from numpy import zeros
+    from numpy.linalg import lstsq
 
     # Assemble the A matrix
     spX = asarray([p[0] for p in points])

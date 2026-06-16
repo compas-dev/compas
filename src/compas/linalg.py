@@ -1,23 +1,6 @@
 import sys
 from functools import wraps
 
-from numpy import absolute
-from numpy import array
-from numpy import asarray
-from numpy import atleast_2d
-from numpy import cross
-from numpy import nan_to_num
-from numpy import nonzero
-from numpy import sum
-from numpy.linalg import cond
-from scipy.linalg import cho_factor  # type: ignore
-from scipy.linalg import cho_solve  # type: ignore
-from scipy.linalg import lstsq  # type: ignore
-from scipy.linalg import qr  # type: ignore
-from scipy.linalg import svd  # type: ignore
-from scipy.sparse.linalg import factorized  # type: ignore
-from scipy.sparse.linalg import spsolve  # type: ignore
-
 # ==============================================================================
 # Fundamentals
 # ==============================================================================
@@ -60,6 +43,10 @@ def nullspace(A, tol=0.001):
            [ 0.52381648]])
 
     """
+    from numpy import asarray
+    from numpy import atleast_2d
+    from scipy.linalg import svd  # type: ignore
+
     A = atleast_2d(asarray(A, dtype=float))
     u, s, vh = svd(A, compute_uv=True)
     tol = s[0] * tol
@@ -98,6 +85,10 @@ def rank(A, tol=0.001):
     2
 
     """
+    from numpy import asarray
+    from numpy import atleast_2d
+    from scipy.linalg import svd  # type: ignore
+
     A = atleast_2d(asarray(A, dtype=float))
     s = svd(A, compute_uv=False)
     tol = s[0] * tol
@@ -138,6 +129,11 @@ def dof(A, tol=0.001, condition=False):
     True
 
     """
+    from numpy import asarray
+    from numpy import atleast_2d
+    from numpy.linalg import cond
+
+
     A = atleast_2d(asarray(A, dtype=float))
     r = rank(A, tol=tol)
     k = A.shape[1] - r
@@ -174,6 +170,11 @@ def pivots(U, tol=None):
     [0, 1]
 
     """
+    from numpy import absolute
+    from numpy import array
+    from numpy import atleast_2d
+    from numpy import nonzero
+
     if tol is None:
         tol = sys.float_info.epsilon
     U = atleast_2d(array(U, dtype=float))
@@ -212,6 +213,9 @@ def nonpivots(U, tol=None):
     [2, 3]
 
     """
+    from numpy import asarray
+    from numpy import atleast_2d
+
     U = atleast_2d(asarray(U, dtype=float))
     cols = pivots(U, tol=tol)
     return list(set(range(U.shape[1])) - set(cols))
@@ -241,6 +245,10 @@ def rref(A, tol=None):
     >>>
 
     """
+    from numpy import asarray
+    from numpy import atleast_2d
+    from scipy.linalg import qr  # type: ignore
+
     A = atleast_2d(asarray(A, dtype=float))
 
     # do qr with column pivoting
@@ -249,7 +257,7 @@ def rref(A, tol=None):
     # as leading element
     _, U = qr(A)  # type: ignore
     lead_pos = 0
-    num_rows, num_cols = U.shape
+    num_rows, num_cols = U.shape  # type: ignore
     for r in range(num_rows):
         if lead_pos >= num_cols:
             return
@@ -341,6 +349,8 @@ def _chofactor(A):
            [-5.,  0.,  3.]]), False)
 
     """
+    from scipy.linalg import cho_factor  # type: ignore
+
     return cho_factor(A)
 
 
@@ -373,6 +383,8 @@ def _lufactorized(A):
     array([ 1., -2., -2.])
 
     """
+    from scipy.sparse.linalg import factorized  # type: ignore
+
     return factorized(A)
 
 
@@ -456,6 +468,10 @@ def normrow(A):
            [2.23606798]])
 
     """
+    from numpy import asarray
+    from numpy import atleast_2d
+    from numpy import sum
+
     A = atleast_2d(asarray(A, dtype=float))
     return (sum(A**2, axis=1) ** 0.5).reshape((-1, 1))
 
@@ -502,6 +518,8 @@ def normalizerow(A, do_nan_to_num=True):
            [ 0.        ,  0.89442719, -0.4472136 ]])
 
     """
+    from numpy import nan_to_num
+
     if do_nan_to_num:
         return nan_to_num(A / normrow(A))
     else:
@@ -538,6 +556,8 @@ def rot90(vectors, axes):
            [ 5.3748385 , -7.5247739 ,  4.2998708 ]])
 
     """
+    from numpy import cross
+
     return normalizerow(cross(axes, vectors)) * normrow(vectors)
 
 
@@ -573,6 +593,11 @@ def solve_with_known(A, b, x, known):
         \mathbf{A} \mathbf{x} = \mathbf{b}
 
     """
+    from numpy.linalg import cond
+    from scipy.linalg import cho_factor  # type: ignore
+    from scipy.linalg import cho_solve  # type: ignore
+    from scipy.linalg import lstsq  # type: ignore
+
     eps = 1 / sys.float_info.epsilon
     unknown = list(set(range(x.shape[0])) - set(known))
     A11 = A[unknown, :][:, unknown]
@@ -583,7 +608,7 @@ def solve_with_known(A, b, x, known):
         x[unknown] = Y
         return x
     Y = lstsq(A11, b)
-    x[unknown] = Y[0]
+    x[unknown] = Y[0]  # type: ignore
     return x
 
 
@@ -626,6 +651,8 @@ def spsolve_with_known(A, b, x, known):
     True
 
     """
+    from scipy.sparse.linalg import spsolve  # type: ignore
+
     unknown = list(set(range(x.shape[0])) - set(known))
     A11 = A[unknown, :][:, unknown]
     A12 = A[unknown, :][:, known]

@@ -1,5 +1,3 @@
-from numpy import array
-
 from .trimesh_matrices_numpy import trimesh_cotangent_laplacian_matrix
 
 
@@ -21,6 +19,8 @@ def trimesh_smooth_laplacian_cotangent(trimesh, fixed, kmax=10):
         The mesh is modified in place.
 
     """
+    from numpy import array
+
     for k in range(kmax):
         V = array(trimesh.vertices_attributes("xyz"))
         L = trimesh_cotangent_laplacian_matrix(trimesh)
