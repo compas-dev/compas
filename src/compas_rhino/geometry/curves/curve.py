@@ -6,6 +6,7 @@ import Rhino.Geometry  # type: ignore
 
 from compas.geometry import Curve
 from compas.geometry import Plane
+from compas_rhino.conversions import ConversionError
 from compas_rhino.conversions import box_to_compas
 from compas_rhino.conversions import plane_to_compas_frame
 from compas_rhino.conversions import plane_to_rhino
@@ -14,7 +15,6 @@ from compas_rhino.conversions import point_to_rhino
 from compas_rhino.conversions import polyline_to_compas
 from compas_rhino.conversions import transformation_to_rhino
 from compas_rhino.conversions import vector_to_compas
-from compas_rhino.conversions import ConversionError
 
 
 class RhinoCurve(Curve):

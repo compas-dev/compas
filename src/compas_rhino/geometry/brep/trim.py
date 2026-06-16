@@ -8,7 +8,6 @@ from compas.geometry import BrepTrim
 from compas_rhino.geometry import RhinoNurbsCurve
 
 from .edge import RhinoBrepEdge
-
 from .vertex import RhinoBrepVertex
 
 
