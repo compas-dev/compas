@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Changed `pca_numpy` to run the SVD on the centered data matrix instead of the covariance matrix: forming the covariance squares the condition number, so near-degenerate inputs (e.g. almost collinear point clouds) returned wrong principal directions — `bestfit_plane_numpy` normals were off by 11–37 degrees on exactly planar sliver clouds (#1522). Well-conditioned results are unchanged (same eigenvectors; eigenvalues rescaled to keep their variance meaning).
 * Changed `Tolerance` class to no longer use singleton pattern. `Tolerance()` now creates independent instances instead of returning the global `TOL`. 
 * Renamed `Tolerance.units` to `Tolerance.unit` to better reflect the documented properties. Left `units` with deprecation warning.
 * Fixed `NotImplementedErorr` when calling `BrepLoop.vertices`.
