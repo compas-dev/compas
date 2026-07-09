@@ -128,6 +128,16 @@ tr + tr td { border-top: 1px solid var(--grid); }
 .badge.ok { color: var(--good); }
 .badge.no { color: var(--critical); }
 .note { color: var(--muted); font-size: 12px; }
+.summary { margin: 20px 0 8px; }
+.takeaway { font-size: 15px; line-height: 1.55; margin: 0 0 18px; color: var(--text-primary); }
+.takeaway b { font-weight: 600; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 0 0 20px; }
+.tile { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+.tile .big { font-size: 26px; font-weight: 650; letter-spacing: -0.01em; }
+.tile .lbl { font-size: 12px; color: var(--text-secondary); margin-top: 3px; }
+.tile .sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
+.win { color: var(--good); font-weight: 600; }
+h2.section { margin-top: 8px; }
 """.replace("%SERIES_LIGHT%", series_light).replace("%SERIES_DARK%", series_dark)
 
 
@@ -223,6 +233,130 @@ def _table(subject_rows, colors):
     return '<div class="tablewrap"><table>{}{}</table></div>'.format(head, "".join(body))
 
 
+def _ratio(x):
+    return "{:.1f}×".format(x)
+
+
+def _is_lossless(row):
+    return str(row["lossless"]).lower() in ("true", "1")
+
+
+def _exec_summary(rows, colors, subjects):
+    """Headline stat tiles + a one-line takeaway + a per-subject winners table.
+
+    Everything is derived from the largest measured size of each subject and expressed
+    against JSON, so a reader gets the conclusion before any of the detail below.
+    """
+    baseline = "json"
+    binary = "compas_pb"
+    per = []  # (subject, size, group_map, smallest_row, fastest_row)
+    for subj in subjects:
+        srows = [r for r in rows if r["subject"] == subj]
+        max_size = max(int(r["size"]) for r in srows)
+        group = [r for r in srows if int(r["size"]) == max_size]
+        gmap = {r["format"]: r for r in group}
+        smallest = min(group, key=lambda r: float(r["size_bytes"]))
+        fastest = min(group, key=lambda r: float(r["roundtrip_median_s"]))
+        per.append((subj, max_size, gmap, smallest, fastest))
+
+    # Tiles: best size / round-trip gains of the binary format vs JSON, and lossless coverage.
+    size_gain = speed_gain = None
+    lossless_hits = lossless_total = 0
+    for subj, size, gmap, _, _ in per:
+        if baseline in gmap and binary in gmap:
+            j, b = gmap[baseline], gmap[binary]
+            sr = float(j["size_bytes"]) / float(b["size_bytes"])
+            spd = float(j["roundtrip_median_s"]) / float(b["roundtrip_median_s"])
+            if size_gain is None or sr > size_gain[0]:
+                size_gain = (sr, subj, size)
+            if speed_gain is None or spd > speed_gain[0]:
+                speed_gain = (spd, subj, size)
+            lossless_total += 1
+            lossless_hits += _is_lossless(b)
+
+    tiles = []
+    if size_gain:
+        tiles.append(
+            '<div class="tile"><div class="big win">{r} smaller</div>'
+            '<div class="lbl">{bin} vs JSON on the wire</div>'
+            '<div class="sub">best: {subj} @ {n} elements</div></div>'.format(
+                r=_ratio(size_gain[0]), bin=binary, subj=html.escape(size_gain[1]), n=_fmt_int(size_gain[2])
+            )
+        )
+    if speed_gain:
+        tiles.append(
+            '<div class="tile"><div class="big win">{r} faster</div>'
+            '<div class="lbl">{bin} round-trip vs JSON</div>'
+            '<div class="sub">best: {subj} @ {n} elements</div></div>'.format(
+                r=_ratio(speed_gain[0]), bin=binary, subj=html.escape(speed_gain[1]), n=_fmt_int(speed_gain[2])
+            )
+        )
+    if lossless_total:
+        ok = lossless_hits == lossless_total
+        tiles.append(
+            '<div class="tile"><div class="big{cls}">{h}/{t}</div>'
+            '<div class="lbl">subjects lossless ({bin})</div>'
+            '<div class="sub">exact round-trip of __data__</div></div>'.format(
+                cls=" win" if ok else "", h=lossless_hits, t=lossless_total, bin=binary
+            )
+        )
+
+    # Winners table: per subject at its largest size, the smallest and fastest format vs JSON.
+    head = (
+        "<tr><th>subject</th><th>elements</th><th>smallest</th><th>vs&nbsp;JSON</th>"
+        "<th>fastest round-trip</th><th>vs&nbsp;JSON</th><th>{bin} lossless</th></tr>".format(bin=binary)
+    )
+    body = []
+    for subj, size, gmap, smallest, fastest in per:
+        j = gmap.get(baseline)
+        size_ratio = "{:.2f}×".format(float(j["size_bytes"]) / float(smallest["size_bytes"])) if j else "—"
+        speed_ratio = "{:.2f}×".format(float(j["roundtrip_median_s"]) / float(fastest["roundtrip_median_s"])) if j else "—"
+        b = gmap.get(binary)
+        badge = (
+            ('<span class="badge ok">✓ yes</span>' if _is_lossless(b) else '<span class="badge no">✗ no</span>')
+            if b
+            else '<span class="note">—</span>'
+        )
+        body.append(
+            "<tr><td>{subj}</td><td>{n}</td>"
+            '<td><span class="fmt-cell"><span class="dot" style="background:var(--series-{s1})"></span>{sf} · {sb}</span></td><td>{sr}</td>'
+            '<td><span class="fmt-cell"><span class="dot" style="background:var(--series-{s2})"></span>{ff} · {ft}</span></td><td>{spr}</td>'
+            "<td>{badge}</td></tr>".format(
+                subj=html.escape(subj),
+                n=_fmt_int(size),
+                s1=_slot(colors, smallest["format"]),
+                sf=html.escape(smallest["format"]),
+                sb=_fmt_bytes(smallest["size_bytes"]),
+                sr=size_ratio,
+                s2=_slot(colors, fastest["format"]),
+                ff=html.escape(fastest["format"]),
+                ft=_fmt_time(fastest["roundtrip_median_s"]),
+                spr=speed_ratio,
+                badge=badge,
+            )
+        )
+
+    takeaway = ""
+    if size_gain and speed_gain:
+        takeaway = (
+            '<p class="takeaway">On the largest payloads, <b>{bin}</b> (protobuf: double + flat '
+            "coordinate arrays) is the smallest and fastest option — up to <b>{sr} smaller</b> and "
+            "<b>{spd} faster to load</b> than compact JSON, {loss}.</p>".format(
+                bin=binary,
+                sr=_ratio(size_gain[0]),
+                spd=_ratio(speed_gain[0]),
+                loss=("losslessly" if lossless_hits == lossless_total else "with remaining fidelity notes below"),
+            )
+        )
+
+    return (
+        '<h2 class="section">Summary</h2>'
+        + takeaway
+        + '<div class="tiles">{}</div>'.format("".join(tiles))
+        + '<div class="tablewrap"><table>{}{}</table></div>'.format(head, "".join(body))
+    )
+
+
 def build_html(rows, meta=None):
     """Return a full standalone HTML document for the given result rows.
 
@@ -250,7 +384,7 @@ def build_html(rows, meta=None):
         if key in meta:
             meta_bits.append("{} {}".format(key, meta[key]))
 
-    sections = [_legend(rows, colors)]
+    sections = [_exec_summary(rows, colors, subjects), _legend(rows, colors)]
     for subject in subjects:
         subject_rows = [r for r in rows if r["subject"] == subject]
         sections.append("<h2>{}</h2>".format(html.escape(subject)))

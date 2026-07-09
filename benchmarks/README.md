@@ -35,14 +35,14 @@ Registered in [`formats.py`](serialization/formats.py):
 
 - `json` — compact text (the default, lossless);
 - `json_zip` — zip-compressed JSON (size baseline);
-- `compas_pb` — protobuf binary via the [`compas_pb`](https://pypi.org/project/compas_pb/)
-  plugin (optional dep; `pip install compas_pb`). Skipped automatically if not installed.
-  Currently **float32 → lossy** for float64 geometry; the harness quantifies the error
-  (see `max_abs_error` / `rms_error`).
+- `compas_pb` — protobuf binary via the `compas_pb` plugin (optional dep). We track the
+  **optimized branch** (`benchmark/double-precision`): double precision, flat packed
+  coordinate arrays, and inline attribute maps. Skipped automatically if not installed.
+  The harness still quantifies any residual error (`max_abs_error` / `rms_error`).
 
-Later phases register a `compas_pb` `double` variant and an Arrow/columnar prototype the same
-way; the runner picks up any registered, available format automatically and skips those whose
-optional dependency is missing (`available=False`).
+An Arrow/columnar prototype registers the same way; the runner picks up any registered,
+available format automatically and skips those whose optional dependency is missing
+(`available=False`).
 
 ## Running
 
@@ -67,39 +67,63 @@ Run from the repository root so `benchmarks` imports as a package. Requires a wo
 
 ## Results
 
-- `results/baseline_quick.{csv,html}` — JSON, JSON+zip, and `compas_pb` (**as shipped**,
-  float32) on the quick corpus. Findings: `json_zip` is 2–3.6× smaller than compact JSON
-  for ~1.5–1.8× slower round-trips; `compas_pb` as-is is **larger and slower than JSON**
-  and **lossy** (float32), with the error scaling with coordinate magnitude
-  (mesh ~1.5e-08, pointcloud ~3.8e-06).
-- `results/pb_precision_compare.{csv,html}` — **Phase 2 precision probe**: `compas_pb`
-  float32 vs a `double` build. Double drives coordinate error to **0** and makes
-  `Pointcloud` fully lossless, for ~+6% (mesh) / ~+19% (pointcloud) wire size. `Mesh`
-  stays non-lossless even with double — but now purely from **int/float coercion** of
-  zero-valued `default_vertex_attributes` (magnitude error 0), a defect separate from
-  precision (PRD §2.2 "Integer coercion").
+`results/baseline_quick.{csv,html}` — JSON, JSON+zip, and the **optimized** `compas_pb`
+(raw and zip-compressed) on the quick corpus. The HTML report opens with an **executive
+summary** (headline stat tiles + a per-subject winners table) so the conclusion is visible
+before any detail. Headline: with double precision + flat coordinate arrays + inline
+attribute maps, `compas_pb` goes from *larger and slower than JSON* (as shipped) to the
+**smallest and fastest lossless** option on numeric-heavy data:
 
-### Reproducing the `double` variant
+| subject (largest size) | JSON | json_zip | compas_pb | compas_pb_zip |
+|---|---|---|---|---|
+| mesh @10k, wire | 864 KB | 238 KB | 320 KB | **158 KB** |
+| mesh @10k, round-trip | 66 ms | 87 ms | **50 ms** | 58 ms |
+| mesh_attrs @10k, wire | 1.1 MB | 339 KB | 651 KB | **273 KB** |
+| pointcloud @100k, wire | 5.5 MB | 2.7 MB | 2.3 MB | **2.2 MB** |
+| pointcloud @100k, round-trip | 343 ms | 551 ms | **186 ms** | 254 ms |
 
-The `double` numbers come from an experimental branch of the external `compas_pb` repo,
-not the shipped wheel:
+All four formats are now **lossless on every subject**. `compas_pb_zip` is smallest;
+raw `compas_pb` is fastest (no compress step). Applied optimizations:
 
-```bash
-# in the compas_pb checkout, on a branch:
-#   flip float -> double in protobuf_defs/compas_pb/generated/geometry.proto (PointData etc.)
-#   regenerate with the pinned protoc (invocations.PROTOC_VERSION, 31.1):
-protoc --proto_path=src/compas_pb/protobuf_defs \
-       --python_out=src --pyi_out=src \
-       src/compas_pb/protobuf_defs/compas_pb/generated/geometry.proto
-pip install -e .            # into the compas .venv
-python -m benchmarks.serialization.run --formats json compas_pb --out benchmarks/serialization/results/pb_double.csv
-pip install --force-reinstall --no-deps compas_pb   # restore the as-shipped float32 build
-```
+- **Precision fixed** (`float → double`): coordinate error is **0** everywhere.
+- **Flat coordinate arrays** replaced a `PointData` message *per vertex/point* (each of
+  which carried a per-point UUID + name) with packed `repeated double` triplets — the
+  dominant size/speed win, for Mesh, Pointcloud, Polyline, Polygon, Bezier, Polyhedron.
+- **Inline `map<string, AnyData>` attributes** (Mesh, Graph) dropped the `DictData`
+  wrapper and skip empty/default entries.
+- **Int/float distinction preserved** — `AnyData` gained explicit `int64`/`double` arms
+  instead of routing numbers through `google.protobuf.Value`, so `0.0` no longer comes
+  back as `0`. This makes `Mesh`/`Graph` fully lossless (canonical hash matches).
+- **CSR face storage** — faces are a flat packed `face_vertices` index array + a
+  `face_sizes` length array, instead of one `FaceList` message per face.
+- **No `Any` wrapper on plain dicts/lists** — `AnyData` gained explicit `dict_value` /
+  `list_value` arms, so every nested dict/list no longer carries a ~44-byte
+  `google.protobuf.Any` `type_url`. This cut `mesh_attrs@10k` from **1.1 MB → 651 KB**
+  (now below JSON) and helps Graph, fallback, and any nested container.
+
+The optimizations live on the `benchmark/double-precision` branch of the external
+`compas_pb` repo (regenerate `_pb2` with the pinned protoc `invocations.PROTOC_VERSION`,
+then `pip install -e .` into this `.venv`).
+
+## Pending optimizations
+
+1. **Columnar vertex attributes** — `mesh_attrs` is now small but still slower than JSON to
+   *load* (each vertex rebuilds a `DictData` and repeats the attribute-name string). Storing
+   attributes column-wise (name once + a packed value array aligned to vertices) is the
+   Phase-3 columnar layout; it should make attribute-heavy meshes beat JSON on both axes.
+2. **Standalone `PointData` guid/name** — still serialized on every standalone Point/Line/
+   Frame. Omitting them (design decision: binary parity with JSON vs compactness) would
+   shrink primitive-heavy payloads.
+3. **Graph flat coordinates** — Graph nodes still carry coordinates inside per-node
+   `AnyData` dicts. A flat node-key + coordinate layout is the analog of the Mesh rewrite,
+   but node keys are arbitrary so it needs a small schema redesign.
 
 ## Status
 
 Phase 1: baseline harness + JSON numbers, plus `Data.canonical_hash()` decoupling object
 identity from the JSON text (`sha256()` is unchanged).
-Phase 2 (in progress): `compas_pb` measured; precision fix (double) quantified above. Still
-open: the int-coercion fix, a real version-compat policy, and reducing per-type boilerplate.
+Phase 2 (in progress): `compas_pb` measured and **optimized** — double precision, flat
+coordinate arrays, inline attribute maps, explicit int/float, CSR faces — now a fully
+**lossless** binary mode, smaller and faster than JSON on numeric data. Still open: a real
+version-compat policy and reducing per-type boilerplate.
 N1 speed/memory targets for the columnar direction will be set from these baselines.

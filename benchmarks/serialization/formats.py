@@ -10,6 +10,7 @@ with ``available=False`` and be skipped by the runner rather than crashing it.
 """
 
 import io
+import zipfile
 
 import compas
 
@@ -78,7 +79,8 @@ register(Format("json_zip", _json_zip_dumps, _json_zip_loads, note="zip-compress
 
 
 # ---------------------------------------------------------------------------
-# Protobuf (compas_pb plugin, optional). float32 wire -> lossy for float64 geometry.
+# Protobuf (compas_pb plugin, optional). Measured against the optimized branch:
+# double precision + flat coordinate arrays + inline attribute maps.
 # ---------------------------------------------------------------------------
 
 try:
@@ -101,12 +103,33 @@ def _pb_loads(blob):
     return pb_load_bts(blob)
 
 
+def _pb_zip_dumps(obj):
+    buffer = io.BytesIO()
+    with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as zf:
+        zf.writestr("content.pb", _pb_dumps(obj))
+    return buffer.getvalue()
+
+
+def _pb_zip_loads(blob):
+    with zipfile.ZipFile(io.BytesIO(blob)) as zf:
+        return _pb_loads(zf.read("content.pb"))
+
+
 register(
     Format(
         "compas_pb",
         _pb_dumps,
         _pb_loads,
         available=_PB_AVAILABLE,
-        note="protobuf binary, float32 (lossy)",
+        note="protobuf binary, double + flat arrays (optimized)",
+    )
+)
+register(
+    Format(
+        "compas_pb_zip",
+        _pb_zip_dumps,
+        _pb_zip_loads,
+        available=_PB_AVAILABLE,
+        note="protobuf binary, zip-compressed",
     )
 )
