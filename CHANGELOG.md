@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `TOL.update()` method for explicit global state modification. 
 * Added `TOL.temporary()` context manager for scoped changes.
 * Added missing implementation of `Brep.to_polygons()` in `compas_rhino.geometry.RhinoBrep`.
+* Added `Data.canonical_hash()` for content-based hashing that is independent of guid, name, and serialization format (`sha256()` is unchanged).
 
 ### Changed
 

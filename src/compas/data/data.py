@@ -10,6 +10,7 @@ except ImportError:
     pass
 
 import hashlib
+import json
 from copy import deepcopy
 from uuid import UUID
 from uuid import uuid4
@@ -330,6 +331,66 @@ class Data(object):
         """
         h = hashlib.sha256()
         h.update(compas.json_dumps(self).encode())
+        if as_string:
+            return h.hexdigest()
+        return h.digest()
+
+    def canonical_hash(self, as_string=False):
+        """Compute a content hash of the object that is independent of guid, name, and serialization format.
+
+        Unlike :meth:`sha256`, which hashes the full JSON text of the object (including its
+        guid), this method hashes a canonical form of ``__dtype__`` + ``__data__`` only. Two
+        objects with the same type and data therefore produce the same hash regardless of their
+        guid/name, and regardless of which format (JSON, protobuf, ...) they were loaded from,
+        because every format reconstructs the same ``__data__``.
+
+        Parameters
+        ----------
+        as_string : bool, optional
+            If True, return the digest in hexadecimal format rather than as bytes.
+
+        Returns
+        -------
+        bytes | str
+
+        See Also
+        --------
+        :meth:`sha256`
+
+        Notes
+        -----
+        The canonical form is a UTF-8 JSON encoding of ``{"dtype", "data"}`` with sorted keys
+        and no insignificant whitespace, produced with the guid excluded from this object and
+        from any nested :class:`compas.data.Data` objects. This makes the hash suitable for
+        content-addressed change detection and version control, independent of the wire format.
+
+        Examples
+        --------
+        >>> from compas.geometry import Point
+        >>> a = Point(0, 0, 0)
+        >>> b = Point(0, 0, 0)
+        >>> a.guid == b.guid
+        False
+        >>> a.canonical_hash() == b.canonical_hash()
+        True
+
+        """
+        from compas.data import DataEncoder
+
+        previous = DataEncoder.minimal
+        DataEncoder.minimal = True
+        try:
+            canonical = json.dumps(
+                self.__jsondump__(minimal=True),
+                cls=DataEncoder,
+                sort_keys=True,
+                separators=(",", ":"),
+            )
+        finally:
+            DataEncoder.minimal = previous
+
+        h = hashlib.sha256()
+        h.update(canonical.encode())
         if as_string:
             return h.hexdigest()
         return h.digest()
