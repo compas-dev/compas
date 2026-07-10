@@ -1,0 +1,53 @@
+{
+  "data": {
+    "message": {
+      "@type": "type.googleapis.com/compas_pb.data.MeshData",
+      "vertices": [
+        0.0,
+        0.0,
+        0.13942679845788375,
+        1.0,
+        0.0,
+        -0.47498924477733306,
+        0.0,
+        1.0,
+        -0.22497068163088074,
+        1.0,
+        1.0,
+        -0.27678926185117725
+      ],
+      "faceVertices": [
+        0,
+        1,
+        3,
+        2
+      ],
+      "vertexAttributeColumns": [
+        {
+          "name": "quality",
+          "doubles": [
+            0.7364712141640124,
+            0.6766994874229113,
+            0.8921795677048454,
+            0.08693883262941615
+          ]
+        }
+      ],
+      "defaultVertexAttributes": {
+        "y": {
+          "doubleValue": 0.0
+        },
+        "x": {
+          "doubleValue": 0.0
+        },
+        "z": {
+          "doubleValue": 0.0
+        }
+      },
+      "faceSizes": [
+        4
+      ]
+    }
+  },
+  "version": "0.5.0"
+}

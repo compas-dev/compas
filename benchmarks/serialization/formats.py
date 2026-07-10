@@ -133,3 +133,113 @@ register(
         note="protobuf binary, zip-compressed",
     )
 )
+
+try:
+    import zstandard  # noqa: F401
+
+    _ZSTD_AVAILABLE = _PB_AVAILABLE
+except ImportError:
+    _ZSTD_AVAILABLE = False
+
+
+def _pb_zstd_dumps(obj):
+    import zstandard
+
+    return zstandard.ZstdCompressor(level=10).compress(_pb_dumps(obj))
+
+
+def _pb_zstd_loads(blob):
+    import zstandard
+
+    return _pb_loads(zstandard.ZstdDecompressor().decompress(blob))
+
+
+register(
+    Format(
+        "compas_pb_zstd",
+        _pb_zstd_dumps,
+        _pb_zstd_loads,
+        available=_ZSTD_AVAILABLE,
+        note="protobuf binary, zstandard-compressed",
+    )
+)
+
+
+# ---------------------------------------------------------------------------
+# MessagePack over the JSON-shape tree (the Kumiki-project approach, applied to COMPAS
+# types via an msgspec enc_hook instead of Kumiki's own Serializable dataclasses).
+# Binary but row-oriented / schemaless — a midpoint between JSON and the columnar compas_pb.
+# ---------------------------------------------------------------------------
+
+try:
+    import msgspec  # noqa: F401
+
+    _MSGPACK_AVAILABLE = True
+except ImportError:
+    _MSGPACK_AVAILABLE = False
+
+
+def _msgpack_enc_hook(obj):
+    # msgspec calls this for types it doesn't natively encode; COMPAS Data objects expose
+    # their {dtype, data, guid, name} dict via __jsondump__, and nested Data recurse the same way.
+    if hasattr(obj, "__jsondump__"):
+        return obj.__jsondump__()
+    raise NotImplementedError("Cannot msgpack-encode {}".format(type(obj)))
+
+
+def _msgpack_reconstruct(node):
+    from compas.data.encoders import cls_from_dtype
+
+    if isinstance(node, dict):
+        if "dtype" in node:
+            data = _msgpack_reconstruct(node["data"])
+            cls = cls_from_dtype(node["dtype"], node.get("inheritance"))
+            return cls.__jsonload__(data, guid=node.get("guid"), name=node.get("name"))
+        return {key: _msgpack_reconstruct(value) for key, value in node.items()}
+    if isinstance(node, list):
+        return [_msgpack_reconstruct(item) for item in node]
+    return node
+
+
+def _msgpack_dumps(obj):
+    import msgspec
+
+    return msgspec.msgpack.encode(obj, enc_hook=_msgpack_enc_hook)
+
+
+def _msgpack_loads(blob):
+    import msgspec
+
+    return _msgpack_reconstruct(msgspec.msgpack.decode(blob))
+
+
+def _msgpack_zstd_dumps(obj):
+    import zstandard
+
+    return zstandard.ZstdCompressor(level=10).compress(_msgpack_dumps(obj))
+
+
+def _msgpack_zstd_loads(blob):
+    import zstandard
+
+    return _msgpack_loads(zstandard.ZstdDecompressor().decompress(blob))
+
+
+register(
+    Format(
+        "compas_msgpack",
+        _msgpack_dumps,
+        _msgpack_loads,
+        available=_MSGPACK_AVAILABLE,
+        note="msgpack over the JSON-shape tree (Kumiki-style)",
+    )
+)
+register(
+    Format(
+        "compas_msgpack_zstd",
+        _msgpack_zstd_dumps,
+        _msgpack_zstd_loads,
+        available=_MSGPACK_AVAILABLE and _ZSTD_AVAILABLE,
+        note="msgpack, zstandard-compressed",
+    )
+)

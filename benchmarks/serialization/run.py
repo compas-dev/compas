@@ -28,15 +28,19 @@ from benchmarks.serialization import fixtures
 from benchmarks.serialization import formats
 from benchmarks.serialization import metrics
 from benchmarks.serialization import report
+from benchmarks.serialization import samples
 
 HERE = os.path.dirname(__file__)
 RESULTS_DIR = os.path.join(HERE, "results")
 
-# Per-subject sizes. Mesh sizes are vertex counts; pointcloud sizes are point counts.
+# Sizes are element counts (vertices / points / nodes / primitives). DEFAULT_SIZES applies
+# to any subject not given explicit sizes in PRESETS.
+DEFAULT_SIZES = {
+    "quick": [1000, 10000],
+    "full": [1000, 100000, 1000000],
+}
 PRESETS = {
     "quick": {
-        "mesh": [1000, 10000],
-        "mesh_attrs": [1000, 10000],
         "pointcloud": [10000, 100000],
     },
     "full": {  # PRD 10.1
@@ -45,6 +49,10 @@ PRESETS = {
         "pointcloud": [10000, 1000000, 10000000, 50000000],
     },
 }
+
+
+def _sizes_for(preset, subject):
+    return PRESETS[preset].get(subject, DEFAULT_SIZES[preset])
 
 CSV_COLUMNS = [
     "subject",
@@ -91,13 +99,14 @@ def run(subjects, preset, format_names, repeat, seed):
         raise SystemExit("No matching available formats.")
 
     rows = []
-    sizes_by_subject = PRESETS[preset]
 
     for subject in subjects:
         factory = fixtures.SUBJECTS[subject]
-        for size in sizes_by_subject[subject]:
-            obj = factory(size, seed)
-            measured = {f.name: metrics.measure(f, obj, repeat=repeat) for f in active_formats}
+        for size in _sizes_for(preset, subject):
+            # Build a fresh fixture per format: serializing accesses .guid on some paths (JSON
+            # forces it), which would mutate a shared object and unfairly change what a later
+            # format encodes. A pristine object per format keeps each measurement independent.
+            measured = {f.name: metrics.measure(f, factory(size, seed), repeat=repeat) for f in active_formats}
             json_size = measured.get("json", {}).get("size_bytes")
 
             for fmt in active_formats:
@@ -170,6 +179,7 @@ def main():
     parser.add_argument("--repeat", type=int, default=5, help="Timed runs per measurement (median reported).")
     parser.add_argument("--seed", type=int, default=fixtures.DEFAULT_SEED)
     parser.add_argument("--out", default=os.path.join(RESULTS_DIR, "baseline_quick.csv"), help="CSV output path.")
+    parser.add_argument("--no-samples", action="store_true", help="Skip writing encoded-format samples.")
     args = parser.parse_args()
 
     rows = run(args.subjects, args.preset, args.formats, args.repeat, args.seed)
@@ -178,6 +188,10 @@ def main():
     meta = {"preset": args.preset, "repeat": args.repeat, "seed": args.seed, "compas": compas.__version__}
     html_out = report.write_html(rows, os.path.splitext(out)[0] + ".html", meta=meta)
     print("\nWrote {} rows to {}\nWrote report to {}".format(len(rows), out, html_out))
+
+    if not args.no_samples:
+        sample_files = samples.dump_samples(os.path.join(os.path.dirname(out) or ".", "samples"), seed=args.seed)
+        print("Wrote {} encoded-format samples to {}/samples/".format(len(sample_files), os.path.dirname(out) or "."))
 
 
 if __name__ == "__main__":

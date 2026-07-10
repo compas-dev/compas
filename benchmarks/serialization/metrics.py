@@ -69,6 +69,20 @@ def numeric_error(original, roundtrip):
     return {"max_abs_error": max(diffs), "rms_error": rms}
 
 
+def _data_of(obj):
+    """__data__ of a single Data object, or a list of __data__ for a collection subject."""
+    if isinstance(obj, (list, tuple)):
+        return [item.__data__ for item in obj]
+    return obj.__data__
+
+
+def _hash_of(obj):
+    """Canonical hash of a single Data object, or of each item for a collection subject."""
+    if isinstance(obj, (list, tuple)):
+        return [item.canonical_hash() for item in obj]
+    return obj.canonical_hash()
+
+
 def measure(fmt, obj, repeat=5):
     """Serialize/deserialize ``obj`` with ``fmt`` and return a metrics dict.
 
@@ -93,9 +107,10 @@ def measure(fmt, obj, repeat=5):
     _, peak_bytes = tracemalloc.get_traced_memory()
     tracemalloc.stop()
 
-    data_equal = obj.__data__ == roundtrip.__data__
-    hash_equal = obj.canonical_hash() == roundtrip.canonical_hash()
-    error = numeric_error(obj.__data__, roundtrip.__data__)
+    orig_data, rt_data = _data_of(obj), _data_of(roundtrip)
+    data_equal = orig_data == rt_data
+    hash_equal = _hash_of(obj) == _hash_of(roundtrip)
+    error = numeric_error(orig_data, rt_data)
 
     row = {
         "format": fmt.name,

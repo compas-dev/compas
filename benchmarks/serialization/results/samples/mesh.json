@@ -1,0 +1,55 @@
+{
+    "data": {
+        "attributes": {},
+        "default_edge_attributes": {},
+        "default_face_attributes": {},
+        "default_vertex_attributes": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        },
+        "edgedata": {},
+        "face": {
+            "0": [
+                0,
+                1,
+                3,
+                2
+            ]
+        },
+        "facedata": {
+            "0": {}
+        },
+        "max_face": 0,
+        "max_vertex": 3,
+        "vertex": {
+            "0": {
+                "quality": 0.7364712141640124,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.13942679845788375
+            },
+            "1": {
+                "quality": 0.6766994874229113,
+                "x": 1.0,
+                "y": 0.0,
+                "z": -0.47498924477733306
+            },
+            "2": {
+                "quality": 0.8921795677048454,
+                "x": 0.0,
+                "y": 1.0,
+                "z": -0.22497068163088074
+            },
+            "3": {
+                "quality": 0.08693883262941615,
+                "x": 1.0,
+                "y": 1.0,
+                "z": -0.27678926185117725
+            }
+        }
+    },
+    "dtype": "compas.datastructures/Mesh",
+    "guid": "18409b01-4820-4e7c-ad8f-8ad927880e68",
+    "inheritance": []
+}

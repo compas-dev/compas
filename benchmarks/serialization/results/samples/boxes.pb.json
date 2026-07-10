@@ -1,0 +1,51 @@
+{
+  "data": {
+    "listValue": {
+      "items": [
+        {
+          "message": {
+            "@type": "type.googleapis.com/compas_pb.data.BoxData",
+            "frame": {
+              "point": {
+                "x": 27.885359691576753,
+                "y": -94.99784895546661,
+                "z": -44.99413632617615
+              },
+              "xaxis": {
+                "x": 1.0
+              },
+              "yaxis": {
+                "y": 1.0
+              }
+            },
+            "xsize": 3.008896643339405,
+            "ysize": 7.628240927476112,
+            "zsize": 7.0902953868062015
+          }
+        },
+        {
+          "message": {
+            "@type": "type.googleapis.com/compas_pb.data.BoxData",
+            "frame": {
+              "point": {
+                "x": 78.43591354096907,
+                "y": -82.61223347411678,
+                "z": -15.61563606294591
+              },
+              "xaxis": {
+                "x": 1.0
+              },
+              "yaxis": {
+                "y": 1.0
+              }
+            },
+            "xsize": 1.268174974942633,
+            "ysize": 2.9677417732324303,
+            "zsize": 5.548197592930261
+          }
+        }
+      ]
+    }
+  },
+  "version": "0.5.0"
+}

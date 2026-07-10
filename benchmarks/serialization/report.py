@@ -11,6 +11,7 @@ the harness.
 
 import datetime
 import html
+import json
 
 # Validated categorical palette (dataviz skill reference instance): (light, dark) per slot.
 _SERIES = [
@@ -28,6 +29,94 @@ _METRICS = [
     ("roundtrip_median_s", "Round-trip time", "time"),
     ("size_bytes", "Wire size", "bytes"),
 ]
+
+# Client-side filter + summary re-render. __SLOTS__ is replaced with a {format: seriesSlot} map.
+_FILTER_JS = """
+var SLOT = __SLOTS__;
+var ROWS = JSON.parse(document.getElementById('rows-data').textContent);
+function isCompressed(f){ return f.indexOf('zip') >= 0 || f.indexOf('zstd') >= 0; }
+function inGroup(f, g){ return g === 'all' || (g === 'compressed') === isCompressed(f); }
+function isPb(f){ return f.indexOf('compas_pb') === 0; }
+function fmtInt(n){ return (+n).toLocaleString('en-US'); }
+function fmtBytes(n){ var u=['B','KB','MB','GB'],i=0; n=+n; while(n>=1024&&i<3){n/=1024;i++;} return n.toFixed(1)+' '+u[i]; }
+function fmtTime(s){ s=+s; return s<1 ? (s*1000).toFixed(1)+' ms' : s.toFixed(3)+' s'; }
+function ratio(x){ return x.toFixed(1)+'\\u00d7'; }
+function dot(f){ return '<span class="dot" style="background:var(--series-'+(SLOT[f]||1)+')"></span>'; }
+function median(a){ if(!a.length) return 0; var s=a.slice().sort(function(x,y){return x-y;}); var m=Math.floor(s.length/2); return s.length%2 ? s[m] : (s[m-1]+s[m])/2; }
+function range(a){ return 'range '+Math.min.apply(null,a).toFixed(1)+'\\u2013'+Math.max.apply(null,a).toFixed(1)+'\\u00d7 across '+a.length+' subjects'; }
+function currentGroup(){ var b=document.querySelector('.segmented button.active'); return b ? b.getAttribute('data-value') : 'all'; }
+function minBy(a, f){ return a.reduce(function(x,y){return f(y)<f(x)?y:x;}); }
+function tile(big, cls, lbl, sub){ return '<div class="tile"><div class="big'+cls+'">'+big+'</div><div class="lbl">'+lbl+'</div><div class="sub">'+sub+'</div></div>'; }
+function factor(r, better, worse){ return r>=1 ? ratio(r)+' '+better : ratio(1/r)+' '+worse; }
+
+function renderSummary(rows){
+  var subjects=[]; rows.forEach(function(r){ if(subjects.indexOf(r.subject)<0) subjects.push(r.subject); });
+  var baseName = rows.some(function(r){return r.format==='json';}) ? 'json'
+               : (rows.some(function(r){return r.format==='json_zip';}) ? 'json_zip' : null);
+  var baseLabel = baseName || 'baseline';
+  var per = subjects.map(function(subj){
+    var sr = rows.filter(function(r){return r.subject===subj;});
+    var maxSize = Math.max.apply(null, sr.map(function(r){return r.size;}));
+    return { subj: subj, size: maxSize, group: sr.filter(function(r){return r.size===maxSize;}) };
+  });
+  var sizeRatios=[], speedRatios=[], smallWins=0, fastWins=0, winTot=0;
+  per.forEach(function(p){
+    var base = p.group.filter(function(r){return r.format===baseName;})[0];
+    var pbs = p.group.filter(function(r){return isPb(r.format);});
+    if(base && pbs.length){
+      sizeRatios.push(base.size_bytes / minBy(pbs, function(r){return r.size_bytes;}).size_bytes);
+      speedRatios.push(base.roundtrip / minBy(pbs, function(r){return r.roundtrip;}).roundtrip);
+      winTot++;
+      if(isPb(minBy(p.group, function(r){return r.size_bytes;}).format)) smallWins++;
+      if(isPb(minBy(p.group, function(r){return r.roundtrip;}).format)) fastWins++;
+    }
+  });
+  var tiles='';
+  if(sizeRatios.length){ var ms=median(sizeRatios); tiles+=tile(factor(ms,'smaller','larger'), ms>=1?' win':'', 'median wire size vs '+baseLabel, range(sizeRatios)); }
+  if(speedRatios.length){ var mt=median(speedRatios); tiles+=tile(factor(mt,'faster','slower'), mt>=1?' win':'', 'median round-trip vs '+baseLabel, range(speedRatios)); }
+  if(winTot) tiles+=tile(smallWins+'/'+winTot, (smallWins===winTot?' win':''), 'subjects where compas_pb is smallest', 'and fastest to load on '+fastWins+'/'+winTot);
+  var head='<tr><th>subject</th><th>elements</th><th>smallest</th><th>vs '+baseLabel
+         +'</th><th>fastest round-trip</th><th>vs '+baseLabel+'</th><th>lossless</th></tr>';
+  var body='';
+  per.forEach(function(p){
+    if(!p.group.length) return;
+    var base = p.group.filter(function(r){return r.format===baseName;})[0];
+    var smallest = minBy(p.group, function(r){return r.size_bytes;});
+    var fastest = minBy(p.group, function(r){return r.roundtrip;});
+    var sr = base ? (base.size_bytes/smallest.size_bytes).toFixed(2)+'\\u00d7' : '\\u2014';
+    var spr = base ? (base.roundtrip/fastest.roundtrip).toFixed(2)+'\\u00d7' : '\\u2014';
+    var pb = p.group.filter(function(r){return isPb(r.format);})[0];
+    var badge = pb ? (pb.lossless ? '<span class="badge ok">\\u2713 yes</span>' : '<span class="badge no">\\u2717 no</span>') : '<span class="note">\\u2014</span>';
+    body+='<tr><td>'+p.subj+'</td><td>'+fmtInt(p.size)+'</td>'
+        +'<td><span class="fmt-cell">'+dot(smallest.format)+smallest.format+' \\u00b7 '+fmtBytes(smallest.size_bytes)+'</span></td><td>'+sr+'</td>'
+        +'<td><span class="fmt-cell">'+dot(fastest.format)+fastest.format+' \\u00b7 '+fmtTime(fastest.roundtrip)+'</span></td><td>'+spr+'</td>'
+        +'<td>'+badge+'</td></tr>';
+  });
+  return '<h2 class="section">Summary</h2><div class="tiles">'+tiles+'</div><div class="tablewrap"><table>'+head+body+'</table></div>';
+}
+
+function applyFilter(){
+  var g = currentGroup();
+  document.querySelectorAll('[data-format]').forEach(function(el){
+    el.style.display = inGroup(el.getAttribute('data-format'), g) ? '' : 'none';
+  });
+  document.querySelectorAll('.sizegroup').forEach(function(sg){
+    var fills = [].slice.call(sg.querySelectorAll('.bar-row')).filter(function(r){return r.style.display!=='none';})
+                  .map(function(r){return r.querySelector('.fill');});
+    var max = Math.max.apply(null, fills.map(function(f){return parseFloat(f.dataset.value);}).concat([0]));
+    fills.forEach(function(f){ f.style.width = max>0 ? (parseFloat(f.dataset.value)/max*100).toFixed(1)+'%' : '0%'; });
+  });
+  document.getElementById('summary-body').innerHTML = renderSummary(ROWS.filter(function(r){return inGroup(r.format, g);}));
+}
+document.querySelectorAll('.segmented button').forEach(function(b){
+  b.addEventListener('click', function(){
+    document.querySelectorAll('.segmented button').forEach(function(x){ x.classList.remove('active'); });
+    b.classList.add('active');
+    applyFilter();
+  });
+});
+applyFilter();
+"""
 
 
 def _fmt_int(n):
@@ -138,6 +227,16 @@ tr + tr td { border-top: 1px solid var(--grid); }
 .tile .sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
 .win { color: var(--good); font-weight: 600; }
 h2.section { margin-top: 8px; }
+.controls { margin: 14px 0 4px; display: flex; align-items: center; gap: 12px; }
+.controls-label { font-size: 13px; color: var(--text-secondary); }
+.segmented { display: inline-flex; background: var(--track); border: 1px solid var(--border);
+  border-radius: 9px; padding: 2px; gap: 2px; }
+.segmented button { font: inherit; font-size: 13px; color: var(--text-secondary); cursor: pointer;
+  background: transparent; border: 0; border-radius: 7px; padding: 5px 14px; line-height: 1.4; }
+.segmented button:hover { color: var(--text-primary); }
+.segmented button.active { background: var(--surface); color: var(--text-primary); font-weight: 600;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.10); }
+.tile .rng { font-size: 11px; color: var(--muted); margin-top: 2px; font-variant-numeric: tabular-nums; }
 """.replace("%SERIES_LIGHT%", series_light).replace("%SERIES_DARK%", series_dark)
 
 
@@ -155,8 +254,10 @@ def _legend(rows, colors):
         seen.append(r["format"])
         slot = _slot(colors, r["format"])
         parts.append(
-            '<span class="chip"><span class="dot" style="background:var(--series-{})"></span>'
-            "<b>{}</b> · {}</span>".format(slot, html.escape(r["format"]), html.escape(r.get("note", "")))
+            '<span class="chip" data-format="{fmt}"><span class="dot" style="background:var(--series-{slot})"></span>'
+            "<b>{fmt}</b> · {note}</span>".format(
+                slot=slot, fmt=html.escape(r["format"]), note=html.escape(r.get("note", ""))
+            )
         )
     parts.append("</div>")
     return "".join(parts)
@@ -178,14 +279,15 @@ def _bars(subject_rows, colors, metric_key, kind):
             width = float(r[metric_key]) / group_max * 100.0
             slot = _slot(colors, r["format"])
             rows_html.append(
-                '<div class="bar-row">'
+                '<div class="bar-row" data-format="{name}">'
                 '<div class="bar-name">{name}</div>'
-                '<div class="track"><div class="fill" style="width:{w:.1f}%;background:var(--series-{s})"></div></div>'
+                '<div class="track"><div class="fill" style="width:{w:.1f}%;background:var(--series-{s})" data-value="{dv}"></div></div>'
                 '<div class="bar-val">{val}</div>'
                 "</div>".format(
                     name=html.escape(r["format"]),
                     w=width,
                     s=slot,
+                    dv=float(r[metric_key]),
                     val=_fmt_value(r[metric_key], kind),
                 )
             )
@@ -209,7 +311,7 @@ def _table(subject_rows, colors):
         lossless = str(r["lossless"]).lower() in ("true", "1")
         badge = '<span class="badge ok">✓ yes</span>' if lossless else '<span class="badge no">✗ no</span>'
         body.append(
-            "<tr>"
+            '<tr data-format="{fmt}">'
             "<td>{size}</td>"
             '<td><span class="fmt-cell"><span class="dot" style="background:var(--series-{slot})"></span>{fmt}</span></td>'
             "<td>{wire}</td><td>{ratio}×</td>"
@@ -231,130 +333,6 @@ def _table(subject_rows, colors):
             )
         )
     return '<div class="tablewrap"><table>{}{}</table></div>'.format(head, "".join(body))
-
-
-def _ratio(x):
-    return "{:.1f}×".format(x)
-
-
-def _is_lossless(row):
-    return str(row["lossless"]).lower() in ("true", "1")
-
-
-def _exec_summary(rows, colors, subjects):
-    """Headline stat tiles + a one-line takeaway + a per-subject winners table.
-
-    Everything is derived from the largest measured size of each subject and expressed
-    against JSON, so a reader gets the conclusion before any of the detail below.
-    """
-    baseline = "json"
-    binary = "compas_pb"
-    per = []  # (subject, size, group_map, smallest_row, fastest_row)
-    for subj in subjects:
-        srows = [r for r in rows if r["subject"] == subj]
-        max_size = max(int(r["size"]) for r in srows)
-        group = [r for r in srows if int(r["size"]) == max_size]
-        gmap = {r["format"]: r for r in group}
-        smallest = min(group, key=lambda r: float(r["size_bytes"]))
-        fastest = min(group, key=lambda r: float(r["roundtrip_median_s"]))
-        per.append((subj, max_size, gmap, smallest, fastest))
-
-    # Tiles: best size / round-trip gains of the binary format vs JSON, and lossless coverage.
-    size_gain = speed_gain = None
-    lossless_hits = lossless_total = 0
-    for subj, size, gmap, _, _ in per:
-        if baseline in gmap and binary in gmap:
-            j, b = gmap[baseline], gmap[binary]
-            sr = float(j["size_bytes"]) / float(b["size_bytes"])
-            spd = float(j["roundtrip_median_s"]) / float(b["roundtrip_median_s"])
-            if size_gain is None or sr > size_gain[0]:
-                size_gain = (sr, subj, size)
-            if speed_gain is None or spd > speed_gain[0]:
-                speed_gain = (spd, subj, size)
-            lossless_total += 1
-            lossless_hits += _is_lossless(b)
-
-    tiles = []
-    if size_gain:
-        tiles.append(
-            '<div class="tile"><div class="big win">{r} smaller</div>'
-            '<div class="lbl">{bin} vs JSON on the wire</div>'
-            '<div class="sub">best: {subj} @ {n} elements</div></div>'.format(
-                r=_ratio(size_gain[0]), bin=binary, subj=html.escape(size_gain[1]), n=_fmt_int(size_gain[2])
-            )
-        )
-    if speed_gain:
-        tiles.append(
-            '<div class="tile"><div class="big win">{r} faster</div>'
-            '<div class="lbl">{bin} round-trip vs JSON</div>'
-            '<div class="sub">best: {subj} @ {n} elements</div></div>'.format(
-                r=_ratio(speed_gain[0]), bin=binary, subj=html.escape(speed_gain[1]), n=_fmt_int(speed_gain[2])
-            )
-        )
-    if lossless_total:
-        ok = lossless_hits == lossless_total
-        tiles.append(
-            '<div class="tile"><div class="big{cls}">{h}/{t}</div>'
-            '<div class="lbl">subjects lossless ({bin})</div>'
-            '<div class="sub">exact round-trip of __data__</div></div>'.format(
-                cls=" win" if ok else "", h=lossless_hits, t=lossless_total, bin=binary
-            )
-        )
-
-    # Winners table: per subject at its largest size, the smallest and fastest format vs JSON.
-    head = (
-        "<tr><th>subject</th><th>elements</th><th>smallest</th><th>vs&nbsp;JSON</th>"
-        "<th>fastest round-trip</th><th>vs&nbsp;JSON</th><th>{bin} lossless</th></tr>".format(bin=binary)
-    )
-    body = []
-    for subj, size, gmap, smallest, fastest in per:
-        j = gmap.get(baseline)
-        size_ratio = "{:.2f}×".format(float(j["size_bytes"]) / float(smallest["size_bytes"])) if j else "—"
-        speed_ratio = "{:.2f}×".format(float(j["roundtrip_median_s"]) / float(fastest["roundtrip_median_s"])) if j else "—"
-        b = gmap.get(binary)
-        badge = (
-            ('<span class="badge ok">✓ yes</span>' if _is_lossless(b) else '<span class="badge no">✗ no</span>')
-            if b
-            else '<span class="note">—</span>'
-        )
-        body.append(
-            "<tr><td>{subj}</td><td>{n}</td>"
-            '<td><span class="fmt-cell"><span class="dot" style="background:var(--series-{s1})"></span>{sf} · {sb}</span></td><td>{sr}</td>'
-            '<td><span class="fmt-cell"><span class="dot" style="background:var(--series-{s2})"></span>{ff} · {ft}</span></td><td>{spr}</td>'
-            "<td>{badge}</td></tr>".format(
-                subj=html.escape(subj),
-                n=_fmt_int(size),
-                s1=_slot(colors, smallest["format"]),
-                sf=html.escape(smallest["format"]),
-                sb=_fmt_bytes(smallest["size_bytes"]),
-                sr=size_ratio,
-                s2=_slot(colors, fastest["format"]),
-                ff=html.escape(fastest["format"]),
-                ft=_fmt_time(fastest["roundtrip_median_s"]),
-                spr=speed_ratio,
-                badge=badge,
-            )
-        )
-
-    takeaway = ""
-    if size_gain and speed_gain:
-        takeaway = (
-            '<p class="takeaway">On the largest payloads, <b>{bin}</b> (protobuf: double + flat '
-            "coordinate arrays) is the smallest and fastest option — up to <b>{sr} smaller</b> and "
-            "<b>{spd} faster to load</b> than compact JSON, {loss}.</p>".format(
-                bin=binary,
-                sr=_ratio(size_gain[0]),
-                spd=_ratio(speed_gain[0]),
-                loss=("losslessly" if lossless_hits == lossless_total else "with remaining fidelity notes below"),
-            )
-        )
-
-    return (
-        '<h2 class="section">Summary</h2>'
-        + takeaway
-        + '<div class="tiles">{}</div>'.format("".join(tiles))
-        + '<div class="tablewrap"><table>{}{}</table></div>'.format(head, "".join(body))
-    )
 
 
 def build_html(rows, meta=None):
@@ -384,7 +362,19 @@ def build_html(rows, meta=None):
         if key in meta:
             meta_bits.append("{} {}".format(key, meta[key]))
 
-    sections = [_exec_summary(rows, colors, subjects), _legend(rows, colors)]
+    controls = (
+        '<div class="controls"><span class="controls-label">Show formats</span>'
+        '<div class="segmented" id="fmtfilter" role="tablist">'
+        '<button type="button" data-value="uncompressed" role="tab">Uncompressed</button>'
+        '<button type="button" data-value="compressed" role="tab">Compressed</button>'
+        '<button type="button" data-value="all" class="active" role="tab">All</button>'
+        "</div></div>"
+    )
+    sections = [
+        controls,
+        '<div id="summary-body"></div>',
+        _legend(rows, colors),
+    ]
     for subject in subjects:
         subject_rows = [r for r in rows if r["subject"] == subject]
         sections.append("<h2>{}</h2>".format(html.escape(subject)))
@@ -393,6 +383,23 @@ def build_html(rows, meta=None):
             sections.append(_bars(subject_rows, colors, metric_key, kind))
         sections.append(_table(subject_rows, colors))
 
+    data_rows = [
+        {
+            "subject": r["subject"],
+            "size": int(r["size"]),
+            "format": r["format"],
+            "size_bytes": int(r["size_bytes"]),
+            "roundtrip": float(r["roundtrip_median_s"]),
+            "lossless": str(r["lossless"]).lower() in ("true", "1"),
+        }
+        for r in rows
+    ]
+    slot_map = {r["format"]: _slot(colors, r["format"]) for r in rows}
+    script = (
+        '<script id="rows-data" type="application/json">{data}</script>'
+        "<script>{js}</script>"
+    ).format(data=json.dumps(data_rows), js=_FILTER_JS.replace("__SLOTS__", json.dumps(slot_map)))
+
     return (
         "<!doctype html><html lang='en'><head><meta charset='utf-8'>"
         "<meta name='viewport' content='width=device-width, initial-scale=1'>"
@@ -400,9 +407,14 @@ def build_html(rows, meta=None):
         "<body><div class='wrap'>"
         "<h1>COMPAS serialization benchmark</h1>"
         "<p class='meta'>{meta}</p>"
-        "{body}"
+        "{body}{script}"
         "</div></body></html>"
-    ).format(css=_css(colors), meta=html.escape(" · ".join(meta_bits)), body="".join(sections))
+    ).format(
+        css=_css(colors),
+        meta=html.escape(" · ".join(meta_bits)),
+        body="".join(sections),
+        script=script,
+    )
 
 
 def write_html(rows, out_path, meta=None):

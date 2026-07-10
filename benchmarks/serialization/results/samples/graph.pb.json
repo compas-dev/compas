@@ -1,0 +1,74 @@
+{
+  "data": {
+    "message": {
+      "@type": "type.googleapis.com/compas_pb.data.GraphData",
+      "nodeKeys": [
+        {
+          "intValue": "0"
+        },
+        {
+          "intValue": "1"
+        },
+        {
+          "intValue": "2"
+        },
+        {
+          "intValue": "3"
+        }
+      ],
+      "nodeAttributes": [
+        {
+          "name": "x",
+          "doubles": [
+            0.0,
+            1.0,
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "name": "y",
+          "doubles": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "z",
+          "doubles": [
+            0.13942679845788375,
+            -0.47498924477733306,
+            -0.22497068163088074,
+            -0.27678926185117725
+          ]
+        }
+      ],
+      "defaultNodeAttributes": {
+        "y": {
+          "doubleValue": 0.0
+        },
+        "x": {
+          "doubleValue": 0.0
+        },
+        "z": {
+          "doubleValue": 0.0
+        }
+      },
+      "edgeU": [
+        0,
+        0,
+        1,
+        2
+      ],
+      "edgeV": [
+        1,
+        2,
+        3,
+        3
+      ]
+    }
+  },
+  "version": "0.5.0"
+}
