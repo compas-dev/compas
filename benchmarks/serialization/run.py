@@ -35,6 +35,11 @@ RESULTS_DIR = os.path.join(HERE, "results")
 
 # Sizes are element counts (vertices / points / nodes / primitives). DEFAULT_SIZES applies
 # to any subject not given explicit sizes in PRESETS.
+#
+# The PRD (10.1) lists 5e6 vertices / 5e7 points as the largest sizes; the "full" preset caps
+# at 1e6 / 1e7 so a run completes in reasonable time and memory on a workstation. The scaling
+# trend for the N1 targets (binary/columnar vs JSON) is already clear at those sizes; bump the
+# caps here for a machine that can take it.
 DEFAULT_SIZES = {
     "quick": [1000, 10000],
     "full": [1000, 100000, 1000000],
@@ -43,10 +48,10 @@ PRESETS = {
     "quick": {
         "pointcloud": [10000, 100000],
     },
-    "full": {  # PRD 10.1
-        "mesh": [1000, 100000, 1000000, 5000000],
-        "mesh_attrs": [1000, 100000, 1000000, 5000000],
-        "pointcloud": [10000, 1000000, 10000000, 50000000],
+    "full": {
+        "mesh": [1000, 100000, 1000000],
+        "mesh_attrs": [1000, 100000, 1000000],
+        "pointcloud": [10000, 1000000, 10000000],
     },
 }
 

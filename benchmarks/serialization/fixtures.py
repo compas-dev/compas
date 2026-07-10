@@ -19,6 +19,7 @@ import random
 
 from compas.datastructures import Graph
 from compas.datastructures import Mesh
+from compas.geometry import Bezier
 from compas.geometry import Box
 from compas.geometry import Circle
 from compas.geometry import Frame
@@ -26,7 +27,11 @@ from compas.geometry import Line
 from compas.geometry import Plane
 from compas.geometry import Point
 from compas.geometry import Pointcloud
+from compas.geometry import Polygon
+from compas.geometry import Polyhedron
+from compas.geometry import Polyline
 from compas.geometry import Sphere
+from compas.geometry import Transformation
 from compas.geometry import Vector
 
 DEFAULT_SEED = 42
@@ -146,6 +151,17 @@ def _make_primitive(kind, rng):
     if kind == "circle":
         f = Frame(coord(), [1.0, 0.0, 0.0], [0.0, 1.0, 0.0])
         return Circle(rng.uniform(1.0, 10.0), frame=f)
+    # Compound geometry — exercises the flat `repeated double` point arrays in compas_pb.
+    if kind == "polyline":
+        return Polyline([coord() for _ in range(8)])
+    if kind == "polygon":
+        return Polygon([coord() for _ in range(6)])
+    if kind == "bezier":
+        return Bezier([coord() for _ in range(4)])
+    if kind == "polyhedron":
+        return Polyhedron([coord() for _ in range(4)], [[0, 1, 2], [0, 1, 3], [0, 2, 3], [1, 2, 3]])
+    if kind == "transformation":
+        return Transformation.from_frame(Frame(coord(), [1.0, 0.1, 0.0], [0.0, 1.0, 0.1]))
     raise ValueError("Unknown primitive kind: {}".format(kind))
 
 
@@ -170,7 +186,10 @@ def make_primitives(kind, count, seed=DEFAULT_SEED):
     return [_make_primitive(kind, rng) for _ in range(count)]
 
 
-_PRIMITIVE_KINDS = ["point", "vector", "line", "frame", "plane", "box", "sphere", "circle"]
+_PRIMITIVE_KINDS = [
+    "point", "vector", "line", "frame", "plane", "box", "sphere", "circle",
+    "polyline", "polygon", "bezier", "polyhedron", "transformation",
+]
 
 
 # Subject catalogue: label -> factory(size, seed) returning a Data object (or list of them).

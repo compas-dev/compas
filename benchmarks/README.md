@@ -24,14 +24,23 @@ For each **subject × size × format**:
 | `pointcloud`  | N float64 points                           | none¹ |
 | `graph`       | jittered grid, nodes (x,y,z) + edges       | per-node coords |
 | `points`, `vectors`, `lines`, `frames`, `planes`, `boxes`, `spheres`, `circles` | a list of N primitives/shapes | — |
+| `polylines`, `polygons`, `beziers`, `polyhedrons` | a list of N compound objects (each holds several points) | — |
+| `transformations` | a list of N 4×4 matrices | — |
 
 ¹ The COMPAS `Pointcloud` type has no per-point attribute slot, so the "with per-element
 attributes" case lives on `mesh_attrs`.
 
 The primitive/shape subjects are **collections** (a Python `list` of N objects, a common
-real-world payload — e.g. a list of frames as robot targets). Fixtures are seeded
-([`fixtures.py`](serialization/fixtures.py)) so runs are comparable and reused across every
-format; the harness measures a list or a single `Data` object transparently.
+real-world payload — e.g. a list of frames as robot targets). The compound subjects
+(polylines/polygons/beziers/polyhedrons) each hold several points, so they exercise
+compas_pb's flat `repeated double` point arrays. This covers ~15 of compas_pb's ~31 native
+geometry types; still uncovered: the conics (Arc/Ellipse/Parabola/Hyperbola), the remaining
+shapes (Cylinder/Cone/Capsule/Torus), Quaternion, and the specific transformation subtypes
+(Translation/Rotation/Scale/… — which have their own proto messages beyond the base matrix).
+
+Fixtures are seeded ([`fixtures.py`](serialization/fixtures.py)) so runs are comparable and
+reused across every format; the harness measures a list or a single `Data` object
+transparently.
 
 ## Formats under test
 
