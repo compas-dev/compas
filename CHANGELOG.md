@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Renamed `Tolerance.units` to `Tolerance.unit` to better reflect the documented properties. Left `units` with deprecation warning.
 * Fixed `NotImplementedErorr` when calling `BrepLoop.vertices`.
 * Fixed `python -m compas` to detect extensions based on `importlib` rather than `pkg_resources`.
+* Deferred loading of NumPy and SciPy dependencies.
 
 ### Removed
 
