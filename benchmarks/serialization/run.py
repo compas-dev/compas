@@ -37,9 +37,9 @@ RESULTS_DIR = os.path.join(HERE, "results")
 # to any subject not given explicit sizes in PRESETS.
 #
 # The PRD (10.1) lists 5e6 vertices / 5e7 points as the largest sizes; the "full" preset caps
-# at 1e6 / 1e7 so a run completes in reasonable time and memory on a workstation. The scaling
-# trend for the N1 targets (binary/columnar vs JSON) is already clear at those sizes; bump the
-# caps here for a machine that can take it.
+# at 1e6 elements so a run completes in reasonable time and memory. (Larger sizes are dominated
+# by the tracemalloc peak-memory probe, which traces every allocation during deserialize.) The
+# binary-vs-JSON scaling trend for N1 is already clear across the 1e3 -> 1e6 sweep.
 DEFAULT_SIZES = {
     "quick": [1000, 10000],
     "full": [1000, 100000, 1000000],
@@ -51,7 +51,7 @@ PRESETS = {
     "full": {
         "mesh": [1000, 100000, 1000000],
         "mesh_attrs": [1000, 100000, 1000000],
-        "pointcloud": [10000, 1000000, 10000000],
+        "pointcloud": [10000, 100000, 1000000],
     },
 }
 

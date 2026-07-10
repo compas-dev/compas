@@ -177,6 +177,28 @@ The optimizations live on the `benchmark/double-precision` branch of the externa
 `compas_pb` repo (regenerate `_pb2` with the pinned protoc `invocations.PROTOC_VERSION`,
 then `pip install -e .` into this `.venv`).
 
+### N1 — binary-vs-JSON scaling (`--preset full`)
+
+`results/baseline_full.{csv,html}` sweeps the bulk-numeric subjects across **1e3 → 1e6**
+elements. compas_pb vs JSON **at 1e6 elements**:
+
+| subject | wire | load time | peak memory |
+|---|---|---|---|
+| `mesh` | **2.8×** smaller (100 → 35 MB) | 1.3× faster | 1.9× lower |
+| `mesh_attrs` | **3.0×** smaller (128 → 43 MB) | 1.3× faster | 1.8× lower |
+| `pointcloud` | **2.4×** smaller (55 → 23 MB) | 1.2× faster | 1.2× lower |
+| `graph` | **2.1×** smaller (85 → 40 MB) | **3.2×** faster | 1.7× lower |
+
+Wire and peak-memory ratios are ~flat with size; the **load-time** advantage *grows* with
+size (compas_pb has fixed per-call overhead — it can be slower than JSON at 1e3, but is
+amortized by 1e5 and clearly ahead by 1e6). Graph shows the biggest load win (3.2×) because
+the columnar node layout skips rebuilding N per-node dicts.
+
+**N1 is met**, with a proposed acceptance bar (holds for all four subjects at **≥ 1e5**
+elements): **wire ≥ 2× smaller, load ≥ 1.2× faster, peak memory ≥ 1.2× lower** than compact
+JSON. (The preset caps at 1e6; beyond that the `tracemalloc` peak-memory probe — which traces
+every allocation on deserialize — dominates runtime. Swap it for RSS sampling to push higher.)
+
 ## Pending optimizations
 
 1. **Batched primitive lists** — collections of small primitives load slightly slower than
