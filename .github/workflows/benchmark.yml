@@ -1,0 +1,61 @@
+name: serialization-benchmark
+
+# Runs the serialization benchmark and uploads the results (CSV + HTML report + encoded
+# samples) as a downloadable workflow artifact. Manual only — benchmarks are slow and their
+# timings are meaningless on a noisy shared runner if triggered on every push.
+on:
+  workflow_dispatch:
+    inputs:
+      preset:
+        description: "Corpus size preset"
+        type: choice
+        options: [quick, full]
+        default: quick
+      repeat:
+        description: "Timed runs per measurement (median reported)"
+        default: "5"
+      compas_pb_ref:
+        description: "compas_pb git ref to benchmark (branch/tag/sha)"
+        default: "benchmark/double-precision"
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install compas + benchmark dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+          # Optional benchmark formats (skipped automatically if absent, but we want them here):
+          pip install msgspec zstandard
+          # The optimized compas_pb under test. Its generated _pb2 modules are committed, so no
+          # protoc is needed. Public repo -> no auth required.
+          pip install "compas_pb @ git+https://github.com/gramaziokohler/compas_pb.git@${{ inputs.compas_pb_ref }}"
+
+      - name: Show versions
+        run: |
+          python -c "import compas, compas_pb, msgspec, zstandard; print('compas', compas.__version__); print('compas_pb', compas_pb.__version__)"
+
+      - name: Run benchmark (${{ inputs.preset }})
+        run: |
+          python -m benchmarks.serialization.run \
+            --preset "${{ inputs.preset }}" \
+            --repeat "${{ inputs.repeat }}" \
+            --out "benchmarks/serialization/results/baseline_${{ inputs.preset }}.csv"
+
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        with:
+          name: serialization-benchmark-${{ inputs.preset }}-${{ github.run_number }}
+          path: benchmarks/serialization/results/
+          retention-days: 90
+          if-no-files-found: error

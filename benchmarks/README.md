@@ -97,6 +97,17 @@ python -m benchmarks.serialization.run --subjects mesh pointcloud --formats json
 Run from the repository root so `benchmarks` imports as a package. Requires a working
 `numpy` (COMPAS geometry imports it at load time).
 
+### On CI
+
+The `serialization-benchmark` GitHub Actions workflow
+([`.github/workflows/benchmark.yml`](../.github/workflows/benchmark.yml)) runs the benchmark
+on demand (**Actions → serialization-benchmark → Run workflow**) and uploads the whole
+`results/` folder (CSV + HTML report + samples) as a downloadable artifact. Inputs let you
+pick the `preset`, `repeat` count, and the `compas_pb` git ref to test (default the
+`benchmark/double-precision` branch — its `_pb2` modules are committed, so no protoc is
+needed). It is manual-only: benchmark timings are meaningless on a noisy shared runner if
+triggered on every push.
+
 ## Results
 
 `results/baseline_quick.{csv,html}` — JSON, JSON+zip, and the **optimized** `compas_pb`
