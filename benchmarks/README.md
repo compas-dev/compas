@@ -25,18 +25,21 @@ For each **subject × size × format**:
 | `graph`       | jittered grid, nodes (x,y,z) + edges       | per-node coords |
 | `points`, `vectors`, `lines`, `frames`, `planes`, `boxes`, `spheres`, `circles` | a list of N primitives/shapes | — |
 | `polylines`, `polygons`, `beziers`, `polyhedrons` | a list of N compound objects (each holds several points) | — |
-| `transformations` | a list of N 4×4 matrices | — |
+| `arcs`, `ellipses`, `parabolas`, `hyperbolas` | a list of N conics | — |
+| `cylinders`, `cones`, `capsules`, `toruses` | a list of N solids | — |
+| `transformations`, `translations`, `rotations`, `scales`, `shears`, `reflections`, `projections`, `quaternions` | a list of N transforms/quaternions | — |
 
 ¹ The COMPAS `Pointcloud` type has no per-point attribute slot, so the "with per-element
 attributes" case lives on `mesh_attrs`.
 
 The primitive/shape subjects are **collections** (a Python `list` of N objects, a common
-real-world payload — e.g. a list of frames as robot targets). The compound subjects
-(polylines/polygons/beziers/polyhedrons) each hold several points, so they exercise
-compas_pb's flat `repeated double` point arrays. This covers ~15 of compas_pb's ~31 native
-geometry types; still uncovered: the conics (Arc/Ellipse/Parabola/Hyperbola), the remaining
-shapes (Cylinder/Cone/Capsule/Torus), Quaternion, and the specific transformation subtypes
-(Translation/Rotation/Scale/… — which have their own proto messages beyond the base matrix).
+real-world payload — e.g. a list of frames as robot targets). The compound subjects each
+hold several points, exercising compas_pb's flat `repeated double` point arrays. **The corpus
+now benchmarks all 31 of compas_pb's native serializable types** (the report shows a live
+coverage banner). All round-trip losslessly except a few ~1e-16 quirks the fidelity check
+surfaces: `frames`/`planes` (COMPAS re-normalizes axes on construction — affects JSON too) and
+`rotations` (compas_pb's `Rotation` serializer round-trips through axis+angle, not the exact
+matrix, so it isn't bit-reproduced).
 
 Fixtures are seeded ([`fixtures.py`](serialization/fixtures.py)) so runs are comparable and
 reused across every format; the harness measures a list or a single `Data` object
@@ -205,18 +208,20 @@ every allocation on deserialize — dominates runtime. Swap it for RSS sampling 
    JSON because each element goes through registry lookup + message unpack. A batched/columnar
    encoding for homogeneous primitive lists (e.g. N points/frames as flat arrays) would close
    it, the same way the mesh/graph rewrites did.
-2. **Mesh face/edge attributes** — still stored as `map<string, AnyData>` (cheap when empty,
-   which is the common case). Could reuse the columnar layout when populated; low priority
-   since the corpus doesn't exercise face/edge attributes.
-3. **Compare against MsgSpec** — evaluate the Kumiki-project MsgSpec-based serialization as an
-   additional format (next step).
+2. **`Rotation` serializer** — stores axis + angle, so the 4×4 matrix isn't bit-reproduced on
+   round-trip (~1e-16 error; `rotations` shows `lossless=no`). Storing the matrix directly (as
+   `Transformation` does) would make it exact.
+3. **PRD-scale memory (5e6/5e7)** — the `--preset full` run caps at 1e6 because the
+   `tracemalloc` peak-memory probe traces every allocation; swap it for RSS sampling to push
+   to the PRD's largest sizes.
 
 ## Status
 
 Phase 1: baseline harness + JSON numbers, plus `Data.canonical_hash()` decoupling object
 identity from the JSON text (`sha256()` is unchanged).
-Phase 2 (in progress): `compas_pb` measured and **optimized** — double precision, flat
-coordinate arrays, inline attribute maps, explicit int/float, CSR faces — now a fully
-**lossless** binary mode, smaller and faster than JSON on numeric data. Still open: a real
-version-compat policy and reducing per-type boilerplate.
-N1 speed/memory targets for the columnar direction will be set from these baselines.
+Phase 2: `compas_pb` measured and **optimized** — double precision, flat coordinate arrays,
+columnar attributes (mesh vertices/faces/edges, graph nodes/edges), explicit int/float, CSR
+faces, guid/name omission, msgpack comparison. Now a **lossless** binary mode, **smaller and
+faster than JSON** on numeric data (**N1 met** — see the full-preset table). All **31**
+serializable types benchmarked. The wire-version check is a **hard gate** (PRD N4) — the
+version bump that activates rejection of older data happens at release.

@@ -23,7 +23,7 @@
             "zsize": 7.0902953868062015
         },
         "dtype": "compas.geometry/Box",
-        "guid": "06648dc3-7107-4921-a54c-2544a7554083"
+        "guid": "f476798c-2362-4fcd-ba05-d2be7134a7d4"
     },
     {
         "data": {
@@ -49,6 +49,6 @@
             "zsize": 5.548197592930261
         },
         "dtype": "compas.geometry/Box",
-        "guid": "d6895f29-4f5d-423f-9882-3dab24dbfe97"
+        "guid": "1c8a7441-e116-48d1-ab55-0023a1b08018"
     }
 ]

@@ -237,6 +237,10 @@ h2.section { margin-top: 8px; }
 .segmented button.active { background: var(--surface); color: var(--text-primary); font-weight: 600;
   box-shadow: 0 1px 2px rgba(0,0,0,0.10); }
 .tile .rng { font-size: 11px; color: var(--muted); margin-top: 2px; font-variant-numeric: tabular-nums; }
+.coverage { margin: 18px 0 0; font-size: 13px; color: var(--text-secondary);
+  background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; }
+.coverage b { color: var(--text-primary); font-weight: 650; }
+.coverage .miss { color: var(--muted); font-size: 12px; }
 """.replace("%SERIES_LIGHT%", series_light).replace("%SERIES_DARK%", series_dark)
 
 
@@ -335,6 +339,21 @@ def _table(subject_rows, colors):
     return '<div class="tablewrap"><table>{}{}</table></div>'.format(head, "".join(body))
 
 
+def _coverage_banner(coverage):
+    """Static banner: how many of compas_pb's serializable types the corpus benchmarks."""
+    if not coverage:
+        return ""
+    n, total = coverage["benchmarked"], coverage["serializable"]
+    missing = coverage.get("missing") or []
+    if missing:
+        tail = ' <span class="miss">not yet covered: {}</span>'.format(html.escape(", ".join(missing)))
+    else:
+        tail = " — full coverage."
+    return '<div class="coverage"><b>{}/{}</b> of compas_pb\'s serializable types are benchmarked.{}</div>'.format(
+        n, total, tail
+    )
+
+
 def build_html(rows, meta=None):
     """Return a full standalone HTML document for the given result rows.
 
@@ -372,6 +391,7 @@ def build_html(rows, meta=None):
     )
     sections = [
         controls,
+        _coverage_banner(meta.get("coverage")),
         '<div id="summary-body"></div>',
         _legend(rows, colors),
     ]

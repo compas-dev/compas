@@ -46,13 +46,13 @@
         }
       ],
       "defaultNodeAttributes": {
+        "x": {
+          "doubleValue": 0.0
+        },
         "z": {
           "doubleValue": 0.0
         },
         "y": {
-          "doubleValue": 0.0
-        },
-        "x": {
           "doubleValue": 0.0
         }
       },

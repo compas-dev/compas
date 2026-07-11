@@ -23,7 +23,7 @@
         ]
       }
     },
-    "guid": "b59eb003-2b3b-4342-97ea-bd77e222bf07"
+    "guid": "7f173147-3df8-49e2-9c97-5ac2eb9a2a3c"
   },
   {
     "dtype": "compas.geometry/Box",
@@ -49,6 +49,6 @@
         ]
       }
     },
-    "guid": "3a32aaba-889d-4fb9-b3cb-18bf6372d1d1"
+    "guid": "9ec7b2a5-df6f-473d-a308-dc8fe088275d"
   }
 ]

@@ -19,19 +19,34 @@ import random
 
 from compas.datastructures import Graph
 from compas.datastructures import Mesh
+from compas.geometry import Arc
 from compas.geometry import Bezier
 from compas.geometry import Box
+from compas.geometry import Capsule
 from compas.geometry import Circle
+from compas.geometry import Cone
+from compas.geometry import Cylinder
+from compas.geometry import Ellipse
 from compas.geometry import Frame
+from compas.geometry import Hyperbola
 from compas.geometry import Line
+from compas.geometry import Parabola
 from compas.geometry import Plane
 from compas.geometry import Point
 from compas.geometry import Pointcloud
 from compas.geometry import Polygon
 from compas.geometry import Polyhedron
 from compas.geometry import Polyline
+from compas.geometry import Projection
+from compas.geometry import Quaternion
+from compas.geometry import Reflection
+from compas.geometry import Rotation
+from compas.geometry import Scale
+from compas.geometry import Shear
 from compas.geometry import Sphere
+from compas.geometry import Torus
 from compas.geometry import Transformation
+from compas.geometry import Translation
 from compas.geometry import Vector
 
 DEFAULT_SEED = 42
@@ -131,6 +146,12 @@ def _make_primitive(kind, rng):
     def coord():
         return [rng.uniform(-100.0, 100.0) for _ in range(3)]
 
+    def frame():
+        # Axis-aligned (only translated): a jittered frame re-normalizes with ~1e-16 error on
+        # round-trip (a COMPAS construction quirk, exercised by the `frames` subject itself), which
+        # would otherwise mask the losslessness of the shape/conic placed on it.
+        return Frame(coord(), [1.0, 0.0, 0.0], [0.0, 1.0, 0.0])
+
     if kind == "point":
         return Point(*coord())
     if kind == "vector":
@@ -161,7 +182,40 @@ def _make_primitive(kind, rng):
     if kind == "polyhedron":
         return Polyhedron([coord() for _ in range(4)], [[0, 1, 2], [0, 1, 3], [0, 2, 3], [1, 2, 3]])
     if kind == "transformation":
-        return Transformation.from_frame(Frame(coord(), [1.0, 0.1, 0.0], [0.0, 1.0, 0.1]))
+        return Transformation.from_frame(frame())
+    # Conics
+    if kind == "arc":
+        return Arc(radius=rng.uniform(1.0, 9.0), start_angle=0.2, end_angle=1.5, frame=frame())
+    if kind == "ellipse":
+        return Ellipse(major=rng.uniform(3.0, 9.0), minor=rng.uniform(1.0, 3.0), frame=frame())
+    if kind == "parabola":
+        return Parabola(focal=rng.uniform(1.0, 5.0), frame=frame())
+    if kind == "hyperbola":
+        return Hyperbola(major=rng.uniform(3.0, 9.0), minor=rng.uniform(1.0, 3.0), frame=frame())
+    # Solids
+    if kind == "cylinder":
+        return Cylinder(radius=rng.uniform(1.0, 5.0), height=rng.uniform(2.0, 9.0), frame=frame())
+    if kind == "cone":
+        return Cone(radius=rng.uniform(1.0, 5.0), height=rng.uniform(2.0, 9.0), frame=frame())
+    if kind == "capsule":
+        return Capsule(radius=rng.uniform(1.0, 3.0), height=rng.uniform(2.0, 9.0), frame=frame())
+    if kind == "torus":
+        return Torus(radius_axis=rng.uniform(3.0, 9.0), radius_pipe=rng.uniform(1.0, 2.0), frame=frame())
+    # Quaternion + transformation subtypes (each has its own proto message)
+    if kind == "quaternion":
+        return Quaternion(1.0 + rng.uniform(-0.3, 0.3), *coord()).unitized()
+    if kind == "translation":
+        return Translation.from_vector(coord())
+    if kind == "rotation":
+        return Rotation.from_axis_and_angle([0.0, 0.0, 1.0], rng.uniform(0.1, 3.0))
+    if kind == "scale":
+        return Scale.from_factors([rng.uniform(0.5, 3.0) for _ in range(3)])
+    if kind == "shear":
+        return Shear.from_angle_direction_plane(rng.uniform(0.1, 0.8), [1.0, 0.0, 0.0], Plane([0, 0, 0], [0, 0, 1]))
+    if kind == "reflection":
+        return Reflection.from_plane(Plane(coord(), [0.0, 0.0, 1.0]))
+    if kind == "projection":
+        return Projection.from_plane(Plane(coord(), [0.0, 0.0, 1.0]))
     raise ValueError("Unknown primitive kind: {}".format(kind))
 
 
@@ -189,6 +243,8 @@ def make_primitives(kind, count, seed=DEFAULT_SEED):
 _PRIMITIVE_KINDS = [
     "point", "vector", "line", "frame", "plane", "box", "sphere", "circle",
     "polyline", "polygon", "bezier", "polyhedron", "transformation",
+    "arc", "ellipse", "parabola", "hyperbola", "cylinder", "cone", "capsule", "torus",
+    "quaternion", "translation", "rotation", "scale", "shear", "reflection", "projection",
 ]
 
 
@@ -202,5 +258,5 @@ SUBJECTS = {
 }
 # One subject per primitive kind (pluralized label), each a list of `size` primitives.
 for _kind in _PRIMITIVE_KINDS:
-    _label = _kind + ("es" if _kind.endswith("x") else "s")
+    _label = _kind + ("es" if _kind.endswith(("x", "s")) else "s")
     SUBJECTS[_label] = (lambda k: lambda size, seed=DEFAULT_SEED: make_primitives(k, size, seed=seed))(_kind)

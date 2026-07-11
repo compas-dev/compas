@@ -98,6 +98,30 @@ def _human_bytes(n):
         n /= 1024.0
 
 
+def _coverage():
+    """How many of compas_pb's native serializable types the corpus exercises.
+
+    Returns ``{"benchmarked", "serializable", "missing"}`` or ``None`` if compas_pb is absent.
+    """
+    try:
+        import compas_pb.conversions  # noqa: F401  (import registers the serializers)
+        from compas_pb.registry import SerializerRegistry
+
+        serializable = {t.__name__ for t in SerializerRegistry._SERIALIZERS}
+    except Exception:
+        return None
+    benchmarked = set()
+    for factory in fixtures.SUBJECTS.values():
+        obj = factory(2)
+        item = obj[0] if isinstance(obj, (list, tuple)) else obj
+        benchmarked.add(type(item).__name__)
+    return {
+        "benchmarked": len(benchmarked & serializable),
+        "serializable": len(serializable),
+        "missing": sorted(serializable - benchmarked),
+    }
+
+
 def run(subjects, preset, format_names, repeat, seed):
     active_formats = [f for f in formats.formats() if f.available and (not format_names or f.name in format_names)]
     if not active_formats:
@@ -191,6 +215,7 @@ def main():
     print_table(rows)
     out = write_csv(rows, args.out)
     meta = {"preset": args.preset, "repeat": args.repeat, "seed": args.seed, "compas": compas.__version__}
+    meta["coverage"] = _coverage()
     html_out = report.write_html(rows, os.path.splitext(out)[0] + ".html", meta=meta)
     print("\nWrote {} rows to {}\nWrote report to {}".format(len(rows), out, html_out))
 
