@@ -199,8 +199,21 @@ the columnar node layout skips rebuilding N per-node dicts.
 
 **N1 is met**, with a proposed acceptance bar (holds for all four subjects at **≥ 1e5**
 elements): **wire ≥ 2× smaller, load ≥ 1.2× faster, peak memory ≥ 1.2× lower** than compact
-JSON. (The preset caps at 1e6; beyond that the `tracemalloc` peak-memory probe — which traces
-every allocation on deserialize — dominates runtime. Swap it for RSS sampling to push higher.)
+JSON.
+
+The preset caps at 1e6 because beyond that the `tracemalloc` peak-memory probe (it traces
+every allocation on deserialize) dominates runtime — measuring memory at PRD scale needs an
+RSS-sampling probe instead. A one-off **spot check at 5e7 points** (size + time only, no
+tracemalloc) confirms the ratios are flat with size and it does not OOM (RSS ≈ 9 GB of 36):
+
+| pointcloud @ 5e7 | json | compas_pb | ratio |
+|---|---|---|---|
+| wire | 2.90 GB | 1.20 GB | **2.42× smaller** |
+| dump | 208 s | 24 s | **8.6× faster** |
+| load | 188 s | 155 s | **1.21× faster** |
+
+(The wire/load ratios match the 1e6 numbers almost exactly; the dump gap widens because JSON
+spends ~200 s building a 2.9 GB string while compas_pb writes packed doubles.)
 
 ## Pending optimizations
 
@@ -208,9 +221,10 @@ every allocation on deserialize — dominates runtime. Swap it for RSS sampling 
    JSON because each element goes through registry lookup + message unpack. A batched/columnar
    encoding for homogeneous primitive lists (e.g. N points/frames as flat arrays) would close
    it, the same way the mesh/graph rewrites did.
-2. **PRD-scale memory (5e6/5e7)** — the `--preset full` run caps at 1e6 because the
-   `tracemalloc` peak-memory probe traces every allocation; swap it for RSS sampling to push
-   to the PRD's largest sizes.
+2. **Peak memory at PRD scale (5e6/5e7)** — size and load-time ratios are already confirmed
+   flat at 5e7 (spot check above), so this is a *productization stress test*, not an N1 gap.
+   The only thing unmeasured at those sizes is peak memory, which needs an RSS-sampling probe
+   (the `tracemalloc` probe is too slow past ~1e6).
 
 ## Status
 
