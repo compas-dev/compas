@@ -36,10 +36,10 @@ The primitive/shape subjects are **collections** (a Python `list` of N objects, 
 real-world payload — e.g. a list of frames as robot targets). The compound subjects each
 hold several points, exercising compas_pb's flat `repeated double` point arrays. **The corpus
 now benchmarks all 31 of compas_pb's native serializable types** (the report shows a live
-coverage banner). All round-trip losslessly except a few ~1e-16 quirks the fidelity check
-surfaces: `frames`/`planes` (COMPAS re-normalizes axes on construction — affects JSON too) and
-`rotations` (compas_pb's `Rotation` serializer round-trips through axis+angle, not the exact
-matrix, so it isn't bit-reproduced).
+coverage banner). All round-trip losslessly except `frames`/`planes`, which show a ~1e-16
+discrepancy for **every** format including JSON — COMPAS re-normalizes their axes on
+construction (`normalize(normalize(v)) ≠ normalize(v)` at the last ULP), a geometry quirk the
+fidelity check surfaces, not a serialization defect.
 
 Fixtures are seeded ([`fixtures.py`](serialization/fixtures.py)) so runs are comparable and
 reused across every format; the harness measures a list or a single `Data` object
@@ -208,10 +208,7 @@ every allocation on deserialize — dominates runtime. Swap it for RSS sampling 
    JSON because each element goes through registry lookup + message unpack. A batched/columnar
    encoding for homogeneous primitive lists (e.g. N points/frames as flat arrays) would close
    it, the same way the mesh/graph rewrites did.
-2. **`Rotation` serializer** — stores axis + angle, so the 4×4 matrix isn't bit-reproduced on
-   round-trip (~1e-16 error; `rotations` shows `lossless=no`). Storing the matrix directly (as
-   `Transformation` does) would make it exact.
-3. **PRD-scale memory (5e6/5e7)** — the `--preset full` run caps at 1e6 because the
+2. **PRD-scale memory (5e6/5e7)** — the `--preset full` run caps at 1e6 because the
    `tracemalloc` peak-memory probe traces every allocation; swap it for RSS sampling to push
    to the PRD's largest sizes.
 
