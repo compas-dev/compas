@@ -73,7 +73,7 @@ class Data(object):
 
     @property
     def __dtype__(self):
-        return "{}/{}".format(".".join(self.__class__.__module__.split(".")[:2]), self.__class__.__name__)
+        return self.__clstype__()
 
     @classmethod
     def __clstype__(cls):
