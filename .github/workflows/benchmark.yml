@@ -1,7 +1,7 @@
 name: serialization-benchmark
 
-# Runs the serialization benchmark and uploads the results (CSV + HTML report + encoded
-# samples) as a downloadable workflow artifact.
+# Runs the serialization benchmark, puts its executive summary directly on the workflow
+# run page, and uploads the full results (CSV + interactive HTML + encoded samples).
 #
 # PR runs always use the `quick` preset. Their *size* and *losslessness* numbers are
 # deterministic and meaningful; the *timing* numbers are only indicative on a shared runner —
@@ -66,6 +66,7 @@ jobs:
             --out "${{ runner.temp }}/serialization-results/baseline_${{ inputs.preset || 'quick' }}.csv"
 
       - name: Upload results
+        id: upload-results
         uses: actions/upload-artifact@v4
         with:
           name: serialization-benchmark-${{ inputs.preset || 'quick' }}-${{ github.run_number }}
@@ -74,3 +75,9 @@ jobs:
           path: ${{ runner.temp }}/serialization-results/
           retention-days: 90
           if-no-files-found: error
+
+      - name: Publish benchmark summary
+        env:
+          ARTIFACT_URL: ${{ steps.upload-results.outputs.artifact-url }}
+          RESULTS_CSV: ${{ runner.temp }}/serialization-results/baseline_${{ inputs.preset || 'quick' }}.csv
+        run: python -m benchmarks.serialization.report "$RESULTS_CSV" --artifact-url "$ARTIFACT_URL" >> "$GITHUB_STEP_SUMMARY"

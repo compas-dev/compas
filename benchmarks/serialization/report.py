@@ -1,17 +1,23 @@
-"""Render benchmark result rows as a self-contained, readable HTML report.
+"""Render benchmark result rows as HTML or a GitHub job summary.
 
 The CSV is the machine record; this is the human view. One standalone ``.html`` file
 (no external assets, theme-aware) with, per subject: grouped bars comparing formats at
 each size on the metrics that matter (round-trip time and wire size), plus a full table.
+
+The Markdown summary contains the executive view for CI, where GitHub does not render
+standalone HTML reports directly on a workflow run's summary page.
 
 New formats (protobuf, Arrow, ...) need no changes here: colors are assigned to formats
 in first-appearance order from a validated categorical palette, so the report grows with
 the harness.
 """
 
+import argparse
+import csv
 import datetime
 import html
 import json
+import statistics
 
 # Validated categorical palette (dataviz skill reference instance): (light, dark) per slot.
 _SERIES = [
@@ -441,3 +447,137 @@ def write_html(rows, out_path, meta=None):
     with open(out_path, "w") as f:
         f.write(build_html(rows, meta))
     return out_path
+
+
+def _is_lossless(value):
+    return str(value).lower() in ("true", "1")
+
+
+def _comparison(base, result, kind):
+    """Describe how a smaller/faster result compares with its baseline."""
+    base = float(base)
+    result = float(result)
+    if not base or not result:
+        return "—"
+    ratio = base / result
+    if 0.995 <= ratio <= 1.005:
+        return "the same"
+    if ratio > 1:
+        return "{:.2f}× {}".format(ratio, "smaller" if kind == "size" else "faster")
+    return "{:.2f}× {}".format(1.0 / ratio, "larger" if kind == "size" else "slower")
+
+
+def _markdown_cell(value):
+    return str(value).replace("|", "\\|").replace("\n", " ")
+
+
+def build_markdown_summary(rows, artifact_url=None):
+    """Return the largest-size executive summary as GitHub-flavored Markdown."""
+    subjects = []
+    for row in rows:
+        if row["subject"] not in subjects:
+            subjects.append(row["subject"])
+
+    groups = []
+    for subject in subjects:
+        subject_rows = [row for row in rows if row["subject"] == subject]
+        largest_size = max(int(row["size"]) for row in subject_rows)
+        groups.append((subject, largest_size, [row for row in subject_rows if int(row["size"]) == largest_size]))
+
+    baseline_name = None
+    formats = {row["format"] for row in rows}
+    if "json" in formats:
+        baseline_name = "json"
+    elif "json_zip" in formats:
+        baseline_name = "json_zip"
+
+    size_ratios = []
+    time_ratios = []
+    smallest_wins = 0
+    fastest_wins = 0
+    compared = 0
+    table_rows = []
+    for subject, largest_size, group in groups:
+        smallest = min(group, key=lambda row: float(row["size_bytes"]))
+        fastest = min(group, key=lambda row: float(row["roundtrip_median_s"]))
+        baseline = next((row for row in group if row["format"] == baseline_name), None)
+        protobuf_rows = [row for row in group if row["format"].startswith("compas_pb")]
+
+        size_comparison = "—"
+        time_comparison = "—"
+        if baseline:
+            size_comparison = _comparison(baseline["size_bytes"], smallest["size_bytes"], "size")
+            time_comparison = _comparison(baseline["roundtrip_median_s"], fastest["roundtrip_median_s"], "time")
+        if baseline and protobuf_rows:
+            best_protobuf_size = min(float(row["size_bytes"]) for row in protobuf_rows)
+            best_protobuf_time = min(float(row["roundtrip_median_s"]) for row in protobuf_rows)
+            size_ratios.append(float(baseline["size_bytes"]) / best_protobuf_size)
+            time_ratios.append(float(baseline["roundtrip_median_s"]) / best_protobuf_time)
+            compared += 1
+            smallest_wins += smallest["format"].startswith("compas_pb")
+            fastest_wins += fastest["format"].startswith("compas_pb")
+
+        if protobuf_rows:
+            protobuf_lossless = "✅ yes" if all(_is_lossless(row["lossless"]) for row in protobuf_rows) else "❌ no"
+        else:
+            protobuf_lossless = "—"
+
+        table_rows.append(
+            "| {} | {} | `{}` · {} | {} | `{}` · {} | {} | {} |".format(
+                _markdown_cell(subject),
+                _fmt_int(largest_size),
+                _markdown_cell(smallest["format"]),
+                _fmt_bytes(smallest["size_bytes"]),
+                size_comparison,
+                _markdown_cell(fastest["format"]),
+                _fmt_time(fastest["roundtrip_median_s"]),
+                time_comparison,
+                protobuf_lossless,
+            )
+        )
+
+    lines = ["## Serialization benchmark", ""]
+    if artifact_url:
+        lines.extend(["[Download the full interactive HTML report, CSV, and encoded samples]({})".format(artifact_url), ""])
+    if compared:
+        lines.extend(
+            [
+                "At the largest measured size for each subject, relative to `{}`, the best `compas_pb` variant is typically **{}** in wire size and **{}** in round-trip time. "
+                "A `compas_pb` variant is smallest for **{}/{}** subjects and fastest for **{}/{}**.".format(
+                    baseline_name,
+                    _comparison(1.0, 1.0 / statistics.median(size_ratios), "size"),
+                    _comparison(1.0, 1.0 / statistics.median(time_ratios), "time"),
+                    smallest_wins,
+                    compared,
+                    fastest_wins,
+                    compared,
+                ),
+                "",
+            ]
+        )
+
+    baseline_label = baseline_name or "baseline"
+    lines.extend(
+        [
+            "| Subject | Elements | Smallest | vs {} | Fastest round-trip | vs {} | `compas_pb` lossless |".format(baseline_label, baseline_label),
+            "|:--|--:|:--|:--|:--|:--|:--|",
+        ]
+    )
+    lines.extend(table_rows)
+    lines.append("")
+    return "\n".join(lines)
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Render a benchmark CSV as a GitHub job summary.")
+    parser.add_argument("csv_path", help="Benchmark CSV to summarize")
+    parser.add_argument("--artifact-url", help="URL for the complete downloadable artifact")
+    args = parser.parse_args()
+
+    with open(args.csv_path, newline="") as csv_file:
+        rows = list(csv.DictReader(csv_file))
+    print(build_markdown_summary(rows, artifact_url=args.artifact_url))
+
+
+if __name__ == "__main__":
+    main()

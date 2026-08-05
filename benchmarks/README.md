@@ -105,7 +105,9 @@ Run from the repository root so `benchmarks` imports as a package. Requires a wo
 The `serialization-benchmark` GitHub Actions workflow
 ([`.github/workflows/benchmark.yml`](../.github/workflows/benchmark.yml)) runs the benchmark
 on demand (**Actions → serialization-benchmark → Run workflow**) and uploads the whole
-fresh run directory (CSV + HTML report + samples) as a downloadable artifact. Inputs let you
+fresh run directory (CSV + HTML report + samples) as a downloadable artifact. The workflow
+run summary shows the largest-size results and a prominent link to the full artifact, so the
+main conclusions are visible without opening the ZIP. Inputs let you
 pick the `preset`, `repeat` count, and the `compas_pb` git ref to test (default the
 `benchmark/double-precision` branch — its `_pb2` modules are committed, so no protoc is
 needed). It is manual-only: benchmark timings are meaningless on a noisy shared runner if
