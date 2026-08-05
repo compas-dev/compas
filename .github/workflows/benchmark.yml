@@ -62,12 +62,14 @@ jobs:
           python -m benchmarks.serialization.run \
             --preset "${{ inputs.preset || 'quick' }}" \
             --repeat "${{ inputs.repeat || '5' }}" \
-            --out "benchmarks/serialization/results/baseline_${{ inputs.preset || 'quick' }}.csv"
+            --out "${{ runner.temp }}/serialization-results/baseline_${{ inputs.preset || 'quick' }}.csv"
 
       - name: Upload results
         uses: actions/upload-artifact@v4
         with:
           name: serialization-benchmark-${{ inputs.preset || 'quick' }}-${{ github.run_number }}
-          path: benchmarks/serialization/results/
+          # Upload only this run's clean output. The repository also tracks historical
+          # baselines, which must not leak into a quick run's artifact.
+          path: ${{ runner.temp }}/serialization-results/
           retention-days: 90
           if-no-files-found: error

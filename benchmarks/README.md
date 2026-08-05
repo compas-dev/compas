@@ -43,7 +43,10 @@ fidelity check surfaces, not a serialization defect.
 
 Fixtures are seeded ([`fixtures.py`](serialization/fixtures.py)) so runs are comparable and
 reused across every format; the harness measures a list or a single `Data` object
-transparently.
+transparently. Each format gets one untimed dump/load warm-up before measurement so plugin
+discovery, imports, and lazy codec initialization cannot make the first format look slower
+than formats measured later. Cold-start latency should be measured separately in a fresh
+process rather than mixed into the steady-state medians.
 
 ## Formats under test
 
@@ -102,7 +105,7 @@ Run from the repository root so `benchmarks` imports as a package. Requires a wo
 The `serialization-benchmark` GitHub Actions workflow
 ([`.github/workflows/benchmark.yml`](../.github/workflows/benchmark.yml)) runs the benchmark
 on demand (**Actions → serialization-benchmark → Run workflow**) and uploads the whole
-`results/` folder (CSV + HTML report + samples) as a downloadable artifact. Inputs let you
+fresh run directory (CSV + HTML report + samples) as a downloadable artifact. Inputs let you
 pick the `preset`, `repeat` count, and the `compas_pb` git ref to test (default the
 `benchmark/double-precision` branch — its `_pb2` modules are committed, so no protoc is
 needed). It is manual-only: benchmark timings are meaningless on a noisy shared runner if

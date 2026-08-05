@@ -97,6 +97,13 @@ def measure(fmt, obj, repeat=5):
     -------
     dict
     """
+    # Keep one-time import, plugin-discovery, descriptor initialization, and allocator
+    # setup out of the steady-state timings. Without this warm-up, results depend on
+    # format/subject order: the first protobuf row can pay all of compas_pb's startup
+    # cost while later compressed protobuf rows appear faster despite doing more work.
+    warm_blob = fmt.dumps(obj)
+    fmt.loads(warm_blob)
+
     blob, dump_samples = _time(lambda: fmt.dumps(obj), repeat)
     roundtrip, load_samples = _time(lambda: fmt.loads(blob), repeat)
 
