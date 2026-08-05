@@ -3,13 +3,10 @@ name: serialization-benchmark
 # Runs the serialization benchmark and uploads the results (CSV + HTML report + encoded
 # samples) as a downloadable workflow artifact.
 #
-# Push/PR runs always use the `quick` preset. Their *size* and *losslessness* numbers are
+# PR runs always use the `quick` preset. Their *size* and *losslessness* numbers are
 # deterministic and meaningful; the *timing* numbers are only indicative on a shared runner —
 # use workflow_dispatch (or a dedicated machine) when the exact timings matter.
 on:
-  push:
-    branches:
-      - exploration/serialization
   pull_request:
   workflow_dispatch:
     inputs:
@@ -28,7 +25,7 @@ on:
 permissions:
   contents: read
 
-# One run per ref; a new push cancels the previous (and its PR event's duplicate) run.
+# One run per ref; a new commit cancels the previous run for the same PR.
 concurrency:
   group: serialization-benchmark-${{ github.ref }}
   cancel-in-progress: true
