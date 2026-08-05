@@ -278,16 +278,17 @@ and reused across all formats.
 
 ### 10.4 Reporting
 
-A small, repeatable harness (script + fixtures) that emits a table/CSV per run,
-committed alongside the PRD so results are reproducible and reviewable. Targets
-for N1 are set **after** the baseline exists, expressed as a required factor
-improvement over JSON for the largest sizes.
+A small, repeatable harness (script + fixtures) that emits a table/CSV per run as
+a CI artifact. The PRD records the key conclusions and acceptance thresholds;
+generated reports are not version-controlled. Targets for N1 are set **after**
+the baseline exists, expressed as a required factor improvement over JSON for
+the largest sizes.
 
 ## 11. Rough phasing
 
 1. **Baseline & harness.** Build the §10 corpus (`Mesh`, `Pointcloud`) and
    benchmark harness; measure JSON and current `compas_pb`. Decouple `sha256`
-   from JSON text. *Exit:* a committed results table and agreed N1 targets.
+   from JSON text. *Exit:* an archived results artifact and agreed N1 targets.
 2. **Safe binary.** Fix `compas_pb` precision/int issues; measure the `double`
    cost; define fallback + version policy; expand/auto-generate coverage.
 3. **Columnar prototype.** Arrow/buffer profile for `Mesh` + `Pointcloud`; Python

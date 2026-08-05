@@ -112,6 +112,9 @@ dist/docs
 
 generated/
 
+# Generated serialization benchmark reports and encoded samples.
+benchmarks/serialization/results/
+
 *.3dmbak
 *.rhl
 

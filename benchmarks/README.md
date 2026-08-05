@@ -113,10 +113,11 @@ triggered on every push.
 
 ## Results
 
-`results/baseline_quick.{csv,html}` — JSON, JSON+zip, and the **optimized** `compas_pb`
-(raw and zip-compressed) on the quick corpus. The HTML report opens with an **executive
-summary** (headline stat tiles + a per-subject winners table) so the conclusion is visible
-before any detail. Headline: with double precision + flat coordinate arrays + inline
+Generated reports under `results/` are deliberately ignored by Git. Run the commands above
+or download a CI artifact to produce `baseline_quick.{csv,html}` and the encoded samples.
+The HTML report opens with an **executive summary** (headline stat tiles + a per-subject
+winners table) so the conclusion is visible before any detail. The findings recorded below
+come from the reference runs: with double precision + flat coordinate arrays + inline
 attribute maps, `compas_pb` goes from *larger and slower than JSON* (as shipped) to the
 **smallest and fastest lossless** option on numeric-heavy data:
 
