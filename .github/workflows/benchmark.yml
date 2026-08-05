@@ -20,7 +20,7 @@ on:
         default: "5"
       compas_pb_ref:
         description: "compas_pb git ref to benchmark (branch/tag/sha)"
-        default: "perf/round-trip"
+        default: "main"
       formats:
         description: "formats to benchmark (json, json_zip, compas_pb, compas_pb_zip, compas_pb_zstd, compas_msgpack, compas_msgpack_zstd)"
         default: "json compas_pb"
@@ -51,7 +51,7 @@ jobs:
           pip install msgspec zstandard
           # The optimized compas_pb under test. Its generated _pb2 modules are committed, so no
           # protoc is needed. Public repo -> no auth required.
-          pip install "compas_pb @ git+https://github.com/gramaziokohler/compas_pb.git@${{ inputs.compas_pb_ref || 'main' }}"
+          pip install "compas_pb @ git+https://github.com/gramaziokohler/compas_pb.git@${{ inputs.compas_pb_ref || 'perf/round-trip' }}"
 
       - name: Show versions
         run: |
