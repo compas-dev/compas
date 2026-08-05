@@ -62,7 +62,7 @@ jobs:
           python -m benchmarks.serialization.run \
             --preset "${{ inputs.preset || 'quick' }}" \
             --repeat "${{ inputs.repeat || '5' }}" \
-            --formats "${{ inputs.formats || 'json compas_pb' }}" \
+            --formats ${{ inputs.formats || 'json compas_pb' }} \
             --out "${{ runner.temp }}/serialization-results/baseline_${{ inputs.preset || 'quick' }}.csv"
 
       - name: Upload results
