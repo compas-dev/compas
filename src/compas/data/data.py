@@ -5,14 +5,14 @@ from typing import IO
 from typing import Any
 from typing import Optional
 from typing import Type
-from typing import TypeVar
 from typing import Union
 from uuid import UUID
 from uuid import uuid4
 
+from typing_extensions import Self
+
 import compas
 
-D = TypeVar("D", bound="Data")
 JSONFile = Union[str, os.PathLike[str], IO[str]]
 
 
@@ -50,8 +50,6 @@ class Data:
     * `compas.data.json_loads`
 
     """
-
-    DATASCHEMA: dict[str, Any] = {}
 
     def __init__(self, name: Optional[str] = None) -> None:
         self._guid: Optional[UUID] = None
@@ -122,7 +120,7 @@ class Data:
         return state
 
     @classmethod
-    def __jsonload__(cls: Type[D], data: dict[str, Any], guid: Optional[str] = None, name: Optional[str] = None) -> D:
+    def __jsonload__(cls, data: dict[str, Any], guid: Optional[str] = None, name: Optional[str] = None) -> Self:
         """Construct an object from COMPAS JSON serialization data.
 
         Parameters
@@ -179,7 +177,7 @@ class Data:
             self.name = state["name"]
 
     @classmethod
-    def __from_data__(cls: Type[D], data: dict[str, Any]) -> D:
+    def __from_data__(cls, data: dict[str, Any]) -> Self:
         """Construct an object of this type from the provided data.
 
         Parameters
@@ -243,7 +241,7 @@ class Data:
         self._name = name
 
     @classmethod
-    def from_json(cls: Type[D], filepath: JSONFile) -> D:
+    def from_json(cls, filepath: JSONFile) -> Self:
         """Construct an object of this type from a JSON file.
 
         Parameters
@@ -289,7 +287,7 @@ class Data:
         compas.json_dump(self, filepath, pretty=pretty, compact=compact, minimal=minimal)
 
     @classmethod
-    def from_jsonstring(cls: Type[D], string: str) -> D:
+    def from_jsonstring(cls, string: str) -> Self:
         """Construct an object of this type from a JSON string.
 
         Parameters
@@ -351,7 +349,7 @@ class Data:
         """
         return compas.json_dumps(self, pretty=pretty, compact=compact, minimal=minimal)
 
-    def copy(self: D, cls: Optional[Type[D]] = None, copy_guid: bool = False) -> D:
+    def copy(self, cls: Optional[Type[Self]] = None, copy_guid: bool = False) -> Self:
         """Make an independent copy of the data object.
 
         Parameters

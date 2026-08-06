@@ -24,7 +24,7 @@ def dataclass_dataschema(cls: Type[Data]) -> dict[str, Any]:
         The JSON schema.
 
     """
-    return cls.DATASCHEMA
+    raise NotImplementedError
 
 
 def dataclass_typeschema(cls: Type[Data]) -> dict[str, Any]:
