@@ -3,6 +3,8 @@ from typing import Literal
 from typing import Sequence
 from typing import Union
 
+from typing_extensions import Self
+
 from compas.itertools import linspace
 
 from .color import Color
@@ -115,7 +117,7 @@ class ColorMap:
     # --------------------------------------------------------------------------
 
     @classmethod
-    def from_palette(cls, name: str) -> "ColorMap":
+    def from_palette(cls, name: str) -> Self:
         """Construct a color map from a named palette.
 
         Parameters
@@ -156,7 +158,7 @@ class ColorMap:
         return cmap
 
     @classmethod
-    def from_mpl(cls, name: ColorMapName) -> "ColorMap":
+    def from_mpl(cls, name: ColorMapName) -> Self:
         """Construct a color map from matplotlib.
 
         Parameters
@@ -185,7 +187,7 @@ class ColorMap:
         return cls(colors)
 
     @classmethod
-    def from_color(cls, color: Color, rangetype: ColorRangeType = "full") -> "ColorMap":
+    def from_color(cls, color: Color, rangetype: ColorRangeType = "full") -> Self:
         """Construct a color map from a single color by varying luminance.
 
         Parameters
@@ -224,7 +226,7 @@ class ColorMap:
         raise ValueError("`rangetype` should be one of 'full', 'light', 'dark'.")
 
     @classmethod
-    def from_two_colors(cls, c1: Color, c2: Color, diverging: bool = False) -> "ColorMap":
+    def from_two_colors(cls, c1: Color, c2: Color, diverging: bool = False) -> Self:
         """Create a color map from two colors.
 
         Parameters
@@ -263,7 +265,7 @@ class ColorMap:
         return cls(colors)
 
     @classmethod
-    def from_three_colors(cls, c1: Color, c2: Color, c3: Color) -> "ColorMap":
+    def from_three_colors(cls, c1: Color, c2: Color, c3: Color) -> Self:
         """Construct a color map from three colors.
 
         Parameters
@@ -295,7 +297,7 @@ class ColorMap:
         return cls(colors)
 
     @classmethod
-    def from_rgb(cls) -> "ColorMap":
+    def from_rgb(cls) -> Self:
         """Construct a color map from the complete rgb color space.
 
         Returns

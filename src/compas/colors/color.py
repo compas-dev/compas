@@ -7,6 +7,8 @@ from typing import Sequence
 from typing import Union
 from typing import cast
 
+from typing_extensions import Self
+
 from compas.colors.html_colors import HTML_TO_RGB255
 from compas.data import Data
 from compas.tolerance import TOL
@@ -144,17 +146,6 @@ class Color(Data):
     compas.colors.ColorMap
 
     """
-
-    DATASCHEMA: dict[str, object] = {
-        "type": "object",
-        "properties": {
-            "red": {"type": "number", "minimum": 0.0, "maximum": 1.0},
-            "green": {"type": "number", "minimum": 0.0, "maximum": 1.0},
-            "blue": {"type": "number", "minimum": 0.0, "maximum": 1.0},
-            "alpha": {"type": "number", "minimum": 0.0, "maximum": 1.0},
-        },
-        "required": ["red", "green", "blue", "alpha"],
-    }
 
     @property
     def __data__(self) -> dict[str, float]:
@@ -324,7 +315,7 @@ class Color(Data):
         return (maxval - minval) / maxval
 
     @property
-    def contrast(self) -> "Color":
+    def contrast(self) -> Self:
         return self.darkened(25) if self.is_light else self.lightened(50)
 
     # --------------------------------------------------------------------------
@@ -332,7 +323,7 @@ class Color(Data):
     # --------------------------------------------------------------------------
 
     @classmethod
-    def from_rgb255(cls, r: int, g: int, b: int) -> "Color":
+    def from_rgb255(cls, r: int, g: int, b: int) -> Self:
         """Construct a color from RGB255 components.
 
         Parameters
@@ -352,7 +343,7 @@ class Color(Data):
         return cls(r / 255, g / 255, b / 255)
 
     @classmethod
-    def from_hls(cls, hue: float, luminance: float, saturation: float) -> "Color":
+    def from_hls(cls, hue: float, luminance: float, saturation: float) -> Self:
         """Construct a color from Hue, Lightness, and Saturation.
 
         Parameters
@@ -377,7 +368,7 @@ class Color(Data):
         return cls(r, g, b)
 
     @classmethod
-    def from_hsv(cls, h: float, s: float, v: float) -> "Color":
+    def from_hsv(cls, h: float, s: float, v: float) -> Self:
         """Construct a color from Hue, Saturation, and Value.
 
         Parameters
@@ -402,7 +393,7 @@ class Color(Data):
         return cls(r, g, b)
 
     @classmethod
-    def from_yiq(cls, y: float, i: float, q: float) -> "Color":
+    def from_yiq(cls, y: float, i: float, q: float) -> Self:
         """Construct a color from components in the YIQ color space.
 
         Parameters
@@ -427,7 +418,7 @@ class Color(Data):
         return cls(r, g, b)
 
     @classmethod
-    def from_yuv(cls, y: float, u: float, v: float) -> "Color":
+    def from_yuv(cls, y: float, u: float, v: float) -> Self:
         """Construct a color from components in the YUV color space.
 
         Parameters
@@ -454,7 +445,7 @@ class Color(Data):
         return cls(r, g, b)
 
     @classmethod
-    def from_number(cls, number: float) -> "Color":
+    def from_number(cls, number: float) -> Self:
         """Construct a color from a single number in the range 0-1.
 
         Parameters
@@ -492,7 +483,7 @@ class Color(Data):
     from_i = from_number
 
     @classmethod
-    def from_hex(cls, value: str) -> "Color":
+    def from_hex(cls, value: str) -> Self:
         """Construct a color from a hexadecimal color value.
 
         Parameters
@@ -512,7 +503,7 @@ class Color(Data):
         return cls(r / 255.0, g / 255.0, b / 255.0)
 
     @classmethod
-    def from_name(cls, name: str) -> "Color":
+    def from_name(cls, name: str) -> Self:
         """Construct a color from a name in the extended color table of HTML/CSS/SVG.
 
         Parameters
@@ -655,7 +646,7 @@ class Color(Data):
     # --------------------------------------------------------------------------
 
     @classmethod
-    def white(cls) -> "Color":
+    def white(cls) -> Self:
         """Construct the color white.
 
         Returns
@@ -666,7 +657,7 @@ class Color(Data):
         return cls(1.0, 1.0, 1.0)
 
     @classmethod
-    def black(cls) -> "Color":
+    def black(cls) -> Self:
         """Construct the color black.
 
         Returns
@@ -677,7 +668,7 @@ class Color(Data):
         return cls(0.0, 0.0, 0.0)
 
     @classmethod
-    def grey(cls) -> "Color":
+    def grey(cls) -> Self:
         """Construct the color grey.
 
         Returns
@@ -688,7 +679,7 @@ class Color(Data):
         return cls(0.5, 0.5, 0.5)
 
     @classmethod
-    def red(cls) -> "Color":
+    def red(cls) -> Self:
         """Construct the color red.
 
         Returns
@@ -699,7 +690,7 @@ class Color(Data):
         return cls(1.0, 0.0, 0.0)
 
     @classmethod
-    def orange(cls) -> "Color":
+    def orange(cls) -> Self:
         """Construct the color orange.
 
         Returns
@@ -710,7 +701,7 @@ class Color(Data):
         return cls(1.0, 0.5, 0.0)
 
     @classmethod
-    def yellow(cls) -> "Color":
+    def yellow(cls) -> Self:
         """Construct the color yellow.
 
         Returns
@@ -721,7 +712,7 @@ class Color(Data):
         return cls(1.0, 1.0, 0.0)
 
     @classmethod
-    def lime(cls) -> "Color":
+    def lime(cls) -> Self:
         """Construct the color lime (or chartreuse green).
 
         Returns
@@ -732,7 +723,7 @@ class Color(Data):
         return cls(0.5, 1.0, 0.0)
 
     @classmethod
-    def green(cls) -> "Color":
+    def green(cls) -> Self:
         """Construct the color green.
 
         Returns
@@ -743,7 +734,7 @@ class Color(Data):
         return cls(0.0, 1.0, 0.0)
 
     @classmethod
-    def mint(cls) -> "Color":
+    def mint(cls) -> Self:
         """Construct the color mint (or spring green).
 
         Returns
@@ -754,7 +745,7 @@ class Color(Data):
         return cls(0.0, 1.0, 0.5)
 
     @classmethod
-    def cyan(cls) -> "Color":
+    def cyan(cls) -> Self:
         """Construct the color cyan.
 
         Returns
@@ -765,7 +756,7 @@ class Color(Data):
         return cls(0.0, 1.0, 1.0)
 
     @classmethod
-    def azure(cls) -> "Color":
+    def azure(cls) -> Self:
         """Construct the color azure.
 
         Returns
@@ -776,7 +767,7 @@ class Color(Data):
         return cls(0.0, 0.5, 1.0)
 
     @classmethod
-    def blue(cls) -> "Color":
+    def blue(cls) -> Self:
         """Construct the color blue.
 
         Returns
@@ -787,7 +778,7 @@ class Color(Data):
         return cls(0.0, 0.0, 1.0)
 
     @classmethod
-    def violet(cls) -> "Color":
+    def violet(cls) -> Self:
         """Construct the color violet.
 
         Returns
@@ -798,7 +789,7 @@ class Color(Data):
         return cls(0.5, 0.0, 1.0)
 
     @classmethod
-    def magenta(cls) -> "Color":
+    def magenta(cls) -> Self:
         """Construct the color magenta.
 
         Returns
@@ -809,7 +800,7 @@ class Color(Data):
         return cls(1.0, 0.0, 1.0)
 
     @classmethod
-    def pink(cls) -> "Color":
+    def pink(cls) -> Self:
         """Construct the color pink.
 
         Returns
@@ -824,7 +815,7 @@ class Color(Data):
     # --------------------------------------------------------------------------
 
     @classmethod
-    def maroon(cls) -> "Color":
+    def maroon(cls) -> Self:
         """Construct the color maroon.
 
         Returns
@@ -835,7 +826,7 @@ class Color(Data):
         return cls(0.5, 0.0, 0.0)
 
     @classmethod
-    def brown(cls) -> "Color":
+    def brown(cls) -> Self:
         """Construct the color brown.
 
         Returns
@@ -846,7 +837,7 @@ class Color(Data):
         return cls(0.5, 0.25, 0.0)
 
     @classmethod
-    def olive(cls) -> "Color":
+    def olive(cls) -> Self:
         """Construct the color olive.
 
         Returns
@@ -857,7 +848,7 @@ class Color(Data):
         return cls(0.5, 0.5, 0.0)
 
     @classmethod
-    def teal(cls) -> "Color":
+    def teal(cls) -> Self:
         """Construct the color teal.
 
         Returns
@@ -868,7 +859,7 @@ class Color(Data):
         return cls(0.0, 0.5, 0.5)
 
     @classmethod
-    def navy(cls) -> "Color":
+    def navy(cls) -> Self:
         """Construct the color navy.
 
         Returns
@@ -879,7 +870,7 @@ class Color(Data):
         return cls(0.0, 0.0, 0.5)
 
     @classmethod
-    def purple(cls) -> "Color":
+    def purple(cls) -> Self:
         """Construct the color purple.
 
         Returns
@@ -890,7 +881,7 @@ class Color(Data):
         return cls(0.5, 0.0, 0.5)
 
     @classmethod
-    def silver(cls) -> "Color":
+    def silver(cls) -> Self:
         """Construct the color silver.
 
         Returns
@@ -941,7 +932,7 @@ class Color(Data):
         self.g = g
         self.b = b
 
-    def lightened(self, factor: float = 10.0) -> "Color":
+    def lightened(self, factor: float = 10.0) -> Self:
         """Return a lightened copy of the color.
 
         Parameters
@@ -992,7 +983,7 @@ class Color(Data):
         self.g = g
         self.b = b
 
-    def darkened(self, factor: float = 10.0) -> "Color":
+    def darkened(self, factor: float = 10.0) -> Self:
         """Return a darkened copy of the color.
 
         Parameters
@@ -1026,7 +1017,7 @@ class Color(Data):
         self.g = 1.0 - self.g
         self.b = 1.0 - self.b
 
-    def inverted(self) -> "Color":
+    def inverted(self) -> Self:
         """Return an inverted copy of the color.
 
         Returns
@@ -1067,7 +1058,7 @@ class Color(Data):
         self.g = g
         self.b = b
 
-    def saturated(self, factor: float = 10.0) -> "Color":
+    def saturated(self, factor: float = 10.0) -> Self:
         """Return a saturated copy of the color.
 
         Parameters
@@ -1118,7 +1109,7 @@ class Color(Data):
         self.g = g
         self.b = b
 
-    def desaturated(self, factor: float = 10.0) -> "Color":
+    def desaturated(self, factor: float = 10.0) -> Self:
         """Return a desaturated copy of the color.
 
         Parameters

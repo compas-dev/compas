@@ -2,6 +2,8 @@ from typing import Iterator
 from typing import Optional
 from typing import Union
 
+from typing_extensions import Self
+
 from compas.data import Data
 
 from .color import Color
@@ -38,7 +40,7 @@ class ColorDict(Data):
         }
 
     @classmethod
-    def __from_data__(cls, data: dict) -> "ColorDict":
+    def __from_data__(cls, data: dict) -> Self:
         colordict = cls(data["default"])
         colordict.update(data["dict"])
         return colordict
