@@ -2,19 +2,34 @@ from itertools import product
 from math import cos
 from math import pi
 from math import sin
+from typing import TYPE_CHECKING
+from typing import Any
+from typing import Hashable
+from typing import Iterable
+from typing import Mapping
+from typing import Optional
+from typing import Sequence
 
 from compas.geometry import angle_vectors_xy
 from compas.geometry import is_ccw_xy
 from compas.geometry import subtract_vectors_xy
 from compas.geometry._core.predicates_2 import is_intersection_segment_segment_xy
 
+if TYPE_CHECKING:
+    from compas.datastructures import Graph
 
-def graph_is_crossed(graph):
+
+Node = Hashable
+Edge = tuple[Node, Node]
+Crossing = tuple[Edge, Edge]
+
+
+def graph_is_crossed(graph: "Graph") -> bool:
     """Verify if a graph has crossing edges.
 
     Parameters
     ----------
-    graph : :class:`compas.datastructures.Graph`
+    graph
         A graph object.
 
     Returns
@@ -40,7 +55,22 @@ def graph_is_crossed(graph):
     return False
 
 
-def _are_edges_crossed(edges, vertices):
+def _are_edges_crossed(edges: Iterable[Edge], vertices: Mapping[Node, Sequence[float]]) -> bool:
+    """Verify whether any two edges cross.
+
+    Parameters
+    ----------
+    edges
+        The edges to check.
+    vertices
+        A mapping of node identifiers to point coordinates.
+
+    Returns
+    -------
+    bool
+        True if at least one pair of edges crosses.
+
+    """
     for (u1, v1), (u2, v2) in product(edges, edges):
         if u1 == u2 or v1 == v2 or u1 == v2 or u2 == v1:
             continue
@@ -53,12 +83,12 @@ def _are_edges_crossed(edges, vertices):
     return False
 
 
-def graph_count_crossings(graph):
+def graph_count_crossings(graph: "Graph") -> int:
     """Count the number of crossings (pairs of crossing edges) in the graph.
 
     Parameters
     ----------
-    graph : :class:`compas.datastructures.Graph`
+    graph
         A graph object.
 
     Returns
@@ -74,12 +104,12 @@ def graph_count_crossings(graph):
     return len(graph_find_crossings(graph))
 
 
-def graph_find_crossings(graph):
+def graph_find_crossings(graph: "Graph") -> list[Crossing]:
     """Identify all pairs of crossing edges in a graph.
 
     Parameters
     ----------
-    graph : :class:`compas.datastructures.Graph`
+    graph
         A graph object.
 
     Returns
@@ -92,7 +122,7 @@ def graph_find_crossings(graph):
     This algorithm assumes that the graph lies in the XY plane.
 
     """
-    crossings = set()
+    crossings: set[Crossing] = set()
     for (u1, v1), (u2, v2) in product(graph.edges(), graph.edges()):
         if u1 == u2 or v1 == v2 or u1 == v2 or u2 == v1:
             continue
@@ -109,18 +139,18 @@ def graph_find_crossings(graph):
     return list(crossings)
 
 
-def graph_is_xy(graph):
-    """Verify that a graph lies in the XY plane.
+def graph_is_xy(graph: "Graph") -> bool:
+    """Verify that all nodes of a graph lie in a plane parallel to XY.
 
     Parameters
     ----------
-    graph : :class:`compas.datastructures.Graph`
+    graph
         A graph object.
 
     Returns
     -------
     bool
-        True if the Z coordinate of all vertices is zero.
+        True if all nodes have the same Z coordinate.
         False otherwise.
 
     """
@@ -129,17 +159,17 @@ def graph_is_xy(graph):
         if z is None:
             z = graph.node_attribute(key, "z") or 0.0
         else:
-            if z != graph.node_attribute(key, "z") or 0.0:
+            if z != (graph.node_attribute(key, "z") or 0.0):
                 return False
     return True
 
 
-def graph_is_planar(graph):
+def graph_is_planar(graph: "Graph") -> bool:
     """Check if the graph is planar.
 
     Parameters
     ----------
-    graph : :class:`compas.datastructures.Graph`
+    graph
         A graph object.
 
     Returns
@@ -161,41 +191,37 @@ def graph_is_planar(graph):
     exists.
 
     """
-    try:
-        import networkx as nx
-    except ImportError:
-        print("NetworkX is not installed.")
-        raise
+    import networkx as nx
 
     return nx.is_planar(graph.to_networkx())
 
 
-def graph_is_planar_embedding(graph):
+def graph_is_planar_embedding(graph: "Graph") -> bool:
     """Verify that a graph is embedded in the plane without crossing edges.
 
     Parameters
     ----------
-    graph : :class:`compas.datastructures.Graph`
+    graph
         A graph object.
 
     Returns
     -------
     bool
         True if the graph is embedded in the plane without crossing edges.
-        Fase otherwise.
+        False otherwise.
 
     """
     return graph_is_planar(graph) and graph_is_xy(graph) and not graph_is_crossed(graph)
 
 
-def graph_embed_in_plane(graph, fixed=None):
+def graph_embed_in_plane(graph: "Graph", fixed: Optional[Sequence[Node]] = None) -> bool:
     """Embed the graph in the plane.
 
     Parameters
     ----------
-    graph : :class:`compas.datastructures.Graph`
+    graph
         A graph object.
-    fixed : [hashable, hashable], optional
+    fixed
         Two fixed points.
 
     Returns
@@ -210,14 +236,14 @@ def graph_embed_in_plane(graph, fixed=None):
         If NetworkX is not installed.
 
     """
-    try:
-        import networkx as nx
-    except ImportError:
-        print("NetworkX is not installed. Get NetworkX at https://networkx.github.io/.")
-        raise
+    import networkx as nx
 
-    x = graph.nodes_attribute("x")
-    y = graph.nodes_attribute("y")
+    x = graph.nodes_attribute("x") or []
+    y = graph.nodes_attribute("y") or []
+
+    if not x or not y:
+        return False
+
     xmin, xmax = min(x), max(x)
     ymin, ymax = min(y), max(y)
     xspan = xmax - xmin
@@ -226,7 +252,7 @@ def graph_embed_in_plane(graph, fixed=None):
     edges = [(u, v) for u, v in graph.edges() if not graph.is_leaf(u) and not graph.is_leaf(v)]
 
     is_embedded = False
-    pos = {}
+    pos: dict[Node, Any] = {}
 
     count = 100
     while count:

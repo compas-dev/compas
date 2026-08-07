@@ -1,33 +1,39 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+from typing import TYPE_CHECKING
+from typing import Hashable
+from typing import Optional
+
+if TYPE_CHECKING:
+    from compas.datastructures import Graph
 
 
-def graph_split_edge(graph, edge, t=0.5):
-    """Split and edge by inserting a node along its length.
+def graph_split_edge(
+    graph: "Graph",
+    edge: tuple[Hashable, Hashable],
+    t: float = 0.5,
+) -> Optional[Hashable]:
+    """Split an edge by inserting a node along its length.
 
     Parameters
     ----------
-    edge : tuple[hashable, hashable]
+    graph
+        A graph data structure.
+    edge
         The identifier of the edge to split.
-    t : float, optional
+    t
         The position of the inserted node on the edge.
 
     Returns
     -------
-    hashable
-        The key of the inserted node.
+    hashable | None
+        The key of the inserted node, or None if the edge does not exist.
 
     Raises
     ------
     ValueError
         If `t` is not in the range 0-1.
-    Exception
-        If the edge is not part of the graph.
-
     """
     u, v = edge
-    if not graph.has_edge(u, v):
+    if not graph.has_edge(edge):
         return
 
     if t <= 0.0:
@@ -39,25 +45,9 @@ def graph_split_edge(graph, edge, t=0.5):
     x, y, z = graph.edge_point(edge, t)
     w = graph.add_node(x=x, y=y, z=z)
 
-    graph.add_edge((u, w))
-    graph.add_edge((w, v))
-
-    if v in graph.edge[u]:
-        del graph.edge[u][v]
-    elif u in graph.edge[v]:
-        del graph.edge[v][u]
-    else:
-        raise Exception
-
-    # split half-edge UV
-    graph.adjacency[u][w] = None
-    graph.adjacency[w][v] = None
-    del graph.adjacency[u][v]
-
-    # split half-edge VU
-    graph.adjacency[v][w] = None
-    graph.adjacency[w][u] = None
-    del graph.adjacency[v][u]
+    graph.add_edge(u, w)
+    graph.add_edge(w, v)
+    graph.delete_edge(edge)
 
     # return the key of the split node
     return w

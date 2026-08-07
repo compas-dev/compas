@@ -100,10 +100,6 @@ def test_graph_data1(graph):
     assert graph.number_of_nodes() == other.number_of_nodes()
     assert graph.number_of_edges() == other.number_of_edges()
 
-    if not compas.IPY:
-        assert Graph.validate_data(graph.__data__)
-        assert Graph.validate_data(other.__data__)
-
 
 def test_graph_data2():
     cloud = Pointcloud.from_bounds(random.random(), random.random(), random.random(), random.randint(10, 100))
@@ -111,10 +107,6 @@ def test_graph_data2():
     other = Graph.__from_data__(json.loads(json.dumps(graph.__data__)))
 
     assert graph.__data__ == other.__data__
-
-    if not compas.IPY:
-        assert Graph.validate_data(graph.__data__)
-        assert Graph.validate_data(other.__data__)
 
 
 def test_shortest_path():

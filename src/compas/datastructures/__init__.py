@@ -27,9 +27,6 @@ from .mesh.subdivision import trimesh_subdivide_loop
 from .graph.graph import Graph
 from .mesh.mesh import Mesh
 from .volmesh.volmesh import VolMesh
-from .assembly.exceptions import AssemblyError, FeatureError
-from .assembly.assembly import Assembly
-from .assembly.part import Feature, GeometricFeature, ParametricFeature, Part
 from .cell_network.cell_network import CellNetwork
 from .tree.tree import Tree, TreeNode
 from .tree.hashtree import HashTree, HashNode
