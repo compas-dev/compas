@@ -286,10 +286,6 @@ def test_mesh_data(halfedge):
     assert halfedge.number_of_edges() == other.number_of_edges()
     assert halfedge.number_of_faces() == other.number_of_faces()
 
-    if not compas.IPY:
-        assert Mesh.validate_data(halfedge.__data__)
-        assert Mesh.validate_data(other.__data__)
-
 
 # --------------------------------------------------------------------------
 # converters
@@ -467,6 +463,20 @@ def test_cull_vertices():
     assert mesh.number_of_vertices() == v - 1
 
 
+def test_quads_to_triangles_preserves_face_attributes():
+    mesh = Mesh.from_vertices_and_faces(
+        [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0]],
+        [[0, 1, 2, 3]],
+    )
+    mesh.face_attribute(0, "name", "quad")
+
+    mesh.quads_to_triangles()
+
+    assert mesh.number_of_faces() == 2
+    assert mesh.number_of_edges() == 5
+    assert all(mesh.face_attribute(face, "name") == "quad" for face in mesh.faces())
+
+
 # --------------------------------------------------------------------------
 # info
 # --------------------------------------------------------------------------
@@ -533,6 +543,32 @@ def test_genus():
 # --------------------------------------------------------------------------
 # vertex attributes
 # --------------------------------------------------------------------------
+
+
+def test_filtered_accessors_with_and_without_data():
+    mesh = Mesh.from_vertices_and_faces(
+        [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0]],
+        [[0, 1, 2]],
+    )
+    mesh.vertex_attribute(0, "selected", True)
+    mesh.edge_attribute((0, 1), "selected", True)
+    mesh.face_attribute(0, "selected", True)
+
+    assert list(mesh.vertices_where(selected=True)) == [0]
+    assert list(mesh.edges_where(selected=True)) == [(0, 1)]
+    assert list(mesh.faces_where(selected=True)) == [0]
+
+    vertex, vertex_data = next(mesh.vertices_where(data=True, selected=True))
+    edge, edge_data = next(mesh.edges_where(data=True, selected=True))
+    face, face_data = next(mesh.faces_where(data=True, selected=True))
+
+    assert vertex == 0 and vertex_data["selected"] is True
+    assert edge == (0, 1) and edge_data["selected"] is True
+    assert face == 0 and face_data["selected"] is True
+
+    assert list(mesh.vertices_where_predicate(lambda key, attr: key == 0)) == [0]
+    assert list(mesh.edges_where_predicate(lambda edge, attr: edge == (0, 1))) == [(0, 1)]
+    assert list(mesh.faces_where_predicate(lambda face, attr: face == 0)) == [0]
 
 
 def test_default_vertex_attributes():
@@ -681,30 +717,44 @@ def test_del_edge_attribute_in_view(halfedge, edge_key):
         attrs["foo"]
 
 
+def test_attributes_can_be_set_to_none(halfedge, vertex_key, face_key, edge_key):
+    halfedge.vertex_attribute(vertex_key, "nullable", None)
+    halfedge.face_attribute(face_key, "nullable", None)
+    halfedge.edge_attribute(edge_key, "nullable", None)
+
+    assert "nullable" in halfedge.vertex[vertex_key]
+    assert "nullable" in halfedge.facedata[face_key]
+    assert "nullable" in halfedge.edgedata[str(tuple(sorted(edge_key)))]
+    assert halfedge.vertex_attribute(vertex_key, "nullable") is None
+    assert halfedge.face_attribute(face_key, "nullable") is None
+    assert halfedge.edge_attribute(edge_key, "nullable") is None
+
+
+def test_bulk_attributes_can_be_set_to_none(halfedge):
+    halfedge.vertices_attribute("nullable", None)
+    halfedge.faces_attribute("nullable", None)
+    halfedge.edges_attribute("nullable", None)
+
+    assert halfedge.vertices_attribute("nullable") == [None] * halfedge.number_of_vertices()
+    assert halfedge.faces_attribute("nullable") == [None] * halfedge.number_of_faces()
+    assert halfedge.edges_attribute("nullable") == [None] * halfedge.number_of_edges()
+
+
 # --------------------------------------------------------------------------
 # accessors
 # --------------------------------------------------------------------------
 
 
 def test_vertices(cube):
-    if compas.PY3:
-        assert hasattr(cube.vertices(), "__next__")
-    else:
-        assert hasattr(cube.vertices(), "__iter__")
+    assert hasattr(cube.vertices(), "__next__")
 
 
 def test_faces(cube):
-    if compas.PY3:
-        assert hasattr(cube.faces(), "__next__")
-    else:
-        assert hasattr(cube.faces(), "__iter__")
+    assert hasattr(cube.faces(), "__next__")
 
 
 def test_edges(cube):
-    if compas.PY3:
-        assert hasattr(cube.edges(), "__next__")
-    else:
-        assert hasattr(cube.edges(), "__iter__")
+    assert hasattr(cube.edges(), "__next__")
 
 
 # --------------------------------------------------------------------------
@@ -1332,10 +1382,48 @@ def test_face_attributes_includes_all_defaults(box):
 
 
 # --------------------------------------------------------------------------
+# matrices
+# --------------------------------------------------------------------------
+
+
+def test_connectivity_and_laplacian_matrices_use_mesh_edges():
+    numpy = pytest.importorskip("numpy")
+    mesh = Mesh.from_vertices_and_faces(
+        [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0]],
+        [[0, 1, 2], [0, 2, 3]],
+    )
+
+    connectivity = mesh.connectivity_matrix()
+    laplacian = mesh.laplacian_matrix()
+
+    assert connectivity.shape == (mesh.number_of_edges(), mesh.number_of_vertices())
+    assert numpy.all(numpy.count_nonzero(connectivity, axis=1) == 2)
+    assert numpy.allclose(laplacian, connectivity.T.dot(connectivity))
+
+
+def test_matrix_types_with_noncontiguous_vertex_keys():
+    mesh = Mesh.from_vertices_and_faces(
+        {2: [0.0, 0.0, 0.0], 4: [1.0, 0.0, 0.0], 8: [0.0, 1.0, 0.0]},
+        [[2, 4, 8]],
+    )
+
+    assert isinstance(mesh.adjacency_matrix(rtype="list"), list)
+    assert mesh.connectivity_matrix(rtype="csr").shape == (3, 3)
+    assert mesh.degree_matrix(rtype="coo").shape == (3, 3)
+    assert mesh.face_matrix(rtype="csc").shape == (1, 3)
+    assert mesh.laplacian_matrix(rtype="array").shape == (3, 3)
+
+
+# --------------------------------------------------------------------------
 # bounding volumes
 # --------------------------------------------------------------------------
 
 if not compas.IPY:
+
+    def test_aabb_and_obb_are_properties(cube):
+        assert isinstance(Mesh.aabb, property)
+        assert isinstance(Mesh.obb, property)
+        assert isinstance(cube.aabb, Box)
 
     def test_compute_aabb():
         mesh = Mesh.from_obj(compas.get("tubemesh.obj"))
@@ -1352,3 +1440,53 @@ if not compas.IPY:
         assert isinstance(obb, Box)
         assert len(obb.points) == 8
         assert obb.contains_points(mesh.to_points())
+
+
+# --------------------------------------------------------------------------
+# derived meshes
+# --------------------------------------------------------------------------
+
+
+def test_offset_returns_same_mesh_type():
+    mesh = Mesh.from_vertices_and_faces(
+        [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0]],
+        [[0, 1, 2, 3]],
+    )
+
+    offset = mesh.offset(2.0)
+
+    assert type(offset) is type(mesh)
+    assert all(TOL.is_close(offset.vertex_coordinates(vertex)[2], 2.0) for vertex in offset.vertices())
+
+
+def test_thickened_closes_open_mesh():
+    mesh = Mesh.from_vertices_and_faces(
+        [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0]],
+        [[0, 1, 2, 3]],
+    )
+
+    thickened = mesh.thickened(1.0)
+
+    assert thickened.number_of_vertices() == 8
+    assert thickened.number_of_faces() == 6
+    assert thickened.is_closed()
+
+
+def test_exploded_returns_one_mesh_per_component():
+    mesh = Mesh.from_vertices_and_faces(
+        [
+            [0.0, 0.0, 0.0],
+            [1.0, 0.0, 0.0],
+            [0.0, 1.0, 0.0],
+            [2.0, 0.0, 0.0],
+            [3.0, 0.0, 0.0],
+            [2.0, 1.0, 0.0],
+        ],
+        [[0, 1, 2], [3, 4, 5]],
+    )
+
+    parts = mesh.exploded()
+
+    assert len(parts) == 2
+    assert all(type(part) is type(mesh) for part in parts)
+    assert sorted(part.number_of_faces() for part in parts) == [1, 1]

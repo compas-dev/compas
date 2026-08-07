@@ -1,7 +1,29 @@
+"""Halfedge-based mesh data structure.
+
+Notes
+-----
+Several collection-based attribute methods currently select their default
+elements with expressions such as ``keys or self.vertices()``. As a result, an
+explicitly empty collection selects all elements rather than no elements. This
+legacy behaviour should be reviewed separately because changing it may affect
+existing callers.
+"""
+
 from collections.abc import Mapping
 from itertools import product
 from math import pi
 from random import sample
+from typing import Any
+from typing import Callable
+from typing import Iterable
+from typing import Iterator
+from typing import Literal
+from typing import Optional
+from typing import Sequence
+from typing import Union
+from typing import overload
+
+from typing_extensions import Self
 
 from compas.datastructures.attributes import EdgeAttributeView
 from compas.datastructures.attributes import FaceAttributeView
@@ -20,6 +42,7 @@ from compas.geometry import Point
 from compas.geometry import Polygon
 from compas.geometry import Polyhedron
 from compas.geometry import Shape  # noqa: F401
+from compas.geometry import Transformation
 from compas.geometry import Vector
 from compas.geometry import add_vectors
 from compas.geometry import angle_points
@@ -63,6 +86,13 @@ from .slice import mesh_slice_plane
 from .smoothing import mesh_smooth_area
 from .smoothing import mesh_smooth_centroid
 from .subdivision import mesh_subdivide
+from .types import AttributeDict
+from .types import Edge
+from .types import Face
+from .types import PointCoordinates
+from .types import Vertex
+
+_MISSING = object()
 
 
 class Mesh(Datastructure):
@@ -70,30 +100,30 @@ class Mesh(Datastructure):
 
     Parameters
     ----------
-    default_vertex_attributes : dict[str, Any], optional
+    default_vertex_attributes
         Default values for vertex attributes.
-    default_edge_attributes : dict[str, Any], optional
+    default_edge_attributes
         Default values for edge attributes.
-    default_face_attributes : dict[str, Any], optional
+    default_face_attributes
         Default values for face attributes.
-    name : str, optional
+    name
         Then name of the mesh.
-    **kwargs : dict, optional
+    **kwargs
         Additional keyword arguments, which are stored in the attributes dict.
 
     Attributes
     ----------
-    default_vertex_attributes : dict[str, Any]
+    default_vertex_attributes
         Dictionary containing default values for the attributes of vertices.
-        It is recommended to add a default to this dictionary using :meth:`update_default_vertex_attributes`
+        It is recommended to add a default to this dictionary using
         for every vertex attribute used in the data structure.
-    default_edge_attributes : dict[str, Any]
+    default_edge_attributes
         Dictionary containing default values for the attributes of edges.
-        It is recommended to add a default to this dictionary using :meth:`update_default_edge_attributes`
+        It is recommended to add a default to this dictionary using
         for every edge attribute used in the data structure.
-    default_face_attributes : dict[str, Any]
-        Dictionary contnaining default values for the attributes of faces.
-        It is recommended to add a default to this dictionary using :meth:`update_default_face_attributes`
+    default_face_attributes
+        Dictionary containing default values for the attributes of faces.
+        It is recommended to add a default to this dictionary using
         for every face attribute used in the data structure.
 
     Examples
@@ -121,58 +151,8 @@ class Mesh(Datastructure):
     smooth_centroid = mesh_smooth_centroid
     smooth_area = mesh_smooth_area
 
-    DATASCHEMA = {
-        "type": "object",
-        "properties": {
-            "attributes": {"type": "object"},
-            "default_vertex_attributes": {"type": "object"},
-            "default_edge_attributes": {"type": "object"},
-            "default_face_attributes": {"type": "object"},
-            "vertex": {
-                "type": "object",
-                "patternProperties": {"^[0-9]+$": {"type": "object"}},
-                "additionalProperties": False,
-            },
-            "face": {
-                "type": "object",
-                "patternProperties": {
-                    "^[0-9]+$": {
-                        "type": "array",
-                        "items": {"type": "integer", "minimum": 0},
-                        "minItems": 3,
-                    }
-                },
-                "additionalProperties": False,
-            },
-            "facedata": {
-                "type": "object",
-                "patternProperties": {"^[0-9]+$": {"type": "object"}},
-                "additionalProperties": False,
-            },
-            "edgedata": {
-                "type": "object",
-                "patternProperties": {"^\\([0-9]+, [0-9]+\\)$": {"type": "object"}},
-                "additionalProperties": False,
-            },
-            "max_vertex": {"type": "integer", "minimum": -1},
-            "max_face": {"type": "integer", "minimum": -1},
-        },
-        "required": [
-            "attributes",
-            "default_vertex_attributes",
-            "default_edge_attributes",
-            "default_face_attributes",
-            "vertex",
-            "face",
-            "facedata",
-            "edgedata",
-            "max_vertex",
-            "max_face",
-        ],
-    }
-
     @property
-    def __data__(self):
+    def __data__(self) -> dict[str, Any]:
         return self.__before_json_dump__(
             {
                 "attributes": self.attributes,
@@ -188,14 +168,14 @@ class Mesh(Datastructure):
             }
         )
 
-    def __before_json_dump__(self, data):
+    def __before_json_dump__(self, data: dict[str, Any]) -> dict[str, Any]:
         data["vertex"] = {str(vertex): attr for vertex, attr in data["vertex"].items()}
         data["face"] = {str(face): vertices for face, vertices in data["face"].items()}
         data["facedata"] = {str(face): attr for face, attr in data["facedata"].items()}
         return data
 
     @classmethod
-    def __from_data__(cls, data):
+    def __from_data__(cls, data: dict[str, Any]) -> Self:
         mesh = cls(
             default_vertex_attributes=data.get("default_vertex_attributes"),
             default_face_attributes=data.get("default_face_attributes"),
@@ -221,21 +201,21 @@ class Mesh(Datastructure):
         return mesh
 
     def __init__(
-            self,
-            default_vertex_attributes=None,
-            default_edge_attributes=None,
-            default_face_attributes=None,
-            name=None,
-            **kwargs
-        ):  # fmt: skip
-        super(Mesh, self).__init__(kwargs, name=name)
+        self,
+        default_vertex_attributes: Optional[AttributeDict] = None,
+        default_edge_attributes: Optional[AttributeDict] = None,
+        default_face_attributes: Optional[AttributeDict] = None,
+        name: Optional[str] = None,
+        **kwargs: Any,
+    ) -> None:
+        super().__init__(kwargs, name=name)
         self._max_vertex = -1
         self._max_face = -1
-        self.vertex = {}
-        self.halfedge = {}
-        self.face = {}
-        self.facedata = {}
-        self.edgedata = {}
+        self.vertex: dict[Vertex, AttributeDict] = {}
+        self.halfedge: dict[Vertex, dict[Vertex, Optional[Face]]] = {}
+        self.face: dict[Face, list[Vertex]] = {}
+        self.facedata: dict[Face, AttributeDict] = {}
+        self.edgedata: dict[str, AttributeDict] = {}
         self.default_vertex_attributes = {"x": 0.0, "y": 0.0, "z": 0.0}
         self.default_edge_attributes = {}
         self.default_face_attributes = {}
@@ -246,7 +226,7 @@ class Mesh(Datastructure):
         if default_face_attributes:
             self.default_face_attributes.update(default_face_attributes)
 
-    def __str__(self):
+    def __str__(self) -> str:
         tpl = "<Mesh with {} vertices, {} faces, {} edges>"
         return tpl.format(self.number_of_vertices(), self.number_of_faces(), self.number_of_edges())
 
@@ -255,7 +235,7 @@ class Mesh(Datastructure):
     # --------------------------------------------------------------------------
 
     @property
-    def adjacency(self):
+    def adjacency(self) -> dict[Vertex, dict[Vertex, Optional[Face]]]:
         return self.halfedge
 
     # --------------------------------------------------------------------------
@@ -263,19 +243,19 @@ class Mesh(Datastructure):
     # --------------------------------------------------------------------------
 
     @classmethod
-    def from_obj(cls, filepath, precision=None):  # type: (...) -> Mesh
+    def from_obj(cls, filepath: Any, precision: Optional[int] = None) -> Self:
         """Construct a mesh object from the data described in an OBJ file.
 
         Parameters
         ----------
-        filepath : str
+        filepath
             The path to the file.
-        precision: str, optional
+        precision
             The precision of the geometric map that is used to connect the lines.
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        Mesh
             A mesh object.
 
         Notes
@@ -300,94 +280,108 @@ class Mesh(Datastructure):
         if faces:
             return cls.from_vertices_and_faces(vertices, faces)
         if edges:
-            lines = [(vertices[u], vertices[v], 0) for u, v in edges]
+            lines = [(vertices[u], vertices[v]) for u, v in edges]
             return cls.from_lines(lines)
         return cls()
 
     @classmethod
-    def from_ply(cls, filepath, precision=None):  # type: (...) -> Mesh
+    def from_ply(cls, filepath: Any, precision: Optional[int] = None) -> Self:
         """Construct a mesh object from the data described in a PLY file.
 
         Parameters
         ----------
-        filepath : str
+        filepath
             The path to the file.
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        Mesh
             A mesh object.
 
         """
         ply = PLY(filepath)
-        vertices = ply.parser.vertices  # type: ignore
-        faces = ply.parser.faces  # type: ignore
+        parser = ply.parser
+        if parser is None:
+            return cls()
+        vertices = parser.vertices or []
+        faces = parser.faces or []
         mesh = cls.from_vertices_and_faces(vertices, faces)
         return mesh
 
     @classmethod
-    def from_stl(cls, filepath, precision=None):  # type: (...) -> Mesh
+    def from_stl(cls, filepath: Any, precision: Optional[int] = None) -> Self:
         """Construct a mesh object from the data described in a STL file.
 
         Parameters
         ----------
-        filepath : str
+        filepath
             The path to the file.
-        precision: str, optional
+        precision
             The precision of the geometric map that is used to connect the lines.
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        Mesh
             A mesh object.
 
         """
         stl = STL(filepath, precision)
-        vertices = stl.parser.vertices  # type: ignore
-        faces = stl.parser.faces  # type: ignore
+        parser = stl.parser
+        if parser is None:
+            return cls()
+        vertices = parser.vertices or []
+        faces = parser.faces or []
         mesh = cls.from_vertices_and_faces(vertices, faces)
         return mesh
 
     @classmethod
-    def from_off(cls, filepath):  # type: (...) -> Mesh
+    def from_off(cls, filepath: Any) -> Self:
         """Construct a mesh object from the data described in a OFF file.
 
         Parameters
         ----------
-        filepath : str
+        filepath
             The path to the file.
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        Mesh
             A mesh object.
 
         """
         off = OFF(filepath)
-        vertices = off.reader.vertices  # type: ignore
-        faces = off.reader.faces  # type: ignore
+        reader = off.reader
+        if reader is None:
+            return cls()
+        vertices = reader.vertices or []
+        faces = reader.faces or []
         mesh = cls.from_vertices_and_faces(vertices, faces)
         return mesh
 
     @classmethod
-    def from_lines(cls, lines, delete_boundary_face=False, precision=None):  # type: (...) -> Mesh
+    def from_lines(
+        cls,
+        lines: Iterable[Sequence[PointCoordinates]],
+        delete_boundary_face: bool = False,
+        precision: Optional[int] = None,
+    ) -> Self:
         """Construct a mesh object from a list of lines described by start and end point coordinates.
 
         Parameters
         ----------
-        lines : list[tuple[list[float], list[float]]]
+        lines
             A list of pairs of point coordinates.
-        delete_boundary_face : bool, optional
+        delete_boundary_face
             The algorithm that finds the faces formed by the connected lines
             first finds the face *on the outside*. In most cases this face is not expected
             to be there. Therefore, there is the option to have it automatically deleted.
-        precision: str, optional
+        precision
             The precision of the geometric map that is used to connect the lines.
-            Defaults to the value of :attr:`compas.PRECISION`.
+            Defaults to the value of
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        Mesh
             A mesh object.
 
         """
@@ -395,7 +389,8 @@ class Mesh(Datastructure):
 
         graph = Graph.from_lines(lines, precision=precision)
         vertices = graph.to_points()
-        faces = graph.find_cycles()
+        vertex_index = {vertex: index for index, vertex in enumerate(graph.nodes())}
+        faces = [[vertex_index[vertex] for vertex in face] for face in graph.find_cycles()]
         mesh = cls.from_vertices_and_faces(vertices, faces)
         if delete_boundary_face:
             mesh.delete_face(0)
@@ -403,7 +398,11 @@ class Mesh(Datastructure):
         return mesh
 
     @classmethod
-    def from_polylines(cls, boundary_polylines, other_polylines):  # type: (...) -> Mesh
+    def from_polylines(
+        cls,
+        boundary_polylines: list[list[PointCoordinates]],
+        other_polylines: list[list[PointCoordinates]],
+    ) -> Self:
         """Construct mesh from polylines.
 
         Based on construction from_lines,
@@ -415,14 +414,14 @@ class Mesh(Datastructure):
 
         Parameters
         ----------
-        boundary_polylines : list[list[float]]
+        boundary_polylines
             List of polylines representing boundaries as lists of vertex coordinates.
-        other_polylines : list[list[float]]
+        other_polylines
             List of the other polylines as lists of vertex coordinates.
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        Mesh
             A mesh object.
 
         """
@@ -473,21 +472,25 @@ class Mesh(Datastructure):
         return cls.from_vertices_and_faces(vertices, faces)
 
     @classmethod
-    def from_vertices_and_faces(cls, vertices, faces):  # type: (...) -> Mesh
+    def from_vertices_and_faces(
+        cls,
+        vertices: Union[Sequence[PointCoordinates], Mapping[Vertex, PointCoordinates]],
+        faces: Union[Sequence[Sequence[Vertex]], Mapping[Face, Sequence[Vertex]]],
+    ) -> Self:
         """Construct a mesh object from a list of vertices and faces.
 
         Parameters
         ----------
-        vertices : list[list[float]] | dict[int, list[float]]
+        vertices
             A list of vertices, represented by their XYZ coordinates,
             or a dictionary of vertex keys pointing to their XYZ coordinates.
-        faces : list[list[int]] | dict[int, list[int]]
+        faces
             A list of faces, represented by a list of indices referencing the list of vertex coordinates,
             or a dictionary of face keys pointing to a list of indices referencing the list of vertex coordinates.
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        Mesh
             A mesh object.
 
         """
@@ -501,8 +504,8 @@ class Mesh(Datastructure):
                 mesh.add_vertex(x=x, y=y, z=z)
 
         if isinstance(faces, Mapping):
-            for fkey, vertices in faces.items():
-                mesh.add_face(vertices, fkey)
+            for fkey, face_vertices in faces.items():
+                mesh.add_face(face_vertices, fkey)
         else:
             for face in iter(faces):
                 mesh.add_face(face)
@@ -510,17 +513,17 @@ class Mesh(Datastructure):
         return mesh
 
     @classmethod
-    def from_polyhedron(cls, f):  # type: (...) -> Mesh
+    def from_polyhedron(cls, f: int) -> Self:
         """Construct a mesh from a platonic solid.
 
         Parameters
         ----------
-        f : {4, 6, 8, 12, 20}
+        f
             The number of faces.
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        Mesh
             A mesh object.
 
         """
@@ -528,40 +531,40 @@ class Mesh(Datastructure):
         return cls.from_vertices_and_faces(p.vertices, p.faces)
 
     @classmethod
-    def from_shape(cls, shape, **kwargs):  # type: (Shape, dict) -> Mesh
+    def from_shape(cls, shape: Shape, **kwargs: Any) -> Self:
         """Construct a mesh from a primitive shape.
 
         Parameters
         ----------
-        shape : :class:`compas.geometry.Shape`
+        shape
             The input shape to generate a mesh from.
-        **kwargs : dict[str, Any], optional
-            Optional keyword arguments to be passed on to :meth:`compas.geometry.Shape.to_vertices_and_faces`.
+        **kwargs
+            Optional keyword arguments to be passed on to
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        Mesh
             A mesh object.
 
         """
-        vertices, faces = shape.to_vertices_and_faces(**kwargs)  # type: ignore
+        vertices, faces = shape.to_vertices_and_faces(**kwargs)
         mesh = cls.from_vertices_and_faces(vertices, faces)
         mesh.name = shape.name
         return mesh
 
     @classmethod
-    def from_points(cls, points):  # type: (...) -> Mesh
+    def from_points(cls, points: Sequence[PointCoordinates]) -> Self:
         """Construct a mesh from a delaunay triangulation of a set of points.
 
         Parameters
         ----------
-        points : list[list[float]]
+        points
             XYZ coordinates of the points.
             Z coordinates should be zero.
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        Mesh
             A mesh object.
 
         """
@@ -571,21 +574,25 @@ class Mesh(Datastructure):
         return cls.from_vertices_and_faces(points, faces)
 
     @classmethod
-    def from_polygons(cls, polygons, precision=None):  # type: (...) -> Mesh
+    def from_polygons(
+        cls,
+        polygons: Iterable[Sequence[PointCoordinates]],
+        precision: Optional[int] = None,
+    ) -> Self:
         """Construct a mesh from a series of polygons.
 
         Parameters
         ----------
-        polygons : list[list[float]]
+        polygons
             A list of polygons, with each polygon defined as an ordered list of
             XYZ coordinates of its corners.
-        precision : int, optional
+        precision
             Precision for converting numbers to strings.
-            Default is :attr:`TOL.precision`.
+            Default is
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        Mesh
             A mesh object.
 
         """
@@ -599,30 +606,36 @@ class Mesh(Datastructure):
                 face.append(gkey)
             faces.append(face)
         gkey_index = {gkey: index for index, gkey in enumerate(gkey_xyz)}
-        vertices = gkey_xyz.values()
+        vertices = list(gkey_xyz.values())
         faces[:] = [[gkey_index[gkey] for gkey in face] for face in faces]
         return cls.from_vertices_and_faces(vertices, faces)
 
     @classmethod
-    def from_meshgrid(cls, dx, nx, dy=None, ny=None):  # type: (...) -> Mesh
+    def from_meshgrid(
+        cls,
+        dx: float,
+        nx: int,
+        dy: Optional[float] = None,
+        ny: Optional[int] = None,
+    ) -> Self:
         """Construct a mesh from faces and vertices on a regular grid.
 
         Parameters
         ----------
-        dx : float
+        dx
             The size of the grid in the X direction.
-        nx : int
+        nx
             The number of faces in the X direction.
-        dy : float, optional
+        dy
             The size of the grid in the Y direction.
             Defaults to the value of `dx`.
-        ny : int, optional
+        ny
             The number of faces in the Y direction.
             Defaults to the value of `nx`.
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        Mesh
             A mesh object.
 
         """
@@ -647,7 +660,7 @@ class Mesh(Datastructure):
     # Conversions
     # --------------------------------------------------------------------------
 
-    def to_lines(self):
+    def to_lines(self) -> list[tuple[list[float], list[float]]]:
         """Return the lines of the mesh as pairs of start and end point coordinates.
 
         Returns
@@ -658,7 +671,7 @@ class Mesh(Datastructure):
         """
         return [self.edge_coordinates(edge) for edge in self.edges()]
 
-    def to_polylines(self):
+    def to_polylines(self) -> list[list[list[float]]]:
         """Convert the mesh to a collection of polylines.
 
         Returns
@@ -669,12 +682,12 @@ class Mesh(Datastructure):
         """
         raise NotImplementedError
 
-    def to_vertices_and_faces(self, triangulated=False):
+    def to_vertices_and_faces(self, triangulated: bool = False) -> tuple[list[list[float]], list[list[int]]]:
         """Return the vertices and faces of a mesh.
 
         Parameters
         ----------
-        triangulated: bool, optional
+        triangulated
             If True, triangulate the faces.
 
         Returns
@@ -714,7 +727,7 @@ class Mesh(Datastructure):
 
         return vertices, faces
 
-    def to_points(self):
+    def to_points(self) -> list[list[float]]:
         """Convert the mesh to a collection of points.
 
         Returns
@@ -725,7 +738,7 @@ class Mesh(Datastructure):
         """
         return [self.vertex_coordinates(vertex) for vertex in self.vertices()]
 
-    def to_polygons(self):
+    def to_polygons(self) -> list[list[list[float]]]:
         """Convert the mesh to a collection of polygons.
 
         Returns
@@ -736,16 +749,22 @@ class Mesh(Datastructure):
         """
         return [self.face_coordinates(fkey) for fkey in self.faces()]
 
-    def to_obj(self, filepath, precision=None, unweld=False, **kwargs):
+    def to_obj(
+        self,
+        filepath: Any,
+        precision: Optional[int] = None,
+        unweld: bool = False,
+        **kwargs: Any,
+    ) -> None:
         """Write the mesh to an OBJ file.
 
         Parameters
         ----------
-        filepath : str
+        filepath
             Full path of the file.
-        precision: str, optional
+        precision
             The precision of the geometric map that is used to connect the lines.
-        unweld : bool, optional
+        unweld
             If True, all faces have their own unique vertices.
             If False (default), vertices are shared between faces if this is also the case in the mesh.
 
@@ -762,12 +781,12 @@ class Mesh(Datastructure):
         obj = OBJ(filepath, precision=precision)
         obj.write(self, unweld=unweld, **kwargs)
 
-    def to_ply(self, filepath, **kwargs):
+    def to_ply(self, filepath: Any, **kwargs: Any) -> None:
         """Write a mesh object to a PLY file.
 
         Parameters
         ----------
-        filepath : str
+        filepath
             The path to the file.
 
         Returns
@@ -778,17 +797,23 @@ class Mesh(Datastructure):
         ply = PLY(filepath)
         ply.write(self, **kwargs)
 
-    def to_stl(self, filepath, precision=None, binary=False, **kwargs):
+    def to_stl(
+        self,
+        filepath: Any,
+        precision: Optional[int] = None,
+        binary: bool = False,
+        **kwargs: Any,
+    ) -> None:
         """Write a mesh to an STL file.
 
         Parameters
         ----------
-        filepath : str
+        filepath
             The path to the file.
-        precision : str, optional
+        precision
             Rounding precision for the vertex coordinates.
-            Defaults to the value of :attr:`compas.PRECISION`.
-        binary : bool, optional
+            Defaults to the value of `compas.PRECISION`.
+        binary
             If True, the file will be written in binary format.
             ASCII otherwise.
 
@@ -800,18 +825,18 @@ class Mesh(Datastructure):
         -----
         STL files only support triangle faces.
         It is the user's responsibility to convert all faces of a mesh to triangles.
-        For example, with :meth:`compas.datastructures.Mesh.quads_to_triangles`.
+        For example, with `compas.datastructures.Mesh.quads_to_triangles`.
 
         """
         stl = STL(filepath, precision)
         stl.write(self, binary=binary, **kwargs)
 
-    def to_off(self, filepath, **kwargs):
+    def to_off(self, filepath: Any, **kwargs: Any) -> None:
         """Write a mesh object to an OFF file.
 
         Parameters
         ----------
-        filepath : str
+        filepath
             The path to the file.
 
         Returns
@@ -826,7 +851,7 @@ class Mesh(Datastructure):
     # Helpers
     # --------------------------------------------------------------------------
 
-    def clear(self):
+    def clear(self) -> None:
         """Clear all the mesh data.
 
         Returns
@@ -847,12 +872,12 @@ class Mesh(Datastructure):
         self._max_vertex = -1
         self._max_face = -1
 
-    def vertex_sample(self, size=1):
+    def vertex_sample(self, size: int = 1) -> list[Vertex]:
         """A random sample of the vertices.
 
         Parameters
         ----------
-        size : int, optional
+        size
             The number of vertices in the random sample.
 
         Returns
@@ -862,17 +887,17 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`edge_sample`, :meth:`face_sample`
+        edge_sample, face_sample
 
         """
         return sample(list(self.vertices()), size)
 
-    def edge_sample(self, size=1):
+    def edge_sample(self, size: int = 1) -> list[Edge]:
         """A random sample of the edges.
 
         Parameters
         ----------
-        size : int, optional
+        size
             The number of edges in the random sample.
 
         Returns
@@ -882,17 +907,17 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`vertex_sample`, :meth:`face_sample`
+        vertex_sample, face_sample
 
         """
         return sample(list(self.edges()), size)
 
-    def face_sample(self, size=1):
+    def face_sample(self, size: int = 1) -> list[Face]:
         """A random sample of the faces.
 
         Parameters
         ----------
-        size : int, optional
+        size
             The number of faces in the random sample.
 
         Returns
@@ -902,12 +927,12 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`vertex_sample`, :meth:`edge_sample`
+        vertex_sample, edge_sample
 
         """
         return sample(list(self.faces()), size)
 
-    def vertex_index(self):
+    def vertex_index(self) -> dict[Vertex, int]:
         """Returns a dictionary that maps vertex identifiers to the
         corresponding index in a vertex list or array.
 
@@ -918,12 +943,12 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`index_vertex`
+        index_vertex
 
         """
         return {key: index for index, key in enumerate(self.vertices())}
 
-    def index_vertex(self):
+    def index_vertex(self) -> dict[int, Vertex]:
         """Returns a dictionary that maps the indices of a vertex list to
         the corresponding vertex identifiers.
 
@@ -934,20 +959,20 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`vertex_index`
+        vertex_index
 
         """
         return dict(enumerate(self.vertices()))
 
-    def vertex_gkey(self, precision=None):
+    def vertex_gkey(self, precision: Optional[int] = None) -> dict[Vertex, str]:
         """Returns a dictionary that maps vertex dictionary keys to the corresponding
         *geometric key* up to a certain precision.
 
         Parameters
         ----------
-        precision : int, optional
+        precision
             Precision for converting numbers to strings.
-            Default is :attr:`TOL.precision`.
+            Default is
 
         Returns
         -------
@@ -959,15 +984,15 @@ class Mesh(Datastructure):
         xyz = self.vertex_coordinates
         return {key: gkey(xyz(key), precision) for key in self.vertices()}
 
-    def gkey_vertex(self, precision=None):
+    def gkey_vertex(self, precision: Optional[int] = None) -> dict[str, Vertex]:
         """Returns a dictionary that maps *geometric keys* of a certain precision
         to the keys of the corresponding vertices.
 
         Parameters
         ----------
-        precision : int, optional
+        precision
             Precision for converting numbers to strings.
-            Default is :attr:`TOL.precision`.
+            Default is
 
         Returns
         -------
@@ -983,16 +1008,21 @@ class Mesh(Datastructure):
     # Builders & Modifiers
     # --------------------------------------------------------------------------
 
-    def add_vertex(self, key=None, attr_dict=None, **kwattr):
+    def add_vertex(
+        self,
+        key: Optional[Vertex] = None,
+        attr_dict: Optional[Mapping[str, Any]] = None,
+        **kwattr: Any,
+    ) -> Vertex:
         """Add a vertex to the mesh object.
 
         Parameters
         ----------
-        key : int, optional
+        key
             The vertex identifier.
-        attr_dict : dict[str, Any], optional
+        attr_dict
             A dictionary of vertex attributes.
-        **kwattr : dict[str, Any], optional
+        **kwattr
             A dictionary of additional attributes compiled of remaining named arguments.
 
         Returns
@@ -1002,8 +1032,8 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`add_face`
-        :meth:`delete_vertex`, :meth:`delete_face`
+        add_face
+        delete_vertex, delete_face
 
         Notes
         -----
@@ -1036,27 +1066,36 @@ class Mesh(Datastructure):
         if key not in self.vertex:
             self.vertex[key] = {}
             self.halfedge[key] = {}
-        attr = attr_dict or {}
+        # NOTE: This preserves the permissive legacy behaviour: any falsy value
+        # is treated as an empty mapping. Revisit separately whether attr_dict
+        # should be validated as a Mapping at runtime.
+        attr = dict(attr_dict or {})
         attr.update(kwattr)
         self.vertex[key].update(attr)
         return key
 
-    def add_face(self, vertices, fkey=None, attr_dict=None, **kwattr):
+    def add_face(
+        self,
+        vertices: Sequence[Vertex],
+        fkey: Optional[Face] = None,
+        attr_dict: Optional[Mapping[str, Any]] = None,
+        **kwattr: Any,
+    ) -> Optional[Face]:
         """Add a face to the mesh object.
 
         Parameters
         ----------
-        vertices : list[int]
+        vertices
             A list of vertex keys.
-        attr_dict : dict[str, Any], optional
+        attr_dict
             A dictionary of face attributes.
-        **kwattr : dict[str, Any], optional
+        **kwattr
             A dictionary of additional attributes compiled of remaining named arguments.
 
         See Also
         --------
-        :meth:`add_vertex`
-        :meth:`delete_face`, :meth:`delete_vertex`
+        add_vertex
+        delete_face, delete_vertex
 
         Returns
         -------
@@ -1089,7 +1128,10 @@ class Mesh(Datastructure):
         fkey = int(fkey)
         if fkey > self._max_face:
             self._max_face = fkey
-        attr = attr_dict or {}
+        # NOTE: This preserves the permissive legacy behaviour: any falsy value
+        # is treated as an empty mapping. Revisit separately whether attr_dict
+        # should be validated as a Mapping at runtime.
+        attr = dict(attr_dict or {})
         attr.update(kwattr)
         self.face[fkey] = vertices
         self.facedata.setdefault(fkey, attr)
@@ -1101,19 +1143,19 @@ class Mesh(Datastructure):
 
     # rename this to "add"
     # and add an alias
-    def join(self, other, weld=False, precision=None):
+    def join(self, other: "Mesh", weld: bool = False, precision: Optional[int] = None) -> None:
         """Add the vertices and faces of another mesh to the current mesh.
 
         Parameters
         ----------
-        other : :class:`compas.datastructures.Mesh`
+        other
             The other mesh.
-        weld : bool, optional
+        weld
             If True, weld close vertices after joining.
             Default is False.
-        precision : int, optional
+        precision
             The precision used for welding.
-            Default is :attr:`TOL.precision`.
+            Default is to use the global precision value.
 
         Returns
         -------
@@ -1163,12 +1205,12 @@ class Mesh(Datastructure):
         if weld:
             self.weld(precision=precision)
 
-    def delete_vertex(self, key):
+    def delete_vertex(self, key: Vertex) -> None:
         """Delete a vertex from the mesh and everything that is attached to it.
 
         Parameters
         ----------
-        key : int
+        key
             The identifier of the vertex.
 
         Returns
@@ -1177,14 +1219,14 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`delete_face`
-        :meth:`add_vertex`, :meth:`add_face`
+        delete_face
+        add_vertex, add_face
 
         Notes
         -----
         In some cases, disconnected vertices can remain after application of this
         method. To remove these vertices as well, combine this method with vertex
-        culling (:meth:`cull_vertices`).
+        culling (cull_vertices).
 
         """
         nbrs = self.vertex_neighbors(key)
@@ -1213,12 +1255,12 @@ class Mesh(Datastructure):
         del self.halfedge[key]
         del self.vertex[key]
 
-    def delete_face(self, fkey):
+    def delete_face(self, fkey: Face) -> None:
         """Delete a face from the mesh object.
 
         Parameters
         ----------
-        fkey : int
+        fkey
             The identifier of the face.
 
         Returns
@@ -1227,14 +1269,14 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`delete_vertex`
-        :meth:`add_vertex`, :meth:`add_face`
+        delete_vertex
+        add_vertex, add_face
 
         Notes
         -----
         In some cases, disconnected vertices can remain after application of this
         method. To remove these vertices as well, combine this method with vertex
-        culling (:meth:`cull_vertices`).
+        culling (cull_vertices).
 
         """
         for u, v in self.face_halfedges(fkey):
@@ -1253,7 +1295,7 @@ class Mesh(Datastructure):
         if fkey in self.facedata:
             del self.facedata[fkey]
 
-    def remove_unused_vertices(self):
+    def remove_unused_vertices(self) -> None:
         """Remove all unused vertices from the mesh object.
 
         Returns
@@ -1262,7 +1304,7 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`delete_vertex`
+        delete_vertex
 
         """
         for u in list(self.vertices()):
@@ -1275,7 +1317,7 @@ class Mesh(Datastructure):
 
     cull_vertices = remove_unused_vertices
 
-    def flip_cycles(self):
+    def flip_cycles(self) -> None:
         """Flip the cycle directions of all faces.
 
         Returns
@@ -1297,18 +1339,24 @@ class Mesh(Datastructure):
                 if u not in self.halfedge[v]:
                     self.halfedge[v][u] = None
 
-    def insert_vertex(self, fkey, key=None, xyz=None, return_fkeys=False):
+    def insert_vertex(
+        self,
+        fkey: Face,
+        key: Optional[Vertex] = None,
+        xyz: Optional[PointCoordinates] = None,
+        return_fkeys: bool = False,
+    ) -> Union[Vertex, tuple[Vertex, list[Face]]]:
         """Insert a vertex in the specified face.
 
         Parameters
         ----------
-        fkey : int
+        fkey
             The key of the face in which the vertex should be inserted.
-        key : int, optional
+        key
             The key to be used to identify the inserted vertex.
-        xyz : list[float], optional
+        xyz
             Specific XYZ coordinates for the inserted vertex.
-        return_fkeys : bool, optional
+        return_fkeys
             If True, return the identifiers of the newly created faces in addition to the identifier of the inserted vertex.
 
         Returns
@@ -1335,12 +1383,21 @@ class Mesh(Datastructure):
     # Accessors
     # --------------------------------------------------------------------------
 
-    def vertices(self, data=False):
+    @overload
+    def vertices(self, data: Literal[False] = False) -> Iterator[Vertex]: ...
+
+    @overload
+    def vertices(self, data: Literal[True]) -> Iterator[tuple[Vertex, VertexAttributeView]]: ...
+
+    @overload
+    def vertices(self, data: bool) -> Iterator[Union[Vertex, tuple[Vertex, VertexAttributeView]]]: ...
+
+    def vertices(self, data: bool = False) -> Iterator[Any]:
         """Iterate over the vertices of the mesh.
 
         Parameters
         ----------
-        data : bool, optional
+        data
             If True, yield the vertex attributes in addition to the vertex identifiers.
 
         Yields
@@ -1351,8 +1408,8 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`faces`, :meth:`edges`
-        :meth:`vertices_where`, :meth:`edges_where`, :meth:`faces_where`
+        faces, edges
+        vertices_where, edges_where, faces_where
 
         """
         for key in self.vertex:
@@ -1361,12 +1418,21 @@ class Mesh(Datastructure):
             else:
                 yield key, self.vertex_attributes(key)
 
-    def faces(self, data=False):
+    @overload
+    def faces(self, data: Literal[False] = False) -> Iterator[Face]: ...
+
+    @overload
+    def faces(self, data: Literal[True]) -> Iterator[tuple[Face, FaceAttributeView]]: ...
+
+    @overload
+    def faces(self, data: bool) -> Iterator[Union[Face, tuple[Face, FaceAttributeView]]]: ...
+
+    def faces(self, data: bool = False) -> Iterator[Any]:
         """Iterate over the faces of the mesh.
 
         Parameters
         ----------
-        data : bool, optional
+        data
             If True, yield the face attributes in addition to the face identifiers.
 
         Yields
@@ -1377,8 +1443,8 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`vertices`, :meth:`edges`
-        :meth:`vertices_where`, :meth:`edges_where`, :meth:`faces_where`
+        vertices, edges
+        vertices_where, edges_where, faces_where
 
         """
         for key in self.face:
@@ -1387,12 +1453,21 @@ class Mesh(Datastructure):
             else:
                 yield key, self.face_attributes(key)
 
-    def edges(self, data=False):
+    @overload
+    def edges(self, data: Literal[False] = False) -> Iterator[Edge]: ...
+
+    @overload
+    def edges(self, data: Literal[True]) -> Iterator[tuple[Edge, EdgeAttributeView]]: ...
+
+    @overload
+    def edges(self, data: bool) -> Iterator[Union[Edge, tuple[Edge, EdgeAttributeView]]]: ...
+
+    def edges(self, data: bool = False) -> Iterator[Any]:
         """Iterate over the edges of the mesh.
 
         Parameters
         ----------
-        data : bool, optional
+        data
             If True, yield the edge attributes in addition to the edge identifiers.
 
         Yields
@@ -1403,8 +1478,8 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`vertices`, :meth:`faces`
-        :meth:`vertices_where`, :meth:`edges_where`, :meth:`faces_where`
+        vertices, faces
+        vertices_where, edges_where, faces_where
 
         Notes
         -----
@@ -1414,7 +1489,7 @@ class Mesh(Datastructure):
         they are accessed using this method.
 
         This method yields the directed edges of the mesh.
-        Unless edges were added explicitly using :meth:`add_edge` the order of
+        Unless edges were added explicitly using add_edge the order of
         edges is *as they come out*. However, as long as the toplogy remains
         unchanged, the order is consistent.
 
@@ -1433,18 +1508,55 @@ class Mesh(Datastructure):
                 else:
                     yield key, self.edge_attributes(key)
 
-    def vertices_where(self, conditions=None, data=False, **kwargs):
+    @overload
+    def vertices_where(
+        self,
+        conditions: Optional[AttributeDict] = None,
+        data: Literal[False] = False,
+        **kwargs: Any,
+    ) -> Iterator[Vertex]: ...
+
+    @overload
+    def vertices_where(
+        self,
+        conditions: Optional[AttributeDict],
+        data: Literal[True],
+        **kwargs: Any,
+    ) -> Iterator[tuple[Vertex, VertexAttributeView]]: ...
+
+    @overload
+    def vertices_where(
+        self,
+        *,
+        data: Literal[True],
+        **kwargs: Any,
+    ) -> Iterator[tuple[Vertex, VertexAttributeView]]: ...
+
+    @overload
+    def vertices_where(
+        self,
+        conditions: Optional[AttributeDict],
+        data: bool,
+        **kwargs: Any,
+    ) -> Iterator[Union[Vertex, tuple[Vertex, VertexAttributeView]]]: ...
+
+    def vertices_where(
+        self,
+        conditions: Optional[AttributeDict] = None,
+        data: bool = False,
+        **kwargs: Any,
+    ) -> Iterator[Any]:
         """Get vertices for which a certain condition or set of conditions is true.
 
         Parameters
         ----------
-        conditions : dict, optional
+        conditions
             A set of conditions in the form of key-value pairs.
             The keys should be attribute names. The values can be attribute
             values or ranges of attribute values in the form of min/max pairs.
-        data : bool, optional
+        data
             If True, yield the vertex attributes in addition to the vertex identifiers.
-        **kwargs : dict[str, Any], optional
+        **kwargs
             Additional conditions provided as named function arguments.
 
         Yields
@@ -1455,8 +1567,8 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`faces_where`, :meth:`edges_where`
-        :meth:`vertices_where_predicate`, :meth:`edges_where_predicate`, :meth:`faces_where_predicate`
+        faces_where, edges_where
+        vertices_where_predicate, edges_where_predicate, faces_where_predicate
 
         """
         conditions = conditions or {}
@@ -1515,16 +1627,41 @@ class Mesh(Datastructure):
                 else:
                     yield key
 
-    def vertices_where_predicate(self, predicate, data=False):
+    @overload
+    def vertices_where_predicate(
+        self,
+        predicate: Callable[[Vertex, VertexAttributeView], bool],
+        data: Literal[False] = False,
+    ) -> Iterator[Vertex]: ...
+
+    @overload
+    def vertices_where_predicate(
+        self,
+        predicate: Callable[[Vertex, VertexAttributeView], bool],
+        data: Literal[True],
+    ) -> Iterator[tuple[Vertex, VertexAttributeView]]: ...
+
+    @overload
+    def vertices_where_predicate(
+        self,
+        predicate: Callable[[Vertex, VertexAttributeView], bool],
+        data: bool,
+    ) -> Iterator[Union[Vertex, tuple[Vertex, VertexAttributeView]]]: ...
+
+    def vertices_where_predicate(
+        self,
+        predicate: Callable[[Vertex, VertexAttributeView], bool],
+        data: bool = False,
+    ) -> Iterator[Any]:
         """Get vertices for which a certain condition or set of conditions is true using a lambda function.
 
         Parameters
         ----------
-        predicate : callable
+        predicate
             The condition you want to evaluate.
-            The callable takes 2 parameters: the vertex identifier and the vertex attributes,
+            The callable takes 2 parameters
             and should return True or False.
-        data : bool, optional
+        data
             If True, yield the vertex attributes in addition to the vertex identifiers.
 
         Yields
@@ -1535,8 +1672,8 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`faces_where_predicate`, :meth:`edges_where_predicate`
-        :meth:`vertices_where`, :meth:`edges_where`, :meth:`faces_where`
+        faces_where_predicate, edges_where_predicate
+        vertices_where, edges_where, faces_where
 
         """
         for key, attr in self.vertices(True):
@@ -1546,18 +1683,55 @@ class Mesh(Datastructure):
                 else:
                     yield key
 
-    def edges_where(self, conditions=None, data=False, **kwargs):
+    @overload
+    def edges_where(
+        self,
+        conditions: Optional[AttributeDict] = None,
+        data: Literal[False] = False,
+        **kwargs: Any,
+    ) -> Iterator[Edge]: ...
+
+    @overload
+    def edges_where(
+        self,
+        conditions: Optional[AttributeDict],
+        data: Literal[True],
+        **kwargs: Any,
+    ) -> Iterator[tuple[Edge, EdgeAttributeView]]: ...
+
+    @overload
+    def edges_where(
+        self,
+        *,
+        data: Literal[True],
+        **kwargs: Any,
+    ) -> Iterator[tuple[Edge, EdgeAttributeView]]: ...
+
+    @overload
+    def edges_where(
+        self,
+        conditions: Optional[AttributeDict],
+        data: bool,
+        **kwargs: Any,
+    ) -> Iterator[Union[Edge, tuple[Edge, EdgeAttributeView]]]: ...
+
+    def edges_where(
+        self,
+        conditions: Optional[AttributeDict] = None,
+        data: bool = False,
+        **kwargs: Any,
+    ) -> Iterator[Any]:
         """Get edges for which a certain condition or set of conditions is true.
 
         Parameters
         ----------
-        conditions : dict, optional
+        conditions
             A set of conditions in the form of key-value pairs.
             The keys should be attribute names. The values can be attribute
             values or ranges of attribute values in the form of min/max pairs.
-        data : bool, optional
+        data
             If True, yield the edge attributes in addition to the edge identifiers.
-        **kwargs : dict[str, Any], optional
+        **kwargs
             Additional conditions provided as named function arguments.
 
         Yields
@@ -1568,8 +1742,8 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`vertices_where`, :meth:`faces_where`
-        :meth:`vertices_where_predicate`, :meth:`edges_where_predicate`, :meth:`faces_where_predicate`
+        vertices_where, faces_where
+        vertices_where_predicate, edges_where_predicate, faces_where_predicate
 
         """
         conditions = conditions or {}
@@ -1611,17 +1785,42 @@ class Mesh(Datastructure):
                 else:
                     yield key
 
-    def edges_where_predicate(self, predicate, data=False):
+    @overload
+    def edges_where_predicate(
+        self,
+        predicate: Callable[[Edge, EdgeAttributeView], bool],
+        data: Literal[False] = False,
+    ) -> Iterator[Edge]: ...
+
+    @overload
+    def edges_where_predicate(
+        self,
+        predicate: Callable[[Edge, EdgeAttributeView], bool],
+        data: Literal[True],
+    ) -> Iterator[tuple[Edge, EdgeAttributeView]]: ...
+
+    @overload
+    def edges_where_predicate(
+        self,
+        predicate: Callable[[Edge, EdgeAttributeView], bool],
+        data: bool,
+    ) -> Iterator[Union[Edge, tuple[Edge, EdgeAttributeView]]]: ...
+
+    def edges_where_predicate(
+        self,
+        predicate: Callable[[Edge, EdgeAttributeView], bool],
+        data: bool = False,
+    ) -> Iterator[Any]:
         """Get edges for which a certain condition or set of conditions is true using a lambda function.
 
         Parameters
         ----------
-        predicate : callable
+        predicate
             The condition you want to evaluate.
             The callable takes 3 parameters:
             the identifier of the first vertex, the identifier of the second vertex, and the edge attributes,
             and should return True or False.
-        data : bool, optional
+        data
             If True, yield the vertex attributes in addition ot the vertex identifiers.
 
         Yields
@@ -1632,8 +1831,8 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`faces_where_predicate`, :meth:`vertices_where_predicate`
-        :meth:`vertices_where`, :meth:`edges_where`, :meth:`faces_where`
+        faces_where_predicate, vertices_where_predicate
+        vertices_where, edges_where, faces_where
 
         """
         for key, attr in self.edges(True):
@@ -1643,18 +1842,55 @@ class Mesh(Datastructure):
                 else:
                     yield key
 
-    def faces_where(self, conditions=None, data=False, **kwargs):
+    @overload
+    def faces_where(
+        self,
+        conditions: Optional[AttributeDict] = None,
+        data: Literal[False] = False,
+        **kwargs: Any,
+    ) -> Iterator[Face]: ...
+
+    @overload
+    def faces_where(
+        self,
+        conditions: Optional[AttributeDict],
+        data: Literal[True],
+        **kwargs: Any,
+    ) -> Iterator[tuple[Face, FaceAttributeView]]: ...
+
+    @overload
+    def faces_where(
+        self,
+        *,
+        data: Literal[True],
+        **kwargs: Any,
+    ) -> Iterator[tuple[Face, FaceAttributeView]]: ...
+
+    @overload
+    def faces_where(
+        self,
+        conditions: Optional[AttributeDict],
+        data: bool,
+        **kwargs: Any,
+    ) -> Iterator[Union[Face, tuple[Face, FaceAttributeView]]]: ...
+
+    def faces_where(
+        self,
+        conditions: Optional[AttributeDict] = None,
+        data: bool = False,
+        **kwargs: Any,
+    ) -> Iterator[Any]:
         """Get faces for which a certain condition or set of conditions is true.
 
         Parameters
         ----------
-        conditions : dict, optional
+        conditions
             A set of conditions in the form of key-value pairs.
             The keys should be attribute names. The values can be attribute
             values or ranges of attribute values in the form of min/max pairs.
-        data : bool, optional
+        data
             If True, yield the face attributes in addition to face identifiers.
-        **kwargs : dict[str, Any], optional
+        **kwargs
             Additional conditions provided as named function arguments.
 
         Yields
@@ -1665,8 +1901,8 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`vertices_where`, :meth:`edges_where`
-        :meth:`vertices_where_predicate`, :meth:`edges_where_predicate`, :meth:`faces_where_predicate`
+        vertices_where, edges_where
+        vertices_where_predicate, edges_where_predicate, faces_where_predicate
 
         """
         conditions = conditions or {}
@@ -1708,16 +1944,41 @@ class Mesh(Datastructure):
                 else:
                     yield fkey
 
-    def faces_where_predicate(self, predicate, data=False):
+    @overload
+    def faces_where_predicate(
+        self,
+        predicate: Callable[[Face, FaceAttributeView], bool],
+        data: Literal[False] = False,
+    ) -> Iterator[Face]: ...
+
+    @overload
+    def faces_where_predicate(
+        self,
+        predicate: Callable[[Face, FaceAttributeView], bool],
+        data: Literal[True],
+    ) -> Iterator[tuple[Face, FaceAttributeView]]: ...
+
+    @overload
+    def faces_where_predicate(
+        self,
+        predicate: Callable[[Face, FaceAttributeView], bool],
+        data: bool,
+    ) -> Iterator[Union[Face, tuple[Face, FaceAttributeView]]]: ...
+
+    def faces_where_predicate(
+        self,
+        predicate: Callable[[Face, FaceAttributeView], bool],
+        data: bool = False,
+    ) -> Iterator[Any]:
         """Get faces for which a certain condition or set of conditions is true using a lambda function.
 
         Parameters
         ----------
-        predicate : callable
+        predicate
             The condition you want to evaluate.
-            The callable takes 2 parameters: the face identifier and the face attributes,
+            The callable takes 2 parameters
             and should return True or False.
-        data : bool, optional
+        data
             If True, yield the face attributes in addition to the face identifiers.
 
         Yields
@@ -1728,8 +1989,8 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`edges_where_predicate`, :meth:`vertices_where_predicate`
-        :meth:`vertices_where`, :meth:`edges_where`, :meth:`faces_where`
+        edges_where_predicate, vertices_where_predicate
+        vertices_where, edges_where, faces_where
 
         """
         for fkey, attr in self.faces(True):
@@ -1743,14 +2004,18 @@ class Mesh(Datastructure):
     # Attributes
     # --------------------------------------------------------------------------
 
-    def update_default_vertex_attributes(self, attr_dict=None, **kwattr):
+    def update_default_vertex_attributes(
+        self,
+        attr_dict: Optional[AttributeDict] = None,
+        **kwattr: Any,
+    ) -> None:
         """Update the default vertex attributes.
 
         Parameters
         ----------
-        attr_dict : dict[str, Any], optional
+        attr_dict
             A dictionary of attributes with their default values.
-        **kwattr : dict[str, Any], optional
+        **kwattr
             A dictionary compiled of remaining named arguments.
 
         Returns
@@ -1759,8 +2024,8 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`update_default_edge_attributes`
-        :meth:`update_default_face_attributes`
+        update_default_edge_attributes
+        update_default_face_attributes
 
         Notes
         -----
@@ -1772,16 +2037,22 @@ class Mesh(Datastructure):
         attr_dict.update(kwattr)
         self.default_vertex_attributes.update(attr_dict)
 
-    def vertex_attribute(self, key, name, value=None):
+    @overload
+    def vertex_attribute(self, key: Vertex, name: str) -> Any: ...
+
+    @overload
+    def vertex_attribute(self, key: Vertex, name: str, value: Any) -> None: ...
+
+    def vertex_attribute(self, key: Vertex, name: str, value: Any = _MISSING) -> Any:
         """Get or set an attribute of a vertex.
 
         Parameters
         ----------
-        key : int
+        key
             The vertex identifier.
-        name : str
+        name
             The name of the attribute
-        value : object, optional
+        value
             The value of the attribute.
 
         Returns
@@ -1797,15 +2068,15 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`vertex_attributes`, :meth:`vertices_attribute`, :meth:`vertices_attributes`
-        :meth:`unset_vertex_attribute`
-        :meth:`edge_attribute`
-        :meth:`face_attribute`
+        vertex_attributes, vertices_attribute, vertices_attributes
+        unset_vertex_attribute
+        edge_attribute
+        face_attribute
 
         """
         if key not in self.vertex:
             raise KeyError(key)
-        if value is not None:
+        if value is not _MISSING:
             self.vertex[key][name] = value
             return None
         if name in self.vertex[key]:
@@ -1814,14 +2085,14 @@ class Mesh(Datastructure):
             if name in self.default_vertex_attributes:
                 return self.default_vertex_attributes[name]
 
-    def unset_vertex_attribute(self, key, name):
+    def unset_vertex_attribute(self, key: Vertex, name: str) -> None:
         """Unset the attribute of a vertex.
 
         Parameters
         ----------
-        key : int
+        key
             The vertex identifier.
-        name : str
+        name
             The name of the attribute.
 
         Returns
@@ -1835,9 +2106,9 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`vertex_attribute`, :meth:`vertex_attributes`, :meth:`vertices_attribute`, :meth:`vertices_attributes`
-        :meth:`unset_edge_attribute`
-        :meth:`unset_face_attribute`
+        vertex_attribute, vertex_attributes, vertices_attribute, vertices_attributes
+        unset_edge_attribute
+        unset_face_attribute
 
         Notes
         -----
@@ -1848,16 +2119,21 @@ class Mesh(Datastructure):
         if name in self.vertex[key]:
             del self.vertex[key][name]
 
-    def vertex_attributes(self, key, names=None, values=None):
+    def vertex_attributes(
+        self,
+        key: Vertex,
+        names: Optional[Sequence[str]] = None,
+        values: Optional[Sequence[Any]] = None,
+    ) -> Any:
         """Get or set multiple attributes of a vertex.
 
         Parameters
         ----------
-        key : int
+        key
             The identifier of the vertex.
-        names : list[str], optional
+        names
             A list of attribute names.
-        values : list[Any], optional
+        values
             A list of attribute values.
 
         Returns
@@ -1876,9 +2152,9 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`vertex_attribute`, :meth:`vertices_attribute`, :meth:`vertices_attributes`
-        :meth:`edge_attributes`
-        :meth:`face_attributes`
+        vertex_attribute, vertices_attribute, vertices_attributes
+        edge_attributes
+        face_attributes
 
         """
         if key not in self.vertex:
@@ -1902,17 +2178,38 @@ class Mesh(Datastructure):
                 values.append(None)
         return values
 
-    def vertices_attribute(self, name, value=None, keys=None):
+    @overload
+    def vertices_attribute(
+        self,
+        name: str,
+        *,
+        keys: Optional[Iterable[Vertex]] = None,
+    ) -> list[Any]: ...
+
+    @overload
+    def vertices_attribute(
+        self,
+        name: str,
+        value: Any,
+        keys: Optional[Iterable[Vertex]] = None,
+    ) -> None: ...
+
+    def vertices_attribute(
+        self,
+        name: str,
+        value: Any = _MISSING,
+        keys: Optional[Iterable[Vertex]] = None,
+    ) -> Optional[list[Any]]:
         """Get or set an attribute of multiple vertices.
 
         Parameters
         ----------
-        name : str
+        name
             The name of the attribute.
-        value : object, optional
+        value
             The value of the attribute.
             Default is None.
-        keys : list[int], optional
+        keys
             A list of vertex identifiers.
 
         Returns
@@ -1928,29 +2225,34 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`vertex_attribute`, :meth:`vertex_attributes`, :meth:`vertices_attributes`
-        :meth:`edges_attribute`
-        :meth:`faces_attribute`
+        vertex_attribute, vertex_attributes, vertices_attributes
+        edges_attribute
+        faces_attribute
 
         """
         if not keys:
             keys = self.vertices()
-        if value is not None:
+        if value is not _MISSING:
             for key in keys:
                 self.vertex_attribute(key, name, value)
             return
         return [self.vertex_attribute(key, name) for key in keys]
 
-    def vertices_attributes(self, names=None, values=None, keys=None):
+    def vertices_attributes(
+        self,
+        names: Optional[Sequence[str]] = None,
+        values: Optional[Sequence[Any]] = None,
+        keys: Optional[Iterable[Vertex]] = None,
+    ) -> Any:
         """Get or set multiple attributes of multiple vertices.
 
         Parameters
         ----------
-        names : list[str], optional
+        names
             The names of the attribute.
-        values : list[Any], optional
+        values
             The values of the attributes.
-        keys : list[int], optional
+        keys
             A list of vertex identifiers.
 
         Returns
@@ -1969,9 +2271,9 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`vertex_attribute`, :meth:`vertex_attributes`, :meth:`vertices_attribute`
-        :meth:`edges_attributes`
-        :meth:`faces_attributes`
+        vertex_attribute, vertex_attributes, vertices_attribute
+        edges_attributes
+        faces_attributes
 
         """
         if not keys:
@@ -1982,14 +2284,18 @@ class Mesh(Datastructure):
             return
         return [self.vertex_attributes(key, names) for key in keys]
 
-    def update_default_face_attributes(self, attr_dict=None, **kwattr):
+    def update_default_face_attributes(
+        self,
+        attr_dict: Optional[AttributeDict] = None,
+        **kwattr: Any,
+    ) -> None:
         """Update the default face attributes.
 
         Parameters
         ----------
-        attr_dict : dict[str, Any], optional
+        attr_dict
             A dictionary of attributes with their default values.
-        **kwattr : dict[str, Any], optional
+        **kwattr
             A dictionary compiled of remaining named arguments.
 
         Returns
@@ -1998,8 +2304,8 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`update_default_vertex_attributes`
-        :meth:`update_default_edge_attributes`
+        update_default_vertex_attributes
+        update_default_edge_attributes
 
         Notes
         -----
@@ -2011,16 +2317,22 @@ class Mesh(Datastructure):
         attr_dict.update(kwattr)
         self.default_face_attributes.update(attr_dict)
 
-    def face_attribute(self, key, name, value=None):
+    @overload
+    def face_attribute(self, key: Face, name: str) -> Any: ...
+
+    @overload
+    def face_attribute(self, key: Face, name: str, value: Any) -> None: ...
+
+    def face_attribute(self, key: Face, name: str, value: Any = _MISSING) -> Any:
         """Get or set an attribute of a face.
 
         Parameters
         ----------
-        key : int
+        key
             The face identifier.
-        name : str
+        name
             The name of the attribute.
-        value : object, optional
+        value
             The value of the attribute.
 
         Returns
@@ -2035,15 +2347,15 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`face_attributes`, :meth:`faces_attribute`, :meth:`faces_attributes`
-        :meth:`unset_face_attribute`
-        :meth:`edge_attribute`
-        :meth:`vertex_attribute`
+        face_attributes, faces_attribute, faces_attributes
+        unset_face_attribute
+        edge_attribute
+        vertex_attribute
 
         """
         if key not in self.face:
             raise KeyError(key)
-        if value is not None:
+        if value is not _MISSING:
             if key not in self.facedata:
                 self.facedata[key] = {}
             self.facedata[key][name] = value
@@ -2053,14 +2365,14 @@ class Mesh(Datastructure):
         if name in self.default_face_attributes:
             return self.default_face_attributes[name]
 
-    def unset_face_attribute(self, key, name):
+    def unset_face_attribute(self, key: Face, name: str) -> None:
         """Unset the attribute of a face.
 
         Parameters
         ----------
-        key : int
+        key
             The face identifier.
-        name : str
+        name
             The name of the attribute.
 
         Returns
@@ -2074,9 +2386,9 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`face_attribute`, :meth:`face_attributes`, :meth:`faces_attribute`, :meth:`faces_attributes`
-        :meth:`unset_edge_attribute`
-        :meth:`unset_vertex_attribute`
+        face_attribute, face_attributes, faces_attribute, faces_attributes
+        unset_edge_attribute
+        unset_vertex_attribute
 
         Notes
         -----
@@ -2090,16 +2402,21 @@ class Mesh(Datastructure):
             if name in self.facedata[key]:
                 del self.facedata[key][name]
 
-    def face_attributes(self, key, names=None, values=None):
+    def face_attributes(
+        self,
+        key: Face,
+        names: Optional[Sequence[str]] = None,
+        values: Optional[Sequence[Any]] = None,
+    ) -> Any:
         """Get or set multiple attributes of a face.
 
         Parameters
         ----------
-        key : int
+        key
             The identifier of the face.
-        names : list[str], optional
+        names
             A list of attribute names.
-        values : list[Any], optional
+        values
             A list of attribute values.
 
         Returns
@@ -2118,9 +2435,9 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`face_attribute`, :meth:`faces_attribute`, :meth:`faces_attributes`
-        :meth:`edge_attributes`
-        :meth:`vertex_attributes`
+        face_attribute, faces_attribute, faces_attributes
+        edge_attributes
+        vertex_attributes
 
         """
         if key not in self.face:
@@ -2141,17 +2458,38 @@ class Mesh(Datastructure):
             values.append(value)
         return values
 
-    def faces_attribute(self, name, value=None, keys=None):
+    @overload
+    def faces_attribute(
+        self,
+        name: str,
+        *,
+        keys: Optional[Iterable[Face]] = None,
+    ) -> list[Any]: ...
+
+    @overload
+    def faces_attribute(
+        self,
+        name: str,
+        value: Any,
+        keys: Optional[Iterable[Face]] = None,
+    ) -> None: ...
+
+    def faces_attribute(
+        self,
+        name: str,
+        value: Any = _MISSING,
+        keys: Optional[Iterable[Face]] = None,
+    ) -> Optional[list[Any]]:
         """Get or set an attribute of multiple faces.
 
         Parameters
         ----------
-        name : str
+        name
             The name of the attribute.
-        value : object, optional
+        value
             The value of the attribute.
             Default is None.
-        keys : list[int], optional
+        keys
             A list of face identifiers.
 
         Returns
@@ -2167,31 +2505,36 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`face_attribute`, :meth:`face_attributes`, :meth:`faces_attributes`
-        :meth:`edges_attribute`
-        :meth:`vertices_attribute`
+        face_attribute, face_attributes, faces_attributes
+        edges_attribute
+        vertices_attribute
 
         """
         if not keys:
             keys = self.faces()
-        if value is not None:
+        if value is not _MISSING:
             for key in keys:
                 self.face_attribute(key, name, value)
             return
         return [self.face_attribute(key, name) for key in keys]
 
-    def faces_attributes(self, names=None, values=None, keys=None):
+    def faces_attributes(
+        self,
+        names: Optional[Sequence[str]] = None,
+        values: Optional[Sequence[Any]] = None,
+        keys: Optional[Iterable[Face]] = None,
+    ) -> Any:
         """Get or set multiple attributes of multiple faces.
 
         Parameters
         ----------
-        names : list[str], optional
+        names
             The names of the attribute.
             Default is None.
-        values : list[Any], optional
+        values
             The values of the attributes.
             Default is None.
-        keys : list[int], optional
+        keys
             A list of face identifiers.
 
         Returns
@@ -2210,9 +2553,9 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`face_attribute`, :meth:`face_attributes`, :meth:`faces_attribute`
-        :meth:`edges_attributes`
-        :meth:`vertices_attributes`
+        face_attribute, face_attributes, faces_attribute
+        edges_attributes
+        vertices_attributes
 
         """
         if not keys:
@@ -2223,14 +2566,18 @@ class Mesh(Datastructure):
             return
         return [self.face_attributes(key, names) for key in keys]
 
-    def update_default_edge_attributes(self, attr_dict=None, **kwattr):
+    def update_default_edge_attributes(
+        self,
+        attr_dict: Optional[AttributeDict] = None,
+        **kwattr: Any,
+    ) -> None:
         """Update the default edge attributes.
 
         Parameters
         ----------
-        attr_dict : dict[str, Any], optional
+        attr_dict
             A dictionary of attributes with their default values.
-        **kwattr : dict[str, Any], optional
+        **kwattr
             A dictionary compiled of remaining named arguments.
 
         Returns
@@ -2239,8 +2586,8 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`update_default_vertex_attributes`
-        :meth:`update_default_face_attributes`
+        update_default_vertex_attributes
+        update_default_face_attributes
 
         Notes
         -----
@@ -2252,16 +2599,22 @@ class Mesh(Datastructure):
         attr_dict.update(kwattr)
         self.default_edge_attributes.update(attr_dict)
 
-    def edge_attribute(self, edge, name, value=None):
+    @overload
+    def edge_attribute(self, edge: Edge, name: str) -> Any: ...
+
+    @overload
+    def edge_attribute(self, edge: Edge, name: str, value: Any) -> None: ...
+
+    def edge_attribute(self, edge: Edge, name: str, value: Any = _MISSING) -> Any:
         """Get or set an attribute of an edge.
 
         Parameters
         ----------
-        edge : tuple[int, int]
+        edge
             The identifier of the edge as a pair of vertex identifiers.
-        name : str
+        name
             The name of the attribute.
-        value : object, optional
+        value
             The value of the attribute.
             Default is None.
 
@@ -2277,17 +2630,17 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`edge_attributes`, :meth:`edges_attribute`, :meth:`edges_attributes`
-        :meth:`unset_edge_attribute`
-        :meth:`vertex_attribute`
-        :meth:`face_attribute`
+        edge_attributes, edges_attribute, edges_attributes
+        unset_edge_attribute
+        vertex_attribute
+        face_attribute
 
         """
         u, v = edge
         if u not in self.halfedge or v not in self.halfedge[u]:
             raise KeyError(edge)
         key = str(tuple(sorted(edge)))
-        if value is not None:
+        if value is not _MISSING:
             if key not in self.edgedata:
                 self.edgedata[key] = {}
             self.edgedata[key][name] = value
@@ -2297,14 +2650,14 @@ class Mesh(Datastructure):
         if name in self.default_edge_attributes:
             return self.default_edge_attributes[name]
 
-    def unset_edge_attribute(self, edge, name):
+    def unset_edge_attribute(self, edge: Edge, name: str) -> None:
         """Unset the attribute of an edge.
 
         Parameters
         ----------
-        edge : tuple[int, int]
+        edge
             The edge identifier.
-        name : str
+        name
             The name of the attribute.
 
         Returns
@@ -2318,9 +2671,9 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`edge_attribute`, :meth:`edge_attributes`, :meth:`edges_attribute`, :meth:`edges_attributes`
-        :meth:`unset_vertex_attribute`
-        :meth:`unset_face_attribute`
+        edge_attribute, edge_attributes, edges_attribute, edges_attributes
+        unset_vertex_attribute
+        unset_face_attribute
 
         Notes
         -----
@@ -2335,16 +2688,21 @@ class Mesh(Datastructure):
         if key in self.edgedata and name in self.edgedata[key]:
             del self.edgedata[key][name]
 
-    def edge_attributes(self, edge, names=None, values=None):
+    def edge_attributes(
+        self,
+        edge: Edge,
+        names: Optional[Sequence[str]] = None,
+        values: Optional[Sequence[Any]] = None,
+    ) -> Any:
         """Get or set multiple attributes of an edge.
 
         Parameters
         ----------
-        edge : tuple[int, int]
+        edge
             The identifier of the edge.
-        names : list[str], optional
+        names
             A list of attribute names.
-        values : list[Any], optional
+        values
             A list of attribute values.
 
         Returns
@@ -2363,9 +2721,9 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`edge_attribute`, :meth:`edges_attribute`, :meth:`edges_attributes`
-        :meth:`vertex_attributes`
-        :meth:`face_attributes`
+        edge_attribute, edges_attribute, edges_attributes
+        vertex_attributes
+        face_attributes
 
         """
         u, v = edge
@@ -2388,17 +2746,38 @@ class Mesh(Datastructure):
             values.append(value)
         return values
 
-    def edges_attribute(self, name, value=None, keys=None):
+    @overload
+    def edges_attribute(
+        self,
+        name: str,
+        *,
+        keys: Optional[Iterable[Edge]] = None,
+    ) -> list[Any]: ...
+
+    @overload
+    def edges_attribute(
+        self,
+        name: str,
+        value: Any,
+        keys: Optional[Iterable[Edge]] = None,
+    ) -> None: ...
+
+    def edges_attribute(
+        self,
+        name: str,
+        value: Any = _MISSING,
+        keys: Optional[Iterable[Edge]] = None,
+    ) -> Optional[list[Any]]:
         """Get or set an attribute of multiple edges.
 
         Parameters
         ----------
-        name : str
+        name
             The name of the attribute.
-        value : object, optional
+        value
             The value of the attribute.
             Default is None.
-        keys : list[tuple[int, int]], optional
+        keys
             A list of edge identifiers.
 
         Returns
@@ -2414,30 +2793,35 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`edge_attribute`, :meth:`edge_attributes`, :meth:`edges_attributes`
-        :meth:`vertex_attributes`
-        :meth:`face_attributes`
+        edge_attribute, edge_attributes, edges_attributes
+        vertex_attributes
+        face_attributes
 
         """
         edges = keys or self.edges()
-        if value is not None:
+        if value is not _MISSING:
             for edge in edges:
                 self.edge_attribute(edge, name, value)
             return
         return [self.edge_attribute(edge, name) for edge in edges]
 
-    def edges_attributes(self, names=None, values=None, keys=None):
+    def edges_attributes(
+        self,
+        names: Optional[Sequence[str]] = None,
+        values: Optional[Sequence[Any]] = None,
+        keys: Optional[Iterable[Edge]] = None,
+    ) -> Any:
         """Get or set multiple attributes of multiple edges.
 
         Parameters
         ----------
-        names : list[str], optional
+        names
             The names of the attribute.
             Default is None.
-        values : list[Any], optional
+        values
             The values of the attributes.
             Default is None.
-        keys : list[tuple[int, int]], optional
+        keys
             A list of edge identifiers.
 
         Returns
@@ -2456,9 +2840,9 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`edge_attribute`, :meth:`edge_attributes`, :meth:`edges_attribute`
-        :meth:`vertex_attributes`
-        :meth:`face_attributes`
+        edge_attribute, edge_attributes, edges_attribute
+        vertex_attributes
+        face_attributes
 
         """
         edges = keys or self.edges()
@@ -2472,8 +2856,8 @@ class Mesh(Datastructure):
     # Info
     # --------------------------------------------------------------------------
 
-    def summary(self):
-        """Print a summary of the mesh.
+    def summary(self) -> str:
+        """Generate a summary of the mesh.
 
         Returns
         -------
@@ -2497,7 +2881,7 @@ class Mesh(Datastructure):
             self.number_of_faces(),
         )
 
-    def number_of_vertices(self):
+    def number_of_vertices(self) -> int:
         """Count the number of vertices in the mesh.
 
         Returns
@@ -2506,13 +2890,13 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`number_of_edges`
-        :meth:`number_of_faces`
+        number_of_edges
+        number_of_faces
 
         """
         return len(list(self.vertices()))
 
-    def number_of_edges(self):
+    def number_of_edges(self) -> int:
         """Count the number of edges in the mesh.
 
         Returns
@@ -2521,13 +2905,13 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`number_of_vertices`
-        :meth:`number_of_faces`
+        number_of_vertices
+        number_of_faces
 
         """
         return len(list(self.edges()))
 
-    def number_of_faces(self):
+    def number_of_faces(self) -> int:
         """Count the number of faces in the mesh.
 
         Returns
@@ -2536,13 +2920,13 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`number_of_vertices`
-        :meth:`number_of_edges`
+        number_of_vertices
+        number_of_edges
 
         """
         return len(list(self.faces()))
 
-    def is_valid(self):
+    def is_valid(self) -> bool:
         """Verify that the mesh is valid.
 
         A mesh is valid if the following conditions are fulfilled:
@@ -2560,7 +2944,7 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`is_regular`, :meth:`is_manifold`, :meth:`is_orientable`, :meth:`is_empty`, :meth:`is_closed`, :meth:`is_trimesh`, :meth:`is_quadmesh`
+        is_regular, is_manifold, is_orientable, is_empty, is_closed, is_trimesh, is_quadmesh
 
         """
         for key in self.vertices():
@@ -2594,7 +2978,7 @@ class Mesh(Datastructure):
                     return False
         return True
 
-    def is_regular(self):
+    def is_regular(self) -> bool:
         """Verify that the mesh is regular.
 
         A mesh is regular if the following conditions are fulfilled:
@@ -2610,7 +2994,7 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`is_valid`, :meth:`is_manifold`, :meth:`is_orientable`, :meth:`is_empty`, :meth:`is_closed`, :meth:`is_trimesh`, :meth:`is_quadmesh`
+        is_valid, is_manifold, is_orientable, is_empty, is_closed, is_trimesh, is_quadmesh
 
         """
         if not self.vertex or not self.face:
@@ -2633,7 +3017,7 @@ class Mesh(Datastructure):
 
         return True
 
-    def is_manifold(self):
+    def is_manifold(self) -> bool:
         """Verify that the mesh is manifold.
 
         A mesh is manifold if the following conditions are fulfilled:
@@ -2649,7 +3033,7 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`is_valid`, :meth:`is_regular`, :meth:`is_orientable`, :meth:`is_empty`, :meth:`is_closed`, :meth:`is_trimesh`, :meth:`is_quadmesh`
+        is_valid, is_regular, is_orientable, is_empty, is_closed, is_trimesh, is_quadmesh
 
         """
         if not self.vertex:
@@ -2678,7 +3062,7 @@ class Mesh(Datastructure):
 
         return True
 
-    def is_orientable(self):
+    def is_orientable(self) -> bool:
         """Verify that the mesh is orientable.
 
         A manifold mesh is orientable if any two adjacent faces have compatible orientation,
@@ -2692,12 +3076,12 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`is_valid`, :meth:`is_regular`, :meth:`is_manifold`, :meth:`is_empty`, :meth:`is_closed`, :meth:`is_trimesh`, :meth:`is_quadmesh`
+        is_valid, is_regular, is_manifold, is_empty, is_closed, is_trimesh, is_quadmesh
 
         """
         raise NotImplementedError
 
-    def is_trimesh(self):
+    def is_trimesh(self) -> bool:
         """Verify that the mesh consists of only triangles.
 
         Returns
@@ -2708,14 +3092,14 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`is_valid`, :meth:`is_regular`, :meth:`is_manifold`, :meth:`is_orientable`, :meth:`is_empty`, :meth:`is_closed`, :meth:`is_quadmesh`
+        is_valid, is_regular, is_manifold, is_orientable, is_empty, is_closed, is_quadmesh
 
         """
         if not self.face:
             return False
         return not any(3 != len(self.face_vertices(fkey)) for fkey in self.faces())
 
-    def is_quadmesh(self):
+    def is_quadmesh(self) -> bool:
         """Verify that the mesh consists of only quads.
 
         Returns
@@ -2726,14 +3110,14 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`is_valid`, :meth:`is_regular`, :meth:`is_manifold`, :meth:`is_orientable`, :meth:`is_empty`, :meth:`is_closed`, :meth:`is_trimesh`
+        is_valid, is_regular, is_manifold, is_orientable, is_empty, is_closed, is_trimesh
 
         """
         if not self.face:
             return False
         return not any(4 != len(self.face_vertices(fkey)) for fkey in self.faces())
 
-    def is_empty(self):
+    def is_empty(self) -> bool:
         """Verify that the mesh is empty.
 
         Returns
@@ -2744,14 +3128,14 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`is_valid`, :meth:`is_regular`, :meth:`is_manifold`, :meth:`is_orientable`, :meth:`is_closed`, :meth:`is_trimesh`, :meth:`is_quadmesh`
+        is_valid, is_regular, is_manifold, is_orientable, is_closed, is_trimesh, is_quadmesh
 
         """
         if self.number_of_vertices() == 0:
             return True
         return False
 
-    def is_closed(self):
+    def is_closed(self) -> bool:
         """Verify that the mesh is closed.
 
         Returns
@@ -2762,7 +3146,7 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`is_valid`, :meth:`is_regular`, :meth:`is_manifold`, :meth:`is_orientable`, :meth:`is_empty`, :meth:`is_trimesh`, :meth:`is_quadmesh`
+        is_valid, is_regular, is_manifold, is_orientable, is_empty, is_trimesh, is_quadmesh
 
         """
         if self.is_empty():
@@ -2772,18 +3156,18 @@ class Mesh(Datastructure):
                 return False
         return True
 
-    def is_connected(self):
+    def is_connected(self) -> bool:
         """Verify that the mesh is connected.
 
         Returns
         -------
         bool
-            True if the mesh is not empty and has no naked edges.
+            True if the mesh is not empty and all vertices belong to one connected component.
             False otherwise.
 
         See Also
         --------
-        :meth:`is_valid`, :meth:`is_regular`, :meth:`is_manifold`, :meth:`is_orientable`, :meth:`is_empty`, :meth:`is_trimesh`, :meth:`is_quadmesh`
+        is_valid, is_regular, is_manifold, is_orientable, is_empty, is_trimesh, is_quadmesh
 
         """
         if not self.vertex:
@@ -2791,7 +3175,7 @@ class Mesh(Datastructure):
         nodes = breadth_first_traverse(self.adjacency, self.vertex_sample(size=1)[0])
         return len(nodes) == self.number_of_vertices()
 
-    def euler(self):
+    def euler(self) -> int:
         """Calculate the Euler characteristic.
 
         Returns
@@ -2801,7 +3185,7 @@ class Mesh(Datastructure):
 
         See Also
         --------
-        :meth:`genus`
+        genus
 
         """
         V = len([vkey for vkey in self.vertices() if len(self.vertex_neighbors(vkey)) != 0])
@@ -2813,14 +3197,14 @@ class Mesh(Datastructure):
     # Cleanup
     # --------------------------------------------------------------------------
 
-    def weld(self, precision=None):
+    def weld(self, precision: Optional[int] = None) -> None:
         """Weld vertices that are closer than a given precision.
 
         Parameters
         ----------
-        precision : int, optional
+        precision
             The precision of the geometric map that is used to connect the lines.
-            Defaults to the value of :attr:`compas.PRECISION`.
+            Defaults to the value of `compas.PRECISION`.
 
         Returns
         -------
@@ -2830,14 +3214,14 @@ class Mesh(Datastructure):
         """
         self.remove_duplicate_vertices(precision=precision)
 
-    def remove_duplicate_vertices(self, precision=None):
+    def remove_duplicate_vertices(self, precision: Optional[int] = None) -> None:
         """Remove all duplicate vertices and clean up any affected faces.
 
         Parameters
         ----------
-        precision : int, optional
+        precision
             Precision for converting numbers to strings.
-            Default is :attr:`TOL.precision`.
+            Default is `TOL.precision`.
 
         Returns
         -------
@@ -2901,14 +3285,8 @@ class Mesh(Datastructure):
                 if u not in self.halfedge[v]:
                     self.halfedge[v][u] = None
 
-    # only reason this is here is because of the potential angles check
-    def quads_to_triangles(self, check_angles=False):
+    def quads_to_triangles(self) -> None:
         """Convert all quadrilateral faces to triangles by adding a diagonal edge.
-
-        Parameters
-        ----------
-        check_angles : bool, optional
-            Flag indicating that the angles of the quads should be checked to choose the best diagonal.
 
         Returns
         -------
@@ -2930,16 +3308,21 @@ class Mesh(Datastructure):
                     del self.facedata[face]
 
     # only reason this is here and not on the halfedge is because of the spatial tree
-    def unify_cycles(self, root=None, nmax=None, max_distance=None):
+    def unify_cycles(
+        self,
+        root: Optional[Face] = None,
+        nmax: Optional[int] = None,
+        max_distance: Optional[float] = None,
+    ) -> None:
         """Unify the cycles of the mesh.
 
         Parameters
         ----------
-        root : int, optional
+        root
             The key of the root face.
-        nmax : int, optional
+        nmax
             The maximum number of neighboring faces to consider. If neither nmax nor max_distance is specified, all faces will be considered.
-        max_distance : float, optional
+        max_distance
             The max_distance of the search sphere for neighboring faces. If neither nmax nor max_distance is specified, all faces will be considered.
 
         Returns
@@ -2974,7 +3357,7 @@ class Mesh(Datastructure):
     # Components
     # --------------------------------------------------------------------------
 
-    def connected_vertices(self):
+    def connected_vertices(self) -> list[list[Vertex]]:
         """Find groups of connected vertices.
 
         Returns
@@ -2985,7 +3368,7 @@ class Mesh(Datastructure):
         """
         return connected_components(self.adjacency)
 
-    def connected_faces(self):
+    def connected_faces(self) -> list[set[Face]]:
         """Find groups of connected faces.
 
         Returns
@@ -2994,7 +3377,6 @@ class Mesh(Datastructure):
             Groups of connected faces.
 
         """
-        # return connected_components(self.face_adjacency)
         parts = self.connected_vertices()
         return [set([face for vertex in part for face in self.vertex_faces(vertex)]) for part in parts]
 
@@ -3002,12 +3384,12 @@ class Mesh(Datastructure):
     # Vertex topology
     # --------------------------------------------------------------------------
 
-    def has_vertex(self, key):
+    def has_vertex(self, key: Vertex) -> bool:
         """Verify that a vertex is in the mesh.
 
         Parameters
         ----------
-        key : int
+        key
             The identifier of the vertex.
 
         Returns
@@ -3019,12 +3401,12 @@ class Mesh(Datastructure):
         """
         return key in self.vertex
 
-    def is_vertex_connected(self, key):
+    def is_vertex_connected(self, key: Vertex) -> bool:
         """Verify that a vertex is connected.
 
         Parameters
         ----------
-        key : int
+        key
             The identifier of the vertex.
 
         Returns
@@ -3036,12 +3418,12 @@ class Mesh(Datastructure):
         """
         return self.vertex_degree(key) > 0
 
-    def is_vertex_on_boundary(self, key):
+    def is_vertex_on_boundary(self, key: Vertex) -> bool:
         """Verify that a vertex is on a boundary.
 
         Parameters
         ----------
-        key : int
+        key
             The identifier of the vertex.
 
         Returns
@@ -3056,14 +3438,14 @@ class Mesh(Datastructure):
                 return True
         return False
 
-    def vertex_neighbors(self, key, ordered=False):
+    def vertex_neighbors(self, key: Vertex, ordered: bool = False) -> list[Vertex]:
         """Return the neighbors of a vertex.
 
         Parameters
         ----------
-        key : int
+        key
             The identifier of the vertex.
-        ordered : bool, optional
+        ordered
             If True, return the neighbors in the cycling order of the faces.
 
         Returns
@@ -3102,30 +3484,28 @@ class Mesh(Datastructure):
         fkey = self.halfedge[start][key]
         nbrs = [start]
         count = 1000
-        while count:
+        while count and fkey is not None:
             count -= 1
             nbr = self.face_vertex_descendant(fkey, key)
             fkey = self.halfedge[nbr][key]
             if nbr == start:
                 break
             nbrs.append(nbr)
-            if fkey is None:
-                break
         return nbrs
 
-    def vertex_neighborhood(self, key, ring=1):
+    def vertex_neighborhood(self, key: Vertex, ring: int = 1) -> set[Vertex]:
         """Return the vertices in the neighborhood of a vertex.
 
         Parameters
         ----------
-        key : int
+        key
             The identifier of the vertex.
-        ring : int, optional
+        ring
             The number of neighborhood rings to include.
 
         Returns
         -------
-        list[int]
+        set[int]
             The vertices in the neighborhood.
 
         Notes
@@ -3145,12 +3525,12 @@ class Mesh(Datastructure):
             i += 1
         return nbrs
 
-    def vertex_degree(self, key):
+    def vertex_degree(self, key: Vertex) -> int:
         """Count the neighbors of a vertex.
 
         Parameters
         ----------
-        key : int
+        key
             The identifier of the vertex.
 
         Returns
@@ -3161,7 +3541,7 @@ class Mesh(Datastructure):
         """
         return len(self.vertex_neighbors(key))
 
-    def vertex_min_degree(self):
+    def vertex_min_degree(self) -> int:
         """Compute the minimum degree of all vertices.
 
         Returns
@@ -3174,7 +3554,7 @@ class Mesh(Datastructure):
             return 0
         return min(self.vertex_degree(key) for key in self.vertices())
 
-    def vertex_max_degree(self):
+    def vertex_max_degree(self) -> int:
         """Compute the maximum degree of all vertices.
 
         Returns
@@ -3187,16 +3567,25 @@ class Mesh(Datastructure):
             return 0
         return max(self.vertex_degree(key) for key in self.vertices())
 
-    def vertex_faces(self, key, ordered=False, include_none=False):
+    @overload
+    def vertex_faces(self, key: Vertex, ordered: bool = False, include_none: Literal[False] = False) -> list[Face]: ...
+
+    @overload
+    def vertex_faces(self, key: Vertex, ordered: bool, include_none: Literal[True]) -> list[Optional[Face]]: ...
+
+    @overload
+    def vertex_faces(self, key: Vertex, *, include_none: Literal[True]) -> list[Optional[Face]]: ...
+
+    def vertex_faces(self, key: Vertex, ordered: bool = False, include_none: bool = False) -> Union[list[Face], list[Optional[Face]]]:
         """The faces connected to a vertex.
 
         Parameters
         ----------
-        key : int
+        key
             The identifier of the vertex.
-        ordered : bool, optional
+        ordered
             If True, return the faces in cycling order.
-        include_none : bool, optional
+        include_none
             If True, include *outside* faces in the list.
 
         Returns
@@ -3218,7 +3607,7 @@ class Mesh(Datastructure):
     # Edge topology
     # --------------------------------------------------------------------------
 
-    def has_edge(self, key):
+    def has_edge(self, key: Edge) -> bool:
         """Verify that the mesh contains a specific edge.
 
         Warnings
@@ -3227,7 +3616,7 @@ class Mesh(Datastructure):
 
         Parameters
         ----------
-        key : tuple[int, int]
+        key
             The identifier of the edge.
 
         Returns
@@ -3239,12 +3628,12 @@ class Mesh(Datastructure):
         """
         return key in set(self.edges())
 
-    def has_halfedge(self, key):
+    def has_halfedge(self, key: Edge) -> bool:
         """Verify that a halfedge is part of the mesh.
 
         Parameters
         ----------
-        key : tuple[int, int]
+        key
             The identifier of the halfedge.
 
         Returns
@@ -3257,17 +3646,17 @@ class Mesh(Datastructure):
         u, v = key
         return u in self.halfedge and v in self.halfedge[u]
 
-    def edge_faces(self, edge):
+    def edge_faces(self, edge: Edge) -> tuple[Optional[Face], Optional[Face]]:
         """Find the two faces adjacent to an edge.
 
         Parameters
         ----------
-        edge : tuple[int, int]
+        edge
             The identifier of the edge.
 
         Returns
         -------
-        tuple[int, int]
+        tuple[int | None, int | None]
             The identifiers of the adjacent faces.
             If the edge is on the boundary, one of the identifiers is None.
 
@@ -3275,12 +3664,12 @@ class Mesh(Datastructure):
         u, v = edge
         return self.halfedge[u][v], self.halfedge[v][u]
 
-    def halfedge_face(self, edge):
+    def halfedge_face(self, edge: Edge) -> Optional[Face]:
         """Find the face corresponding to a halfedge.
 
         Parameters
         ----------
-        edge : tuple[int, int]
+        edge
             The identifier of the halfedge.
 
         Returns
@@ -3298,12 +3687,12 @@ class Mesh(Datastructure):
         u, v = edge
         return self.halfedge[u][v]
 
-    def is_edge_on_boundary(self, edge):
+    def is_edge_on_boundary(self, edge: Edge) -> bool:
         """Verify that an edge is on the boundary.
 
         Parameters
         ----------
-        edge : tuple[int, int]
+        edge
             The identifier of the edge.
 
         Returns
@@ -3320,12 +3709,12 @@ class Mesh(Datastructure):
     # Polyedge topology
     # --------------------------------------------------------------------------
 
-    def edge_loop(self, edge):
+    def edge_loop(self, edge: Edge) -> list[Edge]:
         """Find all edges on the same loop as a given edge.
 
         Parameters
         ----------
-        edge : tuple[int, int]
+        edge
             The identifier of the starting edge.
 
         Returns
@@ -3342,12 +3731,12 @@ class Mesh(Datastructure):
         vu_loop[:] = [(u, v) for v, u in vu_loop[::-1]]
         return vu_loop + uv_loop[1:]
 
-    def halfedge_loop(self, edge):
+    def halfedge_loop(self, edge: Edge) -> list[Edge]:
         """Find all edges on the same loop as the halfedge, in the direction of the halfedge.
 
         Parameters
         ----------
-        edge : tuple[int, int]
+        edge
             The identifier of the starting edge.
 
         Returns
@@ -3372,12 +3761,12 @@ class Mesh(Datastructure):
                 break
         return edges
 
-    def _halfedge_loop_on_boundary(self, edge):
+    def _halfedge_loop_on_boundary(self, edge: Edge) -> list[Edge]:
         """Find all edges on the same loop as the halfedge, in the direction of the halfedge, if the halfedge is on the boundary.
 
         Parameters
         ----------
-        edge : tuple[int, int]
+        edge
             The identifier of the starting edge.
 
         Returns
@@ -3407,14 +3796,20 @@ class Mesh(Datastructure):
                 break
         return edges
 
-    def edge_strip(self, edge, return_faces=False):
+    @overload
+    def edge_strip(self, edge: Edge, return_faces: Literal[False] = False) -> list[Edge]: ...
+
+    @overload
+    def edge_strip(self, edge: Edge, return_faces: Literal[True]) -> tuple[list[Edge], list[Optional[Face]]]: ...
+
+    def edge_strip(self, edge: Edge, return_faces: bool = False) -> Union[list[Edge], tuple[list[Edge], list[Optional[Face]]]]:
         """Find all edges on the same strip as a given edge.
 
         Parameters
         ----------
-        edge : tuple[int, int]
+        edge
             The identifier of the starting edge.
-        return_faces : bool, optional
+        return_faces
             Return the faces on the strip in addition to the edges.
 
         Returns
@@ -3443,12 +3838,12 @@ class Mesh(Datastructure):
         faces = [self.halfedge_face(edge) for edge in strip[:-1]]
         return strip, faces
 
-    def halfedge_strip(self, edge):
+    def halfedge_strip(self, edge: Edge) -> list[Edge]:
         """Find all edges on the same strip as a given halfedge.
 
         Parameters
         ----------
-        edge : tuple[int, int]
+        edge
             The identifier of the starting edge.
 
         Returns
@@ -3478,12 +3873,12 @@ class Mesh(Datastructure):
     # Face topology
     # --------------------------------------------------------------------------
 
-    def has_face(self, fkey):
+    def has_face(self, fkey: Face) -> bool:
         """Verify that a face is part of the mesh.
 
         Parameters
         ----------
-        fkey : int
+        fkey
             The identifier of the face.
 
         Returns
@@ -3495,12 +3890,12 @@ class Mesh(Datastructure):
         """
         return fkey in self.face
 
-    def face_vertices(self, fkey):
+    def face_vertices(self, fkey: Face) -> list[Vertex]:
         """The vertices of a face.
 
         Parameters
         ----------
-        fkey : int
+        fkey
             Identifier of the face.
 
         Returns
@@ -3511,12 +3906,12 @@ class Mesh(Datastructure):
         """
         return self.face[fkey]
 
-    def face_halfedges(self, fkey):
+    def face_halfedges(self, fkey: Face) -> list[Edge]:
         """The halfedges of a face.
 
         Parameters
         ----------
-        fkey : int
+        fkey
             Identifier of the face.
 
         Returns
@@ -3528,29 +3923,29 @@ class Mesh(Datastructure):
         vertices = self.face_vertices(fkey)
         return list(pairwise(vertices + vertices[0:1]))
 
-    def face_corners(self, fkey):
+    def face_corners(self, fkey: Face) -> list[tuple[Vertex, Vertex, Vertex]]:
         """Return triplets of face vertices forming the corners of the face.
 
         Parameters
         ----------
-        fkey : int
+        fkey
             Identifier of the face.
 
         Returns
         -------
-        list[int]
+        list[tuple[int, int, int]]
             The corners of the face in the form of a list of vertex triplets.
 
         """
         vertices = self.face_vertices(fkey)
         return list(window(vertices + vertices[0:2], 3))
 
-    def face_neighbors(self, fkey):
+    def face_neighbors(self, fkey: Face) -> list[Face]:
         """Return the neighbors of a face across its edges.
 
         Parameters
         ----------
-        fkey : int
+        fkey
             Identifier of the face.
 
         Returns
@@ -3566,14 +3961,14 @@ class Mesh(Datastructure):
                 nbrs.append(nbr)
         return nbrs
 
-    def face_neighborhood(self, key, ring=1):
+    def face_neighborhood(self, key: Face, ring: int = 1) -> list[Face]:
         """Return the faces in the neighborhood of a face.
 
         Parameters
         ----------
-        key : int
+        key
             The identifier of the face.
-        ring : int, optional
+        ring
             The size of the neighborhood.
 
         Returns
@@ -3594,12 +3989,12 @@ class Mesh(Datastructure):
             i += 1
         return list(nbrs)
 
-    def face_degree(self, fkey):
+    def face_degree(self, fkey: Face) -> int:
         """Count the neighbors of a face.
 
         Parameters
         ----------
-        fkey : int
+        fkey
             Identifier of the face.
 
         Returns
@@ -3610,7 +4005,7 @@ class Mesh(Datastructure):
         """
         return len(self.face_neighbors(fkey))
 
-    def face_min_degree(self):
+    def face_min_degree(self) -> int:
         """Compute the minimum degree of all faces.
 
         Returns
@@ -3623,7 +4018,7 @@ class Mesh(Datastructure):
             return 0
         return min(self.face_degree(fkey) for fkey in self.faces())
 
-    def face_max_degree(self):
+    def face_max_degree(self) -> int:
         """Compute the maximum degree of all faces.
 
         Returns
@@ -3636,16 +4031,16 @@ class Mesh(Datastructure):
             return 0
         return max(self.face_degree(fkey) for fkey in self.faces())
 
-    def face_vertex_ancestor(self, fkey, key, n=1):
+    def face_vertex_ancestor(self, fkey: Face, key: Vertex, n: int = 1) -> Vertex:
         """Return the n-th vertex before the specified vertex in a specific face.
 
         Parameters
         ----------
-        fkey : int
+        fkey
             Identifier of the face.
-        key : int
+        key
             The identifier of the vertex.
-        n : int, optional
+        n
             The index of the vertex ancestor.
             Default is 1, meaning the previous vertex.
 
@@ -3663,16 +4058,16 @@ class Mesh(Datastructure):
         i = self.face[fkey].index(key)
         return self.face[fkey][(i - n) % len(self.face[fkey])]
 
-    def face_vertex_descendant(self, fkey, key, n=1):
+    def face_vertex_descendant(self, fkey: Face, key: Vertex, n: int = 1) -> Vertex:
         """Return the n-th vertex after the specified vertex in a specific face.
 
         Parameters
         ----------
-        fkey : int
+        fkey
             Identifier of the face.
-        key : int
+        key
             The identifier of the vertex.
-        n : int, optional
+        n
             The index of the vertex descendant.
             Default is 1, meaning the next vertex.
 
@@ -3690,14 +4085,14 @@ class Mesh(Datastructure):
         i = self.face[fkey].index(key)
         return self.face[fkey][(i + n) % len(self.face[fkey])]
 
-    def face_adjacency_halfedge(self, f1, f2):
+    def face_adjacency_halfedge(self, f1: Face, f2: Face) -> Optional[Edge]:
         """Find one half-edge over which two faces are adjacent.
 
         Parameters
         ----------
-        f1 : int
+        f1
             The identifier of the first face.
-        f2 : int
+        f2
             The identifier of the second face.
 
         Returns
@@ -3716,31 +4111,30 @@ class Mesh(Datastructure):
             if self.halfedge[v][u] == f2:
                 return u, v
 
-    def face_adjacency_vertices(self, f1, f2):
+    def face_adjacency_vertices(self, f1: Face, f2: Face) -> list[Vertex]:
         """Find all vertices over which two faces are adjacent.
 
         Parameters
         ----------
-        f1 : int
+        f1
             The identifier of the first face.
-        f2 : int
+        f2
             The identifier of the second face.
 
         Returns
         -------
-        list[int] | None
-            The vertices separating face 1 from face 2,
-            or None, if the faces are not adjacent.
+        list[int]
+            The vertices shared by face 1 and face 2.
 
         """
         return [vkey for vkey in self.face_vertices(f1) if vkey in self.face_vertices(f2)]
 
-    def is_face_on_boundary(self, key):
+    def is_face_on_boundary(self, key: Face) -> bool:
         """Verify that a face is on a boundary.
 
         Parameters
         ----------
-        key : int
+        key
             The identifier of the face.
 
         Returns
@@ -3759,12 +4153,12 @@ class Mesh(Datastructure):
     face_vertex_after = face_vertex_descendant
     face_vertex_before = face_vertex_ancestor
 
-    def halfedge_after(self, edge):
+    def halfedge_after(self, edge: Edge) -> Edge:
         """Find the halfedge after the given halfedge in the same face.
 
         Parameters
         ----------
-        edge : tuple[int, int]
+        edge
             The identifier of the starting halfedge.
 
         Returns
@@ -3782,12 +4176,12 @@ class Mesh(Datastructure):
         w = nbrs[0]
         return v, w
 
-    def halfedge_before(self, edge):
+    def halfedge_before(self, edge: Edge) -> Edge:
         """Find the halfedge before the given halfedge in the same face.
 
         Parameters
         ----------
-        edge : tuple[int, int]
+        edge
             The identifier of the starting halfedge.
 
         Returns
@@ -3805,12 +4199,12 @@ class Mesh(Datastructure):
         t = nbrs[-1]
         return t, u
 
-    def vertex_edges(self, vertex):
+    def vertex_edges(self, vertex: Vertex) -> list[Edge]:
         """Find all edges connected to a given vertex.
 
         Parameters
         ----------
-        vertex : int
+        vertex
 
         Returns
         -------
@@ -3825,12 +4219,12 @@ class Mesh(Datastructure):
                 edges.append((nbr, vertex))
         return edges
 
-    def halfedge_loop_vertices(self, edge):
+    def halfedge_loop_vertices(self, edge: Edge) -> list[Vertex]:
         """Find all vertices on the same loop as a given halfedge.
 
         Parameters
         ----------
-        edge : tuple[int, int]
+        edge
             The identifier of the starting halfedge.
         Returns
         -------
@@ -3841,17 +4235,17 @@ class Mesh(Datastructure):
         loop = self.halfedge_loop(edge)
         return [loop[0][0]] + [edge[1] for edge in loop]
 
-    def halfedge_strip_faces(self, edge):
+    def halfedge_strip_faces(self, edge: Edge) -> list[Optional[Face]]:
         """Find all faces on the same strip as a given halfedge.
 
         Parameters
         ----------
-        edge : tuple[int, int]
+        edge
             The identifier of the starting halfedge.
 
         Returns
         -------
-        list[int]
+        list[int | None]
             The faces on the same strip as the given halfedge.
 
         """
@@ -3862,7 +4256,7 @@ class Mesh(Datastructure):
     # Mesh geometry
     # --------------------------------------------------------------------------
 
-    def area(self):
+    def area(self) -> float:
         """Calculate the total mesh area.
 
         Returns
@@ -3873,15 +4267,15 @@ class Mesh(Datastructure):
         """
         return sum(self.face_area(fkey) for fkey in self.faces())
 
-    def volume(self, copy=True, unify_cycles=True):
+    def volume(self, copy: bool = True, unify_cycles: bool = True) -> Optional[float]:
         """Calculate the volume of the mesh.
 
         Parameters
         ----------
-        copy : bool, optional
+        copy
             If True, a copy of the mesh is made before computation to avoid modifying the original.
             Default is True.
-        unify_cycles : bool, optional
+        unify_cycles
             If True, face cycles are unified to ensure consistent orientation.
             Default is True.
 
@@ -3942,7 +4336,7 @@ class Mesh(Datastructure):
 
         return abs(volume)
 
-    def centroid(self):
+    def centroid(self) -> list[float]:
         """Calculate the mesh centroid.
 
         Returns
@@ -3956,7 +4350,7 @@ class Mesh(Datastructure):
             1.0 / self.area(),
         )
 
-    def normal(self):
+    def normal(self) -> list[float]:
         """Calculate the average mesh normal.
 
         Returns
@@ -3970,23 +4364,25 @@ class Mesh(Datastructure):
             1.0 / self.area(),
         )
 
-    def aabb(self):
+    @property
+    def aabb(self) -> Box:
         """Calculate the axis aligned bounding box of the mesh.
 
         Returns
         -------
-        :class:`compas.geometry.Box`
+        Box
 
         """
         xyz = self.vertices_attributes("xyz")
         return Box.from_bounding_box(bounding_box(xyz))
 
-    def obb(self):
+    @property
+    def obb(self) -> Box:
         """Calculate the oriented bounding box of the mesh.
 
         Returns
         -------
-        :class:`compas.geometry.Box`
+        Box
 
         """
         xyz = self.vertices_attributes("xyz")
@@ -3996,14 +4392,14 @@ class Mesh(Datastructure):
     # Vertex geometry
     # --------------------------------------------------------------------------
 
-    def vertex_coordinates(self, key, axes="xyz"):
+    def vertex_coordinates(self, key: Vertex, axes: str = "xyz") -> list[float]:
         """Return the coordinates of a vertex.
 
         Parameters
         ----------
-        key : int
+        key
             The identifier of the vertex.
-        axes : str, optional
+        axes
             The axes along which to take the coordinates.
             Should be a combination of x, y, and z.
 
@@ -4015,44 +4411,44 @@ class Mesh(Datastructure):
         """
         return self.vertex_attributes(key, axes)
 
-    def vertex_point(self, key):
+    def vertex_point(self, key: Vertex) -> Point:
         """Return the point of a vertex.
 
         Parameters
         ----------
-        key : int
+        key
             The identifier of the vertex.
 
         Returns
         -------
-        :class:`compas.geometry.Point`
+        Point
             The point of the vertex.
         """
-        return Point(*self.vertex_coordinates(key))  # type: ignore
+        return Point(*self.vertex_coordinates(key))
 
-    def vertices_points(self, vertices):
+    def vertices_points(self, vertices: Iterable[Vertex]) -> list[Point]:
         """Return the points of multiple vertices.
 
         Parameters
         ----------
-        vertices : list[int]
+        vertices
             The identifiers of the vertices.
 
         Returns
         -------
-        list[:class:`compas.geometry.Point`]
+        list[Point]
             The points of the vertices.
         """
         return [self.vertex_point(vertex) for vertex in vertices]
 
-    def set_vertex_point(self, vertex, point):
+    def set_vertex_point(self, vertex: Vertex, point: PointCoordinates) -> None:
         """Set the point of a vertex.
 
         Parameters
         ----------
-        vertex : int
+        vertex
             The identifier of the vertex.
-        point : :class:`compas.geometry.Point`
+        point
             The point to set.
 
         Returns
@@ -4062,12 +4458,12 @@ class Mesh(Datastructure):
         """
         self.vertex_attributes(vertex, "xyz", point)
 
-    def vertex_area(self, key):
+    def vertex_area(self, key: Vertex) -> float:
         """Compute the tributary area of a vertex.
 
         Parameters
         ----------
-        key : int
+        key
             The identifier of the vertex.
 
         Returns
@@ -4098,17 +4494,17 @@ class Mesh(Datastructure):
 
         return 0.25 * area
 
-    def vertex_laplacian(self, key):
+    def vertex_laplacian(self, key: Vertex) -> Vector:
         """Compute the vector from a vertex to the centroid of its neighbors.
 
         Parameters
         ----------
-        key : int
+        key
             The identifier of the vertex.
 
         Returns
         -------
-        :class:`compas.geometry.Vector`
+        Vector
             The Laplacian vector.
 
         """
@@ -4116,47 +4512,47 @@ class Mesh(Datastructure):
         p = self.vertex_coordinates(key)
         return Vector(*subtract_vectors(c, p))
 
-    def vertex_neighborhood_centroid(self, key):
+    def vertex_neighborhood_centroid(self, key: Vertex) -> Point:
         """Compute the centroid of the neighbors of a vertex.
 
         Parameters
         ----------
-        key : int
+        key
             The identifier of the vertex.
 
         Returns
         -------
-        :class:`compas.geometry.Point`
+        Point
             The centroid of the vertex neighbors.
 
         """
         return Point(*centroid_points([self.vertex_coordinates(nbr) for nbr in self.vertex_neighbors(key)]))
 
-    def vertex_normal(self, key):
+    def vertex_normal(self, key: Vertex) -> Vector:
         """Return the normal vector at the vertex as the weighted average of the
         normals of the neighboring faces.
 
         Parameters
         ----------
-        key : int
+        key
             The identifier of the vertex.
 
         Returns
         -------
-        :class:`compas.geometry.Vector`
+        Vector
             The normal vector.
 
         """
         vectors = [self.face_normal(fkey, False) for fkey in self.vertex_faces(key) if fkey is not None]
         return Vector(*normalize_vector(centroid_points(vectors)))
 
-    def vertex_curvature(self, vkey):
+    def vertex_curvature(self, vkey: Vertex) -> float:
         """Dimensionless vertex curvature.
 
         Parameters
         ----------
-        fkey : int
-            The face key.
+        vkey
+            The vertex key.
 
         Returns
         -------
@@ -4165,9 +4561,7 @@ class Mesh(Datastructure):
 
         References
         ----------
-        Based on [#]_.
-
-        .. [#] Botsch, Mario, et al. *Polygon mesh processing.* AK Peters/CRC Press, 2010.
+        Botsch, Mario, et al. *Polygon mesh processing.* AK Peters/CRC Press, 2010.
 
         """
         C = 0
@@ -4183,14 +4577,14 @@ class Mesh(Datastructure):
     # Edge geometry
     # --------------------------------------------------------------------------
 
-    def edge_coordinates(self, edge, axes="xyz"):
+    def edge_coordinates(self, edge: Edge, axes: str = "xyz") -> tuple[list[float], list[float]]:
         """Return the coordinates of the start and end point of an edge.
 
         Parameters
         ----------
-        edge : tuple(int, int)
+        edge
             The identifier of the edge.
-        axes : str, optional
+        axes
             The axes along which the coordinates should be included.
 
         Returns
@@ -4202,44 +4596,44 @@ class Mesh(Datastructure):
         """
         return self.vertex_coordinates(edge[0], axes=axes), self.vertex_coordinates(edge[1], axes=axes)
 
-    def edge_start(self, edge):
+    def edge_start(self, edge: Edge) -> Point:
         """Return the point at the start of an edge.
 
         Parameters
         ----------
-        edge : tuple(int, int)
+        edge
             The identifier of the edge.
 
         Returns
         -------
-        :class:`compas.geometry.Point`
+        Point
             The point at the start.
 
         """
         return self.vertex_point(edge[0])
 
-    def edge_end(self, edge):
+    def edge_end(self, edge: Edge) -> Point:
         """Return the point at the end of an edge.
 
         Parameters
         ----------
-        edge : tuple(int, int)
+        edge
             The identifier of the edge.
 
         Returns
         -------
-        :class:`compas.geometry.Point`
+        Point
             The point at the end.
 
         """
         return self.vertex_point(edge[1])
 
-    def edge_length(self, edge):
+    def edge_length(self, edge: Edge) -> float:
         """Return the length of an edge.
 
         Parameters
         ----------
-        edge : tuple(int, int)
+        edge
             The identifier of the edge.
 
         Returns
@@ -4251,38 +4645,38 @@ class Mesh(Datastructure):
         a, b = self.edge_coordinates(edge)
         return distance_point_point(a, b)
 
-    def edge_vector(self, edge):
+    def edge_vector(self, edge: Edge) -> Vector:
         """Return the vector of an edge.
 
         Parameters
         ----------
-        edge : tuple(int, int)
+        edge
             The identifier of the edge.
 
         Returns
         -------
-        :class:`compas.geometry.Vector`
+        Vector
 
         """
         a, b = self.edge_coordinates(edge)
         ab = subtract_vectors(b, a)
         return Vector(*ab)
 
-    def edge_point(self, edge, t=0.5):
+    def edge_point(self, edge: Edge, t: float = 0.5) -> Point:
         """Return a point along an edge.
 
         Parameters
         ----------
-        edge : tuple(int, int)
+        edge
             The identifier of the edge.
-        t : float, optional
+        t
             The location of the point on the edge.
             If the value of `t` is outside the range 0-1, the point will
             lie in the direction of the edge, but not on the edge vector.
 
         Returns
         -------
-        :class:`compas.geometry.Point`
+        Point
             The point at parameter ``t``.
 
         """
@@ -4290,34 +4684,34 @@ class Mesh(Datastructure):
         ab = subtract_vectors(b, a)
         return Point(*add_vectors(a, scale_vector(ab, t)))
 
-    def edge_midpoint(self, edge):
+    def edge_midpoint(self, edge: Edge) -> Point:
         """Return the midpoint of an edge.
 
         Parameters
         ----------
-        edge : tuple(int, int)
+        edge
             The identifier of the edge.
 
         Returns
         -------
-        list[float]
-            The XYZ coordinates of the midpoint.
+        Point
+            The midpoint of the edge.
 
         """
         a, b = self.edge_coordinates(edge)
         return Point(*midpoint_line((a, b)))
 
-    def edge_direction(self, edge):
+    def edge_direction(self, edge: Edge) -> Vector:
         """Return the direction vector of an edge.
 
         Parameters
         ----------
-        edge : tuple(int, int)
+        edge
             The identifier of the edge.
 
         Returns
         -------
-        :class:`compas.geometry.Vector`
+        Vector
             The direction vector of the edge.
 
         """
@@ -4325,17 +4719,17 @@ class Mesh(Datastructure):
         vector.unitize()
         return vector
 
-    def edge_line(self, edge):
+    def edge_line(self, edge: Edge) -> Line:
         """Return the line of an edge.
 
         Parameters
         ----------
-        edge : tuple(int, int)
+        edge
             The identifier of the edge.
 
         Returns
         -------
-        :class:`compas.geometry.Line`
+        Line
             The line of the edge.
 
         """
@@ -4345,14 +4739,14 @@ class Mesh(Datastructure):
     # Face geometry
     # --------------------------------------------------------------------------
 
-    def face_coordinates(self, fkey, axes="xyz"):
+    def face_coordinates(self, fkey: Face, axes: str = "xyz") -> list[list[float]]:
         """Compute the coordinates of the vertices of a face.
 
         Parameters
         ----------
-        fkey : int
+        fkey
             The identifier of the face.
-        axes : str, optional
+        axes
             The axes along which to take the coordinates.
             Should be a combination of x, y, and z.
 
@@ -4364,77 +4758,77 @@ class Mesh(Datastructure):
         """
         return [self.vertex_coordinates(key, axes=axes) for key in self.face_vertices(fkey)]
 
-    def face_points(self, fkey):
+    def face_points(self, fkey: Face) -> list[Point]:
         """Compute the points of the vertices of a face.
 
         Parameters
         ----------
-        fkey : int
+        fkey
             The identifier of the face.
 
         Returns
         -------
-        list[:class:`compas.geometry.Point`]
+        list[Point]
             The points of the vertices of the face.
 
         """
         return [self.vertex_point(key) for key in self.face_vertices(fkey)]
 
-    def face_normal(self, fkey, unitized=True):
+    def face_normal(self, fkey: Face, unitized: bool = True) -> Vector:
         """Compute the normal of a face.
 
         Parameters
         ----------
-        fkey : int
+        fkey
             The identifier of the face.
-        unitized : bool, optional
+        unitized
             If True, the vector is unitized.
 
         Returns
         -------
-        :class:`compas.geometry.Vector`
+        Vector
 
         """
         return Vector(*normal_polygon(self.face_coordinates(fkey), unitized=unitized))
 
-    def face_centroid(self, fkey):
+    def face_centroid(self, fkey: Face) -> Point:
         """Compute the point at the centroid of a face.
 
         Parameters
         ----------
-        fkey : int
+        fkey
             The identifier of the face.
 
         Returns
         -------
-        :class:`compas.geometry.Point`
+        Point
             The point at the centroid.
 
         """
         return Point(*centroid_points(self.face_coordinates(fkey)))
 
-    def face_center(self, fkey):
+    def face_center(self, fkey: Face) -> Point:
         """Compute the point at the center of mass of a face.
 
         Parameters
         ----------
-        fkey : int
+        fkey
             The identifier of the face.
 
         Returns
         -------
-        :class:`compas.geometry.Point`
+        Point
             The point at the center of mass.
 
         """
         return Point(*centroid_polygon(self.face_coordinates(fkey)))  # type: ignore
 
-    def face_area(self, fkey):
+    def face_area(self, fkey: Face) -> float:
         """Compute the area of a face.
 
         Parameters
         ----------
-        fkey : int
+        fkey
             The identifier of the face.
 
         Returns
@@ -4445,14 +4839,14 @@ class Mesh(Datastructure):
         """
         return area_polygon(self.face_coordinates(fkey))
 
-    def face_flatness(self, fkey, maxdev=0.02):
+    def face_flatness(self, fkey: Face, maxdev: float = 0.02) -> float:
         """Compute the flatness of the mesh face.
 
         Parameters
         ----------
-        fkey : int
+        fkey
             The identifier of the face.
-        maxdev : float, optional
+        maxdev
             A maximum value for the allowed deviation from flatness.
 
         Returns
@@ -4490,12 +4884,12 @@ class Mesh(Datastructure):
         d = distance_line_line((points[0], points[2]), (points[1], points[3]))
         return (d / length) / maxdev
 
-    def face_aspect_ratio(self, fkey):
+    def face_aspect_ratio(self, fkey: Face) -> float:
         """Face aspect ratio as the ratio between the lengths of the maximum and minimum face edges.
 
         Parameters
         ----------
-        fkey : int
+        fkey
             The face key.
 
         Returns
@@ -4511,12 +4905,12 @@ class Mesh(Datastructure):
         face_edge_lengths = [self.edge_length(edge) for edge in self.face_halfedges(fkey)]
         return max(face_edge_lengths) / min(face_edge_lengths)
 
-    def face_skewness(self, fkey):
-        """Face skewness as the maximum absolute angular deviation from the idefault_edge_attributesl polygon angle.
+    def face_skewness(self, fkey: Face) -> float:
+        """Face skewness as the maximum absolute angular deviation from the ideal polygon angle.
 
         Parameters
         ----------
-        fkey : int
+        fkey
             The face key.
 
         Returns
@@ -4529,7 +4923,7 @@ class Mesh(Datastructure):
         * Wikipedia. *Types of mesh*. Available at: https://en.wikipedia.org/wiki/Types_of_mesh.
 
         """
-        idefault_edge_attributesl_angle = 180 * (1 - 2 / float(len(self.face_vertices(fkey))))
+        ideal_angle = 180 * (1 - 2 / float(len(self.face_vertices(fkey))))
         angles = []
         vertices = self.face_vertices(fkey)
         for u, v, w in window(vertices + vertices[:2], n=3):
@@ -4539,11 +4933,11 @@ class Mesh(Datastructure):
             angle = angle_points(o, a, b, deg=True)
             angles.append(angle)
         return max(
-            (max(angles) - idefault_edge_attributesl_angle) / (180 - idefault_edge_attributesl_angle),  # type: ignore
-            (idefault_edge_attributesl_angle - min(angles)) / idefault_edge_attributesl_angle,  # type: ignore
+            (max(angles) - ideal_angle) / (180 - ideal_angle),
+            (ideal_angle - min(angles)) / ideal_angle,
         )
 
-    def face_curvature(self, fkey):
+    def face_curvature(self, fkey: Face) -> float:
         """Dimensionless face curvature.
 
         Face curvature is defined as the maximum face vertex deviation from
@@ -4552,7 +4946,7 @@ class Mesh(Datastructure):
 
         Parameters
         ----------
-        fkey : int
+        fkey
             The face key.
 
         Returns
@@ -4569,49 +4963,49 @@ class Mesh(Datastructure):
         average_distances = vector_average([distance_point_point(point, centroid) for point in points])
         return max_deviation / average_distances
 
-    def face_plane(self, face):
+    def face_plane(self, face: Face) -> Plane:
         """A plane defined by the centroid and the normal of the face.
 
         Parameters
         ----------
-        face : int
+        face
             The face identifier.
 
         Returns
         -------
-        :class:`compas.geometry.Plane`
+        Plane
             The plane of the face.
 
         """
         return Plane(self.face_centroid(face), self.face_normal(face))
 
-    def face_polygon(self, face):
+    def face_polygon(self, face: Face) -> Polygon:
         """The polygon of a face.
 
         Parameters
         ----------
-        face : int
+        face
             The face identifier.
 
         Returns
         -------
-        :class:`compas.geometry.Polygon`
+        Polygon
             The polygon of the face.
 
         """
         return Polygon(self.face_coordinates(face))
 
-    def face_circle(self, face):
+    def face_circle(self, face: Face) -> Circle:
         """The circle of a face.
 
         Parameters
         ----------
-        face : int
+        face
             The face identifier.
 
         Returns
         -------
-        :class:`compas.geometry.Circle`
+        Circle
             The circle of the face.
 
         """
@@ -4620,17 +5014,17 @@ class Mesh(Datastructure):
         point, normal, radius = bestfit_circle_numpy(self.face_coordinates(face))
         return Circle.from_plane_and_radius(Plane(point, normal), radius)
 
-    def face_frame(self, face):
+    def face_frame(self, face: Face) -> Frame:
         """The frame of a face.
 
         Parameters
         ----------
-        face : int
+        face
             The face identifier.
 
         Returns
         -------
-        :class:`compas.geometry.Frame`
+        Frame
             The frame of the face.
 
         """
@@ -4643,7 +5037,7 @@ class Mesh(Datastructure):
     # Boundaries
     # --------------------------------------------------------------------------
 
-    def vertices_on_boundary(self):
+    def vertices_on_boundary(self) -> list[Vertex]:
         """Find the vertices on the longest boundary.
 
         Returns
@@ -4655,7 +5049,7 @@ class Mesh(Datastructure):
         boundaries = self.vertices_on_boundaries()
         return boundaries[0] if boundaries else []
 
-    def edges_on_boundary(self):
+    def edges_on_boundary(self) -> list[Edge]:
         """Find the edges on the longest boundary.
 
         Returns
@@ -4667,7 +5061,7 @@ class Mesh(Datastructure):
         boundaries = self.edges_on_boundaries()
         return boundaries[0] if boundaries else []
 
-    def faces_on_boundary(self):
+    def faces_on_boundary(self) -> list[Face]:
         """Find the faces on the longest boundary.
 
         Returns
@@ -4679,7 +5073,7 @@ class Mesh(Datastructure):
         boundaries = self.faces_on_boundaries()
         return boundaries[0] if boundaries else []
 
-    def vertices_on_boundaries(self):
+    def vertices_on_boundaries(self) -> list[list[Vertex]]:
         """Find the vertices on all boundaries of the mesh.
 
         Returns
@@ -4780,12 +5174,12 @@ class Mesh(Datastructure):
                 if vertices_all:
                     key = vertices_all[0]
 
-        def length(boundary):
+        def length(boundary: list[Vertex]) -> float:
             return sum(self.edge_length(edge) for edge in pairwise(boundary + boundary[:1]))  # type: ignore
 
         return sorted(boundaries, key=length, reverse=True)
 
-    def edges_on_boundaries(self):
+    def edges_on_boundaries(self) -> list[list[Edge]]:
         """Find the edges on all boundaries of the mesh.
 
         Returns
@@ -4800,7 +5194,7 @@ class Mesh(Datastructure):
             edgegroups.append(list(pairwise(vertices)))
         return edgegroups
 
-    def faces_on_boundaries(self):
+    def faces_on_boundaries(self) -> list[list[Face]]:
         """Find the faces on all boundaries of the mesh.
 
         Returns
@@ -4827,12 +5221,12 @@ class Mesh(Datastructure):
     # Transformations
     # --------------------------------------------------------------------------
 
-    def transform(self, T):
+    def transform(self, T: Union[Transformation, Sequence[Sequence[float]]]) -> None:  # type: ignore[override]
         """Transform the mesh.
 
         Parameters
         ----------
-        T : :class:`Transformation`
+        T
             The transformation used to transform the mesh.
 
         Returns
@@ -4853,12 +5247,12 @@ class Mesh(Datastructure):
         for vertex, point in zip(self.vertices(), points):
             self.vertex_attributes(vertex, "xyz", point)
 
-    def transform_numpy(self, T):
+    def transform_numpy(self, T: Any) -> None:  # type: ignore[override]
         """Transform the mesh.
 
         Parameters
         ----------
-        T : :class:`numpy.ndarray`
+        T
             The transformation used to transform the mesh.
 
         Returns
@@ -4885,12 +5279,14 @@ class Mesh(Datastructure):
     # Matrices
     # --------------------------------------------------------------------------
 
-    def adjacency_matrix(self, rtype="array"):
+    def adjacency_matrix(
+        self, rtype: Literal["array", "csc", "csr", "coo", "list"] = "array"
+    ) -> Any:
         """Compute the adjacency matrix of the mesh.
 
         Parameters
         ----------
-        rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
+        rtype
             Format of the result.
 
         Returns
@@ -4905,12 +5301,14 @@ class Mesh(Datastructure):
         adjacency = [[vertex_index[nbr] for nbr in self.vertex_neighbors(vertex)] for vertex in self.vertices()]
         return adjacency_matrix(adjacency, rtype=rtype)
 
-    def connectivity_matrix(self, rtype="array"):
+    def connectivity_matrix(
+        self, rtype: Literal["array", "csc", "csr", "coo", "list"] = "array"
+    ) -> Any:
         """Compute the connectivity matrix of the mesh.
 
         Parameters
         ----------
-        rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
+        rtype
             Format of the result.
 
         Returns
@@ -4922,15 +5320,17 @@ class Mesh(Datastructure):
         from compas.matrices import connectivity_matrix
 
         vertex_index = self.vertex_index()
-        adjacency = [[vertex_index[nbr] for nbr in self.vertex_neighbors(vertex)] for vertex in self.vertices()]
-        return connectivity_matrix(adjacency, rtype=rtype)
+        edges = [(vertex_index[u], vertex_index[v]) for u, v in self.edges()]
+        return connectivity_matrix(edges, rtype=rtype)
 
-    def degree_matrix(self, rtype="array"):
+    def degree_matrix(
+        self, rtype: Literal["array", "csc", "csr", "coo", "list"] = "array"
+    ) -> Any:
         """Compute the degree matrix of the mesh.
 
         Parameters
         ----------
-        rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
+        rtype
             Format of the result.
 
         Returns
@@ -4945,12 +5345,14 @@ class Mesh(Datastructure):
         adjacency = [[vertex_index[nbr] for nbr in self.vertex_neighbors(vertex)] for vertex in self.vertices()]
         return degree_matrix(adjacency, rtype=rtype)
 
-    def face_matrix(self, rtype="array"):
+    def face_matrix(
+        self, rtype: Literal["array", "csc", "csr", "coo", "list"] = "array"
+    ) -> Any:
         r"""Compute the face matrix of the mesh.
 
         Parameters
         ----------
-        rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
+        rtype
             Format of the result.
 
         Returns
@@ -4999,12 +5401,14 @@ class Mesh(Datastructure):
         faces = [[vertex_index[vertex] for vertex in self.face_vertices(face)] for face in self.faces()]
         return face_matrix(faces, rtype=rtype)
 
-    def laplacian_matrix(self, rtype="array"):
+    def laplacian_matrix(
+        self, rtype: Literal["array", "csc", "csr", "coo", "list"] = "array"
+    ) -> Any:
         r"""Compute the Laplacian matrix of the mesh.
 
         Parameters
         ----------
-        rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
+        rtype
             Format of the result.
 
         Returns
@@ -5016,7 +5420,7 @@ class Mesh(Datastructure):
         -----
         The :math:`n \times n` uniform Laplacian matrix :math:`\mathbf{L}` of a mesh
         with vertices :math:`\mathbf{V}` and edges :math:`\mathbf{E}` is defined as
-        follows [1]_
+        follows.
 
         .. math::
 
@@ -5034,8 +5438,8 @@ class Mesh(Datastructure):
 
         References
         ----------
-        .. [1] Nealen A., Igarashi T., Sorkine O. and Alexa M.
-            `Laplacian Mesh Optimization <https://igl.ethz.ch/projects/Laplacian-mesh-processing/Laplacian-mesh-optimization/lmo.pdf>`_.
+        Nealen A., Igarashi T., Sorkine O. and Alexa M.
+        [Laplacian Mesh Optimization](https://igl.ethz.ch/projects/Laplacian-mesh-processing/Laplacian-mesh-optimization/lmo.pdf).
 
         Examples
         --------
@@ -5054,24 +5458,24 @@ class Mesh(Datastructure):
         from compas.matrices import laplacian_matrix
 
         vertex_index = self.vertex_index()
-        adjacency = [[vertex_index[nbr] for nbr in self.vertex_neighbors(vertex)] for vertex in self.vertices()]
-        return laplacian_matrix(adjacency, rtype=rtype)
+        edges = [(vertex_index[u], vertex_index[v]) for u, v in self.edges()]
+        return laplacian_matrix(edges, rtype=rtype)
 
     # --------------------------------------------------------------------------
     # Other methods
     # --------------------------------------------------------------------------
 
-    def offset(self, distance=1.0):
+    def offset(self, distance: float = 1.0) -> Self:
         """Generate an offset mesh.
 
         Parameters
         ----------
-        distance : float, optional
+        distance
             The offset distance.
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        Mesh
             The offset mesh.
 
         Notes
@@ -5100,21 +5504,21 @@ class Mesh(Datastructure):
 
         return offset
 
-    def thickened(self, thickness=1.0, both=True):
+    def thickened(self, thickness: float = 1.0, both: bool = True) -> Self:
         """Generate a thicknened mesh.
 
         Parameters
         ----------
-        thickness : float, optional
+        thickness
             The mesh thickness.
             This should be a positive value.
-        both : bool, optional
+        both
             If true, the mesh is thickened on both sides of the original.
             Otherwise, the mesh is thickened on the side of the positive normal.
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        Mesh
             The thickened mesh.
 
         Raises
@@ -5134,8 +5538,8 @@ class Mesh(Datastructure):
             raise ValueError("Thickness should be a positive number.")
 
         if both:
-            mesh_top = self.offset(+0.5 * thickness)  # type: Mesh
-            mesh_bottom = self.offset(-0.5 * thickness)  # type: Mesh
+            mesh_top = self.offset(+0.5 * thickness)
+            mesh_bottom = self.offset(-0.5 * thickness)
         else:
             mesh_top = self.offset(thickness)
             mesh_bottom = self.copy()
@@ -5144,11 +5548,11 @@ class Mesh(Datastructure):
         mesh_bottom.flip_cycles()
 
         # join parts
-        thickened_mesh = mesh_top.copy()  # type: Mesh
+        thickened_mesh = mesh_top.copy()
         thickened_mesh.join(mesh_bottom)
 
         # close boundaries
-        n = thickened_mesh.number_of_vertices() / 2
+        n = thickened_mesh.number_of_vertices() // 2
 
         edges_on_boundary = [edge for boundary in list(thickened_mesh.edges_on_boundaries()) for edge in boundary]
 
@@ -5163,12 +5567,12 @@ class Mesh(Datastructure):
     # perhaps there should be
     # * from_vertices_and_faces
     # * from_points_and_faces
-    def exploded(self):
+    def exploded(self) -> list[Self]:
         """Explode the mesh into its connected components.
 
         Returns
         -------
-        list[:class:`compas.datastructures.Mesh`]
+        list[Mesh]
             The list of the meshes from the exploded mesh parts.
 
         """
