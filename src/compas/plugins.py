@@ -1,6 +1,17 @@
-"""
-COMPAS has an extensible architecture based on plugins that allows to
-customize and extend the functionality of the core framework.
+"""COMPAS plugin infrastructure.
+
+Notes
+-----
+Plugin discovery currently imports every installed top-level ``compas*``
+package and every module listed in its ``__all_plugins__`` attribute. Plugin
+modules should therefore remain lightweight and defer imports of optional or
+heavy dependencies until the plugin function is called. In particular, GUI
+toolkits may terminate the process during import instead of raising an
+``ImportError``, which cannot be handled by :class:`Importer`.
+
+In the future, discovery should preferably use explicit package entry points
+so that unrelated extension packages do not have to be imported merely to
+locate plugin implementations.
 """
 
 # The COMPAS plugin system owes a lot to pluggy, the pytest plugin framework
