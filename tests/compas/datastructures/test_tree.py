@@ -1,6 +1,4 @@
 import pytest
-import compas
-import json
 
 from compas.datastructures import Tree, TreeNode
 from compas.data import json_dumps, json_loads
@@ -129,6 +127,22 @@ def test_tree_traversal(simple_tree):
     assert nodes == ["root", "branch1", "branch2", "leaf1_1", "leaf1_2", "leaf2_1", "leaf2_2"]
 
 
+def test_tree_invalid_traversal(simple_tree):
+    with pytest.raises(ValueError):
+        list(simple_tree.traverse(strategy="unknown"))
+
+    with pytest.raises(ValueError):
+        list(simple_tree.traverse(order="unknown"))
+
+
+def test_treenode_ancestors_and_descendants(simple_tree):
+    branch1 = simple_tree.get_node_by_name("branch1")
+    leaf1_1 = simple_tree.get_node_by_name("leaf1_1")
+
+    assert [node.name for node in leaf1_1.ancestors] == ["branch1", "root"]
+    assert [node.name for node in branch1.descendants] == ["leaf1_1", "leaf1_2"]
+
+
 # =============================================================================
 # Tree Manipulation
 # =============================================================================
@@ -172,6 +186,31 @@ def test_tree_serialization(simple_tree):
     test_tree_traversal(deserialized)
     test_tree_add_node(deserialized)
     test_tree_remove_node(json_loads(serialized))
+
+
+def test_empty_tree_from_data():
+    tree = Tree.__from_data__(Tree().__data__)
+
+    assert tree.root is None
+    assert list(tree.nodes) == []
+
+
+def test_get_nodes_by_name(simple_tree):
+    branch1 = simple_tree.get_node_by_name("branch1")
+    branch1.add(TreeNode(name="duplicate"))
+    branch1.add(TreeNode(name="duplicate"))
+
+    assert len(simple_tree.get_nodes_by_name("duplicate")) == 2
+    assert simple_tree.get_node_by_name("missing") is None
+
+
+def test_hierarchy_max_depth(simple_tree):
+    hierarchy = simple_tree.get_hierarchy_string(max_depth=1)
+
+    assert "root" in hierarchy
+    assert "branch1" in hierarchy
+    assert "branch2" in hierarchy
+    assert "leaf1_1" not in hierarchy
 
 
 # =============================================================================

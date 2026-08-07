@@ -1,5 +1,48 @@
+"""Tree data structures.
+
+Notes
+-----
+The following design considerations should be addressed in a future revision:
+
+* Enforce tree ownership consistently. A root node already assigned to another
+  tree currently has no parent and can therefore be added to a second tree.
+* Prevent cycles by rejecting attempts to add a node to itself or to one of its
+  descendants.
+* Prevent implicit reparenting. Adding a child to a second parent currently leaves
+  it in the first parent's children while changing its parent reference.
+* Avoid exposing the mutable internal children list, because direct mutations
+  bypass parent and tree bookkeeping.
+* Consider using one authoritative mutation API instead of overlapping operations
+  on both ``Tree`` and ``TreeNode``.
+* Preserve specialized ``TreeNode`` subclasses during deserialization instead of
+  always reconstructing plain ``TreeNode`` instances.
+* Detect duplicate keys produced by custom key mappers in ``Tree.to_graph`` rather
+  than silently merging nodes.
+* Clarify and test the intended behavior of detached subtrees. Descendants remain
+  connected to the detached branch, but the subtree no longer belongs to a tree.
+
+"""
+
+from collections import deque
+from typing import TYPE_CHECKING
+from typing import Any
+from typing import Callable
+from typing import Hashable
+from typing import Iterator
+from typing import Literal
+from typing import Optional
+
+from typing_extensions import Self
+
 from compas.data import Data
 from compas.datastructures import Datastructure
+
+if TYPE_CHECKING:
+    from compas.datastructures import Graph
+
+
+TraversalStrategy = Literal["depthfirst", "breadthfirst"]
+TraversalOrder = Literal["preorder", "postorder"]
 
 
 class TreeNode(Data):
@@ -7,33 +50,33 @@ class TreeNode(Data):
 
     Parameters
     ----------
-    **kwargs : dict[str, Any], optional
+    **kwargs
         User-defined attributes of the tree node.
 
     Attributes
     ----------
-    parent : :class:`compas.datastructures.TreeNode`
+    parent
         The parent node of the tree node.
-    children : list[:class:`compas.datastructures.TreeNode`]
+    children
         The children of the tree node.
-    tree : :class:`compas.datastructures.Tree`
+    tree
         The tree to which the node belongs.
-    is_root : bool
+    is_root
         True if the node is the root node of the tree.
-    is_leaf : bool
+    is_leaf
         True if the node is a leaf node of the tree.
-    is_branch : bool
+    is_branch
         True if the node is a branch node of the tree.
-    acestors : generator[:class:`compas.datastructures.TreeNode`]
-        A generator of the acestors of the tree node.
-    descendants : generator[:class:`compas.datastructures.TreeNode`]
+    ancestors
+        An iterator over the ancestors of the tree node.
+    descendants
         A generator of the descendants of the tree node, using a depth-first preorder traversal.
 
     """
 
     @property
-    def __data__(self):
-        data = {}
+    def __data__(self) -> dict[str, Any]:
+        data: dict[str, Any] = {}
         if self.name is not None:
             data["name"] = self.name
         if self.attributes:
@@ -43,7 +86,7 @@ class TreeNode(Data):
         return data
 
     @classmethod
-    def __from_data__(cls, data):
+    def __from_data__(cls, data: dict[str, Any]) -> Self:
         name = data.get("name", None)
         attributes = data.get("attributes", {})
         children = data.get("children", [])
@@ -53,52 +96,52 @@ class TreeNode(Data):
             node.add(cls.__from_data__(child))
         return node
 
-    def __init__(self, name=None, **kwargs):
-        super(TreeNode, self).__init__(name=name)
+    def __init__(self, name: Optional[str] = None, **kwargs: Any) -> None:
+        super().__init__(name=name)
         self.attributes = kwargs
-        self._parent = None
-        self._children = []
-        self._tree = None
+        self._parent: Optional[TreeNode] = None
+        self._children: list[TreeNode] = []
+        self._tree: Optional[Tree] = None
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         if self._name:
             return "<TreeNode: {}>".format(self._name)
         return "<TreeNode>"
 
     @property
-    def is_root(self):
+    def is_root(self) -> bool:
         return self._parent is None
 
     @property
-    def is_leaf(self):
+    def is_leaf(self) -> bool:
         return not self._children
 
     @property
-    def is_branch(self):
+    def is_branch(self) -> bool:
         return not self.is_root and not self.is_leaf
 
     @property
-    def parent(self):
+    def parent(self) -> Optional["TreeNode"]:
         return self._parent
 
     @property
-    def children(self):
+    def children(self) -> list["TreeNode"]:
         return self._children
 
     @property
-    def tree(self):
+    def tree(self) -> Optional["Tree"]:
         if self.is_root:
             return self._tree
-        else:
-            return self.parent.tree  # type: ignore
+        if self.parent:
+            return self.parent.tree
+        return None
 
-    def add(self, node):
-        """
-        Add a child node to this node.
+    def add(self, node: "TreeNode") -> None:
+        """Add a child node to this node.
 
         Parameters
         ----------
-        node : :class:`compas.datastructures.TreeNode`
+        node
             The node to add.
 
         Returns
@@ -108,7 +151,7 @@ class TreeNode(Data):
         Raises
         ------
         TypeError
-            If the node is not a :class:`compas.datastructures.TreeNode` object.
+            If the node is not a TreeNode object.
 
         """
         if not isinstance(node, TreeNode):
@@ -117,13 +160,12 @@ class TreeNode(Data):
             self._children.append(node)
         node._parent = self
 
-    def remove(self, node):
-        """
-        Remove a child node from this node.
+    def remove(self, node: "TreeNode") -> None:
+        """Remove a child node from this node.
 
         Parameters
         ----------
-        node : :class:`compas.datastructures.TreeNode`
+        node
             The node to remove.
 
         Returns
@@ -135,33 +177,36 @@ class TreeNode(Data):
         node._parent = None
 
     @property
-    def ancestors(self):
+    def ancestors(self) -> Iterator["TreeNode"]:
         this = self
         while this.parent:
             yield this.parent
             this = this.parent
 
     @property
-    def descendants(self):
+    def descendants(self) -> Iterator["TreeNode"]:
         for child in self.children:
             yield child
             for descendant in child.descendants:
                 yield descendant
 
-    def traverse(self, strategy="depthfirst", order="preorder"):
-        """
-        Traverse the tree from this node.
+    def traverse(
+        self,
+        strategy: TraversalStrategy = "depthfirst",
+        order: TraversalOrder = "preorder",
+    ) -> Iterator["TreeNode"]:
+        """Traverse the tree from this node.
 
         Parameters
         ----------
-        strategy : {"depthfirst", "breadthfirst"}, optional
+        strategy
             The traversal strategy.
-        order : {"preorder", "postorder"}, optional
+        order
             The traversal order. This parameter is only used for depth-first traversal.
 
         Yields
         ------
-        :class:`compas.datastructures.TreeNode`
+        TreeNode
             The next node in the traversal.
 
         Raises
@@ -185,9 +230,9 @@ class TreeNode(Data):
             else:
                 raise ValueError("Unknown traversal order: {}".format(order))
         elif strategy == "breadthfirst":
-            queue = [self]
+            queue: deque[TreeNode] = deque([self])
             while queue:
-                node = queue.pop(0)
+                node = queue.popleft()
                 yield node
                 queue.extend(node.children)
         else:
@@ -200,18 +245,18 @@ class Tree(Datastructure):
 
     Parameters
     ----------
-    name : str, optional
+    name
         The name of the tree.
-    **kwargs : dict, optional
+    **kwargs
         Additional keyword arguments, which are stored in the attributes dict.
 
     Attributes
     ----------
-    root : :class:`compas.datastructures.TreeNode`
+    root
         The root node of the tree.
-    nodes : generator[:class:`compas.datastructures.TreeNode`]
+    nodes
         The nodes of the tree.
-    leaves : generator[:class:`compas.datastructures.TreeNode`]
+    leaves
         A generator of the leaves of the tree.
 
     Examples
@@ -236,40 +281,40 @@ class Tree(Datastructure):
     """
 
     @property
-    def __data__(self):
+    def __data__(self) -> dict[str, Any]:
         return {
             "attributes": self.attributes,
             "root": None if not self.root else self.root.__data__,
         }
 
     @classmethod
-    def __from_data__(cls, data):
+    def __from_data__(cls, data: dict[str, Any]) -> Self:
         tree = cls()
         tree.attributes.update(data["attributes"] or {})
-        root = TreeNode.__from_data__(data["root"])
-        tree.add(root)
+        if data["root"] is not None:
+            root = TreeNode.__from_data__(data["root"])
+            tree.add(root)
         return tree
 
-    def __init__(self, name=None, **kwargs):
-        super(Tree, self).__init__(kwargs, name=name)
-        self._root = None
+    def __init__(self, name: Optional[str] = None, **kwargs: Any) -> None:
+        super().__init__(kwargs, name=name)
+        self._root: Optional[TreeNode] = None
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "<Tree with {} nodes>\n{}".format(len(list(self.nodes)), self.get_hierarchy_string(max_depth=3))
 
     @property
-    def root(self):
+    def root(self) -> Optional[TreeNode]:
         return self._root
 
-    def add(self, node, parent=None):
-        """
-        Add a node to the tree.
+    def add(self, node: TreeNode, parent: Optional[TreeNode] = None) -> None:
+        """Add a node to the tree.
 
         Parameters
         ----------
-        node : :class:`compas.datastructures.TreeNode`
+        node
             The node to add.
-        parent : :class:`compas.datastructures.TreeNode`, optional
+        parent
             The parent node of the node to add.
             Default is ``None``, in which case the node is added as a root node.
 
@@ -280,8 +325,8 @@ class Tree(Datastructure):
         Raises
         ------
         TypeError
-            If the node is not a :class:`compas.datastructures.TreeNode` object.
-            If the supplied parent node is not a :class:`compas.datastructures.TreeNode` object.
+            If the node is not a TreeNode object.
+            If the supplied parent node is not a TreeNode object.
         ValueError
             If the node is already part of another tree.
             If the supplied parent node is not part of this tree.
@@ -300,7 +345,7 @@ class Tree(Datastructure):
                 raise ValueError("The tree already has a root node, remove it first.")
 
             self._root = node
-            node._tree = self  # type: ignore
+            node._tree = self
 
         else:
             # add the node as a child of the parent node
@@ -313,18 +358,17 @@ class Tree(Datastructure):
             parent.add(node)
 
     @property
-    def nodes(self):
+    def nodes(self) -> Iterator[TreeNode]:
         if self.root:
             for node in self.root.traverse():
                 yield node
 
-    def remove(self, node):
-        """
-        Remove a node from the tree.
+    def remove(self, node: TreeNode) -> None:
+        """Remove a node from the tree.
 
         Parameters
         ----------
-        node : :class:`compas.datastructures.TreeNode`
+        node
             The node to remove.
 
         Returns
@@ -335,29 +379,32 @@ class Tree(Datastructure):
         if node == self.root:
             self._root = None
             node._tree = None
-        else:
+        elif node.parent:
             node.parent.remove(node)
 
     @property
-    def leaves(self):
+    def leaves(self) -> Iterator[TreeNode]:
         for node in self.nodes:
             if node.is_leaf:
                 yield node
 
-    def traverse(self, strategy="depthfirst", order="preorder"):
-        """
-        Traverse the tree from the root node.
+    def traverse(
+        self,
+        strategy: TraversalStrategy = "depthfirst",
+        order: TraversalOrder = "preorder",
+    ) -> Iterator[TreeNode]:
+        """Traverse the tree from the root node.
 
         Parameters
         ----------
-        strategy : {"depthfirst", "breadthfirst"}, optional
+        strategy
             The traversal strategy.
-        order : {"preorder", "postorder"}, optional
+        order
             The traversal order. This parameter is only used for depth-first traversal.
 
         Yields
         ------
-        :class:`compas.datastructures.TreeNode`
+        TreeNode
             The next node in the traversal.
 
         Raises
@@ -371,37 +418,35 @@ class Tree(Datastructure):
             for node in self.root.traverse(strategy=strategy, order=order):
                 yield node
 
-    def get_node_by_name(self, name):
-        """
-        Get a node by its name.
+    def get_node_by_name(self, name: str) -> Optional[TreeNode]:
+        """Get a node by its name.
 
         Parameters
         ----------
-        name : str
+        name
             The name of the node.
 
         Returns
         -------
-        :class:`compas.datastructures.TreeNode`
-            The node.
+        TreeNode | None
+            The node, or None if no matching node exists.
 
         """
         for node in self.nodes:
             if node.name == name:
                 return node
 
-    def get_nodes_by_name(self, name):
-        """
-        Get all nodes by their name.
+    def get_nodes_by_name(self, name: str) -> list[TreeNode]:
+        """Get all nodes by their name.
 
         Parameters
         ----------
-        name : str
+        name
             The name of the node.
 
         Returns
         -------
-        list[:class:`compas.datastructures.TreeNode`]
+        list[TreeNode]
             The nodes.
 
         """
@@ -411,13 +456,12 @@ class Tree(Datastructure):
                 nodes.append(node)
         return nodes
 
-    def get_hierarchy_string(self, max_depth=None):
-        """
-        Return string representation for the spatial hierarchy of the tree.
+    def get_hierarchy_string(self, max_depth: Optional[int] = None) -> str:
+        """Return a string representation of the tree hierarchy.
 
         Parameters
         ----------
-        max_depth : int, optional
+        max_depth
             The maximum depth of the hierarchy to print.
             Default is ``None``, in which case the entire hierarchy is printed.
 
@@ -430,7 +474,13 @@ class Tree(Datastructure):
 
         hierarchy = []
 
-        def traverse(node, hierarchy, prefix="", last=True, depth=0):
+        def traverse(
+            node: TreeNode,
+            hierarchy: list[str],
+            prefix: str = "",
+            last: bool = True,
+            depth: int = 0,
+        ) -> None:
             if max_depth is not None and depth > max_depth:
                 return
 
@@ -445,18 +495,18 @@ class Tree(Datastructure):
 
         return "\n".join(hierarchy)
 
-    def to_graph(self, key_mapper=None):
+    def to_graph(self, key_mapper: Optional[Callable[[TreeNode], Hashable]] = None) -> "Graph":
         """Convert the tree to a graph.
 
         Parameters
         ----------
-        key_mapper : callable, optional
+        key_mapper
             A callable to map the tree node to a key in the graph.
             Default is ``None``, in which case the index of the node is used.
 
         Returns
         -------
-        :class:`compas.datastructures.Graph`
+        Graph
             The graph.
 
         """
@@ -466,7 +516,8 @@ class Tree(Datastructure):
         nodes = list(self.nodes)
 
         if key_mapper is None:
-            key_mapper = lambda node: nodes.index(node)  # noqa: E731
+            node_key = {node: index for index, node in enumerate(nodes)}
+            key_mapper = node_key.__getitem__
 
         for node in nodes:
             graph.add_node(key=key_mapper(node), attr_dict=node.attributes, name=node._name)
