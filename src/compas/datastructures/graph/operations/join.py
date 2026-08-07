@@ -1,5 +1,4 @@
 from typing import TYPE_CHECKING
-from typing import Hashable
 from typing import Iterable
 from typing import Optional
 from typing import Sequence
@@ -7,11 +6,13 @@ from typing import Sequence
 from compas.itertools import pairwise
 from compas.tolerance import TOL
 
+from ..types import Node
+
 if TYPE_CHECKING:
     from compas.datastructures import Graph
 
 
-def graph_join_edges(graph: "Graph", key: Hashable) -> None:
+def graph_join_edges(graph: "Graph", key: Node) -> None:
     """Join the edges incidental on the given node, if there are exactly two incident edges.
 
     Parameters

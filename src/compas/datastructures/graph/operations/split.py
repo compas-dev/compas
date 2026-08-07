@@ -1,6 +1,8 @@
 from typing import TYPE_CHECKING
-from typing import Hashable
 from typing import Optional
+
+from ..types import Edge
+from ..types import Node
 
 if TYPE_CHECKING:
     from compas.datastructures import Graph
@@ -8,9 +10,9 @@ if TYPE_CHECKING:
 
 def graph_split_edge(
     graph: "Graph",
-    edge: tuple[Hashable, Hashable],
+    edge: Edge,
     t: float = 0.5,
-) -> Optional[Hashable]:
+) -> Optional[Node]:
     """Split an edge by inserting a node along its length.
 
     Parameters

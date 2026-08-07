@@ -4,7 +4,6 @@ from math import pi
 from math import sin
 from typing import TYPE_CHECKING
 from typing import Any
-from typing import Hashable
 from typing import Iterable
 from typing import Mapping
 from typing import Optional
@@ -15,13 +14,12 @@ from compas.geometry import is_ccw_xy
 from compas.geometry import subtract_vectors_xy
 from compas.geometry._core.predicates_2 import is_intersection_segment_segment_xy
 
+from .types import Crossing
+from .types import Edge
+from .types import Node
+
 if TYPE_CHECKING:
     from compas.datastructures import Graph
-
-
-Node = Hashable
-Edge = tuple[Node, Node]
-Crossing = tuple[Edge, Edge]
 
 
 def graph_is_crossed(graph: "Graph") -> bool:

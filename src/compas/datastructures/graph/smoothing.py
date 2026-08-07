@@ -1,11 +1,12 @@
 from typing import TYPE_CHECKING
 from typing import Any
 from typing import Callable
-from typing import Hashable
 from typing import Iterable
 from typing import Optional
 
 from compas.geometry import centroid_points
+
+from .types import Node
 
 if TYPE_CHECKING:
     from compas.datastructures import Graph
@@ -13,7 +14,7 @@ if TYPE_CHECKING:
 
 def graph_smooth_centroid(
     graph: "Graph",
-    fixed: Optional[Iterable[Hashable]] = None,
+    fixed: Optional[Iterable[Node]] = None,
     kmax: int = 100,
     damping: float = 0.5,
     callback: Optional[Callable[[int, Any], None]] = None,

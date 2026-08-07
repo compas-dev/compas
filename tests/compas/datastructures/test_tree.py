@@ -173,10 +173,6 @@ def test_tree_serialization(simple_tree):
     test_tree_add_node(deserialized)
     test_tree_remove_node(json_loads(serialized))
 
-    if not compas.IPY:
-        data = json.loads(serialized)["data"]
-        assert Tree.validate_data(data)
-
 
 # =============================================================================
 # Tree Conversion

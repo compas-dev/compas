@@ -31,16 +31,6 @@ class TreeNode(Data):
 
     """
 
-    DATASCHEMA = {
-        "type": "object",
-        "$recursiveAnchor": True,
-        "properties": {
-            "name": {"type": "string"},
-            "attributes": {"type": "object"},
-            "children": {"type": "array", "items": {"$recursiveRef": "#"}},
-        },
-    }
-
     @property
     def __data__(self):
         data = {}
@@ -245,20 +235,11 @@ class Tree(Datastructure):
 
     """
 
-    DATASCHEMA = {
-        "type": "object",
-        "properties": {
-            "root": TreeNode.DATASCHEMA,
-            "attributes": {"type": "object"},
-        },
-        "required": ["root", "attributes"],
-    }
-
     @property
     def __data__(self):
         return {
             "attributes": self.attributes,
-            "root": self.root.__data__,  # type: ignore
+            "root": None if not self.root else self.root.__data__,
         }
 
     @classmethod

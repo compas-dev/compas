@@ -5,14 +5,12 @@ from random import sample
 from random import shuffle
 from typing import Any
 from typing import Callable
-from typing import Hashable
 from typing import Iterable
 from typing import Iterator
 from typing import Literal
 from typing import Optional
 from typing import Sequence
 from typing import Union
-from typing import cast
 from typing import overload
 
 from typing_extensions import Self
@@ -51,10 +49,11 @@ from .planarity import graph_is_planar
 from .planarity import graph_is_planar_embedding
 from .planarity import graph_is_xy
 from .smoothing import graph_smooth_centroid
+from .types import AttributeDict
+from .types import Edge
+from .types import Node
 
-Node = Hashable
-Edge = tuple[Node, Node]
-AttributeDict = dict[str, Any]
+_MISSING = object()
 
 
 class Graph(Datastructure):
@@ -702,11 +701,8 @@ class Graph(Datastructure):
         """
         if key is None:
             key = self._max_node = self._max_node + 1
-        try:
-            if cast(Any, key) > self._max_node:
-                self._max_node = cast(int, key)
-        except (ValueError, TypeError):
-            pass
+        elif isinstance(key, int) and key > self._max_node:
+            self._max_node = key
 
         if key not in self.node:
             self.node[key] = {}
@@ -933,6 +929,9 @@ class Graph(Datastructure):
     @overload
     def nodes(self, data: Literal[True]) -> Iterator[tuple[Node, NodeAttributeView]]: ...
 
+    @overload
+    def nodes(self, data: bool) -> Iterator[Union[Node, tuple[Node, NodeAttributeView]]]: ...
+
     def nodes(self, data: bool = False) -> Iterator[Any]:
         """Iterate over the nodes of the graph.
 
@@ -974,6 +973,14 @@ class Graph(Datastructure):
         data: Literal[True],
         **kwargs: Any,
     ) -> Iterator[tuple[Node, NodeAttributeView]]: ...
+
+    @overload
+    def nodes_where(
+        self,
+        conditions: Optional[AttributeDict] = None,
+        data: bool = False,
+        **kwargs: Any,
+    ) -> Iterator[Union[Node, tuple[Node, NodeAttributeView]]]: ...
 
     def nodes_where(
         self,
@@ -1070,6 +1077,13 @@ class Graph(Datastructure):
         data: Literal[True],
     ) -> Iterator[tuple[Node, NodeAttributeView]]: ...
 
+    @overload
+    def nodes_where_predicate(
+        self,
+        predicate: Callable[[Node, NodeAttributeView], bool],
+        data: bool,
+    ) -> Iterator[Union[Node, tuple[Node, NodeAttributeView]]]: ...
+
     def nodes_where_predicate(
         self,
         predicate: Callable[[Node, NodeAttributeView], bool],
@@ -1114,6 +1128,9 @@ class Graph(Datastructure):
     @overload
     def edges(self, data: Literal[True]) -> Iterator[tuple[Edge, EdgeAttributeView]]: ...
 
+    @overload
+    def edges(self, data: bool) -> Iterator[Union[Edge, tuple[Edge, EdgeAttributeView]]]: ...
+
     def edges(self, data: bool = False) -> Iterator[Any]:
         """Iterate over the edges of the graph.
 
@@ -1156,6 +1173,14 @@ class Graph(Datastructure):
         data: Literal[True],
         **kwargs: Any,
     ) -> Iterator[tuple[Edge, EdgeAttributeView]]: ...
+
+    @overload
+    def edges_where(
+        self,
+        conditions: Optional[AttributeDict] = None,
+        data: bool = False,
+        **kwargs: Any,
+    ) -> Iterator[Union[Edge, tuple[Edge, EdgeAttributeView]]]: ...
 
     def edges_where(
         self,
@@ -1240,6 +1265,13 @@ class Graph(Datastructure):
         predicate: Callable[[Edge, EdgeAttributeView], bool],
         data: Literal[True],
     ) -> Iterator[tuple[Edge, EdgeAttributeView]]: ...
+
+    @overload
+    def edges_where_predicate(
+        self,
+        predicate: Callable[[Edge, EdgeAttributeView], bool],
+        data: bool,
+    ) -> Iterator[Union[Edge, tuple[Edge, EdgeAttributeView]]]: ...
 
     def edges_where_predicate(
         self,
@@ -1359,7 +1391,13 @@ class Graph(Datastructure):
     # Node attributes
     # --------------------------------------------------------------------------
 
-    def node_attribute(self, key: Node, name: str, value: Any = None) -> Any:
+    @overload
+    def node_attribute(self, key: Node, name: str) -> Any: ...
+
+    @overload
+    def node_attribute(self, key: Node, name: str, value: Any) -> None: ...
+
+    def node_attribute(self, key: Node, name: str, value: Any = _MISSING) -> Any:
         """Get or set an attribute of a node.
 
         Parameters
@@ -1369,7 +1407,7 @@ class Graph(Datastructure):
         name
             The name of the attribute
         value
-            The value of the attribute.
+            The value of the attribute. If omitted, the current value is returned.
 
         Returns
         -------
@@ -1391,7 +1429,7 @@ class Graph(Datastructure):
         """
         if key not in self.node:
             raise KeyError(key)
-        if value is not None:
+        if value is not _MISSING:
             self.node[key][name] = value
             return
         if name in self.node[key]:
@@ -1486,10 +1524,26 @@ class Graph(Datastructure):
                 values.append(None)
         return values
 
+    @overload
     def nodes_attribute(
         self,
         name: str,
-        value: Any = None,
+        *,
+        keys: Optional[Iterable[Node]] = None,
+    ) -> list[Any]: ...
+
+    @overload
+    def nodes_attribute(
+        self,
+        name: str,
+        value: Any,
+        keys: Optional[Iterable[Node]] = None,
+    ) -> None: ...
+
+    def nodes_attribute(
+        self,
+        name: str,
+        value: Any = _MISSING,
         keys: Optional[Iterable[Node]] = None,
     ) -> Optional[list[Any]]:
         """Get or set an attribute of multiple nodes.
@@ -1499,7 +1553,7 @@ class Graph(Datastructure):
         name
             The name of the attribute.
         value
-            The value of the attribute.
+            The value of the attribute. If omitted, the current values are returned.
         keys
             A list of node identifiers.
 
@@ -1522,7 +1576,7 @@ class Graph(Datastructure):
         """
         if not keys:
             keys = self.nodes()
-        if value is not None:
+        if value is not _MISSING:
             for key in keys:
                 self.node_attribute(key, name, value)
             return
@@ -1577,7 +1631,13 @@ class Graph(Datastructure):
     # Edge attributes
     # --------------------------------------------------------------------------
 
-    def edge_attribute(self, key: Edge, name: str, value: Any = None) -> Any:
+    @overload
+    def edge_attribute(self, key: Edge, name: str) -> Any: ...
+
+    @overload
+    def edge_attribute(self, key: Edge, name: str, value: Any) -> None: ...
+
+    def edge_attribute(self, key: Edge, name: str, value: Any = _MISSING) -> Any:
         """Get or set an attribute of an edge.
 
         Parameters
@@ -1587,7 +1647,7 @@ class Graph(Datastructure):
         name
             The name of the attribute.
         value
-            The value of the attribute.
+            The value of the attribute. If omitted, the current value is returned.
 
         Returns
         -------
@@ -1610,7 +1670,7 @@ class Graph(Datastructure):
         if u not in self.edge or v not in self.edge[u]:
             raise KeyError(key)
         attr = self.edge[u][v]
-        if value is not None:
+        if value is not _MISSING:
             attr[name] = value
             return
         if name in attr:
@@ -1708,10 +1768,26 @@ class Graph(Datastructure):
             values.append(value)
         return values
 
+    @overload
     def edges_attribute(
         self,
         name: str,
-        value: Any = None,
+        *,
+        keys: Optional[Iterable[Edge]] = None,
+    ) -> list[Any]: ...
+
+    @overload
+    def edges_attribute(
+        self,
+        name: str,
+        value: Any,
+        keys: Optional[Iterable[Edge]] = None,
+    ) -> None: ...
+
+    def edges_attribute(
+        self,
+        name: str,
+        value: Any = _MISSING,
         keys: Optional[Iterable[Edge]] = None,
     ) -> Optional[list[Any]]:
         """Get or set an attribute of multiple edges.
@@ -1721,7 +1797,7 @@ class Graph(Datastructure):
         name
             The name of the attribute.
         value
-            The value of the attribute.
+            The value of the attribute. If omitted, the current values are returned.
         keys
             A list of edge identifiers.
 
@@ -1744,7 +1820,7 @@ class Graph(Datastructure):
         """
         if not keys:
             keys = self.edges()
-        if value is not None:
+        if value is not _MISSING:
             for key in keys:
                 self.edge_attribute(key, name, value)
             return
@@ -2447,7 +2523,14 @@ class Graph(Datastructure):
         connected_nodes
 
         """
-        return [[(u, v) for u in nodes for v in self.neighbors(u) if cast(Any, u) < cast(Any, v)] for nodes in self.connected_nodes()]
+        return self._group_edges_by_component(self.connected_nodes())
+
+    def _group_edges_by_component(self, components: Sequence[Sequence[Node]]) -> list[list[Edge]]:
+        node_component = {node: index for index, nodes in enumerate(components) for node in nodes}
+        edges_by_component: list[list[Edge]] = [[] for _ in components]
+        for edge in self.edges():
+            edges_by_component[node_component[edge[0]]].append(edge)
+        return edges_by_component
 
     def exploded(self) -> list[Self]:
         """Explode the graph into its connected components.
@@ -2459,8 +2542,9 @@ class Graph(Datastructure):
         """
         cls = type(self)
         graphs = []
-        for nodes in self.connected_nodes():
-            edges = [(u, v) for u in nodes for v in self.neighbors(u) if cast(Any, u) < cast(Any, v)]
+        components = self.connected_nodes()
+        edges_by_component = self._group_edges_by_component(components)
+        for nodes, edges in zip(components, edges_by_component):
             graph = cls(
                 default_node_attributes=self.default_node_attributes,
                 default_edge_attributes=self.default_edge_attributes,

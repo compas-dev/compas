@@ -1,6 +1,5 @@
 from math import pi
 from typing import TYPE_CHECKING
-from typing import Hashable
 from typing import Iterable
 from typing import Mapping
 from typing import Optional
@@ -10,11 +9,12 @@ from compas.geometry import angle_vectors
 from compas.geometry import is_ccw_xy
 from compas.itertools import pairwise
 
+from .types import Node
+
 if TYPE_CHECKING:
     from compas.datastructures import Graph
 
 PI2 = 2.0 * pi
-Node = Hashable
 
 
 def graph_find_cycles(graph: "Graph", breakpoints: Optional[Iterable[Node]] = None) -> list[list[Node]]:
