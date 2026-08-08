@@ -481,7 +481,7 @@ class Mesh(Datastructure):
     @classmethod
     def from_vertices_and_faces(
         cls,
-        vertices: Union[Sequence[PointCoordinates], Mapping[Vertex, PointCoordinates]],
+        vertices: Union[Sequence[Iterable[float]], Mapping[Vertex, Iterable[float]]],
         faces: Union[Sequence[Sequence[Vertex]], Mapping[Face, Sequence[Vertex]]],
     ) -> Self:
         """Construct a mesh object from a list of vertices and faces.
