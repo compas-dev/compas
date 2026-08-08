@@ -7,6 +7,13 @@ elements with expressions such as ``keys or self.vertices()``. As a result, an
 explicitly empty collection selects all elements rather than no elements. This
 legacy behaviour should be reviewed separately because changing it may affect
 existing callers.
+
+Edge data keys are currently constructed as direction-independent strings in
+multiple locations. A dedicated helper should centralize this normalization in
+the short term. Longer term, ``edgedata`` should use canonical ``Edge`` tuples
+internally, with conversion to a JSON-compatible representation confined to
+``__data__`` and ``__from_data__``. At that point, an ``edge_key`` helper should
+return the canonical tuple rather than a serialized string.
 """
 
 from collections.abc import Mapping

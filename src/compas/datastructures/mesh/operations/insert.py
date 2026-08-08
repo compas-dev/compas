@@ -1,15 +1,26 @@
-def mesh_add_vertex_to_face_edge(mesh, key, fkey, v):
+from typing import TYPE_CHECKING
+from typing import Optional
+
+from ..types import Edge
+from ..types import Face
+from ..types import Vertex
+
+if TYPE_CHECKING:
+    from ..mesh import Mesh
+
+
+def mesh_add_vertex_to_face_edge(mesh: "Mesh", key: Vertex, fkey: Face, v: Vertex) -> None:
     """Add an existing vertex of the mesh to an existing face.
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh
         The mesh data structure.
-    key : int
+    key
         The identifier of the vertex.
-    fkey : int
+    fkey
         The identifier of the face.
-    v : int
+    v
         The identifier of the vertex before which the new vertex should be added.
 
     Returns
@@ -46,7 +57,7 @@ def mesh_add_vertex_to_face_edge(mesh, key, fkey, v):
     vertices = mesh.face_vertices(fkey)
     i = vertices.index(v)
     u = vertices[i - 1]
-    vertices.insert(key, i - 1)
+    vertices.insert(i, key)
     mesh.halfedge[u][key] = fkey
     mesh.halfedge[key][v] = fkey
     if u not in mesh.halfedge[key]:
@@ -56,13 +67,12 @@ def mesh_add_vertex_to_face_edge(mesh, key, fkey, v):
     del mesh.halfedge[u][v]
     if u in mesh.halfedge[v]:
         del mesh.halfedge[v][u]
-    if (u, v) in mesh.edgedata:
-        del mesh.edgedata[u, v]
-    if (v, u) in mesh.edgedata:
-        del mesh.edgedata[v, u]
+    edge_data_key = str(tuple(sorted((u, v))))
+    if edge_data_key in mesh.edgedata:
+        del mesh.edgedata[edge_data_key]
 
 
-def mesh_insert_vertex_on_edge(mesh, edge, vkey=None):
+def mesh_insert_vertex_on_edge(mesh: "Mesh", edge: Edge, vkey: Optional[Vertex] = None) -> Vertex:
     """Insert a vertex in the faces adjacent to an edge, between the two edge vertices.
 
     If no vertex key is specified or if the key does not exist yet, a vertex is added and located at the edge midpoint.
@@ -70,9 +80,11 @@ def mesh_insert_vertex_on_edge(mesh, edge, vkey=None):
 
     Parameters
     ----------
-    edge : tuple[int, int]
+    mesh
+        The mesh data structure.
+    edge
         The edge identifier.
-    vkey: int, optional
+    vkey
         The vertex key to insert.
         Default is to auto-generate a new vertex identifier.
 
@@ -98,7 +110,7 @@ def mesh_insert_vertex_on_edge(mesh, edge, vkey=None):
     # add new vertex if there is none or if vkey not in vertices
     if vkey is None:
         vkey = mesh.add_vertex(attr_dict={attr: xyz for attr, xyz in zip(["x", "y", "z"], mesh.edge_midpoint(edge))})
-    elif vkey not in list(mesh.vertices()):
+    elif not mesh.has_vertex(vkey):
         vkey = mesh.add_vertex(
             key=vkey,
             attr_dict={attr: xyz for attr, xyz in zip(["x", "y", "z"], mesh.edge_midpoint(edge))},

@@ -1,20 +1,32 @@
-from compas.itertools import pairwise
+from typing import TYPE_CHECKING
+from typing import Collection
+from typing import Iterable
+from typing import Optional
+
 from compas.topology import connected_components
 from compas.topology import vertex_adjacency_from_edges
 
+from ..types import Edge
+from ..types import Face
+from ..types import Vertex
 from .substitute import mesh_substitute_vertex_in_faces
 
+if TYPE_CHECKING:
+    from ..mesh import Mesh
 
-def mesh_unweld_vertices(mesh, fkey, where=None):
+
+def mesh_unweld_vertices(
+    mesh: "Mesh", fkey: Face, where: Optional[Collection[Vertex]] = None
+) -> list[Vertex]:
     """Unweld a face of the mesh.
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh
         A mesh object.
-    fkey : int
+    fkey
         The identifier of a face.
-    where : list[int], optional
+    where
         A list of vertices to unweld.
         Default is to unweld all vertices of the face.
 
@@ -24,33 +36,33 @@ def mesh_unweld_vertices(mesh, fkey, where=None):
         The vertices of the unwelded face.
 
     """
-    face = []
     vertices = mesh.face_vertices(fkey)
+    face_attributes = dict(mesh.face_attributes(fkey))
 
     if not where:
         where = vertices
+    selected = set(where)
 
-    for u, v in pairwise(vertices + vertices[0:1]):
-        if u in where:
-            x, y, z = mesh.vertex_coordinates(u)
-            u = mesh.add_vertex(x=x, y=y, z=z)
-        if u in where or v in where:
-            mesh.halfedge[v][u] = None
-        face.append(u)
+    face = []
+    for vertex in vertices:
+        if vertex in selected:
+            vertex = mesh.add_vertex(attr_dict=dict(mesh.vertex_attributes(vertex)))
+        face.append(vertex)
 
-    mesh.add_face(face, fkey=fkey)
+    mesh.delete_face(fkey)
+    mesh.add_face(face, fkey=fkey, attr_dict=face_attributes)
 
     return face
 
 
-def mesh_unweld_edges(mesh, edges):
+def mesh_unweld_edges(mesh: "Mesh", edges: Iterable[Edge]) -> None:
     """Unwelds a mesh along edges.
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh
         A mesh.
-    edges: list[tuple[int, int]]
+    edges
         List of edges as tuples of vertex keys.
 
     Returns
@@ -58,6 +70,8 @@ def mesh_unweld_edges(mesh, edges):
     None
 
     """
+    edges = set(edges)
+
     # set of vertices in edges to unweld
     vertices = set([i for edge in edges for i in edge])
 
@@ -74,10 +88,14 @@ def mesh_unweld_edges(mesh, edges):
         network_edges = []
         for nbr in mesh.vertex_neighbors(vkey):
             if not mesh.is_edge_on_boundary((vkey, nbr)) and (vkey, nbr) not in edges and (nbr, vkey) not in edges:
+                face_vkey_nbr = mesh.halfedge[vkey][nbr]
+                face_nbr_vkey = mesh.halfedge[nbr][vkey]
+                if face_vkey_nbr is None or face_nbr_vkey is None:
+                    continue
                 network_edges.append(
                     (
-                        old_to_new[mesh.halfedge[vkey][nbr]],
-                        old_to_new[mesh.halfedge[nbr][vkey]],
+                        old_to_new[face_vkey_nbr],
+                        old_to_new[face_nbr_vkey],
                     )
                 )
 

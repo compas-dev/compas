@@ -1,16 +1,27 @@
-def mesh_merge_faces(mesh, faces):
+from typing import TYPE_CHECKING
+from typing import Optional
+from typing import Sequence
+
+from ..types import Face
+
+if TYPE_CHECKING:
+    from ..mesh import Mesh
+
+
+def mesh_merge_faces(mesh: "Mesh", faces: Sequence[Face]) -> Optional[Face]:
     """Merge two faces of a mesh over their shared edge.
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh
         A mesh data structure.
-    faces : list[int]
+    faces
         Face identifiers.
 
     Returns
     -------
-    int
+    int | None
+        The merged face, or None if the faces are not adjacent.
 
     Examples
     --------
@@ -27,6 +38,9 @@ def mesh_merge_faces(mesh, faces):
     [3, 5, 0, 4, 1, 6, 2, 7]
 
     """
+    if len(faces) != 2:
+        raise ValueError("Exactly two faces are required.")
+
     u, v = None, None
     for i, j in mesh.face_halfedges(faces[0]):
         if faces[1] == mesh.halfedge[j][i]:
@@ -54,6 +68,8 @@ def mesh_merge_faces(mesh, faces):
     mesh.delete_face(faces[0])
     mesh.delete_face(faces[1])
     key = mesh.add_face(vertices)
+    if key is None:
+        raise RuntimeError("Merging the faces produced an invalid face.")
     # remove internal edges
     remove = []
     for edge in mesh.face_halfedges(key):
