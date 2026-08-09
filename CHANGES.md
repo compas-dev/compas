@@ -196,3 +196,73 @@ This document summarizes the changes to `compas.datastructures.mesh` on the
 - `VolMesh.is_valid()` remains unimplemented and raises `NotImplementedError`.
 - Edge and face data keys remain serialized strings internally pending a
   dedicated canonical data-key API.
+
+### CellNetwork
+
+#### Type annotations and API documentation
+
+- Added shared CellNetwork types for vertices, edges, faces, cells, attributes,
+  and point coordinates.
+- Added Python 3.9-compatible annotations throughout serialization,
+  construction, conversion, accessors, attributes, topology, boundaries, and
+  geometry.
+- Added exhaustive overloads for accessors and attribute methods whose return
+  type depends on `data`, `names`, `values`, or setter arguments.
+- Updated overloaded-function docstrings to document every return or yield
+  scenario separately.
+- Converted docstrings from Sphinx roles and directives to the NumPy-style
+  syntax expected by Griffe and MkDocstrings, and removed duplicated parameter
+  type declarations.
+- Preserved custom CellNetwork subclasses in data round-trips and alternate
+  constructors.
+
+#### Data and construction
+
+- Removed the legacy data schema declaration and typed the internal topology and
+  attribute mappings directly.
+- Fixed serialization round-trips for edge orientation and complete cell data.
+- Prevented builders, filters, and default-attribute updates from mutating
+  caller-owned mappings.
+- Changed `add_face()` to reject missing vertices and faces with fewer than
+  three vertices before modifying topology.
+- Added a canonical, direction-independent helper for edge attribute-data keys.
+- Fixed edge insertion so adjacency is stored in the supplied direction, and
+  fixed edge deletion so its attributes are removed.
+
+#### Attributes and queries
+
+- Added support for explicitly storing `None` as a vertex, edge, face, or cell
+  attribute value.
+- Made explicitly empty vertex, edge, face, and cell selections remain empty
+  instead of selecting every element.
+- Fixed list-valued vertex filters so remaining conditions are still evaluated.
+- Made `edges(data=True)` return the documented `EdgeAttributeView`, including
+  default attributes.
+- Added the missing `has_cell()` query and corrected accessor return contracts,
+  including sample functions and predicate filters.
+
+#### Topology, geometry, and conversions
+
+- Added explicit validation for vertex neighborhood rings below 1.
+- Fixed `vertex_neighbors()` to return the documented list.
+- Fixed `edge_cells()` to inspect both edge directions and deduplicate cells.
+- Fixed `cell_vertex_neighbors()` to use edge adjacency rather than vertex
+  attributes.
+- Deduplicated cell edges and documented invalid cell-face membership with an
+  explicit `ValueError`.
+- Fixed `faces_to_mesh()` for generator inputs and updated OBJ construction to
+  use the public parser data.
+- Converted attribute views to dictionaries at Graph API boundaries and
+  preserved default attributes during graph conversion.
+- Typed and verified vertex, edge, face, cell, boundary, and geometry queries.
+
+#### Tests
+
+- Expanded CellNetwork coverage for serialization, subclass preservation,
+  clearing, builders, validation, samples, attribute overload scenarios,
+  filtering, topology, geometry, boundaries, and graph and mesh conversions.
+
+#### Known compatibility notes
+
+- `CellNetwork.is_valid()` remains unimplemented and raises
+  `NotImplementedError`.
