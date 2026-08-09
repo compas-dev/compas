@@ -942,9 +942,10 @@ class Graph(Datastructure):
 
         Yields
         ------
-        hashable | tuple[hashable, dict[str, Any]]
-            If `data` is False, the next node identifier.
-            If `data` is True, the next node as a (key, attr) tuple.
+        hashable
+            The node identifier if `data` is `False`.
+        tuple[hashable, NodeAttributeView]
+            The node identifier and its attributes if `data` is `True`.
 
         See Also
         --------
@@ -1001,9 +1002,10 @@ class Graph(Datastructure):
 
         Yields
         ------
-        hashable | tuple[hashable, dict[str, Any]]
-            If `data` is False, the next node that matches the condition.
-            If `data` is True, the next node and its attributes.
+        hashable
+            A matching node identifier if `data` is `False`.
+        tuple[hashable, NodeAttributeView]
+            A matching node identifier and its attributes if `data` is `True`.
 
         See Also
         --------
@@ -1101,9 +1103,10 @@ class Graph(Datastructure):
 
         Yields
         ------
-        hashable | tuple[hashable, dict[str, Any]]
-            If `data` is False, the next node that matches the condition.
-            If `data` is True, the next node and its attributes.
+        hashable
+            A matching node identifier if `data` is `False`.
+        tuple[hashable, NodeAttributeView]
+            A matching node identifier and its attributes if `data` is `True`.
 
         See Also
         --------
@@ -1141,9 +1144,10 @@ class Graph(Datastructure):
 
         Yields
         ------
-        tuple[hashable, hashable] | tuple[tuple[hashable, hashable], dict[str, Any]]
-            If `data` is False, the next edge identifier (u, v).
-            If `data` is True, the next edge identifier and its attributes as a ((u, v), attr) tuple.
+        tuple[hashable, hashable]
+            The edge identifier if `data` is `False`.
+        tuple[tuple[hashable, hashable], EdgeAttributeView]
+            The edge identifier and its attributes if `data` is `True`.
 
         See Also
         --------
@@ -1203,9 +1207,10 @@ class Graph(Datastructure):
 
         Yields
         ------
-        tuple[hashable, hashable] | tuple[tuple[hashable, hashable], dict[str, Any]]
-            If `data` is False, the next edge identifier (u, v).
-            If `data` is True, the next edge identifier and its attributes as a ((u, v), attr) tuple.
+        tuple[hashable, hashable]
+            A matching edge identifier if `data` is `False`.
+        tuple[tuple[hashable, hashable], EdgeAttributeView]
+            A matching edge identifier and its attributes if `data` is `True`.
 
         See Also
         --------
@@ -1292,9 +1297,10 @@ class Graph(Datastructure):
 
         Yields
         ------
-        tuple[hashable, hashable] | tuple[tuple[hashable, hashable], dict[str, Any]]
-            If `data` is False, the next edge identifier (u, v).
-            If `data` is True, the next edge identifier and its attributes as a ((u, v), attr) tuple.
+        tuple[hashable, hashable]
+            A matching edge identifier if `data` is `False`.
+        tuple[tuple[hashable, hashable], EdgeAttributeView]
+            A matching edge identifier and its attributes if `data` is `True`.
 
         See Also
         --------
@@ -1411,9 +1417,10 @@ class Graph(Datastructure):
 
         Returns
         -------
-        obj or None
-            The value of the attribute,
-            or None when the function is used as a "setter".
+        Any
+            The attribute value when `value` is not provided.
+        None
+            When `value` is provided.
 
         Raises
         ------
@@ -1559,9 +1566,10 @@ class Graph(Datastructure):
 
         Returns
         -------
-        list[Any] | None
-            The value of the attribute for each node,
-            or None if the function is used as a "setter".
+        list[Any]
+            The attribute values when `value` is not provided.
+        None
+            When `value` is provided.
 
         Raises
         ------
@@ -1651,8 +1659,10 @@ class Graph(Datastructure):
 
         Returns
         -------
-        object | None
-            The value of the attribute, or None when the function is used as a "setter".
+        Any
+            The attribute value when `value` is not provided.
+        None
+            When `value` is provided.
 
         Raises
         ------
@@ -1803,9 +1813,10 @@ class Graph(Datastructure):
 
         Returns
         -------
-        list[Any] | None
-            A list containing the value per edge of the requested attribute,
-            or None if the function is used as a "setter".
+        list[Any]
+            The attribute values when `value` is not provided.
+        None
+            When `value` is provided.
 
         Raises
         ------

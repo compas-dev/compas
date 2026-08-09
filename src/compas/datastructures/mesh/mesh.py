@@ -1409,9 +1409,10 @@ class Mesh(Datastructure):
 
         Yields
         ------
-        int | tuple[int, dict[str, Any]]
-            If `data` is False, the next vertex identifier.
-            If `data` is True, the next vertex as a (key, attr) tuple.
+        int
+            The vertex identifier if `data` is `False`.
+        tuple[int, VertexAttributeView]
+            The vertex identifier and its attributes if `data` is `True`.
 
         See Also
         --------
@@ -1444,9 +1445,10 @@ class Mesh(Datastructure):
 
         Yields
         ------
-        int | tuple[int, dict[str, Any]]
-            If `data` is False, the next face identifier.
-            If `data` is True, the next face as a (fkey, attr) tuple.
+        int
+            The face identifier if `data` is `False`.
+        tuple[int, FaceAttributeView]
+            The face identifier and its attributes if `data` is `True`.
 
         See Also
         --------
@@ -1479,9 +1481,10 @@ class Mesh(Datastructure):
 
         Yields
         ------
-        tuple[int, int] | tuple[tuple[int, int], dict[str, Any]]
-            If `data` is False, the next edge as a (u, v) tuple.
-            If `data` is True, the next edge as a ((u, v), data) tuple.
+        tuple[int, int]
+            The edge identifier if `data` is `False`.
+        tuple[tuple[int, int], EdgeAttributeView]
+            The edge identifier and its attributes if `data` is `True`.
 
         See Also
         --------
@@ -1568,9 +1571,10 @@ class Mesh(Datastructure):
 
         Yields
         ------
-        int | tuple[int, dict[str, Any]]
-            If `data` is False, the next vertex that matches the condition.
-            If `data` is True, the next vertex and its attributes.
+        int
+            A matching vertex identifier if `data` is `False`.
+        tuple[int, VertexAttributeView]
+            A matching vertex identifier and its attributes if `data` is `True`.
 
         See Also
         --------
@@ -1673,9 +1677,10 @@ class Mesh(Datastructure):
 
         Yields
         ------
-        int | tuple[int, dict[str, Any]]
-            If `data` is False, the next vertex that matches the condition.
-            If `data` is True, the next vertex and its attributes.
+        int
+            A matching vertex identifier if `data` is `False`.
+        tuple[int, VertexAttributeView]
+            A matching vertex identifier and its attributes if `data` is `True`.
 
         See Also
         --------
@@ -1743,9 +1748,10 @@ class Mesh(Datastructure):
 
         Yields
         ------
-        tuple[int, int] | tuple[tuple[int, int], dict[str, Any]]
-            If `data` is False, the next edge as a (u, v) tuple.
-            If `data` is True, the next edge as a (u, v, data) tuple.
+        tuple[int, int]
+            A matching edge identifier if `data` is `False`.
+        tuple[tuple[int, int], EdgeAttributeView]
+            A matching edge identifier and its attributes if `data` is `True`.
 
         See Also
         --------
@@ -1832,9 +1838,10 @@ class Mesh(Datastructure):
 
         Yields
         ------
-        tuple[int, int] | tuple[tuple[int, int], dict[str, Any]]
-            If `data` is False, the next edge as a (u, v) tuple.
-            If `data` is True, the next edge as a (u, v, data) tuple.
+        tuple[int, int]
+            A matching edge identifier if `data` is `False`.
+        tuple[tuple[int, int], EdgeAttributeView]
+            A matching edge identifier and its attributes if `data` is `True`.
 
         See Also
         --------
@@ -1902,9 +1909,10 @@ class Mesh(Datastructure):
 
         Yields
         ------
-        int | tuple[int, dict[str, Any]]
-            If `data` is False, the next face that matches the condition.
-            If `data` is True, the next face and its attributes.
+        int
+            A matching face identifier if `data` is `False`.
+        tuple[int, FaceAttributeView]
+            A matching face identifier and its attributes if `data` is `True`.
 
         See Also
         --------
@@ -1990,9 +1998,10 @@ class Mesh(Datastructure):
 
         Yields
         ------
-        int | tuple[int, dict[str, Any]]
-            If `data` is False, the next face that matches the condition.
-            If `data` is True, the next face and its attributes.
+        int
+            A matching face identifier if `data` is `False`.
+        tuple[int, FaceAttributeView]
+            A matching face identifier and its attributes if `data` is `True`.
 
         See Also
         --------
@@ -2064,9 +2073,10 @@ class Mesh(Datastructure):
 
         Returns
         -------
-        object | None
-            The value of the attribute,
-            or None when the function is used as a "setter".
+        Any
+            The attribute value when `value` is not provided.
+        None
+            When `value` is provided.
 
         Raises
         ------
@@ -2221,9 +2231,10 @@ class Mesh(Datastructure):
 
         Returns
         -------
-        list[Any] | None
-            The value of the attribute for each vertex,
-            or None if the function is used as a "setter".
+        list[Any]
+            The attribute values when `value` is not provided.
+        None
+            When `value` is provided.
 
         Raises
         ------
@@ -2344,8 +2355,10 @@ class Mesh(Datastructure):
 
         Returns
         -------
-        object | None
-            The value of the attribute, or None when the function is used as a "setter".
+        Any
+            The attribute value when `value` is not provided.
+        None
+            When `value` is provided.
 
         Raises
         ------
@@ -2501,9 +2514,10 @@ class Mesh(Datastructure):
 
         Returns
         -------
-        list[Any] | None
-            A list containing the value per face of the requested attribute,
-            or None if the function is used as a "setter".
+        list[Any]
+            The attribute values when `value` is not provided.
+        None
+            When `value` is provided.
 
         Raises
         ------
@@ -2627,8 +2641,10 @@ class Mesh(Datastructure):
 
         Returns
         -------
-        object | None
-            The value of the attribute, or None when the function is used as a "setter".
+        Any
+            The attribute value when `value` is not provided.
+        None
+            When `value` is provided.
 
         Raises
         ------
@@ -2789,9 +2805,10 @@ class Mesh(Datastructure):
 
         Returns
         -------
-        list[Any] | None
-            A list containing the value per edge of the requested attribute,
-            or None if the function is used as a "setter".
+        list[Any]
+            The attribute values when `value` is not provided.
+        None
+            When `value` is provided.
 
         Raises
         ------
@@ -3598,7 +3615,9 @@ class Mesh(Datastructure):
         Returns
         -------
         list[int]
-            The faces connected to a vertex.
+            The incident faces if `include_none` is `False`.
+        list[int | None]
+            The incident faces, including outside faces, if `include_none` is `True`.
 
         """
         if not ordered:
@@ -3821,9 +3840,10 @@ class Mesh(Datastructure):
 
         Returns
         -------
-        list[tuple[int, int]] | tuple[list[tuple[int, int]], list[int]]
-            If `return_faces` is False, the edges on the same strip as the given edge.
-            If `return_faces` is False, the edges on the same strip and the corresponding faces.
+        list[tuple[int, int]]
+            The strip edges if `return_faces` is `False`.
+        tuple[list[tuple[int, int]], list[int | None]]
+            The strip edges and corresponding faces if `return_faces` is `True`.
 
         """
         u, v = edge
