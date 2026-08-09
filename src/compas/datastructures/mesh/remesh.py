@@ -1,59 +1,76 @@
+from typing import TYPE_CHECKING
+from typing import Any
+from typing import Callable
+from typing import Collection
+from typing import Optional
+
 from .operations.collapse import trimesh_collapse_edge
 from .operations.split import trimesh_split_edge
 from .operations.swap import trimesh_swap_edge
 from .smoothing import mesh_smooth_area
+from .types import Vertex
+
+if TYPE_CHECKING:
+    from .mesh import Mesh
+
+RemeshCallback = Callable[["Mesh", int, Any], None]
 
 
 def trimesh_remesh(
-    mesh,
-    target,
-    kmax=100,
-    tol=0.1,
-    divergence=0.01,
-    verbose=False,
-    allow_boundary_split=False,
-    allow_boundary_swap=False,
-    allow_boundary_collapse=False,
-    smooth=True,
-    fixed=None,
-    callback=None,
-    callback_args=None,
-):
+    mesh: "Mesh",
+    target: float,
+    kmax: int = 100,
+    tol: float = 0.1,
+    divergence: float = 0.01,
+    verbose: bool = False,
+    allow_boundary_split: bool = False,
+    allow_boundary_swap: bool = False,
+    allow_boundary_collapse: bool = False,
+    smooth: bool = True,
+    fixed: Optional[Collection[Vertex]] = None,
+    callback: Optional[RemeshCallback] = None,
+    callback_args: Any = None,
+) -> None:
     """Remesh until all edges have a specified target length.
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh
         A triangle mesh.
-    target : float
+    target
         The target length for the mesh edges.
-    kmax : int, optional
+    kmax
         The number of iterations.
-    tol : float, optional
+    tol
         Length deviation tolerance.
-    divergence : float, optional
-        ??
-    verbose : bool, optional
+    divergence
+        The relative change in vertex count below which remeshing stops.
+    verbose
         Print feedback messages.
-    allow_boundary_split : bool, optional
+    allow_boundary_split
         Allow boundary edges to be split.
-    allow_boundary_swap : bool, optional
+    allow_boundary_swap
         Allow boundary edges or edges connected to the boundary to be swapped.
-    allow_boundary_collapse : bool, optional
+    allow_boundary_collapse
         Allow boundary edges or edges connected to the boundary to be collapsed.
-    smooth : bool, optional
+    smooth
         Apply smoothing at every iteration.
-    fixed : list[int], optional
+    fixed
         A list of vertices that have to stay fixed.
-    callback : callable, optional
+    callback
         A user-defined function that is called after every iteration.
-    callback_args : list[Any], optional
-        A list of additional parameters to be passed to the callback function.
+    callback_args
+        Additional parameters to pass to the callback function.
 
     Returns
     -------
     None
         The mesh is modified in place.
+
+    Raises
+    ------
+    ValueError
+        If the target length is not positive.
 
     Notes
     -----
@@ -69,15 +86,16 @@ def trimesh_remesh(
     The minimum and maximum lengths are calculated based on a desired target
     length.
 
-    For more info, see [1]_.
-
     References
     ----------
-    .. [1] Botsch, M. & Kobbelt, L., 2004. *A remeshing approach to multiresolution modeling*.
-           Proceedings of the 2004 Eurographics/ACM SIGGRAPH symposium on Geometry processing - SGP '04, p.185.
-           Available at: http://portal.acm.org/citation.cfm?doid=1057432.1057457.
+    * Botsch, M. & Kobbelt, L., 2004. *A remeshing approach to multiresolution modeling*.
+      Proceedings of the 2004 Eurographics/ACM SIGGRAPH symposium on Geometry processing - SGP '04, p.185.
+      Available at: http://portal.acm.org/citation.cfm?doid=1057432.1057457.
 
     """
+    if target <= 0:
+        raise ValueError("The target length should be greater than zero.")
+
     if verbose:
         print(target)
 
@@ -129,7 +147,7 @@ def trimesh_remesh(
                     continue
 
                 if verbose:
-                    print("split edge: {0} - {1}".format(u, v))
+                    print(f"split edge: {u} - {v}")
 
                 trimesh_split_edge(mesh, (u, v), allow_boundary=allow_boundary_split)
 
@@ -149,7 +167,7 @@ def trimesh_remesh(
                 if mesh.edge_length((u, v)) >= lmin - dlmin:
                     continue
                 if verbose:
-                    print("collapse edge: {0} - {1}".format(u, v))
+                    print(f"collapse edge: {u} - {v}")
 
                 trimesh_collapse_edge(mesh, (u, v), allow_boundary=allow_boundary_collapse, fixed=fixed)
 
@@ -202,7 +220,7 @@ def trimesh_remesh(
                     continue
 
                 if verbose:
-                    print("swap edge: {0} - {1}".format(u, v))
+                    print(f"swap edge: {u} - {v}")
 
                 trimesh_swap_edge(mesh, (u, v), allow_boundary=allow_boundary_swap)
 

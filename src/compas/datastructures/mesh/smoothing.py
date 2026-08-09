@@ -1,24 +1,44 @@
+from typing import TYPE_CHECKING
+from typing import Any
+from typing import Callable
+from typing import Collection
+from typing import Optional
+
 from compas.geometry import centroid_points
 from compas.geometry import centroid_polygon
 
+from .types import Vertex
 
-def mesh_smooth_centroid(mesh, fixed=None, kmax=100, damping=0.5, callback=None, callback_args=None):
+if TYPE_CHECKING:
+    from .mesh import Mesh
+
+SmoothingCallback = Callable[[int, Any], None]
+
+
+def mesh_smooth_centroid(
+    mesh: "Mesh",
+    fixed: Optional[Collection[Vertex]] = None,
+    kmax: int = 100,
+    damping: float = 0.5,
+    callback: Optional[SmoothingCallback] = None,
+    callback_args: Any = None,
+) -> None:
     """Smooth a mesh by moving every free vertex to the centroid of its neighbors.
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh
         A mesh object.
-    fixed : list[int], optional
+    fixed
         The fixed vertices of the mesh.
-    kmax : int, optional
+    kmax
         The maximum number of iterations.
-    damping : float, optional
+    damping
         The damping factor.
-    callback : callable, optional
+    callback
         A user-defined callback function to be executed after every iteration.
-    callback_args : list[Any], optional
-        A list of arguments to be passed to the callback.
+    callback_args
+        Additional arguments to pass to the callback.
 
     Returns
     -------
@@ -26,13 +46,12 @@ def mesh_smooth_centroid(mesh, fixed=None, kmax=100, damping=0.5, callback=None,
 
     Raises
     ------
-    Exception
+    TypeError
         If a callback is provided, but it is not callable.
 
     """
-    if callback:
-        if not callable(callback):
-            raise Exception("Callback is not callable.")
+    if callback is not None and not callable(callback):
+        raise TypeError("Callback is not callable.")
 
     fixed = fixed or []
     fixed = set(fixed)
@@ -52,27 +71,34 @@ def mesh_smooth_centroid(mesh, fixed=None, kmax=100, damping=0.5, callback=None,
             attr["y"] += damping * (cy - y)
             attr["z"] += damping * (cz - z)
 
-        if callback:
+        if callback is not None:
             callback(k, callback_args)
 
 
-def mesh_smooth_centerofmass(mesh, fixed=None, kmax=100, damping=0.5, callback=None, callback_args=None):
+def mesh_smooth_centerofmass(
+    mesh: "Mesh",
+    fixed: Optional[Collection[Vertex]] = None,
+    kmax: int = 100,
+    damping: float = 0.5,
+    callback: Optional[SmoothingCallback] = None,
+    callback_args: Any = None,
+) -> None:
     """Smooth a mesh by moving every free vertex to the center of mass of the polygon formed by the neighboring vertices.
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh
         A mesh object.
-    fixed : list[int], optional
+    fixed
         The fixed vertices of the mesh.
-    kmax : int, optional
+    kmax
         The maximum number of iterations.
-    damping : float, optional
+    damping
         The damping factor.
-    callback : callable, optional
+    callback
         A user-defined callback function to be executed after every iteration.
-    callback_args : list[Any], optional
-        A list of arguments to be passed to the callback.
+    callback_args
+        Additional arguments to pass to the callback.
 
     Returns
     -------
@@ -80,13 +106,12 @@ def mesh_smooth_centerofmass(mesh, fixed=None, kmax=100, damping=0.5, callback=N
 
     Raises
     ------
-    Exception
+    TypeError
         If a callback is provided, but it is not callable.
 
     """
-    if callback:
-        if not callable(callback):
-            raise Exception("Callback is not callable.")
+    if callback is not None and not callable(callback):
+        raise TypeError("Callback is not callable.")
 
     fixed = fixed or []
     fixed = set(fixed)
@@ -106,27 +131,34 @@ def mesh_smooth_centerofmass(mesh, fixed=None, kmax=100, damping=0.5, callback=N
             attr["y"] += damping * (cy - y)
             attr["z"] += damping * (cz - z)
 
-        if callback:
+        if callback is not None:
             callback(k, callback_args)
 
 
-def mesh_smooth_area(mesh, fixed=None, kmax=100, damping=0.5, callback=None, callback_args=None):
+def mesh_smooth_area(
+    mesh: "Mesh",
+    fixed: Optional[Collection[Vertex]] = None,
+    kmax: int = 100,
+    damping: float = 0.5,
+    callback: Optional[SmoothingCallback] = None,
+    callback_args: Any = None,
+) -> None:
     """Smooth a mesh by moving each vertex to the barycenter of the centroids of the surrounding faces, weighted by area.
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh
         A mesh object.
-    fixed : list[int], optional
+    fixed
         The fixed vertices of the mesh.
-    kmax : int, optional
+    kmax
         The maximum number of iterations.
-    damping : float, optional
+    damping
         The damping factor.
-    callback : callable, optional
+    callback
         A user-defined callback function to be executed after every iteration.
-    callback_args : list[Any], optional
-        A list of arguments to be passed to the callback.
+    callback_args
+        Additional arguments to pass to the callback.
 
     Returns
     -------
@@ -134,13 +166,12 @@ def mesh_smooth_area(mesh, fixed=None, kmax=100, damping=0.5, callback=None, cal
 
     Raises
     ------
-    Exception
+    TypeError
         If a callback is provided, but it is not callable.
 
     """
-    if callback:
-        if not callable(callback):
-            raise Exception("Callback is not callable.")
+    if callback is not None and not callable(callback):
+        raise TypeError("Callback is not callable.")
 
     fixed = fixed or []
     fixed = set(fixed)
@@ -179,5 +210,5 @@ def mesh_smooth_area(mesh, fixed=None, kmax=100, damping=0.5, callback=None, cal
             attr["y"] += damping * (ay - y)
             attr["z"] += damping * (az - z)
 
-        if callback:
+        if callback is not None:
             callback(k, callback_args)

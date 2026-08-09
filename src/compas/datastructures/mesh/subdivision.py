@@ -1,14 +1,32 @@
 from copy import deepcopy
 from math import cos
 from math import pi
+from typing import TYPE_CHECKING
+from typing import Any
+from typing import Collection
+from typing import Literal
+from typing import Mapping
+from typing import Optional
+from typing import TypeVar
+from typing import Union
+from typing import cast
 
 from compas.geometry import centroid_points
 from compas.geometry import offset_polygon
 from compas.itertools import iterable_like
 from compas.itertools import pairwise
 
+from .types import Face
+from .types import Vertex
 
-def subd_factory(cls):
+if TYPE_CHECKING:
+    from .mesh import Mesh
+
+MeshType = TypeVar("MeshType", bound="Mesh")
+SubdivisionScheme = Literal["tri", "quad", "corner", "catmullclark", "doosabin", "frames", "loop"]
+
+
+def subd_factory(cls: Any) -> Any:
     class SubdMesh(cls):
         _add_vertex = cls.add_vertex
         _add_face = cls.add_face
@@ -45,7 +63,7 @@ def subd_factory(cls):
     return SubdMesh
 
 
-def mesh_fast_copy(other):
+def mesh_fast_copy(other: MeshType) -> MeshType:
     SubdMesh = subd_factory(type(other))
     subd = SubdMesh()
     subd.vertex = deepcopy(other.vertex)
@@ -54,7 +72,7 @@ def mesh_fast_copy(other):
     subd.halfedge = deepcopy(other.halfedge)
     subd._max_vertex = other._max_vertex
     subd._max_face = other._max_face
-    return subd
+    return cast(MeshType, subd)
 
 
 # distinguish between subd of meshes with and without boundary
@@ -67,21 +85,21 @@ def mesh_fast_copy(other):
 # any subd algorithm should return a new subd mesh, leaving the control mesh intact
 
 
-def mesh_subdivide(mesh, scheme="catmullclark", **options):
+def mesh_subdivide(mesh: MeshType, scheme: SubdivisionScheme = "catmullclark", **options: Any) -> MeshType:
     """Subdivide the input mesh.
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh
         A mesh object.
-    scheme : Literal['tri', 'quad', 'corner', 'catmullclark', 'doosabin', 'frames', 'loop'], optional
+    scheme
         The scheme according to which the mesh should be subdivided.
-    **options : dict[str, Any], optional
+    **options
         Optional additional keyword arguments.
 
     Returns
     -------
-    :class:`compas.datastructures.Mesh`
+    Mesh
         The subdivided mesh.
 
     Raises
@@ -105,22 +123,22 @@ def mesh_subdivide(mesh, scheme="catmullclark", **options):
     if scheme == "loop":
         return trimesh_subdivide_loop(mesh, **options)
 
-    raise ValueError("Scheme is not supported")
+    raise ValueError(f"Subdivision scheme is not supported: {scheme}")
 
 
-def mesh_subdivide_tri(mesh, k=1):
+def mesh_subdivide_tri(mesh: MeshType, k: int = 1) -> MeshType:
     """Subdivide a mesh using simple insertion of vertices.
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh
         The mesh object that will be subdivided.
-    k : int, optional
+    k
         The number of levels of subdivision.
 
     Returns
     -------
-    :class:`compas.datastructures.Mesh`
+    Mesh
         A new subdivided mesh.
 
     Examples
@@ -148,20 +166,25 @@ def mesh_subdivide_tri(mesh, k=1):
     return cls.__from_data__(subd.__data__)
 
 
-def mesh_subdivide_quad(mesh, k=1):
+def mesh_subdivide_quad(mesh: MeshType, k: int = 1) -> MeshType:
     """Subdivide a mesh such that all faces are quads.
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh
         The mesh object that will be subdivided.
-    k : int, optional
+    k
         The number of levels of subdivision.
 
     Returns
     -------
-    :class:`compas.datastructures.Mesh`
+    Mesh
         A new subdivided mesh.
+
+    Raises
+    ------
+    RuntimeError
+        If subdivision produces an invalid face.
 
     Examples
     --------
@@ -181,8 +204,9 @@ def mesh_subdivide_quad(mesh, k=1):
     """
     cls = type(mesh)
     subd = mesh_fast_copy(mesh)
-    for face in subd.faces():
-        subd.facedata[face]["path"] = [face]
+    if k > 0:
+        for face in subd.faces():
+            subd.facedata[face]["path"] = [face]
     for _ in range(k):
         faces = {face: subd.face_vertices(face)[:] for face in subd.faces()}
         face_centroid = {face: subd.face_centroid(face) for face in subd.faces()}
@@ -197,6 +221,8 @@ def mesh_subdivide_quad(mesh, k=1):
                 a = ancestor[vertex]
                 d = descendant[vertex]
                 newface = subd.add_face([a, vertex, d, c])
+                if newface is None:
+                    raise RuntimeError("Quad subdivision produced an invalid face.")
                 subd.facedata[newface]["path"] = subd.facedata[face]["path"] + [i]
             del subd.face[face]
             del subd.facedata[face]
@@ -204,19 +230,19 @@ def mesh_subdivide_quad(mesh, k=1):
     return subd2
 
 
-def mesh_subdivide_corner(mesh, k=1):
+def mesh_subdivide_corner(mesh: MeshType, k: int = 1) -> MeshType:
     """Subdivide a mesh by cutting corners.
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh
         The mesh object that will be subdivided.
-    k : int, optional
+    k
         The number of levels of subdivision.
 
     Returns
     -------
-    :class:`compas.datastructures.Mesh`
+    Mesh
         A new subdivided mesh.
 
     Notes
@@ -247,22 +273,31 @@ def mesh_subdivide_corner(mesh, k=1):
     return subd2
 
 
-def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
+def mesh_subdivide_catmullclark(
+    mesh: MeshType,
+    k: int = 1,
+    fixed: Optional[Collection[Vertex]] = None,
+) -> MeshType:
     """Subdivide a mesh using the Catmull-Clark algorithm.
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh
         The mesh object that will be subdivided.
-    k : int, optional
+    k
         The number of levels of subdivision.
-    fixed : list[int], optional
+    fixed
         A list of fixed vertices.
 
     Returns
     -------
-    :class:`compas.datastructures.Mesh`
+    Mesh
         A new subdivided mesh.
+
+    Raises
+    ------
+    RuntimeError
+        If an edge cannot be split during subdivision.
 
     Notes
     -----
@@ -314,9 +349,7 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
     """
     cls = type(mesh)
 
-    if not fixed:
-        fixed = []
-    fixed = set(fixed)
+    fixed = set(fixed or [])
 
     for _ in range(k):
         subd = mesh_fast_copy(mesh)
@@ -335,6 +368,8 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
         for u, v in mesh.edges():
             w = subd.split_edge((u, v), allow_boundary=True)
+            if w is None:
+                raise RuntimeError("Splitting an edge during Catmull-Clark subdivision failed.")
             crease = mesh.edge_attribute((u, v), "crease") or 0
 
             if crease:
@@ -407,7 +442,7 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
             elif C == 2:
                 V = key_xyz[key]
-                E = [0, 0, 0]
+                E = [0.0, 0.0, 0.0]
                 for nbr, crease in zip(nbrs, creases):
                     if crease:
                         x, y, z = key_xyz[nbr]
@@ -429,22 +464,31 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
     return subd2
 
 
-def mesh_subdivide_doosabin(mesh, k=1, fixed=None):
+def mesh_subdivide_doosabin(
+    mesh: MeshType,
+    k: int = 1,
+    fixed: Optional[Collection[Vertex]] = None,
+) -> MeshType:
     """Subdivide a mesh following the doo-sabin scheme.
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh
         The mesh object that will be subdivided.
-    k : int, optional
+    k
         The number of levels of subdivision.
-    fixed : list[int], optional
+    fixed
         A list of fixed vertices.
 
     Returns
     -------
-    :class:`compas.datastructures.Mesh`
+    Mesh
         A new subdivided mesh.
+
+    Notes
+    -----
+    The ``fixed`` parameter is currently retained for API compatibility but has
+    no effect on Doo-Sabin subdivision.
 
     Examples
     --------
@@ -460,11 +504,6 @@ def mesh_subdivide_doosabin(mesh, k=1, fixed=None):
     True
 
     """
-    if not fixed:
-        fixed = []
-
-    fixed = set(fixed)
-
     cls = type(mesh)
     SubdMesh = subd_factory(cls)
 
@@ -544,23 +583,27 @@ def mesh_subdivide_doosabin(mesh, k=1, fixed=None):
     return subd2
 
 
-def mesh_subdivide_frames(mesh, offset, add_windows=False):
+def mesh_subdivide_frames(
+    mesh: MeshType,
+    offset: Union[float, Mapping[Face, float]],
+    add_windows: bool = False,
+) -> MeshType:
     """Subdivide a mesh by creating offset frames and windows on its faces.
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh
         The mesh object to be subdivided.
-    offset : float | dict[int, float]
+    offset
         The offset distance to create the frames.
         A single value will result in a constant offset everywhere.
         A dictionary mapping faces to offset values will be processed accordingly.
-    add_windows : bool, optional
+    add_windows
         If True, add a window face in the frame opening.
 
     Returns
     -------
-    :class:`compas.datastructures.Mesh`
+    Mesh
         A new subdivided mesh.
 
     """
@@ -570,9 +613,11 @@ def mesh_subdivide_frames(mesh, offset, add_windows=False):
     subd = SubdMesh()
 
     # 0. pre-compute offset distances
-    if not isinstance(offset, dict):
+    if not isinstance(offset, Mapping):
         distances = iterable_like(mesh.faces(), [offset], offset)
-        offset = {fkey: od for fkey, od in zip(mesh.faces(), distances)}
+        face_offsets = {fkey: od for fkey, od in zip(mesh.faces(), distances)}
+    else:
+        face_offsets = offset
 
     # 1. add vertices
     newkeys = {}
@@ -582,7 +627,7 @@ def mesh_subdivide_frames(mesh, offset, add_windows=False):
     # 2. add faces
     for fkey in mesh.faces():
         face = [newkeys[vkey] for vkey in mesh.face_vertices(fkey)]
-        d = offset.get(fkey)
+        d = face_offsets.get(fkey)
 
         # 2a. add face and break if no offset is found
         if d is None:
@@ -611,22 +656,31 @@ def mesh_subdivide_frames(mesh, offset, add_windows=False):
     return cls.__from_data__(subd.__data__)
 
 
-def trimesh_subdivide_loop(mesh, k=1, fixed=None):
+def trimesh_subdivide_loop(
+    mesh: MeshType,
+    k: int = 1,
+    fixed: Optional[Collection[Vertex]] = None,
+) -> MeshType:
     """Subdivide a triangle mesh using the Loop algorithm.
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh
         The mesh object that will be subdivided.
-    k : int, optional
+    k
         The number of levels of subdivision.
-    fixed : list[int], optional
+    fixed
         A list of fixed vertices.
 
     Returns
     -------
-    :class:`compas.datastructures.Mesh`
+    Mesh
         A new subdivided mesh.
+
+    Raises
+    ------
+    RuntimeError
+        If an edge cannot be split during subdivision.
 
     Examples
     --------
@@ -656,10 +710,7 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
     """
     cls = type(mesh)
 
-    if not fixed:
-        fixed = []
-
-    fixed = set(fixed)
+    fixed = set(fixed or [])
 
     subd = mesh_fast_copy(mesh)
 
@@ -713,6 +764,8 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
         # odd vertices
         for u, v in list(subd.edges()):
             w = subd.split_edge((u, v), allow_boundary=True)
+            if w is None:
+                raise RuntimeError("Splitting an edge during Loop subdivision failed.")
 
             edgepoints[(u, v)] = w
             edgepoints[(v, u)] = w

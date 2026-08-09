@@ -1,28 +1,47 @@
-from math import pi
+from typing import TYPE_CHECKING
+from typing import Optional
+from typing import Type
+from typing import TypeVar
+from typing import overload
 
-from compas.itertools import flatten
+if TYPE_CHECKING:
+    from .mesh import Mesh
 
-PI2 = 2.0 * pi
+MeshType = TypeVar("MeshType", bound="Mesh")
+DualMeshType = TypeVar("DualMeshType", bound="Mesh")
 
 
-def mesh_dual(mesh, cls=None, include_boundary=False):
+@overload
+def mesh_dual(mesh: MeshType, cls: None = None, include_boundary: bool = False) -> MeshType: ...
+
+
+@overload
+def mesh_dual(mesh: "Mesh", cls: Type[DualMeshType], include_boundary: bool = False) -> DualMeshType: ...
+
+
+def mesh_dual(mesh: "Mesh", cls: Optional[Type["Mesh"]] = None, include_boundary: bool = False) -> "Mesh":
     """Construct the dual of a mesh.
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh
         A mesh object.
-    cls : Type[:class:`compas.datastructures.Mesh`], optional
+    cls
         The type of the dual mesh.
         Defaults to the type of the provided mesh object.
-    include_boundary: bool, optional
-        Whether to include boundary faces for the dual mesh
+    include_boundary
+        Whether to include boundary faces for the dual mesh.
         If True, create faces on boundaries including all original mesh boundary vertices.
 
     Returns
     -------
-    :class:`compas.datastructures.Mesh`
+    Mesh
         The dual mesh object.
+
+    Raises
+    ------
+    RuntimeError
+        If the boundary vertices are not ordered consistently.
 
     Examples
     --------
@@ -37,14 +56,15 @@ def mesh_dual(mesh, cls=None, include_boundary=False):
     >>> dual = mesh.dual(include_boundary=True)
 
     """
-    if not cls:
+    if cls is None:
         cls = type(mesh)
 
     dual = cls()
 
     face_centroid = {face: mesh.face_centroid(face) for face in mesh.faces()}
-    outer = set(flatten(mesh.vertices_on_boundaries()))
-    inner = list(set(mesh.vertices()) - outer)
+    boundaries = mesh.vertices_on_boundaries()
+    outer = {vertex for boundary in boundaries for vertex in boundary}
+    inner = set(mesh.vertices()) - outer
     vertex_xyz = {}
     face_vertices = {}
 
@@ -78,14 +98,14 @@ def mesh_dual(mesh, cls=None, include_boundary=False):
             edge_vertex[u, v] = edge_vertex[v, u] = dual.add_vertex(x=x, y=y, z=z)
 
     vertex_vertex = {}
-    for boundary in mesh.vertices_on_boundaries():
+    for boundary in boundaries:
         if boundary[0] == boundary[-1]:
             boundary = boundary[:-1]
         for vertex in boundary:
             x, y, z = mesh.vertex_coordinates(vertex)
             vertex_vertex[vertex] = dual.add_vertex(x=x, y=y, z=z)
 
-    for boundary in mesh.vertices_on_boundaries():
+    for boundary in boundaries:
         if boundary[0] == boundary[-1]:
             boundary = boundary[:-1]
         for vertex in boundary:
@@ -93,7 +113,10 @@ def mesh_dual(mesh, cls=None, include_boundary=False):
             nbrs = mesh.vertex_neighbors(vertex, ordered=True)[::-1]
             vertices.append(edge_vertex[vertex, nbrs[0]])
             for nbr in nbrs[:-1]:
-                vertices.append(mesh.halfedge_face((vertex, nbr)))
+                face = mesh.halfedge_face((vertex, nbr))
+                if face is None:
+                    raise RuntimeError("The boundary vertices are not ordered consistently.")
+                vertices.append(face)
             vertices.append(edge_vertex[vertex, nbrs[-1]])
             dual.add_face(vertices[::-1])
 
