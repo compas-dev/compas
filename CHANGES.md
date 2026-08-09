@@ -134,3 +134,65 @@ This document summarizes the changes to `compas.datastructures.mesh` on the
   Centralizing canonical edge-key handling remains future work.
 - Mesh slicing does not validate its closed-volume assumption.
 - The Doo-Sabin `fixed` parameter remains nonfunctional.
+
+### VolMesh
+
+#### Type annotations and API documentation
+
+- Added shared VolMesh types for vertices, edges, faces, halffaces, cells,
+  attributes, coordinates, and cell topology.
+- Added Python 3.9-compatible annotations throughout serialization,
+  construction, accessors, attributes, topology, geometry, boundaries, and
+  transformation.
+- Added overloads for accessors and attribute methods whose return type depends
+  on a data or setter argument.
+- Preserved custom VolMesh subclasses in constructors and data round-trips.
+- Documented explicit validation failures and the currently unimplemented
+  `is_valid()` method.
+
+#### Data and construction
+
+- Fixed serialization of non-empty cell attributes.
+- Prevented builders and default-attribute updates from mutating caller-owned
+  mappings.
+- Changed `add_halfface()` to reject vertex identifiers that are not already
+  part of the VolMesh, avoiding vertices with implicit default geometry.
+- Added canonical, direction-independent helpers for edge and face attribute
+  data keys.
+- Documented that these local helpers should become a dedicated data-key API
+  used consistently by storage and serialization.
+
+#### Attributes and queries
+
+- Added support for explicitly storing `None` as a vertex, edge, face, or cell
+  attribute value.
+- Prevented filtering methods from modifying caller-owned condition mappings.
+- Added the missing `has_cell()` query and corrected reversed-edge handling in
+  `has_edge()`.
+- Corrected semantic sample types, distinguishing faces from halffaces.
+
+#### Topology and geometry
+
+- Fixed `delete_vertex()` so that it removes the requested vertex after deleting
+  its incident cells.
+- Fixed edge and face attribute cleanup so shared topology retains its data until
+  the final incident cell is removed.
+- Fixed halfface manifold-neighbor traversal and support for unattached
+  halffaces.
+- Added explicit validation for vertex and halfface neighborhood rings below 1.
+- Fixed cell vertex-neighbor traversal on Python 3, deduplicated cell edges, and
+  deduplicated adjacent-cell results.
+- Typed and verified vertex, edge, face, cell, boundary, and transformation
+  geometry APIs.
+
+#### Tests
+
+- Expanded VolMesh coverage for serialization, constructors, builders,
+  modifiers, samples, all attribute domains, filtering, topology, geometry,
+  boundaries, data cleanup, subclass preservation, and transformation.
+
+#### Known compatibility notes
+
+- `VolMesh.is_valid()` remains unimplemented and raises `NotImplementedError`.
+- Edge and face data keys remain serialized strings internally pending a
+  dedicated canonical data-key API.
