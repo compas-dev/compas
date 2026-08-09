@@ -6,10 +6,103 @@
 
 ## Datastructures
 
-### Mesh
+### Shared infrastructure
 
-This document summarizes the changes to `compas.datastructures.mesh` on the
-`remove-future` branch relative to `origin/remove-future`.
+- Typed the `Datastructure` base class, including serialization, inheritance,
+  bounding-box caches, transformation hooks, and copy-transform helpers.
+- Replaced legacy return-type comments with subclass-preserving `Self` types and
+  made the implicit `to_points()` contract explicit.
+- Prevented datastructures from retaining caller-owned attribute mappings.
+- Typed the mutable-mapping compatibility implementation with generic key and
+  value types and overloads for `get()`, `pop()`, and `setdefault()`.
+- Fixed keyword-only `MutableMapping.update()` calls, which previously ignored
+  all supplied values.
+- Documented that avoiding abstract base classes and metaclasses was an
+  IronPython 2.7 workaround that should now be reconsidered.
+- Typed the attribute-view hierarchy and fixed `custom_only=True` so lookup,
+  membership, iteration, and length expose the same keys.
+- Removed redundant specialized attribute-view constructors and corrected the
+  `CellAttributeView` description.
+
+### Graph
+
+#### Type annotations and API documentation
+
+- Added shared graph types for hashable node identifiers, edges, and attribute
+  dictionaries.
+- Added Python 3.9-compatible annotations throughout serialization,
+  constructors, conversions, accessors, attributes, topology, geometry,
+  transformations, matrices, duality, planarity, operations, and smoothing.
+- Added overloads for node and edge accessors and getter/setter attribute APIs,
+  and preserved custom Graph subclasses in constructors and graph-producing
+  operations.
+- Removed the legacy graph data schema and migrated docstrings away from Sphinx
+  roles and duplicated parameter types.
+
+#### Graph behavior and operations
+
+- Corrected automatic node-key tracking so only integer keys affect the next
+  generated key.
+- Added support for explicitly storing `None` in node and edge attributes.
+- Fixed connected-component edge grouping and graph explosion for mixed node-key
+  types.
+- Added safe handling for empty and edgeless cycle searches and typed the cycle
+  and neighbor-ordering helpers.
+- Improved edge splitting and degree-two edge joining, including validation,
+  default attributes, and preservation of remaining node attributes.
+- Expanded polyline extraction coverage for empty, open, closed, disconnected,
+  branched, and explicitly split graphs.
+- Typed and verified crossing detection, planarity checks, planar embeddings,
+  and centroid smoothing, including fixed nodes, damping, isolated nodes, and
+  callback validation.
+
+#### Tests
+
+- Added focused coverage for graph serialization, mixed key types, nullable
+  attributes, duality, topology operations, polylines, planarity, crossings,
+  smoothing, callbacks, and empty-graph behavior.
+
+### Tree and HashTree
+
+#### Tree
+
+- Added typed serialization, parent/child relationships, traversal strategies,
+  node lookup, hierarchy formatting, and Graph conversion for `Tree` and
+  `TreeNode`.
+- Preserved subclasses in data construction and added correct optional return
+  types for roots, parents, owning trees, and name-based lookup.
+- Fixed empty-tree deserialization and replaced breadth-first list popping with
+  a deque.
+- Added explicit errors for unsupported traversal strategies and orders.
+- Documented remaining design questions around ownership, cycles, reparenting,
+  mutable child lists, detached subtrees, subclass deserialization, and duplicate
+  Graph keys.
+- Expanded tests for invalid traversal options, ancestors and descendants,
+  empty-tree round-trips, duplicate-name lookup, and limited-depth hierarchy
+  output.
+
+#### HashTree
+
+- Reworked `HashTree` and `HashNode` as independent immutable data types instead
+  of mutable subclasses of `Tree` and `TreeNode`.
+- Added typed serialization, traversal, hierarchy formatting, Graph conversion,
+  signatures, and diffing.
+- Made children immutable, defensively copied values, and distinguished an
+  explicit `None` value from a branch node without a value.
+- Made signatures independent of dictionary insertion order and computed them
+  lazily from immutable node content.
+- Added validation for values combined with children, duplicate sibling paths,
+  reused child nodes, invalid roots, missing diff roots, non-Data inputs, and
+  duplicate Graph keys.
+- Added comprehensive serialization, immutability, signature, validation,
+  conversion, and diff regression tests.
+
+### Removed datastructures
+
+- Removed the deprecated `Assembly`, `Part`, and related assembly exceptions and
+  tests from `compas.datastructures`.
+
+### Mesh
 
 #### Type annotations and API documentation
 
