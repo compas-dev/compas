@@ -1,21 +1,30 @@
-from typing import TypeVar  # noqa: F401
+from typing import Any
+from typing import Mapping
+from typing import Optional
+from typing import Sequence
+
+from typing_extensions import Self
 
 from compas.data import Data
-
-G = TypeVar("G", bound="Datastructure")
+from compas.geometry import Box
+from compas.geometry import Transformation
 
 
 class Datastructure(Data):
     """Base class for all data structures."""
 
-    def __init__(self, attributes=None, name=None):
-        super(Datastructure, self).__init__(name=name)
-        self.attributes = attributes or {}
-        self._aabb = None
-        self._obb = None
+    def __init__(
+        self,
+        attributes: Optional[Mapping[str, Any]] = None,
+        name: Optional[str] = None,
+    ) -> None:
+        super().__init__(name=name)
+        self.attributes = dict(attributes or {})
+        self._aabb: Optional[Box] = None
+        self._obb: Optional[Box] = None
 
     @property
-    def __inheritance__(self):
+    def __inheritance__(self) -> list[str]:
         """Get the inheritance chain of the datastructure.
         Until one level above the Datastructure class (eg. Mesh, Graph, ...).
 
@@ -34,12 +43,12 @@ class Datastructure(Data):
             inheritance.append(cls.__clstype__())
         return inheritance
 
-    def __jsondump__(self, minimal=False):
+    def __jsondump__(self, minimal: bool = False) -> dict[str, Any]:
         """Return the required information for serialization with the COMPAS JSON serializer.
 
         Parameters
         ----------
-        minimal : bool, optional
+        minimal
             If True, exclude the GUID from the dump dict.
 
         Returns
@@ -60,23 +69,39 @@ class Datastructure(Data):
         return state
 
     @property
-    def aabb(self):
+    def aabb(self) -> Box:
         if self._aabb is None:
             self._aabb = self.compute_aabb()
         return self._aabb
 
     @property
-    def obb(self):
+    def obb(self) -> Box:
         if self._obb is None:
             self._obb = self.compute_obb()
         return self._obb
 
-    def compute_aabb(self):
+    def to_points(self) -> list[list[float]]:
+        """Return the points of the datastructure.
+
+        Returns
+        -------
+        list[list[float]]
+            The point coordinates.
+
+        Raises
+        ------
+        NotImplementedError
+            If the subclass does not implement this method.
+
+        """
+        raise NotImplementedError
+
+    def compute_aabb(self) -> Box:
         """Compute the axis-aligned bounding box of the datastructure.
 
         Returns
         -------
-        :class:`compas.geometry.Box`
+        Box
 
         """
         from compas.geometry import Box
@@ -84,12 +109,12 @@ class Datastructure(Data):
 
         return Box.from_bounding_box(bounding_box(self.to_points()))
 
-    def compute_obb(self):
+    def compute_obb(self) -> Box:
         """Compute the oriented bounding box of the datastructure.
 
         Returns
         -------
-        :class:`compas.geometry.Box`
+        Box
 
         """
         from compas.geometry import Box
@@ -97,27 +122,32 @@ class Datastructure(Data):
 
         return Box.from_bounding_box(oriented_bounding_box_numpy(self.to_points()))
 
-    def transform(self, transformation):
+    def transform(self, transformation: Transformation) -> None:
         """Transforms the data structure.
 
         Parameters
         ----------
-        transformation : :class:`Transformation`
+        transformation
             The transformation used to transform the data structure.
 
         Returns
         -------
         None
 
+        Raises
+        ------
+        NotImplementedError
+            If the subclass does not implement this method.
+
         """
         raise NotImplementedError
 
-    def transformed(self, transformation):
+    def transformed(self, transformation: Transformation) -> Self:
         """Returns a transformed copy of this data structure.
 
         Parameters
         ----------
-        transformation : :class:`Transformation`
+        transformation
             The transformation used to transform the copy.
 
         Returns
@@ -130,27 +160,32 @@ class Datastructure(Data):
         datastructure.transform(transformation)
         return datastructure
 
-    def transform_numpy(self, transformation):
+    def transform_numpy(self, transformation: Any) -> None:
         """Transforms the data structure.
 
         Parameters
         ----------
-        transformation : :class:`Transformation`
+        transformation
             The transformation used to transform the data structure.
 
         Returns
         -------
         None
 
+        Raises
+        ------
+        NotImplementedError
+            If the subclass does not implement this method.
+
         """
         raise NotImplementedError
 
-    def transformed_numpy(self, transformation):
+    def transformed_numpy(self, transformation: Any) -> Self:
         """Returns a transformed copy of this data structure.
 
         Parameters
         ----------
-        transformation : :class:`Transformation`
+        transformation
             The transformation used to transform the copy.
 
         Returns
@@ -163,19 +198,19 @@ class Datastructure(Data):
         datastructure.transform_numpy(transformation)
         return datastructure
 
-    def scale(self, x, y=None, z=None):
+    def scale(self, x: float, y: Optional[float] = None, z: Optional[float] = None) -> None:
         """Scale the datastructure.
 
         Parameters
         ----------
-        x : float
+        x
             The scaling factor in the x-direction.
-        y : float, optional
+        y
             The scaling factor in the y-direction.
-            Defaults to ``x``.
-        z : float, optional
+            Defaults to `x`.
+        z
             The scaling factor in the z-direction.
-            Defaults to ``x``.
+            Defaults to `x`.
 
         Returns
         -------
@@ -199,24 +234,24 @@ class Datastructure(Data):
 
         self.transform(Scale.from_factors([x, y, z]))
 
-    def scaled(self, x, y=None, z=None):  # type: (...) -> G
-        """Returns a scaled copy of this geometry.
+    def scaled(self, x: float, y: Optional[float] = None, z: Optional[float] = None) -> Self:
+        """Returns a scaled copy of this datastructure.
 
         Parameters
         ----------
-        x : float
+        x
             The scaling factor in the x-direction.
-        y : float, optional
+        y
             The scaling factor in the y-direction.
-            Defaults to ``x``.
-        z : float, optional
+            Defaults to `x`.
+        z
             The scaling factor in the z-direction.
-            Defaults to ``x``.
+            Defaults to `x`.
 
         Returns
         -------
-        :class:`Geometry`
-            The scaled geometry.
+        Datastructure
+            The scaled datastructure.
 
         See Also
         --------
@@ -236,12 +271,12 @@ class Datastructure(Data):
 
         return self.transformed(Scale.from_factors([x, y, z]))
 
-    def translate(self, vector):
+    def translate(self, vector: Sequence[float]) -> None:
         """Translate the datastructure.
 
         Parameters
         ----------
-        vector : :class:`compas.geometry.Vector`
+        vector
             The vector used to translate the datastructure.
 
         Returns
@@ -260,18 +295,18 @@ class Datastructure(Data):
 
         self.transform(Translation.from_vector(vector))
 
-    def translated(self, vector):  # type: (...) -> G
-        """Returns a translated copy of this geometry.
+    def translated(self, vector: Sequence[float]) -> Self:
+        """Returns a translated copy of this datastructure.
 
         Parameters
         ----------
-        vector : :class:`compas.geometry.Vector`
+        vector
             The vector used to translate the datastructure.
 
         Returns
         -------
-        :class:`Geometry`
-            The translated geometry.
+        Datastructure
+            The translated datastructure.
 
         See Also
         --------
@@ -285,17 +320,22 @@ class Datastructure(Data):
 
         return self.transformed(Translation.from_vector(vector))
 
-    def rotate(self, angle, axis=None, point=None):
+    def rotate(
+        self,
+        angle: float,
+        axis: Optional[Sequence[float]] = None,
+        point: Optional[Sequence[float]] = None,
+    ) -> None:
         """Rotate the datastructure.
 
         Parameters
         ----------
-        angle : float
+        angle
             The angle of rotation in radians.
-        axis : :class:`compas.geometry.Vector`, optional
+        axis
             The axis of rotation.
             Defaults to the z-axis.
-        point : :class:`compas.geometry.Point`, optional
+        point
             The base point of the rotation axis.
             Defaults to the origin.
 
@@ -318,24 +358,29 @@ class Datastructure(Data):
 
         self.transform(Rotation.from_axis_and_angle(axis, angle, point))
 
-    def rotated(self, angle, axis=None, point=None):  # type: (...) -> G
-        """Returns a rotated copy of this geometry.
+    def rotated(
+        self,
+        angle: float,
+        axis: Optional[Sequence[float]] = None,
+        point: Optional[Sequence[float]] = None,
+    ) -> Self:
+        """Returns a rotated copy of this datastructure.
 
         Parameters
         ----------
-        angle : float
+        angle
             The angle of rotation in radians.
-        axis : :class:`compas.geometry.Vector`, optional
+        axis
             The axis of rotation.
             Defaults to the z-axis.
-        point : :class:`compas.geometry.Point`, optional
+        point
             The base point of the rotation axis.
             Defaults to the origin.
 
         Returns
         -------
-        :class:`Geometry`
-            The rotated geometry.
+        Datastructure
+            The rotated datastructure.
 
         See Also
         --------

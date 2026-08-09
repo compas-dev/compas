@@ -21,6 +21,19 @@ class Level1(Datastructure):
         return obj
 
 
+class TransformableDatastructure(Datastructure):
+    def __init__(self, attributes=None, name=None):
+        super().__init__(attributes=attributes, name=name)
+        self.transformations = []
+
+    @property
+    def __data__(self):
+        return {"attributes": self.attributes}
+
+    def transform(self, transformation):
+        self.transformations.append(transformation)
+
+
 @pytest.fixture
 def level2():
     # Level2 is a custom class that is not available outside of this local scope
@@ -171,3 +184,37 @@ def test_custom_mesh(custom_mesh):
     assert loaded.__jsondump__()["dtype"] == "compas.datastructures/Mesh"
     assert loaded.__jsondump__()["inheritance"] == []
     assert not hasattr(loaded, "custom_mesh_attr")
+
+
+def test_datastructure_does_not_retain_input_attributes():
+    attributes = {"name": "original"}
+    datastructure = Datastructure(attributes=attributes)
+
+    datastructure.attributes["name"] = "changed"
+
+    assert attributes == {"name": "original"}
+
+
+def test_copy_transformations_preserve_subclass():
+    datastructure = TransformableDatastructure()
+
+    scaled = datastructure.scaled(2)
+    translated = datastructure.translated([1, 2, 3])
+    rotated = datastructure.rotated(0.5)
+
+    assert type(scaled) is TransformableDatastructure
+    assert type(translated) is TransformableDatastructure
+    assert type(rotated) is TransformableDatastructure
+    assert not datastructure.transformations
+    assert len(scaled.transformations) == 1
+    assert len(translated.transformations) == 1
+    assert len(rotated.transformations) == 1
+
+
+def test_unimplemented_transformations_raise():
+    datastructure = Datastructure()
+
+    with pytest.raises(NotImplementedError):
+        datastructure.transform(None)
+    with pytest.raises(NotImplementedError):
+        datastructure.transform_numpy(None)
