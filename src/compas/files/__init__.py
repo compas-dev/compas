@@ -16,4 +16,4 @@ from .obj_document import OBJDocument, OBJElementReference, OBJFace, OBJGroup, O
 from .off import OFF, OFFReader, OFFWriter
 from .ply import PLY, PLYParser, PLYReader, PLYWriter
 from .stl import STL, STLParser, STLReader, STLWriter
-from .xml import XML, XMLElement, XMLReader, XMLWriter, prettify_string
+from .xml import parse_xml, read_xml, write_xml, xml_to_string

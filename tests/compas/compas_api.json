@@ -203,11 +203,10 @@
       "STLParser",
       "STLReader",
       "STLWriter",
-      "XML",
-      "XMLElement",
-      "XMLReader",
-      "XMLWriter",
-      "prettify_string"
+      "parse_xml",
+      "read_xml",
+      "write_xml",
+      "xml_to_string"
     ],
     "compas.geometry": [
       "Arc",
