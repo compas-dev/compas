@@ -13,14 +13,14 @@ class GLTF(object):
     ----------
     filepath : str
         Path to the location of the glTF file.
-    content : :class:`compas.files.GLTFContent`
-    reader : :class:`compas.files.GLTFReader`
-    parser : :class:`compas.files.GLTFParser`
-    exporter : :class:`compas.files.GLTFExporter`
+    content : compas.files.GLTFContent
+    reader : compas.files.GLTFReader
+    parser : compas.files.GLTFParser
+    exporter : compas.files.GLTFExporter
 
     References
     ----------
-    .. [1] https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/figures/gltfOverview-2.0.0b.png
+    https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/figures/gltfOverview-2.0.0b.png
 
     """
 
@@ -35,7 +35,7 @@ class GLTF(object):
         self._exporter = None
 
     def read(self):
-        """Read the glTF located at :attr:`compas.files.GLTF.filepath` and load its content."""
+        """Read the glTF located at compas.files.GLTF.filepath and load its content."""
         self._reader = GLTFReader(self.filepath)
         self._parser = GLTFParser(self._reader)
         self._is_parsed = True
@@ -71,14 +71,14 @@ class GLTF(object):
         return self._exporter
 
     def export(self, embed_data=False):
-        """Export the content of this :class:`compas.files.GLTF` to the location
-        :attr:`compas.files.GLTF.filepath`, with file format determined by the given extension.
+        """Export the content of this compas.files.GLTF to the location
+        compas.files.GLTF.filepath, with file format determined by the given extension.
 
         Parameters
         ----------
         embed_data : bool
-            When set to ``True``, mesh and other data will be embedded in the glTF,
-            and no external binary file will be created.  The default value is ``False``.
+            When set to `True`, mesh and other data will be embedded in the glTF,
+            and no external binary file will be created.  The default value is `False`.
 
         Returns
         -------

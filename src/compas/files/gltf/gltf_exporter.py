@@ -35,11 +35,11 @@ class GLTFExporter(object):
         Location where the glTF or glb is to be written. The extension of the filepath
         determines which format will be used. If there will be an accompanying binary file,
         it will be written in the same directory.
-    content : :class:`compas.files.GLTFContent`
+    content : compas.files.GLTFContent
     embed_data : bool
-        When ``True``, all mesh and other data will be embedded as data uri's in the glTF json,
+        When `True`, all mesh and other data will be embedded as data uri's in the glTF json,
         with the exception of external image data.
-        When ``False``, the data will be written to an external binary file or chunk.
+        When `False`, the data will be written to an external binary file or chunk.
 
     """
 
@@ -408,13 +408,13 @@ class GLTFExporter(object):
         }
         if include_bounds:
             try:
-                # Here we check if ``data`` contains tuples,
+                # Here we check if `data` contains tuples,
                 # and compute min/max per coordinate.
                 _ = [e for e in data[0]]
                 minimum = tuple(map(min, zip(*data)))
                 maximum = tuple(map(max, zip(*data)))
             except TypeError:
-                # Here, ``data`` must contain primitives and not tuples,
+                # Here, `data` must contain primitives and not tuples,
                 # so min and max are more simply computed.
                 minimum = (min(data),)
                 maximum = (max(data),)

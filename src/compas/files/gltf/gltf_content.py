@@ -14,27 +14,27 @@ class GLTFContent(object):
     Attributes
     ----------
     scenes : dict
-        Dictionary containing (int, :class:`compas.files.GLTFScene`) pairs.
+        Dictionary containing (int, compas.files.GLTFScene) pairs.
     default_scene_key : int or None
         Key of the scene to be displayed on loading the glTF.
     nodes : dict
-        Dictionary containing (int, :class:`compas.files.GLTFNode`) pairs.
+        Dictionary containing (int, compas.files.GLTFNode) pairs.
     meshes : dict
-        Dictionary containing (int, :class:`compas.files.GLTFMesh`) pairs.
+        Dictionary containing (int, compas.files.GLTFMesh) pairs.
     cameras : dict
-        Dictionary containing (int, :class:`compas.files.data_classes.CameraData`) pairs.
+        Dictionary containing (int, compas.files.data_classes.CameraData) pairs.
     animations : dict
-        Dictionary containing (int, :class:`compas.files.data_classes.AnimationData`) pairs.
+        Dictionary containing (int, compas.files.data_classes.AnimationData) pairs.
     skins : dict
-        Dictionary containing (int, :class:`compas.files.data_classes.SkinData`) pairs.
+        Dictionary containing (int, compas.files.data_classes.SkinData) pairs.
     materials : dict
-        Dictionary containing (int, :class:`compas.files.data_classes.MaterialData`) pairs.
+        Dictionary containing (int, compas.files.data_classes.MaterialData) pairs.
     textures : dict
-        Dictionary containing (int, :class:`compas.files.data_classes.TextureData`) pairs.
+        Dictionary containing (int, compas.files.data_classes.TextureData) pairs.
     samplers : dict
-        Dictionary containing (int, :class:`compas.files.data_classes.SamplerData`) pairs.
+        Dictionary containing (int, compas.files.data_classes.SamplerData) pairs.
     images : dict
-        Dictionary containing (int, :class:`compas.files.data_classes.ImageData`) pairs.
+        Dictionary containing (int, compas.files.data_classes.ImageData) pairs.
     extras : object
     extensions : object
 
@@ -62,7 +62,7 @@ class GLTFContent(object):
         return self.scenes[key]
 
     def check_if_forest(self):
-        """Raises an exception if :attr:`compas.files.GLTFContent.nodes` is not a disjoint
+        """Raises an exception if compas.files.GLTFContent.nodes is not a disjoint
         union of rooted trees.
 
         Returns
@@ -207,7 +207,7 @@ class GLTFContent(object):
 
         Parameters
         ----------
-        scene : :class:`compas.files.GLTFScene`
+        scene : compas.files.GLTFScene
 
         Returns
         -------
@@ -229,11 +229,11 @@ class GLTFContent(object):
                     queue.append(child_key)
 
     def get_node_faces(self, node):
-        """Returns the faces of the mesh at ``node``, if any.
+        """Returns the faces of the mesh at `node`, if any.
 
         Parameters
         ----------
-        node : :class:`compas.files.GLTFNode`
+        node : compas.files.GLTFNode
 
         Returns
         -------
@@ -245,11 +245,11 @@ class GLTFContent(object):
         return mesh_data.faces
 
     def get_node_vertices(self, node):
-        """Returns the vertices of the mesh at ``node``, if any.
+        """Returns the vertices of the mesh at `node`, if any.
 
         Parameters
         ----------
-        node : :class:`compas.files.GLTFNode`
+        node : compas.files.GLTFNode
 
         Returns
         -------
@@ -272,7 +272,7 @@ class GLTFContent(object):
 
         Returns
         -------
-        node : :class:`compas.files.GLTFNode` or `None`
+        node : compas.files.GLTFNode or `None`
         """
         for key in self.nodes:
             if self.nodes[key].name == name:
@@ -291,7 +291,7 @@ class GLTFContent(object):
 
         Parameters
         ----------
-        material : :class:`compas.files.data_classes.MaterialData`
+        material : compas.files.data_classes.MaterialData
             The material to add
 
         Returns
@@ -307,7 +307,7 @@ class GLTFContent(object):
 
         Parameters
         ----------
-        texture : :class:`compas.files.data_classes.TextureData`
+        texture : compas.files.data_classes.TextureData
             The texture to add
 
         Returns
@@ -323,7 +323,7 @@ class GLTFContent(object):
 
         Parameters
         ----------
-        image : :class:`compas.files.data_classes.ImageData`
+        image : compas.files.data_classes.ImageData
             The image to add
 
         Returns
@@ -361,22 +361,22 @@ class GLTFContent(object):
 
         Returns
         -------
-        :class:`compas.files.GLTFScene`
+        compas.files.GLTFScene
         """
         return GLTFScene(self, name=name, extras=extras)
 
     def add_node_to_scene(self, scene, node_name=None, node_extras=None):
-        """Creates a :class:`compas.files.GLTFNode` and adds this node to the children of ``scene``.
+        """Creates a compas.files.GLTFNode and adds this node to the children of `scene`.
 
         Parameters
         ----------
-        scene : :class:`compas.files.GLTFScene`
+        scene : compas.files.GLTFScene
         node_name : str
         node_extras : object
 
         Returns
         -------
-        :class:`compas.files.GLTFNode`
+        compas.files.GLTFNode
         """
         if scene not in self.scenes.values():
             raise Exception("Cannot find scene.")
@@ -385,48 +385,48 @@ class GLTFContent(object):
         return node
 
     def add_child_to_node(self, parent_node, child_name=None, child_extras=None):
-        """Creates a :class:`compas.files.GLTFNode` and adds this node to the children of ``parent_node``.
+        """Creates a compas.files.GLTFNode and adds this node to the children of `parent_node`.
 
         Parameters
         ----------
-        parent_node : :class:`compas.files.GLTFNode`
+        parent_node : compas.files.GLTFNode
         child_name : str
         child_extras : object
 
         Returns
         -------
-        :class:`compas.files.GLTFNode`
+        compas.files.GLTFNode
         """
         child_node = GLTFNode(self, child_name, child_extras)
         parent_node.children.append(child_node.key)
         return child_node
 
     def add_mesh(self, mesh):
-        """Creates a :class:`compas.files.GLTFMesh` object from a compas mesh, and adds this
+        """Creates a compas.files.GLTFMesh object from a compas mesh, and adds this
         to the content.
 
         Parameters
         ----------
-        mesh : :class:`compas.datastructures.Mesh`
+        mesh : compas.datastructures.Mesh
 
         Returns
         -------
-        :class:`compas.files.GLTFMesh`
+        compas.files.GLTFMesh
         """
         return GLTFMesh.from_mesh(self, mesh)
 
     def add_mesh_to_node(self, node, mesh):
-        """Adds an existing mesh to ``node`` if ``mesh`` is a valid mesh key, or through ``add_mesh`` creates and adds a
-        mesh to ``node``.
+        """Adds an existing mesh to `node` if `mesh` is a valid mesh key, or through `add_mesh` creates and adds a
+        mesh to `node`.
 
         Parameters
         ----------
-        node : :class:`compas.files.GLTFNode`
-        mesh : Union[:class:`compas.datastructures.Mesh`, int]
+        node : compas.files.GLTFNode
+        mesh : Union[compas.datastructures.Mesh, int]
 
         Returns
         -------
-        :class:`compas.files.GLTFMesh`
+        compas.files.GLTFMesh
         """
         if isinstance(mesh, int):
             mesh_data = self.meshes[mesh]
@@ -440,7 +440,7 @@ class GLTFContent(object):
 
         Parameters
         ----------
-        scene : :class:`compas.files.GLTFScene`
+        scene : compas.files.GLTFScene
 
         Returns
         -------
@@ -463,7 +463,7 @@ class GLTFContent(object):
 
         Parameters
         ----------
-        scene : :class:`compas.files.GLTFScene`
+        scene : compas.files.GLTFScene
 
         Returns
         -------

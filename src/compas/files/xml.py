@@ -22,13 +22,13 @@ class XML(object):
 
     Attributes
     ----------
-    reader : :class:`compas.files.XMLReader`, read-only
+    reader : compas.files.XMLReader, read-only
         Reader used to process the XML file or string.
-    writer : :class:`XMLWriter`, read-only
+    writer : XMLWriter, read-only
         Writer used to process the XML object to a file or string.
     filepath : str
         The path to the XML file.
-    root : :class:`xml.etree.ElementTree.Element`
+    root : xml.etree.ElementTree.Element
         Root element of the XML tree.
 
     Examples
@@ -71,7 +71,7 @@ class XML(object):
 
     def read(self):
         """Read XML from a file path or file-like object,
-        stored in the attribute ``filepath``.
+        stored in the attribute `filepath`.
 
         Returns
         -------
@@ -125,7 +125,7 @@ class XML(object):
 
         Returns
         -------
-        :class:`compas.files.XML`
+        compas.files.XML
 
         """
         xml = cls(source)
@@ -143,7 +143,7 @@ class XML(object):
 
         Returns
         -------
-        :class:`compas.files.XML`
+        compas.files.XML
 
         """
         xml = cls()
@@ -175,7 +175,7 @@ class XMLReader(object):
 
     Parameters
     ----------
-    root : :class:`xml.etree.ElementTree.Element`
+    root : xml.etree.ElementTree.Element
         Root XML element
 
     """
@@ -191,12 +191,12 @@ class XMLReader(object):
         ----------
         source : path string | file-like object | URL string
             A path, a file-like object or a URL pointing to a file.
-        tree_parser : :class:`ET.XMLParser`, optional
+        tree_parser : ET.XMLParser, optional
             A custom tree parser.
 
         Returns
         -------
-        :class:`compas.files.XMLReader`
+        compas.files.XMLReader
 
         """
         return cls(xml_impl.xml_from_file(source, tree_parser))
@@ -209,12 +209,12 @@ class XMLReader(object):
         ----------
         text : str
             A string of text containing the XML source code.
-        tree_parser : :class:`ET.XMLParser`, optional
+        tree_parser : ET.XMLParser, optional
             A custom tree parser.
 
         Returns
         -------
-        :class:`compas.files.XMLReader`
+        compas.files.XMLReader
 
         """
         return cls(xml_impl.xml_from_string(text, tree_parser))
@@ -225,7 +225,7 @@ class XMLWriter(object):
 
     Parameters
     ----------
-    xml : :class:`compas.files.XML`
+    xml : compas.files.XML
         The XML tree to write.
 
     """
@@ -280,7 +280,7 @@ class XMLElement(object):
         The type of XML tag.
     attributes : dict[str, Any], optional
         The attributes of the tag as name-value pairs.
-    elements : list[:class:`compas.files.XMLElement`], optional
+    elements : list[compas.files.XMLElement], optional
         A list of elements contained by the current element.
     text : str, optional
         The text contained by the element.
@@ -298,7 +298,7 @@ class XMLElement(object):
 
         Returns
         -------
-        :class:`ET.Element`
+        ET.Element
 
         """
         root = ET.Element(self.tag, self.attributes)
@@ -310,7 +310,7 @@ class XMLElement(object):
 
         Parameters
         ----------
-        element : :class:`ET.Element`
+        element : ET.Element
             The parent element.
 
         Returns

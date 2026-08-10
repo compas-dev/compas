@@ -31,7 +31,7 @@ def get_morph_function(weights):
 
 def get_weighted_mesh_vertices(mesh, weights):
     """A mesh may be deformed by several morph targets, with the displacement defined by each target
-    being modified by a certain ``weight``.  A common use case for such targets and weights would
+    being modified by a certain `weight`.  A common use case for such targets and weights would
     be interpolating between two geometries in an animation.  This returns the vertices of the augmented
     mesh.
     """

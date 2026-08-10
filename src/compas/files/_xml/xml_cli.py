@@ -21,13 +21,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""This module defines an :class:`xml.etree.ElementTree.XMLParser` that
+"""This module defines an xml.etree.ElementTree.XMLParser that
 delegates to the .NET `System.Xml.XmlReader
 <http://msdn.microsoft.com/en-us/library/system.xml.xmlreader>`_ XML
 parser to parse an XML document.
 
-`IronPython <http://ironpython.net/>`_ is not able to load CPython's
-:mod:`xml.parsers.expat` module, and so the default parser used by
+[IronPython](http://ironpython.net/) is not able to load CPython's
+xml.parsers.expat module, and so the default parser used by
 ElementTree does not exist is most releases.
 """
 
@@ -105,17 +105,17 @@ def xml_from_string(text, tree_parser=None):
 class CLRXMLTreeParser(ET.XMLParser):
     """Parses XML using .NET infrastructure.
 
-    This is a sub-class of :class:`xml.etree.ElementTree.XMLParser`
+    This is a sub-class of xml.etree.ElementTree.XMLParser
     that delegates parsing to the .NET `System.Xml.XmlReader
     <http://msdn.microsoft.com/en-us/library/system.xml.xmlreader>`_
     parser.
 
     Parameters
     ----------
-    target : :class:`xml.etree.ElementTree.TreeBuilder`
-        Target object (if omitted, a standard ``TreeBuilder`` instance is used)
+    target : xml.etree.ElementTree.TreeBuilder
+        Target object (if omitted, a standard `TreeBuilder` instance is used)
     validating : bool
-        ``True`` to use a validating parser, otherwise ``False``
+        `True` to use a validating parser, otherwise `False`
     """
 
     def __init__(self, target=None, validating=False):
@@ -149,7 +149,7 @@ class CLRXMLTreeParser(ET.XMLParser):
         -----
         All *data* across calls to this method are buffered
         internally; the parser itself is not actually created
-        until the :meth:`close` method is called.
+        until the close method is called.
 
         """
         self._buffer.append(data)
@@ -160,7 +160,7 @@ class CLRXMLTreeParser(ET.XMLParser):
 
         Returns
         -------
-        :class:`xml.etree.ElementTree.ElementTree`
+        xml.etree.ElementTree.ElementTree
             The root element of the XML document
         """
         xml_string = "".join(self._buffer)

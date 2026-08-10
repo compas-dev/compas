@@ -12,7 +12,7 @@ class OFF(object):
 
     Attributes
     ----------
-    reader : :class:`OFFReader`, read-only
+    reader : OFFReader, read-only
         A OFF file reader.
 
     References
@@ -55,7 +55,7 @@ class OFF(object):
 
         Parameters
         ----------
-        mesh : :class:`compas.datastructures.Mesh`
+        mesh : compas.datastructures.Mesh
             The mesh.
         author : str, optional
             The author name to include in the header.
@@ -230,7 +230,7 @@ class OFFWriter(object):
     ----------
     filepath : path string | file-like object | URL string
         A path, a file-like object or a URL pointing to a file.
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : compas.datastructures.Mesh
         Mesh to write to the file.
     author : str, optional
         The author name to include in the header.

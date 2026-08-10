@@ -23,11 +23,11 @@ class GLTFMesh(object):
     context : GLTFContent
         GLTF context in which the mesh exists.
     key : int
-        Key of the mesh used in :attr:`compas.files.GLTFMesh.context.meshes`.
+        Key of the mesh used in compas.files.GLTFMesh.context.meshes.
     vertices : list
         List of xyz-tuples representing the points of the mesh.
     faces : list
-        List of tuples referencing the indices of :attr:`compas.files.GLTFMesh.vertices`
+        List of tuples referencing the indices of compas.files.GLTFMesh.vertices
         representing faces of the mesh.
 
     """
@@ -81,7 +81,7 @@ class GLTFMesh(object):
         return faces
 
     def shift_indices(self, indices, shift):
-        """Given a list of indices, returns a list of indices, all shifted by ``shift``.
+        """Given a list of indices, returns a list of indices, all shifted by `shift`.
 
         Parameters
         ----------
@@ -96,7 +96,7 @@ class GLTFMesh(object):
         return [index + shift for index in indices]
 
     def group_indices(self, indices, group_size):
-        """Returns a list of the elements of ``indices`` grouped into tuples of size ``group_size``.
+        """Returns a list of the elements of `indices` grouped into tuples of size `group_size`.
 
         Parameters
         ----------
@@ -113,7 +113,7 @@ class GLTFMesh(object):
 
     @classmethod
     def validate_faces(cls, faces):
-        """Raises an exception if not all faces in ``faces`` are defining either all triangles, lines
+        """Raises an exception if not all faces in `faces` are defining either all triangles, lines
         or points.
 
         Parameters
@@ -156,14 +156,14 @@ class GLTFMesh(object):
 
     @classmethod
     def from_vertices_and_faces(cls, context, vertices, faces, mesh_name=None, extras=None):
-        """Construct a :class:`compas.files.GLTFMesh` object from lists of vertices and faces.
+        """Construct a compas.files.GLTFMesh object from lists of vertices and faces.
         Vertices can be given as either a list of xyz-tuples or -lists, in which case
         the faces reference vertices by index, or vertices can be given as a dictionary of
         key-value pairs where the values are xyz-tuples or -lists and the faces reference the keys.
 
         Parameters
         ----------
-        context : :class:`compas.files.GLTFContent`
+        context : compas.files.GLTFContent
         vertices : Union[list, dict]
         faces : list
         mesh_name : str
@@ -171,7 +171,7 @@ class GLTFMesh(object):
 
         Returns
         -------
-        :class:`compas.files.GLTFMesh`
+        compas.files.GLTFMesh
 
         """
         cls.validate_faces(faces)
@@ -194,16 +194,16 @@ class GLTFMesh(object):
 
     @classmethod
     def from_mesh(cls, context, mesh):
-        """Construct a :class:`compas.files.GLTFMesh` object from a compas mesh.
+        """Construct a compas.files.GLTFMesh object from a compas mesh.
 
         Parameters
         ----------
-        context : :class:`compas.files.GLTFContent`
-        mesh : :class:`compas.datastructures.Mesh`
+        context : compas.files.GLTFContent
+        mesh : compas.datastructures.Mesh
 
         Returns
         -------
-        :class:`compas.files.GLTFMesh`
+        compas.files.GLTFMesh
         """
         vertices, faces = mesh.to_vertices_and_faces()
         texture_coordinates = mesh.vertices_attribute("texture_coordinate")
@@ -244,18 +244,18 @@ class GLTFMesh(object):
 
     @classmethod
     def from_data(cls, mesh, context, primitive_data_list):
-        """Creates a :class:`compas.files.GLTFMesh` from a glTF node dictionary
+        """Creates a compas.files.GLTFMesh from a glTF node dictionary
         and inserts it in the provided context.
 
         Parameters
         ----------
         mesh : dict
-        context : :class:`compas.files.GLTFContent`
+        context : compas.files.GLTFContent
         primitive_data_list : list
 
         Returns
         -------
-        :class:`compas.files.GLTFMesh`
+        compas.files.GLTFMesh
         """
         if mesh is None:
             return None

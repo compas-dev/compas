@@ -20,9 +20,9 @@ class PLY(object):
         The path to the file.
     precision : str
         A COMPAS precision specification.
-    reader : :class:`PLYReader`
+    reader : PLYReader
         A PLY file reader.
-    parser : :class:`PLYParser`
+    parser : PLYParser
         A PLY data parser.
 
     References
@@ -68,7 +68,7 @@ class PLY(object):
 
         Parameters
         ----------
-        mesh : :class:`compas.datastructures.Mesh`
+        mesh : compas.datastructures.Mesh
             The mesh.
         author : str, optional
             The author name to include in the header.
@@ -129,7 +129,7 @@ class PLYReader(object):
         Each property is a tuple of the property name and the property type.
     sections : list
         The sections in the file.
-        Possible sections are ``vertex``, ``edge`` and ``face``.
+        Possible sections are `vertex`, `edge` and `face`.
     vertices : list
         The vertices found in the file.
         Each vertex is a dictionary of property names and property values.
@@ -581,7 +581,7 @@ class PLYParser(object):
 
     Parameters
     ----------
-    reader : :class:`PLYReader`
+    reader : PLYReader
         A PLY file reader.
     precision : str
         COMPAS precision specification for parsing geometric data.
@@ -624,7 +624,7 @@ class PLYWriter(object):
     ----------
     filepath : path string | file-like object | URL string
         A path, a file-like object or a URL pointing to a file.
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : compas.datastructures.Mesh
         Mesh to write to the file.
     author : str, optional
         The author name to include in the header.

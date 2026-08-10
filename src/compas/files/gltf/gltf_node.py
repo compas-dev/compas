@@ -18,22 +18,22 @@ class GLTFNode(object):
     name : str
         Name of the node.
     children : GLTFChildren
-        Validated list of keys referencing :attr:`compas.files.GLTFNode.context.nodes`.
+        Validated list of keys referencing compas.files.GLTFNode.context.nodes.
     matrix : list of lists
         Matrix representing the displacement from node's parent to the node.
         Default value is the identity matrix.
         Cannot be set when any of translation, rotation or scale is set.
     translation : list[float]
         xyz-coordinates of the translation displacement of the node.
-        Cannot be set when :attr:`compas.files.GLTFNode.matrix` is set.
+        Cannot be set when compas.files.GLTFNode.matrix is set.
     rotation : list[float]
         Unit quaternion representing the rotational displacement of the node.
-        Cannot be set when :attr:`compas.files.GLTFNode.matrix` is set.
+        Cannot be set when compas.files.GLTFNode.matrix is set.
     scale : list[float]
         List of length 3 representing the scaling displacement of the node.
-        Cannot be set when :attr:`compas.files.GLTFNode.matrix` is set.
+        Cannot be set when compas.files.GLTFNode.matrix is set.
     mesh_key : int
-        Key of the mesh within :attr:`compas.files.GLTFNode.context.meshes`.
+        Key of the mesh within compas.files.GLTFNode.context.meshes.
     weights : list[float]
         Weights used for computing morph targets in the attached mesh.
     position : tuple
@@ -41,11 +41,11 @@ class GLTFNode(object):
     transform : list of lists
         Matrix representing the displacement from the root node to the node.
     key : int
-        Key of the node used in :attr:`compas.files.GLTFNode.context.nodes`.
+        Key of the node used in compas.files.GLTFNode.context.nodes.
     camera : int
-        Key of the camera in :attr:`compas.files.GLTFNode.context.cameras`.
+        Key of the camera in compas.files.GLTFNode.context.cameras.
     skin : int
-        Key of the skin in :attr:`compas.files.GLTFNode.context.skins`.
+        Key of the skin in compas.files.GLTFNode.context.skins.
     extras : object
         Application-specific data.
     extensions : object
@@ -233,7 +233,7 @@ class GLTFNode(object):
         return matrix
 
     def add_child(self, child_name=None, child_extras=None):
-        """Creates a :class:`compas.files.GLTFNode` with name `child_name` (default `None`) and extras `child_extras`
+        """Creates a compas.files.GLTFNode with name `child_name` (default `None`) and extras `child_extras`
         (default `None`), and adds this node to the children of this node.
 
         Parameters
@@ -243,7 +243,7 @@ class GLTFNode(object):
 
         Returns
         -------
-        :class:`compas.files.GLTFNode`
+        compas.files.GLTFNode
         """
         return self.context.add_child_to_node(self, child_name, child_extras)
 
@@ -309,17 +309,17 @@ class GLTFNode(object):
 
     @classmethod
     def from_data(cls, node, context):
-        """Creates a :class:`compas.files.GLTFNode` from a glTF node dictionary
+        """Creates a compas.files.GLTFNode from a glTF node dictionary
         and inserts it in the provided context.
 
         Parameters
         ----------
         node : dict
-        context : :class:`compas.files.GLTFContent`
+        context : compas.files.GLTFContent
 
         Returns
         -------
-        :class:`compas.files.GLTFNode`
+        compas.files.GLTFNode
         """
         if node is None:
             return None

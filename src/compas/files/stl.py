@@ -14,13 +14,13 @@ class STL(object):
         A path, a file-like object or a URL pointing to a file.
     precision : int, optional
         Precision for converting numbers to strings.
-        Default is :attr:`TOL.precision`.
+        Default is TOL.precision.
 
     Attributes
     ----------
-    reader : :class:`STLReader`
+    reader : STLReader
         A STL file reader.
-    parser : :class:`STLParser`
+    parser : STLParser
         A STL file parser.
 
     """
@@ -62,7 +62,7 @@ class STL(object):
 
         Parameters
         ----------
-        mesh : :class:`compas.datastructures.Mesh`
+        mesh : compas.datastructures.Mesh
             The mesh.
         binary : bool, optional
             Flag indicating that the file should be written in binary format.
@@ -274,7 +274,7 @@ class STLParser(object):
 
     Parameters
     ----------
-    reader : :class:`STLReader`
+    reader : STLReader
         A STL file reader.
     precision : str, optional
         COMPAS precision specification for parsing geometric data.
@@ -331,7 +331,7 @@ class STLWriter(object):
     ----------
     filepath : path string | file-like object | URL string
         A path, a file-like object or a URL pointing to a file.
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh : compas.datastructures.Mesh
         The mesh.
     binary : bool, optional
         Flag indicating that the file should be written in binary format.
