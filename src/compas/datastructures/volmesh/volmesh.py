@@ -29,7 +29,9 @@ from compas.datastructures.attributes import EdgeAttributeView
 from compas.datastructures.attributes import FaceAttributeView
 from compas.datastructures.attributes import VertexAttributeView
 from compas.datastructures.datastructure import Datastructure
-from compas.files import OBJ
+from compas.files import read_obj
+from compas.files import weld_obj_data
+from compas.files import write_obj
 from compas.geometry import Box
 from compas.geometry import Line
 from compas.geometry import Point
@@ -328,14 +330,14 @@ class VolMesh(Datastructure):
         --------
         to_obj
         from_meshgrid, from_vertices_and_cells
-        compas.files.OBJ
+        read_obj
 
         """
-        obj = OBJ(filepath, precision)
-        vertices = obj.vertices or []
-        faces = obj.faces or []
-        groups = obj.groups or {}
-        objects = obj.objects or {}
+        data = weld_obj_data(read_obj(filepath), precision)
+        vertices = data.vertices
+        faces = data.faces
+        groups = data.groups
+        objects = data.objects
 
         if groups:
             cells = []
@@ -514,8 +516,7 @@ class VolMesh(Datastructure):
 
         """
         meshes = [self.cell_to_mesh(cell) for cell in self.cells()]
-        obj = OBJ(filepath, precision=precision)
-        obj.write(meshes, **kwargs)
+        write_obj(filepath, meshes, precision=precision, **kwargs)
 
     def to_vertices_and_cells(self) -> tuple[list[list[float]], list[list[list[Vertex]]]]:
         """Return the vertices and cells of a volmesh.

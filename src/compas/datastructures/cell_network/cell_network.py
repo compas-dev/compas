@@ -20,7 +20,8 @@ from compas.datastructures.attributes import EdgeAttributeView
 from compas.datastructures.attributes import FaceAttributeView
 from compas.datastructures.attributes import VertexAttributeView
 from compas.datastructures.datastructure import Datastructure
-from compas.files import OBJ
+from compas.files import read_obj
+from compas.files import weld_obj_data
 from compas.geometry import Line
 from compas.geometry import Plane
 from compas.geometry import Point
@@ -921,13 +922,13 @@ class CellNetwork(Datastructure):
         --------
         to_obj
         from_meshgrid, from_vertices_and_cells
-        compas.files.OBJ
+        read_obj
 
         """
-        obj = OBJ(filepath, precision)
-        vertices = obj.vertices or []
-        faces = obj.faces or []
-        groups = obj.groups or {}
+        data = weld_obj_data(read_obj(filepath), precision)
+        vertices = data.vertices
+        faces = data.faces
+        groups = data.groups
         cells = []
         for name in groups:
             group = groups[name]
@@ -1009,8 +1010,7 @@ class CellNetwork(Datastructure):
     #     the faces to the file.
 
     #     """
-    #     obj = OBJ(filepath, precision=precision)
-    #     obj.write(self, **kwargs)
+    #     write_obj(filepath, self, precision=precision, **kwargs)
 
     # def to_vertices_and_cells(self):
     #     """Return the vertices and cells of a cell network.

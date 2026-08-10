@@ -36,10 +36,12 @@ from compas.datastructures.attributes import EdgeAttributeView
 from compas.datastructures.attributes import FaceAttributeView
 from compas.datastructures.attributes import VertexAttributeView
 from compas.datastructures.datastructure import Datastructure
-from compas.files import OBJ
 from compas.files import OFF
 from compas.files import PLY
 from compas.files import STL
+from compas.files import obj_data
+from compas.files import read_obj
+from compas.files import write_obj
 from compas.geometry import Box
 from compas.geometry import Circle
 from compas.geometry import Frame
@@ -277,18 +279,17 @@ class Mesh(Datastructure):
         * quadmesh.obj
 
         """
-        obj = OBJ(filepath, precision)
-        obj.read()
-        vertices = obj.vertices
-        faces = obj.faces
-        edges = obj.lines
+        data = obj_data(read_obj(filepath))
+        vertices = data.vertices
+        faces = data.faces
+        edges = data.lines
         if not vertices:
             return cls()
         if faces:
             return cls.from_vertices_and_faces(vertices, faces)
         if edges:
             lines = [(vertices[u], vertices[v]) for u, v in edges]
-            return cls.from_lines(lines)
+            return cls.from_lines(lines, precision=precision)
         return cls()
 
     @classmethod
@@ -578,7 +579,7 @@ class Mesh(Datastructure):
         from compas.geometry import delaunay_triangulation
 
         faces = delaunay_triangulation(points)
-        return cls.from_vertices_and_faces(points, faces)
+        return cls.from_vertices_and_faces(points, faces)  # type: ignore
 
     @classmethod
     def from_polygons(
@@ -785,8 +786,7 @@ class Mesh(Datastructure):
         the faces to the file.
 
         """
-        obj = OBJ(filepath, precision=precision)
-        obj.write(self, unweld=unweld, **kwargs)
+        write_obj(filepath, self, precision=precision, unweld=unweld, **kwargs)
 
     def to_ply(self, filepath: Any, **kwargs: Any) -> None:
         """Write a mesh object to a PLY file.
@@ -5306,9 +5306,7 @@ class Mesh(Datastructure):
     # Matrices
     # --------------------------------------------------------------------------
 
-    def adjacency_matrix(
-        self, rtype: Literal["array", "csc", "csr", "coo", "list"] = "array"
-    ) -> Any:
+    def adjacency_matrix(self, rtype: Literal["array", "csc", "csr", "coo", "list"] = "array") -> Any:
         """Compute the adjacency matrix of the mesh.
 
         Parameters
@@ -5328,9 +5326,7 @@ class Mesh(Datastructure):
         adjacency = [[vertex_index[nbr] for nbr in self.vertex_neighbors(vertex)] for vertex in self.vertices()]
         return adjacency_matrix(adjacency, rtype=rtype)
 
-    def connectivity_matrix(
-        self, rtype: Literal["array", "csc", "csr", "coo", "list"] = "array"
-    ) -> Any:
+    def connectivity_matrix(self, rtype: Literal["array", "csc", "csr", "coo", "list"] = "array") -> Any:
         """Compute the connectivity matrix of the mesh.
 
         Parameters
@@ -5350,9 +5346,7 @@ class Mesh(Datastructure):
         edges = [(vertex_index[u], vertex_index[v]) for u, v in self.edges()]
         return connectivity_matrix(edges, rtype=rtype)
 
-    def degree_matrix(
-        self, rtype: Literal["array", "csc", "csr", "coo", "list"] = "array"
-    ) -> Any:
+    def degree_matrix(self, rtype: Literal["array", "csc", "csr", "coo", "list"] = "array") -> Any:
         """Compute the degree matrix of the mesh.
 
         Parameters
@@ -5372,9 +5366,7 @@ class Mesh(Datastructure):
         adjacency = [[vertex_index[nbr] for nbr in self.vertex_neighbors(vertex)] for vertex in self.vertices()]
         return degree_matrix(adjacency, rtype=rtype)
 
-    def face_matrix(
-        self, rtype: Literal["array", "csc", "csr", "coo", "list"] = "array"
-    ) -> Any:
+    def face_matrix(self, rtype: Literal["array", "csc", "csr", "coo", "list"] = "array") -> Any:
         r"""Compute the face matrix of the mesh.
 
         Parameters
@@ -5428,9 +5420,7 @@ class Mesh(Datastructure):
         faces = [[vertex_index[vertex] for vertex in self.face_vertices(face)] for face in self.faces()]
         return face_matrix(faces, rtype=rtype)
 
-    def laplacian_matrix(
-        self, rtype: Literal["array", "csc", "csr", "coo", "list"] = "array"
-    ) -> Any:
+    def laplacian_matrix(self, rtype: Literal["array", "csc", "csr", "coo", "list"] = "array") -> Any:
         r"""Compute the Laplacian matrix of the mesh.
 
         Parameters

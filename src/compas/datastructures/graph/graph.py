@@ -18,7 +18,8 @@ from typing_extensions import Self
 from compas.datastructures.attributes import EdgeAttributeView
 from compas.datastructures.attributes import NodeAttributeView
 from compas.datastructures.datastructure import Datastructure
-from compas.files import OBJ
+from compas.files import obj_data
+from compas.files import read_obj
 from compas.geometry import Box
 from compas.geometry import Line
 from compas.geometry import Point
@@ -244,16 +245,9 @@ class Graph(Datastructure):
         OBJ
 
         """
-        graph = cls()
-        obj = OBJ(filepath, precision)
-        obj.read()
-        nodes = obj.vertices
-        edges = obj.lines
-        for i, (x, y, z) in enumerate(nodes):  # type: ignore
-            graph.add_node(i, x=x, y=y, z=z)
-        for edge in edges:  # type: ignore
-            graph.add_edge(edge[0], edge[1])
-        return graph
+        data = obj_data(read_obj(filepath))
+        lines = [(data.vertices[u], data.vertices[v]) for u, v in data.lines]
+        return cls.from_lines(lines, precision=precision)
 
     @classmethod
     def from_lines(cls, lines: Iterable[Sequence[Any]], precision: Optional[int] = None) -> Self:
