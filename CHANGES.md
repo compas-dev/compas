@@ -4,6 +4,69 @@
 
 ## Data
 
+## Files
+
+### General
+
+- Updated file-format documentation to the current MkDocs-compatible
+  NumPy-style conventions by removing Sphinx roles, directives, duplicated
+  parameter types, and unnecessary fully qualified return-type paths.
+- Removed the remaining Python 2, old CPython, and IronPython compatibility
+  paths from the file-format infrastructure.
+
+### OBJ
+
+- Replaced the stateful legacy `OBJ` facade with an explicit document-based
+  pipeline consisting of `OBJReader`, `OBJParser`, `OBJDocument`, and
+  `OBJWriter`.
+- Added typed OBJ document elements for vertices and their texture and normal
+  references, points, lines, faces, ordered elements, objects, groups,
+  materials, and smoothing groups.
+- Added `read_obj()` and `write_obj()` convenience functions supporting paths,
+  URLs, text streams, and binary streams. Writing supports documents, individual
+  meshes, multiple named meshes, metadata headers, and explicitly unwelded face
+  output.
+- Added `OBJData` and `obj_data()` as an identity-preserving projection from
+  structured OBJ elements to plain vertex indices. Reading no longer welds
+  coincident vertices implicitly.
+- Added the explicitly named `weld_obj_data()` conversion for workflows that
+  require coordinate-based vertex merging, with a configurable geometric-key
+  precision.
+- Added `read_obj_meshes()` to extract all named polygon meshes from a source,
+  preserve object names and independent vertex identities, collect unassigned
+  faces, and optionally request explicit welding.
+- Updated OBJ integration in Mesh, Graph, VolMesh, and CellNetwork. Indexed mesh
+  faces preserve their OBJ vertex identities, line-based graph and mesh
+  construction performs topology merging in `from_lines()`, and cell-based
+  datastructures request welding explicitly when shared cell vertices are
+  required.
+- Added parsing for positive and negative vertex references, texture and normal
+  references, objects, groups, material libraries, active materials, smoothing
+  groups, continuations, comments, and degree-one `curv` statements.
+- Added semantic document, parser, writer, stream, multiple-mesh, welded and
+  non-welded projection, and roundtrip tests. Roundtrip coverage verifies that
+  identity-preserving reads retain vertex counts while explicit welding produces
+  and retains the reduced topology.
+
+### XML
+
+- Removed the `XML`, `XMLReader`, `XMLWriter`, and `XMLElement` class hierarchy
+  in favor of the explicit `read_xml()`, `parse_xml()`, `write_xml()`, and
+  `xml_to_string()` functions.
+- Removed the entire private `_xml` compatibility package for IronPython and
+  CPython versions older than 3.8.
+- Reimplemented XML processing directly with `xml.etree.ElementTree`, while
+  retaining COMPAS path, URL, text-stream, and binary-stream support through
+  `_iotools`.
+- Replaced `minidom` formatting with `ElementTree.indent()` and ensured pretty
+  serialization does not mutate the caller's element tree.
+- Adopted standard ElementTree namespace semantics: expanded names and namespace
+  meaning survive roundtrips, but `xmlns` declarations are no longer injected
+  as artificial element attributes and original prefixes are not guaranteed.
+- Added coverage for files, URLs, text and binary streams, string parsing,
+  string and byte serialization, nonmutating formatting, writing, and namespace
+  roundtrips.
+
 ## Datastructures
 
 ### Shared infrastructure
