@@ -81,6 +81,22 @@
 - Added tests for custom schemas and properties, ASCII document roundtrips,
   binary fixtures, variable-size binary faces, streams, and mesh roundtrips.
 
+### OFF
+
+- Replaced the stateful `OFF` facade with the aligned `OFFReader`, `OFFParser`,
+  `OFFDocument`, and `OFFWriter` pipeline.
+- Added `read_off()` and `write_off()` convenience functions using explicit
+  source and target parameters and shared byte I/O.
+- Preserved standalone and inline comments as document metadata and applied
+  author, email, and date metadata without mutating caller-owned documents.
+- Added strict parsing and validation for headers, counts, coordinate
+  dimensions, face degrees, vertex references, incomplete input, and trailing
+  data, with support for continuations and counts on the header line.
+- Applied numeric precision only during serialization and updated Mesh OFF
+  integration without changing `Mesh.from_off()` or `Mesh.to_off()`.
+- Added separated reader, parser, document, writer, convenience, malformed-input,
+  metadata, and welded and non-welded mesh roundtrip tests.
+
 ### XML
 
 - Removed the `XML`, `XMLReader`, `XMLWriter`, and `XMLElement` class hierarchy
