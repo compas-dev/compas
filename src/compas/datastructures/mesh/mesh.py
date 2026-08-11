@@ -37,11 +37,13 @@ from compas.datastructures.attributes import FaceAttributeView
 from compas.datastructures.attributes import VertexAttributeView
 from compas.datastructures.datastructure import Datastructure
 from compas.files import OFF
-from compas.files import PLY
 from compas.files import STL
 from compas.files import obj_data
+from compas.files import ply_data
 from compas.files import read_obj
+from compas.files import read_ply
 from compas.files import write_obj
+from compas.files import write_ply
 from compas.geometry import Box
 from compas.geometry import Circle
 from compas.geometry import Frame
@@ -307,14 +309,8 @@ class Mesh(Datastructure):
             A mesh object.
 
         """
-        ply = PLY(filepath)
-        parser = ply.parser
-        if parser is None:
-            return cls()
-        vertices = parser.vertices or []
-        faces = parser.faces or []
-        mesh = cls.from_vertices_and_faces(vertices, faces)
-        return mesh
+        data = ply_data(read_ply(filepath))
+        return cls.from_vertices_and_faces(data.vertices, data.faces)
 
     @classmethod
     def from_stl(cls, filepath: Any, precision: Optional[int] = None) -> Self:
@@ -801,8 +797,7 @@ class Mesh(Datastructure):
         None
 
         """
-        ply = PLY(filepath)
-        ply.write(self, **kwargs)
+        write_ply(filepath, self, **kwargs)
 
     def to_stl(
         self,

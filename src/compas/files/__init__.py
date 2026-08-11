@@ -14,6 +14,7 @@ from .gltf.gltf_reader import GLTFReader
 from .obj import OBJData, OBJParser, OBJReader, OBJWriter, obj_data, read_obj, read_obj_meshes, weld_obj_data, write_obj
 from .obj_document import OBJDocument, OBJElementReference, OBJFace, OBJGroup, OBJLine, OBJObject, OBJPoint, OBJVertexReference
 from .off import OFF, OFFReader, OFFWriter
-from .ply import PLY, PLYParser, PLYReader, PLYWriter
+from .ply import PLYData, PLYParser, PLYReader, PLYWriter, ply_data, read_ply, write_ply
+from .ply_document import PLYDocument, PLYElement, PLYProperty
 from .stl import STL, STLParser, STLReader, STLWriter
 from .xml import parse_xml, read_xml, write_xml, xml_to_string

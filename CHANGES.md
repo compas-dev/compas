@@ -48,6 +48,23 @@
   identity-preserving reads retain vertex counts while explicit welding produces
   and retains the reduced topology.
 
+### PLY
+
+- Replaced the stateful `PLY` facade with a schema-driven pipeline consisting
+  of `PLYReader`, `PLYParser`, `PLYDocument`, and `PLYWriter`.
+- Added structured PLY properties and elements that preserve ordered schemas,
+  custom scalar and list properties, comments, object information, format, and
+  version metadata.
+- Added `read_ply()`, `write_ply()`, and the mesh-oriented `ply_data()`
+  projection, with support for paths, URLs, text streams, and binary streams.
+- Added generic ASCII, binary little-endian, and binary big-endian parsing and
+  writing, including variable-length list properties and standard scalar type
+  aliases.
+- Updated Mesh and Pointcloud PLY integration without changing their public
+  constructors and conversion methods.
+- Added tests for custom schemas and properties, ASCII document roundtrips,
+  binary fixtures, variable-size binary faces, streams, and mesh roundtrips.
+
 ### XML
 
 - Removed the `XML`, `XMLReader`, `XMLWriter`, and `XMLElement` class hierarchy
