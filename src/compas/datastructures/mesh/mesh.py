@@ -36,15 +36,17 @@ from compas.datastructures.attributes import EdgeAttributeView
 from compas.datastructures.attributes import FaceAttributeView
 from compas.datastructures.attributes import VertexAttributeView
 from compas.datastructures.datastructure import Datastructure
-from compas.files import STL
 from compas.files import obj_data
 from compas.files import ply_data
 from compas.files import read_obj
 from compas.files import read_off
 from compas.files import read_ply
+from compas.files import read_stl
+from compas.files import weld_stl_data
 from compas.files import write_obj
 from compas.files import write_off
 from compas.files import write_ply
+from compas.files import write_stl
 from compas.geometry import Box
 from compas.geometry import Circle
 from compas.geometry import Frame
@@ -330,14 +332,8 @@ class Mesh(Datastructure):
             A mesh object.
 
         """
-        stl = STL(filepath, precision)
-        parser = stl.parser
-        if parser is None:
-            return cls()
-        vertices = parser.vertices or []
-        faces = parser.faces or []
-        mesh = cls.from_vertices_and_faces(vertices, faces)
-        return mesh
+        data = weld_stl_data(read_stl(filepath), precision)
+        return cls.from_vertices_and_faces(data.vertices, data.faces)
 
     @classmethod
     def from_off(cls, filepath: Any) -> Self:
@@ -825,8 +821,7 @@ class Mesh(Datastructure):
         For example, with `compas.datastructures.Mesh.quads_to_triangles`.
 
         """
-        stl = STL(filepath, precision)
-        stl.write(self, binary=binary, **kwargs)
+        write_stl(filepath, self, precision=precision, binary=binary, **kwargs)
 
     def to_off(self, filepath: Any, **kwargs: Any) -> None:
         """Write a mesh object to an OFF file.

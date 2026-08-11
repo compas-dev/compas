@@ -17,5 +17,6 @@ from .off import OFFParser, OFFReader, OFFWriter, read_off, write_off
 from .off_document import OFFDocument
 from .ply import PLYData, PLYParser, PLYReader, PLYWriter, ply_data, read_ply, write_ply
 from .ply_document import PLYDocument, PLYElement, PLYProperty
-from .stl import STL, STLParser, STLReader, STLWriter
+from .stl import STLData, STLParser, STLReader, STLWriter, read_stl, stl_data, weld_stl_data, write_stl
+from .stl_document import STLDocument, STLFacet, STLSolid
 from .xml import parse_xml, read_xml, write_xml, xml_to_string

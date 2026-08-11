@@ -100,6 +100,26 @@
 - Added separated reader, parser, document, writer, convenience, malformed-input,
   metadata, and welded and non-welded mesh roundtrip tests.
 
+### STL
+
+- Replaced the stateful legacy `STL` facade with the aligned `STLReader`,
+  `STLParser`, `STLDocument`, and `STLWriter` pipeline.
+- Added `read_stl()` and `write_stl()` convenience functions for ASCII and
+  binary STL using shared path and stream I/O, while preserving solid names,
+  binary headers, facet normals, and binary attribute values.
+- Added strict document validation and parsing for facet structure, coordinate
+  dimensions, incomplete ASCII input, binary facet counts, and exact binary
+  payload sizes. Binary files whose header starts with `solid` are detected by
+  their declared facet count rather than by the header text.
+- Added identity-preserving `stl_data()` and explicit `weld_stl_data()` mesh
+  projections. `Mesh.from_stl()` requests welding explicitly because STL stores
+  independent facet vertices, while parsing itself no longer merges geometry.
+- Applied numeric precision only during ASCII serialization, retained document
+  formats by default, and stopped translating negative coordinates during
+  writing.
+- Added separated reader, parser, document, writer, malformed-input, stream,
+  welding, and ASCII and binary mesh roundtrip tests.
+
 ### XML
 
 - Removed the `XML`, `XMLReader`, `XMLWriter`, and `XMLElement` class hierarchy
