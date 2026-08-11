@@ -120,6 +120,84 @@
 - Added separated reader, parser, document, writer, malformed-input, stream,
   welding, and ASCII and binary mesh roundtrip tests.
 
+### glTF
+
+- Removed postponed-annotation and other legacy Python compatibility syntax
+  from the glTF package, using explicit forward references where required.
+- Removed JSON-oriented `to_data()` and `from_data()` methods from glTF
+  semantic objects. `GLTFParser` now owns JSON decoding and `GLTFEncoder` owns
+  JSON construction and index remapping, leaving document objects focused on
+  semantic content, validation, editing, and COMPAS conversions.
+- Converted passive glTF semantic and extension values to Python dataclasses.
+  Document, scene, node, and mesh entities retain explicit constructors because
+  they allocate keys and establish validated document relationships.
+- Added complete scene conversion with `Scene.from_gltf()` and
+  `Scene.to_gltf()`. The adapter preserves node hierarchy and local
+  transformations, converts meshes, point clouds, lines, and polylines, expands
+  all glTF line and triangle topology modes, and warns when unsupported COMPAS
+  scene items are omitted from glTF geometry.
+- Added explicit, symmetric primitive conversion functions for glTF points,
+  lines, line strips and loops, triangles, triangle strips and fans, and their
+  closest COMPAS mesh, point-cloud, line, and polyline equivalents.
+- Introduced an explicit source-to-document pipeline: `GLTFReader` now only
+  acquires primary bytes and configures relative resource loading, while
+  `GLTFParser` owns JSON and GLB decoding, resource resolution, accessor
+  decoding, and semantic document construction.
+- Added typed `GLTFSource`, filesystem and URL resource loaders, strict JSON and
+  GLB container parsing, and dedicated buffer, buffer-view, data-URI, sparse,
+  interleaved, and normalized accessor decoding.
+- Added `GLTFDocument` as the semantic document and scene-editing model.
+- Added non-mutating `GLTFEncoder`, structured `GLTFPayload`, and `GLTFWriter`
+  layers, plus `read_gltf()` and `write_gltf()` convenience functions. JSON
+  glTF resources are written adjacent to path targets, and GLB output is
+  supported for paths and binary streams.
+- Removed the stateful `GLTF` facade in favor of `read_gltf()` and
+  `write_gltf()`.
+- Removed remaining IronPython buffer-packing compatibility and fixed matrix
+  accessor packing to select padding from the accessor type.
+- Added separated reader, container, parser, encoder, writer, resource,
+  non-mutation, external-buffer, stream, JSON glTF, and GLB roundtrip tests.
+- Modernized the semantic document core (`GLTFDocument`, `GLTFScene`,
+  `GLTFNode`, `GLTFMesh`, and `GLTFChildren`) with Python 3.9-compatible type
+  annotations and MkDocs-oriented docstrings, and removed the obsolete
+  executable example embedded in `gltf_content.py`.
+- Added whole-document validation for scene, node, mesh, camera, and skin
+  references, multiple node parents, and hierarchy cycles. Parsing and encoding
+  now validate semantic content explicitly.
+- Added `without_orphans()` for non-destructive cleanup. Encoding operates on
+  the cleaned copy rather than modifying the caller's scene graph.
+- Fixed `GLTFChildren.pop(0)`, `index()`, and `count()` return behavior, corrected
+  node skin lookup to use the document's skin collection, and made animation
+  and skin cleanup safe while filtering collections.
+- Added semantic document tests for child-sequence behavior, skin references,
+  cyclic and multiply-parented hierarchies, and non-mutating orphan cleanup.
+- Modernized material, texture, image, camera, animation, skin, primitive, and
+  supported-extension data classes with typed construction and serialization,
+  modern `super()` usage, and explicit recursive semantic traversal.
+- Removed the IronPython-only semantic marker attributes and replaced
+  reflection through `dir()` with `iter_data()` and `extension_keys()`.
+- Fixed material serialization keys for occlusion textures and alpha cutoff,
+  preserved explicit zero glossiness, remapped skin skeleton keys during
+  serialization, and omitted absent primitive index accessors.
+- Preserved asset metadata, required versus used extensions, and unknown
+  top-level properties across semantic roundtrips.
+- Extended validation to materials, textures, images, samplers, primitive
+  modes and indices, animation targets and interpolation, skins, cameras, asset
+  versions, and required-extension declarations.
+- Merged JSON and binary construction directly into `GLTFEncoder` and removed
+  the redundant encoding-state and legacy `GLTFExporter` classes.
+- Added automatic 32-bit index accessors for large meshes, four-byte buffer-view
+  alignment, padded matrix accessor decoding, and normalized non-sparse
+  accessor decoding.
+- Added regression tests for specification property names, skin remapping,
+  nested extensions, metadata preservation, deterministic encoding, large
+  indices, padded matrices, normalized accessors, and invalid strides and
+  references.
+- Removed unused alpha-mode and MIME-type containers, the unused component-size
+  table, duplicate orphan cleanup and hierarchy checks during encoding, and the
+  `GLTFContent` alias module. Updated tests to use only the explicit document
+  pipeline instead of private exporter state.
+
 ### XML
 
 - Removed the `XML`, `XMLReader`, `XMLWriter`, and `XMLElement` class hierarchy

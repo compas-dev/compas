@@ -1,3 +1,11 @@
+from typing import TYPE_CHECKING
+from typing import Any
+from typing import Optional
+from typing import Type
+from typing import cast
+
+from typing_extensions import Self
+
 import compas.data  # noqa: F401
 import compas.datastructures  # noqa: F401
 import compas.geometry  # noqa: F401
@@ -10,6 +18,9 @@ from .context import clear
 from .context import detect_current_context
 from .group import Group
 from .sceneobject import SceneObject
+
+if TYPE_CHECKING:
+    from compas.files import GLTFDocument
 
 
 class Scene(Tree):
@@ -41,8 +52,7 @@ class Scene(Tree):
     """
 
     @property
-    def __data__(self):
-        # type: () -> dict
+    def __data__(self) -> dict[str, Any]:
         items = {str(object.item.guid): object.item for object in self.objects if object.item is not None}
         return {
             "name": self.name,
@@ -51,8 +61,7 @@ class Scene(Tree):
         }
 
     @classmethod
-    def __from_data__(cls, data):
-        # type: (dict) -> Scene
+    def __from_data__(cls, data: dict[str, Any]) -> Self:
         scene = cls(data["name"])
         items = {str(item.guid): item for item in data["items"]}
 
@@ -70,27 +79,64 @@ class Scene(Tree):
 
         return scene
 
-    def __init__(self, name="Scene", context=None):
-        # type: (str, str | None) -> None
-        super(Scene, self).__init__(name=name)
-        super(Scene, self).add(TreeNode(name="ROOT"))
+    def __init__(self, name: str = "Scene", context: Optional[str] = None) -> None:
+        super().__init__(name=name)
+        super().add(TreeNode(name="ROOT"))
         self.context = context or detect_current_context()
 
+    @classmethod
+    def from_gltf(cls, document: "GLTFDocument", scene_key: Optional[int] = None) -> Self:
+        """Construct a COMPAS scene from a glTF document.
+
+        Parameters
+        ----------
+        document
+            Source glTF document.
+        scene_key
+            Scene to convert. By default, use the document's default or first scene.
+
+        Returns
+        -------
+        Scene
+            Converted scene.
+
+        """
+        from compas.files.gltf.gltf_conversions import gltf_to_scene
+
+        return cast(Self, gltf_to_scene(document, scene_key, scene_type=cls))
+
+    def to_gltf(self) -> "GLTFDocument":
+        """Convert this scene to a glTF document.
+
+        Unsupported scene items are omitted with a warning.
+
+        Returns
+        -------
+        GLTFDocument
+            Converted document.
+
+        """
+        from compas.files.gltf.gltf_conversions import scene_to_gltf
+
+        return scene_to_gltf(self)
+
     @property
-    def objects(self):
-        # type: () -> list[SceneObject]
+    def objects(self) -> list[SceneObject]:
         return [node for node in self.nodes if not node.is_root]  # type: ignore
 
     @property
-    def context_objects(self):
-        # type: () -> list
-        guids = []
+    def context_objects(self) -> list[Any]:
+        guids: list[Any] = []
         for obj in self.objects:
             guids += obj.guids
         return guids
 
-    def add(self, item, parent=None, **kwargs):
-        # type: (compas.geometry.Geometry | compas.datastructures.Datastructure, SceneObject | TreeNode | None, dict) -> SceneObject
+    def add(
+        self,
+        item: Any,
+        parent: Optional[SceneObject | TreeNode] = None,
+        **kwargs: Any,
+    ) -> SceneObject:
         """Add an item to the scene.
 
         Parameters
@@ -123,17 +169,20 @@ class Scene(Tree):
                 group_kwargs.update(kwargs)
                 kwargs = group_kwargs
             sceneobject = SceneObject(item=item, context=self.context, **kwargs)  # type: ignore
-        super(Scene, self).add(sceneobject, parent=parent)
+        super().add(sceneobject, parent=parent)
         return sceneobject
 
-    def add_group(self, name, parent=None, **kwargs):
-        # type: (str, SceneObject | TreeNode | None, dict) -> SceneObject
+    def add_group(
+        self,
+        name: str,
+        parent: Optional[SceneObject | TreeNode] = None,
+        **kwargs: Any,
+    ) -> Group:
         group = Group(name=name, **kwargs)
         self.add(group, parent=parent)
         return group
 
-    def clear_context(self, guids=None):
-        # type: (list | None) -> None
+    def clear_context(self, guids: Optional[list[Any]] = None) -> None:
         """Clear the visualisation context.
 
         Parameters
@@ -159,8 +208,7 @@ class Scene(Tree):
         """
         clear(guids)
 
-    def clear(self, clear_scene=True, clear_context=True):
-        # type: (bool, bool) -> None
+    def clear(self, clear_scene: bool = True, clear_context: bool = True) -> None:
         """Clear the scene.
 
         Parameters
@@ -194,7 +242,7 @@ class Scene(Tree):
         if clear_context:
             self.clear_context(guids)
 
-    def draw(self):
+    def draw(self) -> list[Any]:
         """Draw the scene.
 
         This will just draw all scene objects in the scene tree,
@@ -208,7 +256,7 @@ class Scene(Tree):
 
         before_draw()
 
-        drawn_objects = []
+        drawn_objects: list[Any] = []
         for sceneobject in self.objects:
             if sceneobject.show:
                 drawn_objects += sceneobject.draw()
@@ -217,7 +265,7 @@ class Scene(Tree):
 
         return drawn_objects
 
-    def redraw(self):
+    def redraw(self) -> None:
         """Redraw the scene.
 
         This removes all previously drawn objects from the visualisation context,
@@ -227,8 +275,7 @@ class Scene(Tree):
         self.clear(clear_scene=False, clear_context=True)
         self.draw()
 
-    def find_by_name(self, name):
-        # type: (str) -> SceneObject
+    def find_by_name(self, name: str) -> Optional[SceneObject]:
         """Find the first scene object with the given name.
 
         Parameters
@@ -243,8 +290,7 @@ class Scene(Tree):
         """
         return self.get_node_by_name(name=name)
 
-    def find_by_itemtype(self, itemtype):
-        # type: (...) -> SceneObject | None
+    def find_by_itemtype(self, itemtype: Type[Any]) -> Optional[SceneObject]:
         """Find the first scene object with a data item of the given type.
 
         Parameters
@@ -261,8 +307,7 @@ class Scene(Tree):
             if isinstance(obj.item, itemtype):
                 return obj
 
-    def find_all_by_itemtype(self, itemtype):
-        # type: (...) -> list[SceneObject]
+    def find_all_by_itemtype(self, itemtype: Type[Any]) -> list[SceneObject]:
         """Find all scene objects with a data item of the given type.
 
         Parameters
@@ -275,7 +320,7 @@ class Scene(Tree):
         list[:class:`SceneObject`]
 
         """
-        sceneobjects = []
+        sceneobjects: list[SceneObject] = []
         for obj in self.objects:
             if isinstance(obj.item, itemtype):
                 sceneobjects.append(obj)

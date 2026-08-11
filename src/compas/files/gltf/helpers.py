@@ -13,7 +13,7 @@ def matrix_to_col_major_order(matrix):
 
 
 def get_morph_function(weights):
-    """Returns a function which computes for a fixed list w of scalar weights the linear combination
+    """Return a function that computes, for fixed weights, the linear combination
                                   vertex + sum_i(w[i] * targets[i])
     where vertex and targets[i] are vectors."""
 

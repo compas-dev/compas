@@ -24,10 +24,6 @@ locate plugin implementations.
 #
 # https://github.com/pytest-dev/pluggy
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 import functools
 import inspect
 import pkgutil

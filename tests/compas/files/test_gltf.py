@@ -1,182 +1,63 @@
-import json
-import os
+from pathlib import Path
+
 import pytest
-from compas.files import GLTF
-from compas.files import GLTFContent
-from compas.tolerance import TOL
 
-# Temporary change the global precision in the TOL class to 12
-TOL.precision = 12
-
-BASE_FOLDER = os.path.dirname(__file__)
+from compas.files import GLTFDocument
+from compas.files import GLTFEncoder
+from compas.files import read_gltf
 
 
-@pytest.fixture
-def simple_gltf():
-    return os.path.join(BASE_FOLDER, "fixtures", "gltf", "SimpleMeshes.gltf")
+FIXTURES = Path(__file__).parent / "fixtures" / "gltf"
 
 
-@pytest.fixture
-def embedded_gltf():
-    return os.path.join(BASE_FOLDER, "fixtures", "gltf", "SimpleMeshesEmbedded.gltf")
+@pytest.mark.parametrize(
+    ("filename", "collection"),
+    [
+        ("SimpleMeshes.gltf", "meshes"),
+        ("SimpleMeshesEmbedded.gltf", "scenes"),
+        ("BoxInterleaved.glb", "nodes"),
+        ("TriangleWithoutIndices.gltf", "meshes"),
+        ("SimpleMorph.gltf", "meshes"),
+        ("SimpleSparseAccessor.gltf", "meshes"),
+        ("AnimatedMorphCube.glb", "animations"),
+        ("BoxTextured.glb", "materials"),
+        ("SpecGlossVsMetalRough.glb", "materials"),
+        ("SpecularTest.glb", "materials"),
+    ],
+)
+def test_gltf_fixtures_parse_and_encode(filename, collection):
+    document = read_gltf(FIXTURES / filename)
+    payload = GLTFEncoder(format="glb").encode(document)
+
+    assert getattr(document, collection)
+    assert payload.json[collection]
 
 
-@pytest.fixture
-def interleaved_glb():
-    return os.path.join(BASE_FOLDER, "fixtures", "gltf", "BoxInterleaved.glb")
+def test_interleaved_vertices():
+    document = read_gltf(FIXTURES / "BoxInterleaved.glb")
+
+    assert len(document.meshes[0].vertices) == 24
 
 
-@pytest.fixture
-def indexless_gltf():
-    return os.path.join(BASE_FOLDER, "fixtures", "gltf", "TriangleWithoutIndices.gltf")
+def test_morph_and_sparse_vertices():
+    morph = read_gltf(FIXTURES / "SimpleMorph.gltf")
+    sparse = read_gltf(FIXTURES / "SimpleSparseAccessor.gltf")
+
+    assert (0.5, 1.5, 0.0) in morph.meshes[0].vertices
+    assert (5.0, 4.0, 0.0) in sparse.meshes[0].vertices
+    assert (5.0, 4.0, 0.0) in sparse.nodes[0].vertices
 
 
-@pytest.fixture
-def morph_gltf():
-    return os.path.join(BASE_FOLDER, "fixtures", "gltf", "SimpleMorph.gltf")
+def test_document_scene_editing():
+    document = GLTFDocument()
+    scene = document.add_scene()
+    node = scene.add_child()
+    node.add_child()
 
-
-@pytest.fixture
-def sparse_gltf():
-    return os.path.join(BASE_FOLDER, "fixtures", "gltf", "SimpleSparseAccessor.gltf")
-
-
-@pytest.fixture
-def animated_gltf():
-    return os.path.join(BASE_FOLDER, "fixtures", "gltf", "AnimatedMorphCube.glb")
-
-
-@pytest.fixture
-def textured_gltf():
-    return os.path.join(BASE_FOLDER, "fixtures", "gltf", "BoxTextured.glb")
-
-
-@pytest.fixture
-def specglossmetalrough_gltf():
-    return os.path.join(BASE_FOLDER, "fixtures", "gltf", "SpecGlossVsMetalRough.glb")
-
-
-@pytest.fixture
-def specular_gltf():
-    return os.path.join(BASE_FOLDER, "fixtures", "gltf", "SpecularTest.glb")
-
-
-def test_simple_gltf(simple_gltf):
-    gltf = GLTF(simple_gltf)
-    gltf.read()
-    assert len(gltf.content.scenes[0].children) == 2
-
-    exporter = gltf.exporter
-    json.dumps(exporter._gltf_dict)
-    assert len(exporter._gltf_dict["nodes"]) == 2
-    assert len(exporter._gltf_dict["meshes"]) == 1
-    assert len(exporter._buffer) == exporter._gltf_dict["buffers"][0]["byteLength"]
-
-
-def test_embedded_gltf(embedded_gltf):
-    gltf = GLTF(embedded_gltf)
-    gltf.read()
-    assert len(gltf.content.scenes[0].children) > 1
-
-    exporter = gltf.exporter
-    exporter.embed_data = True
-    exporter.load()
-    json.dumps(exporter._gltf_dict)
-    assert exporter._gltf_dict["buffers"][0]["uri"].startswith("data")
-    assert "animations" not in exporter._gltf_dict
-    assert "materials" not in exporter._gltf_dict
-
-
-def test_interleaved_glb(interleaved_glb):
-    gltf = GLTF(interleaved_glb)
-    gltf.read()
-    assert len(gltf.content.nodes) == 2
-    assert len(gltf.content.meshes[0].vertices) == 24
-
-
-def test_indexless_gltf(indexless_gltf):
-    gltf = GLTF(indexless_gltf)
-    gltf.read()
-    assert len(gltf.content.meshes[0].vertices) > 0
-
-
-def test_morph_gltf(morph_gltf):
-    gltf = GLTF(morph_gltf)
-    gltf.read()
-    assert (0.5, 1.5, 0.0) in gltf.content.meshes[0].vertices
-
-
-def test_sparse_gltf(sparse_gltf):
-    gltf = GLTF(sparse_gltf)
-    gltf.read()
-    assert (5.0, 4.0, 0.0) in gltf.content.meshes[0].vertices
-    assert len(gltf.content.meshes[0].faces) > 0
-    assert (5.0, 4.0, 0.0) in gltf.content.nodes[0].vertices
-
-
-def test_animated_gltf(animated_gltf):
-    gltf = GLTF(animated_gltf)
-    gltf.read()
-    assert len(gltf.content.animations) > 0
-
-    exporter = gltf.exporter
-    json.dumps(exporter._gltf_dict)
-    assert len(exporter._gltf_dict["animations"]) > 0
-    assert "images" not in exporter._gltf_dict
-
-
-def test_textured_gltf(textured_gltf):
-    gltf = GLTF(textured_gltf)
-    gltf.read()
-    assert len(gltf.content.materials) > 0
-
-    exporter = gltf.exporter
-    json.dumps(exporter._gltf_dict)
-    assert len(exporter._gltf_dict["materials"]) > 0
-    assert len(exporter._gltf_dict["samplers"]) > 0
-    assert len(exporter._gltf_dict["images"]) > 0
-    assert len(exporter._gltf_dict["textures"]) > 0
-    assert "animations" not in exporter._gltf_dict
-
-
-def test_specglossmetalrough(specglossmetalrough_gltf):
-    gltf = GLTF(specglossmetalrough_gltf)
-    gltf.read()
-    exporter = gltf.exporter
-    json.dumps(exporter._gltf_dict)
-    assert exporter._content.extensions_used == ["KHR_materials_pbrSpecularGlossiness"]
-
-
-def test_specular(specular_gltf):
-    gltf = GLTF(specular_gltf)
-    gltf.read()
-    exporter = gltf.exporter
-    json.dumps(exporter._gltf_dict)
-    assert exporter._content.extensions_used == ["KHR_materials_specular"]
-
-
-def test_gltf_content():
-    content = GLTFContent()
-    scene = content.add_scene()
-    assert len(content.scenes) == 1
-
-    node_0 = scene.add_child()
-    assert len(content.nodes) == 1
-    assert len(scene.children) == 1
-    assert len(node_0.children) == 0
-
-    node_0.add_child()
-    assert len(content.nodes) == 2
-    assert len(node_0.children) == 1
+    assert len(document.nodes) == 2
     assert len(scene.nodes) == 2
-    assert len(scene.positions_and_edges[0]) == 3
 
-    node_0.children = []
-    content.remove_orphans()
-    assert len(node_0.children) == 0
-    assert len(content.nodes) == 1
-    assert len(scene.nodes) == 1
+    node.children = []
+    document.remove_orphans()
 
-
-# Reset the precision to its default value
-TOL.precision = TOL.PRECISION
+    assert len(document.nodes) == 1

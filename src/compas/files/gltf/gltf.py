@@ -1,88 +1,70 @@
-from compas.files.gltf.gltf_exporter import GLTFExporter
-from compas.files.gltf.gltf_parser import GLTFParser
-from compas.files.gltf.gltf_reader import GLTFReader
+"""Convenience functions for reading and writing glTF documents."""
+
+from os import PathLike
+from pathlib import Path
+from typing import Optional
+from typing import cast
+
+from compas import _iotools
+
+from .gltf_document import GLTFDocument
+from .gltf_encoder import GLTFEncoder
+from .gltf_parser import GLTFParser
+from .gltf_reader import GLTFReader
+from .gltf_resources import GLTFResourceLoader
+from .gltf_types import GLTFFormat
+from .gltf_writer import GLTFWriter
 
 
-class GLTF(object):
-    """Class for working with files in glTF format.
+def read_gltf(
+    source: _iotools.IOSource,
+    resource_loader: Optional[GLTFResourceLoader] = None,
+) -> GLTFDocument:
+    """Read a glTF document.
 
-    Caution: Extensions and most other application specific data are unsupported,
-    and their data may be lost upon import.
-
-    Attributes
+    Parameters
     ----------
-    filepath : str
-        Path to the location of the glTF file.
-    content : compas.files.GLTFContent
-    reader : compas.files.GLTFReader
-    parser : compas.files.GLTFParser
-    exporter : compas.files.GLTFExporter
+    source
+        Path, URL, text stream, or binary stream.
+    resource_loader
+        Optional loader for external buffers and images.
 
-    References
-    ----------
-    https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/figures/gltfOverview-2.0.0b.png
+    Returns
+    -------
+    GLTFDocument
+        Parsed semantic document.
 
     """
+    return GLTFParser(GLTFReader(source, resource_loader).read()).parse()
 
-    def __init__(self, filepath=None):
-        self.filepath = filepath
-        self._content = None
 
-        self._is_parsed = False
-        self._reader = None
-        self._parser = None
+def write_gltf(
+    target: _iotools.IOTarget,
+    document: GLTFDocument,
+    format: Optional[GLTFFormat] = None,
+    embed_data: bool = False,
+) -> None:
+    """Encode and write a glTF document.
 
-        self._exporter = None
+    Parameters
+    ----------
+    target
+        Path or writable stream.
+    document
+        Semantic glTF document.
+    format
+        Explicit format required for stream targets.
+    embed_data
+        Embed binary data in JSON glTF output.
 
-    def read(self):
-        """Read the glTF located at compas.files.GLTF.filepath and load its content."""
-        self._reader = GLTFReader(self.filepath)
-        self._parser = GLTFParser(self._reader)
-        self._is_parsed = True
-
-        self._content = self._parser.content
-
-    @property
-    def reader(self):
-        if not self._is_parsed:
-            self.read()
-        return self._reader
-
-    @property
-    def parser(self):
-        if not self._is_parsed:
-            self.read()
-        return self._parser
-
-    @property
-    def content(self):
-        return self._content
-
-    @content.setter
-    def content(self, value):
-        if not self._is_parsed:
-            self._is_parsed = True
-        self._content = value
-
-    @property
-    def exporter(self):
-        if not self._exporter:
-            self._exporter = GLTFExporter(self.filepath, self.content)
-        return self._exporter
-
-    def export(self, embed_data=False):
-        """Export the content of this compas.files.GLTF to the location
-        compas.files.GLTF.filepath, with file format determined by the given extension.
-
-        Parameters
-        ----------
-        embed_data : bool
-            When set to `True`, mesh and other data will be embedded in the glTF,
-            and no external binary file will be created.  The default value is `False`.
-
-        Returns
-        -------
-
-        """
-        self.exporter.embed_data = embed_data
-        self.exporter.export()
+    """
+    if format is None:
+        if not isinstance(target, (str, PathLike)):
+            raise ValueError("A glTF format is required for stream targets.")
+        suffix = Path(target).suffix.lower()
+        if suffix not in (".gltf", ".glb"):
+            raise ValueError("The target must use a .gltf or .glb extension.")
+        format = cast(GLTFFormat, suffix[1:])
+    filename = Path(target).stem if isinstance(target, (str, PathLike)) else "model"
+    payload = GLTFEncoder(format, embed_data, filename).encode(document)
+    GLTFWriter(target).write(payload)
