@@ -1,4 +1,3 @@
-from io import BytesIO
 from io import StringIO
 
 import pytest
@@ -9,32 +8,28 @@ from compas.files.obj_reader import OBJReader
 
 
 def parse(text):
-    return OBJParser(OBJReader(StringIO(text))).parse()
+    return OBJParser(OBJReader(StringIO(text)).read()).parse()
 
 
-def test_obj_reader_handles_comments_and_continuations():
-    statements = OBJReader(
-        StringIO(
-            """
-            # comment
-            v 0 0 \\
-              0 # inline comment
-            f 1 1 1
-            """
-        )
-    ).read()
+def test_obj_parser_handles_comments_and_continuations():
+    document = parse(
+        """
+        # comment
+        v 0 0 \\
+          0 # inline comment
+        f 1 1 1
+        """
+    )
 
-    assert [(statement.keyword, statement.arguments) for statement in statements] == [
-        ("v", ("0", "0", "0")),
-        ("f", ("1", "1", "1")),
-    ]
+    assert document.comments == ["comment", "inline comment"]
+    assert document.vertices == [[0.0, 0.0, 0.0]]
+    assert len(document.faces) == 1
 
 
-def test_obj_reader_decodes_binary_streams():
-    statements = OBJReader(BytesIO(b"v 0 0 0\n")).read()
+def test_obj_parser_uses_configured_encoding():
+    document = OBJParser("# Grüezi\n".encode("latin-1"), encoding="latin-1").parse()
 
-    assert statements[0].keyword == "v"
-    assert statements[0].line == 1
+    assert document.comments == ["Grüezi"]
 
 
 def test_obj_parser_builds_structured_document():

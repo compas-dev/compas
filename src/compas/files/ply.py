@@ -1,5 +1,6 @@
 """Convenience functions for reading and writing PLY data."""
 
+from copy import deepcopy
 from dataclasses import dataclass
 from typing import Any
 from typing import Optional
@@ -10,10 +11,10 @@ from .ply_document import PLYDocument
 from .ply_document import PLYElement
 from .ply_document import PLYFormat
 from .ply_document import PLYProperty
-from .ply_document import PLYValue
 from .ply_parser import PLYParser
 from .ply_reader import PLYReader
 from .ply_reader import PLYSource
+from .ply_types import PLYValue
 from .ply_writer import PLYTarget
 from .ply_writer import PLYWriter
 
@@ -34,12 +35,12 @@ def _scalar(record: dict[str, PLYValue], name: str) -> Union[int, float]:
     return value
 
 
-def read_ply(filepath: PLYSource) -> PLYDocument:
+def read_ply(source: PLYSource) -> PLYDocument:
     """Read a PLY source into a document.
 
     Parameters
     ----------
-    filepath
+    source
         Path, URL, text stream, or binary stream containing PLY data.
 
     Returns
@@ -48,7 +49,7 @@ def read_ply(filepath: PLYSource) -> PLYDocument:
         Parsed PLY document.
 
     """
-    return PLYParser(PLYReader(filepath)).parse()
+    return PLYParser(PLYReader(source).read()).parse()
 
 
 def ply_data(document: PLYDocument) -> PLYData:
@@ -65,6 +66,7 @@ def ply_data(document: PLYDocument) -> PLYData:
         Vertex coordinates, edges, and polygon faces.
 
     """
+    document.validate()
     vertex_element = document.element("vertex")
     face_element = document.element("face")
     edge_element = document.element("edge")
@@ -98,11 +100,16 @@ def ply_data(document: PLYDocument) -> PLYData:
                 end = cast(Union[int, float], record[names[1]])
                 edges.append((int(start), int(end)))
 
+    vertex_count = len(vertices)
+    if any(vertex < 0 or vertex >= vertex_count for face in faces for vertex in face):
+        raise ValueError("PLY face contains an invalid vertex index.")
+    if any(vertex < 0 or vertex >= vertex_count for edge in edges for vertex in edge):
+        raise ValueError("PLY edge contains an invalid vertex index.")
     return PLYData(vertices, edges, faces)
 
 
 def write_ply(
-    filepath: PLYTarget,
+    target: PLYTarget,
     data: Any,
     precision: Optional[Union[int, str]] = None,
     format: Optional[PLYFormat] = None,
@@ -114,7 +121,7 @@ def write_ply(
 
     Parameters
     ----------
-    filepath
+    target
         Path or writable text or binary stream.
     data
         PLY document or mesh to write.
@@ -135,22 +142,17 @@ def write_ply(
     None
 
     """
-    if isinstance(data, PLYDocument):
-        PLYWriter(filepath, format=format).write(data)
-        return
-
-    document = _document_from_mesh(data, precision)
+    document = deepcopy(data) if isinstance(data, PLYDocument) else _document_from_mesh(data)
     if author:
         document.comments.append(f"author: {author}")
     if email:
         document.comments.append(f"email: {email}")
     if date:
         document.comments.append(f"date: {date}")
-    PLYWriter(filepath, format=format).write(document)
+    PLYWriter(target, format=format, precision=precision).write(document)
 
 
-def _document_from_mesh(mesh: Any, precision: Optional[Union[int, str]]) -> PLYDocument:
-    digits = _precision_digits(precision)
+def _document_from_mesh(mesh: Any) -> PLYDocument:
     vertex_index = mesh.vertex_index()
     vertex = PLYElement(
         "vertex",
@@ -158,19 +160,9 @@ def _document_from_mesh(mesh: Any, precision: Optional[Union[int, str]]) -> PLYD
     )
     for key in mesh.vertices():
         xyz = mesh.vertex_coordinates(key)
-        if digits is not None:
-            xyz = [round(value, digits) for value in xyz]
         vertex.data.append(dict(zip(("x", "y", "z"), xyz)))
 
     face = PLYElement("face", [PLYProperty("vertex_indices", "int", "uchar")])
     for key in mesh.faces():
         face.data.append({"vertex_indices": [vertex_index[vertex] for vertex in mesh.face_vertices(key)]})
     return PLYDocument(elements=[vertex, face])
-
-
-def _precision_digits(precision: Optional[Union[int, str]]) -> Optional[int]:
-    if precision is None:
-        return None
-    if isinstance(precision, int):
-        return precision
-    return int(precision.rstrip("f"))

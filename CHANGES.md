@@ -13,6 +13,8 @@
   parameter types, and unnecessary fully qualified return-type paths.
 - Removed the remaining Python 2, old CPython, and IronPython compatibility
   paths from the file-format infrastructure.
+- Added shared `_iotools.read_bytes()` and `_iotools.write_bytes()` helpers for
+  consistent path, URL, text-stream, and binary-stream handling across formats.
 
 ### OBJ
 
@@ -43,6 +45,12 @@
 - Added parsing for positive and negative vertex references, texture and normal
   references, objects, groups, material libraries, active materials, smoothing
   groups, continuations, comments, and degree-one `curv` statements.
+- Preserved standalone and inline comments in `OBJDocument`, moved all OBJ
+  serialization helpers out of the writer class, and made generated metadata a
+  document concern rather than writer configuration.
+- Aligned OBJ and PLY pipeline responsibilities: readers now only normalize
+  paths, URLs, and streams to bytes, while parsers own decoding, lexical
+  processing, format syntax, and document construction.
 - Added semantic document, parser, writer, stream, multiple-mesh, welded and
   non-welded projection, and roundtrip tests. Roundtrip coverage verifies that
   identity-preserving reads retain vertex counts while explicit welding produces
@@ -60,6 +68,14 @@
 - Added generic ASCII, binary little-endian, and binary big-endian parsing and
   writing, including variable-length list properties and standard scalar type
   aliases.
+- Centralized PLY scalar definitions, parsing, validation, packing, and
+  unpacking in a shared codec module.
+- Strengthened PLY validation for formats, property schemas, scalar kinds and
+  ranges, list-count types and capacities, trailing and truncated data, and
+  mesh vertex references.
+- Applied numeric precision during ASCII serialization rather than rounding the
+  semantic document data, and ensured metadata options are applied to copied
+  documents without mutating caller-owned data.
 - Updated Mesh and Pointcloud PLY integration without changing their public
   constructors and conversion methods.
 - Added tests for custom schemas and properties, ASCII document roundtrips,

@@ -1,8 +1,7 @@
 """Semantic document model for parsed OBJ data.
 
 The document contains normalized, zero-based references and no file, parser,
-or writer state. Both the convenience API and the legacy OBJ facade use it as
-their intermediate representation.
+or writer state.
 """
 
 from dataclasses import dataclass
@@ -145,6 +144,8 @@ class OBJDocument:
         Named groups in insertion order.
     material_libraries
         Referenced material-library paths in source order.
+    comments
+        Comments in source order, without comment markers.
 
     Notes
     -----
@@ -165,6 +166,7 @@ class OBJDocument:
     objects: dict[str, OBJObject] = field(default_factory=dict)
     groups: dict[str, OBJGroup] = field(default_factory=dict)
     material_libraries: list[str] = field(default_factory=list)
+    comments: list[str] = field(default_factory=list)
 
     def validate(self) -> None:
         """Validate the internal references and coordinate dimensions.

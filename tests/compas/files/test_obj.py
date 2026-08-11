@@ -50,6 +50,18 @@ def test_write_obj_writes_document():
     assert stream.getvalue() == OBJ_TEXT
 
 
+def test_write_obj_adds_metadata_without_mutating_document():
+    stream = StringIO()
+    document = OBJDocument(vertices=[[0.0, 0.0, 0.0]])
+
+    write_obj(stream, document, author="COMPAS")
+    stream.seek(0)
+    restored = read_obj(stream)
+
+    assert document.comments == []
+    assert restored.comments == ["author: COMPAS"]
+
+
 def test_write_obj_writes_mesh_with_compatibility_header():
     stream = StringIO()
     mesh = Mesh.from_vertices_and_faces(

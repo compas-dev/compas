@@ -13,8 +13,9 @@ PLYSource = Union[str, PathLike[str], TextIO, BinaryIO]
 class PLYReader:
     """Read bytes from a PLY source."""
 
-    def __init__(self, source: PLYSource) -> None:
+    def __init__(self, source: PLYSource, encoding: str = "utf-8") -> None:
         self.source = source
+        self.encoding = encoding
 
     def read(self) -> bytes:
         """Read the source.
@@ -25,6 +26,4 @@ class PLYReader:
             Complete PLY source data.
 
         """
-        with _iotools.open_file(self.source, "rb") as stream:
-            data = stream.read()
-        return data.encode("utf-8") if isinstance(data, str) else data
+        return _iotools.read_bytes(self.source, encoding=self.encoding)

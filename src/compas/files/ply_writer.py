@@ -1,7 +1,11 @@
-"""Writer for structured ASCII and binary PLY documents."""
+"""Writer for structured ASCII and binary PLY documents.
 
-import struct
-from io import TextIOBase
+Notes
+-----
+A future public `ply_to_bytes` function could expose serialization separately
+from target writing, following the XML API.
+"""
+
 from os import PathLike
 from typing import BinaryIO
 from typing import Optional
@@ -13,18 +17,25 @@ from compas import _iotools
 
 from .ply_document import PLYDocument
 from .ply_document import PLYFormat
-from .ply_document import PLYScalar
-from .ply_parser import _SCALAR_FORMATS
+from .ply_types import PLYScalar
+from .ply_types import pack_scalar
 
 PLYTarget = Union[str, PathLike[str], TextIO, BinaryIO]
 
 
-def _format_number(value: PLYScalar) -> str:
-    return repr(value)
+def _precision_digits(precision: Optional[Union[int, str]]) -> Optional[int]:
+    if precision is None:
+        return None
+    if isinstance(precision, int):
+        return precision
+    return int(precision.rstrip("f"))
 
 
-def _pack_scalar(value: PLYScalar, byte_order: str, data_type: str) -> bytes:
-    return struct.pack(byte_order + _SCALAR_FORMATS[data_type], value)
+def _format_number(value: PLYScalar, precision: Optional[int]) -> str:
+    if isinstance(value, int) or precision is None:
+        return repr(value)
+    number = f"{value:.{precision}f}".rstrip("0").rstrip(".")
+    return "0" if number in ("", "-0") else number
 
 
 def _header(document: PLYDocument, format: PLYFormat) -> bytes:
@@ -42,7 +53,7 @@ def _header(document: PLYDocument, format: PLYFormat) -> bytes:
     return ("\n".join(lines) + "\n").encode("ascii")
 
 
-def _ascii_body(document: PLYDocument) -> bytes:
+def _ascii_body(document: PLYDocument, precision: Optional[int]) -> bytes:
     lines = []
     for element in document.elements:
         for record in element.data:
@@ -51,9 +62,9 @@ def _ascii_body(document: PLYDocument) -> bytes:
                 value = record[prop.name]
                 if prop.list_count_type:
                     items = value if isinstance(value, list) else []
-                    values.extend([str(len(items)), *[_format_number(item) for item in items]])
+                    values.extend([str(len(items)), *[_format_number(item, precision) for item in items]])
                 else:
-                    values.append(_format_number(cast(PLYScalar, value)))
+                    values.append(_format_number(cast(PLYScalar, value), precision))
             lines.append(" ".join(values))
     return (("\n".join(lines) + "\n") if lines else "").encode("ascii")
 
@@ -67,26 +78,32 @@ def _binary_body(document: PLYDocument, format: PLYFormat) -> bytes:
                 value = record[prop.name]
                 if prop.list_count_type:
                     items = value if isinstance(value, list) else []
-                    data.extend(_pack_scalar(len(items), byte_order, prop.list_count_type))
+                    data.extend(pack_scalar(len(items), byte_order, prop.list_count_type))
                     for item in items:
-                        data.extend(_pack_scalar(item, byte_order, prop.data_type))
+                        data.extend(pack_scalar(item, byte_order, prop.data_type))
                 else:
-                    data.extend(_pack_scalar(cast(PLYScalar, value), byte_order, prop.data_type))
+                    data.extend(pack_scalar(cast(PLYScalar, value), byte_order, prop.data_type))
     return bytes(data)
 
 
-def _body(document: PLYDocument, format: PLYFormat) -> bytes:
+def _body(document: PLYDocument, format: PLYFormat, precision: Optional[int]) -> bytes:
     if format == "ascii":
-        return _ascii_body(document)
+        return _ascii_body(document, precision)
     return _binary_body(document, format)
 
 
 class PLYWriter:
     """Write a structured PLY document."""
 
-    def __init__(self, target: PLYTarget, format: Optional[PLYFormat] = None) -> None:
+    def __init__(
+        self,
+        target: PLYTarget,
+        format: Optional[PLYFormat] = None,
+        precision: Optional[Union[int, str]] = None,
+    ) -> None:
         self.target = target
         self.format = format
+        self.precision = _precision_digits(precision)
 
     def write(self, document: PLYDocument) -> None:
         """Write a PLY document.
@@ -102,12 +119,10 @@ class PLYWriter:
 
         """
         document.validate()
-        output_format = cast(PLYFormat, self.format or document.format)
+        output_format = document.format
+        if self.format is not None:
+            output_format = self.format
         header = _header(document, output_format)
-        body = _body(document, output_format)
+        body = _body(document, output_format, self.precision)
         data = header + body
-        with _iotools.open_file(self.target, "wb") as stream:
-            if isinstance(stream, TextIOBase):
-                cast(TextIO, stream).write(data.decode("ascii"))
-            else:
-                cast(BinaryIO, stream).write(data)
+        _iotools.write_bytes(self.target, data, encoding="ascii")

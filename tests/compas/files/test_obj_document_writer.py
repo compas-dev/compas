@@ -74,10 +74,11 @@ def test_obj_writer_supports_binary_streams():
 def test_obj_document_roundtrip_preserves_semantics():
     stream = StringIO()
     original = make_document()
+    original.comments.append("roundtrip metadata")
 
     OBJWriter(stream).write(original)
     stream.seek(0)
-    restored = OBJParser(OBJReader(stream)).parse()
+    restored = OBJParser(OBJReader(stream).read()).parse()
 
     assert restored.vertices == original.vertices
     assert restored.vertex_weights == original.vertex_weights
@@ -89,3 +90,4 @@ def test_obj_document_roundtrip_preserves_semantics():
     assert restored.objects == original.objects
     assert restored.groups == original.groups
     assert restored.material_libraries == original.material_libraries
+    assert restored.comments == original.comments

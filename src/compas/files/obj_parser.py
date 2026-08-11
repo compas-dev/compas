@@ -1,10 +1,11 @@
-"""Document parser for logical OBJ statements.
+"""Parser for OBJ source data.
 
-The legacy OBJ facade uses this parser internally. The original OBJParser
-remains available for compatibility.
+The parser decodes OBJ source bytes, produces logical statements, and converts
+them into a structured document.
 """
 
-from typing import Iterable
+from dataclasses import dataclass
+from typing import Iterator
 from typing import Optional
 
 from .obj_document import OBJDocument
@@ -15,7 +16,43 @@ from .obj_document import OBJLine
 from .obj_document import OBJObject
 from .obj_document import OBJPoint
 from .obj_document import OBJVertexReference
-from .obj_reader import OBJStatement
+
+
+@dataclass(frozen=True)
+class OBJStatement:
+    """Logical OBJ statement with its one-based source line."""
+
+    line: int
+    keyword: str
+    arguments: tuple[str, ...]
+
+
+def _line_statements(line_number: int, line: str) -> Iterator[OBJStatement]:
+    content, marker, comment = line.partition("#")
+    content = content.strip()
+    if content:
+        keyword, *arguments = content.split()
+        yield OBJStatement(line_number, keyword, tuple(arguments))
+    if marker and comment.strip():
+        yield OBJStatement(line_number, "#", (comment.strip(),))
+
+
+def _statements(source: bytes, encoding: str) -> Iterator[OBJStatement]:
+    continuation = ""
+    start_line = 0
+    for line_number, source_line in enumerate(source.decode(encoding).splitlines(), start=1):
+        line = source_line.rstrip()
+        if continuation:
+            line = continuation + line.lstrip()
+        else:
+            start_line = line_number
+        if line.endswith("\\"):
+            continuation = line[:-1].rstrip() + " "
+            continue
+        continuation = ""
+        yield from _line_statements(start_line, line)
+    if continuation:
+        yield from _line_statements(start_line, continuation.rstrip())
 
 
 class OBJParseError(ValueError):
@@ -27,13 +64,16 @@ class OBJParser:
 
     Parameters
     ----------
-    statements
-        Logical statements produced by the document-based OBJ reader.
+    source
+        Complete OBJ source data.
+    encoding
+        Encoding used to decode source bytes.
 
     """
 
-    def __init__(self, statements: Iterable[OBJStatement]) -> None:
-        self.statements = statements
+    def __init__(self, source: bytes, encoding: str = "utf-8") -> None:
+        self.source = source
+        self.encoding = encoding
         self.document = OBJDocument()
         self._object: Optional[str] = None
         self._groups: list[str] = []
@@ -50,7 +90,7 @@ class OBJParser:
             Parsed and validated OBJ document.
 
         """
-        for statement in self.statements:
+        for statement in _statements(self.source, self.encoding):
             try:
                 self._parse_statement(statement)
             except (IndexError, TypeError, ValueError) as error:
@@ -65,7 +105,9 @@ class OBJParser:
         keyword = statement.keyword
         arguments = statement.arguments
 
-        if keyword == "v":
+        if keyword == "#":
+            self.document.comments.append(arguments[0])
+        elif keyword == "v":
             self._parse_vertex(arguments)
         elif keyword == "vt":
             self._parse_texture_vertex(arguments)

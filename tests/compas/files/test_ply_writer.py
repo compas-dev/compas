@@ -43,6 +43,17 @@ def test_ply_writer_writes_ascii_to_text_stream():
     assert result.endswith("4 0 1 2 3\n")
 
 
+def test_ply_writer_applies_precision_without_mutating_document():
+    document = make_document()
+    document.elements[0].data[1]["x"] = 1.23456
+    stream = StringIO()
+
+    PLYWriter(stream, precision=3).write(document)
+
+    assert "1.235 0 0\n" in stream.getvalue()
+    assert document.elements[0].data[1]["x"] == 1.23456
+
+
 def test_ply_writer_ascii_document_roundtrip():
     original = make_document()
     stream = StringIO()

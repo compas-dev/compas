@@ -1,6 +1,7 @@
 """Convenience functions for reading and writing OBJ data."""
 
 from collections import OrderedDict
+from copy import deepcopy
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 from typing import Any
@@ -43,13 +44,15 @@ class OBJData:
     groups: dict[str, list[tuple[str, int]]]
 
 
-def read_obj(filepath: OBJSource) -> OBJDocument:
+def read_obj(source: OBJSource, encoding: str = "utf-8") -> OBJDocument:
     """Read an OBJ source into an OBJ document.
 
     Parameters
     ----------
-    filepath
+    source
         Path, URL, text stream, or binary stream containing OBJ data.
+    encoding
+        Encoding used for text streams and source decoding.
 
     Returns
     -------
@@ -57,7 +60,8 @@ def read_obj(filepath: OBJSource) -> OBJDocument:
         Parsed OBJ document.
 
     """
-    return OBJParser(OBJReader(filepath)).parse()
+    data = OBJReader(source, encoding=encoding).read()
+    return OBJParser(data, encoding=encoding).parse()
 
 
 def obj_data(document: OBJDocument) -> OBJData:
@@ -103,7 +107,7 @@ def weld_obj_data(document: OBJDocument, precision: Optional[int] = None) -> OBJ
 
 
 def read_obj_meshes(
-    filepath: OBJSource,
+    source: OBJSource,
     weld: bool = False,
     precision: Optional[int] = None,
 ) -> list["Mesh"]:
@@ -111,7 +115,7 @@ def read_obj_meshes(
 
     Parameters
     ----------
-    filepath
+    source
         Path, URL, text stream, or binary stream containing OBJ data.
     weld
         If True, explicitly weld coincident vertices before constructing the meshes.
@@ -127,7 +131,7 @@ def read_obj_meshes(
     """
     from compas.datastructures import Mesh
 
-    document = read_obj(filepath)
+    document = read_obj(source)
     data = weld_obj_data(document, precision) if weld else obj_data(document)
     meshes = []
     claimed_faces = set()
@@ -187,7 +191,7 @@ def _project_obj_data(
 
 
 def write_obj(
-    filepath: OBJTarget,
+    target: OBJTarget,
     data: Any,
     precision: Optional[int] = None,
     unweld: bool = False,
@@ -199,7 +203,7 @@ def write_obj(
 
     Parameters
     ----------
-    filepath
+    target
         Path or writable text or binary stream.
     data
         OBJ document, mesh, or collection of meshes to write.
@@ -221,29 +225,30 @@ def write_obj(
     """
     precision = TOL.precision if precision is None else precision
     if isinstance(data, OBJDocument):
-        OBJWriter(filepath, precision=precision).write(data)
-        return
-
-    meshes = list(data) if isinstance(data, (list, tuple)) else [data]
-    document = _document_from_meshes(meshes, unweld=unweld)
-    comments = [
-        "OBJ",
-        "COMPAS",
-        f"version: {compas.__version__}",
-        f"precision: {precision}",
-        "V F E: {} {} {}".format(
-            sum(mesh.number_of_vertices() for mesh in meshes),
-            sum(mesh.number_of_faces() for mesh in meshes),
-            sum(mesh.number_of_edges() for mesh in meshes),
-        ),
-    ]
+        document = deepcopy(data)
+    else:
+        meshes = list(data) if isinstance(data, (list, tuple)) else [data]
+        document = _document_from_meshes(meshes, unweld=unweld)
+        document.comments.extend(
+            [
+                "OBJ",
+                "COMPAS",
+                f"version: {compas.__version__}",
+                f"precision: {precision}",
+                "V F E: {} {} {}".format(
+                    sum(mesh.number_of_vertices() for mesh in meshes),
+                    sum(mesh.number_of_faces() for mesh in meshes),
+                    sum(mesh.number_of_edges() for mesh in meshes),
+                ),
+            ]
+        )
     if author:
-        comments.append(f"author: {author}")
+        document.comments.append(f"author: {author}")
     if email:
-        comments.append(f"email: {email}")
+        document.comments.append(f"email: {email}")
     if date:
-        comments.append(f"date: {date}")
-    OBJWriter(filepath, precision=precision, comments=comments).write(document)
+        document.comments.append(f"date: {date}")
+    OBJWriter(target, precision=precision).write(document)
 
 
 def _document_from_meshes(meshes: Iterable[Any], unweld: bool = False) -> OBJDocument:

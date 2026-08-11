@@ -1,37 +1,15 @@
 """Parser for ASCII and binary PLY documents."""
 
 import struct
-from typing import Callable
 from typing import cast
 
 from .ply_document import PLYDocument
 from .ply_document import PLYElement
 from .ply_document import PLYFormat
 from .ply_document import PLYProperty
-from .ply_document import PLYScalar
-from .ply_reader import PLYReader
-
-_SCALAR_FORMATS = {
-    "char": "b",
-    "int8": "b",
-    "uchar": "B",
-    "uint8": "B",
-    "short": "h",
-    "int16": "h",
-    "ushort": "H",
-    "uint16": "H",
-    "int": "i",
-    "int32": "i",
-    "uint": "I",
-    "uint32": "I",
-    "int64": "q",
-    "uint64": "Q",
-    "float": "f",
-    "float32": "f",
-    "double": "d",
-    "float64": "d",
-}
-_INTEGER_TYPES = {name for name, code in _SCALAR_FORMATS.items() if code not in ("f", "d")}
+from .ply_types import PLY_SCALAR_TYPES
+from .ply_types import parse_scalar
+from .ply_types import unpack_scalar
 
 
 class PLYParseError(ValueError):
@@ -57,6 +35,7 @@ def _parse_header(header: list[str]) -> tuple[PLYDocument, list[int]]:
     document = PLYDocument()
     counts = []
     current = None
+    has_format = False
     for line in header[1:]:
         parts = line.split()
         if not parts:
@@ -66,6 +45,7 @@ def _parse_header(header: list[str]) -> tuple[PLYDocument, list[int]]:
                 raise PLYParseError(f"Unsupported PLY format: {parts[1]}")
             document.format = cast(PLYFormat, parts[1])
             document.version = parts[2]
+            has_format = True
         elif parts[0] == "comment":
             document.comments.append(line[len("comment") :].lstrip())
         elif parts[0] == "obj_info":
@@ -84,16 +64,14 @@ def _parse_header(header: list[str]) -> tuple[PLYDocument, list[int]]:
                 current.properties.append(PLYProperty(parts[2], parts[1]))
             else:
                 raise PLYParseError("Invalid PLY property declaration.")
+    if not has_format:
+        raise PLYParseError("PLY header has no format statement.")
     return document, counts
 
 
 def _require_type(data_type: str) -> None:
-    if data_type not in _SCALAR_FORMATS:
+    if data_type not in PLY_SCALAR_TYPES:
         raise PLYParseError(f"Unsupported PLY scalar type: {data_type}")
-
-
-def _converter(data_type: str) -> Callable[[str], PLYScalar]:
-    return int if data_type in _INTEGER_TYPES else float
 
 
 def _parse_ascii(body: bytes, document: PLYDocument, counts: list[int]) -> None:
@@ -104,12 +82,18 @@ def _parse_ascii(body: bytes, document: PLYDocument, counts: list[int]) -> None:
                 record = {}
                 for prop in element.properties:
                     if prop.list_count_type:
-                        size = int(next(tokens))
-                        convert = _converter(prop.data_type)
-                        record[prop.name] = [convert(next(tokens)) for _ in range(size)]
+                        count = parse_scalar(next(tokens), prop.list_count_type)
+                        if int(count) < 0:
+                            raise ValueError("PLY list lengths cannot be negative.")
+                        record[prop.name] = [parse_scalar(next(tokens), prop.data_type) for _ in range(int(count))]
                     else:
-                        record[prop.name] = _converter(prop.data_type)(next(tokens))
+                        record[prop.name] = parse_scalar(next(tokens), prop.data_type)
                 element.data.append(record)
+        try:
+            next(tokens)
+        except StopIteration:
+            return
+        raise PLYParseError("ASCII PLY data contains unexpected trailing values.")
     except (StopIteration, ValueError) as error:
         raise PLYParseError("Invalid ASCII PLY element data.") from error
 
@@ -123,30 +107,26 @@ def _parse_binary(body: bytes, document: PLYDocument, counts: list[int]) -> None
                 record = {}
                 for prop in element.properties:
                     if prop.list_count_type:
-                        size, offset = _unpack(body, offset, byte_order, prop.list_count_type)
+                        size, offset = unpack_scalar(body, offset, byte_order, prop.list_count_type)
                         values = []
                         for _ in range(int(size)):
-                            value, offset = _unpack(body, offset, byte_order, prop.data_type)
+                            value, offset = unpack_scalar(body, offset, byte_order, prop.data_type)
                             values.append(value)
                         record[prop.name] = values
                     else:
-                        record[prop.name], offset = _unpack(body, offset, byte_order, prop.data_type)
+                        record[prop.name], offset = unpack_scalar(body, offset, byte_order, prop.data_type)
                 element.data.append(record)
-    except (struct.error, ValueError) as error:
+        if offset != len(body):
+            raise PLYParseError("Binary PLY data contains unexpected trailing bytes.")
+    except (ValueError, struct.error) as error:
         raise PLYParseError("Invalid binary PLY element data.") from error
 
 
-def _unpack(data: bytes, offset: int, byte_order: str, data_type: str) -> tuple[PLYScalar, int]:
-    format = byte_order + _SCALAR_FORMATS[data_type]
-    value = struct.unpack_from(format, data, offset)[0]
-    return value, offset + struct.calcsize(format)
-
-
 class PLYParser:
-    """Parse bytes supplied by a PLY reader into a document."""
+    """Parse PLY source bytes into a document."""
 
-    def __init__(self, reader: PLYReader) -> None:
-        self.reader = reader
+    def __init__(self, source: bytes) -> None:
+        self.source = source
 
     def parse(self) -> PLYDocument:
         """Parse the complete PLY document.
@@ -157,8 +137,7 @@ class PLYParser:
             Parsed PLY document.
 
         """
-        source = self.reader.read()
-        header, body = _split_header(source)
+        header, body = _split_header(self.source)
         document, counts = _parse_header(header)
         if document.format == "ascii":
             _parse_ascii(body, document, counts)
