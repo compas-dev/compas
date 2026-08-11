@@ -13,7 +13,8 @@ from .gltf.gltf_parser import GLTFParser
 from .gltf.gltf_reader import GLTFReader
 from .obj import OBJData, OBJParser, OBJReader, OBJWriter, obj_data, read_obj, read_obj_meshes, weld_obj_data, write_obj
 from .obj_document import OBJDocument, OBJElementReference, OBJFace, OBJGroup, OBJLine, OBJObject, OBJPoint, OBJVertexReference
-from .off import OFF, OFFReader, OFFWriter
+from .off import OFFParser, OFFReader, OFFWriter, read_off, write_off
+from .off_document import OFFDocument
 from .ply import PLYData, PLYParser, PLYReader, PLYWriter, ply_data, read_ply, write_ply
 from .ply_document import PLYDocument, PLYElement, PLYProperty
 from .stl import STL, STLParser, STLReader, STLWriter

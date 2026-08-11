@@ -36,13 +36,14 @@ from compas.datastructures.attributes import EdgeAttributeView
 from compas.datastructures.attributes import FaceAttributeView
 from compas.datastructures.attributes import VertexAttributeView
 from compas.datastructures.datastructure import Datastructure
-from compas.files import OFF
 from compas.files import STL
 from compas.files import obj_data
 from compas.files import ply_data
 from compas.files import read_obj
+from compas.files import read_off
 from compas.files import read_ply
 from compas.files import write_obj
+from compas.files import write_off
 from compas.files import write_ply
 from compas.geometry import Box
 from compas.geometry import Circle
@@ -353,14 +354,8 @@ class Mesh(Datastructure):
             A mesh object.
 
         """
-        off = OFF(filepath)
-        reader = off.reader
-        if reader is None:
-            return cls()
-        vertices = reader.vertices or []
-        faces = reader.faces or []
-        mesh = cls.from_vertices_and_faces(vertices, faces)
-        return mesh
+        document = read_off(filepath)
+        return cls.from_vertices_and_faces(document.vertices, document.faces)
 
     @classmethod
     def from_lines(
@@ -846,8 +841,7 @@ class Mesh(Datastructure):
         None
 
         """
-        off = OFF(filepath)
-        off.write(self, **kwargs)
+        write_off(filepath, self, **kwargs)
 
     # --------------------------------------------------------------------------
     # Helpers
