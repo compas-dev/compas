@@ -1,12 +1,36 @@
 """PLY scalar type definitions and codecs."""
 
 import struct
+from typing import Literal
 from typing import NamedTuple
 from typing import Optional
 from typing import Union
 
+PLYFormat = Literal["ascii", "binary_little_endian", "binary_big_endian"]
+PLYDataType = Literal[
+    "char",
+    "int8",
+    "uchar",
+    "uint8",
+    "short",
+    "int16",
+    "ushort",
+    "uint16",
+    "int",
+    "int32",
+    "uint",
+    "uint32",
+    "int64",
+    "uint64",
+    "float",
+    "float32",
+    "double",
+    "float64",
+]
+PLYByteOrder = Literal["<", ">"]
 PLYScalar = Union[int, float]
 PLYValue = Union[PLYScalar, list[PLYScalar]]
+PLYRecord = dict[str, PLYValue]
 
 
 class PLYScalarType(NamedTuple):
@@ -18,7 +42,7 @@ class PLYScalarType(NamedTuple):
     maximum: Optional[int] = None
 
 
-PLY_SCALAR_TYPES = {
+PLY_SCALAR_TYPES: dict[PLYDataType, PLYScalarType] = {
     "char": PLYScalarType("b", True, -128, 127),
     "int8": PLYScalarType("b", True, -128, 127),
     "uchar": PLYScalarType("B", True, 0, 255),
@@ -40,7 +64,7 @@ PLY_SCALAR_TYPES = {
 }
 
 
-def validate_scalar(value: PLYScalar, data_type: str) -> None:
+def validate_scalar(value: PLYScalar, data_type: PLYDataType) -> None:
     """Validate a scalar value against a PLY type."""
     scalar_type = PLY_SCALAR_TYPES.get(data_type)
     if scalar_type is None:
@@ -58,7 +82,7 @@ def validate_scalar(value: PLYScalar, data_type: str) -> None:
             raise ValueError(f"PLY value is outside the range of {data_type}.")
 
 
-def parse_scalar(value: str, data_type: str) -> PLYScalar:
+def parse_scalar(value: str, data_type: PLYDataType) -> PLYScalar:
     """Parse and validate an ASCII PLY scalar."""
     scalar_type = PLY_SCALAR_TYPES.get(data_type)
     if scalar_type is None:
@@ -68,13 +92,13 @@ def parse_scalar(value: str, data_type: str) -> PLYScalar:
     return result
 
 
-def pack_scalar(value: PLYScalar, byte_order: str, data_type: str) -> bytes:
+def pack_scalar(value: PLYScalar, byte_order: PLYByteOrder, data_type: PLYDataType) -> bytes:
     """Pack a validated binary PLY scalar."""
     validate_scalar(value, data_type)
     return struct.pack(byte_order + PLY_SCALAR_TYPES[data_type].format, value)
 
 
-def unpack_scalar(data: bytes, offset: int, byte_order: str, data_type: str) -> tuple[PLYScalar, int]:
+def unpack_scalar(data: bytes, offset: int, byte_order: PLYByteOrder, data_type: PLYDataType) -> tuple[PLYScalar, int]:
     """Unpack a binary PLY scalar and return its new offset."""
     scalar_type = PLY_SCALAR_TYPES.get(data_type)
     if scalar_type is None:

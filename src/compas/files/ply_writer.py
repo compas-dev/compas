@@ -6,21 +6,17 @@ A future public `ply_to_bytes` function could expose serialization separately
 from target writing, following the XML API.
 """
 
-from os import PathLike
-from typing import BinaryIO
 from typing import Optional
-from typing import TextIO
 from typing import Union
 from typing import cast
 
 from compas import _iotools
 
 from .ply_document import PLYDocument
-from .ply_document import PLYFormat
+from .ply_types import PLYByteOrder
+from .ply_types import PLYFormat
 from .ply_types import PLYScalar
 from .ply_types import pack_scalar
-
-PLYTarget = Union[str, PathLike[str], TextIO, BinaryIO]
 
 
 def _precision_digits(precision: Optional[Union[int, str]]) -> Optional[int]:
@@ -29,6 +25,12 @@ def _precision_digits(precision: Optional[Union[int, str]]) -> Optional[int]:
     if isinstance(precision, int):
         return precision
     return int(precision.rstrip("f"))
+
+
+def _output_format(document_format: PLYFormat, requested_format: Optional[PLYFormat]) -> PLYFormat:
+    if requested_format is None:
+        return document_format
+    return requested_format
 
 
 def _format_number(value: PLYScalar, precision: Optional[int]) -> str:
@@ -70,7 +72,7 @@ def _ascii_body(document: PLYDocument, precision: Optional[int]) -> bytes:
 
 
 def _binary_body(document: PLYDocument, format: PLYFormat) -> bytes:
-    byte_order = "<" if format == "binary_little_endian" else ">"
+    byte_order: PLYByteOrder = "<" if format == "binary_little_endian" else ">"
     data = bytearray()
     for element in document.elements:
         for record in element.data:
@@ -97,13 +99,13 @@ class PLYWriter:
 
     def __init__(
         self,
-        target: PLYTarget,
+        target: _iotools.IOTarget,
         format: Optional[PLYFormat] = None,
         precision: Optional[Union[int, str]] = None,
     ) -> None:
-        self.target = target
-        self.format = format
-        self.precision = _precision_digits(precision)
+        self.target: _iotools.IOTarget = target
+        self.format: Optional[PLYFormat] = format
+        self.precision: Optional[int] = _precision_digits(precision)
 
     def write(self, document: PLYDocument) -> None:
         """Write a PLY document.
@@ -119,9 +121,7 @@ class PLYWriter:
 
         """
         document.validate()
-        output_format = document.format
-        if self.format is not None:
-            output_format = self.format
+        output_format = _output_format(document.format, self.format)
         header = _header(document, output_format)
         body = _body(document, output_format, self.precision)
         data = header + body

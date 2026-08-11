@@ -1,19 +1,12 @@
 """Source acquisition for PLY files."""
 
-from os import PathLike
-from typing import BinaryIO
-from typing import TextIO
-from typing import Union
-
 from compas import _iotools
-
-PLYSource = Union[str, PathLike[str], TextIO, BinaryIO]
 
 
 class PLYReader:
     """Read bytes from a PLY source."""
 
-    def __init__(self, source: PLYSource, encoding: str = "utf-8") -> None:
+    def __init__(self, source: _iotools.IOSource, encoding: str = "utf-8") -> None:
         self.source = source
         self.encoding = encoding
 

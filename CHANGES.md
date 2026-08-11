@@ -70,6 +70,9 @@
   aliases.
 - Centralized PLY scalar definitions, parsing, validation, packing, and
   unpacking in a shared codec module.
+- Consolidated shared PLY domain declarations such as formats, data types,
+  byte order, scalar values, and records in `ply_types.py`, while reusing the
+  generic `_iotools` source and target aliases for I/O.
 - Strengthened PLY validation for formats, property schemas, scalar kinds and
   ranges, list-count types and capacities, trailing and truncated data, and
   mesh vertex references.

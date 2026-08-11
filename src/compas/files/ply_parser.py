@@ -5,9 +5,11 @@ from typing import cast
 
 from .ply_document import PLYDocument
 from .ply_document import PLYElement
-from .ply_document import PLYFormat
 from .ply_document import PLYProperty
 from .ply_types import PLY_SCALAR_TYPES
+from .ply_types import PLYByteOrder
+from .ply_types import PLYDataType
+from .ply_types import PLYFormat
 from .ply_types import parse_scalar
 from .ply_types import unpack_scalar
 
@@ -56,12 +58,11 @@ def _parse_header(header: list[str]) -> tuple[PLYDocument, list[int]]:
             counts.append(int(parts[2]))
         elif parts[0] == "property" and current is not None:
             if parts[1] == "list" and len(parts) == 5:
-                _require_type(parts[2])
-                _require_type(parts[3])
-                current.properties.append(PLYProperty(parts[4], parts[3], parts[2]))
+                count_type = _data_type(parts[2])
+                data_type = _data_type(parts[3])
+                current.properties.append(PLYProperty(parts[4], data_type, count_type))
             elif len(parts) == 3:
-                _require_type(parts[1])
-                current.properties.append(PLYProperty(parts[2], parts[1]))
+                current.properties.append(PLYProperty(parts[2], _data_type(parts[1])))
             else:
                 raise PLYParseError("Invalid PLY property declaration.")
     if not has_format:
@@ -69,9 +70,10 @@ def _parse_header(header: list[str]) -> tuple[PLYDocument, list[int]]:
     return document, counts
 
 
-def _require_type(data_type: str) -> None:
+def _data_type(data_type: str) -> PLYDataType:
     if data_type not in PLY_SCALAR_TYPES:
         raise PLYParseError(f"Unsupported PLY scalar type: {data_type}")
+    return cast(PLYDataType, data_type)
 
 
 def _parse_ascii(body: bytes, document: PLYDocument, counts: list[int]) -> None:
@@ -99,7 +101,7 @@ def _parse_ascii(body: bytes, document: PLYDocument, counts: list[int]) -> None:
 
 
 def _parse_binary(body: bytes, document: PLYDocument, counts: list[int]) -> None:
-    byte_order = "<" if document.format == "binary_little_endian" else ">"
+    byte_order: PLYByteOrder = "<" if document.format == "binary_little_endian" else ">"
     offset = 0
     try:
         for element, count in zip(document.elements, counts):

@@ -7,15 +7,15 @@ from typing import Optional
 from typing import Union
 from typing import cast
 
+from compas import _iotools
+
 from .ply_document import PLYDocument
 from .ply_document import PLYElement
-from .ply_document import PLYFormat
 from .ply_document import PLYProperty
 from .ply_parser import PLYParser
 from .ply_reader import PLYReader
-from .ply_reader import PLYSource
+from .ply_types import PLYFormat
 from .ply_types import PLYValue
-from .ply_writer import PLYTarget
 from .ply_writer import PLYWriter
 
 
@@ -35,7 +35,7 @@ def _scalar(record: dict[str, PLYValue], name: str) -> Union[int, float]:
     return value
 
 
-def read_ply(source: PLYSource) -> PLYDocument:
+def read_ply(source: _iotools.IOSource) -> PLYDocument:
     """Read a PLY source into a document.
 
     Parameters
@@ -109,7 +109,7 @@ def ply_data(document: PLYDocument) -> PLYData:
 
 
 def write_ply(
-    target: PLYTarget,
+    target: _iotools.IOTarget,
     data: Any,
     precision: Optional[Union[int, str]] = None,
     format: Optional[PLYFormat] = None,

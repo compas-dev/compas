@@ -2,15 +2,13 @@
 
 from dataclasses import dataclass
 from dataclasses import field
-from typing import Literal
 from typing import Optional
-from typing import cast
 
 from .ply_types import PLY_SCALAR_TYPES
-from .ply_types import PLYValue
+from .ply_types import PLYDataType
+from .ply_types import PLYFormat
+from .ply_types import PLYRecord
 from .ply_types import validate_scalar
-
-PLYFormat = Literal["ascii", "binary_little_endian", "binary_big_endian"]
 
 
 @dataclass(frozen=True)
@@ -18,8 +16,8 @@ class PLYProperty:
     """Property in a PLY element schema."""
 
     name: str
-    data_type: str
-    list_count_type: Optional[str] = None
+    data_type: PLYDataType
+    list_count_type: Optional[PLYDataType] = None
 
     @property
     def is_list(self) -> bool:
@@ -40,7 +38,7 @@ class PLYElement:
 
     name: str
     properties: list[PLYProperty] = field(default_factory=list)
-    data: list[dict[str, PLYValue]] = field(default_factory=list)
+    data: list[PLYRecord] = field(default_factory=list)
 
 
 @dataclass
@@ -103,7 +101,9 @@ class PLYDocument:
                     if prop.is_list != isinstance(value, list):
                         raise ValueError(f"Invalid value for PLY property: {prop.name}")
                     if isinstance(value, list):
-                        validate_scalar(len(value), cast(str, prop.list_count_type))
+                        if prop.list_count_type is None:
+                            raise ValueError(f"Missing list count type for PLY property: {prop.name}")
+                        validate_scalar(len(value), prop.list_count_type)
                         for item in value:
                             validate_scalar(item, prop.data_type)
                     else:
