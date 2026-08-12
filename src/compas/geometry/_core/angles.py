@@ -140,6 +140,11 @@ def angle_vectors_projected(u, v, normal, deg=False, tol=None):
         The tolerance for comparing values to zero.
         Default is :attr:`TOL.absolute`.
 
+    Raises
+    ------
+    ValueError
+        If one of the input vectors is parallel to the normal vector.
+
     Returns
     -------
     float
