@@ -21,6 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Renamed `Tolerance.units` to `Tolerance.unit` to better reflect the documented properties. Left `units` with deprecation warning.
 * Fixed `NotImplementedErorr` when calling `BrepLoop.vertices`.
 * Fixed `python -m compas` to detect extensions based on `importlib` rather than `pkg_resources`.
+* Changed `angle_vectors_projected` to raise `ValueError` when an input vector is parallel to projection normal.
+* Changed `angle_vectors` to raise `ValueError` when one of the input vectors is a zero-length vector instead of returning 0.
 
 ### Removed
 
@@ -161,7 +163,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed a bug when printing an empty `Tree`.
 * Fixed a bug in `Group` for IronPython where the decoding declaration was missing.
 * Fixed a bug where a `Group` without name could not be added to the scene.
-* Fixed a bug where `angle_vectors_projected` returned a 0 when an input vector was parallel to projection normal. Now returns `None`.
 
 ### Removed
 
