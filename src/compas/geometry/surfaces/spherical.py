@@ -191,6 +191,44 @@ class SphericalSurface(Surface):
     # Methods
     # =============================================================================
 
+    def isocurve_u(self, u):
+        """Compute the isoparametric curve at parameter u.
+
+        Parameters
+        ----------
+        u : float
+
+        Returns
+        -------
+        :class:`compas.geometry.Circle`
+
+        """
+        origin = self.center
+        xaxis = self.point_at(u=u, v=0) - origin
+        yaxis = self.point_at(u=u, v=0.25) - origin
+        frame = Frame(origin, xaxis, yaxis)
+        return Circle(radius=xaxis.length, frame=frame)
+
+    def isocurve_v(self, v):
+        """Compute the isoparametric curve at parameter v.
+
+        Parameters
+        ----------
+        v : float
+
+        Returns
+        -------
+        :class:`compas.geometry.Circle`
+
+        """
+        x = self.point_at(u=0, v=v)
+        y = self.point_at(u=0.25, v=v)
+        origin = self.center + self.frame.zaxis * (x - self.center).dot(self.frame.zaxis)
+        xaxis = x - origin
+        yaxis = y - origin
+        frame = Frame(origin, xaxis, yaxis)
+        return Circle(radius=xaxis.length, frame=frame)
+
     def point_at(self, u, v, world=True):
         """Construct a point on the sphere.
 

@@ -2,11 +2,11 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from Rhino.Geometry import Point3d
-from System.Drawing.Color import FromArgb
+import Rhino  # type: ignore
+import System  # type: ignore
 
+from compas.data.validators import is_sequence_of_iterable
 from compas.itertools import iterable_like
-from compas.utilities import is_sequence_of_iterable
 
 from .base import BaseConduit
 
@@ -58,8 +58,8 @@ class LabelsConduit(BaseConduit):
 
     """
 
-    default_color = FromArgb(0, 0, 0)
-    default_textcolor = FromArgb(255, 255, 255)
+    default_color = System.Drawing.Color.FromArgb(0, 0, 0)
+    default_textcolor = System.Drawing.Color.FromArgb(255, 255, 255)
 
     def __init__(self, labels, color=None, **kwargs):
         super(LabelsConduit, self).__init__(**kwargs)
@@ -79,7 +79,10 @@ class LabelsConduit(BaseConduit):
             # the first item in the list should be a tuple of colors
             # if not, wrap the tuple
             color = [color]
-        color = [(FromArgb(*bg), FromArgb(*text)) for bg, text in iterable_like(self.labels, color, (self.default_color, self.default_textcolor))]
+        color = [
+            (System.Drawing.Color.FromArgb(*bg), System.Drawing.Color.FromArgb(*text))
+            for bg, text in iterable_like(self.labels, color, (self.default_color, self.default_textcolor))  # type: ignore
+        ]
         self._color = color
 
     def DrawForeground(self, e):
@@ -97,6 +100,6 @@ class LabelsConduit(BaseConduit):
         for i, (pos, text) in enumerate(self.labels):
             if self.color:
                 color, textcolor = self.color[i]
-                e.Display.DrawDot(Point3d(*pos), text, color, textcolor)
+                e.Display.DrawDot(Rhino.Geometry.Point3d(*pos), text, color, textcolor)
             else:
-                e.Display.DrawDot(Point3d(*pos), text, self.default_color, self.default_textcolor)
+                e.Display.DrawDot(Rhino.Geometry.Point3d(*pos), text, self.default_color, self.default_textcolor)

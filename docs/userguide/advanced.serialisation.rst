@@ -149,6 +149,50 @@ which will help with IntelliSense and code completion.
     boxes: List[Box] = session['boxes']
 
 
+Inheritance
+===========
+
+When working with custom classes that inherit from COMPAS datastructures, COMPAS will encode the inheritance chain in the serialized data. This allows the object to be reconstructed using the closest available superclass if the custom class is not available in the environment where the data is loaded.
+For example, a user can create a custom mesh class and serialize it to JSON:
+
+.. code-block:: python
+
+    from compas.datastructures import Mesh
+    from compas import json_dump
+
+    class CustomMesh(Mesh):
+        def __init__(self, *args, **kwargs):
+            super(CustomMesh, self).__init__(*args, **kwargs)
+            self.custom_mesh_attr = "custom_mesh"
+
+        @property
+        def __data__(self):
+            data = super(CustomMesh, self).__data__
+            data["custom_mesh_attr"] = self.custom_mesh_attr
+            return data
+
+        @classmethod
+        def __from_data__(cls, data):
+            obj = super(CustomMesh, cls).__from_data__(data)
+            obj.custom_mesh_attr = data.get("custom_mesh_attr", "")
+            return obj
+
+    # Create and serialize a custom mesh
+    custom_mesh = CustomMesh(name="test")
+    json_dump(custom_mesh, 'custom_mesh.json')
+
+If another user loads "custom_mesh.json" in an environment where the CustomMesh class is not available, COMPAS will reconstruct the object as an instance of its closest available superclass, which in this case is the regular Mesh class:
+
+.. code-block:: python
+
+    from compas.datastructures import Mesh
+    from compas import json_load
+
+    mesh = json_load('custom_mesh.json')
+    assert isinstance(mesh, Mesh) # This will be True
+
+
+
 Validation
 ==========
 

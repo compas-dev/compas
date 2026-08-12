@@ -1,0 +1,21 @@
+{
+    "name": "Info",
+    "nickname": "Info",
+    "category": "COMPAS",
+    "subcategory": "Info",
+    "description": "Displays information about the active COMPAS environment.",
+    "exposure": 2,
+
+    "ghpython": {
+        "isAdvancedMode": true,
+        "iconDisplay": 2,
+        "inputParameters": [
+        ],
+        "outputParameters": [
+            {
+                "name": "info",
+                "description": "Environment info."
+            }
+        ]
+    }
+}

@@ -20,8 +20,8 @@ from Rhino.Geometry import Vector3d
 from Rhino.Geometry import Vector3f
 
 from compas.geometry import centroid_points
+from compas.geometry import centroid_polygon
 from compas.itertools import pairwise
-from compas_rhino.drawing import _face_to_max_quad
 
 try:
     from Rhino.Geometry import MeshNgon
@@ -29,6 +29,17 @@ except ImportError:
     MeshNgon = False
 
 TOL = sc.doc.ModelAbsoluteTolerance
+
+
+def _face_to_max_quad(points, face):
+    faces = []
+    c = len(points)
+    points.append(centroid_polygon(points))
+    for i in range(-1, len(face) - 1):
+        a = face[i]
+        b = face[i + 1]
+        faces.append([c, a, b, b])
+    return faces
 
 
 def draw_frame(frame):

@@ -2,6 +2,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import Rhino.Geometry  # type: ignore
+
 from compas.geometry import Curve
 from compas.geometry import Plane
 from compas_rhino.conversions import box_to_compas
@@ -9,8 +11,10 @@ from compas_rhino.conversions import plane_to_compas_frame
 from compas_rhino.conversions import plane_to_rhino
 from compas_rhino.conversions import point_to_compas
 from compas_rhino.conversions import point_to_rhino
+from compas_rhino.conversions import polyline_to_compas
 from compas_rhino.conversions import transformation_to_rhino
 from compas_rhino.conversions import vector_to_compas
+from compas_rhino.conversions import ConversionError
 
 
 class RhinoCurve(Curve):
@@ -144,6 +148,33 @@ class RhinoCurve(Curve):
     # ==============================================================================
     # Conversions
     # ==============================================================================
+
+    def to_polyline(self, tolerance=1, angle_tolerance=1, minimum_lenght=0, maximum_length=1):
+        """
+        Convert the curve to a polyline.
+
+        Parameters
+        ----------
+        tolerance : float, optional
+            The tolerance. This is the maximum deviation from line midpoints to the curve.
+        angle_tolerance : float, optional
+            The angle tolerance in radians. This is the maximum deviation of the line directions.
+        minimum_lenght : float, optional
+            The minimum segment length.
+        maximum_length : float, optional
+            The maximum segment length.
+
+        Returns
+        -------
+        :class:`compas.geometry.Polyline`
+            The polyline representation of the curve.
+        """
+        curve_polyline = self.native_curve.ToPolyline(tolerance, angle_tolerance, minimum_lenght, maximum_length)
+        polyline_created, polyline = curve_polyline.TryGetPolyline()
+        if polyline_created:
+            return polyline_to_compas(polyline)
+        else:
+            raise ConversionError("The curve cannot be converted to a polyline.")
 
     # ==============================================================================
     # Methods
@@ -393,7 +424,8 @@ class RhinoCurve(Curve):
         point = self.point_at(self.domain[0])  # type: ignore
         plane = Plane(point, direction)
         plane = plane_to_rhino(plane)
-        self.native_curve = self.native_curve.Offset(plane, distance, tolerance, 0)[0]  # type: ignore
+        offset_style = Rhino.Geometry.CurveOffsetCornerStyle.NONE
+        self.native_curve = self.native_curve.Offset(plane, distance, tolerance, offset_style)[0]  # type: ignore
 
     def smooth(self):
         raise NotImplementedError

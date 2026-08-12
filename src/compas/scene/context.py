@@ -112,9 +112,9 @@ def detect_current_context():
         return "Rhino"
     if compas.is_blender():
         return "Blender"
-    other_contexts = [v for v in ITEM_SCENEOBJECT.keys()]
-    if other_contexts:
-        return other_contexts[0]
+    # other_contexts = [v for v in ITEM_SCENEOBJECT.keys()]
+    # if other_contexts:
+    #     return other_contexts[0]
 
     return None
 

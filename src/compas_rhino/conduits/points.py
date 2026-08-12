@@ -2,13 +2,11 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from Rhino.Display.PointStyle import Simple
-from Rhino.Geometry import Point3d
-from System.Drawing.Color import FromArgb
+import Rhino  # type: ignore
+import System  # type: ignore
 
+from compas.data.validators import is_sequence_of_iterable
 from compas.itertools import iterable_like
-from compas.utilities import color_to_rgb
-from compas.utilities.coercing import is_sequence_of_iterable
 
 from .base import BaseConduit
 
@@ -59,7 +57,7 @@ class PointsConduit(BaseConduit):
     """
 
     default_size = 3
-    default_color = FromArgb(255, 0, 0)
+    default_color = System.Drawing.Color.FromArgb(255, 0, 0)
 
     def __init__(self, points, size=None, color=None, **kwargs):
         super(PointsConduit, self).__init__(**kwargs)
@@ -77,7 +75,7 @@ class PointsConduit(BaseConduit):
     def size(self, size):
         size = size or self.default_size
         try:
-            len(size)
+            len(size)  # type: ignore
         except TypeError:
             size = [size]
         size = iterable_like(self.points, size, self.default_size)
@@ -92,7 +90,7 @@ class PointsConduit(BaseConduit):
         color = color or self.default_color
         if not is_sequence_of_iterable(color):
             color = [color]
-        color = [FromArgb(*color_to_rgb(c)) for c in iterable_like(self.points, color, self.default_color)]
+        color = [System.Drawing.Color.FromArgb(*c) for c in iterable_like(self.points, color, self.default_color)]
         self._color = color
 
     def DrawForeground(self, e):
@@ -107,5 +105,5 @@ class PointsConduit(BaseConduit):
         None
 
         """
-        for xyz, size, color in zip(self.points, self.size, self.color):
-            e.Display.DrawPoint(Point3d(*xyz), Simple, size, color)
+        for xyz, size, color in zip(self.points, self.size, self.color):  # type: ignore
+            e.Display.DrawPoint(Rhino.Geometry.Point3d(*xyz), Rhino.Display.PointStyle.Simple, size, color)

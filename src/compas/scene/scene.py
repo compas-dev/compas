@@ -8,6 +8,7 @@ from .context import after_draw
 from .context import before_draw
 from .context import clear
 from .context import detect_current_context
+from .group import Group
 from .sceneobject import SceneObject
 
 
@@ -42,7 +43,7 @@ class Scene(Tree):
     @property
     def __data__(self):
         # type: () -> dict
-        items = {str(object.item.guid): object.item for object in self.objects}
+        items = {str(object.item.guid): object.item for object in self.objects if object.item is not None}
         return {
             "name": self.name,
             "root": self.root.__data__,  # type: ignore
@@ -56,13 +57,16 @@ class Scene(Tree):
         items = {str(item.guid): item for item in data["items"]}
 
         def add(node, parent, items):
-            for child_node in node["children"]:
-                guid = child_node["item"]
+            for child_node in node.get("children", []):
                 settings = child_node["settings"]
-                sceneobject = parent.add(items[guid], **settings)
+                if "item" in child_node:
+                    guid = child_node["item"]
+                    sceneobject = scene.add(items[guid], parent=parent, **settings)
+                else:
+                    sceneobject = scene.add_group(parent=parent, **settings)
                 add(child_node, sceneobject, items)
 
-        add(data["root"], scene, items)
+        add(data["root"], scene.root, items)
 
         return scene
 
@@ -113,9 +117,20 @@ class Scene(Tree):
                 if kwargs["context"] != self.context:
                     raise Exception("Object context should be the same as scene context: {} != {}".format(kwargs["context"], self.context))
                 del kwargs["context"]  # otherwist the SceneObject receives "context" twice, which results in an error
+            if isinstance(parent, Group):
+                # Use the kwargs of the parent group as default values for the child sceneobject
+                group_kwargs = parent.kwargs.copy()
+                group_kwargs.update(kwargs)
+                kwargs = group_kwargs
             sceneobject = SceneObject(item=item, context=self.context, **kwargs)  # type: ignore
         super(Scene, self).add(sceneobject, parent=parent)
         return sceneobject
+
+    def add_group(self, name, parent=None, **kwargs):
+        # type: (str, SceneObject | TreeNode | None, dict) -> SceneObject
+        group = Group(name=name, **kwargs)
+        self.add(group, parent=parent)
+        return group
 
     def clear_context(self, guids=None):
         # type: (list | None) -> None
@@ -163,8 +178,8 @@ class Scene(Tree):
         -----
         To redraw the scene, without modifying any of the other objects in the visualisation context:
 
-        >>> scene.clear(clear_scene=False, clear_context=True)
-        >>> scene.draw()
+        >>> scene.clear(clear_scene=False, clear_context=True)  # doctest: +SKIP
+        >>> scene.draw()  # doctest: +SKIP
 
         """
         guids = []
@@ -209,11 +224,11 @@ class Scene(Tree):
         before drawing all scene objects in the scene tree.
 
         """
-
         self.clear(clear_scene=False, clear_context=True)
         self.draw()
 
     def find_by_name(self, name):
+        # type: (str) -> SceneObject
         """Find the first scene object with the given name.
 
         Parameters
@@ -226,10 +241,10 @@ class Scene(Tree):
         :class:`SceneObject`
 
         """
-        # type: (str) -> SceneObject
         return self.get_node_by_name(name=name)
 
     def find_by_itemtype(self, itemtype):
+        # type: (...) -> SceneObject | None
         """Find the first scene object with a data item of the given type.
 
         Parameters
@@ -239,10 +254,29 @@ class Scene(Tree):
 
         Returns
         -------
-        :class:`SceneObject`
+        :class:`SceneObject` or None
 
         """
-        # type: (Type[compas.data.Data]) -> SceneObject
         for obj in self.objects:
             if isinstance(obj.item, itemtype):
                 return obj
+
+    def find_all_by_itemtype(self, itemtype):
+        # type: (...) -> list[SceneObject]
+        """Find all scene objects with a data item of the given type.
+
+        Parameters
+        ----------
+        itemtype : :class:`compas.data.Data`
+            The type of the data item associated with the scene object.
+
+        Returns
+        -------
+        list[:class:`SceneObject`]
+
+        """
+        sceneobjects = []
+        for obj in self.objects:
+            if isinstance(obj.item, itemtype):
+                sceneobjects.append(obj)
+        return sceneobjects

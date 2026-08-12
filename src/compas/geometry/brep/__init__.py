@@ -28,6 +28,11 @@ def from_brepfaces(*args, **kwargs):
 
 
 @pluggable(category="factories")
+def from_breps(*args, **kwargs):
+    raise PluginNotInstalledError
+
+
+@pluggable(category="factories")
 def from_cone(*args, **kwargs):
     raise PluginNotInstalledError
 

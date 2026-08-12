@@ -4,6 +4,7 @@ import json
 import compas
 from random import random
 from compas.geometry import Vector
+from compas.tolerance import TOL
 
 
 @pytest.mark.parametrize(
@@ -93,6 +94,26 @@ def test_vector_equality():
     assert not (p1 != p2)
     assert p1 != p3
     assert not (p1 == p3)
+
+
+def test_vector_comparison_relative():
+    a = Vector(random(), random(), random())
+    b = Vector(a.x + a.x * TOL.relative * 0.1, a.y + a.y * TOL.relative * 0.1, a.z + a.z * TOL.relative * 0.1)
+    c = Vector(a.x + a.x * TOL.relative, a.y + a.y * TOL.relative, a.z + a.z * TOL.relative)
+    d = Vector(a.x + a.x * TOL.relative * 10.0, a.y + a.y * TOL.relative * 10.0, a.z + a.z * TOL.relative * 10.0)
+    assert a == b
+    assert a == c
+    assert a != d
+
+
+def test_vector_comparison_absolute():
+    a = Vector(0, 0, 0)
+    b = Vector(a.x + TOL.absolute * 0.1, a.y + TOL.absolute * 0.1, a.z + TOL.absolute * 0.1)
+    c = Vector(a.x + TOL.absolute, a.y + TOL.absolute, a.z + TOL.absolute)
+    d = Vector(a.x + TOL.absolute * 10.0, a.y + TOL.absolute * 10.0, a.z + TOL.absolute * 10.0)
+    assert a == b
+    assert a == c
+    assert a != d
 
 
 def test_vector_inplace_operators():

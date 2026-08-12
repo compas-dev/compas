@@ -267,7 +267,7 @@ class Cone(Shape):
         list[list[int]]
 
         """
-        vertices = self._vertices
+        vertices = self.vertices
 
         faces = []
         first = 0
@@ -299,6 +299,22 @@ class Cone(Shape):
     # ==========================================================================
     # Transformations
     # ==========================================================================
+
+    def scale(self, factor):
+        """Scale the cone by multiplying the radius and height by a factor.
+
+        Parameters
+        ----------
+        factor : float
+            The scaling factor.
+
+        Returns
+        -------
+        None
+
+        """
+        self.radius *= factor
+        self.height *= factor
 
     # ==========================================================================
     # Methods

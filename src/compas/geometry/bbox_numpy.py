@@ -95,15 +95,15 @@ def oriented_bounding_box_numpy(points, tol=None):
         # also compute the axis aligned bounding box
         # and compare the areas of the two
 
-        rect1, area1 = minimum_area_rectangle_xy(points, return_size=True)
-
         points = world_to_local_coordinates_numpy(frame, points)
+        rect1, area1 = minimum_area_rectangle_xy(points, return_size=True)
         rect2 = bounding_box(points)[:4]
         area2 = (rect2[1][0] - rect2[0][0]) * (rect2[3][1] - rect2[0][1])
 
         if area1 < area2:
             rect = [[pt[0], pt[1], 0.0] for pt in rect1]
-            bbox = rect + rect
+            bbox = local_to_world_coordinates_numpy(frame, rect)
+            bbox = vstack((bbox, bbox)).tolist()
         else:
             rect = [[pt[0], pt[1], 0.0] for pt in rect2]
             bbox = local_to_world_coordinates_numpy(frame, rect)
@@ -250,21 +250,21 @@ def minimum_area_rectangle_xy(points, return_size=False):
     """
     boxes = []
 
-    n = len(points)
     points = points[:, :2]
     hull = ConvexHull(points)
     xy = points[hull.vertices, :2]
-    mean = sum(xy, axis=0) / n
+    hull_centroid = sum(xy, axis=0) / len(xy)
 
     for simplex in hull.simplices:
         p0 = points[simplex[0]]
         p1 = points[simplex[1]]
 
+        vn = xy - p0
+
         # s direction
         s = p1 - p0
         sl = sum(s**2) ** 0.5
         su = s / sl
-        vn = xy - p0
         sc = (sum(vn * s, axis=1) / sl).reshape((-1, 1))
         scmax = argmax(sc)
         scmin = argmin(sc)
@@ -277,7 +277,6 @@ def minimum_area_rectangle_xy(points, return_size=False):
         t = array([-s[1], s[0]])
         tl = sum(t**2) ** 0.5
         tu = t / tl
-        vn = xy - p0
         tc = (sum(vn * t, axis=1) / tl).reshape((-1, 1))
         tcmax = argmax(tc)
         tcmin = argmin(tc)
@@ -287,8 +286,8 @@ def minimum_area_rectangle_xy(points, return_size=False):
         h = tc[tcmax] - tc[tcmin]
         a = w * h
 
-        # box corners
-        if dot(t, mean - p0) < 0:
+        # other box corners
+        if dot(t, hull_centroid - p0) < 0:
             b3 = b0 - h * tu
             b2 = b1 - h * tu
         else:

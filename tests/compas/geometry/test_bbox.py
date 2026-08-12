@@ -1,7 +1,10 @@
 import pytest
 import os
 import compas
+from random import random
 from compas.tolerance import TOL
+from compas.datastructures import Mesh
+from compas.geometry import Box
 from compas.geometry import bounding_box
 from compas.geometry import bounding_box_xy
 
@@ -146,3 +149,58 @@ def test_oriented_bounding_box_numpy_from_fixtures():
     results = oriented_bounding_box_numpy(coords)
     for result, expected_values in zip(results, expected):
         assert TOL.is_allclose(result, expected_values)
+
+
+def test_oriented_bounding_box_numpy_flat():
+    if compas.IPY:
+        return
+
+    from compas.geometry import oriented_bounding_box_numpy
+
+    points = [[10 * random(), 10 * random(), 0] for i in range(100)]
+    box = Box.from_bounding_box(oriented_bounding_box_numpy(points))
+
+    for point in points:
+        assert box.contains_point(point)
+
+    assert not box.contains_point([10 * random(), 10 * random(), 1])
+
+    points = [[10 * random(), 10 * random(), 10] for i in range(100)]
+    box = Box.from_bounding_box(oriented_bounding_box_numpy(points))
+
+    for point in points:
+        assert box.contains_point(point)
+
+    assert not box.contains_point([10 * random(), 10 * random(), 11])
+
+
+def test_minimum_area_rectangle_xy():
+    if compas.IPY:
+        return
+
+    from compas.geometry import bbox_numpy
+    import numpy as np
+
+    mesh = Mesh.from_obj(os.path.join(HERE, "fixtures", "bbox_rect_bad.obj"))
+    points, _ = mesh.to_vertices_and_faces()
+    expected = [[359.481028, 229.73229169], [256.84043629, 120.92493596], [295.67358196, 84.29269706], [398.31417367, 193.10005279]]
+
+    min_bbox = bbox_numpy.minimum_area_rectangle_xy(np.array(points))
+
+    assert TOL.is_allclose(min_bbox, expected)
+
+
+def test_minimum_area_rectangle_xy_translated():
+    if compas.IPY:
+        return
+
+    from compas.geometry import bbox_numpy
+    import numpy as np
+
+    mesh = Mesh.from_obj(os.path.join(HERE, "fixtures", "bbox_rect_good.obj"))
+    points, _ = mesh.to_vertices_and_faces()
+    expected = [[307.39472429, 358.36965131], [204.75412877, 249.56229154], [243.58728967, 212.93003827], [346.22788519, 321.73739804]]
+
+    min_bbox = bbox_numpy.minimum_area_rectangle_xy(np.array(points))
+
+    assert TOL.is_allclose(min_bbox, expected)

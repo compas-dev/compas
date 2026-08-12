@@ -5,8 +5,8 @@ from __future__ import print_function
 import time
 from contextlib import contextmanager
 
-import Rhino
-import scriptcontext as sc
+import Rhino  # type: ignore
+import scriptcontext as sc  # type: ignore
 
 
 class BaseConduit(Rhino.Display.DisplayConduit):

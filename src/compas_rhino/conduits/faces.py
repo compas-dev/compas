@@ -2,11 +2,11 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from Rhino.Geometry import Point3d
-from System.Drawing.Color import FromArgb
+import Rhino  # type: ignore
+import System  # type: ignore
 
+from compas.data.validators import is_sequence_of_iterable
 from compas.itertools import iterable_like
-from compas.utilities import is_sequence_of_iterable
 
 from .base import BaseConduit
 
@@ -49,7 +49,7 @@ class FacesConduit(BaseConduit):
 
     """
 
-    default_color = FromArgb(255, 255, 255)
+    default_color = System.Drawing.Color.FromArgb(255, 255, 255)
 
     def __init__(self, vertices, faces, color=None, **kwargs):
         super(FacesConduit, self).__init__(**kwargs)
@@ -68,7 +68,7 @@ class FacesConduit(BaseConduit):
             return
         if not is_sequence_of_iterable(color):
             color = [color]
-        color = [FromArgb(*c) for c in iterable_like(self.faces, color, self.default_color)]
+        color = [System.Drawing.Color.FromArgb(*c) for c in iterable_like(self.faces, color, self.default_color)]
         self._color = color
 
     def DrawForeground(self, e):
@@ -84,7 +84,7 @@ class FacesConduit(BaseConduit):
 
         """
         for i, face in enumerate(self.faces):
-            points = [Point3d(*self.vertices[key]) for key in face]
+            points = [Rhino.Geometry.Point3d(*self.vertices[key]) for key in face]
             if self.color:
                 e.Display.DrawPolygon(points, self.color[i], True)
             else:

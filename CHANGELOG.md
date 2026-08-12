@@ -9,6 +9,134 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `TOL.update()` method for explicit global state modification. 
+* Added `TOL.temporary()` context manager for scoped changes.
+* Added missing implementation of `Brep.to_polygons()` in `compas_rhino.geometry.RhinoBrep`.
+
+### Changed
+
+* Changed `Data.__dtype__` to delegate to `Data.__clstype__` (removes duplicated dtype format logic).
+* Changed `pca_numpy` to run the SVD on the centered data matrix instead of the covariance matrix: forming the covariance squares the condition number, so near-degenerate inputs (e.g. almost collinear point clouds) returned wrong principal directions — `bestfit_plane_numpy` normals were off by 11–37 degrees on exactly planar sliver clouds (#1522). Well-conditioned results are unchanged (same eigenvectors; eigenvalues rescaled to keep their variance meaning).
+* Changed `Tolerance` class to no longer use singleton pattern. `Tolerance()` now creates independent instances instead of returning the global `TOL`. 
+* Renamed `Tolerance.units` to `Tolerance.unit` to better reflect the documented properties. Left `units` with deprecation warning.
+* Fixed `NotImplementedErorr` when calling `BrepLoop.vertices`.
+* Fixed `python -m compas` to detect extensions based on `importlib` rather than `pkg_resources`.
+
+### Removed
+
+
+## [2.15.0] 2025-11-12
+
+### Added
+
+* Added `compas_rhino.install_with_pip` with corresponding command line utility `install_in_rhino`.
+* Added support for `.stp` file extension in addition to `.step` for `RhinoBrep.from_step()` and `RhinoBrep.to_step()` methods.
+* Added `volume()` method to `compas.datastructures.Mesh` for computing the volume of closed meshes using signed volume of triangles.
+* Added functions `warning`, `message`, `error` and `remark` to `compas_ghpython`.
+* Added method `RhinoBrep.closest_point()`.
+* Added attributes `RhinoBrepEdge.domain` and `RhinoBrepEdge.index` and methods `RhinoBrepEdge.closest_point()` and `RhinoBrepEdge.point_at`.
+* Added method `RhinoBrepFace.point_at()`, `RhinoBrepFace.closest_point()`, `RhinoBrepFace.is_point_on_face()` and `RhinoBrepFace.is_point_on_boundary()`.
+* Added method `RhinoBrepLoop.to_curve()`.
+* Added attribute `RhinoBrepTrim.edge`.
+* Added attribute `RhinoBrepVertex.index`.
+* Added method `RhinoCurve.to_polyline()`.
+
+### Changed
+
+* Updated minimum library version to `2.14.1` in Rhino8 GH components.
+* Changed name of YAK package from `bluejay` to `compas`.
+* Fixed broken `scaled()` method in `Sphere`, `Cylinder`, and `Capsule` classes by overriding to accept uniform scaling factor.
+* Fixed bug in `compas.geometry.PlanarSurface`.
+* Fixed bug in `Curve.offset()` in `compas_rhino`.
+
+### Removed
+
+
+## [2.14.1] 2025-09-07
+
+### Added
+
+### Changed
+
+* Fixed bug in `compas_rhino.scene.meshobject.RhinoMeshObject` related to missing object name.
+
+### Removed
+
+
+## [2.14.0] 2025-09-06
+
+### Added
+
+* Implemented `to_points` method in `compas.datastructures.Mesh`, which before raised a `NotImplementedError`.
+* Implemented `compute_aabb` method in `compas.datastructures.Datastructure`, which before raised a `NotImplementedError`. Made use of the `compas.geometry.bbox.bounding_box` function.
+* Implemented `compute_obb` method in `compas.datastructures.Datastructure`, which before raised a `NotImplementedError`. Made use of the `compas.geometry.bbox_numpy.oriented_bounding_box_numpy` function.
+* Added `vertices_to_points` method in `compas.datastructures.CellNetwork`.
+* Added `to_points` method in `compas.datastructures.VolMesh`.
+* Added test function `test_vertices_to_points`in `test_cell_network.py`.
+* Added test function `test_to_points` in `test_graph.py`.
+* Added test function `test_to_points` in `test_volmesh.py`.
+* Added test functions `test_to_points`, `test_compute_aabb`, and `test_compute_obb` in `test_mesh.py`.
+* Added setters for `SceneObject.worldtransformation` and `SceneObject.frame`, which automatically handles the parent transformations.
+* Added missing property `centroid` in `compas_rhino.geometry.RhinoBrep`.
+* Added missing property `curves` in `compas_rhino.geometry.RhinoBrep`.
+* Added missing property `is_closed` in `compas_rhino.geometry.RhinoBrep`.
+* Added missing property `is_orientable` in `compas_rhino.geometry.RhinoBrep`.
+* Added missing property `is_surface` in `compas_rhino.geometry.RhinoBrep`.
+* Added missing property `is_valid` in `compas_rhino.geometry.RhinoBrep`.
+* Added missing property `orientation` in `compas_rhino.geometry.RhinoBrep`.
+* Added missing property `surfaces` in `compas_rhino.geometry.RhinoBrep`.
+* Added implementation for `Brep.from_sweep` in `compas_rhino.geometry.RhinoBrep`.
+* Added implementation for `Brep.from_cone` in `compas_rhino.geometry.RhinoBrep`.
+* Added implementation for `Brep.from_plane` in `compas_rhino.geometry.RhinoBrep`.
+* Added implementation for `Brep.from_brepfaces` in `compas_rhino.geometry.RhinoBrep`.
+* Added implementation for `Brep.from_breps` in `compas_rhino.geometry.RhinoBrep`.
+* Added implementation for `Brep.from_torus` in `compas_rhino.geometry.RhinoBrep`.
+* Added implementation for `Brep.from_polygons` in `compas_rhino.geometry.RhinoBrep`.
+* Added implementation for `Brep.from_pipe` in `compas_rhino.geometry.RhinoBrep`.
+* Added implementation for `Brep.from_iges` in `compas_rhino.geometry.RhinoBrep`.
+* Added implementation for `Brep.to_step` in `compas_rhino.geometry.RhinoBrep`.
+* Added implementation for `Brep.to_viewmesh()` in `compas_rhino.geometry.RhinoBrep`.
+
+### Changed
+
+* Fixed bug (inconsistency) in return value of `compas.geometry.triangulation_delaunay.delaunay_triangulation`. Only the faces of the triangulation should be returned.
+
+### Removed
+
+* Removed property `is_compound` from `compas.geometry.Brep` as OCC specific.
+* Removed property `is_compoundsolid` from `compas.geometry.Brep` as OCC specific.
+* Removed property `solids` from `compas.geometry.Brep` as OCC specific.
+* Removed property `shells` from `compas.geometry.Brep` as OCC specific.
+
+## [2.13.0] 2025-06-04
+
+### Added
+
+* Added `compas.scene.Scene.add_group()` for adding group.
+* Added `compas.scene.Group.add_from_list()` for adding a list of items to a group.
+* Added implementation for `compas.geometry.SphericalSurface.isocurve_u`.
+* Added implementation for `compas.geometry.SphericalSurface.isocurve_v`.
+* Added implementation for `compas.geometry.CylindricalSurface.isocurve_u`.
+* Added implementation for `compas.geometry.CylindricalSurface.isocurve_v`.
+
+### Changed
+
+* Fixed error in `circle_to_compas` from Rhino.
+* Fixed Rhino to Rhino brep serialization.
+* Upated `compas.scene.Group.add()` to pass on group kwargs as default for child items.
+* Fixed bug in context detection, which wrongly defaults to `Viewer` instead of `None`.
+* Fixed bug in calculation of `compas.geometry.Polyhedron.edges` if geometry is computed using numpy.
+* Fixed bug in `Grpah.from_pointcloud` which uses degree parameter wrongly.
+
+### Removed
+
+
+## [2.12.0] 2025-05-28
+
+### Added
+
+* Added `inheritance` field to `__jsondump__` of `compas.datastructures.Datastructure` to allow for deserialization to closest available superclass of custom datastructures.
+
 ### Changed
 
 * `compas_rhino.uninstall` will try to remove compas packages from all possible
@@ -16,6 +144,209 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+
+## [2.11.0] 2025-04-22
+
+### Added
+
+* Added `Group` to `compas.scene`.
+* Added `compas.geometry.Brep.cap_planar_holes`.
+* Added `compas_rhino.geometry.RhinoBrep.cap_planar_holes`.
+* Added `compas.geometry.angle_vectors_projected`.
+* Added `compas.geometry.Brep.from_curves`.
+* Added `compas_rhino.geometry.RhinoBrep.from_curves`.
+
+### Changed
+
+* Changed `SceneObject.frame` to read-only result of `Frame.from_transformation(SceneObject.worldtransformation)`, representing the local coordinate system of the scene object in world coordinates.
+* Changed `SceneObject.worldtransformation` to the multiplication of all transformations from the scene object to the root of the scene tree, there will no longer be an additional transformation in relation to the object's frame.
+* Fixed call to `astar_shortest_path` in `Graph.shortest_path`.
+* Fixed a bug when printing an empty `Tree`.
+* Fixed a bug in `Group` for IronPython where the decoding declaration was missing.
+* Fixed a bug where a `Group` without name could not be added to the scene.
+* Fixed a bug where `angle_vectors_projected` returned a 0 when an input vector was parallel to projection normal. Now returns `None`.
+
+### Removed
+
+
+## [2.10.0] 2025-03-03
+
+### Added
+
+* Added `flip` to `compas.geometry.Brep`.
+* Added implementation of `flip` to `compas_rhino.geometry.RhinoBrep`.
+
+### Changed
+
+* Fixed unexpected behavior for method `Plane.is_parallel` for opposite normals.
+
+### Removed
+
+
+## [2.9.1] 2025-02-06
+
+### Added
+
+* Added method `frame_at` to `compas.geometry.BrepFace`.
+* Added method `frame_at` to `compas_rhino.geometry.RhinoBrepFace`.
+* Added property `is_reversed` to `compas.geometry.BrepFace`.
+* Added property `is_reversed` to `compas_rhino.geometry.RhinoBrepFace`.
+
+### Changed
+
+* Fixed publish to YAK via CI workflow.
+* Added selector for `test` and `prod` to CI workflow.
+* Fixed `AttributeError` in `compas.data.DataEncoder.default` due to `np.float_` no longer being available in `numpy>=2`.
+
+### Removed
+
+
+## [2.9.0] 2025-02-04
+
+### Added
+
+* Added `DevTools` with support for automatic reloading of local python modules.
+* Added implementation for `compas_rhino.geometry.RhinoBrep.from_step`.
+* Added CPython implementations of GH components for Rhino8.
+* Added import to new `yakerize` task from `compas_invocations2`.
+* Added import to new `publish_yak` task from `compas_invocations2`.
+
+### Changed
+
+* Moved `unload_modules` to be a static method of `DevTools`. The `unload_modules` function is an alias to this. 
+* Fixed unexpected behavior in `compas.geometry.bbox_numpy.minimum_area_rectangle_xy`.
+* Changed `requirements.txt` to allow `numpy>=2`.
+* Fixed bug in `compas.geometry.Polygon.points` setter by removing duplicate points if they exist.
+* Fixed bug in `compas.geometry.Polygon.plane` by aligning the normal of the bestfit plane with the approximate normal of the polygon faces.
+* Changed the order of face vertices in `compas.geometry.Surface.to_vertices_and_faces` to a counter clockwise cycling direction and outward facing normals for curved surfaces.
+* Deprecated the `-v8.0` flag in `compas_rhino.install`. Install to Rhino8 by following: https://compas.dev/compas/latest/userguide/cad.rhino8.html.
+* Fixed `Info` Grasshopper component for cpython to handle non-bootstrapped environments.
+
+### Removed
+
+
+## [2.8.1] 2025-01-15
+
+### Added
+
+### Changed
+
+* Fixed `NotImplementedError` when calling `compas_rhino.conversions.surface_to_compas` on NURBS Surface.
+* Fixed `NotImplementedError` when calling `compas_rhino.conversions.surface_to_compas` on Surface.
+* Changed point comparison (`compas.geometry.Point.__eq__`) to use `TOL.is_allclose` instead of raw coordinate comparison.
+* Changed vector comparison (`compas.geometry.Vector.__eq__`) to use `TOL.is_allclose` instead of raw coordinate comparison.
+* Fixed bug in frame comparison (`compas.geometry.Frame.__eq__`).
+* Fixed bug in `compas.geometry.oriented_bounding_box_numpy`.
+* Fixed cannot copy `Line` using `deepcopy`.
+
+### Removed
+
+
+## [2.8.0] 2024-12-13
+
+### Added
+
+* Added implementation of `RhinoBrep.fillet()` and `RhinoBrep.filleted()` to `compas_rhino`.
+* Added `Frame.invert` and `Frame.inverted`.
+* Added `Frame.flip` and `Frame.flipped` as alias for invert and inverted.
+* Added `Vector.flip` and `Vector.flipped` as alias for invert and inverted.
+
+### Changed
+
+* Fixed `native_edge` property of `RhinoBrepEdge`.
+* Expose the parameters `radius` and `nmax` from `compas.topology._face_adjacency` to `compas.topology.face_adjacency` and further propagate them to `unify_cycles` and `Mesh.unify_cycles`.
+* Modify `face_adjacency` to avoid using `compas.topology._face_adjacency` by default when there are more than 100 faces, unless one of the parameters `radius`, `nmax` is passed.
+* Changed `unify_cycles` to use the first face in the list as root if no root is provided.
+
+### Removed
+
+
+## [2.7.0] 2024-11-28
+
+### Added
+
+* Added attribute `start_vertex` to `compas.geometry.BrepTrim`.
+* Added attribute `end_vertex` to `compas.geometry.BrepTrim`.
+* Added attribute `vertices` to `compas.geometry.BrepTrim`.
+* Added attribute `start_vertex` to `compas_rhino.geometry.RhinoBrepTrim`.
+* Added attribute `start_vertex` to `compas_rhino.geometry.RhinoBrepTrim`.
+* Added attribute `vertices` to `compas_rhino.geometry.RhinoBrepTrim`.
+
+### Changed
+
+* Fixed `PluginNotInstalledError` when using `Brep.from_boolean_*` in Rhino.
+* Added support for `Polyline` as input for `compas_rhino.Brep.from_extrusion`.
+
+### Removed
+
+
+## [2.6.1] 2024-11-09
+
+### Added
+
+### Changed
+
+* Fixed bug in `compas_rhino.scene.RhinoMeshObject.clear()`.
+
+### Removed
+
+
+## [2.6.0] 2024-11-08
+
+### Added
+
+* Added key conversion map to `compas.colors.ColorDict` to avoid serialisation problems with tuple keys when used in combination with edges.
+* Added `Scene.find_all_by_itemtype`.
+
+### Changed
+
+* Fixed bug in `VolMesh.delete_cell`.
+* Fixed `NoneType` error when calling `compas.geometry.Sphere.edges`.
+* Fixed bug in `VolMesh.vertex_halffaces`.
+* Fixed bug in `VolMesh.vertex_cells`.
+* Fixed bug in `VolMesh.is_halfface_on_boundary`.
+
+### Removed
+
+* Removed `VolMesh.halfface_adjacent_halfface` because of general nonsensicalness, and because it is (and probably always has been) completely broken.
+
+
+## [2.5.0] 2024-10-25
+
+### Added
+
+* Added instructions for creating new data types to the dev guide.
+* Added `compact=False`, `minimal=False` to `compas.data.Data.to_json()` to `compas.data.Data.to_jsonstring()`.
+* Added `copy_guid=False` to `compas.data.Data.copy()`. If true, the copy has the same guid as the original.
+* Added implementation of `Brep.from_loft()` to `compas_rhino`.
+
+### Changed
+
+* Fixed `RuntimeError` when using `compas_rhino.unload_modules` in CPython`.
+* Fixed bug in `Box.scaled` causing a `TypeError` due to incorrect parameter forwarding.
+* Changed argument names of `Box.scale()` to `x`, `y`, `z`, instead of `factor` and made `y` and `z` optional to keep positional arguments backwards compatible.
+* Fixed import errors in `compas_rhino.conduits` for Rhino 8.
+* Fixed doctest failures.
+* Fixed bug in serialization when `compas.datastructures.attributes.AttributeView` is used.
+* Fixed bug in the serialisation of empty scenes.
+* Fixed bug in serialisation process due to `name` attribute appearing in json representation after copy even if not present before copy.
+
+### Removed
+
+
+## [2.4.3] 2024-10-04
+
+### Added
+
+### Changed
+
+* Fixed support for `compas_gpython` in Rhino 8 Grasshopper CPython components.
+* Changed installation instructions for Rhino 8 in the user guide.
+* Fixed `Graph.from_edges` always returning `None`.
+
+### Removed
+
+* Removed deprecated module `compas_ghpython.utilities`. For drawing functions, use `compas_ghpython.drawing` directly.
 
 ## [2.4.2] 2024-09-17
 

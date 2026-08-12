@@ -384,9 +384,13 @@ class Plane(Geometry):
         >>> plane2 = Plane([1.0, 1.0, 1.0], [0.0, 0.0, 1.0])
         >>> plane1.is_parallel(plane2)
         True
+        >>> plane1 = Plane.worldXY()
+        >>> plane2 = Plane([1.0, 1.0, 1.0], [0.0, 0.0, -1.0])
+        >>> plane1.is_parallel(plane2)
+        True
 
         """
-        return TOL.is_close(self.normal.dot(other.normal), 1, rtol=0, atol=tol)
+        return TOL.is_close(abs(self.normal.dot(other.normal)), 1, rtol=0, atol=tol)
 
     def is_perpendicular(self, other, tol=None):
         """Verify if this plane is perpendicular to another plane.

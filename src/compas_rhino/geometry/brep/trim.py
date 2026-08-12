@@ -7,9 +7,13 @@ import Rhino  # type: ignore
 from compas.geometry import BrepTrim
 from compas_rhino.geometry import RhinoNurbsCurve
 
+from .edge import RhinoBrepEdge
+
+from .vertex import RhinoBrepVertex
+
 
 class RhinoBrepTrim(BrepTrim):
-    """An interface for a Brep Trim
+    """Trims hold topological information about how the edges of a Brep face are are organized.
 
     Attributes
     ----------
@@ -21,7 +25,14 @@ class RhinoBrepTrim(BrepTrim):
         True if this trim is reversed from its associated edge curve and False otherwise.
     native_trim : :class:`Rhino.Geometry.BrepTrim`
         The underlying Rhino BrepTrim object.
-
+    start_vertex : :class:`compas_rhino.geometry.RhinoBrepVertex`, read-only
+        The start vertex of this trim.
+    end_vertex : :class:`compas_rhino.geometry.RhinoBrepVertex`, read-only
+        The end vertex of this trim.
+    vertices : list[:class:`compas_rhino.geometry.RhinoBrepVertex`], read-only
+        The list of vertices which comprise this trim (start and end).
+    edge : :class:compas_rhino.geometry.RhinoBrepEdge
+        The edge associated with this trim.
     """
 
     def __init__(self, rhino_trim=None):
@@ -30,6 +41,8 @@ class RhinoBrepTrim(BrepTrim):
         self._curve = None
         self._is_reversed = None
         self._iso_type = None
+        self._start_vertex = None
+        self._end_vertex = None
         if rhino_trim:
             self.native_trim = rhino_trim
 
@@ -40,7 +53,8 @@ class RhinoBrepTrim(BrepTrim):
     @property
     def __data__(self):
         return {
-            "vertex": self._trim.StartVertex.VertexIndex,
+            "start_vertex": self._trim.StartVertex.VertexIndex,
+            "end_vertex": self._trim.EndVertex.VertexIndex,
             "edge": self._trim.Edge.EdgeIndex if self._trim.Edge else -1,  # singular trims have no associated edge
             "curve": RhinoNurbsCurve.from_rhino(self._trim.TrimCurve.ToNurbsCurve()).__data__,
             "iso": str(self._trim.IsoStatus),
@@ -66,9 +80,13 @@ class RhinoBrepTrim(BrepTrim):
         """
         instance = cls()
         curve = RhinoNurbsCurve.__from_data__(data["curve"]).rhino_curve
-        iso_status = getattr(Rhino.Geometry.IsoStatus, data["iso"])
+        try:
+            iso_status = getattr(Rhino.Geometry.IsoStatus, data["iso"])
+        except AttributeError:
+            # due to discrepancy in how IsoStatus.None looks like in Rhino7 vs Rhino8 (`IsoStatus.NONE`)
+            iso_status = Rhino.Geometry.IsoStatus.NONE
         is_reversed = True if data["is_reversed"] == "true" else False
-        instance.native_trim = builder.add_trim(curve, data["edge"], is_reversed, iso_status, data["vertex"])
+        instance.native_trim = builder.add_trim(curve, data["edge"], is_reversed, iso_status, data["start_vertex"])
         return instance
 
     # ==============================================================================
@@ -78,6 +96,18 @@ class RhinoBrepTrim(BrepTrim):
     @property
     def curve(self):
         return self._curve
+
+    @property
+    def start_vertex(self):
+        return self._start_vertex
+
+    @property
+    def end_vertex(self):
+        return self._end_vertex
+
+    @property
+    def vertices(self):
+        return [self.start_vertex, self.end_vertex]
 
     @property
     def is_reverse(self):
@@ -91,9 +121,15 @@ class RhinoBrepTrim(BrepTrim):
     def native_trim(self):
         return self._trim
 
+    @property
+    def edge(self):
+        return RhinoBrepEdge(self._trim.Edge)
+
     @native_trim.setter
     def native_trim(self, rhino_trim):
         self._trim = rhino_trim
         self._curve = RhinoNurbsCurve.from_rhino(rhino_trim.TrimCurve.ToNurbsCurve())
         self._is_reversed = rhino_trim.IsReversed()
         self._iso_type = int(rhino_trim.IsoStatus)
+        self._start_vertex = RhinoBrepVertex(rhino_trim.StartVertex)
+        self._end_vertex = RhinoBrepVertex(rhino_trim.EndVertex)

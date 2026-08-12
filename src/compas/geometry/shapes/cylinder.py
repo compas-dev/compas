@@ -267,7 +267,7 @@ class Cylinder(Shape):
         """
         u = self.resolution_u
 
-        vertices = self._vertices
+        vertices = self.vertices
 
         faces = []
         # side faces

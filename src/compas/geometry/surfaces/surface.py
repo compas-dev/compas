@@ -160,7 +160,7 @@ class Surface(Geometry):
             A COMPAS surface.
 
         """
-        raise NotImplementedError
+        return surface_from_native(cls, surface)
 
     @classmethod
     def from_obj(cls, filepath):
@@ -252,9 +252,9 @@ class Surface(Geometry):
         faces = [
             [
                 i * (nv + 1) + j,
-                (i + 1) * (nv + 1) + j,
-                (i + 1) * (nv + 1) + j + 1,
                 i * (nv + 1) + j + 1,
+                (i + 1) * (nv + 1) + j + 1,
+                (i + 1) * (nv + 1) + j,
             ]
             for i, j in product(range(nu), range(nv))
         ]
@@ -474,7 +474,7 @@ class Surface(Geometry):
 
         Returns
         -------
-        :class:`compas_occ.geometry.Curve`
+        :class:`compas.geometry.Curve`
 
         """
         raise NotImplementedError

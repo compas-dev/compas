@@ -432,12 +432,35 @@ class Shape(Geometry):
 
         See Also
         --------
+        scaled
         translate
         rotate
         transform
 
         """
         raise NotImplementedError
+
+    def scaled(self, factor):
+        """Returns a scaled copy of the shape.
+
+        Parameters
+        ----------
+        factor : float
+            The scaling factor.
+
+        Returns
+        -------
+        :class:`compas.geometry.Shape`
+            The scaled shape.
+
+        See Also
+        --------
+        scale
+
+        """
+        shape = self.copy()
+        shape.scale(factor)
+        return shape
 
     # =============================================================================
     # Methods

@@ -51,6 +51,15 @@ def test_tree_initialization():
     assert tree.root is None
 
 
+def test_empty_tree():
+    tree = Tree()
+    assert tree.root is None
+    assert len(list(tree.nodes)) == 0
+    assert len(list(tree.leaves)) == 0
+    assert list(tree.traverse()) == []
+    assert tree.get_hierarchy_string() == ""
+
+
 # =============================================================================
 # TreeNode Properties
 # =============================================================================

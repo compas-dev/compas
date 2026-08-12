@@ -30,12 +30,17 @@ if "ironpython" == platform.python_implementation().lower():
 try:
     import numpy as np
 
+    try:
+        np_float = np.float_
+    except AttributeError:
+        np_float = np.float64
+
     numpy_support = True
 except (ImportError, SyntaxError):
     numpy_support = False
 
 
-def cls_from_dtype(dtype):  # type: (...) -> Type[Data]
+def cls_from_dtype(dtype, inheritance=None):  # type: (...) -> Type[Data]
     """Get the class object corresponding to a COMPAS data type specification.
 
     Parameters
@@ -43,6 +48,8 @@ def cls_from_dtype(dtype):  # type: (...) -> Type[Data]
     dtype : str
         The data type of the COMPAS object in the following format:
         '{}/{}'.format(o.__class__.__module__, o.__class__.__name__).
+    inheritance : list[str], optional
+        The inheritance chain of this class, a list of superclasses that can be used if given dtype is not found.
 
     Returns
     -------
@@ -58,9 +65,23 @@ def cls_from_dtype(dtype):  # type: (...) -> Type[Data]
         If the module doesn't contain the specified data type.
 
     """
-    mod_name, attr_name = dtype.split("/")
-    module = __import__(mod_name, fromlist=[attr_name])
-    return getattr(module, attr_name)
+
+    if inheritance is None:
+        full_inheritance = [dtype]
+    else:
+        full_inheritance = [dtype] + inheritance
+
+    for dtype in full_inheritance:
+        mod_name, attr_name = dtype.split("/")
+        try:
+            module = __import__(mod_name, fromlist=[attr_name])
+            return getattr(module, attr_name)
+        except ImportError:
+            continue
+        except AttributeError:
+            continue
+
+    raise ValueError("No class found in inheritance chain: {}".format(full_inheritance))
 
 
 class DataEncoder(json.JSONEncoder):
@@ -115,6 +136,7 @@ class DataEncoder(json.JSONEncoder):
             The serialized object.
 
         """
+        from compas.datastructures.attributes import AttributeView
 
         if hasattr(o, "__jsondump__"):
             return o.__jsondump__(minimal=DataEncoder.minimal)
@@ -142,7 +164,7 @@ class DataEncoder(json.JSONEncoder):
                 ),  # type: ignore
             ):
                 return int(o)
-            if isinstance(o, (np.float_, np.float16, np.float32, np.float64)):  # type: ignore
+            if isinstance(o, (np_float, np.float16, np.float32, np.float64)):  # type: ignore
                 return float(o)
             if isinstance(o, np.bool_):
                 return bool(o)
@@ -152,6 +174,9 @@ class DataEncoder(json.JSONEncoder):
         if dotnet_support:
             if isinstance(o, (System.Decimal, System.Double, System.Single)):
                 return float(o)
+
+        if isinstance(o, AttributeView):
+            return dict(o)
 
         return super(DataEncoder, self).default(o)
 
@@ -211,7 +236,7 @@ class DataDecoder(json.JSONDecoder):
             return o
 
         try:
-            cls = cls_from_dtype(o["dtype"])
+            cls = cls_from_dtype(o["dtype"], o.get("inheritance", None))
 
         except ValueError:
             raise DecoderError(

@@ -87,3 +87,26 @@ def test_polygon__setitem__():
     assert polygon[4] == point
     assert isinstance(polygon[4], Point)
     assert polygon.lines[-2].end == point
+
+
+def test_polygon_normal_direction():
+    points = [[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]]
+    polygon = Polygon(points)
+    assert polygon.normal.dot([0, 0, 1]) > 0
+
+    points = [[0, 0, 0], [0, 1, 0], [1, 1, 0], [1, 0, 0]]
+    polygon = Polygon(points)
+    assert polygon.normal.dot([0, 0, 1]) < 0
+
+
+@pytest.mark.parametrize(
+    "points",
+    [
+        [[0, 0, 0], [0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]],
+        [[0, 0, 0], [1, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]],
+        [[0, 0, 0], [1, 0, 0], [1, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]],
+    ],
+)
+def test_polygon_duplicate_removal(points):
+    polygon = Polygon(points)
+    assert len(polygon.points) == 4

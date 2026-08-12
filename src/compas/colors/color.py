@@ -99,7 +99,7 @@ class Color(Data):
     By default, this class will create a color with the RGB components in the range ``[0.0, 1.0]``.
 
     >>> Color(1, 0, 0)
-    Color(1, 0, 0, alpha=1.0)
+    Color(red=1, green=0, blue=0, alpha=1.0)
 
     Attempting to create a color with components outside of the range ``[0.0, 1.0]`` will raise a ``ValueError``.
 
@@ -111,7 +111,7 @@ class Color(Data):
     To create a color with components in the range ``[0, 255]``, use the :meth:`from_rgb255` constructor.
 
     >>> Color.from_rgb255(255, 0, 0)
-    Color(1.0, 0.0, 0.0, alpha=1.0)
+    Color(red=1.0, green=0.0, blue=0.0, alpha=1.0)
 
     Similarly, other constructors are available to create colors from other color spaces.
 
@@ -132,13 +132,13 @@ class Color(Data):
 
     >>> color = Color.red()
     >>> color.desaturated(25)
-    Color(0.875, 0.125, 0.125, alpha=1.0)
+    Color(red=0.875, green=0.125, blue=0.125, alpha=1.0)
     >>> color.desaturated(50)
-    Color(0.75, 0.25, 0.25, alpha=1.0)
+    Color(red=0.75, green=0.25, blue=0.25, alpha=1.0)
     >>> color.desaturated(75)
-    Color(0.625, 0.375, 0.375, alpha=1.0)
+    Color(red=0.625, green=0.375, blue=0.375, alpha=1.0)
     >>> color.desaturated(100)
-    Color(0.5, 0.5, 0.5, alpha=1.0)
+    Color(red=0.5, green=0.5, blue=0.5, alpha=1.0)
 
     See Also
     --------

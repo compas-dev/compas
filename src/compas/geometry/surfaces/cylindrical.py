@@ -8,6 +8,7 @@ from math import sin
 
 from compas.geometry import Circle
 from compas.geometry import Frame
+from compas.geometry import Line
 from compas.geometry import Point
 from compas.geometry import Vector
 
@@ -161,6 +162,39 @@ class CylindricalSurface(Surface):
     # =============================================================================
     # Methods
     # =============================================================================
+
+    def isocurve_u(self, u):
+        """Compute the isoparametric curve at parameter u.
+
+        Parameters
+        ----------
+        u : float
+
+        Returns
+        -------
+        :class:`compas.geometry.Line`
+
+        """
+        base = self.point_at(u=u, v=0.5)
+        return Line.from_point_direction_length(base, self.frame.zaxis, 1.0)
+
+    def isocurve_v(self, v):
+        """Compute the isoparametric curve at parameter v.
+
+        Parameters
+        ----------
+        v : float
+
+        Returns
+        -------
+        :class:`compas.geometry.Circle`
+
+        """
+        point = self.center + self.frame.zaxis * v
+        xaxis = self.frame.xaxis
+        yaxis = self.frame.yaxis
+        frame = Frame(point, xaxis, yaxis)
+        return Circle(radius=self.radius, frame=frame)
 
     def point_at(self, u, v, world=True):
         """Compute a point on the surface at the given parameters.

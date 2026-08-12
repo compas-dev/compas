@@ -150,7 +150,7 @@ class Vector(Geometry):
         return iter([self.x, self.y, self.z])
 
     def __eq__(self, other):
-        return self.x == other[0] and self.y == other[1] and self.z == other[2]
+        return TOL.is_allclose(self, other)
 
     def __add__(self, other):
         return Vector(self.x + other[0], self.y + other[1], self.z + other[2])
@@ -679,6 +679,8 @@ class Vector(Geometry):
         """
         self.scale(-1.0)
 
+    flip = invert
+
     def inverted(self):
         """Returns a inverted copy of this vector
 
@@ -696,6 +698,8 @@ class Vector(Geometry):
 
         """
         return self.scaled(-1.0)
+
+    flipped = inverted
 
     def scale(self, n):
         """Scale this vector by a factor n.

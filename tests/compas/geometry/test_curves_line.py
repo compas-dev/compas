@@ -1,3 +1,4 @@
+from copy import deepcopy
 import pytest
 import json
 import compas
@@ -282,3 +283,17 @@ def test_line_flip(p1, p2):
     flipped_line = Line(p1, p2).flipped()
     assert TOL.is_zero(distance_point_point(flipped_line.start, p2))
     assert TOL.is_zero(distance_point_point(flipped_line.end, p1))
+
+
+def test_line_copy_deepcopy():
+    line = Line([0, 0, 0], [1, 0, 0])
+
+    line_copy = line.copy()
+
+    assert line is not line_copy
+    assert line == line_copy
+
+    line_deepcopy = deepcopy(line)
+
+    assert line is not line_deepcopy
+    assert line == line_deepcopy

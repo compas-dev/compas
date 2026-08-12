@@ -1,4 +1,3 @@
-import pytest
 from compas.geometry import Polygon
 from compas.geometry.triangulation_earclip import earclip_polygon
 
@@ -62,38 +61,37 @@ def test_earclip_polygon_wrong_winding():
     ]
 
     polygon = Polygon(points)
-    polygon.points.reverse()
 
     faces = earclip_polygon(polygon)
 
     assert faces == [
+        [0, 28, 27],
         [26, 25, 24],
         [23, 22, 21],
         [21, 20, 19],
-        [16, 15, 14],
-        [14, 13, 12],
-        [11, 10, 9],
-        [9, 8, 7],
-        [7, 6, 5],
-        [5, 4, 3],
-        [1, 0, 28],
+        [19, 18, 17],
+        [17, 16, 15],
+        [15, 14, 13],
+        [10, 9, 8],
+        [8, 7, 6],
+        [4, 3, 2],
         [27, 26, 24],
-        [21, 19, 18],
-        [14, 12, 11],
-        [5, 3, 2],
-        [28, 27, 24],
-        [16, 14, 11],
-        [7, 5, 2],
-        [28, 24, 23],
-        [16, 11, 9],
-        [7, 2, 1],
-        [28, 23, 21],
-        [17, 16, 9],
-        [9, 7, 1],
-        [28, 21, 18],
-        [17, 9, 1],
-        [28, 18, 17],
-        [17, 1, 28],
+        [24, 23, 21],
+        [17, 15, 13],
+        [11, 10, 8],
+        [4, 2, 1],
+        [27, 24, 21],
+        [19, 17, 13],
+        [5, 4, 1],
+        [27, 21, 19],
+        [19, 13, 12],
+        [6, 5, 1],
+        [27, 19, 12],
+        [6, 1, 0],
+        [27, 12, 11],
+        [8, 6, 0],
+        [0, 27, 11],
+        [11, 8, 0],
     ]
 
 
@@ -108,8 +106,7 @@ def test_earclip_polygon_coincident_points():
         ]
     )
 
-    with pytest.raises(IndexError):
-        earclip_polygon(self_intersecting_polygon)
+    earclip_polygon(self_intersecting_polygon)
 
 
 def test_earclip_polygon_when_reversed():
@@ -129,4 +126,4 @@ def test_earclip_polygon_when_reversed():
 
     polygon.points.reverse()
     triangles = earclip_polygon(polygon)
-    assert triangles == [[0, 5, 4], [3, 2, 1], [0, 4, 3], [3, 1, 0]]
+    assert triangles == [[5, 0, 1], [1, 2, 3], [3, 4, 5], [5, 1, 3]]

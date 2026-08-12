@@ -83,3 +83,14 @@ def test_cell_network_boundary(example_cell_network):
     assert set(ds.faces_without_cell()) == {11}
     assert set(ds.edges_without_face()) == {(15, 13), (14, 12)}
     assert set(ds.nonmanifold_edges()) == {(6, 7), (4, 5), (5, 6), (7, 4)}
+
+
+# ==============================================================================
+# Conversion
+# ==============================================================================
+
+
+def test_vertices_to_points(example_cell_network):
+    ds = example_cell_network
+    points = ds.vertices_to_points()
+    assert len(points) == ds.number_of_vertices()

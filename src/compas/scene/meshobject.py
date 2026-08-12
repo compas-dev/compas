@@ -106,16 +106,6 @@ class MeshObject(SceneObject):
         self._item = mesh
         self._transformation = None
 
-    @property
-    def transformation(self):
-        # type: () -> compas.geometry.Transformation | None
-        return self._transformation
-
-    @transformation.setter
-    def transformation(self, transformation):
-        # type: (compas.geometry.Transformation) -> None
-        self._transformation = transformation
-
     def draw_vertices(self):
         """Draw the vertices of the mesh.
 
