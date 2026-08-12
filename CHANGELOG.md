@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Renamed `Tolerance.units` to `Tolerance.unit` to better reflect the documented properties. Left `units` with deprecation warning.
 * Fixed `NotImplementedErorr` when calling `BrepLoop.vertices`.
 * Fixed `python -m compas` to detect extensions based on `importlib` rather than `pkg_resources`.
+* `compas_rhino.uninstall` will try to remove compas packages from all possible install locations.
 
 ### Removed
 
@@ -138,9 +139,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `inheritance` field to `__jsondump__` of `compas.datastructures.Datastructure` to allow for deserialization to closest available superclass of custom datastructures.
 
 ### Changed
-
-* `compas_rhino.uninstall` will try to remove compas packages from all possible
-  install locations.
 
 ### Removed
 
