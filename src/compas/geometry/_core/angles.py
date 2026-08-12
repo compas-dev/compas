@@ -56,25 +56,6 @@ def angle_vectors(u, v, deg=False, tol=None):
     a = max(min(a, 1), -1)
     angle = acos(a)
 
-    # a = length_vector(u)
-    # b = length_vector(v)
-    # if a < tol or b < tol:
-    #     return 0
-    # c = length_vector(subtract_vectors(u, v))
-    # if c < tol:
-    #     return 0
-    # if b >= c and c >= 0:
-    #     mu = c - (a - b)
-    # elif c > b and b >= 0:
-    #     mu = b - (a - c)
-    # else:
-    #     raise Exception("Invalid input vectors.")
-    # angle = 2 * atan(sqrt(((a - b) + c) * mu / ((a + (b + c)) * ((a - c) + b))))
-
-    # a = normalize_vector(u)
-    # b = normalize_vector(v)
-    # angle = 2 * atan2(length_vector(subtract_vectors(a, b)), length_vector(add_vectors(a, b)))
-
     if deg:
         return degrees(angle)
     return angle
