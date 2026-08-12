@@ -1,10 +1,3 @@
-from numpy import asarray
-from numpy import bincount
-from numpy import cross
-from numpy import zeros
-from scipy.sparse import coo_matrix
-from scipy.sparse import spdiags
-
 from compas.geometry import cross_vectors
 from compas.geometry import dot_vectors
 from compas.geometry import length_vector
@@ -107,6 +100,8 @@ def trimesh_cotangent_laplacian_matrix(mesh, rtype="csr"):
         `Laplacian Mesh Optimization <https://igl.ethz.ch/projects/Laplacian-mesh-processing/Laplacian-mesh-optimization/lmo.pdf>`_.
 
     """
+    from scipy.sparse import coo_matrix
+
     vertex_index = mesh.vertex_index()
     n = mesh.number_of_vertices()
     data = []
@@ -173,6 +168,12 @@ def trimesh_vertexarea_matrix(mesh):
     [0.1666, 0.1666, 0.1666]
 
     """
+    from numpy import asarray
+    from numpy import bincount
+    from numpy import cross
+    from numpy import zeros
+    from scipy.sparse import spdiags
+
     vertex_index = mesh.vertex_index()
     xyz = asarray(mesh.vertices_attributes("xyz"), dtype=float)
     tris = asarray(

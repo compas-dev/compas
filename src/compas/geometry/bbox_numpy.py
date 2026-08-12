@@ -1,15 +1,3 @@
-from numpy import amax
-from numpy import amin
-from numpy import argmax
-from numpy import argmin
-from numpy import array
-from numpy import asarray
-from numpy import dot
-from numpy import sum
-from numpy import vstack
-from numpy import zeros
-from scipy.spatial import ConvexHull
-
 from compas.geometry import length_vector
 from compas.geometry import local_axes
 from compas.geometry import local_to_world_coordinates_numpy
@@ -78,6 +66,9 @@ def oriented_bounding_box_numpy(points, tol=None):
     True
 
     """
+    from numpy import asarray
+    from numpy import vstack
+
     points = asarray(points)
     n, dim = points.shape
 
@@ -156,6 +147,9 @@ def oriented_bounding_box_xy_numpy(points):
     :func:`compas.geometry.oriented_bounding_box_numpy`
 
     """
+    from numpy import asarray
+    from numpy import zeros
+
     points = asarray(points)
     n, dim = points.shape
 
@@ -192,6 +186,10 @@ def minimum_volume_box(points, return_size=False):
         XYZ coordinates of 8 points defining a box.
 
     """
+    from numpy import amax
+    from numpy import amin
+    from scipy.spatial import ConvexHull
+
     hull = ConvexHull(points)
     xyz = points[hull.vertices]
     boxes = []
@@ -248,6 +246,13 @@ def minimum_area_rectangle_xy(points, return_size=False):
         XYZ coordinates of 4 points defining a rectangle.
 
     """
+    from numpy import argmax
+    from numpy import argmin
+    from numpy import array
+    from numpy import dot
+    from numpy import sum
+    from scipy.spatial import ConvexHull
+
     boxes = []
 
     points = points[:, :2]

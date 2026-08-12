@@ -1,6 +1,3 @@
-import numpy as np
-from scipy.sparse import coo_matrix  # type: ignore
-
 from compas.linalg import normalizerow
 from compas.linalg import normrow
 from compas.linalg import rot90
@@ -29,6 +26,9 @@ def trimesh_gradient_numpy(M, rtype="array"):
     and the coordinate difference vectors associated with the edges
 
     """
+    import numpy as np
+    from scipy.sparse import coo_matrix  # type: ignore
+
     V, F = M
     v = V.shape[0]
     f = F.shape[0]

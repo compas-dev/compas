@@ -1,5 +1,3 @@
-from numpy import asarray
-
 from .trimesh_gradient_numpy import trimesh_gradient_numpy
 
 
@@ -17,6 +15,8 @@ def trimesh_descent_numpy(M):
         The descent directions.
 
     """
+    from numpy import asarray
+
     vertices, faces = M
     V = asarray(vertices)
     F = asarray(faces)

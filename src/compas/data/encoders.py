@@ -14,7 +14,7 @@ from .data import Data  # noqa: F401
 from .exceptions import DecoderError
 
 IDictionary = None
-numpy_support = False
+numpy_support = None  # type: bool | None
 dotnet_support = False
 
 # We don't do this from `compas.IPY` to avoid circular imports
@@ -27,18 +27,15 @@ if "ironpython" == platform.python_implementation().lower():
     except:  # noqa: E722
         pass
 
-try:
-    import numpy as np
-
-    try:
-        np_float = np.float_
-    except AttributeError:
-        np_float = np.float64
-
-    numpy_support = True
-except (ImportError, SyntaxError):
-    numpy_support = False
-
+def _is_numpy_available():  # type (...) -> bool
+    global numpy_support
+    if numpy_support is None:
+        try:
+            import numpy.version  # noqa: F401
+            numpy_support = True
+        except (ImportError, SyntaxError):
+            numpy_support = False
+    return numpy_support
 
 def cls_from_dtype(dtype, inheritance=None):  # type: (...) -> Type[Data]
     """Get the class object corresponding to a COMPAS data type specification.
@@ -144,7 +141,8 @@ class DataEncoder(json.JSONEncoder):
         if hasattr(o, "__next__"):
             return list(o)
 
-        if numpy_support:
+        if _is_numpy_available():
+            import numpy as np
             if isinstance(o, np.ndarray):
                 return o.tolist()
             if isinstance(
@@ -164,7 +162,9 @@ class DataEncoder(json.JSONEncoder):
                 ),  # type: ignore
             ):
                 return int(o)
-            if isinstance(o, (np_float, np.float16, np.float32, np.float64)):  # type: ignore
+            if hasattr(np, "float_") and isinstance(o, np.float_):  # type: ignore
+                return float(o)
+            if isinstance(o, (np.float16, np.float32, np.float64)):  # type: ignore
                 return float(o)
             if isinstance(o, np.bool_):
                 return bool(o)
