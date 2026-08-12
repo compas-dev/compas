@@ -284,6 +284,8 @@ class Polyhedron(Geometry):
 
     @vertices.setter
     def vertices(self, vertices):
+        if all(isinstance(vertex, Point) for vertex in vertices):
+            vertices = [[vertex.x, vertex.y, vertex.z] for vertex in vertices]
         self._vertices = vertices
 
     @property
