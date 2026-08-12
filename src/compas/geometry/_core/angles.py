@@ -32,6 +32,11 @@ def angle_vectors(u, v, deg=False, tol=None):
         The tolerance for comparing values to zero.
         Default is :attr:`TOL.absolute`.
 
+    Raises
+    ------
+    ValueError
+        If one of the input vectors is a zero-length vector.
+
     Returns
     -------
     float
@@ -46,7 +51,7 @@ def angle_vectors(u, v, deg=False, tol=None):
     """
     L = length_vector(u) * length_vector(v)
     if TOL.is_zero(L, tol):
-        return 0
+        raise ValueError("Cannot compute angle between zero-length vectors.")
     a = dot_vectors(u, v) / L
     a = max(min(a, 1), -1)
     angle = acos(a)
