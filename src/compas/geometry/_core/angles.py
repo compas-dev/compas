@@ -51,7 +51,7 @@ def angle_vectors(u, v, deg=False, tol=None):
     """
     L = length_vector(u) * length_vector(v)
     if TOL.is_zero(L, tol):
-        raise ValueError("Cannot compute angle between zero-length vectors.")
+        raise ValueError("Cannot compute the angle between one or more zero-length vectors.")
     a = dot_vectors(u, v) / L
     a = max(min(a, 1), -1)
     angle = acos(a)
