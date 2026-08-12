@@ -149,6 +149,11 @@ def test_angle_vectors_projected(u, v, normal, result):
     assert TOL.is_close(angle_vectors_projected(u, v, normal), result)
 
 
+def test_angle_vectors_projected_fails_when_input_is_parallel_to_normal():
+    with pytest.raises(ValueError):
+        angle_vectors_projected([1, 0, 0], [0, 1, 0], [1, 0, 0])
+
+
 # ==============================================================================
 # average
 # ==============================================================================
