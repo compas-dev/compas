@@ -54,34 +54,32 @@ def pca_numpy(data):
     # across all observations
     Y = X - mean
 
-    # covariance matrix of spread
-    # note: there is a covariance function in NumPy...
-    # the shape of the covariance matrix is dim x dim
-    # for example, if the data are 2D point coordinates, the shape of C is 2 x 2
-    # the diagonal of the covariance matrix contains the variance of each variable
-    # the off-diagonal elements of the covariance matrix contain the covariance
-    # of two independent variables
-    C = Y.T.dot(Y) / (n - 1)
-
-    # assert C.shape[0] == dim, "The shape of the covariance matrix is not correct."
-
-    # SVD of covariance matrix
-    u, s, vT = svd(C, full_matrices=False)
+    # SVD of the spread matrix directly — deliberately NOT of the covariance
+    # matrix C = Y.T @ Y / (n - 1).
+    # The right-singular vectors of Y are exactly the eigenvectors of C, but
+    # forming C squares the condition number: for near-degenerate data (e.g.
+    # an almost collinear point cloud, whose smallest extent is ~1e-8 of its
+    # largest) the smallest principal direction drowns in floating-point
+    # rounding and the returned directions are wrong, while the SVD of Y
+    # recovers them to full precision. See issue #1522.
+    u, s, vT = svd(Y, full_matrices=False)
 
     # eigenvectors
     # ------------
     # note: the eigenvectors are normalized
     # note: vT is exactly what it says it will be => the transposed eigenvectors
     # => take the rows of vT, or the columns of v
-    # the right-singular vectors of C (the columns of V or the rows of Vt)
-    # are the eigenvectors of CtC
+    # the right-singular vectors of Y (the columns of V or the rows of Vt)
+    # are the eigenvectors of C = Y.T @ Y / (n - 1)
     eigenvectors = vT
 
     # eigenvalues
     # -----------
-    # the nonzero singular values of C are the square roots
-    # of the nonzero eigenvalues of CtC and CCt
-    eigenvalues = s
+    # the singular values of Y are the square roots of the (n - 1)-scaled
+    # eigenvalues of the covariance matrix C; rescale so the returned values
+    # keep their meaning (the variance of the data along each principal
+    # direction), identical to what the SVD of C used to return
+    eigenvalues = (s**2) / (n - 1)
 
     # return
     return mean[0], eigenvectors, eigenvalues

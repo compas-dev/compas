@@ -45,3 +45,4 @@
 - Dominik Reisach <<reisach@arch.ethz.ch>> [@dominikreisach](https://github.com/dominikreisach)
 - Eric Gozzi <<eric.gozzi@arch.ethz.ch>> [@ericgozzi](https://github.com/ericgozzi)
 - Daniel Nunes Locatelli <<nuneslocatelli@arch.ethz.ch>> [@daniel-locatelli](https://github.com/daniel-locatelli)
+- Mengxi He <<m.he@lekolabs.com>> [@mengxihex](https://github.com/mengxihex)
