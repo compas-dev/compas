@@ -1,23 +1,25 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 from ast import literal_eval
+from collections.abc import Mapping
 from itertools import combinations
 from random import sample
 from random import shuffle
+from typing import Any
+from typing import Callable
+from typing import Iterable
+from typing import Iterator
+from typing import Literal
+from typing import Optional
+from typing import Sequence
+from typing import Union
+from typing import overload
 
-import compas
-
-if compas.PY2:
-    from collections import Mapping
-else:
-    from collections.abc import Mapping
+from typing_extensions import Self
 
 from compas.datastructures.attributes import EdgeAttributeView
 from compas.datastructures.attributes import NodeAttributeView
 from compas.datastructures.datastructure import Datastructure
-from compas.files import OBJ
+from compas.files import obj_data
+from compas.files import read_obj
 from compas.geometry import Box
 from compas.geometry import Line
 from compas.geometry import Point
@@ -48,6 +50,11 @@ from .planarity import graph_is_planar
 from .planarity import graph_is_planar_embedding
 from .planarity import graph_is_xy
 from .smoothing import graph_smooth_centroid
+from .types import AttributeDict
+from .types import Edge
+from .types import Node
+
+_MISSING = object()
 
 
 class Graph(Datastructure):
@@ -55,24 +62,24 @@ class Graph(Datastructure):
 
     Parameters
     ----------
-    default_node_attributes : dict, optional
+    default_node_attributes
         Default values for node attributes.
-    default_edge_attributes : dict, optional
+    default_edge_attributes
         Default values for edge attributes.
-    name : str, optional
+    name
         The name of the graph.
-    **kwargs : dict, optional
+    **kwargs
         Additional keyword arguments, which are stored in the attributes dict.
 
     Attributes
     ----------
-    default_node_attributes : dict[str, Any]
+    default_node_attributes
         dictionary containing default values for the attributes of nodes.
-        It is recommended to add a default to this dictionary using :meth:`update_default_node_attributes`
+        It is recommended to add a default to this dictionary using update_default_node_attributes
         for every node attribute used in the data structure.
-    default_edge_attributes : dict[str, Any]
+    default_edge_attributes
         dictionary containing default values for the attributes of edges.
-        It is recommended to add a default to this dictionary using :meth:`update_default_edge_attributes`
+        It is recommended to add a default to this dictionary using update_default_edge_attributes
         for every edge attribute used in the data structure.
 
     """
@@ -89,37 +96,8 @@ class Graph(Datastructure):
     embed_in_plane = graph_embed_in_plane
     find_cycles = graph_find_cycles
 
-    DATASCHEMA = {
-        "type": "object",
-        "properties": {
-            "attributes": {"type": "object"},
-            "default_node_attributes": {"type": "object"},
-            "default_edge_attributes": {"type": "object"},
-            "node": {
-                "type": "object",
-                "additionalProperties": {"type": "object"},
-            },
-            "edge": {
-                "type": "object",
-                "additionalProperties": {
-                    "type": "object",
-                    "additionalProperties": {"type": "object"},
-                },
-            },
-            "max_node": {"type": "integer", "minimum": -1},
-        },
-        "required": [
-            "attributes",
-            "default_node_attributes",
-            "default_edge_attributes",
-            "node",
-            "edge",
-            "max_node",
-        ],
-    }
-
     @property
-    def __data__(self):
+    def __data__(self) -> dict[str, Any]:
         return self.__before_json_dump__(
             {
                 "attributes": self.attributes,
@@ -131,12 +109,12 @@ class Graph(Datastructure):
             }
         )
 
-    def __before_json_dump__(self, data):
+    def __before_json_dump__(self, data: dict[str, Any]) -> dict[str, Any]:
         data["node"] = {repr(key): attr for key, attr in data["node"].items()}
         data["edge"] = {repr(u): {repr(v): attr for v, attr in nbrs.items()} for u, nbrs in data["edge"].items()}
         return data
 
-    def __after_json_load__(self, data):
+    def __after_json_load__(self, data: dict[str, Any]) -> dict[str, Any]:
         l_e = literal_eval
         nodes = data["node"] or {}
         edges = data["edge"] or {}
@@ -145,7 +123,7 @@ class Graph(Datastructure):
         return data
 
     @classmethod
-    def __from_data__(cls, data):
+    def __from_data__(cls, data: dict[str, Any]) -> Self:
         graph = cls(
             default_node_attributes=data.get("default_node_attributes"),
             default_edge_attributes=data.get("default_edge_attributes"),
@@ -162,12 +140,12 @@ class Graph(Datastructure):
 
     def __init__(
         self,
-        default_node_attributes=None,
-        default_edge_attributes=None,
-        name=None,
-        **kwargs
-    ):  # fmt: skip
-        super(Graph, self).__init__(kwargs, name=name)
+        default_node_attributes: Optional[AttributeDict] = None,
+        default_edge_attributes: Optional[AttributeDict] = None,
+        name: Optional[str] = None,
+        **kwargs: Any,
+    ) -> None:
+        super().__init__(kwargs, name=name)
         self._max_node = -1
         self.node = {}
         self.edge = {}
@@ -179,7 +157,7 @@ class Graph(Datastructure):
         if default_edge_attributes:
             self.default_edge_attributes.update(default_edge_attributes)
 
-    def __str__(self):
+    def __str__(self) -> str:
         tpl = "<Graph with {} nodes, {} edges>"
         return tpl.format(self.number_of_nodes(), self.number_of_edges())
 
@@ -188,21 +166,21 @@ class Graph(Datastructure):
     # --------------------------------------------------------------------------
 
     @classmethod
-    def from_edges(cls, edges):
+    def from_edges(cls, edges: Iterable[Edge]) -> Self:
         """Create a new graph instance from information about the edges.
 
         Parameters
         ----------
-        edges : list[tuple[hashable, hashable]]
+        edges
             The edges of the graph as pairs of node identifiers.
 
         Returns
         -------
-        :class:`compas.datastructures.Graph`
+        Graph
 
         See Also
         --------
-        :meth:`from_networkx`
+        from_networkx
 
         """
         graph = cls()
@@ -215,22 +193,22 @@ class Graph(Datastructure):
         return graph
 
     @classmethod
-    def from_networkx(cls, graph):
+    def from_networkx(cls, graph: Any) -> Self:
         """Create a new graph instance from a NetworkX DiGraph instance.
 
         Parameters
         ----------
-        graph : networkx.DiGraph
+        graph
             NetworkX instance of a directed graph.
 
         Returns
         -------
-        :class:`compas.datastructures.Graph`
+        Graph
 
         See Also
         --------
-        :meth:`to_networkx`
-        :meth:`from_edges`
+        to_networkx
+        from_edges
 
         """
         g = cls()
@@ -245,60 +223,53 @@ class Graph(Datastructure):
         return g
 
     @classmethod
-    def from_obj(cls, filepath, precision=None):
+    def from_obj(cls, filepath: Any, precision: Optional[int] = None) -> Self:
         """Construct a graph from the data contained in an OBJ file.
 
         Parameters
         ----------
-        filepath : path string | file-like object | URL string
+        filepath
             A path, a file-like object or a URL pointing to a file.
-        precision: str, optional
+        precision
             The precision of the geometric map that is used to connect the lines.
 
         Returns
         -------
-        :class:`compas.datastructures.Graph`
+        Graph
             A graph object.
 
         See Also
         --------
-        :meth:`to_obj`
-        :meth:`from_lines`, :meth:`from_nodes_and_edges`, :meth:`from_pointcloud`
-        :class:`compas.files.OBJ`
+        to_obj
+        from_lines, from_nodes_and_edges, from_pointcloud
+        OBJ
 
         """
-        graph = cls()
-        obj = OBJ(filepath, precision)
-        obj.read()
-        nodes = obj.vertices
-        edges = obj.lines
-        for i, (x, y, z) in enumerate(nodes):  # type: ignore
-            graph.add_node(i, x=x, y=y, z=z)
-        for edge in edges:  # type: ignore
-            graph.add_edge(*edge)
-        return graph
+        data = obj_data(read_obj(filepath))
+        lines = [(data.vertices[u], data.vertices[v]) for u, v in data.lines]
+        return cls.from_lines(lines, precision=precision)
 
     @classmethod
-    def from_lines(cls, lines, precision=None):
+    def from_lines(cls, lines: Iterable[Sequence[Any]], precision: Optional[int] = None) -> Self:
         """Construct a graph from a set of lines represented by their start and end point coordinates.
 
         Parameters
         ----------
-        lines : list[tuple[list[float, list[float]]]]
+        lines
             A list of pairs of point coordinates.
-        precision : int, optional
+        precision
             Precision for converting numbers to strings.
-            Default is :attr:`TOL.precision`.
+            Default is TOL.precision.
 
         Returns
         -------
-        :class:`compas.datastructures.Graph`
+        Graph
             A graph object.
 
         See Also
         --------
-        :meth:`to_lines`
-        :meth:`from_obj`, :meth:`from_nodes_and_edges`, :meth:`from_pointcloud`
+        to_lines
+        from_obj, from_nodes_and_edges, from_pointcloud
 
         """
         graph = cls()
@@ -323,24 +294,28 @@ class Graph(Datastructure):
         return graph
 
     @classmethod
-    def from_nodes_and_edges(cls, nodes, edges):
+    def from_nodes_and_edges(
+        cls,
+        nodes: Union[Sequence[Sequence[float]], dict[Node, Sequence[float]]],
+        edges: Iterable[Edge],
+    ) -> Self:
         """Construct a graph from nodes and edges.
 
         Parameters
         ----------
-        nodes : list[list[float]] | dict[hashable, list[float]]
+        nodes
             A list of node coordinates or a dictionary of keys pointing to node coordinates to specify keys.
-        edges : list[tuple[hashable, hshable]]
+        edges
 
         Returns
         -------
-        :class:`compas.datastructures.Graph`
+        Graph
             A graph object.
 
         See Also
         --------
-        :meth:`to_nodes_and_edges`
-        :meth:`from_obj`, :meth:`from_lines`, :meth:`from_pointcloud`
+        to_nodes_and_edges
+        from_obj, from_lines, from_pointcloud
 
         """
         graph = cls()
@@ -358,25 +333,25 @@ class Graph(Datastructure):
         return graph
 
     @classmethod
-    def from_pointcloud(cls, cloud, degree=3):
+    def from_pointcloud(cls, cloud: Iterable[Sequence[float]], degree: int = 3) -> Self:
         """Construct a graph from random connections between the points of a pointcloud.
 
         Parameters
         ----------
-        cloud : :class:`compas.geometry.Pointcloud`
+        cloud
             A pointcloud object.
-        degree : int, optional
+        degree
             The number of connections per node.
 
         Returns
         -------
-        :class:`compas.datastructures.Graph`
+        Graph
             A graph object.
 
         See Also
         --------
-        :meth:`to_points`
-        :meth:`from_obj`, :meth:`from_lines`, :meth:`from_nodes_and_edges`
+        to_points
+        from_obj, from_lines, from_nodes_and_edges
 
         """
         graph = cls()
@@ -399,12 +374,12 @@ class Graph(Datastructure):
     # Converters
     # --------------------------------------------------------------------------
 
-    def to_obj(self):
+    def to_obj(self) -> None:
         """Write the graph to an OBJ file.
 
         Parameters
         ----------
-        filepath : path string | file-like object
+        filepath
             A path or a file-like object pointing to a file.
 
         Returns
@@ -413,13 +388,13 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`from_obj`
-        :meth:`to_lines`, :meth:`to_nodes_and_edges`, :meth:`to_points`
+        from_obj
+        to_lines, to_nodes_and_edges, to_points
 
         """
         raise NotImplementedError
 
-    def to_points(self):
+    def to_points(self) -> list[list[float]]:
         """Return the coordinates of the graph.
 
         Returns
@@ -429,13 +404,13 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`from_pointcloud`
-        :meth:`to_lines`, :meth:`to_nodes_and_edges`, :meth:`to_obj`
+        from_pointcloud
+        to_lines, to_nodes_and_edges, to_obj
 
         """
         return [self.node_coordinates(key) for key in self.nodes()]
 
-    def to_lines(self):
+    def to_lines(self) -> list[tuple[list[float], list[float]]]:
         """Return the lines of the graph as pairs of start and end point coordinates.
 
         Returns
@@ -445,26 +420,25 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`from_lines`
-        :meth:`to_nodes_and_edges`, :meth:`to_obj`, :meth:`to_points`
+        from_lines
+        to_nodes_and_edges, to_obj, to_points
 
         """
         return [self.edge_coordinates(edge) for edge in self.edges()]
 
-    def to_nodes_and_edges(self):
+    def to_nodes_and_edges(self) -> tuple[list[list[float]], list[tuple[int, int]]]:
         """Return the nodes and edges of a graph.
 
         Returns
         -------
-        list[list[float]]
-            A list of nodes, represented by their XYZ coordinates.
-        list[tuple[hashable, hashable]]
-            A list of edges, with each edge represented by a pair of indices in the node list.
+        tuple[list[list[float]], list[tuple[int, int]]]
+            A list of nodes, represented by their XYZ coordinates, and
+            a list of edges, with each edge represented by a pair of indices in the node list.
 
         See Also
         --------
-        :meth:`from_nodes_and_edges`
-        :meth:`to_lines`, :meth:`to_obj`, :meth:`to_points`
+        from_nodes_and_edges
+        to_lines, to_obj, to_points
 
         """
         key_index = dict((key, index) for index, key in enumerate(self.nodes()))
@@ -472,7 +446,7 @@ class Graph(Datastructure):
         edges = [(key_index[u], key_index[v]) for u, v in self.edges()]
         return nodes, edges
 
-    def to_networkx(self):
+    def to_networkx(self) -> Any:
         """Create a new NetworkX graph instance from a graph.
 
         Returns
@@ -482,7 +456,7 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`from_networkx`
+        from_networkx
 
         """
         import networkx as nx
@@ -502,7 +476,7 @@ class Graph(Datastructure):
     # Helpers
     # --------------------------------------------------------------------------
 
-    def clear(self):
+    def clear(self) -> None:
         """Clear all the graph data.
 
         Returns
@@ -517,12 +491,12 @@ class Graph(Datastructure):
         self.edge = {}
         self.adjacency = {}
 
-    def node_sample(self, size=1):
+    def node_sample(self, size: int = 1) -> list[Node]:
         """Get a list of identifiers of a random set of n nodes.
 
         Parameters
         ----------
-        size : int, optional
+        size
             The size of the sample.
 
         Returns
@@ -532,17 +506,17 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`edge_sample`
+        edge_sample
 
         """
         return sample(list(self.nodes()), size)
 
-    def edge_sample(self, size=1):
+    def edge_sample(self, size: int = 1) -> list[Edge]:
         """Get the identifiers of a set of random edges.
 
         Parameters
         ----------
-        size : int, optional
+        size
             The size of the sample.
 
         Returns
@@ -552,12 +526,12 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`node_sample`
+        node_sample
 
         """
         return sample(list(self.edges()), size)
 
-    def node_index(self):
+    def node_index(self) -> dict[Node, int]:
         """Returns a dictionary that maps node identifiers to their corresponding index in a node list or array.
 
         Returns
@@ -567,13 +541,13 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`index_node`
-        :meth:`edge_index`
+        index_node
+        edge_index
 
         """
         return {key: index for index, key in enumerate(self.nodes())}
 
-    def index_node(self):
+    def index_node(self) -> dict[int, Node]:
         """Returns a dictionary that maps the indices of a node list to keys in a node dictionary.
 
         Returns
@@ -583,13 +557,13 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`node_index`
-        :meth:`index_edge`
+        node_index
+        index_edge
 
         """
         return dict(enumerate(self.nodes()))
 
-    def edge_index(self):
+    def edge_index(self) -> dict[Edge, int]:
         """Returns a dictionary that maps edge identifiers (i.e. pairs of vertex identifiers)
         to the corresponding edge index in a list or array of edges.
 
@@ -600,13 +574,13 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`index_edge`
-        :meth:`node_index`
+        index_edge
+        node_index
 
         """
         return {(u, v): index for index, (u, v) in enumerate(self.edges())}
 
-    def index_edge(self):
+    def index_edge(self) -> dict[int, Edge]:
         """Returns a dictionary that maps edges in a list to the corresponding
         vertex identifier pairs.
 
@@ -617,21 +591,21 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`edge_index`
-        :meth:`index_node`
+        edge_index
+        index_node
 
         """
         return dict(enumerate(self.edges()))
 
-    def node_gkey(self, precision=None):
+    def node_gkey(self, precision: Optional[int] = None) -> dict[Node, str]:
         """Returns a dictionary that maps node identifiers to the corresponding
         *geometric key* up to a certain precision.
 
         Parameters
         ----------
-        precision : int, optional
+        precision
             Precision for converting numbers to strings.
-            Default is :attr:`TOL.precision`.
+            Default is TOL.precision.
 
         Returns
         -------
@@ -640,23 +614,23 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`gkey_node`
-        :meth:`compas.Tolerance.geometric_key`
+        gkey_node
+        TOL.geometric_key
 
         """
         gkey = TOL.geometric_key
         xyz = self.node_coordinates
         return {key: gkey(xyz(key), precision) for key in self.nodes()}
 
-    def gkey_node(self, precision=None):
+    def gkey_node(self, precision: Optional[int] = None) -> dict[str, Node]:
         """Returns a dictionary that maps *geometric keys* of a certain precision
         to the identifiers of the corresponding nodes.
 
         Parameters
         ----------
-        precision : int, optional
+        precision
             Precision for converting numbers to strings.
-            Default is :attr:`TOL.precision`.
+            Default is TOL.precision.
 
         Returns
         -------
@@ -665,8 +639,8 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`node_gkey`
-        :meth:`compas.Tolerance.geometric_key`
+        node_gkey
+        TOL.geometric_key
 
         """
         gkey = TOL.geometric_key
@@ -677,17 +651,22 @@ class Graph(Datastructure):
     # Builders
     # --------------------------------------------------------------------------
 
-    def add_node(self, key=None, attr_dict=None, **kwattr):
+    def add_node(
+        self,
+        key: Optional[Node] = None,
+        attr_dict: Optional[AttributeDict] = None,
+        **kwattr: Any,
+    ) -> Node:
         """Add a node and specify its attributes (optional).
 
         Parameters
         ----------
-        key : hashable, optional
+        key
             An identifier for the node.
             Defaults to None, in which case an identifier of type int is automatically generated.
-        attr_dict : dict[str, Any], optional
+        attr_dict
             A dictionary of vertex attributes.
-        **kwattr : dict[str, Any], optional
+        **kwattr
             A dictionary of additional attributes compiled of remaining named arguments.
 
         Returns
@@ -697,8 +676,8 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`add_edge`
-        :meth:`delete_node`
+        add_edge
+        delete_node
 
         Notes
         -----
@@ -716,11 +695,8 @@ class Graph(Datastructure):
         """
         if key is None:
             key = self._max_node = self._max_node + 1
-        try:
-            if key > self._max_node:
-                self._max_node = key
-        except (ValueError, TypeError):
-            pass
+        elif isinstance(key, int) and key > self._max_node:
+            self._max_node = key
 
         if key not in self.node:
             self.node[key] = {}
@@ -731,18 +707,24 @@ class Graph(Datastructure):
         self.node[key].update(attr)
         return key
 
-    def add_edge(self, u, v, attr_dict=None, **kwattr):
+    def add_edge(
+        self,
+        u: Node,
+        v: Node,
+        attr_dict: Optional[AttributeDict] = None,
+        **kwattr: Any,
+    ) -> Edge:
         """Add an edge and specify its attributes.
 
         Parameters
         ----------
-        u : hashable
+        u
             The identifier of the first node of the edge.
-        v : hashable
+        v
             The identifier of the second node of the edge.
-        attr_dict : dict[str, Any], optional
+        attr_dict
             A dictionary of edge attributes.
-        **kwattr : dict[str, Any], optional
+        **kwattr
             A dictionary of additional attributes compiled of remaining named arguments.
 
         Returns
@@ -752,8 +734,8 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`add_node`
-        :meth:`delete_edge`
+        add_node
+        delete_edge
 
         Examples
         --------
@@ -779,12 +761,12 @@ class Graph(Datastructure):
     # Modifiers
     # --------------------------------------------------------------------------
 
-    def delete_node(self, key):
+    def delete_node(self, key: Node) -> None:
         """Delete a node from the graph.
 
         Parameters
         ----------
-        key : hashable
+        key
             The identifier of the node.
 
         Returns
@@ -793,8 +775,8 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`delete_edge`
-        :meth:`add_node`
+        delete_edge
+        add_node
 
         Examples
         --------
@@ -816,12 +798,12 @@ class Graph(Datastructure):
                 if v == key:
                     del self.adjacency[u][v]
 
-    def delete_edge(self, edge):
+    def delete_edge(self, edge: Edge) -> None:
         """Delete an edge from the graph.
 
         Parameters
         ----------
-        edge : tuple[hashable, hashable]
+        edge
             The identifier of the edge as a pair of node identifiers.
 
         Returns
@@ -830,8 +812,8 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`delete_node`
-        :meth:`add_edge`
+        delete_node
+        add_edge
 
         Examples
         --------
@@ -854,7 +836,7 @@ class Graph(Datastructure):
     # Info
     # --------------------------------------------------------------------------
 
-    def summary(self):
+    def summary(self) -> str:
         """Return a summary of the graph.
 
         Returns
@@ -873,7 +855,7 @@ class Graph(Datastructure):
         )
         return tpl.format(self.name, self.number_of_nodes(), self.number_of_edges())
 
-    def number_of_nodes(self):
+    def number_of_nodes(self) -> int:
         """Compute the number of nodes of the graph.
 
         Returns
@@ -883,12 +865,12 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`number_of_edges`
+        number_of_edges
 
         """
         return len(list(self.nodes()))
 
-    def number_of_edges(self):
+    def number_of_edges(self) -> int:
         """Compute the number of edges of the graph.
 
         Returns
@@ -898,12 +880,12 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`number_of_nodes`
+        number_of_nodes
 
         """
         return len(list(self.edges()))
 
-    def is_connected(self):
+    def is_connected(self) -> bool:
         """Verify that the graph is connected.
 
 
@@ -935,24 +917,34 @@ class Graph(Datastructure):
     # Accessors
     # --------------------------------------------------------------------------
 
-    def nodes(self, data=False):
+    @overload
+    def nodes(self, data: Literal[False] = False) -> Iterator[Node]: ...
+
+    @overload
+    def nodes(self, data: Literal[True]) -> Iterator[tuple[Node, NodeAttributeView]]: ...
+
+    @overload
+    def nodes(self, data: bool) -> Iterator[Union[Node, tuple[Node, NodeAttributeView]]]: ...
+
+    def nodes(self, data: bool = False) -> Iterator[Any]:
         """Iterate over the nodes of the graph.
 
         Parameters
         ----------
-        data : bool, optional
+        data
             If True, yield the node attributes in addition to the node identifiers.
 
         Yields
         ------
-        hashable | tuple[hashable, dict[str, Any]]
-            If `data` is False, the next node identifier.
-            If `data` is True, the next node as a (key, attr) tuple.
+        hashable
+            The node identifier if `data` is `False`.
+        tuple[hashable, NodeAttributeView]
+            The node identifier and its attributes if `data` is `True`.
 
         See Also
         --------
-        :meth:`nodes_where`, :meth:`nodes_where_predicate`
-        :meth:`edges`, :meth:`edges_where`, :meth:`edges_where_predicate`
+        nodes_where, nodes_where_predicate
+        edges, edges_where, edges_where_predicate
 
         """
         for key in self.node:
@@ -961,28 +953,58 @@ class Graph(Datastructure):
             else:
                 yield key, self.node_attributes(key)
 
-    def nodes_where(self, conditions=None, data=False, **kwargs):
+    @overload
+    def nodes_where(
+        self,
+        conditions: Optional[AttributeDict] = None,
+        data: Literal[False] = False,
+        **kwargs: Any,
+    ) -> Iterator[Node]: ...
+
+    @overload
+    def nodes_where(
+        self,
+        conditions: Optional[AttributeDict],
+        data: Literal[True],
+        **kwargs: Any,
+    ) -> Iterator[tuple[Node, NodeAttributeView]]: ...
+
+    @overload
+    def nodes_where(
+        self,
+        conditions: Optional[AttributeDict] = None,
+        data: bool = False,
+        **kwargs: Any,
+    ) -> Iterator[Union[Node, tuple[Node, NodeAttributeView]]]: ...
+
+    def nodes_where(
+        self,
+        conditions: Optional[AttributeDict] = None,
+        data: bool = False,
+        **kwargs: Any,
+    ) -> Iterator[Any]:
         """Get nodes for which a certain condition or set of conditions is true.
 
         Parameters
         ----------
-        conditions : dict, optional
+        conditions
             A set of conditions in the form of key-value pairs.
             The keys should be attribute names. The values can be attribute
             values or ranges of attribute values in the form of min/max pairs.
-        data : bool, optional
+        data
             If True, yield the node attributes in addition to the node identifiers.
 
         Yields
         ------
-        hashable | tuple[hashable, dict[str, Any]]
-            If `data` is False, the next node that matches the condition.
-            If `data` is True, the next node and its attributes.
+        hashable
+            A matching node identifier if `data` is `False`.
+        tuple[hashable, NodeAttributeView]
+            A matching node identifier and its attributes if `data` is `True`.
 
         See Also
         --------
-        :meth:`nodes`, :meth:`nodes_where_predicate`
-        :meth:`edges`, :meth:`edges_where`, :meth:`edges_where_predicate`
+        nodes, nodes_where_predicate
+        edges, edges_where, edges_where_predicate
 
         """
         conditions = conditions or {}
@@ -1037,27 +1059,53 @@ class Graph(Datastructure):
                 else:
                     yield key
 
-    def nodes_where_predicate(self, predicate, data=False):
+    @overload
+    def nodes_where_predicate(
+        self,
+        predicate: Callable[[Node, NodeAttributeView], bool],
+        data: Literal[False] = False,
+    ) -> Iterator[Node]: ...
+
+    @overload
+    def nodes_where_predicate(
+        self,
+        predicate: Callable[[Node, NodeAttributeView], bool],
+        data: Literal[True],
+    ) -> Iterator[tuple[Node, NodeAttributeView]]: ...
+
+    @overload
+    def nodes_where_predicate(
+        self,
+        predicate: Callable[[Node, NodeAttributeView], bool],
+        data: bool,
+    ) -> Iterator[Union[Node, tuple[Node, NodeAttributeView]]]: ...
+
+    def nodes_where_predicate(
+        self,
+        predicate: Callable[[Node, NodeAttributeView], bool],
+        data: bool = False,
+    ) -> Iterator[Any]:
         """Get nodes for which a certain condition or set of conditions is true using a lambda function.
 
         Parameters
         ----------
-        predicate : callable
+        predicate
             The condition you want to evaluate.
-            The callable takes 2 parameters: the node identifier and the node attributes, and should return True or False.
-        data : bool, optional
+            The callable takes 2 parameters
+        data
             If True, yield the node attributes in addition to the node identifiers.
 
         Yields
         ------
-        hashable | tuple[hashable, dict[str, Any]]
-            If `data` is False, the next node that matches the condition.
-            If `data` is True, the next node and its attributes.
+        hashable
+            A matching node identifier if `data` is `False`.
+        tuple[hashable, NodeAttributeView]
+            A matching node identifier and its attributes if `data` is `True`.
 
         See Also
         --------
-        :meth:`nodes`, :meth:`nodes_where`
-        :meth:`edges`, :meth:`edges_where`, :meth:`edges_where_predicate`
+        nodes, nodes_where
+        edges, edges_where, edges_where_predicate
 
         Examples
         --------
@@ -1071,24 +1119,34 @@ class Graph(Datastructure):
                 else:
                     yield key
 
-    def edges(self, data=False):
+    @overload
+    def edges(self, data: Literal[False] = False) -> Iterator[Edge]: ...
+
+    @overload
+    def edges(self, data: Literal[True]) -> Iterator[tuple[Edge, EdgeAttributeView]]: ...
+
+    @overload
+    def edges(self, data: bool) -> Iterator[Union[Edge, tuple[Edge, EdgeAttributeView]]]: ...
+
+    def edges(self, data: bool = False) -> Iterator[Any]:
         """Iterate over the edges of the graph.
 
         Parameters
         ----------
-        data : bool, optional
+        data
             If True, yield the edge attributes in addition to the edge identifiers.
 
         Yields
         ------
-        tuple[hashable, hashable] | tuple[tuple[hashable, hashable], dict[str, Any]]
-            If `data` is False, the next edge identifier (u, v).
-            If `data` is True, the next edge identifier and its attributes as a ((u, v), attr) tuple.
+        tuple[hashable, hashable]
+            The edge identifier if `data` is `False`.
+        tuple[tuple[hashable, hashable], EdgeAttributeView]
+            The edge identifier and its attributes if `data` is `True`.
 
         See Also
         --------
-        :meth:`edges_where`, :meth:`edges_where_predicate`
-        :meth:`nodes`, :meth:`nodes_where`, :meth:`nodes_where_predicate`
+        edges_where, edges_where_predicate
+        nodes, nodes_where, nodes_where_predicate
 
         """
         for u, nbrs in iter(self.edge.items()):
@@ -1098,30 +1156,60 @@ class Graph(Datastructure):
                 else:
                     yield u, v
 
-    def edges_where(self, conditions=None, data=False, **kwargs):
+    @overload
+    def edges_where(
+        self,
+        conditions: Optional[AttributeDict] = None,
+        data: Literal[False] = False,
+        **kwargs: Any,
+    ) -> Iterator[Edge]: ...
+
+    @overload
+    def edges_where(
+        self,
+        conditions: Optional[AttributeDict],
+        data: Literal[True],
+        **kwargs: Any,
+    ) -> Iterator[tuple[Edge, EdgeAttributeView]]: ...
+
+    @overload
+    def edges_where(
+        self,
+        conditions: Optional[AttributeDict] = None,
+        data: bool = False,
+        **kwargs: Any,
+    ) -> Iterator[Union[Edge, tuple[Edge, EdgeAttributeView]]]: ...
+
+    def edges_where(
+        self,
+        conditions: Optional[AttributeDict] = None,
+        data: bool = False,
+        **kwargs: Any,
+    ) -> Iterator[Any]:
         """Get edges for which a certain condition or set of conditions is true.
 
         Parameters
         ----------
-        conditions : dict, optional
+        conditions
             A set of conditions in the form of key-value pairs.
             The keys should be attribute names. The values can be attribute
             values or ranges of attribute values in the form of min/max pairs.
-        data : bool, optional
+        data
             If True, yield the edge attributes in addition to the edge identifiers.
-        **kwargs : dict[str, Any], optional
+        **kwargs
             Additional conditions provided as named function arguments.
 
         Yields
         ------
-        tuple[hashable, hashable] | tuple[tuple[hashable, hashable], dict[str, Any]]
-            If `data` is False, the next edge identifier (u, v).
-            If `data` is True, the next edge identifier and its attributes as a ((u, v), attr) tuple.
+        tuple[hashable, hashable]
+            A matching edge identifier if `data` is `False`.
+        tuple[tuple[hashable, hashable], EdgeAttributeView]
+            A matching edge identifier and its attributes if `data` is `True`.
 
         See Also
         --------
-        :meth:`edges`, :meth:`edges_where_predicate`
-        :meth:`nodes`, :meth:`nodes_where`, :meth:`nodes_where_predicate`
+        edges, edges_where_predicate
+        nodes, nodes_where, nodes_where_predicate
 
         """
         conditions = conditions or {}
@@ -1163,29 +1251,55 @@ class Graph(Datastructure):
                 else:
                     yield key
 
-    def edges_where_predicate(self, predicate, data=False):
+    @overload
+    def edges_where_predicate(
+        self,
+        predicate: Callable[[Edge, EdgeAttributeView], bool],
+        data: Literal[False] = False,
+    ) -> Iterator[Edge]: ...
+
+    @overload
+    def edges_where_predicate(
+        self,
+        predicate: Callable[[Edge, EdgeAttributeView], bool],
+        data: Literal[True],
+    ) -> Iterator[tuple[Edge, EdgeAttributeView]]: ...
+
+    @overload
+    def edges_where_predicate(
+        self,
+        predicate: Callable[[Edge, EdgeAttributeView], bool],
+        data: bool,
+    ) -> Iterator[Union[Edge, tuple[Edge, EdgeAttributeView]]]: ...
+
+    def edges_where_predicate(
+        self,
+        predicate: Callable[[Edge, EdgeAttributeView], bool],
+        data: bool = False,
+    ) -> Iterator[Any]:
         """Get edges for which a certain condition or set of conditions is true using a lambda function.
 
         Parameters
         ----------
-        predicate : callable
+        predicate
             The condition you want to evaluate.
             The callable takes 2 parameters:
             an edge identifier (tuple of node identifiers) and edge attributes,
             and should return True or False.
-        data : bool, optional
+        data
             If True, yield the edge attributes in addition to the edge attributes.
 
         Yields
         ------
-        tuple[hashable, hashable] | tuple[tuple[hashable, hashable], dict[str, Any]]
-            If `data` is False, the next edge identifier (u, v).
-            If `data` is True, the next edge identifier and its attributes as a ((u, v), attr) tuple.
+        tuple[hashable, hashable]
+            A matching edge identifier if `data` is `False`.
+        tuple[tuple[hashable, hashable], EdgeAttributeView]
+            A matching edge identifier and its attributes if `data` is `True`.
 
         See Also
         --------
-        :meth:`edges`, :meth:`edges_where`
-        :meth:`nodes`, :meth:`nodes_where`, :meth:`nodes_where_predicate`
+        edges, edges_where
+        nodes, nodes_where, nodes_where_predicate
 
         Examples
         --------
@@ -1199,14 +1313,14 @@ class Graph(Datastructure):
                 else:
                     yield key
 
-    def shortest_path(self, u, v):
+    def shortest_path(self, u: Node, v: Node) -> Optional[list[Node]]:
         """Find the shortest path between two nodes using the A* algorithm.
 
         Parameters
         ----------
-        u : hashable
+        u
             The identifier of the start node.
-        v : hashable
+        v
             The identifier of the end node.
 
         Returns
@@ -1216,7 +1330,7 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`compas.topology.astar_shortest_path`
+        astar_shortest_path
 
         """
         return astar_shortest_path(self, u, v)
@@ -1225,14 +1339,14 @@ class Graph(Datastructure):
     # Default attributes
     # --------------------------------------------------------------------------
 
-    def update_default_node_attributes(self, attr_dict=None, **kwattr):
+    def update_default_node_attributes(self, attr_dict: Optional[AttributeDict] = None, **kwattr: Any) -> None:
         """Update the default node attributes.
 
         Parameters
         ----------
-        attr_dict : dict[str, Any], optional
+        attr_dict
             A dictionary of attributes with their default values.
-        **kwattr : dict[str, Any], optional
+        **kwattr
             A dictionary of additional attributes compiled of remaining named arguments.
 
         Returns
@@ -1241,7 +1355,7 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`update_default_edge_attributes`
+        update_default_edge_attributes
 
         """
         if not attr_dict:
@@ -1249,14 +1363,14 @@ class Graph(Datastructure):
         attr_dict.update(kwattr)
         self.default_node_attributes.update(attr_dict)
 
-    def update_default_edge_attributes(self, attr_dict=None, **kwattr):
+    def update_default_edge_attributes(self, attr_dict: Optional[AttributeDict] = None, **kwattr: Any) -> None:
         """Update the default edge attributes.
 
         Parameters
         ----------
-        attr_dict : dict[str, Any], optional
+        attr_dict
             A dictionary of attributes with their default values.
-        **kwattr : dict[str, Any], optional
+        **kwattr
             A dictionary of additional attributes compiled of remaining named arguments.
 
         Returns
@@ -1265,7 +1379,7 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`update_default_node_attributes`
+        update_default_node_attributes
 
         """
         if not attr_dict:
@@ -1277,23 +1391,30 @@ class Graph(Datastructure):
     # Node attributes
     # --------------------------------------------------------------------------
 
-    def node_attribute(self, key, name, value=None):
+    @overload
+    def node_attribute(self, key: Node, name: str) -> Any: ...
+
+    @overload
+    def node_attribute(self, key: Node, name: str, value: Any) -> None: ...
+
+    def node_attribute(self, key: Node, name: str, value: Any = _MISSING) -> Any:
         """Get or set an attribute of a node.
 
         Parameters
         ----------
-        key : hashable
+        key
             The node identifier.
-        name : str
+        name
             The name of the attribute
-        value : obj, optional
-            The value of the attribute.
+        value
+            The value of the attribute. If omitted, the current value is returned.
 
         Returns
         -------
-        obj or None
-            The value of the attribute,
-            or None when the function is used as a "setter".
+        Any
+            The attribute value when `value` is not provided.
+        None
+            When `value` is provided.
 
         Raises
         ------
@@ -1302,14 +1423,14 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`unset_node_attribute`
-        :meth:`node_attributes`, :meth:`nodes_attribute`, :meth:`nodes_attributes`
-        :meth:`edge_attribute`, :meth:`edge_attributes`, :meth:`edges_attribute`, :meth:`edges_attributes`
+        unset_node_attribute
+        node_attributes, nodes_attribute, nodes_attributes
+        edge_attribute, edge_attributes, edges_attribute, edges_attributes
 
         """
         if key not in self.node:
             raise KeyError(key)
-        if value is not None:
+        if value is not _MISSING:
             self.node[key][name] = value
             return
         if name in self.node[key]:
@@ -1318,14 +1439,14 @@ class Graph(Datastructure):
             if name in self.default_node_attributes:
                 return self.default_node_attributes[name]
 
-    def unset_node_attribute(self, key, name):
+    def unset_node_attribute(self, key: Node, name: str) -> None:
         """Unset the attribute of a node.
 
         Parameters
         ----------
-        key : int
+        key
             The node identifier.
-        name : str
+        name
             The name of the attribute.
 
         Raises
@@ -1335,7 +1456,7 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`node_attribute`
+        node_attribute
 
         Notes
         -----
@@ -1346,16 +1467,21 @@ class Graph(Datastructure):
         if name in self.node[key]:
             del self.node[key][name]
 
-    def node_attributes(self, key, names=None, values=None):
+    def node_attributes(
+        self,
+        key: Node,
+        names: Optional[Sequence[str]] = None,
+        values: Optional[list[Any]] = None,
+    ) -> Any:
         """Get or set multiple attributes of a node.
 
         Parameters
         ----------
-        key : hashable
+        key
             The identifier of the node.
-        names : list[str], optional
+        names
             A list of attribute names.
-        values : list[Any], optional
+        values
             A list of attribute values.
 
         Returns
@@ -1374,8 +1500,8 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`node_attribute`, :meth:`nodes_attribute`, :meth:`nodes_attributes`
-        :meth:`edge_attribute`, :meth:`edge_attributes`, :meth:`edges_attribute`, :meth:`edges_attributes`
+        node_attribute, nodes_attribute, nodes_attributes
+        edge_attribute, edge_attributes, edges_attribute, edges_attributes
 
         """
         if key not in self.node:
@@ -1399,23 +1525,45 @@ class Graph(Datastructure):
                 values.append(None)
         return values
 
-    def nodes_attribute(self, name, value=None, keys=None):
+    @overload
+    def nodes_attribute(
+        self,
+        name: str,
+        *,
+        keys: Optional[Iterable[Node]] = None,
+    ) -> list[Any]: ...
+
+    @overload
+    def nodes_attribute(
+        self,
+        name: str,
+        value: Any,
+        keys: Optional[Iterable[Node]] = None,
+    ) -> None: ...
+
+    def nodes_attribute(
+        self,
+        name: str,
+        value: Any = _MISSING,
+        keys: Optional[Iterable[Node]] = None,
+    ) -> Optional[list[Any]]:
         """Get or set an attribute of multiple nodes.
 
         Parameters
         ----------
-        name : str
+        name
             The name of the attribute.
-        value : obj, optional
-            The value of the attribute.
-        keys : list[hashable], optional
+        value
+            The value of the attribute. If omitted, the current values are returned.
+        keys
             A list of node identifiers.
 
         Returns
         -------
-        list[Any] | None
-            The value of the attribute for each node,
-            or None if the function is used as a "setter".
+        list[Any]
+            The attribute values when `value` is not provided.
+        None
+            When `value` is provided.
 
         Raises
         ------
@@ -1424,28 +1572,33 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`node_attribute`, :meth:`node_attributes`, :meth:`nodes_attributes`
-        :meth:`edge_attribute`, :meth:`edge_attributes`, :meth:`edges_attribute`, :meth:`edges_attributes`
+        node_attribute, node_attributes, nodes_attributes
+        edge_attribute, edge_attributes, edges_attribute, edges_attributes
 
         """
         if not keys:
             keys = self.nodes()
-        if value is not None:
+        if value is not _MISSING:
             for key in keys:
                 self.node_attribute(key, name, value)
             return
         return [self.node_attribute(key, name) for key in keys]
 
-    def nodes_attributes(self, names=None, values=None, keys=None):
+    def nodes_attributes(
+        self,
+        names: Optional[Sequence[str]] = None,
+        values: Optional[list[Any]] = None,
+        keys: Optional[Iterable[Node]] = None,
+    ) -> Any:
         """Get or set multiple attributes of multiple nodes.
 
         Parameters
         ----------
-        names : list[str], optional
+        names
             The names of the attribute.
-        values : list[Any], optional
+        values
             The values of the attributes.
-        keys : list[hashable], optional
+        keys
             A list of node identifiers.
 
         Returns
@@ -1464,8 +1617,8 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`node_attribute`, :meth:`node_attributes`, :meth:`nodes_attribute`
-        :meth:`edge_attribute`, :meth:`edge_attributes`, :meth:`edges_attribute`, :meth:`edges_attributes`
+        node_attribute, node_attributes, nodes_attribute
+        edge_attribute, edge_attributes, edges_attribute, edges_attributes
 
         """
         if not keys:
@@ -1480,22 +1633,30 @@ class Graph(Datastructure):
     # Edge attributes
     # --------------------------------------------------------------------------
 
-    def edge_attribute(self, key, name, value=None):
+    @overload
+    def edge_attribute(self, key: Edge, name: str) -> Any: ...
+
+    @overload
+    def edge_attribute(self, key: Edge, name: str, value: Any) -> None: ...
+
+    def edge_attribute(self, key: Edge, name: str, value: Any = _MISSING) -> Any:
         """Get or set an attribute of an edge.
 
         Parameters
         ----------
-        key : tuple[hashable, hashable]
+        key
             The identifier of the edge as a pair of node identifiers.
-        name : str
+        name
             The name of the attribute.
-        value : obj, optional
-            The value of the attribute.
+        value
+            The value of the attribute. If omitted, the current value is returned.
 
         Returns
         -------
-        object | None
-            The value of the attribute, or None when the function is used as a "setter".
+        Any
+            The attribute value when `value` is not provided.
+        None
+            When `value` is provided.
 
         Raises
         ------
@@ -1504,16 +1665,16 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`unset_edge_attribute`
-        :meth:`edge_attributes`, :meth:`edges_attribute`, :meth:`edges_attributes`
-        :meth:`node_attribute`, :meth:`node_attributes`, :meth:`nodes_attribute`, :meth:`nodes_attributes`
+        unset_edge_attribute
+        edge_attributes, edges_attribute, edges_attributes
+        node_attribute, node_attributes, nodes_attribute, nodes_attributes
 
         """
         u, v = key
         if u not in self.edge or v not in self.edge[u]:
             raise KeyError(key)
         attr = self.edge[u][v]
-        if value is not None:
+        if value is not _MISSING:
             attr[name] = value
             return
         if name in attr:
@@ -1521,14 +1682,14 @@ class Graph(Datastructure):
         if name in self.default_edge_attributes:
             return self.default_edge_attributes[name]
 
-    def unset_edge_attribute(self, key, name):
+    def unset_edge_attribute(self, key: Edge, name: str) -> None:
         """Unset the attribute of an edge.
 
         Parameters
         ----------
-        key : tuple[hashable, hashable]
+        key
             The edge identifier.
-        name : str
+        name
             The name of the attribute.
 
         Returns
@@ -1542,7 +1703,7 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`edge_attribute`
+        edge_attribute
 
         Notes
         -----
@@ -1557,16 +1718,21 @@ class Graph(Datastructure):
         if name in attr:
             del attr[name]
 
-    def edge_attributes(self, key, names=None, values=None):
+    def edge_attributes(
+        self,
+        key: Edge,
+        names: Optional[Sequence[str]] = None,
+        values: Optional[list[Any]] = None,
+    ) -> Any:
         """Get or set multiple attributes of an edge.
 
         Parameters
         ----------
-        key : tuple[hashable, hashable]
+        key
             The identifier of the edge.
-        names : list[str], optional
+        names
             A list of attribute names.
-        values : list[Any], optional
+        values
             A list of attribute values.
 
         Returns
@@ -1583,8 +1749,8 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`edge_attribute`, :meth:`edges_attribute`, :meth:`edges_attributes`
-        :meth:`node_attribute`, :meth:`node_attributes`, :meth:`nodes_attribute`, :meth:`nodes_attributes`
+        edge_attribute, edges_attribute, edges_attributes
+        node_attribute, node_attributes, nodes_attribute, nodes_attributes
 
         """
         u, v = key
@@ -1606,23 +1772,45 @@ class Graph(Datastructure):
             values.append(value)
         return values
 
-    def edges_attribute(self, name, value=None, keys=None):
+    @overload
+    def edges_attribute(
+        self,
+        name: str,
+        *,
+        keys: Optional[Iterable[Edge]] = None,
+    ) -> list[Any]: ...
+
+    @overload
+    def edges_attribute(
+        self,
+        name: str,
+        value: Any,
+        keys: Optional[Iterable[Edge]] = None,
+    ) -> None: ...
+
+    def edges_attribute(
+        self,
+        name: str,
+        value: Any = _MISSING,
+        keys: Optional[Iterable[Edge]] = None,
+    ) -> Optional[list[Any]]:
         """Get or set an attribute of multiple edges.
 
         Parameters
         ----------
-        name : str
+        name
             The name of the attribute.
-        value : obj, optional
-            The value of the attribute.
-        keys : list[tuple[hashable, hashable]], optional
+        value
+            The value of the attribute. If omitted, the current values are returned.
+        keys
             A list of edge identifiers.
 
         Returns
         -------
-        list[Any] | None
-            A list containing the value per edge of the requested attribute,
-            or None if the function is used as a "setter".
+        list[Any]
+            The attribute values when `value` is not provided.
+        None
+            When `value` is provided.
 
         Raises
         ------
@@ -1631,28 +1819,33 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`edge_attribute`, :meth:`edge_attributes`, :meth:`edges_attributes`
-        :meth:`node_attribute`, :meth:`node_attributes`, :meth:`nodes_attribute`, :meth:`nodes_attributes`
+        edge_attribute, edge_attributes, edges_attributes
+        node_attribute, node_attributes, nodes_attribute, nodes_attributes
 
         """
         if not keys:
             keys = self.edges()
-        if value is not None:
+        if value is not _MISSING:
             for key in keys:
                 self.edge_attribute(key, name, value)
             return
         return [self.edge_attribute(key, name) for key in keys]
 
-    def edges_attributes(self, names=None, values=None, keys=None):
+    def edges_attributes(
+        self,
+        names: Optional[Sequence[str]] = None,
+        values: Optional[list[Any]] = None,
+        keys: Optional[Iterable[Edge]] = None,
+    ) -> Any:
         """Get or set multiple attributes of multiple edges.
 
         Parameters
         ----------
-        names : list[str], optional
+        names
             The names of the attribute.
-        values : list[Any], optional
+        values
             The values of the attributes.
-        keys : list[tuple[hashable, hashable]], optional
+        keys
             A list of edge identifiers.
 
         Returns
@@ -1671,8 +1864,8 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`edge_attribute`, :meth:`edge_attributes`, :meth:`edges_attribute`
-        :meth:`node_attribute`, :meth:`node_attributes`, :meth:`nodes_attribute`, :meth:`nodes_attributes`
+        edge_attribute, edge_attributes, edges_attribute
+        node_attribute, node_attributes, nodes_attribute, nodes_attributes
 
         """
         if not keys:
@@ -1687,12 +1880,12 @@ class Graph(Datastructure):
     # Node topology
     # --------------------------------------------------------------------------
 
-    def has_node(self, key):
+    def has_node(self, key: Node) -> bool:
         """Verify if a specific node is present in the graph.
 
         Parameters
         ----------
-        key : hashable
+        key
             The identifier of the node.
 
         Returns
@@ -1702,17 +1895,17 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`has_edge`
+        has_edge
 
         """
         return key in self.node
 
-    def is_leaf(self, key):
+    def is_leaf(self, key: Node) -> bool:
         """Verify if a node is a leaf.
 
         Parameters
         ----------
-        key : hashable
+        key
             The identifier of the node.
 
         Returns
@@ -1722,8 +1915,8 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`leaves`
-        :meth:`is_node_connected`
+        leaves
+        is_node_connected
 
         Notes
         -----
@@ -1732,7 +1925,7 @@ class Graph(Datastructure):
         """
         return self.degree(key) == 1
 
-    def leaves(self):
+    def leaves(self) -> list[Node]:
         """Return all leaves of the graph.
 
         Returns
@@ -1743,12 +1936,12 @@ class Graph(Datastructure):
         """
         return [key for key in self.nodes() if self.is_leaf(key)]
 
-    def is_node_connected(self, key):
+    def is_node_connected(self, key: Node) -> bool:
         """Verify if a specific node is connected.
 
         Parameters
         ----------
-        key : hashable
+        key
             The identifier of the node.
 
         Returns
@@ -1758,17 +1951,17 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`is_leaf`
+        is_leaf
 
         """
         return self.degree(key) > 0
 
-    def neighbors(self, key):
+    def neighbors(self, key: Node) -> list[Node]:
         """Return the neighbors of a node.
 
         Parameters
         ----------
-        key : hashable
+        key
             The identifier of the node.
 
         Returns
@@ -1778,20 +1971,20 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`neighbors_out`, :meth:`neighbors_in`
-        :meth:`neighborhood`
+        neighbors_out, neighbors_in
+        neighborhood
 
         """
         return list(self.adjacency[key])
 
-    def neighborhood(self, key, ring=1):
+    def neighborhood(self, key: Node, ring: int = 1) -> list[Node]:
         """Return the nodes in the neighborhood of a node.
 
         Parameters
         ----------
-        key : hashable
+        key
             The identifier of the node.
-        ring : int, optional
+        ring
             The size of the neighborhood.
 
         Returns
@@ -1801,7 +1994,7 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`neighbors`
+        neighbors
 
         """
         nbrs = set(self.neighbors(key))
@@ -1818,12 +2011,12 @@ class Graph(Datastructure):
             nbrs.remove(key)
         return list(nbrs)
 
-    def neighbors_out(self, key):
+    def neighbors_out(self, key: Node) -> list[Node]:
         """Return the outgoing neighbors of a node.
 
         Parameters
         ----------
-        key : hashable
+        key
             The identifier of the node.
 
         Returns
@@ -1833,17 +2026,17 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`neighbors`, :meth:`neighbors_in`
+        neighbors, neighbors_in
 
         """
         return list(self.edge[key])
 
-    def neighbors_in(self, key):
+    def neighbors_in(self, key: Node) -> list[Node]:
         """Return the incoming neighbors of a node.
 
         Parameters
         ----------
-        key : hashable
+        key
             The identifier of the node.
 
         Returns
@@ -1853,17 +2046,17 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`neighbors`, :meth:`neighbors_out`
+        neighbors, neighbors_out
 
         """
         return list(set(self.adjacency[key]) - set(self.edge[key]))
 
-    def degree(self, key):
+    def degree(self, key: Node) -> int:
         """Return the number of neighbors of a node.
 
         Parameters
         ----------
-        key : hashable
+        key
             The identifier of the node.
 
         Returns
@@ -1873,17 +2066,17 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`degree_out`, :meth:`degree_in`
+        degree_out, degree_in
 
         """
         return len(self.neighbors(key))
 
-    def degree_out(self, key):
+    def degree_out(self, key: Node) -> int:
         """Return the number of outgoing neighbors of a node.
 
         Parameters
         ----------
-        key : hashable
+        key
             The identifier of the node.
 
         Returns
@@ -1893,17 +2086,17 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`degree`, :meth:`degree_in`
+        degree, degree_in
 
         """
         return len(self.neighbors_out(key))
 
-    def degree_in(self, key):
+    def degree_in(self, key: Node) -> int:
         """Return the numer of incoming neighbors of a node.
 
         Parameters
         ----------
-        key : hashable
+        key
             The identifier of the node.
 
         Returns
@@ -1913,17 +2106,17 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`degree`, :meth:`degree_out`
+        degree, degree_out
 
         """
         return len(self.neighbors_in(key))
 
-    def node_edges(self, key):
+    def node_edges(self, key: Node) -> list[Edge]:
         """Return the edges connected to a node.
 
         Parameters
         ----------
-        key : hashable
+        key
             The identifier of the node.
 
         Returns
@@ -1944,14 +2137,14 @@ class Graph(Datastructure):
     # Edge topology
     # --------------------------------------------------------------------------
 
-    def has_edge(self, edge, directed=True):
+    def has_edge(self, edge: Edge, directed: bool = True) -> bool:
         """Verify if the graph contains a specific edge.
 
         Parameters
         ----------
-        edge : tuple[hashable, hashable]
+        edge
             The identifier of the edge as a pair of node identifiers.
-        directed : bool, optional
+        directed
             If True, the direction of the edge is taken into account.
 
         Returns
@@ -1961,7 +2154,7 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`has_node`
+        has_node
 
         """
         u, v = edge
@@ -1973,14 +2166,14 @@ class Graph(Datastructure):
     # Node geometry
     # --------------------------------------------------------------------------
 
-    def node_coordinates(self, key, axes="xyz"):
+    def node_coordinates(self, key: Node, axes: str = "xyz") -> list[float]:
         """Return the coordinates of a node.
 
         Parameters
         ----------
-        key : hashable
+        key
             The identifier of the node.
-        axes : str, optional
+        axes
             The components of the node coordinates to return.
 
         Returns
@@ -1990,69 +2183,69 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`node_point`, :meth:`node_laplacian`, :meth:`node_neighborhood_centroid`
+        node_point, node_laplacian, node_neighborhood_centroid
 
         """
         return [self.node[key][axis] for axis in axes]
 
-    def node_point(self, node):
+    def node_point(self, node: Node) -> Point:
         """Return the point of a node.
 
         Parameters
         ----------
-        node : hashable
+        node
             The identifier of the node.
 
         Returns
         -------
-        :class:`compas.geometry.Point`
+        Point
             The point of the node.
 
         See Also
         --------
-        :meth:`node_coordinates`, :meth:`node_laplacian`, :meth:`node_neighborhood_centroid`
+        node_coordinates, node_laplacian, node_neighborhood_centroid
 
         """
         return Point(*self.node_coordinates(node))
 
-    def node_laplacian(self, key):
+    def node_laplacian(self, key: Node) -> Vector:
         """Return the vector from the node to the centroid of its 1-ring neighborhood.
 
         Parameters
         ----------
-        key : hashable
+        key
             The identifier of the node.
 
         Returns
         -------
-        :class:`compas.geometry.Vector`
+        Vector
             The laplacian vector.
 
         See Also
         --------
-        :meth:`node_coordinates`, :meth:`node_point`, :meth:`node_neighborhood_centroid`
+        node_coordinates, node_point, node_neighborhood_centroid
 
         """
         c = centroid_points([self.node_coordinates(nbr) for nbr in self.neighbors(key)])
         p = self.node_coordinates(key)
         return Vector(*subtract_vectors(c, p))
 
-    def node_neighborhood_centroid(self, key):
+    def node_neighborhood_centroid(self, key: Node) -> Point:
         """Return the computed centroid of the neighboring nodes.
 
         Parameters
         ----------
-        key : hashable
+        key
             The identifier of the node.
 
         Returns
         -------
-        :class:`compas.geometry.Point`
+        Point
             The point at the centroid.
 
         See Also
         --------
-        :meth:`node_coordinates`, :meth:`node_point`, :meth:`node_laplacian`
+        node_coordinates, node_point, node_laplacian
 
         """
         return Point(*centroid_points([self.node_coordinates(nbr) for nbr in self.neighbors(key)]))
@@ -2061,14 +2254,14 @@ class Graph(Datastructure):
     # Edge geometry
     # --------------------------------------------------------------------------
 
-    def edge_coordinates(self, edge, axes="xyz"):
+    def edge_coordinates(self, edge: Edge, axes: str = "xyz") -> tuple[list[float], list[float]]:
         """Return the coordinates of the start and end point of an edge.
 
         Parameters
         ----------
-        edge : tuple[hashable, hashable]
+        edge
             The identifier of the edge.
-        axes : str, optional
+        axes
             The axes along which the coordinates should be included.
 
         Returns
@@ -2079,72 +2272,72 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`edge_point`, :meth:`edge_start`, :meth:`edge_end`, :meth:`edge_midpoint`
+        edge_point, edge_start, edge_end, edge_midpoint
 
         """
         u, v = edge
         return self.node_coordinates(u, axes=axes), self.node_coordinates(v, axes=axes)
 
-    def edge_start(self, edge):
+    def edge_start(self, edge: Edge) -> Point:
         """Return the start point of an edge.
 
         Parameters
         ----------
-        edge : tuple[hashable, hashable]
+        edge
             The identifier of the edge.
 
         Returns
         -------
-        :class:`compas.geometry.Point`
+        Point
             The start point of the edge.
 
         See Also
         --------
-        :meth:`edge_point`, :meth:`edge_end`, :meth:`edge_midpoint`
+        edge_point, edge_end, edge_midpoint
 
         """
         return self.node_point(edge[0])
 
-    def edge_end(self, edge):
+    def edge_end(self, edge: Edge) -> Point:
         """Return the end point of an edge.
 
         Parameters
         ----------
-        edge : tuple[hashable, hashable]
+        edge
             The identifier of the edge.
 
         Returns
         -------
-        :class:`compas.geometry.Point`
+        Point
             The end point of the edge.
 
         See Also
         --------
-        :meth:`edge_point`, :meth:`edge_start`, :meth:`edge_midpoint`
+        edge_point, edge_start, edge_midpoint
 
         """
         return self.node_point(edge[1])
 
-    def edge_point(self, edge, t=0.5):
+    def edge_point(self, edge: Edge, t: float = 0.5) -> Point:
         """Return the point at a parametric location along an edge.
 
         Parameters
         ----------
-        edge : tuple[hashable, hashable]
+        edge
             The identifier of the edge.
-        t : float, optional
+        t
             The location of the point on the edge.
             If the value of `t` is outside the range 0-1, the point will
             lie in the direction of the edge, but not on the edge vector.
 
         Returns
         -------
-        :class:`compas.geometry.Point`
+        Point
             The point at the specified location.
 
         See Also
         --------
-        :meth:`edge_start`, :meth:`edge_end`, :meth:`edge_midpoint`
+        edge_start, edge_end, edge_midpoint
 
         """
         if t == 0.0:
@@ -2158,94 +2351,94 @@ class Graph(Datastructure):
         ab = subtract_vectors(b, a)
         return Point(*add_vectors(a, scale_vector(ab, t)))
 
-    def edge_midpoint(self, edge):
+    def edge_midpoint(self, edge: Edge) -> Point:
         """Return the location of the midpoint of an edge.
 
         Parameters
         ----------
-        edge : tuple[hashable, hashable]
+        edge
             The identifier of the edge.
 
         Returns
         -------
-        :class:`compas.geometry.Point`
+        Point
             The midpoint of the edge.
 
         See Also
         --------
-        :meth:`edge_start`, :meth:`edge_end`, :meth:`edge_point`
+        edge_start, edge_end, edge_point
 
         """
         a, b = self.edge_coordinates(edge)
         return Point(*midpoint_line((a, b)))
 
-    def edge_vector(self, edge):
+    def edge_vector(self, edge: Edge) -> Vector:
         """Return the vector of an edge.
 
         Parameters
         ----------
-        edge : tuple[hashable, hashable]
+        edge
             The identifier of the edge.
 
         Returns
         -------
-        :class:`compas.geometry.Vector`
+        Vector
             The vector from start to end.
 
         See Also
         --------
-        :meth:`edge_direction`, :meth:`edge_line`, :meth:`edge_length`
+        edge_direction, edge_line, edge_length
 
         """
         a, b = self.edge_coordinates(edge)
         return Vector.from_start_end(a, b)
 
-    def edge_direction(self, edge):
+    def edge_direction(self, edge: Edge) -> Vector:
         """Return the direction vector of an edge.
 
         Parameters
         ----------
-        edge : tuple[hashable, hashable]
+        edge
             The identifier of the edge.
 
         Returns
         -------
-        :class:`compas.geometry.Vector`
+        Vector
             The direction vector of the edge.
 
         See Also
         --------
-        :meth:`edge_vector`, :meth:`edge_line`, :meth:`edge_length`
+        edge_vector, edge_line, edge_length
 
         """
         return Vector(*normalize_vector(self.edge_vector(edge)))
 
-    def edge_line(self, edge):
+    def edge_line(self, edge: Edge) -> Line:
         """Return the line of an edge.
 
         Parameters
         ----------
-        edge : tuple[hashable, hashable]
+        edge
             The identifier of the edge.
 
         Returns
         -------
-        :class:`compas.geometry.Line`
+        Line
             The line of the edge.
 
         See Also
         --------
-        :meth:`edge_vector`, :meth:`edge_direction`, :meth:`edge_length`
+        edge_vector, edge_direction, edge_length
 
         """
         return Line(*self.edge_coordinates(edge))
 
-    def edge_length(self, edge):
+    def edge_length(self, edge: Edge) -> float:
         """Return the length of an edge.
 
         Parameters
         ----------
-        edge : tuple[hashable, hashable]
+        edge
             The identifier of the edge.
 
         Returns
@@ -2255,7 +2448,7 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`edge_vector`, :meth:`edge_direction`, :meth:`edge_line`
+        edge_vector, edge_direction, edge_line
 
         """
         a, b = self.edge_coordinates(edge)
@@ -2265,12 +2458,12 @@ class Graph(Datastructure):
     # Transformations and BBox
     # --------------------------------------------------------------------------
 
-    def transform(self, transformation):
+    def transform(self, transformation: Any) -> None:
         """Transform all nodes of the graph.
 
         Parameters
         ----------
-        transformation : :class:`Transformation`
+        transformation
             The transformation used to transform the nodes.
 
         Returns
@@ -2283,23 +2476,23 @@ class Graph(Datastructure):
         for point, node in zip(points, self.nodes()):
             self.node_attributes(node, "xyz", point)
 
-    def aabb(self):
+    def aabb(self) -> Box:  # type: ignore[override]
         """Calculate the axis aligned bounding box of the graph.
 
         Returns
         -------
-        :class:`compas.geometry.Box`
+        Box
 
         """
         nodes = self.nodes_attributes("xyz")
         return Box.from_bounding_box(bounding_box(nodes))
 
-    def obb(self):
+    def obb(self) -> Box:  # type: ignore[override]
         """Calculate the oriented bounding box of the graph.
 
         Returns
         -------
-        :class:`compas.geometry.Box`
+        Box
 
         """
         nodes = self.nodes_attributes("xyz")
@@ -2309,7 +2502,7 @@ class Graph(Datastructure):
     # Other Methods
     # --------------------------------------------------------------------------
 
-    def connected_nodes(self):
+    def connected_nodes(self) -> list[list[Node]]:
         """Get groups of connected nodes.
 
         Returns
@@ -2318,12 +2511,12 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`connected_edges`
+        connected_edges
 
         """
         return connected_components(self.adjacency)
 
-    def connected_edges(self):
+    def connected_edges(self) -> list[list[Edge]]:
         """Get groups of connected edges.
 
         Returns
@@ -2332,23 +2525,31 @@ class Graph(Datastructure):
 
         See Also
         --------
-        :meth:`connected_nodes`
+        connected_nodes
 
         """
-        return [[(u, v) for u in nodes for v in self.neighbors(u) if u < v] for nodes in self.connected_nodes()]
+        return self._group_edges_by_component(self.connected_nodes())
 
-    def exploded(self):
+    def _group_edges_by_component(self, components: Sequence[Sequence[Node]]) -> list[list[Edge]]:
+        node_component = {node: index for index, nodes in enumerate(components) for node in nodes}
+        edges_by_component: list[list[Edge]] = [[] for _ in components]
+        for edge in self.edges():
+            edges_by_component[node_component[edge[0]]].append(edge)
+        return edges_by_component
+
+    def exploded(self) -> list[Self]:
         """Explode the graph into its connected components.
 
         Returns
         -------
-        list[:class:`compas.datastructures.Graph`]
+        list[Graph]
 
         """
         cls = type(self)
         graphs = []
-        for nodes in self.connected_nodes():
-            edges = [(u, v) for u in nodes for v in self.neighbors(u) if u < v]
+        components = self.connected_nodes()
+        edges_by_component = self._group_edges_by_component(components)
+        for nodes, edges in zip(components, edges_by_component):
             graph = cls(
                 default_node_attributes=self.default_node_attributes,
                 default_edge_attributes=self.default_edge_attributes,
@@ -2360,7 +2561,7 @@ class Graph(Datastructure):
             graphs.append(graph)
         return graphs
 
-    def complement(self):
+    def complement(self) -> Self:
         """Generate the complement of a graph.
 
         The complement of a graph G is the graph H with the same vertices
@@ -2368,7 +2569,7 @@ class Graph(Datastructure):
 
         Returns
         -------
-        :class:`compas.datastructures.Graph`
+        Graph
             The complement graph.
 
         References
@@ -2405,12 +2606,12 @@ class Graph(Datastructure):
     # Matrices
     # --------------------------------------------------------------------------
 
-    def adjacency_matrix(self, rtype="array"):
+    def adjacency_matrix(self, rtype: str = "array") -> Any:
         """Creates a node adjacency matrix from a Graph datastructure.
 
         Parameters
         ----------
-        rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
+        rtype
             Format of the result.
 
         Returns
@@ -2425,12 +2626,12 @@ class Graph(Datastructure):
         adjacency = [[node_index[nbr] for nbr in self.neighbors(key)] for key in self.nodes()]
         return adjacency_matrix(adjacency, rtype=rtype)
 
-    def connectivity_matrix(self, rtype="array"):
+    def connectivity_matrix(self, rtype: str = "array") -> Any:
         """Creates a connectivity matrix from a Graph datastructure.
 
         Parameters
         ----------
-        rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
+        rtype
             Format of the result.
 
         Returns
@@ -2445,12 +2646,12 @@ class Graph(Datastructure):
         edges = [(node_index[u], node_index[v]) for u, v in self.edges()]
         return connectivity_matrix(edges, rtype=rtype)
 
-    def degree_matrix(self, rtype="array"):
+    def degree_matrix(self, rtype: str = "array") -> Any:
         """Creates a degree matrix from a Graph datastructure.
 
         Parameters
         ----------
-        rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
+        rtype
             Format of the result.
 
         Returns
@@ -2465,14 +2666,14 @@ class Graph(Datastructure):
         adjacency = [[node_index[nbr] for nbr in self.neighbors(key)] for key in self.nodes()]
         return degree_matrix(adjacency, rtype=rtype)
 
-    def laplacian_matrix(self, normalize=False, rtype="array"):
+    def laplacian_matrix(self, normalize: bool = False, rtype: str = "array") -> Any:
         """Creates a Laplacian matrix from a Graph datastructure.
 
         Parameters
         ----------
-        normalize : bool, optional
+        normalize
             If True, normalize the entries such that the value on the diagonal is 1.
-        rtype : Literal['array', 'csc', 'csr', 'coo', 'list'], optional
+        rtype
             Format of the result.
 
         Returns

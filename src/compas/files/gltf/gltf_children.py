@@ -1,64 +1,97 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+"""Validated node-key collection used by glTF scenes and nodes."""
+
+from collections.abc import Iterable
+from collections.abc import Iterator
+from collections.abc import MutableSequence
+from typing import TYPE_CHECKING
+from typing import Optional
+
+if TYPE_CHECKING:
+    from .gltf_document import GLTFDocument
 
 
-class GLTFChildren(object):
-    def __init__(self, context, values):
+class GLTFChildren(MutableSequence[int]):
+    """Mutable node-key sequence validated against a document."""
+
+    def __init__(self, context: "GLTFDocument", values: Iterable[int] = ()) -> None:
         self._values = list(values)
         self._context = context
-        for v in values:
-            self.check_node_context(v)
+        for value in self._values:
+            self._validate(value)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return repr(self._values)
 
-    def __iter__(self):
-        return iter(self._values)
+    def __getitem__(self, index):
+        return self._values[index]
 
-    def __len__(self):
+    def __setitem__(self, index, value) -> None:
+        if isinstance(index, slice):
+            values = list(value)
+            for item in values:
+                self._validate(item)
+            self._values[index] = values
+        else:
+            self._validate(value)
+            self._values[index] = value
+
+    def __delitem__(self, index) -> None:
+        del self._values[index]
+
+    def __len__(self) -> int:
         return len(self._values)
 
-    def __bool__(self):
-        return bool(self._values)
+    def __iter__(self) -> Iterator[int]:
+        return iter(self._values)
 
-    def check_node_context(self, v):
-        if v not in self._context.nodes:
-            raise Exception("Cannot find Node {}.".format(v))
-
-    def append(self, value):
-        self.check_node_context(value)
-        self._values.append(value)
-
-    def extend(self, values):
-        for value in values:
-            self.check_node_context(value)
-        self._values.extend(values)
-
-    def insert(self, index, value):
-        self.check_node_context(value)
+    def insert(self, index: int, value: int) -> None:
+        self._validate(value)
         self._values.insert(index, value)
 
-    def remove(self, value):
-        self._values.remove(value)
+    def _validate(self, value: int) -> None:
+        if value not in self._context.nodes:
+            raise ValueError(f"Cannot find glTF node {value}.")
 
-    def pop(self, index=None):
-        self._values.pop(index or (len(self._values) - 1))
+    def pop(self, index: int = -1) -> int:
+        """Remove and return a node key.
 
-    def clear(self):
-        self._values.clear()
+        Returns
+        -------
+        int
+            Removed node key.
 
-    def index(self, value, start=None, end=None):
-        self._values.index(value, start or 0, end or (len(self._values) - 1))
+        """
+        return self._values.pop(index)
 
-    def count(self, value):
-        self._values.count(value)
+    def index(self, value: int, start: int = 0, stop: Optional[int] = None) -> int:
+        """Return the position of a node key.
 
-    def sort(self, key=None, reverse=False):
-        self._values.sort(key=key, reverse=reverse)
+        Returns
+        -------
+        int
+            Position of the first matching key.
 
-    def reverse(self):
-        self._values.reverse()
+        """
+        return self._values.index(value, start, len(self._values) if stop is None else stop)
 
-    def copy(self):
+    def count(self, value: int) -> int:
+        """Count occurrences of a node key.
+
+        Returns
+        -------
+        int
+            Number of occurrences.
+
+        """
+        return self._values.count(value)
+
+    def copy(self) -> list[int]:
+        """Return an independent list of node keys.
+
+        Returns
+        -------
+        list[int]
+            Copied node keys.
+
+        """
         return self._values.copy()

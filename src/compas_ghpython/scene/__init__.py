@@ -2,8 +2,7 @@
 This package provides scene object plugins for visualising COMPAS objects in Grasshopper.
 When working in GH Python components, :class:`compas.scene.SceneObject` will automatically use the corresponding GHPython scene object for each COMPAS object type.
 """
-
-from __future__ import absolute_import
+# ruff: noqa: F401
 
 from compas.plugins import plugin
 from compas.scene import register
@@ -88,29 +87,3 @@ def register_scene_objects():
     register(Brep, BrepObject, context="Grasshopper")
 
     print("GH SceneObjects registered.")
-
-
-__all__ = [
-    "GHSceneObject",
-    "BoxObject",
-    "CapsuleObject",
-    "CircleObject",
-    "ConeObject",
-    "CurveObject",
-    "CylinderObject",
-    "EllipseObject",
-    "FrameObject",
-    "LineObject",
-    "MeshObject",
-    "GraphObject",
-    "PlaneObject",
-    "PointObject",
-    "PolygonObject",
-    "PolyhedronObject",
-    "PolylineObject",
-    "SphereObject",
-    "SurfaceObject",
-    "TorusObject",
-    "VectorObject",
-    "VolMeshObject",
-]

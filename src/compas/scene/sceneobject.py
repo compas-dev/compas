@@ -1,9 +1,6 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 from functools import reduce
 from operator import mul
+from typing import Union  # noqa: F401
 
 import compas.colors  # noqa: F401
 import compas.data  # noqa: F401
@@ -90,13 +87,13 @@ class SceneObject(TreeNode):
 
     def __init__(
         self,
-        item=None,  # type: compas.data.Data | None
-        name=None,  # type: str | None
-        color=None,  # type: compas.colors.Color | None
+        item=None,  # type: Union[compas.data.Data, None]
+        name=None,  # type: Union[str, None]
+        color=None,  # type: Union[compas.colors.Color, None]
         opacity=1.0,  # type: float
         show=True,  # type: bool
-        transformation=None,  # type: compas.geometry.Transformation | None
-        context=None,  # type: str | None
+        transformation=None,  # type: Union[compas.geometry.Transformation, None]
+        context=None,  # type: Union[str, None]
         **kwargs  # type: dict
     ):  # fmt: skip
         # type: (...) -> None
@@ -138,7 +135,7 @@ class SceneObject(TreeNode):
 
     @property
     def scene(self):
-        # type: () -> compas.scene.Scene | None
+        # type: () -> Union[compas.scene.Scene, None]
         return self.tree
 
     @property
@@ -153,7 +150,7 @@ class SceneObject(TreeNode):
 
     @property
     def frame(self):
-        # type: () -> compas.geometry.Frame | None
+        # type: () -> Union[compas.geometry.Frame, None]
         return Frame.from_transformation(self.worldtransformation)
 
     @frame.setter
@@ -163,7 +160,7 @@ class SceneObject(TreeNode):
 
     @property
     def transformation(self):
-        # type: () -> compas.geometry.Transformation | None
+        # type: () -> Union[compas.geometry.Transformation, None]
         return self._transformation
 
     @transformation.setter
@@ -197,7 +194,7 @@ class SceneObject(TreeNode):
 
     @property
     def contrastcolor(self):
-        # type: () -> compas.colors.Color | None
+        # type: () -> Union[compas.colors.Color, None]
         if not self._contrastcolor:
             if self.color:
                 if self.color.is_light:

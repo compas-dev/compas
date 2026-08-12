@@ -1,16 +1,15 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+from typing import Any
+from typing import Sequence
 
 from .validators import is_item_iterable
 
 
-def coerce_sequence_of_tuple(sequence):
+def coerce_sequence_of_tuple(sequence: Sequence[Any]) -> list[tuple[Any, ...]]:
     """Make sure all items of a sequence are of type tuple.
 
     Parameters
     ----------
-    sequence : sequence
+    sequence
         A sequence of items.
 
     Returns
@@ -20,8 +19,14 @@ def coerce_sequence_of_tuple(sequence):
         with each iterable item converted to a tuple,
         and non-iterable items wrapped in a tuple.
 
+    Examples
+    --------
+    >>> items = coerce_sequence_of_tuple(["a", 1, (None,), [2.0, 3.0]])
+    >>> all(isinstance(item, tuple) for item in items)
+    True
+
     """
-    items = []
+    items: list[tuple[Any, ...]] = []
     for item in sequence:
         if not isinstance(item, tuple):
             if not is_item_iterable(item):
@@ -32,12 +37,12 @@ def coerce_sequence_of_tuple(sequence):
     return items
 
 
-def coerce_sequence_of_list(sequence):
+def coerce_sequence_of_list(sequence: Sequence[Any]) -> list[list[Any]]:
     """Make sure all items of a sequence are of type list.
 
     Parameters
     ----------
-    sequence : sequence
+    sequence
         A sequence of items.
 
     Returns
@@ -47,8 +52,14 @@ def coerce_sequence_of_list(sequence):
         with each iterable item converted to a list,
         and non-iterable items wrapped in a list.
 
+    Examples
+    --------
+    >>> items = coerce_sequence_of_list(["a", 1, (None,), [2.0, 3.0]])
+    >>> all(isinstance(item, list) for item in items)
+    True
+
     """
-    items = []
+    items: list[list[Any]] = []
     for item in sequence:
         if not isinstance(item, list):
             if not is_item_iterable(item):

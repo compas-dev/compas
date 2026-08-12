@@ -2,11 +2,60 @@
 
 import io
 from contextlib import contextmanager
+from os import PathLike
+from typing import BinaryIO
+from typing import TextIO
+from typing import Union
+from typing import cast
+from urllib.request import urlopen
 
-try:
-    from urllib.request import urlopen
-except ImportError:
-    from urllib2 import urlopen
+IOSource = Union[str, PathLike[str], TextIO, BinaryIO]
+IOTarget = Union[str, PathLike[str], TextIO, BinaryIO]
+
+
+def read_bytes(source: IOSource, encoding: str = "utf-8") -> bytes:
+    """Read a path, URL, or stream as bytes.
+
+    Parameters
+    ----------
+    source
+        Path, URL, text stream, or binary stream.
+    encoding
+        Encoding used to convert text-stream data.
+
+    Returns
+    -------
+    bytes
+        Complete source data.
+
+    """
+    with open_file(source, "rb") as stream:
+        data = stream.read()
+    return data.encode(encoding) if isinstance(data, str) else data
+
+
+def write_bytes(target: IOTarget, data: bytes, encoding: str = "utf-8") -> None:
+    """Write bytes to a path or text or binary stream.
+
+    Parameters
+    ----------
+    target
+        Path or writable text or binary stream.
+    data
+        Data to write.
+    encoding
+        Encoding used to convert data for a text stream.
+
+    Returns
+    -------
+    None
+
+    """
+    with open_file(target, "wb") as stream:
+        try:
+            cast(BinaryIO, stream).write(data)
+        except TypeError:
+            cast(TextIO, stream).write(data.decode(encoding))
 
 
 @contextmanager

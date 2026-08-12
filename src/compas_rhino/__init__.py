@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 import io
 import os
 
@@ -24,20 +22,6 @@ GRASSHOPPER_PLUGIN_GUID = "b45a29b1-4343-4035-989e-044e8580d9cf"
 RHINOCYCLES_PLUGIN_GUID = "9bc28e9e-7a6c-4b8f-a0c6-3d05e02d1b97"
 
 unload_modules = DevTools.unload_modules
-
-__all__ = [
-    "PURGE_ON_DELETE",
-    "INSTALLABLE_PACKAGES",
-    "SUPPORTED_VERSIONS",
-    "DEFAULT_VERSION",
-    "INSTALLED_VERSION",
-    "IRONPYTHON_PLUGIN_GUID",
-    "GRASSHOPPER_PLUGIN_GUID",
-    "RHINOCYCLES_PLUGIN_GUID",
-    "clear",
-    "redraw",
-    "unload_modules",
-]
 
 __all_plugins__ = [
     "compas_rhino.geometry.booleans",

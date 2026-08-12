@@ -1,26 +1,50 @@
+from typing import TYPE_CHECKING
+from typing import Generic
+from typing import Optional
+from typing import Type
+from typing import TypeVar
+
+from compas.geometry import Plane
 from compas.geometry import dot_vectors
 from compas.geometry import intersection_segment_plane
 from compas.geometry import length_vector
 from compas.geometry import subtract_vectors
 
+from .types import Vertex
 
-def mesh_slice_plane(mesh, plane):
+if TYPE_CHECKING:
+    from .mesh import Mesh
+
+MeshType = TypeVar("MeshType", bound="Mesh")
+
+
+def mesh_slice_plane(mesh: MeshType, plane: Plane) -> Optional[tuple[MeshType, MeshType]]:
     """Slice a mesh with a plane and construct the resulting submeshes.
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh
         The original mesh.
-    plane : :class:`compas.geometry.Plane`
+    plane
         The cutting plane.
 
     Returns
     -------
-    tuple[:class:`compas.datastructures.Mesh`, :class:`compas.datastructures.Mesh`] | None
+    tuple[Mesh, Mesh] | None
         The "positive" and "negative" submeshes.
         If the mesh and plane do not intersect,
         or if the intersection is degenerate (point or line),
         the function returns None.
+
+    Raises
+    ------
+    RuntimeError
+        If an intersected mesh edge cannot be split.
+
+    Notes
+    -----
+    The current implementation assumes that the input mesh represents a closed
+    volume. This condition is not checked.
 
     Examples
     --------
@@ -41,43 +65,43 @@ def mesh_slice_plane(mesh, plane):
     return intersection.split()
 
 
-class IntersectionMeshPlane(object):
-    def __init__(self, mesh, plane):
+class IntersectionMeshPlane(Generic[MeshType]):
+    def __init__(self, mesh: MeshType, plane: Plane):
         self.mesh = mesh
         self.plane = plane
-        self._intersections = []
+        self._intersections: list[Vertex] = []
         self.intersect()
 
     @property
-    def meshtype(self):
+    def meshtype(self) -> Type[MeshType]:
         return type(self.mesh)
 
     @property
-    def intersections(self):
+    def intersections(self) -> list[Vertex]:
         return self._intersections
 
     @property
-    def is_none(self):
+    def is_none(self) -> bool:
         return len(self.intersections) == 0
 
     @property
-    def is_point(self):
+    def is_point(self) -> bool:
         return len(self.intersections) == 1
 
     @property
-    def is_line(self):
+    def is_line(self) -> bool:
         return len(self.intersections) == 2
 
     @property
-    def is_polygon(self):
+    def is_polygon(self) -> bool:
         return len(self.intersections) >= 3
 
     @property
-    def is_mesh_closed(self):
+    def is_mesh_closed(self) -> bool:
         return self.mesh.is_closed()
 
     @property
-    def positive(self):
+    def positive(self) -> Optional[MeshType]:
         if self.is_none:
             return
         vertices = []
@@ -86,8 +110,8 @@ class IntersectionMeshPlane(object):
                 vertices.append(key)
         faces = []
         for key in vertices:
-            faces += self.mesh.vertex_faces(key)
-        faces = list(set(faces))
+            faces.extend(self.mesh.vertex_faces(key))
+        faces = set(faces)
         vdict = {key: self.mesh.vertex_coordinates(key) for key in vertices + self.intersections}
         fdict = [self.mesh.face_vertices(fkey) for fkey in faces]
         mesh = self.meshtype.from_vertices_and_faces(vdict, fdict)
@@ -95,7 +119,7 @@ class IntersectionMeshPlane(object):
             mesh.add_face(mesh.vertices_on_boundary())
         return mesh
 
-    def is_positive(self, key):
+    def is_positive(self, key: Vertex) -> bool:
         o = self.plane.point
         n = self.plane.normal
         if key not in self.intersections:
@@ -107,7 +131,7 @@ class IntersectionMeshPlane(object):
         return False
 
     @property
-    def negative(self):
+    def negative(self) -> Optional[MeshType]:
         if self.is_none:
             return
         vertices = []
@@ -116,8 +140,8 @@ class IntersectionMeshPlane(object):
                 vertices.append(key)
         faces = []
         for key in vertices:
-            faces += self.mesh.vertex_faces(key)
-        faces = list(set(faces))
+            faces.extend(self.mesh.vertex_faces(key))
+        faces = set(faces)
         vdict = {key: self.mesh.vertex_coordinates(key) for key in vertices + self.intersections}
         fdict = [self.mesh.face_vertices(fkey) for fkey in faces]
         mesh = self.meshtype.from_vertices_and_faces(vdict, fdict)
@@ -125,7 +149,7 @@ class IntersectionMeshPlane(object):
             mesh.add_face(mesh.vertices_on_boundary())
         return mesh
 
-    def is_negative(self, key):
+    def is_negative(self, key: Vertex) -> bool:
         o = self.plane.point
         n = self.plane.normal
         if key in self.intersections:
@@ -135,9 +159,9 @@ class IntersectionMeshPlane(object):
         similarity = dot_vectors(n, oa)
         return similarity < 0.0
 
-    def intersect(self):
-        intersections = []
-        vertex_intersections = []
+    def intersect(self) -> None:
+        intersections: list[Vertex] = []
+        vertex_intersections: list[Vertex] = []
         for u, v in list(self.mesh.edges()):
             a = self.mesh.vertex_attributes(u, "xyz")
             b = self.mesh.vertex_attributes(v, "xyz")
@@ -149,6 +173,8 @@ class IntersectionMeshPlane(object):
                 L_ab = length_vector(subtract_vectors(b, a))
                 t = L_ax / L_ab
                 key = self.mesh.split_edge((u, v), t=t, allow_boundary=True)
+                if key is None:
+                    raise RuntimeError("Splitting an intersected edge failed.")
                 intersections.append(key)
             else:
                 if u in vertex_intersections:
@@ -158,13 +184,17 @@ class IntersectionMeshPlane(object):
                 vertex_intersections.append(v)
         self._intersections = intersections
 
-    def split(self):
+    def split(self) -> tuple[MeshType, MeshType]:
         for fkey in list(self.mesh.faces()):
             split = [key for key in self.mesh.face_vertices(fkey) if key in self.intersections]
             if len(split) == 2:
                 u, v = split
                 try:
                     self.mesh.split_face(fkey, u, v)
-                except Exception:
+                except ValueError:
                     continue
-        return self.positive, self.negative
+        positive = self.positive
+        negative = self.negative
+        if positive is None or negative is None:
+            raise RuntimeError("Splitting the mesh did not produce two submeshes.")
+        return positive, negative

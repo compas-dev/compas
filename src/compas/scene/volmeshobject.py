@@ -1,6 +1,4 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+from typing import Union  # noqa: F401
 
 import compas.colors  # noqa: F401
 import compas.datastructures  # noqa: F401
@@ -69,14 +67,14 @@ class VolMeshObject(SceneObject):
 
     def __init__(
         self,
-        show_vertices=False,  # type: bool | list
-        show_edges=True,  # type: bool | list
-        show_faces=False,  # type: bool | list
-        show_cells=True,  # type: bool | list
-        vertexcolor=None,  # type: compas.colors.Color | dict | None
-        edgecolor=None,  # type: compas.colors.Color | dict | None
-        facecolor=None,  # type: compas.colors.Color | dict | None
-        cellcolor=None,  # type: compas.colors.Color | dict | None
+        show_vertices=False,  # type: Union[bool, list]
+        show_edges=True,  # type: Union[bool, list]
+        show_faces=False,  # type: Union[bool, list]
+        show_cells=True,  # type: Union[bool, list]
+        vertexcolor=None,  # type: Union[compas.colors.Color, dict, None]
+        edgecolor=None,  # type: Union[compas.colors.Color, dict, None]
+        facecolor=None,  # type: Union[compas.colors.Color, dict, None]
+        cellcolor=None,  # type: Union[compas.colors.Color, dict, None]
         vertexsize=1.0,  # type: float
         edgewidth=1.0,  # type: float
         **kwargs  # type: dict
@@ -123,7 +121,7 @@ class VolMeshObject(SceneObject):
 
     @property
     def transformation(self):
-        # type: () -> compas.geometry.Transformation | None
+        # type: () -> Union[compas.geometry.Transformation, None]
         return self._transformation
 
     @transformation.setter

@@ -100,10 +100,6 @@ def test_graph_data1(graph):
     assert graph.number_of_nodes() == other.number_of_nodes()
     assert graph.number_of_edges() == other.number_of_edges()
 
-    if not compas.IPY:
-        assert Graph.validate_data(graph.__data__)
-        assert Graph.validate_data(other.__data__)
-
 
 def test_graph_data2():
     cloud = Pointcloud.from_bounds(random.random(), random.random(), random.random(), random.randint(10, 100))
@@ -111,10 +107,6 @@ def test_graph_data2():
     other = Graph.__from_data__(json.loads(json.dumps(graph.__data__)))
 
     assert graph.__data__ == other.__data__
-
-    if not compas.IPY:
-        assert Graph.validate_data(graph.__data__)
-        assert Graph.validate_data(other.__data__)
 
 
 def test_shortest_path():
@@ -168,6 +160,48 @@ def test_add_node():
     assert graph.add_node("1", x=0, y=0, z=0) == "1"
     assert graph.add_node(2) == 2
     assert graph.add_node(0, x=1) == 0
+
+
+def test_automatic_node_keys_only_track_integer_keys():
+    graph = Graph()
+    graph.add_node(5)
+    graph.add_node(10.5)
+    graph.add_node("20")
+
+    assert graph.add_node() == 6
+
+
+def test_connected_edges_with_mixed_node_key_types():
+    graph = Graph()
+    graph.add_edge(0, "a")
+    graph.add_edge((1, 2), "b")
+
+    components = graph.connected_edges()
+
+    assert len(components) == 2
+    assert {frozenset(edges) for edges in components} == {
+        frozenset([(0, "a")]),
+        frozenset([((1, 2), "b")]),
+    }
+
+
+def test_exploded_with_mixed_node_key_types():
+    graph = Graph()
+    graph.add_node(0, label="zero")
+    graph.add_node("a", label="a")
+    graph.add_node((1, 2), label="tuple")
+    graph.add_node("b", label="b")
+    graph.add_edge(0, "a", weight=1.0)
+    graph.add_edge((1, 2), "b", weight=2.0)
+
+    exploded = graph.exploded()
+
+    assert len(exploded) == 2
+    assert {frozenset(item.nodes()) for item in exploded} == {
+        frozenset([0, "a"]),
+        frozenset([(1, 2), "b"]),
+    }
+    assert sorted(item.edge_attribute(next(item.edges()), "weight") for item in exploded) == [1.0, 2.0]
 
 
 # ==============================================================================
@@ -234,6 +268,43 @@ def test_graph_default_edge_attributes():
         assert graph.edge_attribute(edge, name="b") == 2
         graph.edge_attribute(edge, name="a", value=3)
         assert graph.edge_attribute(edge, name="a") == 3
+
+
+def test_node_attribute_can_be_set_to_none():
+    graph = Graph()
+    graph.add_node(0)
+
+    graph.node_attribute(0, "value", None)
+
+    assert "value" in graph.node[0]
+    assert graph.node_attribute(0, "value") is None
+
+
+def test_nodes_attribute_can_be_set_to_none():
+    graph = Graph.from_edges([(0, 1)])
+
+    graph.nodes_attribute("value", None)
+
+    assert all("value" in graph.node[key] for key in graph.nodes())
+    assert graph.nodes_attribute("value") == [None, None]
+
+
+def test_edge_attribute_can_be_set_to_none():
+    graph = Graph.from_edges([(0, 1)])
+
+    graph.edge_attribute((0, 1), "value", None)
+
+    assert "value" in graph.edge[0][1]
+    assert graph.edge_attribute((0, 1), "value") is None
+
+
+def test_edges_attribute_can_be_set_to_none():
+    graph = Graph.from_edges([(0, 1), (1, 2)])
+
+    graph.edges_attribute("value", None)
+
+    assert all("value" in graph.edge[u][v] for u, v in graph.edges())
+    assert graph.edges_attribute("value") == [None, None]
 
 
 # ==============================================================================

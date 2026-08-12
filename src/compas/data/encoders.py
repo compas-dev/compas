@@ -1,59 +1,32 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
-try:
-    from typing import Type  # noqa: F401
-except ImportError:
-    pass
-
 import json
-import platform
+from typing import Any
+from typing import Optional
+from typing import Type
 
-from .data import Data  # noqa: F401
+import numpy as np
+
+from .data import Data
 from .exceptions import DecoderError
 
 IDictionary = None
 numpy_support = False
 dotnet_support = False
 
-# We don't do this from `compas.IPY` to avoid circular imports
-if "ironpython" == platform.python_implementation().lower():
-    dotnet_support = True
 
-    try:
-        import System  # type: ignore
-        from System.Collections.Generic import IDictionary  # type: ignore
-    except:  # noqa: E722
-        pass
-
-try:
-    import numpy as np
-
-    try:
-        np_float = np.float_
-    except AttributeError:
-        np_float = np.float64
-
-    numpy_support = True
-except (ImportError, SyntaxError):
-    numpy_support = False
-
-
-def cls_from_dtype(dtype, inheritance=None):  # type: (...) -> Type[Data]
+def cls_from_dtype(dtype: str, inheritance: Optional[list[str]] = None) -> Type[Data]:
     """Get the class object corresponding to a COMPAS data type specification.
 
     Parameters
     ----------
-    dtype : str
+    dtype
         The data type of the COMPAS object in the following format:
         '{}/{}'.format(o.__class__.__module__, o.__class__.__name__).
-    inheritance : list[str], optional
+    inheritance
         The inheritance chain of this class, a list of superclasses that can be used if given dtype is not found.
 
     Returns
     -------
-    :class:`compas.data.Data`
+    Data
 
     Raises
     ------
@@ -91,7 +64,7 @@ class DataEncoder(json.JSONEncoder):
 
     * Numpy objects to their Python equivalents;
     * iterables to lists; and
-    * :class:`compas.data.Data` objects,
+    * `compas.data.Data` objects,
       such as geometric primitives and shapes, data structures, robots, ...,
       to a dict with the following structure: ``{'dtype': o.__dtype__, 'data': o.__data__}``
 
@@ -122,17 +95,17 @@ class DataEncoder(json.JSONEncoder):
 
     minimal = False
 
-    def default(self, o):
+    def default(self, o: Any) -> Any:
         """Return an object in serialized form.
 
         Parameters
         ----------
-        o : object
+        o
             The object to serialize.
 
         Returns
         -------
-        str
+        object
             The serialized object.
 
         """
@@ -144,36 +117,31 @@ class DataEncoder(json.JSONEncoder):
         if hasattr(o, "__next__"):
             return list(o)
 
-        if numpy_support:
-            if isinstance(o, np.ndarray):
-                return o.tolist()
-            if isinstance(
-                o,
-                (
-                    np.int_,
-                    np.intc,
-                    np.intp,
-                    np.int8,
-                    np.int16,
-                    np.int32,
-                    np.int64,
-                    np.uint8,
-                    np.uint16,
-                    np.uint32,
-                    np.uint64,
-                ),  # type: ignore
-            ):
-                return int(o)
-            if isinstance(o, (np_float, np.float16, np.float32, np.float64)):  # type: ignore
-                return float(o)
-            if isinstance(o, np.bool_):
-                return bool(o)
-            if isinstance(o, np.void):
-                return None
-
-        if dotnet_support:
-            if isinstance(o, (System.Decimal, System.Double, System.Single)):
-                return float(o)
+        if isinstance(o, np.ndarray):
+            return o.tolist()
+        if isinstance(
+            o,
+            (
+                np.int_,
+                np.intc,
+                np.intp,
+                np.int8,
+                np.int16,
+                np.int32,
+                np.int64,
+                np.uint8,
+                np.uint16,
+                np.uint32,
+                np.uint64,
+            ),  # type: ignore
+        ):
+            return int(o)
+        if isinstance(o, (np.float_, np.float16, np.float32, np.float64)):  # type: ignore
+            return float(o)
+        if isinstance(o, np.bool_):
+            return bool(o)
+        if isinstance(o, np.void):
+            return None
 
         if isinstance(o, AttributeView):
             return dict(o)
@@ -185,7 +153,7 @@ class DataDecoder(json.JSONDecoder):
     """Data decoder for custom JSON serialization with support for COMPAS data structures and geometric primitives.
 
     The decoder hooks into the JSON deserialisation process
-    to reconstruct :class:`compas.data.Data` objects,
+    to reconstruct `compas.data.Data` objects,
     such as geometric primitives and shapes, data structures, robots, ...,
     from the serialized data when possible.
 
@@ -216,15 +184,16 @@ class DataDecoder(json.JSONDecoder):
 
     """
 
-    def __init__(self, *args, **kwargs):
-        super(DataDecoder, self).__init__(object_hook=self.object_hook, *args, **kwargs)
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(object_hook=self.object_hook, *args, **kwargs)
 
-    def object_hook(self, o):
+    def object_hook(self, o: dict[str, Any]) -> Any:  # pyright: ignore[reportIncompatibleMethodOverride]
         """Reconstruct a deserialized object.
 
         Parameters
         ----------
-        o : object
+        o
+            The decoded JSON object.
 
         Returns
         -------

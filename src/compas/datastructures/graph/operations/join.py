@@ -1,19 +1,25 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+from typing import TYPE_CHECKING
+from typing import Iterable
+from typing import Optional
+from typing import Sequence
 
 from compas.itertools import pairwise
 from compas.tolerance import TOL
 
+from ..types import Node
 
-def graph_join_edges(graph, key):
+if TYPE_CHECKING:
+    from compas.datastructures import Graph
+
+
+def graph_join_edges(graph: "Graph", key: Node) -> None:
     """Join the edges incidental on the given node, if there are exactly two incident edges.
 
     Parameters
     ----------
-    graph : :class:`compas.geometry.Graph`
+    graph
         A graph data structure.
-    key : hashable
+    key
         The node identifier.
 
     Returns
@@ -28,30 +34,19 @@ def graph_join_edges(graph, key):
     Therefore, the new edge has only default edge attributes.
 
     """
-    nbrs = graph.vertex_neighbors(key)
+    nbrs = graph.neighbors(key)
     if len(nbrs) != 2:
         return
     a, b = nbrs
-    if a in graph.edge[key]:
-        del graph.edge[key][a]
-    else:
-        del graph.edge[a][key]
-    del graph.halfedge[key][a]
-    del graph.halfedge[a][key]
-    if b in graph.edge[key]:
-        del graph.edge[key][b]
-    else:
-        del graph.edge[b][key]
-    del graph.halfedge[key][b]
-    del graph.halfedge[b][key]
-    del graph.vertex[key]
-    del graph.halfedge[key]
-    del graph.edge[key]
+    graph.delete_node(key)
     # set attributes based on average of two joining edges?
-    graph.add_edge((a, b))
+    graph.add_edge(a, b)
 
 
-def graph_polylines(graph, splits=None):
+def graph_polylines(
+    graph: "Graph",
+    splits: Optional[Iterable[Sequence[float]]] = None,
+) -> list[list[list[float]]]:
     """Join graph edges into polylines.
 
     The polylines stop at points with a valency different from 2 in the graph of line.
@@ -59,9 +54,9 @@ def graph_polylines(graph, splits=None):
 
     Parameters
     ----------
-    graph : Graph
+    graph
         A graph.
-    splits : sequence[[float, float, float] | :class:`compas.geometry.Point`], optional
+    splits
         List of point coordinates for polyline splits.
 
     Returns
@@ -92,13 +87,13 @@ def graph_polylines(graph, splits=None):
     # geometric keys of split points
     if splits is None:
         splits = []
-    stop_geom_keys = set([TOL.geometric_key(xyz) for xyz in splits])
+    stop_geom_keys = {TOL.geometric_key(xyz) for xyz in splits}
 
     polylines = []
     edges_to_visit = set(graph.edges())
 
     # initiate a polyline from an unvisited edge
-    while len(edges_to_visit) > 0:
+    while edges_to_visit:
         polyline = list(edges_to_visit.pop())
 
         # get adjacent edges until the polyline is closed...
@@ -112,7 +107,7 @@ def graph_polylines(graph, splits=None):
             # add next edge
             polyline.append([nbr for nbr in graph.neighbors(polyline[-1]) if nbr != polyline[-2]][0])
 
-        # delete polyline edges from the list of univisted edges
+        # delete polyline edges from the list of unvisited edges
         for u, v in pairwise(polyline):
             if (u, v) in edges_to_visit:
                 edges_to_visit.remove((u, v))

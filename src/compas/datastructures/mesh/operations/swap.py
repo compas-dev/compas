@@ -1,30 +1,47 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+from typing import TYPE_CHECKING
+from typing import Literal
+from typing import Union
+
+from ..types import Edge
+from ..types import Face
+
+if TYPE_CHECKING:
+    from ..mesh import Mesh
 
 
-def trimesh_swap_edge(mesh, edge, allow_boundary=True):
+def trimesh_swap_edge(
+    mesh: "Mesh", edge: Edge, allow_boundary: bool = True
+) -> Union[tuple[Face, Face], Literal[False]]:
     """Replace an edge of the mesh by an edge connecting the opposite
     vertices of the adjacent faces.
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh
         Instance of mesh.
-    edge : tuple[int, int]
+    edge
         The identifier of the edge to swap.
+    allow_boundary
+        If False, reject edges incident to boundary vertices.
 
     Returns
     -------
-    None
+    tuple[int, int] | False
+        The new face identifiers if the swap succeeds, False otherwise.
 
     """
     u, v = edge
+
+    if not mesh.has_halfedge((u, v)) or not mesh.has_halfedge((v, u)):
+        raise ValueError("The edge is not part of the mesh.")
 
     # check legality of the swap
     # swapping on the boundary is not allowed
     fkey_uv = mesh.halfedge[u][v]
     fkey_vu = mesh.halfedge[v][u]
+
+    if fkey_uv is None or fkey_vu is None:
+        return False
 
     u_on = mesh.is_vertex_on_boundary(u)
     v_on = mesh.is_vertex_on_boundary(v)
@@ -58,5 +75,8 @@ def trimesh_swap_edge(mesh, edge, allow_boundary=True):
     # add the faces created by the swap
     a = mesh.add_face([o_uv, o_vu, v])
     b = mesh.add_face([o_vu, o_uv, u])
+
+    if a is None or b is None:
+        raise RuntimeError("Swapping the edge produced an invalid face.")
 
     return a, b

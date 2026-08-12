@@ -1,33 +1,34 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 import json
+import os
 import zipfile
+from typing import IO
+from typing import Any
+from typing import Union
 
 from compas import _iotools
-from compas.data import Data  # noqa: F401
 from compas.data import DataDecoder
 from compas.data import DataEncoder
 
 _JSON_CONTENT_FILENAME = "content.json"
+JSONFile = Union[str, os.PathLike[str], IO[str]]
+ZipFile = Union[str, os.PathLike[str], IO[bytes]]
 
 
-def json_dump(data, fp, pretty=False, compact=False, minimal=False):
+def json_dump(data: Any, fp: JSONFile, pretty: bool = False, compact: bool = False, minimal: bool = False) -> None:
     """Write a collection of COMPAS object data to a JSON file.
 
     Parameters
     ----------
-    data : object
+    data
         Any JSON serializable object.
         This includes any (combination of) COMPAS object(s).
-    fp : path string or file-like object
-        A writeable file-like object or the path to a file.
-    pretty : bool, optional
+    fp
+        A writable file-like object or the path to a file.
+    pretty
         If True, format the output with newlines and indentation.
-    compact : bool, optional
+    compact
         If True, format the output without any whitespace.
-    minimal : bool, optional
+    minimal
         If True, exclude the GUID from the JSON output.
 
     Returns
@@ -36,9 +37,9 @@ def json_dump(data, fp, pretty=False, compact=False, minimal=False):
 
     See Also
     --------
-    :class:`compas.data.json_dumps`
-    :class:`compas.data.json_load`
-    :class:`compas.data.json_loads`
+    compas.data.json_dumps
+    compas.data.json_load
+    compas.data.json_loads
 
     Examples
     --------
@@ -66,19 +67,19 @@ def json_dump(data, fp, pretty=False, compact=False, minimal=False):
         return json.dump(data, f, cls=DataEncoder, **kwargs)
 
 
-def json_dumps(data, pretty=False, compact=False, minimal=False):  # type: (...) -> str
+def json_dumps(data: Any, pretty: bool = False, compact: bool = False, minimal: bool = False) -> str:
     """Write a collection of COMPAS objects to a JSON string.
 
     Parameters
     ----------
-    data : object
+    data
         Any JSON serializable object.
         This includes any (combination of) COMPAS object(s).
-    pretty : bool, optional
+    pretty
         If True, format the output with newlines and indentation.
-    compact : bool, optional
+    compact
         If True, format the output without any whitespace.
-    minimal : bool, optional
+    minimal
         If True, exclude the GUID from the JSON output.
 
     Returns
@@ -87,9 +88,9 @@ def json_dumps(data, pretty=False, compact=False, minimal=False):  # type: (...)
 
     See Also
     --------
-    :class:`compas.data.json_dump`
-    :class:`compas.data.json_load`
-    :class:`compas.data.json_loads`
+    compas.data.json_dump
+    compas.data.json_load
+    compas.data.json_loads
 
     Examples
     --------
@@ -114,31 +115,33 @@ def json_dumps(data, pretty=False, compact=False, minimal=False):  # type: (...)
     return json.dumps(data, cls=DataEncoder, **kwargs)
 
 
-def json_dumpz(data, zip_filename, pretty=False, compact=False, minimal=False):
+def json_dumpz(data: Any, zip_filename: ZipFile, pretty: bool = False, compact: bool = False, minimal: bool = False) -> None:
     """Write a collection of COMPAS objects to a compressed JSON file (using ZIP compression).
 
     Parameters
     ----------
-    data : object
+    data
         Any JSON serializable object.
         This includes any (combination of) COMPAS object(s).
-    pretty : bool, optional
+    zip_filename
+        A writable file-like object or the path to a ZIP file.
+    pretty
         If True, format the output with newlines and indentation.
-    compact : bool, optional
+    compact
         If True, format the output without any whitespace.
-    minimal : bool, optional
+    minimal
         If True, exclude the GUID from the JSON output.
 
     Returns
     -------
-    str
+    None
 
     See Also
     --------
-    :class:`compas.data.json_dump`
-    :class:`compas.data.json_load`
-    :class:`compas.data.json_loads`
-    :class:`compas.data.json_loadz`
+    compas.data.json_dump
+    compas.data.json_load
+    compas.data.json_loads
+    compas.data.json_loadz
     """
     json_str = json_dumps(data, pretty=pretty, compact=compact, minimal=minimal)
 
@@ -146,12 +149,12 @@ def json_dumpz(data, zip_filename, pretty=False, compact=False, minimal=False):
         zf.writestr(_JSON_CONTENT_FILENAME, json_str)
 
 
-def json_loadz(zip_file):
+def json_loadz(zip_file: ZipFile) -> Any:
     """Read COMPAS object data from a compressed JSON file (ZIP).
 
     Parameters
     ----------
-    zip_file : path string | file-like object
+    zip_file
         A readable path or a file-like object pointing to a ZIP file.
 
     Returns
@@ -161,10 +164,10 @@ def json_loadz(zip_file):
 
     See Also
     --------
-    :class:`compas.data.json_dump`
-    :class:`compas.data.json_dumps`
-    :class:`compas.data.json_dumpz`
-    :class:`compas.data.json_loads`
+    compas.data.json_dump
+    compas.data.json_dumps
+    compas.data.json_dumpz
+    compas.data.json_loads
     """
     with zipfile.ZipFile(zip_file) as zf:
         with zf.open(_JSON_CONTENT_FILENAME) as f:
@@ -173,12 +176,12 @@ def json_loadz(zip_file):
     return json_loads(json_str)
 
 
-def json_load(fp):  # type: (...) -> dict
+def json_load(fp: JSONFile) -> Any:
     """Read COMPAS object data from a JSON file.
 
     Parameters
     ----------
-    fp : path string | file-like object | URL string
+    fp
         A readable path, a file-like object or a URL pointing to a file.
 
     Returns
@@ -188,9 +191,9 @@ def json_load(fp):  # type: (...) -> dict
 
     See Also
     --------
-    :class:`compas.data.json_dump`
-    :class:`compas.data.json_dumps`
-    :class:`compas.data.json_loads`
+    compas.data.json_dump
+    compas.data.json_dumps
+    compas.data.json_loads
 
     Examples
     --------
@@ -207,12 +210,12 @@ def json_load(fp):  # type: (...) -> dict
         return json.load(f, cls=DataDecoder)
 
 
-def json_loads(s):  # type: (...) -> dict
+def json_loads(s: str) -> Any:
     """Read COMPAS object data from a JSON string.
 
     Parameters
     ----------
-    s : str
+    s
         A JSON data string.
 
     Returns
@@ -222,9 +225,9 @@ def json_loads(s):  # type: (...) -> dict
 
     See Also
     --------
-    :class:`compas.data.json_dump`
-    :class:`compas.data.json_dumps`
-    :class:`compas.data.json_load`
+    compas.data.json_dump
+    compas.data.json_dumps
+    compas.data.json_load
 
     Examples
     --------

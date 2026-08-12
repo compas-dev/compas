@@ -1,7 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 from random import uniform
 
 from compas.geometry import Geometry
@@ -138,14 +134,10 @@ class Pointcloud(Geometry):
         :class:`compas.geometry.Pointcloud`
 
         """
-        from compas.files import PLY
+        from compas.files import ply_data
+        from compas.files import read_ply
 
-        points = []
-        ply = PLY(filepath)
-        for vertex in ply.reader.vertices:  # type: ignore
-            points.append([vertex["x"], vertex["y"], vertex["z"]])
-        cloud = cls(points)
-        return cloud
+        return cls(ply_data(read_ply(filepath)).vertices)
 
     @classmethod
     def from_pcd(cls, filepath):

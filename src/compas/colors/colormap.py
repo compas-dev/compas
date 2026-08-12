@@ -1,8 +1,9 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 import os
+from typing import Literal
+from typing import Sequence
+from typing import Union
+
+from typing_extensions import Self
 
 from compas.itertools import linspace
 
@@ -19,19 +20,23 @@ mpl = {
     "viridis": _viridis_data,
 }
 
+ColorMapColor = Union[Sequence[float], Color]
+ColorMapName = Literal["magma", "inferno", "plasma", "viridis"]
+ColorRangeType = Literal["full", "light", "dark"]
 
-class ColorMap(object):
+
+class ColorMap:
     """Class providing a map for 256 distinct colors of a specific color palette.
 
     Parameters
     ----------
-    colors : sequence[tuple[float, float, float]]
+    colors
         A sequence of colors forming the map.
         The number of colors in the sequence should be 256.
 
     Attributes
     ----------
-    colors : list[:class:`compas.colors.Color`]
+    colors
         The colors of the map.
 
     Raises
@@ -53,12 +58,12 @@ class ColorMap(object):
 
     See Also
     --------
-    :class:`compas.colors.Color`
+    compas.colors.Color
 
     """
 
-    def __init__(self, colors):
-        self._colors = []
+    def __init__(self, colors: Sequence[ColorMapColor]) -> None:
+        self._colors: list[Color] = []
         self.colors = colors
 
     # --------------------------------------------------------------------------
@@ -66,11 +71,11 @@ class ColorMap(object):
     # --------------------------------------------------------------------------
 
     @property
-    def colors(self):
+    def colors(self) -> list[Color]:
         return self._colors
 
     @colors.setter
-    def colors(self, colors):
+    def colors(self, colors: Sequence[ColorMapColor]) -> None:
         if len(colors) != 256:
             raise ValueError("The color map should have 256 colors.")
         self._colors = [Color(r, g, b) for r, g, b in colors]
@@ -79,21 +84,21 @@ class ColorMap(object):
     # customization
     # --------------------------------------------------------------------------
 
-    def __call__(self, value, minval=0.0, maxval=1.0):
+    def __call__(self, value: float, minval: float = 0.0, maxval: float = 1.0) -> Color:
         """Returns the color in the map corresponding to the given value in the range ``[minval, maxval]``.
 
         Parameters
         ----------
-        value : float
+        value
             The data value for which a color should be computed.
-        minval : float, optional
+        minval
             The minimum value of the data range.
-        maxval : float, optional
+        maxval
             The maximum value of the data range.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         Raises
         ------
@@ -112,17 +117,17 @@ class ColorMap(object):
     # --------------------------------------------------------------------------
 
     @classmethod
-    def from_palette(cls, name):
+    def from_palette(cls, name: str) -> Self:
         """Construct a color map from a named palette.
 
         Parameters
         ----------
-        name : str
+        name
             The name of the palette.
 
         Returns
         -------
-        :class:`compas.colors.ColorMap`
+        ColorMap
             A color map with 256 colors.
 
         Raises
@@ -139,7 +144,7 @@ class ColorMap(object):
         """
         here = os.path.dirname(__file__)
         path = os.path.join(here, "cmcrameri", "{}.txt".format(name))
-        colors = []
+        colors: list[tuple[float, float, float]] = []
         with open(path, "r") as f:
             for line in f:
                 if line:
@@ -153,17 +158,17 @@ class ColorMap(object):
         return cmap
 
     @classmethod
-    def from_mpl(cls, name):
+    def from_mpl(cls, name: ColorMapName) -> Self:
         """Construct a color map from matplotlib.
 
         Parameters
         ----------
-        name : Literal['magma', 'inferno', 'plasma', 'viridis']
+        name
             The name of the mpl colormap.
 
         Returns
         -------
-        :class:`compas.colors.ColorMap`
+        ColorMap
             A color map with 256 colors.
 
         Raises
@@ -182,21 +187,21 @@ class ColorMap(object):
         return cls(colors)
 
     @classmethod
-    def from_color(cls, color, rangetype="full"):
+    def from_color(cls, color: Color, rangetype: ColorRangeType = "full") -> Self:
         """Construct a color map from a single color by varying luminance.
 
         Parameters
         ----------
-        color : :class:`compas.colors.Color`
+        color
             The base color.
-        rangetype : Literal['full', 'light', 'dark'], optional
+        rangetype
             If ``'full'``, use the full luminance range (0.0 - 1.0).
             If ``'light'``, use only the "light" part of the luminance range (0.5 - 1.0).
             If ``'dark'``, use only the "dark" part of the luminance range (0.0 - 0.5).
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        ColorMap
             A color map with 256 colors.
 
         """
@@ -221,25 +226,25 @@ class ColorMap(object):
         raise ValueError("`rangetype` should be one of 'full', 'light', 'dark'.")
 
     @classmethod
-    def from_two_colors(cls, c1, c2, diverging=False):
+    def from_two_colors(cls, c1: Color, c2: Color, diverging: bool = False) -> Self:
         """Create a color map from two colors.
 
         Parameters
         ----------
-        c1 : :class:`compas.colors.Color`
+        c1
             The first color.
-        c2 : :class:`compas.colors.Color`
+        c2
             The second color.
-        diverging : bool, optional
+        diverging
             If True, use white as transition color in the middle.
 
         Returns
         -------
-        :class:`compas.colors.ColorMap`
+        ColorMap
             A color map with 256 colors.
 
         """
-        colors = []
+        colors: list[Color] = []
         if diverging:
             for i in linspace(0, 1.0, 128):
                 r = c1[0] * (1 - i) + 1.0 * i
@@ -260,25 +265,25 @@ class ColorMap(object):
         return cls(colors)
 
     @classmethod
-    def from_three_colors(cls, c1, c2, c3):
+    def from_three_colors(cls, c1: Color, c2: Color, c3: Color) -> Self:
         """Construct a color map from three colors.
 
         Parameters
         ----------
-        c1 : :class:`compas.colors.Color`
+        c1
             The first color.
-        c2 : :class:`compas.colors.Color`
+        c2
             The second color.
-        c3 : :class:`compas.colors.Color`
+        c3
             The third color.
 
         Returns
         -------
-        :class:`compas.colors.ColorMap`
+        ColorMap
             A color map with 256 colors.
 
         """
-        colors = []
+        colors: list[Color] = []
         for i in linspace(0, 1.0, 128):
             r = c1[0] * (1 - i) + c2[0] * i
             g = c1[1] * (1 - i) + c2[1] * i
@@ -292,15 +297,15 @@ class ColorMap(object):
         return cls(colors)
 
     @classmethod
-    def from_rgb(cls):
+    def from_rgb(cls) -> Self:
         """Construct a color map from the complete rgb color space.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        ColorMap
 
         """
-        colors = []
+        colors: list[Color] = []
         for i in linspace(0, 1.0, 256):
             colors.append(Color.from_i(i))
         return cls(colors)

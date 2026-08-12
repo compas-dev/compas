@@ -1,4 +1,4 @@
-from __future__ import print_function
+# ruff: noqa: F401
 
 import os
 
@@ -102,34 +102,6 @@ try:
 except Exception:
     pass
 
-
-__all__ = [
-    "WINDOWS",
-    "LINUX",
-    "OSX",
-    "MONO",
-    "IPY",
-    "RHINO",
-    "BLENDER",
-    "PY2",
-    "PY3",
-    "devday",
-    "is_windows",
-    "is_linux",
-    "is_osx",
-    "is_mono",
-    "is_ironpython",
-    "is_rhino",
-    "is_blender",
-    "is_grasshopper",
-    "get",
-    "json_dump",
-    "json_load",
-    "json_dumps",
-    "json_dumpz",
-    "json_loads",
-    "json_loadz",
-]
 
 __all_plugins__ = [
     "compas.geometry.booleans_shapely",

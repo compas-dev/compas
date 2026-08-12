@@ -1,25 +1,36 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 from math import pi
+from typing import TYPE_CHECKING
+from typing import Iterable
+from typing import Mapping
+from typing import Optional
+from typing import Sequence
 
 from compas.geometry import angle_vectors
 from compas.geometry import is_ccw_xy
 from compas.itertools import pairwise
 
+from .types import Node
+
+if TYPE_CHECKING:
+    from compas.datastructures import Graph
+
 PI2 = 2.0 * pi
 
 
-def graph_find_cycles(graph, breakpoints=None):
+def graph_find_cycles(graph: "Graph", breakpoints: Optional[Iterable[Node]] = None) -> list[list[Node]]:
     """Find the faces of a graph.
 
     Parameters
     ----------
-    graph : :class:`compas.datastructures.Graph`
+    graph
         The graph object.
-    breakpoints : list, optional
+    breakpoints
         The vertices at which to break the found faces.
+
+    Returns
+    -------
+    list[list[hashable]]
+        The cycles of the graph.
 
     Notes
     -----
@@ -30,8 +41,8 @@ def graph_find_cycles(graph, breakpoints=None):
 
     Warnings
     --------
-    This algorithms is essentially a wall follower (a type of maze-solving algorithm).
-    It relies on the geometry of the graph to be repesented as a planar,
+    This algorithm is essentially a wall follower (a type of maze-solving algorithm).
+    It relies on the geometry of the graph to be represented as a planar,
     straight-line embedding. It determines an ordering of the neighboring vertices
     around each vertex, and then follows the *walls* of the graph, always
     taking turns in the same direction.
@@ -39,6 +50,9 @@ def graph_find_cycles(graph, breakpoints=None):
     """
     if not breakpoints:
         breakpoints = []
+
+    if not graph.number_of_edges():
+        return []
 
     for u, v in graph.edges():
         graph.adjacency[u][v] = None
@@ -90,7 +104,22 @@ def graph_find_cycles(graph, breakpoints=None):
     return cycles
 
 
-def graph_node_find_first_neighbor(graph, key):
+def graph_node_find_first_neighbor(graph: "Graph", key: Node) -> Node:
+    """Find the first neighbor of a node in clockwise order from the negative XY diagonal.
+
+    Parameters
+    ----------
+    graph
+        The graph object.
+    key
+        The node identifier.
+
+    Returns
+    -------
+    hashable
+        The identifier of the first neighbor.
+
+    """
     nbrs = graph.neighbors(key)
     if len(nbrs) == 1:
         return nbrs[0]
@@ -108,7 +137,22 @@ def graph_node_find_first_neighbor(graph, key):
     return nbrs[angles.index(min(angles))]
 
 
-def graph_sort_neighbors(graph, ccw=True):
+def graph_sort_neighbors(graph: "Graph", ccw: bool = True) -> dict[Node, list[Node]]:
+    """Sort the neighbors of every node around the node in the XY plane.
+
+    Parameters
+    ----------
+    graph
+        The graph object.
+    ccw
+        If True, sort the neighbors counterclockwise.
+
+    Returns
+    -------
+    dict[hashable, list[hashable]]
+        The sorted neighbors keyed by node identifier.
+
+    """
     sorted_neighbors = {}
     xyz = {key: graph.node_coordinates(key) for key in graph.nodes()}
     for key in graph.nodes():
@@ -119,10 +163,34 @@ def graph_sort_neighbors(graph, ccw=True):
     return sorted_neighbors
 
 
-def node_sort_neighbors(key, nbrs, xyz, ccw=True):
+def node_sort_neighbors(
+    key: Node,
+    nbrs: Sequence[Node],
+    xyz: Mapping[Node, Sequence[float]],
+    ccw: bool = True,
+) -> list[Node]:
+    """Sort the neighbors of a node around the node in the XY plane.
+
+    Parameters
+    ----------
+    key
+        The node identifier.
+    nbrs
+        The identifiers of the neighboring nodes.
+    xyz
+        A mapping of node identifiers to point coordinates.
+    ccw
+        If True, sort the neighbors counterclockwise.
+
+    Returns
+    -------
+    list[hashable]
+        The sorted neighbor identifiers.
+
+    """
     if len(nbrs) == 1:
-        return nbrs
-    ordered = nbrs[0:1]
+        return list(nbrs)
+    ordered = list(nbrs[0:1])
     a = xyz[key]
     for i, nbr in enumerate(nbrs[1:]):
         c = xyz[nbr]
@@ -148,7 +216,22 @@ def node_sort_neighbors(key, nbrs, xyz, ccw=True):
     return ordered
 
 
-def graph_find_edge_cycle(graph, edge):
+def graph_find_edge_cycle(graph: "Graph", edge: tuple[Node, Node]) -> list[Node]:
+    """Find the cycle to the left of a directed edge.
+
+    Parameters
+    ----------
+    graph
+        The graph object.
+    edge
+        The directed edge from which to start.
+
+    Returns
+    -------
+    list[hashable]
+        The nodes of the cycle.
+
+    """
     u, v = edge
     cycle = [u]
     while True:
@@ -161,7 +244,22 @@ def graph_find_edge_cycle(graph, edge):
     return cycle
 
 
-def _break_cycles(cycles, breakpoints):
+def _break_cycles(cycles: Mapping[int, list[Node]], breakpoints: Iterable[Node]) -> list[list[Node]]:
+    """Break cycles at specified nodes.
+
+    Parameters
+    ----------
+    cycles
+        A mapping of cycle identifiers to node cycles.
+    breakpoints
+        The nodes at which to break the cycles.
+
+    Returns
+    -------
+    list[list[hashable]]
+        The resulting cycles.
+
+    """
     breakpoints = set(breakpoints)
     broken = []
 

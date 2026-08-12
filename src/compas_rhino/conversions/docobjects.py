@@ -1,16 +1,11 @@
-from __future__ import absolute_import  # noqa: I001
-from __future__ import division
-from __future__ import print_function
-
 import Rhino.Geometry  # type: ignore  # noqa: F401
 import System  # type: ignore
 
 import compas_rhino.objects
 
-from .exceptions import ConversionError
-
 from .breps import brep_to_compas
 from .curves import curve_to_compas
+from .exceptions import ConversionError
 from .geometry import point_to_compas
 from .meshes import mesh_to_compas
 

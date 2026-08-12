@@ -1,27 +1,41 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+from typing import TYPE_CHECKING
+from typing import Any
+from typing import Callable
+from typing import Iterable
+from typing import Optional
 
 from compas.geometry import centroid_points
 
+from .types import Node
 
-def graph_smooth_centroid(graph, fixed=None, kmax=100, damping=0.5, callback=None, callback_args=None):
+if TYPE_CHECKING:
+    from compas.datastructures import Graph
+
+
+def graph_smooth_centroid(
+    graph: "Graph",
+    fixed: Optional[Iterable[Node]] = None,
+    kmax: int = 100,
+    damping: float = 0.5,
+    callback: Optional[Callable[[int, Any], None]] = None,
+    callback_args: Any = None,
+) -> None:
     """Smooth a graph by moving every free node to the centroid of its neighbors.
 
     Parameters
     ----------
-    graph : Mesh
+    graph
         A graph object.
-    fixed : list, optional
+    fixed
         The fixed nodes of the graph.
-    kmax : int, optional
+    kmax
         The maximum number of iterations.
-    damping : float, optional
+    damping
         The damping factor.
-    callback : callable, optional
+    callback
         A user-defined callback function to be executed after every iteration.
-    callback_args : list, optional
-        A list of arguments to be passed to the callback.
+    callback_args
+        Additional arguments to pass to the callback.
 
     Returns
     -------
@@ -29,31 +43,33 @@ def graph_smooth_centroid(graph, fixed=None, kmax=100, damping=0.5, callback=Non
 
     Raises
     ------
-    Exception
+    TypeError
         If a callback is provided, but it is not callable.
 
     """
-    if callback:
-        if not callable(callback):
-            raise Exception("Callback is not callable.")
+    if callback is not None and not callable(callback):
+        raise TypeError("Callback is not callable.")
 
-    fixed = fixed or []
-    fixed = set(fixed)
+    fixed_nodes = set(fixed or [])
 
     for k in range(kmax):
         key_xyz = {key: graph.node_coordinates(key) for key in graph.nodes()}
 
-        for key, attr in graph.nodes(True):
-            if key in fixed:
+        for key, attr in graph.nodes(data=True):
+            if key in fixed_nodes:
+                continue
+
+            neighbors = graph.neighbors(key)
+            if not neighbors:
                 continue
 
             x, y, z = key_xyz[key]
 
-            cx, cy, cz = centroid_points([key_xyz[nbr] for nbr in graph.neighbors(key)])
+            cx, cy, cz = centroid_points([key_xyz[nbr] for nbr in neighbors])
 
             attr["x"] += damping * (cx - x)
             attr["y"] += damping * (cy - y)
             attr["z"] += damping * (cz - z)
 
-        if callback:
+        if callback is not None:
             callback(k, callback_args)

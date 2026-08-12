@@ -1,13 +1,5 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
-try:
-    from queue import PriorityQueue
-except ImportError:
-    from Queue import PriorityQueue  # type: ignore
-
 from collections import deque
+from queue import PriorityQueue
 
 from compas.geometry import distance_point_point
 

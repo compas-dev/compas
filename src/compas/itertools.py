@@ -1,8 +1,5 @@
 # recipes with itertools
 # see: https://docs.python.org/3.6/library/itertools.html
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
 from functools import reduce
 from itertools import chain
@@ -15,18 +12,6 @@ try:
     from itertools import zip_longest
 except ImportError:
     from itertools import izip_longest as zip_longest  # type: ignore
-
-__all__ = [
-    "normalize_values",
-    "remap_values",
-    "meshgrid",
-    "linspace",
-    "flatten",
-    "reshape",
-    "pairwise",
-    "window",
-    "iterable_like",
-]
 
 
 def normalize_values(values, new_min=0.0, new_max=1.0):

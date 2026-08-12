@@ -1,6 +1,5 @@
 import pytest
 import json
-import compas
 from random import random
 
 from compas.colors import Color
@@ -39,10 +38,6 @@ def test_color_data():
     assert color.a == other.a
 
     assert color == other
-
-    if not compas.IPY:
-        assert Color.validate_data(color.__data__)
-        assert Color.validate_data(other.__data__)
 
 
 def test_color_predefined():

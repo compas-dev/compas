@@ -1,23 +1,29 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+from typing import TYPE_CHECKING
+from typing import Optional
 
 from compas.itertools import pairwise
 
+from ..types import Edge
+from ..types import Face
+from ..types import Vertex
 
-def mesh_split_edge(mesh, edge, t=0.5, allow_boundary=False):
+if TYPE_CHECKING:
+    from ..mesh import Mesh
+
+
+def mesh_split_edge(mesh: "Mesh", edge: Edge, t: float = 0.5, allow_boundary: bool = False) -> Optional[Vertex]:
     """Split and edge by inserting a vertex along its length.
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh
         Instance of a mesh.
-    edge : tuple[int, int]
+    edge
         The identifier of the edge to split.
-    t : float, optional
+    t
         The position of the inserted vertex.
         The value should be between 0.0 and 1.0
-    allow_boundary : bool, optional
+    allow_boundary
         If True, also split edges on the boundary.
 
     Returns
@@ -32,6 +38,9 @@ def mesh_split_edge(mesh, edge, t=0.5, allow_boundary=False):
 
     """
     u, v = edge
+
+    if not mesh.has_halfedge((u, v)) or not mesh.has_halfedge((v, u)):
+        raise ValueError("The edge is not part of the mesh.")
 
     if t < 0.0:
         raise ValueError("t should be greater than or equal to 0.0.")
@@ -81,19 +90,19 @@ def mesh_split_edge(mesh, edge, t=0.5, allow_boundary=False):
     return w
 
 
-def trimesh_split_edge(mesh, edge, t=0.5, allow_boundary=False):
+def trimesh_split_edge(mesh: "Mesh", edge: Edge, t: float = 0.5, allow_boundary: bool = False) -> Optional[Vertex]:
     """Split an edge of a triangle mesh.
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh
         Instance of a mesh.
-    edge : tuple[int, int]
+    edge
         The identifier of the edge to split.
-    t : float, optional
+    t
         The location of the split point along the original edge.
         The value should be between 0.0 and 1.0
-    allow_boundary : bool, optional
+    allow_boundary
         If True, allow splits on boundary edges.
 
     Returns
@@ -107,6 +116,9 @@ def trimesh_split_edge(mesh, edge, t=0.5, allow_boundary=False):
 
     """
     u, v = edge
+
+    if not mesh.has_halfedge((u, v)) or not mesh.has_halfedge((v, u)):
+        raise ValueError("The edge is not part of the mesh.")
 
     if t <= 0.0:
         raise ValueError("t should be greater than 0.0.")
@@ -158,18 +170,18 @@ def trimesh_split_edge(mesh, edge, t=0.5, allow_boundary=False):
     return w
 
 
-def mesh_split_face(mesh, fkey, u, v):
+def mesh_split_face(mesh: "Mesh", fkey: Face, u: Vertex, v: Vertex) -> tuple[Face, Face]:
     """Split a face by inserting an edge between two specified vertices.
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh
         Instance of a mesh
-    fkey : int
+    fkey
         The face key.
-    u : int
+    u
         The key of the first split vertex.
-    v : int
+    v
         The key of the second split vertex.
 
     Returns
@@ -179,7 +191,7 @@ def mesh_split_face(mesh, fkey, u, v):
 
     Raises
     ------
-    :exc:`ValueError`
+    ValueError
         If the split vertices does not belong to the split face or if the split
         vertices are neighbors.
 
@@ -208,7 +220,7 @@ def mesh_split_face(mesh, fkey, u, v):
     i = face.index(u)
     j = face.index(v)
 
-    if i + 1 == j:
+    if abs(i - j) in (1, len(face) - 1):
         raise ValueError("The split vertices are neighbors.")
 
     if j > i:
@@ -221,19 +233,22 @@ def mesh_split_face(mesh, fkey, u, v):
     f = mesh.add_face(f)
     g = mesh.add_face(g)
 
+    if f is None or g is None:
+        raise RuntimeError("Splitting the face produced an invalid face.")
+
     del mesh.face[fkey]
 
     return f, g
 
 
-def mesh_split_strip(mesh, edge):
-    """Split the srip of faces corresponding to a given edge.
+def mesh_split_strip(mesh: "Mesh", edge: Edge) -> list[Vertex]:
+    """Split the strip of faces corresponding to a given edge.
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh
         The input mesh.
-    edge : tuple[int, int]
+    edge
         The edge identifying the strip.
 
     Returns
@@ -248,14 +263,21 @@ def mesh_split_strip(mesh, edge):
     ngons = []
     splits = []
     for edge in strip[:-1]:
-        ngons.append(mesh.halfedge_face(edge))
-        splits.append(mesh.split_edge(edge, t=0.5, allow_boundary=True))
+        ngon = mesh.halfedge_face(edge)
+        split = mesh.split_edge(edge, t=0.5, allow_boundary=True)
+        if ngon is None or split is None:
+            raise RuntimeError("Splitting the strip failed.")
+        ngons.append(ngon)
+        splits.append(split)
 
     if is_closed:
         splits.append(splits[0])
     else:
         edge = strip[-1]
-        splits.append(mesh.split_edge(edge, t=0.5, allow_boundary=True))
+        split = mesh.split_edge(edge, t=0.5, allow_boundary=True)
+        if split is None:
+            raise RuntimeError("Splitting the strip failed.")
+        splits.append(split)
 
     for (u, v), ngon in zip(pairwise(splits), ngons):
         mesh.split_face(ngon, u, v)

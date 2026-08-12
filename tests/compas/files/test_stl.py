@@ -1,50 +1,88 @@
-import os
-import pytest
-import compas
+from io import BytesIO
+from io import StringIO
+
 from compas.datastructures import Mesh
-from compas.files import STL
-from compas.tolerance import TOL
-
-# Temporary change the global precision in the TOL class to 12
-TOL.precision = 12
-
-BASE_FOLDER = os.path.dirname(__file__)
-
-
-@pytest.fixture
-def binary_stl_with_ascii_header():
-    return os.path.join(BASE_FOLDER, "fixtures", "stl", "binary-1.stl")
+from compas.files import STLDocument
+from compas.files import STLFacet
+from compas.files import STLSolid
+from compas.files import read_stl
+from compas.files import stl_data
+from compas.files import weld_stl_data
+from compas.files import write_stl
 
 
-@pytest.fixture
-def binary_stl():
-    return os.path.join(BASE_FOLDER, "fixtures", "stl", "binary-2.stl")
+STL_WITH_SHARED_COORDINATES = """\
+solid square
+facet normal 0 0 1
+outer loop
+vertex 0 0 0
+vertex 1 0 0
+vertex 0 1 0
+endloop
+endfacet
+facet normal 0 0 1
+outer loop
+vertex 1 0 0
+vertex 1 1 0
+vertex 0 1 0
+endloop
+endfacet
+endsolid square
+"""
 
 
-@pytest.fixture
-def ascii_stl():
-    return os.path.join(BASE_FOLDER, "fixtures", "stl", "ascii.stl")
+def test_stl_projection_only_welds_when_requested():
+    document = read_stl(StringIO(STL_WITH_SHARED_COORDINATES))
+
+    unwelded = stl_data(document)
+    welded = weld_stl_data(document)
+
+    assert len(unwelded.vertices) == 6
+    assert len(unwelded.faces) == 2
+    assert len(welded.vertices) == 4
+    assert len(welded.faces) == 2
 
 
-def test_binary_detection(ascii_stl, binary_stl, binary_stl_with_ascii_header):
-    stl = STL(ascii_stl)
-    assert len(stl.parser.vertices) > 0
+def test_mesh_ascii_stl_roundtrip_welds_facet_vertices():
+    mesh = Mesh.from_stl(StringIO(STL_WITH_SHARED_COORDINATES))
+    stream = StringIO()
 
-    stl = STL(binary_stl)
-    assert len(stl.parser.vertices) > 0
+    mesh.to_stl(stream)
+    stream.seek(0)
+    restored = Mesh.from_stl(stream)
 
-    stl = STL(binary_stl_with_ascii_header)
-    assert len(stl.parser.vertices) > 0
-
-
-def test_binary_read_write_fidelity():
-    mesh = Mesh.from_stl(compas.get("cube_binary.stl"))
-    fp = compas.get("cube_binary_2.stl")
-    mesh.to_stl(fp, binary=True)
-    mesh_2 = Mesh.from_stl(fp)
-    assert mesh.adjacency == mesh_2.adjacency
-    assert mesh.vertex == mesh_2.vertex
+    assert mesh.number_of_vertices() == 4
+    assert mesh.number_of_faces() == 2
+    assert restored.number_of_vertices() == 4
+    assert restored.number_of_faces() == 2
 
 
-# Reset the precision to its default value
-TOL.precision = TOL.PRECISION
+def test_mesh_binary_stl_roundtrip():
+    mesh = Mesh.from_stl(StringIO(STL_WITH_SHARED_COORDINATES))
+    stream = BytesIO()
+
+    mesh.to_stl(stream, binary=True)
+    stream.seek(0)
+    restored = Mesh.from_stl(stream)
+
+    assert restored.number_of_vertices() == mesh.number_of_vertices()
+    assert restored.number_of_faces() == mesh.number_of_faces()
+
+
+def test_write_stl_retains_document_format_and_does_not_mutate_document():
+    document = STLDocument(
+        format="binary",
+        header=b"example",
+        solids=[STLSolid("part", [STLFacet([0, 0, 1], [[-1, 0, 0], [0, 0, 0], [-1, 1, 0]], 7)])],
+    )
+    stream = BytesIO()
+
+    write_stl(stream, document)
+    stream.seek(0)
+    restored = read_stl(stream)
+
+    assert document.header == b"example"
+    assert restored.format == "binary"
+    assert restored.header.startswith(b"example")
+    assert restored.solids[0].facets[0].attribute == 7
+    assert restored.solids[0].facets[0].vertices[0][0] == -1

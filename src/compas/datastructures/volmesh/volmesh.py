@@ -1,16 +1,27 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+"""Half-face data structure for volumetric meshes.
 
+Notes
+-----
+Edge and face attribute data use direction-independent serialized keys through
+module-local helpers. These should be consolidated into a dedicated data-key
+generation API used consistently for storage, lookup, deletion, and
+serialization.
+"""
+
+from collections.abc import Mapping
 from itertools import product
 from random import sample
+from typing import Any
+from typing import Callable
+from typing import Iterable
+from typing import Iterator
+from typing import Literal
+from typing import Optional
+from typing import Sequence
+from typing import Union
+from typing import overload
 
-import compas
-
-if compas.PY2:
-    from collections import Mapping  # type: ignore
-else:
-    from collections.abc import Mapping
+from typing_extensions import Self
 
 from compas.datastructures import Mesh
 from compas.datastructures.attributes import CellAttributeView
@@ -18,12 +29,15 @@ from compas.datastructures.attributes import EdgeAttributeView
 from compas.datastructures.attributes import FaceAttributeView
 from compas.datastructures.attributes import VertexAttributeView
 from compas.datastructures.datastructure import Datastructure
-from compas.files import OBJ
+from compas.files import read_obj
+from compas.files import weld_obj_data
+from compas.files import write_obj
 from compas.geometry import Box
 from compas.geometry import Line
 from compas.geometry import Point
 from compas.geometry import Polygon
 from compas.geometry import Polyhedron
+from compas.geometry import Transformation
 from compas.geometry import Vector
 from compas.geometry import add_vectors
 from compas.geometry import bestfit_plane
@@ -44,15 +58,37 @@ from compas.itertools import linspace
 from compas.itertools import pairwise
 from compas.tolerance import TOL
 
+from .types import AttributeDict
+from .types import Cell
+from .types import CellFaces
+from .types import Edge
+from .types import Face
+from .types import FaceVertices
+from .types import Halfface
+from .types import PointCoordinates
+from .types import Vertex
 
-def uv_from_vertices(vertices):
+_MISSING = object()
+
+
+def uv_from_vertices(vertices: Sequence[Vertex]) -> Iterator[Edge]:
     for i in range(-1, len(vertices) - 1):
         yield vertices[i], vertices[i + 1]
 
 
-def uvw_from_vertices(vertices):
+def uvw_from_vertices(vertices: Sequence[Vertex]) -> Iterator[tuple[Vertex, Vertex, Vertex]]:
     for i in range(-2, len(vertices) - 2):
         yield vertices[i], vertices[i + 1], vertices[i + 2]
+
+
+def edge_data_key(edge: Edge) -> str:
+    """Construct a direction-independent key for edge attribute storage."""
+    return str(tuple(sorted(edge)))
+
+
+def face_data_key(vertices: Iterable[Vertex]) -> str:
+    """Construct a direction-independent key for face attribute storage."""
+    return str(tuple(sorted(vertices)))
 
 
 class VolMesh(Datastructure):
@@ -60,99 +96,35 @@ class VolMesh(Datastructure):
 
     Parameters
     ----------
-    default_vertex_attributes : dict, optional
+    default_vertex_attributes
         Default values for vertex attributes.
-    default_edge_attributes : dict, optional
+    default_edge_attributes
         Default values for edge attributes.
-    default_face_attributes : dict, optional
+    default_face_attributes
         Default values for face attributes.
-    default_cell_attributes : dict, optional
+    default_cell_attributes
         Default values for cell attributes.
-    name : str, optional
+    name
         The name of the volmesh.
-    **kwargs : dict, optional
+    **kwargs
         Additional keyword arguments, which are stored in the attributes dict.
 
     Attributes
     ----------
-    default_vertex_attributes : dict[str, Any]
+    default_vertex_attributes
         Default attributes of the vertices.
-    default_edge_attributes : dict[str, Any]
+    default_edge_attributes
         Default values for edge attributes.
-    default_face_attributes : dict[str, Any]
+    default_face_attributes
         Default values for face attributes.
-    default_cell_attributes : dict[str, Any]
+    default_cell_attributes
         Default values for cell attributes.
 
     """
 
-    DATASCHEMA = {
-        "type": "object",
-        "properties": {
-            "attributes": {"type": "object"},
-            "default_vertex_attributes": {"type": "object"},
-            "default_edge_attributes": {"type": "object"},
-            "default_face_attributes": {"type": "object"},
-            "default_cell_attributes": {"type": "object"},
-            "vertex": {
-                "type": "object",
-                "patternProperties": {"^[0-9]+$": {"type": "object"}},
-                "additionalProperties": False,
-            },
-            "cell": {
-                "type": "object",
-                "patternProperties": {
-                    "^[0-9]+$": {
-                        "type": "array",
-                        "minItems": 4,
-                        "items": {
-                            "type": "array",
-                            "minItems": 3,
-                            "items": {"type": "integer", "minimum": 0},
-                        },
-                    }
-                },
-                "additionalProperties": False,
-            },
-            "edge_data": {
-                "type": "object",
-                "patternProperties": {"^\\([0-9]+, [0-9]+\\)$": {"type": "object"}},
-                "additionalProperties": False,
-            },
-            "face_data": {
-                "type": "object",
-                "patternProperties": {"^\\([0-9]+(, [0-9]+){3, }\\)$": {"type": "object"}},
-                "additionalProperties": False,
-            },
-            "cell_data": {
-                "type": "object",
-                "patternProperties": {"^[0-9]+$": {"type": "object"}},
-                "additionalProperties": False,
-            },
-            "max_vertex": {"type": "number", "minimum": -1},
-            "max_face": {"type": "number", "minimum": -1},
-            "max_cell": {"type": "number", "minimum": -1},
-        },
-        "required": [
-            "attributes",
-            "default_vertex_attributes",
-            "default_edge_attributes",
-            "default_face_attributes",
-            "vertex",
-            "cell",
-            "edge_data",
-            "face_data",
-            "cell_data",
-            "max_vertex",
-            "max_face",
-            "max_cell",
-        ],
-    }
-
     @property
-    def __data__(self):
-        # type: () -> dict
-        _cell = {}
+    def __data__(self) -> dict[str, Any]:
+        _cell: dict[Cell, list[list[Vertex]]] = {}
         for c in self._cell:
             faces = []
             for u in sorted(self._cell[c]):
@@ -170,15 +142,14 @@ class VolMesh(Datastructure):
             "cell": {str(cell): faces for cell, faces in _cell.items()},
             "edge_data": self._edge_data,
             "face_data": self._face_data,
-            "cell_data": {str(cell): attr for cell, attr in self._cell_data},
+            "cell_data": {str(cell): attr for cell, attr in self._cell_data.items()},
             "max_vertex": self._max_vertex,
             "max_face": self._max_face,
             "max_cell": self._max_cell,
         }
 
     @classmethod
-    def __from_data__(cls, data):
-        # type: (dict) -> VolMesh
+    def __from_data__(cls, data: dict[str, Any]) -> Self:
         volmesh = cls(
             default_vertex_attributes=data.get("default_vertex_attributes"),
             default_edge_attributes=data.get("default_edge_attributes"),
@@ -211,19 +182,26 @@ class VolMesh(Datastructure):
 
         return volmesh
 
-    def __init__(self, default_vertex_attributes=None, default_edge_attributes=None, default_face_attributes=None, default_cell_attributes=None, name=None, **kwargs):  # fmt: skip
-        # type: (dict | None, dict | None, dict | None, dict | None, str | None, dict) -> None
-        super(VolMesh, self).__init__(kwargs, name=name)
+    def __init__(
+        self,
+        default_vertex_attributes: Optional[AttributeDict] = None,
+        default_edge_attributes: Optional[AttributeDict] = None,
+        default_face_attributes: Optional[AttributeDict] = None,
+        default_cell_attributes: Optional[AttributeDict] = None,
+        name: Optional[str] = None,
+        **kwargs: Any,
+    ) -> None:
+        super().__init__(kwargs, name=name)
         self._max_vertex = -1
         self._max_face = -1
         self._max_cell = -1
-        self._vertex = {}
-        self._halfface = {}
-        self._cell = {}
-        self._plane = {}
-        self._edge_data = {}
-        self._face_data = {}
-        self._cell_data = {}
+        self._vertex: dict[Vertex, AttributeDict] = {}
+        self._halfface: dict[Halfface, list[Vertex]] = {}
+        self._cell: dict[Cell, dict[Vertex, dict[Vertex, Halfface]]] = {}
+        self._plane: dict[Vertex, dict[Vertex, dict[Vertex, Optional[Cell]]]] = {}
+        self._edge_data: dict[str, AttributeDict] = {}
+        self._face_data: dict[str, AttributeDict] = {}
+        self._cell_data: dict[Cell, AttributeDict] = {}
         self.default_vertex_attributes = {"x": 0.0, "y": 0.0, "z": 0.0}
         self.default_edge_attributes = {}
         self.default_face_attributes = {}
@@ -237,8 +215,7 @@ class VolMesh(Datastructure):
         if default_cell_attributes:
             self.default_cell_attributes.update(default_cell_attributes)
 
-    def __str__(self):
-        # type: () -> str
+    def __str__(self) -> str:
         tpl = "<VolMesh with {} vertices, {} faces, {} cells, {} edges>"
         return tpl.format(
             self.number_of_vertices(),
@@ -260,42 +237,50 @@ class VolMesh(Datastructure):
     # --------------------------------------------------------------------------
 
     @classmethod
-    def from_meshgrid(cls, dx=10, dy=None, dz=None, nx=10, ny=None, nz=None):
-        # type: (float, float | None, float | None, int, int | None, int | None) -> VolMesh
+    def from_meshgrid(
+        cls,
+        dx: float = 10,
+        dy: Optional[float] = None,
+        dz: Optional[float] = None,
+        nx: int = 10,
+        ny: Optional[int] = None,
+        nz: Optional[int] = None,
+    ) -> Self:
         """Construct a volmesh from a 3D meshgrid.
 
         Parameters
         ----------
-        dx : float, optional
+        dx
             The size of the grid in the x direction.
-        dy : float, optional
+        dy
             The size of the grid in the y direction.
             Defaults to the value of `dx`.
-        dz : float, optional
+        dz
             The size of the grid in the z direction.
             Defaults to the value of `dx`.
-        nx : int, optional
+        nx
             The number of elements in the x direction.
-        ny : int, optional
+        ny
             The number of elements in the y direction.
             Defaults to the value of `nx`.
-        nz : int, optional
+        nz
             The number of elements in the z direction.
             Defaults to the value of `nx`.
 
         Returns
         -------
-        :class:`compas.datastructures.VolMesh`
+        VolMesh
+            The constructed volumetric mesh.
 
         See Also
         --------
-        :meth:`from_obj`, :meth:`from_vertices_and_cells`
+        from_obj, from_vertices_and_cells
 
         """
-        dy = dy or dx
-        dz = dz or dx
-        ny = ny or nx
-        nz = nz or nx
+        dy = dx if dy is None else dy
+        dz = dx if dz is None else dz
+        ny = nx if ny is None else ny
+        nz = nx if nz is None else nz
 
         vertices = [
             [x, y, z]
@@ -326,8 +311,7 @@ class VolMesh(Datastructure):
         return cls.from_vertices_and_cells(vertices, cells)
 
     @classmethod
-    def from_obj(cls, filepath, precision=None):
-        # type: (str, int | None) -> VolMesh
+    def from_obj(cls, filepath: Any, precision: Optional[int] = None) -> Self:
         """Construct a volmesh object from the data described in an OBJ file.
 
         Parameters
@@ -344,16 +328,16 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`to_obj`
-        :meth:`from_meshgrid`, :meth:`from_vertices_and_cells`
-        :class:`compas.files.OBJ`
+        to_obj
+        from_meshgrid, from_vertices_and_cells
+        read_obj
 
         """
-        obj = OBJ(filepath, precision)
-        vertices = obj.parser.vertices or []  # type: ignore
-        faces = obj.parser.faces or []  # type: ignore
-        groups = obj.parser.groups or {}  # type: ignore
-        objects = obj.parser.objects or {}  # type: ignore
+        data = weld_obj_data(read_obj(filepath), precision)
+        vertices = data.vertices
+        faces = data.faces
+        groups = data.groups
+        objects = data.objects
 
         if groups:
             cells = []
@@ -382,8 +366,11 @@ class VolMesh(Datastructure):
         return cls.from_vertices_and_cells(vertices, cell)
 
     @classmethod
-    def from_vertices_and_cells(cls, vertices, cells):
-        # type: (list[list[float]] | dict[int, list[float]], list[list[list[int]]]) -> VolMesh
+    def from_vertices_and_cells(
+        cls,
+        vertices: Union[Sequence[PointCoordinates], Mapping[Vertex, PointCoordinates]],
+        cells: Sequence[CellFaces],
+    ) -> Self:
         """Construct a volmesh object from vertices and cells.
 
         Parameters
@@ -400,26 +387,25 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`to_vertices_and_cells`
-        :meth:`from_obj`, :meth:`from_meshgrid`
+        to_vertices_and_cells
+        from_obj, from_meshgrid
 
         """
         volmesh = cls()
 
         if isinstance(vertices, Mapping):
-            for key, xyz in vertices.items():  # type: ignore
+            for key, xyz in vertices.items():
                 volmesh.add_vertex(key=key, attr_dict=dict(zip(("x", "y", "z"), xyz)))
         else:
-            for x, y, z in iter(vertices):  # type: ignore
-                volmesh.add_vertex(x=x, y=y, z=z)  # type: ignore
+            for x, y, z in vertices:
+                volmesh.add_vertex(x=x, y=y, z=z)
 
         for cell in cells:
             volmesh.add_cell(cell)
         return volmesh
 
     @classmethod
-    def from_meshes(cls, meshes):
-        # type: (list[Mesh]) -> VolMesh
+    def from_meshes(cls, meshes: Iterable[Mesh]) -> Self:
         """Construct a volmesh from a list of faces.
 
         Parameters
@@ -462,8 +448,7 @@ class VolMesh(Datastructure):
         return cls.from_vertices_and_cells(vertices, cells)
 
     @classmethod
-    def from_polyhedrons(cls, polyhedrons):
-        # type: (list[Polyhedron]) -> VolMesh
+    def from_polyhedrons(cls, polyhedrons: Iterable[Polyhedron]) -> Self:
         """Construct a VolMesh from a list of polyhedrons.
 
         Parameters
@@ -502,8 +487,7 @@ class VolMesh(Datastructure):
     # Conversions
     # --------------------------------------------------------------------------
 
-    def to_obj(self, filepath, precision=None, **kwargs):
-        # type: (str, int | None, dict) -> None
+    def to_obj(self, filepath: Any, precision: Optional[int] = None, **kwargs: Any) -> None:
         """Write the volmesh to an OBJ file.
 
         Parameters
@@ -523,7 +507,7 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`from_obj`
+        from_obj
 
         Warnings
         --------
@@ -531,12 +515,10 @@ class VolMesh(Datastructure):
         the faces to the file.
 
         """
-        meshes = [self.cell_to_mesh(cell) for cell in self.cells()]  # type: ignore
-        obj = OBJ(filepath, precision=precision)
-        obj.write(meshes, **kwargs)  # type: ignore
+        meshes = [self.cell_to_mesh(cell) for cell in self.cells()]
+        write_obj(filepath, meshes, precision=precision, **kwargs)
 
-    def to_vertices_and_cells(self):
-        # type: () -> tuple[list[list[float]], list[list[list[int]]]]
+    def to_vertices_and_cells(self) -> tuple[list[list[float]], list[list[list[Vertex]]]]:
         """Return the vertices and cells of a volmesh.
 
         Returns
@@ -548,7 +530,7 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`from_vertices_and_cells`
+        from_vertices_and_cells
 
         """
         vertex_index = self.vertex_index()
@@ -559,7 +541,7 @@ class VolMesh(Datastructure):
             cells.append(faces)
         return vertices, cells
 
-    def to_points(self):
+    def to_points(self) -> list[list[float]]:
         """Convert the volmesh to a collection of points.
 
         Returns
@@ -570,8 +552,7 @@ class VolMesh(Datastructure):
         """
         return [self.vertex_coordinates(vertex) for vertex in self.vertices()]
 
-    def cell_to_mesh(self, cell):
-        # type: (int) -> Mesh
+    def cell_to_mesh(self, cell: Cell) -> Mesh:
         """Construct a mesh object from from a cell of a volmesh.
 
         Parameters
@@ -586,14 +567,13 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`cell_to_vertices_and_faces`
+        cell_to_vertices_and_faces
 
         """
         vertices, faces = self.cell_to_vertices_and_faces(cell)
         return Mesh.from_vertices_and_faces(vertices, faces)
 
-    def cell_to_vertices_and_faces(self, cell):
-        # type: (int) -> tuple[list[list[float]], list[list[int]]]
+    def cell_to_vertices_and_faces(self, cell: Cell) -> tuple[list[list[float]], list[list[Vertex]]]:
         """Return the vertices and faces of a cell.
 
         Parameters
@@ -610,7 +590,7 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`cell_to_mesh`
+        cell_to_mesh
 
         """
         vertices = self.cell_vertices(cell)
@@ -624,8 +604,7 @@ class VolMesh(Datastructure):
     # Helpers
     # --------------------------------------------------------------------------
 
-    def clear(self):
-        # type: () -> None
+    def clear(self) -> None:
         """Clear all the volmesh data.
 
         Returns
@@ -651,8 +630,7 @@ class VolMesh(Datastructure):
         self._max_face = -1
         self._max_cell = -1
 
-    def vertex_sample(self, size=1):
-        # type: (int) -> list[int]
+    def vertex_sample(self, size: int = 1) -> list[Vertex]:
         """Get the identifiers of a set of random vertices.
 
         Parameters
@@ -667,13 +645,12 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`edge_sample`, :meth:`face_sample`, :meth:`cell_sample`
+        edge_sample, face_sample, cell_sample
 
         """
-        return sample(list(self.vertices()), size)  # type: ignore
+        return sample(list(self.vertices()), size)
 
-    def edge_sample(self, size=1):
-        # type: (int) -> list[tuple[int, int]]
+    def edge_sample(self, size: int = 1) -> list[Edge]:
         """Get the identifiers of a set of random edges.
 
         Parameters
@@ -688,13 +665,12 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`vertex_sample`, :meth:`face_sample`, :meth:`cell_sample`
+        vertex_sample, face_sample, cell_sample
 
         """
-        return sample(list(self.edges()), size)  # type: ignore
+        return sample(list(self.edges()), size)
 
-    def face_sample(self, size=1):
-        # type: (int) -> list[int]
+    def face_sample(self, size: int = 1) -> list[Face]:
         """Get the identifiers of a set of random faces.
 
         Parameters
@@ -709,13 +685,12 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`vertex_sample`, :meth:`edge_sample`, :meth:`cell_sample`
+        vertex_sample, edge_sample, cell_sample
 
         """
-        return sample(list(self.faces()), size)  # type: ignore
+        return sample(list(self.faces()), size)
 
-    def cell_sample(self, size=1):
-        # type: (int) -> list[int]
+    def cell_sample(self, size: int = 1) -> list[Cell]:
         """Get the identifiers of a set of random cells.
 
         Parameters
@@ -730,13 +705,12 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`vertex_sample`, :meth:`edge_sample`, :meth:`face_sample`
+        vertex_sample, edge_sample, face_sample
 
         """
-        return sample(list(self.cells()), size)  # type: ignore
+        return sample(list(self.cells()), size)
 
-    def vertex_index(self):
-        # type: () -> dict[int, int]
+    def vertex_index(self) -> dict[Vertex, int]:
         """Returns a dictionary that maps vertex dictionary keys to the
         corresponding index in a vertex list or array.
 
@@ -747,13 +721,12 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`index_vertex`
+        index_vertex
 
         """
-        return {key: index for index, key in enumerate(self.vertices())}  # type: ignore
+        return {key: index for index, key in enumerate(self.vertices())}
 
-    def index_vertex(self):
-        # type: () -> dict[int, int]
+    def index_vertex(self) -> dict[int, Vertex]:
         """Returns a dictionary that maps the indices of a vertex list to
         keys in the vertex dictionary.
 
@@ -764,13 +737,12 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`vertex_index`
+        vertex_index
 
         """
-        return dict(enumerate(self.vertices()))  # type: ignore
+        return dict(enumerate(self.vertices()))
 
-    def vertex_gkey(self, precision=None):
-        # type: (int | None) -> dict[int, str]
+    def vertex_gkey(self, precision: Optional[int] = None) -> dict[Vertex, str]:
         """Returns a dictionary that maps vertex dictionary keys to the corresponding
         *geometric key* up to a certain precision.
 
@@ -787,15 +759,14 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`gkey_vertex`
+        gkey_vertex
 
         """
         gkey = TOL.geometric_key
         xyz = self.vertex_coordinates
-        return {vertex: gkey(xyz(vertex), precision) for vertex in self.vertices()}  # type: ignore
+        return {vertex: gkey(xyz(vertex), precision) for vertex in self.vertices()}
 
-    def gkey_vertex(self, precision=None):
-        # type: (int | None) -> dict[str, int]
+    def gkey_vertex(self, precision: Optional[int] = None) -> dict[str, Vertex]:
         """Returns a dictionary that maps *geometric keys* of a certain precision
         to the keys of the corresponding vertices.
 
@@ -812,28 +783,32 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`vertex_gkey`
+        vertex_gkey
 
         """
         gkey = TOL.geometric_key
         xyz = self.vertex_coordinates
-        return {gkey(xyz(vertex), precision): vertex for vertex in self.vertices()}  # type: ignore
+        return {gkey(xyz(vertex), precision): vertex for vertex in self.vertices()}
 
     # --------------------------------------------------------------------------
     # Builders & Modifiers
     # --------------------------------------------------------------------------
 
-    def add_vertex(self, key=None, attr_dict=None, **kwattr):
-        # type: (int | None, dict | None, dict) -> int
+    def add_vertex(
+        self,
+        key: Optional[Vertex] = None,
+        attr_dict: Optional[Mapping[str, Any]] = None,
+        **kwattr: Any,
+    ) -> Vertex:
         """Add a vertex to the volmesh object.
 
         Parameters
         ----------
-        key : int, optional
+        key
             The vertex identifier.
-        attr_dict : dict[str, Any], optional
+        attr_dict
             dictionary of vertex attributes.
-        **kwattr : dict[str, Any], optional
+        **kwattr
             A dictionary of additional attributes compiled of remaining named arguments.
 
         Returns
@@ -843,7 +818,7 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`add_halfface`, :meth:`add_cell`
+        add_halfface, add_cell
 
         Notes
         -----
@@ -863,25 +838,29 @@ class VolMesh(Datastructure):
         if key not in self._vertex:
             self._vertex[key] = {}
             self._plane[key] = {}
-        attr = attr_dict or {}
+        attr = dict(attr_dict or {})
         attr.update(kwattr)
         self._vertex[key].update(attr)
         return key
 
-    def add_halfface(self, vertices, fkey=None, attr_dict=None, **kwattr):
-        # type: (list[int], int | None, dict | None, dict) -> int
+    def add_halfface(
+        self,
+        vertices: FaceVertices,
+        fkey: Optional[Halfface] = None,
+        attr_dict: Optional[Mapping[str, Any]] = None,
+        **kwattr: Any,
+    ) -> Halfface:
         """Add a face to the volmesh object.
 
         Parameters
         ----------
-        vertices : list[int]
+        vertices
             A list of ordered vertex keys representing the face.
-            For every vertex that does not yet exist, a new vertex is created.
-        fkey : int, optional
+        fkey
             The face identifier.
-        attr_dict : dict[str, Any], optional
+        attr_dict
             dictionary of halfface attributes.
-        **kwattr : dict[str, Any], optional
+        **kwattr
             A dictionary of additional attributes compiled of remaining named arguments.
 
         Returns
@@ -892,11 +871,12 @@ class VolMesh(Datastructure):
         Raises
         ------
         ValueError
-            If the number of vertices is less than 3.
+            If the number of vertices is less than 3, or if a vertex is not part
+            of the volmesh.
 
         See Also
         --------
-        :meth:`add_vertex`, :meth:`add_cell`
+        add_vertex, add_cell
 
         Notes
         -----
@@ -915,13 +895,17 @@ class VolMesh(Datastructure):
             vertices = vertices[:-1]
         vertices = [int(key) for key in vertices]
 
+        missing = [vertex for vertex in vertices if vertex not in self._vertex]
+        if missing:
+            raise ValueError(f"The following vertices are not part of the volmesh: {missing}")
+
         if fkey is None:
             fkey = self._max_face = self._max_face + 1
         fkey = int(fkey)
         if fkey > self._max_face:
             self._max_face = fkey
 
-        attr = attr_dict or {}
+        attr = dict(attr_dict or {})
         attr.update(kwattr)
         self._halfface[fkey] = vertices
 
@@ -939,18 +923,24 @@ class VolMesh(Datastructure):
 
         return fkey
 
-    def add_cell(self, faces, ckey=None, attr_dict=None, **kwattr):
+    def add_cell(
+        self,
+        faces: CellFaces,
+        ckey: Optional[Cell] = None,
+        attr_dict: Optional[Mapping[str, Any]] = None,
+        **kwattr: Any,
+    ) -> Cell:
         """Add a cell to the volmesh object.
 
         Parameters
         ----------
-        faces : list[list[int]]
+        faces
             The faces of the cell defined as lists of vertices.
-        ckey : int, optional
+        ckey
             The cell identifier.
-        attr_dict : dict[str, Any], optional
+        attr_dict
             A dictionary of cell attributes.
-        **kwattr : dict[str, Any], optional
+        **kwattr
             A dictionary of additional attributes compiled of remaining named arguments.
 
         Returns
@@ -983,7 +973,7 @@ class VolMesh(Datastructure):
         if ckey > self._max_cell:
             self._max_cell = ckey
 
-        attr = attr_dict or {}
+        attr = dict(attr_dict or {})
         attr.update(kwattr)
         self._cell[ckey] = {}
 
@@ -1002,7 +992,7 @@ class VolMesh(Datastructure):
 
         return ckey
 
-    def delete_vertex(self, vertex):
+    def delete_vertex(self, vertex: Vertex) -> None:
         """Delete a vertex from the volmesh and everything that is attached to it.
 
         Parameters
@@ -1016,13 +1006,15 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`delete_halfface`, :meth:`delete_cell`
+        delete_halfface, delete_cell
 
         """
         for cell in self.vertex_cells(vertex):
             self.delete_cell(cell)
+        del self._vertex[vertex]
+        del self._plane[vertex]
 
-    def delete_cell(self, cell):
+    def delete_cell(self, cell: Cell) -> None:
         """Delete a cell from the volmesh.
 
         Parameters
@@ -1041,7 +1033,7 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`delete_vertex`, :meth:`delete_halfface`
+        delete_vertex, delete_halfface
 
         Notes
         -----
@@ -1054,17 +1046,17 @@ class VolMesh(Datastructure):
         # remove edge data
         for face in cell_faces:
             for edge in self.halfface_halfedges(face):
-                # this should also use a key map
-                u, v = edge
-                if (u, v) in self._edge_data:
-                    del self._edge_data[u, v]
-                if (v, u) in self._edge_data:
-                    del self._edge_data[v, u]
+                if any(incident != cell for incident in self.edge_cells(edge)):
+                    continue
+                key = edge_data_key(edge)
+                if key in self._edge_data:
+                    del self._edge_data[key]
 
         # remove face data
         for face in cell_faces:
-            vertices = self.halfface_vertices(face)
-            key = "-".join(map(str, sorted(vertices)))
+            if self.halfface_opposite_cell(face) is not None:
+                continue
+            key = face_data_key(self.halfface_vertices(face))
             if key in self._face_data:
                 del self._face_data[key]
 
@@ -1090,7 +1082,7 @@ class VolMesh(Datastructure):
         # remove cell
         del self._cell[cell]
 
-    def remove_unused_vertices(self):
+    def remove_unused_vertices(self) -> None:
         """Remove all unused vertices from the volmesh object.
 
         Returns
@@ -1110,7 +1102,7 @@ class VolMesh(Datastructure):
     # Volmesh Geometry
     # --------------------------------------------------------------------------
 
-    def centroid(self):
+    def centroid(self) -> Point:
         """Compute the centroid of the volmesh.
 
         Returns
@@ -1121,7 +1113,7 @@ class VolMesh(Datastructure):
         """
         return Point(*centroid_points([self.vertex_coordinates(vertex) for vertex in self.vertices()]))
 
-    def aabb(self):
+    def aabb(self) -> Box:
         """Calculate the axis aligned bounding box of the mesh.
 
         Returns
@@ -1132,7 +1124,7 @@ class VolMesh(Datastructure):
         xyz = self.vertices_attributes("xyz")
         return Box.from_bounding_box(bounding_box(xyz))
 
-    def obb(self):
+    def obb(self) -> Box:
         """Calculate the oriented bounding box of the datastructure.
 
         Returns
@@ -1147,7 +1139,7 @@ class VolMesh(Datastructure):
     # VolMesh Topology
     # --------------------------------------------------------------------------
 
-    def number_of_vertices(self):
+    def number_of_vertices(self) -> int:
         """Count the number of vertices in the volmesh.
 
         Returns
@@ -1157,12 +1149,12 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`number_of_edges`, :meth:`number_of_faces`, :meth:`number_of_cells`
+        number_of_edges, number_of_faces, number_of_cells
 
         """
         return len(list(self.vertices()))
 
-    def number_of_edges(self):
+    def number_of_edges(self) -> int:
         """Count the number of edges in the volmesh.
 
         Returns
@@ -1172,12 +1164,12 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`number_of_vertices`, :meth:`number_of_faces`, :meth:`number_of_cells`
+        number_of_vertices, number_of_faces, number_of_cells
 
         """
         return len(list(self.edges()))
 
-    def number_of_faces(self):
+    def number_of_faces(self) -> int:
         """Count the number of faces in the volmesh.
 
         Returns
@@ -1187,12 +1179,12 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`number_of_vertices`, :meth:`number_of_edges`, :meth:`number_of_cells`
+        number_of_vertices, number_of_edges, number_of_cells
 
         """
         return len(list(self.faces()))
 
-    def number_of_cells(self):
+    def number_of_cells(self) -> int:
         """Count the number of faces in the volmesh.
 
         Returns
@@ -1202,12 +1194,12 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`number_of_vertices`, :meth:`number_of_edges`, :meth:`number_of_faces`
+        number_of_vertices, number_of_edges, number_of_faces
 
         """
         return len(list(self.cells()))
 
-    def is_valid(self):
+    def is_valid(self) -> bool:
         """Verify that the volmesh is valid.
 
         Returns
@@ -1216,6 +1208,11 @@ class VolMesh(Datastructure):
             True if the volmesh is valid.
             False otherwise.
 
+        Raises
+        ------
+        NotImplementedError
+            This validation method is not implemented yet.
+
         """
         raise NotImplementedError
 
@@ -1223,23 +1220,33 @@ class VolMesh(Datastructure):
     # Vertex Accessors
     # --------------------------------------------------------------------------
 
-    def vertices(self, data=False):
+    @overload
+    def vertices(self, data: Literal[False] = False) -> Iterator[Vertex]: ...
+
+    @overload
+    def vertices(self, data: Literal[True]) -> Iterator[tuple[Vertex, VertexAttributeView]]: ...
+
+    @overload
+    def vertices(self, data: bool) -> Iterator[Union[Vertex, tuple[Vertex, VertexAttributeView]]]: ...
+
+    def vertices(self, data: bool = False) -> Iterator[Any]:
         """Iterate over the vertices of the volmesh.
 
         Parameters
         ----------
-        data : bool, optional
+        data
             If True, yield the vertex attributes in addition to the vertex identifiers.
 
         Yields
         ------
-        int | tuple[int, dict[str, Any]]
-            If `data` is False, the next vertex identifier.
-            If `data` is True, the next vertex as a (vertex, attr) a tuple.
+        int
+            The vertex identifier if `data` is `False`.
+        tuple[int, VertexAttributeView]
+            The vertex identifier and its attributes if `data` is `True`.
 
         See Also
         --------
-        :meth:`edges`, :meth:`faces`, :meth:`cells`
+        edges, faces, cells
 
         """
         for vertex in self._vertex:
@@ -1248,7 +1255,12 @@ class VolMesh(Datastructure):
             else:
                 yield vertex, self.vertex_attributes(vertex)
 
-    def vertices_where(self, conditions=None, data=False, **kwargs):
+    def vertices_where(
+        self,
+        conditions: Optional[Mapping[str, Any]] = None,
+        data: bool = False,
+        **kwargs: Any,
+    ) -> Iterator[Any]:
         """Get vertices for which a certain condition or set of conditions is true.
 
         Parameters
@@ -1270,11 +1282,11 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`vertices_where_predicate`
-        :meth:`edges_where`, :meth:`faces_where`, :meth:`cells_where`
+        vertices_where_predicate
+        edges_where, faces_where, cells_where
 
         """
-        conditions = conditions or {}
+        conditions = dict(conditions or {})
         conditions.update(kwargs)
 
         for key, attr in self.vertices(True):
@@ -1331,7 +1343,11 @@ class VolMesh(Datastructure):
                 else:
                     yield key
 
-    def vertices_where_predicate(self, predicate, data=False):
+    def vertices_where_predicate(
+        self,
+        predicate: Callable[[Vertex, VertexAttributeView], bool],
+        data: bool = False,
+    ) -> Iterator[Any]:
         """Get vertices for which a certain condition or set of conditions is true using a lambda function.
 
         Parameters
@@ -1350,8 +1366,8 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`vertices_where`
-        :meth:`edges_where_predicate`, :meth:`faces_where_predicate`, :meth:`cells_where_predicate`
+        vertices_where
+        edges_where_predicate, faces_where_predicate, cells_where_predicate
 
         """
         for key, attr in self.vertices(True):
@@ -1365,7 +1381,11 @@ class VolMesh(Datastructure):
     # Vertex Attributes
     # --------------------------------------------------------------------------
 
-    def update_default_vertex_attributes(self, attr_dict=None, **kwattr):
+    def update_default_vertex_attributes(
+        self,
+        attr_dict: Optional[Mapping[str, Any]] = None,
+        **kwattr: Any,
+    ) -> None:
         """Update the default vertex attributes.
 
         Parameters
@@ -1381,19 +1401,24 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`update_default_edge_attributes`, :meth:`update_default_face_attributes`, :meth:`update_default_cell_attributes`
+        update_default_edge_attributes, update_default_face_attributes, update_default_cell_attributes
 
         Notes
         -----
         Named arguments overwrite correpsonding name-value pairs in the attribute dictionary.
 
         """
-        if not attr_dict:
-            attr_dict = {}
-        attr_dict.update(kwattr)
-        self.default_vertex_attributes.update(attr_dict)
+        attributes = dict(attr_dict or {})
+        attributes.update(kwattr)
+        self.default_vertex_attributes.update(attributes)
 
-    def vertex_attribute(self, vertex, name, value=None):
+    @overload
+    def vertex_attribute(self, vertex: Vertex, name: str) -> Any: ...
+
+    @overload
+    def vertex_attribute(self, vertex: Vertex, name: str, value: Any) -> None: ...
+
+    def vertex_attribute(self, vertex: Vertex, name: str, value: Any = _MISSING) -> Any:
         """Get or set an attribute of a vertex.
 
         Parameters
@@ -1407,9 +1432,10 @@ class VolMesh(Datastructure):
 
         Returns
         -------
-        object | None
-            The value of the attribute,
-            or None when the function is used as a "setter".
+        Any
+            The attribute value when `value` is not provided.
+        None
+            When `value` is provided.
 
         Raises
         ------
@@ -1418,14 +1444,14 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`unset_vertex_attribute`
-        :meth:`vertex_attributes`, :meth:`vertices_attribute`, :meth:`vertices_attributes`
-        :meth:`edge_attribute`, :meth:`face_attribute`, :meth:`cell_attribute`
+        unset_vertex_attribute
+        vertex_attributes, vertices_attribute, vertices_attributes
+        edge_attribute, face_attribute, cell_attribute
 
         """
         if vertex not in self._vertex:
             raise KeyError(vertex)
-        if value is not None:
+        if value is not _MISSING:
             self._vertex[vertex][name] = value
             return None
         if name in self._vertex[vertex]:
@@ -1434,7 +1460,7 @@ class VolMesh(Datastructure):
             if name in self.default_vertex_attributes:
                 return self.default_vertex_attributes[name]
 
-    def unset_vertex_attribute(self, vertex, name):
+    def unset_vertex_attribute(self, vertex: Vertex, name: str) -> None:
         """Unset the attribute of a vertex.
 
         Parameters
@@ -1455,7 +1481,7 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`vertex_attribute`
+        vertex_attribute
 
         Notes
         -----
@@ -1466,7 +1492,12 @@ class VolMesh(Datastructure):
         if name in self._vertex[vertex]:
             del self._vertex[vertex][name]
 
-    def vertex_attributes(self, vertex, names=None, values=None):
+    def vertex_attributes(
+        self,
+        vertex: Vertex,
+        names: Optional[Sequence[str]] = None,
+        values: Optional[Sequence[Any]] = None,
+    ) -> Any:
         """Get or set multiple attributes of a vertex.
 
         Parameters
@@ -1494,8 +1525,8 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`vertex_attribute`, :meth:`vertices_attribute`, :meth:`vertices_attributes`
-        :meth:`edge_attributes`, :meth:`face_attributes`, :meth:`cell_attributes`
+        vertex_attribute, vertices_attribute, vertices_attributes
+        edge_attributes, face_attributes, cell_attributes
 
         """
         if vertex not in self._vertex:
@@ -1519,7 +1550,28 @@ class VolMesh(Datastructure):
                 values.append(None)
         return values
 
-    def vertices_attribute(self, name, value=None, keys=None):
+    @overload
+    def vertices_attribute(
+        self,
+        name: str,
+        *,
+        keys: Optional[Iterable[Vertex]] = None,
+    ) -> list[Any]: ...
+
+    @overload
+    def vertices_attribute(
+        self,
+        name: str,
+        value: Any,
+        keys: Optional[Iterable[Vertex]] = None,
+    ) -> None: ...
+
+    def vertices_attribute(
+        self,
+        name: str,
+        value: Any = _MISSING,
+        keys: Optional[Iterable[Vertex]] = None,
+    ) -> Optional[list[Any]]:
         """Get or set an attribute of multiple vertices.
 
         Parameters
@@ -1528,15 +1580,15 @@ class VolMesh(Datastructure):
             The name of the attribute.
         value : object, optional
             The value of the attribute.
-            Default is None.
         keys : list[int], optional
             A list of vertex identifiers.
 
         Returns
         -------
-        list[Any] | None
-            The value of the attribute for each vertex,
-            or None if the function is used as a "setter".
+        list[Any]
+            The attribute values when `value` is not provided.
+        None
+            When `value` is provided.
 
         Raises
         ------
@@ -1545,18 +1597,23 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`vertex_attribute`, :meth:`vertex_attributes`, :meth:`vertices_attributes`
-        :meth:`edges_attribute`, :meth:`faces_attribute`, :meth:`cells_attribute`
+        vertex_attribute, vertex_attributes, vertices_attributes
+        edges_attribute, faces_attribute, cells_attribute
 
         """
         vertices = keys or self.vertices()
-        if value is not None:
+        if value is not _MISSING:
             for vertex in vertices:
                 self.vertex_attribute(vertex, name, value)
             return
         return [self.vertex_attribute(vertex, name) for vertex in vertices]
 
-    def vertices_attributes(self, names=None, values=None, keys=None):
+    def vertices_attributes(
+        self,
+        names: Optional[Sequence[str]] = None,
+        values: Optional[Sequence[Any]] = None,
+        keys: Optional[Iterable[Vertex]] = None,
+    ) -> Any:
         """Get or set multiple attributes of multiple vertices.
 
         Parameters
@@ -1586,12 +1643,12 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`vertex_attribute`, :meth:`vertex_attributes`, :meth:`vertices_attribute`
-        :meth:`edges_attributes`, :meth:`faces_attributes`, :meth:`cells_attributes`
+        vertex_attribute, vertex_attributes, vertices_attribute
+        edges_attributes, faces_attributes, cells_attributes
 
         """
         vertices = keys or self.vertices()
-        if values:
+        if values is not None:
             for vertex in vertices:
                 self.vertex_attributes(vertex, names, values)
             return
@@ -1601,7 +1658,7 @@ class VolMesh(Datastructure):
     # Vertex Topology
     # --------------------------------------------------------------------------
 
-    def has_vertex(self, vertex):
+    def has_vertex(self, vertex: Vertex) -> bool:
         """Verify that a vertex is in the volmesh.
 
         Parameters
@@ -1617,12 +1674,12 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`has_edge`, :meth:`has_face`, :meth:`has_cell`
+        has_edge, has_face, has_cell
 
         """
         return vertex in self._vertex
 
-    def vertex_neighbors(self, vertex):
+    def vertex_neighbors(self, vertex: Vertex) -> list[Vertex]:
         """Return the vertex neighbors of a vertex.
 
         Parameters
@@ -1637,14 +1694,14 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`vertex_degree`, :meth:`vertex_min_degree`, :meth:`vertex_max_degree`
-        :meth:`vertex_faces`, :meth:`vertex_halffaces`, :meth:`vertex_cells`
-        :meth:`vertex_neighborhood`
+        vertex_degree, vertex_min_degree, vertex_max_degree
+        vertex_faces, vertex_halffaces, vertex_cells
+        vertex_neighborhood
 
         """
-        return self._plane[vertex].keys()
+        return list(self._plane[vertex])
 
-    def vertex_neighborhood(self, vertex, ring=1):
+    def vertex_neighborhood(self, vertex: Vertex, ring: int = 1) -> list[Vertex]:
         """Return the vertices in the neighborhood of a vertex.
 
         Parameters
@@ -1659,15 +1716,23 @@ class VolMesh(Datastructure):
         list[int]
             The vertices in the neighborhood.
 
+        Raises
+        ------
+        ValueError
+            If the ring is smaller than 1.
+
         See Also
         --------
-        :meth:`vertex_neighbors`
+        vertex_neighbors
 
         Notes
         -----
         The vertices in the neighborhood are unordered.
 
         """
+        if ring < 1:
+            raise ValueError("The neighborhood ring should be greater than or equal to 1.")
+
         nbrs = set(self.vertex_neighbors(vertex))
         i = 1
         while True:
@@ -1680,7 +1745,7 @@ class VolMesh(Datastructure):
             i += 1
         return list(nbrs - set([vertex]))
 
-    def vertex_degree(self, vertex):
+    def vertex_degree(self, vertex: Vertex) -> int:
         """Count the neighbors of a vertex.
 
         Parameters
@@ -1695,12 +1760,12 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`vertex_neighbors`, :meth:`vertex_min_degree`, :meth:`vertex_max_degree`
+        vertex_neighbors, vertex_min_degree, vertex_max_degree
 
         """
         return len(self.vertex_neighbors(vertex))
 
-    def vertex_min_degree(self):
+    def vertex_min_degree(self) -> int:
         """Compute the minimum degree of all vertices.
 
         Returns
@@ -1710,14 +1775,14 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`vertex_degree`, :meth:`vertex_max_degree`
+        vertex_degree, vertex_max_degree
 
         """
         if not self._vertex:
             return 0
         return min(self.vertex_degree(vertex) for vertex in self.vertices())
 
-    def vertex_max_degree(self):
+    def vertex_max_degree(self) -> int:
         """Compute the maximum degree of all vertices.
 
         Returns
@@ -1727,14 +1792,14 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`vertex_degree`, :meth:`vertex_min_degree`
+        vertex_degree, vertex_min_degree
 
         """
         if not self._vertex:
             return 0
         return max(self.vertex_degree(vertex) for vertex in self.vertices())
 
-    def vertex_edges(self, vertex):
+    def vertex_edges(self, vertex: Vertex) -> list[Edge]:
         """Compute the edges connected to a given vertex.
 
         Parameters
@@ -1750,7 +1815,7 @@ class VolMesh(Datastructure):
         """
         return [(vertex, nbr) for nbr in sorted(self.vertex_neighbors(vertex))]
 
-    def vertex_halffaces(self, vertex):
+    def vertex_halffaces(self, vertex: Vertex) -> list[Halfface]:
         """Return all halffaces connected to a vertex.
 
         Parameters
@@ -1765,7 +1830,7 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`vertex_neighbors`, :meth:`vertex_faces`, :meth:`vertex_cells`
+        vertex_neighbors, vertex_faces, vertex_cells
 
         """
         u = vertex
@@ -1778,7 +1843,7 @@ class VolMesh(Datastructure):
                     faces.append(face)
         return faces
 
-    def vertex_cells(self, vertex):
+    def vertex_cells(self, vertex: Vertex) -> list[Cell]:
         """Return all cells connected to a vertex.
 
         Parameters
@@ -1793,7 +1858,7 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`vertex_neighbors`, :meth:`vertex_faces`, :meth:`vertex_halffaces`
+        vertex_neighbors, vertex_faces, vertex_halffaces
 
         """
         u = vertex
@@ -1806,7 +1871,7 @@ class VolMesh(Datastructure):
                         cells.append(cell)
         return cells
 
-    def is_vertex_on_boundary(self, vertex):
+    def is_vertex_on_boundary(self, vertex: Vertex) -> bool:
         """Verify that a vertex is on a boundary.
 
         Parameters
@@ -1822,7 +1887,7 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`is_edge_on_boundary`, :meth:`is_face_on_boundary`, :meth:`is_cell_on_boundary`
+        is_edge_on_boundary, is_face_on_boundary, is_cell_on_boundary
 
         """
         halffaces = self.vertex_halffaces(vertex)
@@ -1835,7 +1900,7 @@ class VolMesh(Datastructure):
     # Vertex Geometry
     # --------------------------------------------------------------------------
 
-    def vertex_coordinates(self, vertex, axes="xyz"):
+    def vertex_coordinates(self, vertex: Vertex, axes: str = "xyz") -> list[float]:
         """Return the coordinates of a vertex.
 
         Parameters
@@ -1853,12 +1918,12 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`vertex_point`, :meth:`vertex_laplacian`, :meth:`vertex_neighborhood_centroid`
+        vertex_point, vertex_laplacian, vertex_neighborhood_centroid
 
         """
         return [self._vertex[vertex][axis] for axis in axes]
 
-    def vertex_point(self, vertex):
+    def vertex_point(self, vertex: Vertex) -> Point:
         """Return the point representation of a vertex.
 
         Parameters
@@ -1873,12 +1938,12 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`vertex_laplacian`, :meth:`vertex_neighborhood_centroid`
+        vertex_laplacian, vertex_neighborhood_centroid
 
         """
         return Point(*self.vertex_coordinates(vertex))
 
-    def vertex_laplacian(self, vertex):
+    def vertex_laplacian(self, vertex: Vertex) -> Vector:
         """Compute the vector from a vertex to the centroid of its neighbors.
 
         Parameters
@@ -1893,14 +1958,14 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`vertex_point`, :meth:`vertex_neighborhood_centroid`
+        vertex_point, vertex_neighborhood_centroid
 
         """
         c = self.vertex_neighborhood_centroid(vertex)
         p = self.vertex_coordinates(vertex)
         return Vector(*subtract_vectors(c, p))
 
-    def vertex_neighborhood_centroid(self, vertex):
+    def vertex_neighborhood_centroid(self, vertex: Vertex) -> Point:
         """Compute the point at the centroid of the neighbors of a vertex.
 
         Parameters
@@ -1915,7 +1980,7 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`vertex_point`, :meth:`vertex_laplacian`
+        vertex_point, vertex_laplacian
 
         """
         return Point(*centroid_points([self.vertex_coordinates(nbr) for nbr in self.vertex_neighbors(vertex)]))
@@ -1924,7 +1989,16 @@ class VolMesh(Datastructure):
     # Edge Accessors
     # --------------------------------------------------------------------------
 
-    def edges(self, data=False):
+    @overload
+    def edges(self, data: Literal[False] = False) -> Iterator[Edge]: ...
+
+    @overload
+    def edges(self, data: Literal[True]) -> Iterator[tuple[Edge, EdgeAttributeView]]: ...
+
+    @overload
+    def edges(self, data: bool) -> Iterator[Union[Edge, tuple[Edge, EdgeAttributeView]]]: ...
+
+    def edges(self, data: bool = False) -> Iterator[Any]:
         """Iterate over the edges of the volmesh.
 
         Parameters
@@ -1934,13 +2008,14 @@ class VolMesh(Datastructure):
 
         Yields
         ------
-        tuple[int, int] | tuple[tuple[int, int], dict[str, Any]]
-            If `data` is False, the next edge as a (u, v) tuple.
-            If `data` is True, the next edge as a ((u, v), attr) tuple.
+        tuple[int, int]
+            The edge identifier if `data` is `False`.
+        tuple[tuple[int, int], EdgeAttributeView]
+            The edge identifier and its attributes if `data` is `True`.
 
         See Also
         --------
-        :meth:`vertices`, :meth:`faces`, :meth:`cells`
+        vertices, faces, cells
 
         """
         seen = set()
@@ -1955,7 +2030,12 @@ class VolMesh(Datastructure):
                 else:
                     yield (vertex, nbr), self.edge_attributes((vertex, nbr))
 
-    def edges_where(self, conditions=None, data=False, **kwargs):
+    def edges_where(
+        self,
+        conditions: Optional[Mapping[str, Any]] = None,
+        data: bool = False,
+        **kwargs: Any,
+    ) -> Iterator[Any]:
         """Get edges for which a certain condition or set of conditions is true.
 
         Parameters
@@ -1977,11 +2057,11 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`edges_where_predicate`
-        :meth:`vertices_where`, :meth:`faces_where`, :meth:`cells_where`
+        edges_where_predicate
+        vertices_where, faces_where, cells_where
 
         """
-        conditions = conditions or {}
+        conditions = dict(conditions or {})
         conditions.update(kwargs)
 
         for key in self.edges():
@@ -2020,7 +2100,11 @@ class VolMesh(Datastructure):
                 else:
                     yield key
 
-    def edges_where_predicate(self, predicate, data=False):
+    def edges_where_predicate(
+        self,
+        predicate: Callable[[Edge, EdgeAttributeView], bool],
+        data: bool = False,
+    ) -> Iterator[Any]:
         """Get edges for which a certain condition or set of conditions is true using a lambda function.
 
         Parameters
@@ -2039,8 +2123,8 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`edges_where`
-        :meth:`vertices_where_predicate`, :meth:`faces_where_predicate`, :meth:`cells_where_predicate`
+        edges_where
+        vertices_where_predicate, faces_where_predicate, cells_where_predicate
 
         """
         for key, attr in self.edges(True):
@@ -2054,7 +2138,11 @@ class VolMesh(Datastructure):
     # Edge Attributes
     # --------------------------------------------------------------------------
 
-    def update_default_edge_attributes(self, attr_dict=None, **kwattr):
+    def update_default_edge_attributes(
+        self,
+        attr_dict: Optional[Mapping[str, Any]] = None,
+        **kwattr: Any,
+    ) -> None:
         """Update the default edge attributes.
 
         Parameters
@@ -2070,19 +2158,24 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`update_default_vertex_attributes`, :meth:`update_default_face_attributes`, :meth:`update_default_cell_attributes`
+        update_default_vertex_attributes, update_default_face_attributes, update_default_cell_attributes
 
         Notes
         -----
         Named arguments overwrite correpsonding key-value pairs in the attribute dictionary.
 
         """
-        if not attr_dict:
-            attr_dict = {}
-        attr_dict.update(kwattr)
-        self.default_edge_attributes.update(attr_dict)
+        attributes = dict(attr_dict or {})
+        attributes.update(kwattr)
+        self.default_edge_attributes.update(attributes)
 
-    def edge_attribute(self, edge, name, value=None):
+    @overload
+    def edge_attribute(self, edge: Edge, name: str) -> Any: ...
+
+    @overload
+    def edge_attribute(self, edge: Edge, name: str, value: Any) -> None: ...
+
+    def edge_attribute(self, edge: Edge, name: str, value: Any = _MISSING) -> Any:
         """Get or set an attribute of an edge.
 
         Parameters
@@ -2096,8 +2189,10 @@ class VolMesh(Datastructure):
 
         Returns
         -------
-        object | None
-            The value of the attribute, or None when the function is used as a "setter".
+        Any
+            The attribute value when `value` is not provided.
+        None
+            When `value` is provided.
 
         Raises
         ------
@@ -2106,16 +2201,16 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`unset_edge_attribute`
-        :meth:`edge_attributes`, :meth:`edges_attribute`, :meth:`edges_attributes`
-        :meth:`vertex_attribute`, :meth:`face_attribute`, :meth:`cell_attribute`
+        unset_edge_attribute
+        edge_attributes, edges_attribute, edges_attributes
+        vertex_attribute, face_attribute, cell_attribute
 
         """
         u, v = edge
         if u not in self._plane or v not in self._plane[u]:
             raise KeyError(edge)
-        key = str(tuple(sorted(edge)))
-        if value is not None:
+        key = edge_data_key(edge)
+        if value is not _MISSING:
             if key not in self._edge_data:
                 self._edge_data[key] = {}
             self._edge_data[key][name] = value
@@ -2125,7 +2220,7 @@ class VolMesh(Datastructure):
         if name in self.default_edge_attributes:
             return self.default_edge_attributes[name]
 
-    def unset_edge_attribute(self, edge, name):
+    def unset_edge_attribute(self, edge: Edge, name: str) -> None:
         """Unset the attribute of an edge.
 
         Parameters
@@ -2146,7 +2241,7 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`edge_attribute`
+        edge_attribute
 
         Notes
         -----
@@ -2157,11 +2252,16 @@ class VolMesh(Datastructure):
         u, v = edge
         if u not in self._plane or v not in self._plane[u]:
             raise KeyError(edge)
-        key = str(tuple(sorted(edge)))
+        key = edge_data_key(edge)
         if key in self._edge_data and name in self._edge_data[key]:
             del self._edge_data[key][name]
 
-    def edge_attributes(self, edge, names=None, values=None):
+    def edge_attributes(
+        self,
+        edge: Edge,
+        names: Optional[Sequence[str]] = None,
+        values: Optional[Sequence[Any]] = None,
+    ) -> Any:
         """Get or set multiple attributes of an edge.
 
         Parameters
@@ -2187,22 +2287,21 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`edge_attribute`, :meth:`edges_attribute`, :meth:`edges_attributes`
-        :meth:`vertex_attributes`, :meth:`face_attributes`, :meth:`cell_attributes`
+        edge_attribute, edges_attribute, edges_attributes
+        vertex_attributes, face_attributes, cell_attributes
 
         """
         u, v = edge
         if u not in self._plane or v not in self._plane[u]:
             raise KeyError(edge)
-        key = str(tuple(sorted(edge)))
-        if names and values:
+        key = edge_data_key(edge)
+        if names and values is not None:
             for name, value in zip(names, values):
                 if key not in self._edge_data:
                     self._edge_data[key] = {}
                 self._edge_data[key][name] = value
             return
         if not names:
-            key = str(tuple(sorted(edge)))
             return EdgeAttributeView(self.default_edge_attributes, self._edge_data.setdefault(key, {}))
         values = []
         for name in names:
@@ -2210,7 +2309,28 @@ class VolMesh(Datastructure):
             values.append(value)
         return values
 
-    def edges_attribute(self, name, value=None, edges=None):
+    @overload
+    def edges_attribute(
+        self,
+        name: str,
+        *,
+        edges: Optional[Iterable[Edge]] = None,
+    ) -> list[Any]: ...
+
+    @overload
+    def edges_attribute(
+        self,
+        name: str,
+        value: Any,
+        edges: Optional[Iterable[Edge]] = None,
+    ) -> None: ...
+
+    def edges_attribute(
+        self,
+        name: str,
+        value: Any = _MISSING,
+        edges: Optional[Iterable[Edge]] = None,
+    ) -> Optional[list[Any]]:
         """Get or set an attribute of multiple edges.
 
         Parameters
@@ -2219,15 +2339,15 @@ class VolMesh(Datastructure):
             The name of the attribute.
         value : object, optional
             The value of the attribute.
-            Default is None.
         edges : list[tuple[int, int]], optional
             A list of edge identifiers.
 
         Returns
         -------
-        list[Any] | None
-            A list containing the value per edge of the requested attribute,
-            or None if the function is used as a "setter".
+        list[Any]
+            The attribute values when `value` is not provided.
+        None
+            When `value` is provided.
 
         Raises
         ------
@@ -2236,18 +2356,23 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`edge_attribute`, :meth:`edge_attributes`, :meth:`edges_attributes`
-        :meth:`vertex_attribute`, :meth:`face_attribute`, :meth:`cell_attribute`
+        edge_attribute, edge_attributes, edges_attributes
+        vertex_attribute, face_attribute, cell_attribute
 
         """
         edges = edges or self.edges()
-        if value is not None:
+        if value is not _MISSING:
             for edge in edges:
                 self.edge_attribute(edge, name, value)
             return
         return [self.edge_attribute(edge, name) for edge in edges]
 
-    def edges_attributes(self, names=None, values=None, edges=None):
+    def edges_attributes(
+        self,
+        names: Optional[Sequence[str]] = None,
+        values: Optional[Sequence[Any]] = None,
+        edges: Optional[Iterable[Edge]] = None,
+    ) -> Any:
         """Get or set multiple attributes of multiple edges.
 
         Parameters
@@ -2275,12 +2400,12 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`edge_attribute`, :meth:`edge_attributes`, :meth:`edges_attribute`
-        :meth:`vertex_attributes`, :meth:`face_attributes`, :meth:`cell_attributes`
+        edge_attribute, edge_attributes, edges_attribute
+        vertex_attributes, face_attributes, cell_attributes
 
         """
         edges = edges or self.edges()
-        if values:
+        if values is not None:
             for edge in edges:
                 self.edge_attributes(edge, names, values)
             return
@@ -2290,7 +2415,7 @@ class VolMesh(Datastructure):
     # Edge Topology
     # --------------------------------------------------------------------------
 
-    def has_edge(self, edge):
+    def has_edge(self, edge: Edge) -> bool:
         """Verify that the volmesh contains a directed edge (u, v).
 
         Parameters
@@ -2306,12 +2431,13 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`has_vertex`, :meth:`has_face`, :meth:`has_cell`
+        has_vertex, has_face, has_cell
 
         """
-        return edge in set(self.edges())
+        u, v = edge
+        return u in self._plane and v in self._plane[u]
 
-    def edge_halffaces(self, edge):
+    def edge_halffaces(self, edge: Edge) -> list[Halfface]:
         """Ordered halffaces around edge (u, v).
 
         Parameters
@@ -2326,7 +2452,7 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`edge_cells`
+        edge_cells
 
         """
         u, v = edge
@@ -2338,7 +2464,7 @@ class VolMesh(Datastructure):
                 halffaces.append(face)
         return halffaces
 
-    def edge_cells(self, edge):
+    def edge_cells(self, edge: Edge) -> list[Cell]:
         """Ordered cells around edge (u, v).
 
         Parameters
@@ -2351,15 +2477,25 @@ class VolMesh(Datastructure):
         list[int]
             Ordered list of keys identifying the ordered cells.
 
+        Raises
+        ------
+        RuntimeError
+            If an edge halfface is not assigned to a cell.
+
         See Also
         --------
-        :meth:`edge_halffaces`
+        edge_halffaces
 
         """
-        halffaces = self.edge_halffaces(edge)
-        return [self.halfface_cell(halfface) for halfface in halffaces]
+        cells = []
+        for halfface in self.edge_halffaces(edge):
+            cell = self.halfface_cell(halfface)
+            if cell is None:
+                raise RuntimeError("An edge halfface is not assigned to a cell.")
+            cells.append(cell)
+        return cells
 
-    def is_edge_on_boundary(self, edge):
+    def is_edge_on_boundary(self, edge: Edge) -> bool:
         """Verify that an edge is on the boundary.
 
         Parameters
@@ -2375,7 +2511,7 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`is_vertex_on_boundary`, :meth:`is_face_on_boundary`, :meth:`is_cell_on_boundary`
+        is_vertex_on_boundary, is_face_on_boundary, is_cell_on_boundary
 
         Notes
         -----
@@ -2390,7 +2526,7 @@ class VolMesh(Datastructure):
     # Edge Geometry
     # --------------------------------------------------------------------------
 
-    def edge_coordinates(self, edge, axes="xyz"):
+    def edge_coordinates(self, edge: Edge, axes: str = "xyz") -> tuple[list[float], list[float]]:
         """Return the coordinates of the start and end point of an edge.
 
         Parameters
@@ -2408,15 +2544,15 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`edge_start`, :meth:`edge_end`, :meth:`edge_midpoint`, :meth:`edge_point`
-        :meth:`edge_vector`, :meth:`edge_direction`, :meth:`edge_line`
-        :meth:`edge_length`
+        edge_start, edge_end, edge_midpoint, edge_point
+        edge_vector, edge_direction, edge_line
+        edge_length
 
         """
         u, v = edge
         return self.vertex_coordinates(u, axes=axes), self.vertex_coordinates(v, axes=axes)
 
-    def edge_start(self, edge):
+    def edge_start(self, edge: Edge) -> Point:
         """Return the start point of an edge.
 
         Parameters
@@ -2431,12 +2567,12 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`edge_end`, :meth:`edge_midpoint`, :meth:`edge_point`
+        edge_end, edge_midpoint, edge_point
 
         """
         return self.vertex_point(edge[0])
 
-    def edge_end(self, edge):
+    def edge_end(self, edge: Edge) -> Point:
         """Return the end point of an edge.
 
         Parameters
@@ -2451,12 +2587,12 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`edge_start`, :meth:`edge_midpoint`, :meth:`edge_point`
+        edge_start, edge_midpoint, edge_point
 
         """
         return self.vertex_point(edge[1])
 
-    def edge_midpoint(self, edge):
+    def edge_midpoint(self, edge: Edge) -> Point:
         """Return the midpoint of an edge.
 
         Parameters
@@ -2471,13 +2607,13 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`edge_start`, :meth:`edge_end`, :meth:`edge_point`
+        edge_start, edge_end, edge_point
 
         """
         a, b = self.edge_coordinates(edge)
         return Point(0.5 * (a[0] + b[0]), 0.5 * (a[1] + b[1]), 0.5 * (a[2] + b[2]))
 
-    def edge_point(self, edge, t=0.5):
+    def edge_point(self, edge: Edge, t: float = 0.5) -> Point:
         """Return the point at a parametric location along an edge.
 
         Parameters
@@ -2496,7 +2632,7 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`edge_start`, :meth:`edge_end`, :meth:`edge_midpoint`
+        edge_start, edge_end, edge_midpoint
 
         """
         if t == 0:
@@ -2510,7 +2646,7 @@ class VolMesh(Datastructure):
         ab = subtract_vectors(b, a)
         return Point(*add_vectors(a, scale_vector(ab, t)))
 
-    def edge_vector(self, edge):
+    def edge_vector(self, edge: Edge) -> Vector:
         """Return the vector of an edge.
 
         Parameters
@@ -2525,13 +2661,13 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`edge_direction`, :meth:`edge_line`
+        edge_direction, edge_line
 
         """
         a, b = self.edge_coordinates(edge)
         return Vector.from_start_end(a, b)
 
-    def edge_direction(self, edge):
+    def edge_direction(self, edge: Edge) -> Vector:
         """Return the direction vector of an edge.
 
         Parameters
@@ -2546,12 +2682,12 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`edge_vector`, :meth:`edge_line`
+        edge_vector, edge_line
 
         """
         return Vector(*normalize_vector(self.edge_vector(edge)))
 
-    def edge_line(self, edge):
+    def edge_line(self, edge: Edge) -> Line:
         """Return the line representation of an edge.
 
         Parameters
@@ -2566,12 +2702,12 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`edge_vector`, :meth:`edge_direction`
+        edge_vector, edge_direction
 
         """
         return Line(self.edge_start(edge), self.edge_end(edge))
 
-    def edge_length(self, edge):
+    def edge_length(self, edge: Edge) -> float:
         """Return the length of an edge.
 
         Parameters
@@ -2592,7 +2728,16 @@ class VolMesh(Datastructure):
     # (Half)Face Accessors
     # --------------------------------------------------------------------------
 
-    def halffaces(self, data=False):
+    @overload
+    def halffaces(self, data: Literal[False] = False) -> Iterator[Halfface]: ...
+
+    @overload
+    def halffaces(self, data: Literal[True]) -> Iterator[tuple[Halfface, FaceAttributeView]]: ...
+
+    @overload
+    def halffaces(self, data: bool) -> Iterator[Union[Halfface, tuple[Halfface, FaceAttributeView]]]: ...
+
+    def halffaces(self, data: bool = False) -> Iterator[Any]:
         """Iterate over the halffaces of the volmesh.
 
         Parameters
@@ -2602,13 +2747,14 @@ class VolMesh(Datastructure):
 
         Yields
         ------
-        int | tuple[int, dict[str, Any]]
-            If `data` is False, the next halfface identifier.
-            If `data` is True, the next halfface as a (halfface, attr) tuple.
+        int
+            The halfface identifier if `data` is `False`.
+        tuple[int, FaceAttributeView]
+            The halfface identifier and its attributes if `data` is `True`.
 
         See Also
         --------
-        :meth:`vertices`, :meth:`edges`, :meth:`cells`
+        vertices, edges, cells
 
         """
         for hface in self._halfface:
@@ -2617,7 +2763,16 @@ class VolMesh(Datastructure):
             else:
                 yield hface, self.face_attributes(hface)
 
-    def faces(self, data=False):
+    @overload
+    def faces(self, data: Literal[False] = False) -> Iterator[Face]: ...
+
+    @overload
+    def faces(self, data: Literal[True]) -> Iterator[tuple[Face, FaceAttributeView]]: ...
+
+    @overload
+    def faces(self, data: bool) -> Iterator[Union[Face, tuple[Face, FaceAttributeView]]]: ...
+
+    def faces(self, data: bool = False) -> Iterator[Any]:
         """ "Iterate over the halffaces of the volmesh and yield faces.
 
         Parameters
@@ -2627,13 +2782,14 @@ class VolMesh(Datastructure):
 
         Yields
         ------
-        int | tuple[int, dict[str, Any]]
-            If `data` is False, the next face identifier.
-            If `data` is True, the next face as a (face, attr) tuple.
+        int
+            The face identifier if `data` is `False`.
+        tuple[int, FaceAttributeView]
+            The face identifier and its attributes if `data` is `True`.
 
         See Also
         --------
-        :meth:`vertices`, :meth:`edges`, :meth:`cells`
+        vertices, edges, cells
 
         Notes
         -----
@@ -2647,7 +2803,7 @@ class VolMesh(Datastructure):
         seen = set()
         faces = []
         for face in self._halfface:
-            key = "-".join(map(str, sorted(self.halfface_vertices(face))))
+            key = face_data_key(self.halfface_vertices(face))
             if key in seen:
                 continue
             seen.add(key)
@@ -2658,7 +2814,12 @@ class VolMesh(Datastructure):
             else:
                 yield face, self.face_attributes(face)
 
-    def faces_where(self, conditions=None, data=False, **kwargs):
+    def faces_where(
+        self,
+        conditions: Optional[Mapping[str, Any]] = None,
+        data: bool = False,
+        **kwargs: Any,
+    ) -> Iterator[Any]:
         """Get faces for which a certain condition or set of conditions is true.
 
         Parameters
@@ -2680,11 +2841,11 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`faces_where_predicate`
-        :meth:`vertices_where`, :meth:`edges_where`, :meth:`cells_where`
+        faces_where_predicate
+        vertices_where, edges_where, cells_where
 
         """
-        conditions = conditions or {}
+        conditions = dict(conditions or {})
         conditions.update(kwargs)
 
         for fkey in self.faces():
@@ -2723,7 +2884,11 @@ class VolMesh(Datastructure):
                 else:
                     yield fkey
 
-    def faces_where_predicate(self, predicate, data=False):
+    def faces_where_predicate(
+        self,
+        predicate: Callable[[Face, FaceAttributeView], bool],
+        data: bool = False,
+    ) -> Iterator[Any]:
         """Get faces for which a certain condition or set of conditions is true using a lambda function.
 
         Parameters
@@ -2742,8 +2907,8 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`faces_where`
-        :meth:`vertices_where_predicate`, :meth:`edges_where_predicate`, :meth:`cells_where_predicate`
+        faces_where
+        vertices_where_predicate, edges_where_predicate, cells_where_predicate
 
         """
         for fkey, attr in self.faces(True):
@@ -2757,7 +2922,11 @@ class VolMesh(Datastructure):
     # Face Attributes
     # --------------------------------------------------------------------------
 
-    def update_default_face_attributes(self, attr_dict=None, **kwattr):
+    def update_default_face_attributes(
+        self,
+        attr_dict: Optional[Mapping[str, Any]] = None,
+        **kwattr: Any,
+    ) -> None:
         """Update the default face attributes.
 
         Parameters
@@ -2773,19 +2942,24 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`update_default_vertex_attributes`, :meth:`update_default_edge_attributes`, :meth:`update_default_cell_attributes`
+        update_default_vertex_attributes, update_default_edge_attributes, update_default_cell_attributes
 
         Notes
         -----
         Named arguments overwrite correpsonding key-value pairs in the attribute dictionary.
 
         """
-        if not attr_dict:
-            attr_dict = {}
-        attr_dict.update(kwattr)
-        self.default_face_attributes.update(attr_dict)
+        attributes = dict(attr_dict or {})
+        attributes.update(kwattr)
+        self.default_face_attributes.update(attributes)
 
-    def face_attribute(self, face, name, value=None):
+    @overload
+    def face_attribute(self, face: Face, name: str) -> Any: ...
+
+    @overload
+    def face_attribute(self, face: Face, name: str, value: Any) -> None: ...
+
+    def face_attribute(self, face: Face, name: str, value: Any = _MISSING) -> Any:
         """Get or set an attribute of a face.
 
         Parameters
@@ -2799,8 +2973,10 @@ class VolMesh(Datastructure):
 
         Returns
         -------
-        object | None
-            The value of the attribute, or None when the function is used as a "setter".
+        Any
+            The attribute value when `value` is not provided.
+        None
+            When `value` is provided.
 
         Raises
         ------
@@ -2809,15 +2985,15 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`unset_face_attribute`
-        :meth:`face_attributes`, :meth:`faces_attribute`, :meth:`faces_attributes`
-        :meth:`vertex_attribute`, :meth:`edge_attribute`, :meth:`cell_attribute`
+        unset_face_attribute
+        face_attributes, faces_attribute, faces_attributes
+        vertex_attribute, edge_attribute, cell_attribute
 
         """
         if face not in self._halfface:
             raise KeyError(face)
-        key = str(tuple(sorted(self.halfface_vertices(face))))
-        if value is not None:
+        key = face_data_key(self.halfface_vertices(face))
+        if value is not _MISSING:
             if key not in self._face_data:
                 self._face_data[key] = {}
             self._face_data[key][name] = value
@@ -2827,7 +3003,7 @@ class VolMesh(Datastructure):
         if name in self.default_face_attributes:
             return self.default_face_attributes[name]
 
-    def unset_face_attribute(self, face, name):
+    def unset_face_attribute(self, face: Face, name: str) -> None:
         """Unset the attribute of a face.
 
         Parameters
@@ -2848,7 +3024,7 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`face_attribute`
+        face_attribute
 
         Notes
         -----
@@ -2858,11 +3034,16 @@ class VolMesh(Datastructure):
         """
         if face not in self._halfface:
             raise KeyError(face)
-        key = str(tuple(sorted(self.halfface_vertices(face))))
+        key = face_data_key(self.halfface_vertices(face))
         if key in self._face_data and name in self._face_data[key]:
             del self._face_data[key][name]
 
-    def face_attributes(self, face, names=None, values=None):
+    def face_attributes(
+        self,
+        face: Face,
+        names: Optional[Sequence[str]] = None,
+        values: Optional[Sequence[Any]] = None,
+    ) -> Any:
         """Get or set multiple attributes of a face.
 
         Parameters
@@ -2888,14 +3069,14 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`face_attribute`, :meth:`faces_attribute`, :meth:`faces_attributes`
-        :meth:`vertex_attributes`, :meth:`edge_attributes`, :meth:`cell_attributes`
+        face_attribute, faces_attribute, faces_attributes
+        vertex_attributes, edge_attributes, cell_attributes
 
         """
         if face not in self._halfface:
             raise KeyError(face)
-        key = str(tuple(sorted(self.halfface_vertices(face))))
-        if names and values:
+        key = face_data_key(self.halfface_vertices(face))
+        if names and values is not None:
             for name, value in zip(names, values):
                 if key not in self._face_data:
                     self._face_data[key] = {}
@@ -2909,7 +3090,28 @@ class VolMesh(Datastructure):
             values.append(value)
         return values
 
-    def faces_attribute(self, name, value=None, faces=None):
+    @overload
+    def faces_attribute(
+        self,
+        name: str,
+        *,
+        faces: Optional[Iterable[Face]] = None,
+    ) -> list[Any]: ...
+
+    @overload
+    def faces_attribute(
+        self,
+        name: str,
+        value: Any,
+        faces: Optional[Iterable[Face]] = None,
+    ) -> None: ...
+
+    def faces_attribute(
+        self,
+        name: str,
+        value: Any = _MISSING,
+        faces: Optional[Iterable[Face]] = None,
+    ) -> Optional[list[Any]]:
         """Get or set an attribute of multiple faces.
 
         Parameters
@@ -2918,15 +3120,15 @@ class VolMesh(Datastructure):
             The name of the attribute.
         value : object, optional
             The value of the attribute.
-            Default is None.
         faces : list[int], optional
             A list of face identifiers.
 
         Returns
         -------
-        list[Any] | None
-            A list containing the value per face of the requested attribute,
-            or None if the function is used as a "setter".
+        list[Any]
+            The attribute values when `value` is not provided.
+        None
+            When `value` is provided.
 
         Raises
         ------
@@ -2935,18 +3137,23 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`face_attribute`, :meth:`face_attributes`, :meth:`faces_attributes`
-        :meth:`vertex_attribute`, :meth:`edge_attribute`, :meth:`cell_attribute`
+        face_attribute, face_attributes, faces_attributes
+        vertex_attribute, edge_attribute, cell_attribute
 
         """
         faces = faces or self.faces()
-        if value is not None:
+        if value is not _MISSING:
             for face in faces:
                 self.face_attribute(face, name, value)
             return
         return [self.face_attribute(face, name) for face in faces]
 
-    def faces_attributes(self, names=None, values=None, faces=None):
+    def faces_attributes(
+        self,
+        names: Optional[Sequence[str]] = None,
+        values: Optional[Sequence[Any]] = None,
+        faces: Optional[Iterable[Face]] = None,
+    ) -> Any:
         """Get or set multiple attributes of multiple faces.
 
         Parameters
@@ -2976,12 +3183,12 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`face_attribute`, :meth:`face_attributes`, :meth:`faces_attribute`
-        :meth:`vertex_attributes`, :meth:`edge_attributes`, :meth:`cell_attributes`
+        face_attribute, face_attributes, faces_attribute
+        vertex_attributes, edge_attributes, cell_attributes
 
         """
         faces = faces or self.faces()
-        if values:
+        if values is not None:
             for face in faces:
                 self.face_attributes(face, names, values)
             return
@@ -2991,7 +3198,7 @@ class VolMesh(Datastructure):
     # Face Topology
     # --------------------------------------------------------------------------
 
-    def has_halfface(self, halfface):
+    def has_halfface(self, halfface: Halfface) -> bool:
         """Verify that a face is part of the volmesh.
 
         Parameters
@@ -3007,12 +3214,12 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`has_vertex`, :meth:`has_edge`, :meth:`has_cell`
+        has_vertex, has_edge, has_cell
 
         """
         return halfface in self._halfface
 
-    def halfface_vertices(self, halfface):
+    def halfface_vertices(self, halfface: Halfface) -> list[Vertex]:
         """The vertices of a halfface.
 
         Parameters
@@ -3027,12 +3234,12 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`halfface_edges`, :meth:`halfface_halfedges`
+        halfface_edges, halfface_halfedges
 
         """
         return self._halfface[halfface]
 
-    def halfface_halfedges(self, halfface):
+    def halfface_halfedges(self, halfface: Halfface) -> list[Edge]:
         """The halfedges of a halfface.
 
         Parameters
@@ -3047,13 +3254,13 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`halfface_edges`, :meth:`halfface_vertices`
+        halfface_edges, halfface_vertices
 
         """
         vertices = self.halfface_vertices(halfface)
         return list(pairwise(vertices + vertices[0:1]))
 
-    def halfface_cell(self, halfface):
+    def halfface_cell(self, halfface: Halfface) -> Optional[Cell]:
         """The cell to which the halfface belongs to.
 
         Parameters
@@ -3063,18 +3270,18 @@ class VolMesh(Datastructure):
 
         Returns
         -------
-        int
-            Identifier of the cell.
+        int | None
+            Identifier of the cell, if the halfface belongs to a cell.
 
         See Also
         --------
-        :meth:`halfface_opposite_cell`
+        halfface_opposite_cell
 
         """
         u, v, w = self._halfface[halfface][:3]
         return self._plane[u][v][w]
 
-    def halfface_opposite_cell(self, halfface):
+    def halfface_opposite_cell(self, halfface: Halfface) -> Optional[Cell]:
         """The cell to which the opposite halfface belongs to.
 
         Parameters
@@ -3084,18 +3291,18 @@ class VolMesh(Datastructure):
 
         Returns
         -------
-        int
-            Identifier of the cell.
+        int | None
+            Identifier of the opposite cell, if it exists.
 
         See Also
         --------
-        :meth:`halfface_cell`
+        halfface_cell
 
         """
         u, v, w = self._halfface[halfface][:3]
         return self._plane[w][v][u]
 
-    def halfface_opposite_halfface(self, halfface):
+    def halfface_opposite_halfface(self, halfface: Halfface) -> Optional[Halfface]:
         """The opposite face of a face.
 
         Parameters
@@ -3110,7 +3317,7 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`halfface_adjacent_halfface`
+        halfface_adjacent_halfface
 
         Notes
         -----
@@ -3122,7 +3329,7 @@ class VolMesh(Datastructure):
         nbr = self._plane[w][v][u]
         return None if nbr is None else self._cell[nbr][w][v]
 
-    def halfface_vertex_ancestor(self, halfface, vertex):
+    def halfface_vertex_ancestor(self, halfface: Halfface, vertex: Vertex) -> Vertex:
         """Return the vertex before the specified vertex in a specific face.
 
         Parameters
@@ -3144,13 +3351,13 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`halfface_vertex_descendent`
+        halfface_vertex_descendent
 
         """
         i = self._halfface[halfface].index(vertex)
         return self._halfface[halfface][i - 1]
 
-    def halfface_vertex_descendent(self, halfface, vertex):
+    def halfface_vertex_descendent(self, halfface: Halfface, vertex: Vertex) -> Vertex:
         """Return the vertex after the specified vertex in a specific face.
 
         Parameters
@@ -3172,7 +3379,7 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`halfface_vertex_ancestor`
+        halfface_vertex_ancestor
 
         """
         if self._halfface[halfface][-1] == vertex:
@@ -3180,7 +3387,7 @@ class VolMesh(Datastructure):
         i = self._halfface[halfface].index(vertex)
         return self._halfface[halfface][i + 1]
 
-    def halfface_manifold_neighbors(self, halfface):
+    def halfface_manifold_neighbors(self, halfface: Halfface) -> list[Halfface]:
         """Return the halfface neighbors of a halfface that are on the same manifold.
 
         Parameters
@@ -3195,7 +3402,7 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`halfface_manifold_neighborhood`
+        halfface_manifold_neighborhood
 
         Notes
         -----
@@ -3204,15 +3411,17 @@ class VolMesh(Datastructure):
         """
         nbrs = []
         cell = self.halfface_cell(halfface)
+        if cell is None:
+            return nbrs
         for u, v in self.halfface_halfedges(halfface):
             nbr_halfface = self._cell[cell][v][u]
-            nbr_cell = self._plane[u][v][nbr_halfface]
+            nbr_cell = self.halfface_opposite_cell(nbr_halfface)
             if nbr_cell is not None:
                 nbr = self._cell[nbr_cell][v][u]
                 nbrs.append(nbr)
         return nbrs
 
-    def halfface_manifold_neighborhood(self, halfface, ring=1):
+    def halfface_manifold_neighborhood(self, halfface: Halfface, ring: int = 1) -> list[Halfface]:
         """Return the halfface neighborhood of a halfface across their edges.
 
         Parameters
@@ -3225,15 +3434,23 @@ class VolMesh(Datastructure):
         list[int]
             The list of neighboring halffaces.
 
+        Raises
+        ------
+        ValueError
+            If the ring is smaller than 1.
+
         See Also
         --------
-        :meth:`halfface_manifold_neighbors`
+        halfface_manifold_neighbors
 
         Notes
         -----
         Neighboring halffaces on the same cell are not included.
 
         """
+        if ring < 1:
+            raise ValueError("The neighborhood ring should be greater than or equal to 1.")
+
         nbrs = set(self.halfface_manifold_neighbors(halfface))
         i = 1
         while True:
@@ -3246,7 +3463,7 @@ class VolMesh(Datastructure):
             i += 1
         return list(nbrs - set([halfface]))
 
-    def is_halfface_on_boundary(self, halfface):
+    def is_halfface_on_boundary(self, halfface: Halfface) -> bool:
         """Verify that a face is on the boundary.
 
         Parameters
@@ -3262,7 +3479,7 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`is_vertex_on_boundary`, :meth:`is_edge_on_boundary`, :meth:`is_cell_on_boundary`
+        is_vertex_on_boundary, is_edge_on_boundary, is_cell_on_boundary
 
         """
         u, v, w = self._halfface[halfface][:3]
@@ -3272,7 +3489,7 @@ class VolMesh(Datastructure):
     # Face Geometry
     # --------------------------------------------------------------------------
 
-    def face_vertices(self, face):
+    def face_vertices(self, face: Face) -> list[Vertex]:
         """The vertices of a face.
 
         Parameters
@@ -3288,7 +3505,7 @@ class VolMesh(Datastructure):
         """
         return self.halfface_vertices(face)
 
-    def face_coordinates(self, face, axes="xyz"):
+    def face_coordinates(self, face: Face, axes: str = "xyz") -> list[list[float]]:
         """Compute the coordinates of the vertices of a face.
 
         Parameters
@@ -3306,13 +3523,13 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`face_points`, :meth:`face_polygon`, :meth:`face_normal`, :meth:`face_centroid`, :meth:`face_center`
-        :meth:`face_area`, :meth:`face_flatness`, :meth:`face_aspect_ratio`
+        face_points, face_polygon, face_normal, face_centroid, face_center
+        face_area, face_flatness, face_aspect_ratio
 
         """
         return [self.vertex_coordinates(vertex, axes=axes) for vertex in self.face_vertices(face)]
 
-    def face_points(self, face):
+    def face_points(self, face: Face) -> list[Point]:
         """Compute the points of the vertices of a face.
 
         Parameters
@@ -3327,12 +3544,12 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`face_polygon`, :meth:`face_normal`, :meth:`face_centroid`, :meth:`face_center`
+        face_polygon, face_normal, face_centroid, face_center
 
         """
         return [self.vertex_point(vertex) for vertex in self.face_vertices(face)]
 
-    def face_polygon(self, face):
+    def face_polygon(self, face: Face) -> Polygon:
         """Compute the polygon of a face.
 
         Parameters
@@ -3347,12 +3564,12 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`face_points`, :meth:`face_normal`, :meth:`face_centroid`, :meth:`face_center`
+        face_points, face_normal, face_centroid, face_center
 
         """
         return Polygon(self.face_points(face))
 
-    def face_normal(self, face, unitized=True):
+    def face_normal(self, face: Face, unitized: bool = True) -> Vector:
         """Compute the oriented normal of a face.
 
         Parameters
@@ -3369,12 +3586,12 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`face_points`, :meth:`face_polygon`, :meth:`face_centroid`, :meth:`face_center`
+        face_points, face_polygon, face_centroid, face_center
 
         """
         return Vector(*normal_polygon(self.face_coordinates(face), unitized=unitized))
 
-    def face_centroid(self, face):
+    def face_centroid(self, face: Face) -> Point:
         """Compute the point at the centroid of a face.
 
         Parameters
@@ -3389,12 +3606,12 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`face_points`, :meth:`face_polygon`, :meth:`face_normal`, :meth:`face_center`
+        face_points, face_polygon, face_normal, face_center
 
         """
         return Point(*centroid_points(self.face_coordinates(face)))
 
-    def face_center(self, face):
+    def face_center(self, face: Face) -> Point:
         """Compute the point at the center of mass of a face.
 
         Parameters
@@ -3409,12 +3626,12 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`face_points`, :meth:`face_polygon`, :meth:`face_normal`, :meth:`face_centroid`
+        face_points, face_polygon, face_normal, face_centroid
 
         """
         return Point(*centroid_polygon(self.face_coordinates(face)))
 
-    def face_area(self, face):
+    def face_area(self, face: Face) -> float:
         """Compute the oriented area of a face.
 
         Parameters
@@ -3429,12 +3646,12 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`face_flatness`, :meth:`face_aspect_ratio`
+        face_flatness, face_aspect_ratio
 
         """
         return length_vector(self.face_normal(face, unitized=False))
 
-    def face_flatness(self, face, maxdev=0.02):
+    def face_flatness(self, face: Face, maxdev: float = 0.02) -> float:
         """Compute the flatness of a face.
 
         Parameters
@@ -3449,7 +3666,7 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`face_area`, :meth:`face_aspect_ratio`
+        face_area, face_aspect_ratio
 
         Notes
         -----
@@ -3468,7 +3685,7 @@ class VolMesh(Datastructure):
                 deviation = dev
         return deviation
 
-    def face_aspect_ratio(self, face):
+    def face_aspect_ratio(self, face: Face) -> float:
         """Face aspect ratio as the ratio between the lengths of the maximum and minimum face edges.
 
         Parameters
@@ -3483,7 +3700,7 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`face_area`, :meth:`face_flatness`
+        face_area, face_flatness
 
         References
         ----------
@@ -3506,7 +3723,16 @@ class VolMesh(Datastructure):
     # Cell Accessors
     # --------------------------------------------------------------------------
 
-    def cells(self, data=False):
+    @overload
+    def cells(self, data: Literal[False] = False) -> Iterator[Cell]: ...
+
+    @overload
+    def cells(self, data: Literal[True]) -> Iterator[tuple[Cell, CellAttributeView]]: ...
+
+    @overload
+    def cells(self, data: bool) -> Iterator[Union[Cell, tuple[Cell, CellAttributeView]]]: ...
+
+    def cells(self, data: bool = False) -> Iterator[Any]:
         """Iterate over the cells of the volmesh.
 
         Parameters
@@ -3516,13 +3742,14 @@ class VolMesh(Datastructure):
 
         Yields
         ------
-        int | tuple[int, dict[str, Any]]
-            If `data` is False, the next cell identifier.
-            If `data` is True, the next cell as a (cell, attr) tuple.
+        int
+            The cell identifier if `data` is `False`.
+        tuple[int, CellAttributeView]
+            The cell identifier and its attributes if `data` is `True`.
 
         See Also
         --------
-        :meth:`vertices`, :meth:`edges`, :meth:`faces`
+        vertices, edges, faces
 
         """
         for cell in self._cell:
@@ -3531,7 +3758,12 @@ class VolMesh(Datastructure):
             else:
                 yield cell, self.cell_attributes(cell)
 
-    def cells_where(self, conditions=None, data=False, **kwargs):
+    def cells_where(
+        self,
+        conditions: Optional[Mapping[str, Any]] = None,
+        data: bool = False,
+        **kwargs: Any,
+    ) -> Iterator[Any]:
         """Get cells for which a certain condition or set of conditions is true.
 
         Parameters
@@ -3553,11 +3785,11 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`cells_where_predicate`
-        :meth:`vertices_where`, :meth:`edges_where`, :meth:`faces_where`
+        cells_where_predicate
+        vertices_where, edges_where, faces_where
 
         """
-        conditions = conditions or {}
+        conditions = dict(conditions or {})
         conditions.update(kwargs)
 
         for ckey in self.cells():
@@ -3596,7 +3828,11 @@ class VolMesh(Datastructure):
                 else:
                     yield ckey
 
-    def cells_where_predicate(self, predicate, data=False):
+    def cells_where_predicate(
+        self,
+        predicate: Callable[[Cell, CellAttributeView], bool],
+        data: bool = False,
+    ) -> Iterator[Any]:
         """Get cells for which a certain condition or set of conditions is true using a lambda function.
 
         Parameters
@@ -3615,8 +3851,8 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`cells_where`
-        :meth:`vertices_where_predicate`, :meth:`edges_where_predicate`, :meth:`faces_where_predicate`
+        cells_where
+        vertices_where_predicate, edges_where_predicate, faces_where_predicate
 
         """
         for ckey, attr in self.cells(True):
@@ -3630,7 +3866,11 @@ class VolMesh(Datastructure):
     # Cell Attributes
     # --------------------------------------------------------------------------
 
-    def update_default_cell_attributes(self, attr_dict=None, **kwattr):
+    def update_default_cell_attributes(
+        self,
+        attr_dict: Optional[Mapping[str, Any]] = None,
+        **kwattr: Any,
+    ) -> None:
         """Update the default cell attributes.
 
         Parameters
@@ -3646,19 +3886,24 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`update_default_vertex_attributes`, :meth:`update_default_edge_attributes`, :meth:`update_default_face_attributes`
+        update_default_vertex_attributes, update_default_edge_attributes, update_default_face_attributes
 
         Notes
         -----
         Named arguments overwrite corresponding cell-value pairs in the attribute dictionary.
 
         """
-        if not attr_dict:
-            attr_dict = {}
-        attr_dict.update(kwattr)
-        self.default_cell_attributes.update(attr_dict)
+        attributes = dict(attr_dict or {})
+        attributes.update(kwattr)
+        self.default_cell_attributes.update(attributes)
 
-    def cell_attribute(self, cell, name, value=None):
+    @overload
+    def cell_attribute(self, cell: Cell, name: str) -> Any: ...
+
+    @overload
+    def cell_attribute(self, cell: Cell, name: str, value: Any) -> None: ...
+
+    def cell_attribute(self, cell: Cell, name: str, value: Any = _MISSING) -> Any:
         """Get or set an attribute of a cell.
 
         Parameters
@@ -3672,8 +3917,10 @@ class VolMesh(Datastructure):
 
         Returns
         -------
-        object | None
-            The value of the attribute, or None when the function is used as a "setter".
+        Any
+            The attribute value when `value` is not provided.
+        None
+            When `value` is provided.
 
         Raises
         ------
@@ -3682,14 +3929,14 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`unset_cell_attribute`
-        :meth:`cell_attributes`, :meth:`cells_attribute`, :meth:`cells_attributes`
-        :meth:`vertex_attribute`, :meth:`edge_attribute`, :meth:`face_attribute`
+        unset_cell_attribute
+        cell_attributes, cells_attribute, cells_attributes
+        vertex_attribute, edge_attribute, face_attribute
 
         """
         if cell not in self._cell:
             raise KeyError(cell)
-        if value is not None:
+        if value is not _MISSING:
             if cell not in self._cell_data:
                 self._cell_data[cell] = {}
             self._cell_data[cell][name] = value
@@ -3699,7 +3946,7 @@ class VolMesh(Datastructure):
         if name in self.default_cell_attributes:
             return self.default_cell_attributes[name]
 
-    def unset_cell_attribute(self, cell, name):
+    def unset_cell_attribute(self, cell: Cell, name: str) -> None:
         """Unset the attribute of a cell.
 
         Parameters
@@ -3720,7 +3967,7 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`cell_attribute`
+        cell_attribute
 
         Notes
         -----
@@ -3734,7 +3981,12 @@ class VolMesh(Datastructure):
             if name in self._cell_data[cell]:
                 del self._cell_data[cell][name]
 
-    def cell_attributes(self, cell, names=None, values=None):
+    def cell_attributes(
+        self,
+        cell: Cell,
+        names: Optional[Sequence[str]] = None,
+        values: Optional[Sequence[Any]] = None,
+    ) -> Any:
         """Get or set multiple attributes of a cell.
 
         Parameters
@@ -3760,8 +4012,8 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`cell_attribute`, :meth:`cells_attribute`, :meth:`cells_attributes`
-        :meth:`vertex_attributes`, :meth:`edge_attributes`, :meth:`face_attributes`
+        cell_attribute, cells_attribute, cells_attributes
+        vertex_attributes, edge_attributes, face_attributes
 
         """
         if cell not in self._cell:
@@ -3780,7 +4032,28 @@ class VolMesh(Datastructure):
             values.append(value)
         return values
 
-    def cells_attribute(self, name, value=None, cells=None):
+    @overload
+    def cells_attribute(
+        self,
+        name: str,
+        *,
+        cells: Optional[Iterable[Cell]] = None,
+    ) -> list[Any]: ...
+
+    @overload
+    def cells_attribute(
+        self,
+        name: str,
+        value: Any,
+        cells: Optional[Iterable[Cell]] = None,
+    ) -> None: ...
+
+    def cells_attribute(
+        self,
+        name: str,
+        value: Any = _MISSING,
+        cells: Optional[Iterable[Cell]] = None,
+    ) -> Optional[list[Any]]:
         """Get or set an attribute of multiple cells.
 
         Parameters
@@ -3794,9 +4067,10 @@ class VolMesh(Datastructure):
 
         Returns
         -------
-        list[Any] | None
-            A list containing the value per face of the requested attribute,
-            or None if the function is used as a "setter".
+        list[Any]
+            The attribute values when `value` is not provided.
+        None
+            When `value` is provided.
 
         Raises
         ------
@@ -3805,19 +4079,24 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`cell_attribute`, :meth:`cell_attributes`, :meth:`cells_attributes`
-        :meth:`vertex_attribute`, :meth:`edge_attribute`, :meth:`face_attribute`
+        cell_attribute, cell_attributes, cells_attributes
+        vertex_attribute, edge_attribute, face_attribute
 
         """
         if not cells:
             cells = self.cells()
-        if value is not None:
+        if value is not _MISSING:
             for cell in cells:
                 self.cell_attribute(cell, name, value)
             return
         return [self.cell_attribute(cell, name) for cell in cells]
 
-    def cells_attributes(self, names=None, values=None, cells=None):
+    def cells_attributes(
+        self,
+        names: Optional[Sequence[str]] = None,
+        values: Optional[Sequence[Any]] = None,
+        cells: Optional[Iterable[Cell]] = None,
+    ) -> Any:
         """Get or set multiple attributes of multiple cells.
 
         Parameters
@@ -3847,8 +4126,8 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`cell_attribute`, :meth:`cell_attributes`, :meth:`cells_attribute`
-        :meth:`vertex_attributes`, :meth:`edge_attributes`, :meth:`face_attributes`
+        cell_attribute, cell_attributes, cells_attribute
+        vertex_attributes, edge_attributes, face_attributes
 
         """
         if not cells:
@@ -3863,7 +4142,23 @@ class VolMesh(Datastructure):
     # Cell Topology
     # --------------------------------------------------------------------------
 
-    def cell_vertices(self, cell):
+    def has_cell(self, cell: Cell) -> bool:
+        """Verify that a cell is part of the volmesh.
+
+        Parameters
+        ----------
+        cell
+            The identifier of the cell.
+
+        Returns
+        -------
+        bool
+            True if the cell exists, False otherwise.
+
+        """
+        return cell in self._cell
+
+    def cell_vertices(self, cell: Cell) -> list[Vertex]:
         """The vertices of a cell.
 
         Parameters
@@ -3878,7 +4173,7 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`cell_edges`, :meth:`cell_faces`, :meth:`cell_halfedges`
+        cell_edges, cell_faces, cell_halfedges
 
         Notes
         -----
@@ -3888,7 +4183,7 @@ class VolMesh(Datastructure):
         """
         return list(set([vertex for face in self.cell_faces(cell) for vertex in self.halfface_vertices(face)]))
 
-    def cell_halfedges(self, cell):
+    def cell_halfedges(self, cell: Cell) -> list[Edge]:
         """The halfedges of a cell.
 
         Parameters
@@ -3903,7 +4198,7 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`cell_edges`, :meth:`cell_faces`, :meth:`cell_vertices`
+        cell_edges, cell_faces, cell_vertices
 
         Notes
         -----
@@ -3916,7 +4211,7 @@ class VolMesh(Datastructure):
             halfedges += self.halfface_halfedges(face)
         return halfedges
 
-    def cell_edges(self, cell):
+    def cell_edges(self, cell: Cell) -> list[Edge]:
         """Return all edges of a cell.
 
         Parameters
@@ -3931,7 +4226,7 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`cell_halfedges`, :meth:`cell_faces`, :meth:`cell_vertices`
+        cell_halfedges, cell_faces, cell_vertices
 
         Notes
         -----
@@ -3939,9 +4234,18 @@ class VolMesh(Datastructure):
         but in the context of a cell of the `VolMesh`.
 
         """
-        return list(set(self.cell_halfedges(cell)))
+        seen = set()
+        edges = []
+        for edge in self.cell_halfedges(cell):
+            u, v = edge
+            if (u, v) in seen or (v, u) in seen:
+                continue
+            seen.add((u, v))
+            seen.add((v, u))
+            edges.append(edge)
+        return edges
 
-    def cell_faces(self, cell):
+    def cell_faces(self, cell: Cell) -> list[Halfface]:
         """The faces of a cell.
 
         Parameters
@@ -3956,7 +4260,7 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`cell_halfedges`, :meth:`cell_edges`, :meth:`cell_vertices`
+        cell_halfedges, cell_edges, cell_vertices
 
         Notes
         -----
@@ -3969,7 +4273,7 @@ class VolMesh(Datastructure):
             faces.update(self._cell[cell][vertex].values())
         return list(faces)
 
-    def cell_vertex_neighbors(self, cell, vertex):
+    def cell_vertex_neighbors(self, cell: Cell, vertex: Vertex) -> list[Vertex]:
         """Ordered vertex neighbors of a vertex of a cell.
 
         Parameters
@@ -3986,7 +4290,7 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`cell_vertex_faces`
+        cell_vertex_faces
 
         Notes
         -----
@@ -3998,7 +4302,7 @@ class VolMesh(Datastructure):
         """
         if vertex not in self.cell_vertices(cell):
             raise KeyError(vertex)
-        nbr_vertices = self._cell[cell][vertex].keys()
+        nbr_vertices = list(self._cell[cell][vertex])
         v = nbr_vertices[0]
         ordered_vkeys = [v]
         for i in range(len(nbr_vertices) - 1):
@@ -4007,7 +4311,7 @@ class VolMesh(Datastructure):
             ordered_vkeys.append(v)
         return ordered_vkeys
 
-    def cell_vertex_faces(self, cell, vertex):
+    def cell_vertex_faces(self, cell: Cell, vertex: Vertex) -> list[Halfface]:
         """Ordered faces connected to a vertex of a cell.
 
         Parameters
@@ -4024,7 +4328,7 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`cell_vertex_neighbors`
+        cell_vertex_neighbors
 
         Notes
         -----
@@ -4034,7 +4338,7 @@ class VolMesh(Datastructure):
         but in the context of a cell of the `VolMesh`.
 
         """
-        nbr_vertices = self._cell[cell][vertex].keys()
+        nbr_vertices = list(self._cell[cell][vertex])
         u = vertex
         v = nbr_vertices[0]
         ordered_faces = []
@@ -4044,7 +4348,7 @@ class VolMesh(Datastructure):
             ordered_faces.append(face)
         return ordered_faces
 
-    def cell_halfedge_face(self, cell, halfedge):
+    def cell_halfedge_face(self, cell: Cell, halfedge: Edge) -> Halfface:
         """Find the face corresponding to a specific halfedge of a cell.
 
         Parameters
@@ -4061,7 +4365,7 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`cell_halfedge_opposite_face`
+        cell_halfedge_opposite_face
 
         Notes
         -----
@@ -4072,7 +4376,7 @@ class VolMesh(Datastructure):
         u, v = halfedge
         return self._cell[cell][u][v]
 
-    def cell_halfedge_opposite_face(self, cell, halfedge):
+    def cell_halfedge_opposite_face(self, cell: Cell, halfedge: Edge) -> Halfface:
         """Find the opposite face corresponding to a specific halfedge of a cell.
 
         Parameters
@@ -4089,13 +4393,13 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`cell_halfedge_face`
+        cell_halfedge_face
 
         """
         u, v = halfedge
         return self._cell[cell][v][u]
 
-    def cell_face_neighbors(self, cell, face):
+    def cell_face_neighbors(self, cell: Cell, face: Halfface) -> list[Halfface]:
         """Find the faces adjacent to a given face of a cell.
 
         Parameters
@@ -4107,12 +4411,12 @@ class VolMesh(Datastructure):
 
         Returns
         -------
-        int
-            The identifier of the face.
+        list[int]
+            The identifiers of the adjacent faces.
 
         See Also
         --------
-        :meth:`cell_neighbors`
+        cell_neighbors
 
         Notes
         -----
@@ -4127,7 +4431,7 @@ class VolMesh(Datastructure):
                 nbrs.append(nbr)
         return nbrs
 
-    def cell_neighbors(self, cell):
+    def cell_neighbors(self, cell: Cell) -> list[Cell]:
         """Find the neighbors of a given cell.
 
         Parameters
@@ -4142,19 +4446,21 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`cell_face_neighbors`
+        cell_face_neighbors
 
         """
         nbrs = []
+        seen = set()
         for u in self._cell[cell]:
             for face in self._cell[cell][u].values():
                 a, b, c = self._halfface[face][:3]
                 nbr = self._plane[c][b][a]
-                if nbr is not None:
+                if nbr is not None and nbr not in seen:
+                    seen.add(nbr)
                     nbrs.append(nbr)
         return nbrs
 
-    def is_cell_on_boundary(self, cell):
+    def is_cell_on_boundary(self, cell: Cell) -> bool:
         """Verify that a cell is on the boundary.
 
         Parameters
@@ -4170,7 +4476,7 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`is_vertex_on_boundary`, :meth:`is_edge_on_boundary`, :meth:`is_face_on_boundary`
+        is_vertex_on_boundary, is_edge_on_boundary, is_face_on_boundary
 
         """
         faces = self.cell_faces(cell)
@@ -4183,7 +4489,7 @@ class VolMesh(Datastructure):
     # Cell Geometry
     # --------------------------------------------------------------------------
 
-    def cell_points(self, cell):
+    def cell_points(self, cell: Cell) -> list[Point]:
         """Compute the points of the vertices of a cell.
 
         Parameters
@@ -4198,12 +4504,12 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`cell_lines`, :meth:`cell_polygons`
+        cell_lines, cell_polygons
 
         """
         return [self.vertex_point(vertex) for vertex in self.cell_vertices(cell)]
 
-    def cell_lines(self, cell):
+    def cell_lines(self, cell: Cell) -> list[Line]:
         """Compute the lines of the edges of a cell.
 
         Parameters
@@ -4218,12 +4524,12 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`cell_points`, :meth:`cell_polygons`
+        cell_points, cell_polygons
 
         """
         return [self.edge_line(edge) for edge in self.cell_edges(cell)]
 
-    def cell_polygons(self, cell):
+    def cell_polygons(self, cell: Cell) -> list[Polygon]:
         """Compute the polygons of the faces of a cell.
 
         Parameters
@@ -4238,12 +4544,12 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`cell_points`, :meth:`cell_lines`
+        cell_points, cell_lines
 
         """
         return [self.face_polygon(face) for face in self.cell_faces(cell)]
 
-    def cell_centroid(self, cell):
+    def cell_centroid(self, cell: Cell) -> Point:
         """Compute the point at the centroid of a cell.
 
         Parameters
@@ -4258,13 +4564,13 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`cell_center`
+        cell_center
 
         """
         vertices = self.cell_vertices(cell)
         return Point(*centroid_points([self.vertex_coordinates(vertex) for vertex in vertices]))
 
-    def cell_center(self, cell):
+    def cell_center(self, cell: Cell) -> Point:
         """Compute the point at the center of mass of a cell.
 
         Parameters
@@ -4279,13 +4585,13 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`cell_centroid`
+        cell_centroid
 
         """
         vertices, faces = self.cell_to_vertices_and_faces(cell)
         return Point(*centroid_polyhedron((vertices, faces)))
 
-    def cell_vertex_normal(self, cell, vertex):
+    def cell_vertex_normal(self, cell: Cell, vertex: Vertex) -> Vector:
         """Return the normal vector at the vertex of a boundary cell as the weighted average of the
         normals of the neighboring faces.
 
@@ -4306,7 +4612,7 @@ class VolMesh(Datastructure):
         vectors = [self.face_normal(face) for face in self.vertex_halffaces(vertex) if face in cell_faces]
         return Vector(*normalize_vector(centroid_points(vectors)))
 
-    def cell_polyhedron(self, cell):
+    def cell_polyhedron(self, cell: Cell) -> Polyhedron:
         """Construct a polyhedron from the vertices and faces of a cell.
 
         Parameters
@@ -4327,7 +4633,7 @@ class VolMesh(Datastructure):
     # Boundaries
     # --------------------------------------------------------------------------
 
-    def vertices_on_boundaries(self):
+    def vertices_on_boundaries(self) -> list[Vertex]:
         """Find the vertices on the boundary.
 
         Returns
@@ -4337,7 +4643,7 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`faces_on_boundaries`, :meth:`cells_on_boundaries`
+        faces_on_boundaries, cells_on_boundaries
 
         """
         vertices = set()
@@ -4346,7 +4652,7 @@ class VolMesh(Datastructure):
                 vertices.update(self.halfface_vertices(face))
         return list(vertices)
 
-    def halffaces_on_boundaries(self):
+    def halffaces_on_boundaries(self) -> list[Halfface]:
         """Find the faces on the boundary.
 
         Returns
@@ -4356,7 +4662,7 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`vertices_on_boundaries`, :meth:`cells_on_boundaries`
+        vertices_on_boundaries, cells_on_boundaries
 
         """
         faces = set()
@@ -4365,7 +4671,7 @@ class VolMesh(Datastructure):
                 faces.add(face)
         return list(faces)
 
-    def cells_on_boundaries(self):
+    def cells_on_boundaries(self) -> list[Cell]:
         """Find the cells on the boundary.
 
         Returns
@@ -4375,19 +4681,21 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        :meth:`vertices_on_boundaries`, :meth:`faces_on_boundaries`
+        vertices_on_boundaries, faces_on_boundaries
 
         """
         cells = set()
         for face in self.halffaces_on_boundaries():
-            cells.add(self.halfface_cell(face))
+            cell = self.halfface_cell(face)
+            if cell is not None:
+                cells.add(cell)
         return list(cells)
 
     # --------------------------------------------------------------------------
     # Transformations
     # --------------------------------------------------------------------------
 
-    def transform(self, T):
+    def transform(self, T: Transformation) -> None:
         """Transform the mesh.
 
         Parameters

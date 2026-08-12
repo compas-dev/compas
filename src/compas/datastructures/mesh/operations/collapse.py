@@ -1,18 +1,25 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+from typing import TYPE_CHECKING
+from typing import Collection
+from typing import Literal
+from typing import Optional
+
+from ..types import Edge
+from ..types import Vertex
+
+if TYPE_CHECKING:
+    from ..mesh import Mesh
 
 
-def is_collapse_legal(mesh, edge, allow_boundary=False):
+def is_collapse_legal(mesh: "Mesh", edge: Edge, allow_boundary: bool = False) -> bool:
     """Verify if the requested collapse is legal for a triangle mesh.
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh
         The mesh.
-    edge : tuple[int, int]
+    edge
         The identifier of the edge.
-    allow_boundary : bool, optional
+    allow_boundary
         If True, collapse is allowed even if `u` and/or `v` is on the boundary.
 
     Returns
@@ -23,6 +30,9 @@ def is_collapse_legal(mesh, edge, allow_boundary=False):
 
     """
     u, v = edge
+
+    if not mesh.has_halfedge((u, v)) or not mesh.has_halfedge((v, u)):
+        return False
 
     u_on = mesh.is_vertex_on_boundary(u)
     v_on = mesh.is_vertex_on_boundary(v)
@@ -71,28 +81,36 @@ def is_collapse_legal(mesh, edge, allow_boundary=False):
     return True
 
 
-def mesh_collapse_edge(mesh, edge, t=0.5, allow_boundary=False, fixed=None):
+def mesh_collapse_edge(
+    mesh: "Mesh",
+    edge: Edge,
+    t: float = 0.5,
+    allow_boundary: bool = False,
+    fixed: Optional[Collection[Vertex]] = None,
+) -> Optional[Literal[False]]:
     """Collapse an edge to its first or second vertex, or to an intermediate point.
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh
         Instance of a mesh.
-    edge : tuple[int, int]
+    edge
         The identifier of the edge.
-    t : float, optional
+    t
         Determines where to collapse to.
         If ``t == 0.0`` collapse to start of the edge.
         If ``t == 1.0`` collapse to end of the edge.
         If ``0.0 < t < 1.0``, collapse to a point between start and end of the edge.
-    allow_boundary : bool, optional
+    allow_boundary
         If True, allow collapses involving boundary vertices.
-    fixed : list[int], optional
+    fixed
         A list of identifiers of vertices that should stay fixed.
 
     Returns
     -------
-    None
+    False | None
+        False if the collapse is not legal or involves a fixed vertex.
+        None if the collapse succeeds.
 
     Raises
     ------
@@ -101,6 +119,9 @@ def mesh_collapse_edge(mesh, edge, t=0.5, allow_boundary=False, fixed=None):
 
     """
     u, v = edge
+
+    if not mesh.has_halfedge((u, v)) or not mesh.has_halfedge((v, u)):
+        raise ValueError("The edge is not part of the mesh.")
 
     if t < 0.0:
         raise ValueError("Parameter t should be greater than or equal to 0.")
@@ -217,28 +238,35 @@ def mesh_collapse_edge(mesh, edge, t=0.5, allow_boundary=False, fixed=None):
 # - u and v on boundary
 
 
-def trimesh_collapse_edge(mesh, edge, t=0.5, allow_boundary=False, fixed=None):
+def trimesh_collapse_edge(
+    mesh: "Mesh",
+    edge: Edge,
+    t: float = 0.5,
+    allow_boundary: bool = False,
+    fixed: Optional[Collection[Vertex]] = None,
+) -> bool:
     """Collapse an edge to its first or second vertex, or to an intermediate point.
 
     Parameters
     ----------
-    mesh : :class:`compas.datastructures.Mesh`
+    mesh
         Instance of a mesh.
-    edge : tuple[int, int]
+    edge
         The identifier of the edge.
-    t : float, optional
+    t
         Determines where to collapse to.
         If ``t == 0.0`` collapse to the start of the edge.
         If ``t == 1.0`` collapse to the end of the edge.
         If ``0.0 < t < 1.0``, collapse to a point between start and end.
-    allow_boundary : bool, optional
+    allow_boundary
         If True, allow collapses involving vertices on the boundary.
-    fixed : list, optional
+    fixed
         Identifiers of the vertices that should stay fixed.
 
     Returns
     -------
-    None
+    bool
+        True if the collapse succeeds, False otherwise.
 
     Raises
     ------
@@ -247,6 +275,9 @@ def trimesh_collapse_edge(mesh, edge, t=0.5, allow_boundary=False, fixed=None):
 
     """
     u, v = edge
+
+    if not mesh.has_halfedge((u, v)) or not mesh.has_halfedge((v, u)):
+        raise ValueError("The edge is not part of the mesh.")
 
     if t < 0.0:
         raise ValueError("Parameter t should be greater than or equal to 0.")

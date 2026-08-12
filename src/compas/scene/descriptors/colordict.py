@@ -1,9 +1,5 @@
-import compas
+from collections.abc import Mapping
 
-if compas.PY2:
-    from collections import Mapping
-else:
-    from collections.abc import Mapping
 from compas.colors.colordict import ColorDict
 
 

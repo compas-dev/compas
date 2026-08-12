@@ -1,29 +1,30 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
-try:
-    basestring  # type: ignore
-except NameError:
-    basestring = str
-
 import colorsys
 import re
+from typing import Annotated
+from typing import Iterator
+from typing import Optional
+from typing import Sequence
+from typing import Union
+from typing import cast
+
+from typing_extensions import Self
 
 from compas.colors.html_colors import HTML_TO_RGB255
 from compas.data import Data
 from compas.tolerance import TOL
 
-BASE16 = "0123456789abcdef"
+BASE16: str = "0123456789abcdef"
 
-try:
-    HEX_DEC = {v: int(v, base=16) for v in [x + y for x in BASE16 for y in BASE16]}
-except Exception:
-    HEX_DEC = {v: int(v, 16) for v in [x + y for x in BASE16 for y in BASE16]}
+HEX_DEC: dict[str, int] = {v: int(v, base=16) for v in [x + y for x in BASE16 for y in BASE16]}
 
 
 class ColorError(Exception):
     """Raise if color input is not a color."""
+
+
+ColorLikeSequence = Union[Annotated[Sequence[int], 3], Annotated[Sequence[float], 3]]
+ColorLike = Union[str, ColorLikeSequence]
+ColorInput = Union["Color", ColorLike]
 
 
 class Color(Data):
@@ -31,67 +32,67 @@ class Color(Data):
 
     Parameters
     ----------
-    red : float
+    red
         The red component in the range ``[0.0, 1.0]``.
-    green : float
+    green
         The green component in the range of ``[0.0, 1.0]``.
-    blue : float
+    blue
         The blue component in the range of ``[0.0, 1.0]``.
-    alpha : float, optional
+    alpha
         Transparency setting.
         If ``alpha = 0.0``, the color is fully transparent.
         If ``alpha = 1.0``, the color is fully opaque.
-    name : str, optional
+    name
         The name of the color.
 
     Attributes
     ----------
-    r : float
+    r
         Red component of the color in RGB1 color space.
-    g : float
+    g
         Green component of the color in RGB1 color space.
-    b : float
+    b
         Blue component of the color in RGB1 color space.
-    a : float
+    a
         Transparency in RGB1 color space.
-    rgb : tuple[float, float, float]
+    rgb
         RGB1 color tuple, with components in the range ``[0.0, 1.0]``.
-    rgba : tuple[float, float, float, float]
+    rgba
         RGBA1 color tuple (including alpha), with components in the range ``[0.0, 1.0]``.
-    rgb255 : tuple[int, int, int]
+    rgb255
         RGB255 color tuple, with components in the range ``[0, 255]``.
-    rgba255 : tuple[int, int, int, int]
+    rgba255
         RGBA255 color tuple (including alpha), with components in the range ``[0, 255]``.
-    hex : str
+    hex
         Hexadecimal color string.
-    hls : tuple[float, float, float]
+    hls
         Hue, Lightness, Saturation.
-    hsv : tuple[float, float, float]
+    hsv
         Hue, Saturation, Value / Brightness.
-    lightness : float
+    lightness
         How much white the color appears to contain.
         This is the "Lightness" in HLS.
         Making a color "lighter" is like adding more white.
-    brightness : float
+    brightness
         How well-lit the color appears to be.
         This is the "Value" in HSV.
         Making a color "brighter" is like shining a stronger light on it, or illuminating it better.
-    yuv : tuple[float, float, float]
+    yuv
         Luma and chroma components, with chroma defined by the blue and red projections.
-    luma : float
+    luma
         The brightness of a yuv signal.
-    chroma : tuple[float, float]
+    chroma
         The color of a yuv signal.
         "How different from a grey of the same lightness the color appears to be."
-    luminance : float
+    luminance
         The amount of light that passes through, is emitted from, or is reflected from a particular area.
         Here, it expresses the preceived brightness of the color.
         Note that this is not the same as the "Lightness" of HLS or the "Value/Brightness" of HSV.
-    saturation : float
+    saturation
         The perceived freedom of whiteness.
-    is_light : bool
+    is_light
         If True, the color is considered light.
-    contrast : :class:`compas.colors.Color`
+    contrast
         The contrasting color to the current color.
 
     Examples
@@ -108,7 +109,7 @@ class Color(Data):
     ...
     ValueError: Components of an RGBA color should be in the range 0-1.
 
-    To create a color with components in the range ``[0, 255]``, use the :meth:`from_rgb255` constructor.
+    To create a color with components in the range ``[0, 255]``, use the `from_rgb255` constructor.
 
     >>> Color.from_rgb255(255, 0, 0)
     Color(red=1.0, green=0.0, blue=0.0, alpha=1.0)
@@ -142,40 +143,29 @@ class Color(Data):
 
     See Also
     --------
-    :class:`compas.colors.ColorMap`
+    compas.colors.ColorMap
 
     """
 
-    DATASCHEMA = {
-        "type": "object",
-        "properties": {
-            "red": {"type": "number", "minimum": 0.0, "maximum": 1.0},
-            "green": {"type": "number", "minimum": 0.0, "maximum": 1.0},
-            "blue": {"type": "number", "minimum": 0.0, "maximum": 1.0},
-            "alpha": {"type": "number", "minimum": 0.0, "maximum": 1.0},
-        },
-        "required": ["red", "green", "blue", "alpha"],
-    }
-
     @property
-    def __data__(self):
+    def __data__(self) -> dict[str, float]:
         return {"red": self.r, "green": self.g, "blue": self.b, "alpha": self.a}
 
-    def __init__(self, red, green, blue, alpha=1.0, name=None):
-        super(Color, self).__init__(name=name)
-        self._r = 1.0
-        self._g = 1.0
-        self._b = 1.0
-        self._a = 1.0
+    def __init__(self, red: float, green: float, blue: float, alpha: float = 1.0, name: Optional[str] = None) -> None:
+        super().__init__(name=name)
+        self._r: float = 1.0
+        self._g: float = 1.0
+        self._b: float = 1.0
+        self._a: float = 1.0
         self.r = red
         self.g = green
         self.b = blue
         self.a = alpha
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "{0}(red={1}, green={2}, blue={3}, alpha={4})".format(type(self).__name__, self.r, self.g, self.b, self.a)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "{0}(red={1}, green={2}, blue={3}, alpha={4})".format(
             type(self).__name__,
             TOL.format_number(self.r),
@@ -184,7 +174,7 @@ class Color(Data):
             TOL.format_number(self.a),
         )
 
-    def __getitem__(self, key):
+    def __getitem__(self, key: int) -> float:
         if key == 0:
             return self.r
         if key == 1:
@@ -193,13 +183,14 @@ class Color(Data):
             return self.b
         raise KeyError
 
-    def __len__(self):
+    def __len__(self) -> int:
         return 3
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[float]:
         return iter(self.rgb)
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
+        other = cast(Union["Color", ColorLikeSequence], other)
         return all(a == b for a, b in zip(self, other))
 
     # --------------------------------------------------------------------------
@@ -207,124 +198,124 @@ class Color(Data):
     # --------------------------------------------------------------------------
 
     @property
-    def r(self):
+    def r(self) -> float:
         return self._r
 
     @r.setter
-    def r(self, red):
+    def r(self, red: float) -> None:
         if red > 1.0 or red < 0.0:
             raise ValueError("Components of an RGBA color should be in the range 0-1.")
         self._r = red
 
     @property
-    def g(self):
+    def g(self) -> float:
         return self._g
 
     @g.setter
-    def g(self, green):
+    def g(self, green: float) -> None:
         if green > 1.0 or green < 0.0:
             raise ValueError("Components of an RGBA color should be in the range 0-1.")
         self._g = green
 
     @property
-    def b(self):
+    def b(self) -> float:
         return self._b
 
     @b.setter
-    def b(self, blue):
+    def b(self, blue: float) -> None:
         if blue > 1.0 or blue < 0.0:
             raise ValueError("Components of an RGBA color should be in the range 0-1.")
         self._b = blue
 
     @property
-    def a(self):
+    def a(self) -> float:
         return self._a
 
     @a.setter
-    def a(self, alpha):
+    def a(self, alpha: float) -> None:
         if alpha > 1.0 or alpha < 0.0:
             raise ValueError("Components of an RGBA color should be in the range 0-1.")
         self._a = alpha
 
     @property
-    def rgb(self):
+    def rgb(self) -> tuple[float, float, float]:
         r = self.r
         g = self.g
         b = self.b
         return r, g, b
 
     @property
-    def rgb255(self):
+    def rgb255(self) -> tuple[int, int, int]:
         r = int(self.r * 255)
         g = int(self.g * 255)
         b = int(self.b * 255)
         return r, g, b
 
     @property
-    def rgba(self):
+    def rgba(self) -> tuple[float, float, float, float]:
         r, g, b = self.rgb
         a = self.a
         return r, g, b, a
 
     @property
-    def rgba255(self):
+    def rgba255(self) -> tuple[int, int, int, int]:
         r, g, b = self.rgb255
         a = int(self.a * 255)
         return r, g, b, a
 
     @property
-    def hex(self):
+    def hex(self) -> str:
         return "#{0:02x}{1:02x}{2:02x}".format(*self.rgb255)
 
     @property
-    def hls(self):
+    def hls(self) -> tuple[float, float, float]:
         return colorsys.rgb_to_hls(*self.rgb)
 
     @property
-    def hsv(self):
+    def hsv(self) -> tuple[float, float, float]:
         return colorsys.rgb_to_hsv(*self.rgb)
 
     @property
-    def lightness(self):
+    def lightness(self) -> float:
         return self.hls[1]
 
     @property
-    def brightness(self):
+    def brightness(self) -> float:
         return self.hsv[2]
 
     @property
-    def is_light(self):
+    def is_light(self) -> bool:
         return self.luminance > 0.179
 
     @property
-    def yuv(self):
+    def yuv(self) -> tuple[float, float, float]:
         y = self.luma
         u, v = self.chroma
         return y, u, v
 
     @property
-    def luma(self):
+    def luma(self) -> float:
         return 0.299 * self.r + 0.587 * self.g + 0.114 * self.b
 
     @property
-    def chroma(self):
+    def chroma(self) -> tuple[float, float]:
         y = self.luma
         u = 0.492 * (self.b - y)
         v = 0.877 * (self.r - y)
         return u, v
 
     @property
-    def luminance(self):
+    def luminance(self) -> float:
         return 0.2126 * self.r + 0.7152 * self.g + 0.0722 * self.b
 
     @property
-    def saturation(self):
+    def saturation(self) -> float:
         maxval = max(self.r, self.g, self.b)
         minval = min(self.r, self.g, self.b)
         return (maxval - minval) / maxval
 
     @property
-    def contrast(self):
+    def contrast(self) -> Self:
         return self.darkened(25) if self.is_light else self.lightened(50)
 
     # --------------------------------------------------------------------------
@@ -332,41 +323,41 @@ class Color(Data):
     # --------------------------------------------------------------------------
 
     @classmethod
-    def from_rgb255(cls, r, g, b):  # type: (int, int, int) -> Color
+    def from_rgb255(cls, r: int, g: int, b: int) -> Self:
         """Construct a color from RGB255 components.
 
         Parameters
         ----------
-        r : int & valuerange[0, 255]
-            Red component.
-        g : int & valuerange[0, 255]
-            Green component.
-        b : int & valuerange[0, 255]
-            Blue component.
+        r
+            Red component in the range ``[0, 255]``.
+        g
+            Green component in the range ``[0, 255]``.
+        b
+            Blue component in the range ``[0, 255]``.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(r / 255, g / 255, b / 255)
 
     @classmethod
-    def from_hls(cls, hue, luminance, saturation):  # type: (float, float, float) -> Color
+    def from_hls(cls, hue: float, luminance: float, saturation: float) -> Self:
         """Construct a color from Hue, Lightness, and Saturation.
 
         Parameters
         ----------
-        hue : float
+        hue
             Hue.
-        lightness : float
+        luminance
             Lightness.
-        saturation : float
+        saturation
             Saturation.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         References
         ----------
@@ -377,21 +368,21 @@ class Color(Data):
         return cls(r, g, b)
 
     @classmethod
-    def from_hsv(cls, h, s, v):  # type: (float, float, float) -> Color
+    def from_hsv(cls, h: float, s: float, v: float) -> Self:
         """Construct a color from Hue, Saturation, and Value.
 
         Parameters
         ----------
-        h : float
+        h
             Hue.
-        s : float
+        s
             Saturation.
-        v : float
+        v
             Value.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         References
         ----------
@@ -402,21 +393,21 @@ class Color(Data):
         return cls(r, g, b)
 
     @classmethod
-    def from_yiq(cls, y, i, q):  # type: (float, float, float) -> Color
+    def from_yiq(cls, y: float, i: float, q: float) -> Self:
         """Construct a color from components in the YIQ color space.
 
         Parameters
         ----------
-        y : float
+        y
             Luma.
-        i : float
+        i
             Orange-blue chroma.
-        q : float
+        q
             Purple-green chroma.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         References
         ----------
@@ -427,21 +418,21 @@ class Color(Data):
         return cls(r, g, b)
 
     @classmethod
-    def from_yuv(cls, y, u, v):  # type: (float, float, float) -> Color
+    def from_yuv(cls, y: float, u: float, v: float) -> Self:
         """Construct a color from components in the YUV color space.
 
         Parameters
         ----------
-        y : float
+        y
             Luma.
-        u : float
+        u
             Blue projection chroma.
-        v : float
+        v
             Red projection chroma.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         References
         ----------
@@ -454,17 +445,17 @@ class Color(Data):
         return cls(r, g, b)
 
     @classmethod
-    def from_number(cls, number):  # type: (float) -> Color
+    def from_number(cls, number: float) -> Self:
         """Construct a color from a single number in the range 0-1.
 
         Parameters
         ----------
-        number : float
+        number
             Number in the range 0-1, representing the color.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         if number == 0.0:
@@ -492,17 +483,17 @@ class Color(Data):
     from_i = from_number
 
     @classmethod
-    def from_hex(cls, value):  # type: (str) -> Color
+    def from_hex(cls, value: str) -> Self:
         """Construct a color from a hexadecimal color value.
 
         Parameters
         ----------
-        value : str
+        value
             The hexadecimal color.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         value = value.lstrip("#").lower()
@@ -512,17 +503,17 @@ class Color(Data):
         return cls(r / 255.0, g / 255.0, b / 255.0)
 
     @classmethod
-    def from_name(cls, name):  # type: (str) -> Color
+    def from_name(cls, name: str) -> Self:
         """Construct a color from a name in the extended color table of HTML/CSS/SVG.
 
         Parameters
         ----------
-        name : str
+        name
             The color name. The name is case-insensitive.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         References
         ----------
@@ -535,21 +526,21 @@ class Color(Data):
         return cls.from_rgb255(*rgb255)
 
     @classmethod
-    def from_unknown(cls, unknown):
+    def from_unknown(cls, unknown: ColorInput) -> Optional["Color"]:
         """Construct a color from an unknown input.
 
         Parameters
         ----------
-        unknown : str | tuple[int, int, int] | tuple[float, float, float] | :class:`compas.colors.Color`
+        unknown
             The color input.
 
         Returns
         -------
-        :class:`compas.colors.Color` | None
+        Color | None
 
         Raises
         ------
-        :class:`ColorError`
+        ColorError
 
         """
         if not unknown:
@@ -559,31 +550,33 @@ class Color(Data):
             return unknown
 
         if Color._is_rgb255(unknown):
-            return cls.from_rgb255(*list(unknown))
+            rgb255 = cast(tuple[int, int, int], list(cast(Sequence[int], unknown)))
+            return cls.from_rgb255(*rgb255)
 
         if Color._is_hex(unknown):
-            return cls.from_hex(unknown)
+            return cls.from_hex(cast(str, unknown))
 
         if Color._is_rgb1(unknown):
-            return cls(*list(unknown))
+            rgb1 = cast(tuple[float, float, float], list(cast(Sequence[float], unknown)))
+            return cls(*rgb1)
 
-        if isinstance(unknown, basestring):
+        if isinstance(unknown, str):
             return cls.from_name(unknown)
 
         raise ColorError
 
     @staticmethod
-    def coerce(color):
+    def coerce(color: ColorInput) -> Optional["Color"]:
         """Coerce a color input into a color.
 
         Parameters
         ----------
-        color : str | tuple[int, int, int] | tuple[float, float, float] | :class:`compas.colors.Color`
+        color
             The color input.
 
         Returns
         -------
-        :class:`compas.colors.Color` | None
+        Color | None
 
         Raises
         ------
@@ -594,16 +587,18 @@ class Color(Data):
             return
         if isinstance(color, Color):
             return color
-        if Color._is_rgb255(color):
-            return Color.from_rgb255(*list(color))
         if Color._is_hex(color):
-            return Color.from_hex(color)
+            return Color.from_hex(cast(str, color))
         if Color._is_rgb1(color):
-            return Color(*list(color))
+            rgb1 = cast(tuple[float, float, float], color)
+            return Color(*rgb1)
+        if Color._is_rgb255(color):
+            rgb255 = cast(tuple[int, int, int], color)
+            return Color.from_rgb255(*rgb255)
         raise ColorError
 
     @staticmethod
-    def _is_rgb1(color):
+    def _is_rgb1(color: object) -> bool:
         """Verify that the color is in the RGB 1 color space.
 
         Returns
@@ -611,10 +606,13 @@ class Color(Data):
         bool
 
         """
-        return color and all(isinstance(c, float) and (c >= 0 and c <= 1) for c in color)
+        if not color:
+            return False
+        color = cast(ColorLikeSequence, color)
+        return all(isinstance(c, float) and (c >= 0 and c <= 1) for c in color)
 
     @staticmethod
-    def _is_rgb255(color):
+    def _is_rgb255(color: object) -> bool:
         """Verify that the color is in the RGB 255 color space.
 
         Returns
@@ -622,10 +620,13 @@ class Color(Data):
         bool
 
         """
-        return color and all(isinstance(c, int) and (c >= 0 and c <= 255) for c in color)
+        if not color:
+            return False
+        color = cast(ColorLikeSequence, color)
+        return all(isinstance(c, int) and (c >= 0 and c <= 255) for c in color)
 
     @staticmethod
-    def _is_hex(color):
+    def _is_hex(color: object) -> bool:
         """Verify that the color is in hexadecimal format.
 
         Returns
@@ -633,7 +634,7 @@ class Color(Data):
         bool
 
         """
-        if isinstance(color, basestring):
+        if isinstance(color, str):
             match = re.search(r"^#(?:[0-9a-fA-F]{3}){1,2}$", color)
             if match:
                 return True
@@ -645,166 +646,166 @@ class Color(Data):
     # --------------------------------------------------------------------------
 
     @classmethod
-    def white(cls):
+    def white(cls) -> Self:
         """Construct the color white.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(1.0, 1.0, 1.0)
 
     @classmethod
-    def black(cls):
+    def black(cls) -> Self:
         """Construct the color black.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(0.0, 0.0, 0.0)
 
     @classmethod
-    def grey(cls):
+    def grey(cls) -> Self:
         """Construct the color grey.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(0.5, 0.5, 0.5)
 
     @classmethod
-    def red(cls):
+    def red(cls) -> Self:
         """Construct the color red.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(1.0, 0.0, 0.0)
 
     @classmethod
-    def orange(cls):
+    def orange(cls) -> Self:
         """Construct the color orange.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(1.0, 0.5, 0.0)
 
     @classmethod
-    def yellow(cls):
+    def yellow(cls) -> Self:
         """Construct the color yellow.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(1.0, 1.0, 0.0)
 
     @classmethod
-    def lime(cls):
+    def lime(cls) -> Self:
         """Construct the color lime (or chartreuse green).
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(0.5, 1.0, 0.0)
 
     @classmethod
-    def green(cls):
+    def green(cls) -> Self:
         """Construct the color green.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(0.0, 1.0, 0.0)
 
     @classmethod
-    def mint(cls):
+    def mint(cls) -> Self:
         """Construct the color mint (or spring green).
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(0.0, 1.0, 0.5)
 
     @classmethod
-    def cyan(cls):
+    def cyan(cls) -> Self:
         """Construct the color cyan.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(0.0, 1.0, 1.0)
 
     @classmethod
-    def azure(cls):
+    def azure(cls) -> Self:
         """Construct the color azure.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(0.0, 0.5, 1.0)
 
     @classmethod
-    def blue(cls):
+    def blue(cls) -> Self:
         """Construct the color blue.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(0.0, 0.0, 1.0)
 
     @classmethod
-    def violet(cls):
+    def violet(cls) -> Self:
         """Construct the color violet.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(0.5, 0.0, 1.0)
 
     @classmethod
-    def magenta(cls):
+    def magenta(cls) -> Self:
         """Construct the color magenta.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(1.0, 0.0, 1.0)
 
     @classmethod
-    def pink(cls):
+    def pink(cls) -> Self:
         """Construct the color pink.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(1.0, 0.0, 0.5)
@@ -814,77 +815,78 @@ class Color(Data):
     # --------------------------------------------------------------------------
 
     @classmethod
-    def maroon(cls):
+    def maroon(cls) -> Self:
         """Construct the color maroon.
+
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(0.5, 0.0, 0.0)
 
     @classmethod
-    def brown(cls):
+    def brown(cls) -> Self:
         """Construct the color brown.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(0.5, 0.25, 0.0)
 
     @classmethod
-    def olive(cls):
+    def olive(cls) -> Self:
         """Construct the color olive.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(0.5, 0.5, 0.0)
 
     @classmethod
-    def teal(cls):
+    def teal(cls) -> Self:
         """Construct the color teal.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(0.0, 0.5, 0.5)
 
     @classmethod
-    def navy(cls):
+    def navy(cls) -> Self:
         """Construct the color navy.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(0.0, 0.0, 0.5)
 
     @classmethod
-    def purple(cls):
+    def purple(cls) -> Self:
         """Construct the color purple.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(0.5, 0.0, 0.5)
 
     @classmethod
-    def silver(cls):
+    def silver(cls) -> Self:
         """Construct the color silver.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         return cls(0.75, 0.75, 0.75)
@@ -901,12 +903,12 @@ class Color(Data):
     # Methods
     # --------------------------------------------------------------------------
 
-    def lighten(self, factor=10):
+    def lighten(self, factor: float = 10.0) -> None:
         """Lighten the color.
 
         Parameters
         ----------
-        factor : float, optional
+        factor
             Percentage of lightness increase.
 
         Returns
@@ -930,17 +932,17 @@ class Color(Data):
         self.g = g
         self.b = b
 
-    def lightened(self, factor=10):
+    def lightened(self, factor: float = 10.0) -> Self:
         """Return a lightened copy of the color.
 
         Parameters
         ----------
-        factor : float, optional
+        factor
             Percentage of lightness increase.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         Raises
         ------
@@ -952,12 +954,12 @@ class Color(Data):
         color.lighten(factor=factor)
         return color
 
-    def darken(self, factor=10):
+    def darken(self, factor: float = 10.0) -> None:
         """Darken the color.
 
         Parameters
         ----------
-        factor : float, optional
+        factor
             Percentage of lightness reduction.
 
         Returns
@@ -981,17 +983,17 @@ class Color(Data):
         self.g = g
         self.b = b
 
-    def darkened(self, factor=10):
+    def darkened(self, factor: float = 10.0) -> Self:
         """Return a darkened copy of the color.
 
         Parameters
         ----------
-        factor : float, optional
+        factor
             Percentage of lightness reduction.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         Raises
         ------
@@ -1003,7 +1005,7 @@ class Color(Data):
         color.darken(factor=factor)
         return color
 
-    def invert(self):
+    def invert(self) -> None:
         """Invert the current color wrt to the RGB color circle.
 
         Returns
@@ -1015,24 +1017,24 @@ class Color(Data):
         self.g = 1.0 - self.g
         self.b = 1.0 - self.b
 
-    def inverted(self):
+    def inverted(self) -> Self:
         """Return an inverted copy of the color.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         """
         color = self.copy()
         color.invert()
         return color
 
-    def saturate(self, factor=10):
+    def saturate(self, factor: float = 10.0) -> None:
         """Saturate the color by a given percentage.
 
         Parameters
         ----------
-        factor : float, optional
+        factor
             Percentage of saturation increase.
 
         Returns
@@ -1056,17 +1058,17 @@ class Color(Data):
         self.g = g
         self.b = b
 
-    def saturated(self, factor=10):
+    def saturated(self, factor: float = 10.0) -> Self:
         """Return a saturated copy of the color.
 
         Parameters
         ----------
-        factor : float, optional
+        factor
             Percentage of saturation increase.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         Raises
         ------
@@ -1078,12 +1080,12 @@ class Color(Data):
         color.saturate(factor=factor)
         return color
 
-    def desaturate(self, factor=10):
+    def desaturate(self, factor: float = 10.0) -> None:
         """Desaturate the color by a given percentage.
 
         Parameters
         ----------
-        factor : float, optional
+        factor
             Percentage of saturation reduction.
 
         Returns
@@ -1107,17 +1109,17 @@ class Color(Data):
         self.g = g
         self.b = b
 
-    def desaturated(self, factor=10):
+    def desaturated(self, factor: float = 10.0) -> Self:
         """Return a desaturated copy of the color.
 
         Parameters
         ----------
-        factor : float, optional
+        factor
             Percentage of saturation reduction.
 
         Returns
         -------
-        :class:`compas.colors.Color`
+        Color
 
         Raises
         ------
