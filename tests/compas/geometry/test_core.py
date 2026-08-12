@@ -94,6 +94,19 @@ def test_angles_vectors(u, v, angles):
 
 
 @pytest.mark.parametrize(
+    ("u", "v"),
+    [
+        ([1.0, 0.0, 0.0], [0.0, 0.0, 0.0]),
+        ([0.0, 0.0, 0.0], [1.0, 0.0, 0.0]),
+        ([0.0, 0.0, 0.0], [0.0, 0.0, 0.0]),
+    ],
+)
+def test_angles_vectors_fails_when_input_is_zero(u, v):
+    with pytest.raises(ValueError):
+        angles_vectors(u, v)
+
+
+@pytest.mark.parametrize(
     ("a", "b", "angle"),
     [
         (

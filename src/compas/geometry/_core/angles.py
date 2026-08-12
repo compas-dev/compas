@@ -274,6 +274,11 @@ def angles_vectors(u, v, deg=False):
     deg : bool, optional
         If True, returns the angle in degrees.
 
+    Raises
+    ------
+    ValueError
+        If one of the input vectors is a zero-length vector.
+
     Returns
     -------
     float
