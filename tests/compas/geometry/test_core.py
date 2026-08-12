@@ -74,19 +74,6 @@ def test_angle_vectors_fails_when_input_is_zero(u, v):
         angle_vectors(u, v)
 
 
-# @pytest.mark.parametrize(
-#     ("u", "v"),
-#     [
-#         ([0.0, 0.0, 0.0], [0.0, 0.0, 0.0]),
-#         ([0.0, 0.0, 0.0], [1.0, 0.0, 0.0]),
-#         ([1.0, 0.0, 0.0], [0.0, 0.0, 0.0]),
-#     ],
-# )
-# def test_angle_vectors_fails_when_input_is_zero(u, v):
-#     with pytest.raises(ZeroDivisionError):
-#         angle_vectors(u, v)
-
-
 @pytest.mark.parametrize(
     ("u", "v", "angles"),
     [
@@ -104,19 +91,6 @@ def test_angle_vectors_fails_when_input_is_zero(u, v):
 def test_angles_vectors(u, v, angles):
     a, b = angles
     assert TOL.is_allclose(angles_vectors(u, v), (a, b))
-
-
-# @pytest.mark.parametrize(
-#     ("u", "v"),
-#     [
-#         ([0.0, 0.0, 0.0], [0.0, 0.0, 0.0]),
-#         ([0.0, 0.0, 0.0], [1.0, 0.0, 0.0]),
-#         ([1.0, 0.0, 0.0], [0.0, 0.0, 0.0]),
-#     ],
-# )
-# def test_angles_vectors_fails_when_input_is_zero(u, v):
-#     with pytest.raises(ZeroDivisionError):
-#         angles_vectors(u, v)
 
 
 @pytest.mark.parametrize(
