@@ -1,3 +1,5 @@
+from typing import Union  # noqa: F401
+
 import compas.colors  # noqa: F401
 import compas.geometry  # noqa: F401
 
@@ -42,9 +44,9 @@ class GeometryObject(SceneObject):
 
     def __init__(
         self,
-        pointcolor=None,  # type: compas.colors.Color | None
-        linecolor=None,  # type: compas.colors.Color | None
-        surfacecolor=None,  # type: compas.colors.Color | None
+        pointcolor=None,  # type: Union[compas.colors.Color, None]
+        linecolor=None,  # type: Union[compas.colors.Color, None]
+        surfacecolor=None,  # type: Union[compas.colors.Color, None]
         pointsize=1.0,  # type: float
         linewidth=1.0,  # type: float
         show_points=False,  # type: bool

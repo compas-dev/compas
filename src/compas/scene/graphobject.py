@@ -1,3 +1,5 @@
+from typing import Union  # noqa: F401
+
 import compas.colors  # noqa: F401
 import compas.datastructures  # noqa: F401
 import compas.geometry  # noqa: F401
@@ -47,10 +49,10 @@ class GraphObject(SceneObject):
 
     def __init__(
         self,
-        show_nodes=True,  # type: bool | list
-        show_edges=True,  # type: bool | list
-        nodecolor=None,  # type: dict | compas.colors.Color | None
-        edgecolor=None,  # type: dict | compas.colors.Color | None
+        show_nodes=True,  # type: Union[bool, list]
+        show_edges=True,  # type: Union[bool, list]
+        nodecolor=None,  # type: Union[dict, compas.colors.Color, None]
+        edgecolor=None,  # type: Union[dict, compas.colors.Color, None]
         nodesize=1.0,  # type: float
         edgewidth=1.0,  # type: float
         **kwargs  # type: dict
@@ -91,7 +93,7 @@ class GraphObject(SceneObject):
 
     @property
     def transformation(self):
-        # type: () -> compas.geometry.Transformation | None
+        # type: () -> Union[compas.geometry.Transformation, None]
         return self._transformation
 
     @transformation.setter
@@ -102,7 +104,7 @@ class GraphObject(SceneObject):
 
     @property
     def node_xyz(self):
-        # type: () -> dict[int | str, list[float]]
+        # type: () -> dict[Union[int, str], list[float]]
         if self.graph:
             if self._node_xyz is None:
                 points = self.graph.nodes_attributes("xyz")
@@ -112,7 +114,7 @@ class GraphObject(SceneObject):
 
     @node_xyz.setter
     def node_xyz(self, node_xyz):
-        # type: (dict[int | str, list[float]]) -> None
+        # type: (dict[Union[int, str], list[float]]) -> None
         self._node_xyz = node_xyz
 
     def draw_nodes(self):

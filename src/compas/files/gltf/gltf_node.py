@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING
 from typing import Any
 from typing import Iterable
 from typing import Optional
+from typing import Union
 from typing import cast
 
 from compas.files.gltf.gltf_children import GLTFChildren
@@ -267,7 +268,7 @@ class GLTFNode:
         """
         return self.context.add_child_to_node(self, child_name, child_extras)
 
-    def add_mesh(self, mesh: "int | Mesh") -> "GLTFMesh":
+    def add_mesh(self, mesh: "Union[int, Mesh]") -> "GLTFMesh":
         """Attach an existing or converted mesh to this node.
 
         Parameters

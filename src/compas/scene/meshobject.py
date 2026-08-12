@@ -1,3 +1,5 @@
+from typing import Union  # noqa: F401
+
 import compas.colors  # noqa: F401
 import compas.datastructures  # noqa: F401
 import compas.geometry  # noqa: F401
@@ -54,12 +56,12 @@ class MeshObject(SceneObject):
 
     def __init__(
         self,
-        show_vertices=False,  # type: bool | list
-        show_edges=False,  # type: bool | list
-        show_faces=True,  # type: bool | list
-        vertexcolor=None,  # type: dict | compas.colors.Color | None
-        edgecolor=None,  # type: dict | compas.colors.Color | None
-        facecolor=None,  # type: dict | compas.colors.Color | None
+        show_vertices=False,  # type: Union[bool, list]
+        show_edges=False,  # type: Union[bool, list]
+        show_faces=True,  # type: Union[bool, list]
+        vertexcolor=None,  # type: Union[dict, compas.colors.Color, None]
+        edgecolor=None,  # type: Union[dict, compas.colors.Color, None]
+        facecolor=None,  # type: Union[dict, compas.colors.Color, None]
         vertexsize=1.0,  # type: float
         edgewidth=1.0,  # type: float
         **kwargs  # dict

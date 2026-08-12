@@ -18,6 +18,7 @@ from .surfaces import surface_to_compas
 if not compas.IPY:
     from typing import Callable  # noqa: F401
     from typing import Type  # noqa: F401
+    from typing import Union  # noqa: F401
 
 # =============================================================================
 # To Rhino
@@ -112,7 +113,7 @@ def brep_to_compas_cone(brep):
 
 
 def brep_to_compas_cylinder(brep, tol=None):
-    # type: (Rhino.Geometry.Brep, float | None) -> compas.geometry.Cylinder
+    # type: (Rhino.Geometry.Brep, Union[float, None]) -> compas.geometry.Cylinder
     """Convert a Rhino brep to a COMPAS cylinder.
 
     Parameters
@@ -182,7 +183,7 @@ def brep_to_compas_sphere(brep):
 
 
 def brep_to_compas_surface(brep, tol=None):
-    # type: (Rhino.Geometry.Brep, float | None) -> compas.geometry.NurbsSurface
+    # type: (Rhino.Geometry.Brep, Union[float, None]) -> compas.geometry.NurbsSurface
     """Convert a Rhino brep to a COMPAS surface.
 
     Parameters
@@ -221,7 +222,7 @@ def brep_to_compas_surface(brep, tol=None):
 
 
 def brep_to_compas_mesh(brep, facefilter=None, cleanup=False, cls=None):
-    # type: (Rhino.Geometry.Brep, Callable | None, bool, Type[Mesh] | None) -> Mesh
+    # type: (Rhino.Geometry.Brep, Union[Callable, None], bool, Union[Type[Mesh], None]) -> Mesh
     """Convert the face loops of a Rhino brep to a COMPAS mesh.
 
     Parameters

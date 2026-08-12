@@ -2,6 +2,7 @@ from copy import deepcopy
 from typing import TYPE_CHECKING
 from typing import Any
 from typing import Optional
+from typing import Union
 from typing import cast
 
 from compas.files.gltf.data_classes import AnimationData
@@ -548,7 +549,7 @@ class GLTFDocument:
         """
         return GLTFMesh.from_mesh(self, mesh)
 
-    def add_mesh_to_node(self, node: GLTFNode, mesh: "int | Mesh") -> GLTFMesh:
+    def add_mesh_to_node(self, node: GLTFNode, mesh: "Union[int, Mesh]") -> GLTFMesh:
         """Attach an existing or converted mesh to a node.
 
         Parameters

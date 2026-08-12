@@ -10,6 +10,7 @@ from compas.itertools import pairwise
 
 if not compas.IPY:
     from typing import TYPE_CHECKING
+    from typing import Union  # noqa: F401
 
     if TYPE_CHECKING:
         import compas.datastructures  # noqa: F401
@@ -51,7 +52,7 @@ class Shape(Geometry):
 
     """
 
-    def __init__(self, frame=None, name=None):  # type: (Frame | None, str | None) -> None
+    def __init__(self, frame=None, name=None):  # type: (Union[Frame, None], Union[str, None]) -> None
         super(Shape, self).__init__(name=name)
         self._frame = None
         self._transformation = None
@@ -78,7 +79,7 @@ class Shape(Geometry):
         return self._frame
 
     @frame.setter
-    def frame(self, frame):  # type: (Frame | None) -> None
+    def frame(self, frame):  # type: (Union[Frame, None]) -> None
         if not frame:
             self._frame = None
         else:
@@ -221,7 +222,7 @@ class Shape(Geometry):
     # =============================================================================
 
     def to_vertices_and_faces(self, triangulated=False, u=None, v=None):
-        # type: (bool, int | None, int | None) -> tuple[list[list[float]], list[list[int]] | list[tuple[int, int, int]]]
+        # type: (bool, Union[int, None], Union[int, None]) -> tuple[list[list[float]], Union[list[list[int]], list[tuple[int, int, int]]]]
         """Convert the shape to a list of vertices and faces.
 
         Parameters
@@ -255,7 +256,7 @@ class Shape(Geometry):
         return vertices, faces
 
     def to_polyhedron(self, triangulated=False, u=None, v=None):
-        # type: (bool, int | None, int | None) -> compas.geometry.Polyhedron
+        # type: (bool, Union[int, None], Union[int, None]) -> compas.geometry.Polyhedron
         """Convert the shape to a polyhedron.
 
         Parameters
@@ -290,7 +291,7 @@ class Shape(Geometry):
         return Polyhedron(vertices, faces)
 
     def to_mesh(self, triangulated=False, u=None, v=None):
-        # type: (bool, int | None, int | None) -> compas.datastructures.Mesh
+        # type: (bool, Union[int, None], Union[int, None]) -> compas.datastructures.Mesh
         """Returns a mesh representation of the box.
 
         Parameters

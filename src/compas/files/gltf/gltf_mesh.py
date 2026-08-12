@@ -5,6 +5,7 @@ from collections.abc import Sequence
 from typing import TYPE_CHECKING
 from typing import Any
 from typing import Optional
+from typing import Union
 from typing import cast
 
 from typing_extensions import Self
@@ -159,7 +160,7 @@ class GLTFMesh:
 
     @classmethod
     def validate_vertices(
-        cls, vertices: Sequence[Sequence[float]] | Mapping[Hashable, Sequence[float]]
+        cls, vertices: Union[Sequence[Sequence[float]], Mapping[Hashable, Sequence[float]]]
     ) -> None:
         """Raise an exception if there are either too many vertices, or the vertices do not
         represent points in 3-space.
@@ -185,7 +186,7 @@ class GLTFMesh:
     def from_vertices_and_faces(
         cls,
         context: "GLTFDocument",
-        vertices: Sequence[Sequence[float]] | Mapping[Hashable, Sequence[float]],
+        vertices: Union[Sequence[Sequence[float]], Mapping[Hashable, Sequence[float]]],
         faces: Sequence[Sequence[Hashable]],
         mesh_name: Optional[str] = None,
         extras: Any = None,

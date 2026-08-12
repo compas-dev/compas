@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING
 from typing import Any
 from typing import Optional
 from typing import Sequence
+from typing import Union
 from typing import cast
 
 from compas.datastructures import Mesh
@@ -260,7 +261,7 @@ def gltf_to_scene(
     scene = scene_type(name=source_scene.name or "Scene")
     objects_by_primitive: dict[tuple[int, tuple[float, ...], int], list[Any]] = {}
 
-    def add_node(node: "GLTFNode", parent: "SceneObject | TreeNode") -> None:
+    def add_node(node: "GLTFNode", parent: "Union[SceneObject, TreeNode]") -> None:
         group = scene.add_group(
             name=node.name or "Node {}".format(node.key),
             parent=parent,

@@ -2,6 +2,7 @@ from typing import TYPE_CHECKING
 from typing import Any
 from typing import Optional
 from typing import Type
+from typing import Union
 from typing import cast
 
 from typing_extensions import Self
@@ -134,7 +135,7 @@ class Scene(Tree):
     def add(
         self,
         item: Any,
-        parent: Optional[SceneObject | TreeNode] = None,
+        parent: Optional[Union[SceneObject, TreeNode]] = None,
         **kwargs: Any,
     ) -> SceneObject:
         """Add an item to the scene.
@@ -175,7 +176,7 @@ class Scene(Tree):
     def add_group(
         self,
         name: str,
-        parent: Optional[SceneObject | TreeNode] = None,
+        parent: Optional[Union[SceneObject, TreeNode]] = None,
         **kwargs: Any,
     ) -> Group:
         group = Group(name=name, **kwargs)
