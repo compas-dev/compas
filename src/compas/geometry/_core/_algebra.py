@@ -9,7 +9,6 @@ from math import sin
 from math import sqrt
 from math import tan
 from typing import Optional
-from typing import Protocol
 from typing import Sequence
 from typing import overload
 
@@ -44,13 +43,6 @@ _SPEC2TUPLE = {
 """used for Euler angles: to map rotation type and axes to tuples of inner axis, parity, repetition, frame"""
 
 _NEXT_SPEC = [1, 2, 0, 1]
-
-
-class _FrameLike(Protocol):
-    point: Sequence[float]
-    xaxis: Sequence[float]
-    yaxis: Sequence[float]
-    zaxis: Sequence[float]
 
 
 def vector_average(vector: Sequence[float]) -> float:
@@ -132,7 +124,7 @@ def argmax(values: Sequence[float]) -> int:
     1
 
     """
-    return max(range(len(values)), key=lambda i: values[i])  # type: ignore
+    return max(range(len(values)), key=lambda i: values[i])
 
 
 def argmin(values: Sequence[float]) -> int:
@@ -1585,7 +1577,7 @@ def compose_matrix(
         M = multiply_matrices(M, S)
     for i in range(4):
         for j in range(4):
-            M[i][j] /= M[3][3]  # type: ignore
+            M[i][j] /= M[3][3]
     return M
 
 
@@ -1625,7 +1617,7 @@ def identity_matrix(dim: int) -> list[list[float]]:
     return [[1.0 if i == j else 0.0 for i in range(dim)] for j in range(dim)]
 
 
-def matrix_from_frame(frame: _FrameLike) -> list[list[float]]:
+def matrix_from_frame(frame: Sequence[Sequence[float]]) -> list[list[float]]:
     """Computes a change of basis transformation from world XY to the frame.
 
     Parameters
@@ -1646,15 +1638,18 @@ def matrix_from_frame(frame: _FrameLike) -> list[list[float]]:
     >>> T = matrix_from_frame(f)
 
     """
+    # Core frame data contains an origin and two axes; derive the third axis.
+    point, xaxis, yaxis = frame
+    zaxis = cross_vectors(xaxis, yaxis)
     M = identity_matrix(4)
-    M[0][0], M[1][0], M[2][0] = frame.xaxis
-    M[0][1], M[1][1], M[2][1] = frame.yaxis
-    M[0][2], M[1][2], M[2][2] = frame.zaxis
-    M[0][3], M[1][3], M[2][3] = frame.point
+    M[0][0], M[1][0], M[2][0] = xaxis
+    M[0][1], M[1][1], M[2][1] = yaxis
+    M[0][2], M[1][2], M[2][2] = zaxis
+    M[0][3], M[1][3], M[2][3] = point
     return M
 
 
-def matrix_from_frame_to_frame(frame_from: _FrameLike, frame_to: _FrameLike) -> list[list[float]]:
+def matrix_from_frame_to_frame(frame_from: Sequence[Sequence[float]], frame_to: Sequence[Sequence[float]]) -> list[list[float]]:
     """Computes a transformation between two frames.
 
     This transformation allows to transform geometry from one Cartesian
@@ -1687,7 +1682,7 @@ def matrix_from_frame_to_frame(frame_from: _FrameLike, frame_to: _FrameLike) -> 
     return multiply_matrices(T2, matrix_inverse(T1))
 
 
-def matrix_from_change_of_basis(frame_from: _FrameLike, frame_to: _FrameLike) -> list[list[float]]:
+def matrix_from_change_of_basis(frame_from: Sequence[Sequence[float]], frame_to: Sequence[Sequence[float]]) -> list[list[float]]:
     """Computes a change of basis transformation between two frames.
 
     A basis change is essentially a remapping of geometry from one

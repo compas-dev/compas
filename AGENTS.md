@@ -33,6 +33,7 @@ These instructions apply to the entire repository. Preserve unrelated working-tr
 - Modernization should not silently change valid-input behavior, return types, ordering, orientation, side effects, or error behavior.
 - Before changing an implementation, compare old and new control flow and identify any equivalence that depends on data-structure invariants.
 - Prefer fixing types at API boundaries over changing runtime values inside algorithms.
+- When modernization or typing requires a small, non-obvious change to a function body, add a concise comment explaining why the change is necessary and which input contract or invariant it preserves.
 - Keep diffs narrow. Do not fold speculative architecture changes into typing, documentation, or compatibility patches.
 
 ## Tests and Validation

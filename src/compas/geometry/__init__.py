@@ -6,8 +6,6 @@ shapes, general polygons and polyhedrons, boundary representations (B-reps), and
 """
 # ruff: noqa: F401
 
-import compas
-
 # =============================================================================
 # Core
 # =============================================================================
@@ -203,17 +201,17 @@ from ._core.transformations import (
     world_to_local_coordinates,
 )
 
-if not compas.IPY:
-    from ._core.transformations_numpy import (
-        dehomogenize_and_unflatten_frames_numpy,
-        dehomogenize_numpy,
-        homogenize_and_flatten_frames_numpy,
-        homogenize_numpy,
-        local_to_world_coordinates_numpy,
-        transform_points_numpy,
-        transform_vectors_numpy,
-        world_to_local_coordinates_numpy,
-    )
+from ._core.transformations_numpy import (
+    dehomogenize_and_unflatten_frames_numpy,
+    dehomogenize_numpy,
+    homogenize_and_flatten_frames_numpy,
+    homogenize_numpy,
+    local_to_world_coordinates_numpy,
+    transform_frames_numpy,
+    transform_points_numpy,
+    transform_vectors_numpy,
+    world_to_local_coordinates_numpy,
+)
 
 from ._core.predicates_2 import (
     is_ccw_xy,
@@ -335,23 +333,22 @@ from .trimesh_remeshing import (
 )
 from .trimesh_slicing import trimesh_slice
 
-if not compas.IPY:
-    from .pca_numpy import pca_numpy
-    from .bbox_numpy import (
-        oriented_bounding_box_numpy,
-        oriented_bounding_box_xy_numpy,
-    )
-    from .bestfit_numpy import (
-        bestfit_line_numpy,
-        bestfit_plane_numpy,
-        bestfit_frame_numpy,
-        bestfit_circle_numpy,
-        bestfit_sphere_numpy,
-    )
-    from .hull_numpy import convex_hull_numpy, convex_hull_xy_numpy
-    from .icp_numpy import icp_numpy
-    from .trimesh_gradient_numpy import trimesh_gradient_numpy
-    from .trimesh_descent_numpy import trimesh_descent_numpy
+from .pca_numpy import pca_numpy
+from .bbox_numpy import (
+    oriented_bounding_box_numpy,
+    oriented_bounding_box_xy_numpy,
+)
+from .bestfit_numpy import (
+    bestfit_line_numpy,
+    bestfit_plane_numpy,
+    bestfit_frame_numpy,
+    bestfit_circle_numpy,
+    bestfit_sphere_numpy,
+)
+from .hull_numpy import convex_hull_numpy, convex_hull_xy_numpy
+from .icp_numpy import icp_numpy
+from .trimesh_gradient_numpy import trimesh_gradient_numpy
+from .trimesh_descent_numpy import trimesh_descent_numpy
 
 # =============================================================================
 # Class APIs

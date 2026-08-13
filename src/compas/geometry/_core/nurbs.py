@@ -1,20 +1,21 @@
 from itertools import groupby
+from typing import Sequence
 
 
-def construct_knotvector(degree, pointcount):
+def construct_knotvector(degree: int, pointcount: int) -> list[float]:
     """Construct a nonperiodic (clamped), uniform knot vector for a curve with given degree and number of control points.
 
     This function will generate a knotvector of the form
-    ``[0] * (order) + [i / d for i in range(1, d)] + [1] * (order)``, with ``order = degree + 1`` and ``d = pointcount - degree``.
-    Therefore the length of the knotvector will be ``pointcount + degree + 1``.
+    `[0] * (order) + [i / d for i in range(1, d)] + [1] * (order)`, with `order = degree + 1` and `d = pointcount - degree`.
+    Therefore the length of the knotvector will be `pointcount + degree + 1`.
 
-    For example, if degree is 3 and the number of control points is 7, the knot vector will be ``[0, 0, 0, 0, 1/4, 2/4, 3/4, 1, 1, 1, 1]``.
+    For example, if degree is 3 and the number of control points is 7, the knot vector will be `[0, 0, 0, 0, 1/4, 2/4, 3/4, 1, 1, 1, 1]`.
 
     Parameters
     ----------
-    degree : int
+    degree
         Degree of the curve.
-    pointcount : int
+    pointcount
         The number of control points of the curve.
 
     Returns
@@ -29,15 +30,15 @@ def construct_knotvector(degree, pointcount):
 
     See Also
     --------
-    knotvector_to_knots_and_mults
-    knots_and_mults_to_knotvector
-    find_span
-    compute_basisfuncs
-    compute_basisfuncsderivs
+    [`knotvector_to_knots_and_mults`][compas.geometry.knotvector_to_knots_and_mults]
+    [`knots_and_mults_to_knotvector`][compas.geometry.knots_and_mults_to_knotvector]
+    [`find_span`][compas.geometry.find_span]
+    [`compute_basisfuncs`][compas.geometry.compute_basisfuncs]
+    [`compute_basisfuncsderivs`][compas.geometry.compute_basisfuncsderivs]
 
     References
     ----------
-    The NURBS Book. Chapter 2. Page 66.
+    - *The NURBS Book*. Chapter 2. Page 66.
 
     """
     order = degree + 1
@@ -49,12 +50,12 @@ def construct_knotvector(degree, pointcount):
     return [0] * (order) + [i / d for i in range(1, d)] + [1] * (order)
 
 
-def knotvector_to_knots_and_mults(knotvector):
+def knotvector_to_knots_and_mults(knotvector: Sequence[float]) -> tuple[list[float], list[int]]:
     """Convert a knot vector to a list of knots and multiplicities.
 
     Parameters
     ----------
-    knotvector : list[int | float]
+    knotvector
         Knot vector.
 
     Returns
@@ -64,19 +65,19 @@ def knotvector_to_knots_and_mults(knotvector):
 
     See Also
     --------
-    construct_knotvector
-    knots_and_mults_to_knotvector
-    find_span
-    compute_basisfuncs
-    compute_basisfuncsderivs
+    [`construct_knotvector`][compas.geometry.construct_knotvector]
+    [`knots_and_mults_to_knotvector`][compas.geometry.knots_and_mults_to_knotvector]
+    [`find_span`][compas.geometry.find_span]
+    [`compute_basisfuncs`][compas.geometry.compute_basisfuncs]
+    [`compute_basisfuncsderivs`][compas.geometry.compute_basisfuncsderivs]
 
     Notes
     -----
     The "standard" representation of a knot vector is a list of the form
-    ``[0] * (degree + 1) + [i / d for i in range(1, d)] + [1] * (degree + 1)``, with ``d = pointcount - degree``.
+    `[0] * (degree + 1) + [i / d for i in range(1, d)] + [1] * (degree + 1)`, with `d = pointcount - degree`.
     This representation is used, for example, in the NURBS Book and OpenCASCADe.
 
-    Rhino uses a knot vector of the form ``[0] * (degree) + [i / d for i in range(1, d)] + [1] * (degree)``.
+    Rhino uses a knot vector of the form `[0] * (degree) + [i / d for i in range(1, d)] + [1] * (degree)`.
 
     """
     knots = []
@@ -89,14 +90,14 @@ def knotvector_to_knots_and_mults(knotvector):
     return knots, mults
 
 
-def knots_and_mults_to_knotvector(knots, mults):
+def knots_and_mults_to_knotvector(knots: Sequence[float], mults: Sequence[int]) -> list[float]:
     """Convert a list of knots and multiplicities to a knot vector.
 
     Parameters
     ----------
-    knots : list[int | float]
+    knots
         Knots.
-    mults : list[int]
+    mults
         Multiplicities.
 
     Returns
@@ -106,19 +107,19 @@ def knots_and_mults_to_knotvector(knots, mults):
 
     See Also
     --------
-    construct_knotvector
-    knotvector_to_knots_and_mults
-    find_span
-    compute_basisfuncs
-    compute_basisfuncsderivs
+    [`construct_knotvector`][compas.geometry.construct_knotvector]
+    [`knotvector_to_knots_and_mults`][compas.geometry.knotvector_to_knots_and_mults]
+    [`find_span`][compas.geometry.find_span]
+    [`compute_basisfuncs`][compas.geometry.compute_basisfuncs]
+    [`compute_basisfuncsderivs`][compas.geometry.compute_basisfuncsderivs]
 
     Notes
     -----
     The "standard" representation of a knot vector is a list of the form
-    ``[0] * (degree + 1) + [i / d for i in range(1, d)] + [1] * (degree + 1)``, with ``d = pointcount - degree``.
+    `[0] * (degree + 1) + [i / d for i in range(1, d)] + [1] * (degree + 1)`, with `d = pointcount - degree`.
     This representation is used, for example, in the NURBS Book and OpenCASCADe.
 
-    Rhino uses a knot vector of the form ``[0] * (degree) + [i / d for i in range(1, d)] + [1] * (degree)``.
+    Rhino uses a knot vector of the form `[0] * (degree) + [i / d for i in range(1, d)] + [1] * (degree)`.
 
     """
     knotvector = []
@@ -129,18 +130,18 @@ def knots_and_mults_to_knotvector(knots, mults):
     return knotvector
 
 
-def find_span(n, degree, knotvector, u):
+def find_span(n: int, degree: int, knotvector: Sequence[float], u: float) -> int:
     """Find the knot span index for a given knot value.
 
     Parameters
     ----------
-    n : int
+    n
         Number of control points minus 1.
-    degree : int
+    degree
         Degree of the curve.
-    knotvector : list[int | float]
+    knotvector
         Knot vector of the curve.
-    u : float
+    u
         Parameter value.
 
     Returns
@@ -155,15 +156,15 @@ def find_span(n, degree, knotvector, u):
 
     See Also
     --------
-    construct_knotvector
-    knotvector_to_knots_and_mults
-    knots_and_mults_to_knotvector
-    compute_basisfuncs
-    compute_basisfuncsderivs
+    [`construct_knotvector`][compas.geometry.construct_knotvector]
+    [`knotvector_to_knots_and_mults`][compas.geometry.knotvector_to_knots_and_mults]
+    [`knots_and_mults_to_knotvector`][compas.geometry.knots_and_mults_to_knotvector]
+    [`compute_basisfuncs`][compas.geometry.compute_basisfuncs]
+    [`compute_basisfuncsderivs`][compas.geometry.compute_basisfuncsderivs]
 
     References
     ----------
-    The NURBS Book. Chapter 2. Page 68. Algorithm A2.1.
+    - *The NURBS Book*. Chapter 2. Page 68. Algorithm A2.1.
 
     """
     if u > knotvector[-1]:
@@ -189,18 +190,18 @@ def find_span(n, degree, knotvector, u):
     return mid
 
 
-def compute_basisfuncs(degree, knotvector, i, u):
+def compute_basisfuncs(degree: int, knotvector: Sequence[float], i: int, u: float) -> list[float]:
     """Compute the nonzero basis functions for a given parameter value.
 
     Parameters
     ----------
-    degree : int
+    degree
         Degree of the curve.
-    knotvector : list
+    knotvector
         Knot vector of the curve.
-    i : int
+    i
         Knot span index.
-    u : float
+    u
         Parameter value.
 
     Returns
@@ -210,21 +211,22 @@ def compute_basisfuncs(degree, knotvector, i, u):
 
     See Also
     --------
-    construct_knotvector
-    knotvector_to_knots_and_mults
-    knots_and_mults_to_knotvector
-    find_span
-    compute_basisfuncsderivs
+    [`construct_knotvector`][compas.geometry.construct_knotvector]
+    [`knotvector_to_knots_and_mults`][compas.geometry.knotvector_to_knots_and_mults]
+    [`knots_and_mults_to_knotvector`][compas.geometry.knots_and_mults_to_knotvector]
+    [`find_span`][compas.geometry.find_span]
+    [`compute_basisfuncsderivs`][compas.geometry.compute_basisfuncsderivs]
 
     Notes
     -----
-    In any given knot span, :math:`\\[u_{j}, u_{j+1}\\)` at most degree + 1 of the :math:`N_{i,degree}` basis functions are nonzero,
-    namely the functions :math:`N_{j-degree,degree}, \\dots, N_{j,degree}`.
+    In any given knot span $[u_j, u_{j+1})$, at most degree + 1 of the
+    $N_{i, degree}$ basis functions are nonzero, namely the functions
+    $N_{j - degree, degree}, \\dots, N_{j, degree}$.
 
     References
     ----------
-    The NURBS Book. Chapter 2. Page 56.
-    The NURBS Book. Chapter 2. Page 70. Algorithm A2.2.
+    - *The NURBS Book*. Chapter 2. Page 56.
+    - *The NURBS Book*. Chapter 2. Page 70. Algorithm A2.2.
 
     """
     N = [0.0 for _ in range(degree + 1)]
@@ -249,20 +251,20 @@ def compute_basisfuncs(degree, knotvector, i, u):
     return N
 
 
-def compute_basisfuncsderivs(degree, knotvector, i, u, n):
+def compute_basisfuncsderivs(degree: int, knotvector: Sequence[float], i: int, u: float, n: int) -> list[list[float]]:
     """Compute the derivatives of the basis functions for a given parameter value.
 
     Parameters
     ----------
-    degree : int
+    degree
         Degree of the curve.
-    knotvector : list[int | float]
+    knotvector
         Knot vector of the curve.
-    i : int
+    i
         Knot span index.
-    u : float
+    u
         Parameter value.
-    n : int
+    n
         Number of derivatives to compute.
 
     Returns
@@ -272,15 +274,15 @@ def compute_basisfuncsderivs(degree, knotvector, i, u, n):
 
     See Also
     --------
-    construct_knotvector
-    knotvector_to_knots_and_mults
-    knots_and_mults_to_knotvector
-    find_span
-    compute_basisfuncs
+    [`construct_knotvector`][compas.geometry.construct_knotvector]
+    [`knotvector_to_knots_and_mults`][compas.geometry.knotvector_to_knots_and_mults]
+    [`knots_and_mults_to_knotvector`][compas.geometry.knots_and_mults_to_knotvector]
+    [`find_span`][compas.geometry.find_span]
+    [`compute_basisfuncs`][compas.geometry.compute_basisfuncs]
 
     References
     ----------
-    The NURBS Book. Chapter 2. Page 72. Algorithm A2.3.
+    - *The NURBS Book*. Chapter 2. Page 72. Algorithm A2.3.
 
     """
     # output

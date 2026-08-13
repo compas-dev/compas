@@ -1,7 +1,6 @@
 import pytest
 
-# from compas.geometry import homogenize
-# from compas.geometry import dehomogenize
+from compas.geometry import local_axes
 from compas.geometry import Rotation
 from compas.geometry import Translation
 from compas.tolerance import TOL
@@ -29,6 +28,8 @@ from compas.geometry import transform_points
 from compas.geometry import transform_vectors
 from compas.geometry import translate_points
 from compas.geometry import translate_points_xy
+from compas.geometry._core.transformations import dehomogenize
+from compas.geometry._core.transformations import homogenize
 
 
 @pytest.fixture
@@ -58,16 +59,20 @@ def test_transform_vectors(R):
         assert TOL.is_allclose(a, b)
 
 
-# def test_homogenize():
-#     assert homogenize([[1, 2, 3]], 0.5) == [[0.5, 1.0, 1.5, 0.5]]
+def test_homogenize():
+    assert homogenize([[1, 2, 3]], 0.5) == [[0.5, 1.0, 1.5, 0.5]]
 
 
-# def test_dehomogenize():
-#     assert dehomogenize([[0.5, 1.0, 1.5, 0.5]]) == [[1, 2, 3]]
+def test_dehomogenize():
+    assert dehomogenize([[0.5, 1.0, 1.5, 0.5]]) == [[1.0, 2.0, 3.0]]
 
 
-# def test_local_axes():
-#     pass
+def test_local_axes_accepts_raw_coordinate_sequences():
+    xaxis, yaxis, zaxis = local_axes([0, 0, 0], [1, 0, 0], [0, 1, 0])
+
+    assert xaxis == [1.0, 0.0, 0.0]
+    assert yaxis == [0.0, 1.0, 0.0]
+    assert zaxis == [0.0, 0.0, 1.0]
 
 
 def test_translate_points():
