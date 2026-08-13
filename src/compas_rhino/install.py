@@ -43,13 +43,11 @@ def install(version=None, packages=None, clean=False):
     """
     version = compas_rhino._check_rhino_version(version)
 
-    # We install COMPAS packages in the scripts folder
-    # instead of directly as IPy module.
-    # scripts_path = compas_rhino._get_rhino_scripts_path(version)
-
     if version == "8.0":
         raise ValueError("Installing to Rhino8 using this script is no longer supported. See https://compas.dev/compas/latest/userguide/cad.rhino8.html")
     else:
+        # We install COMPAS packages in the scripts folder
+        # instead of directly as IPy module.
         installation_path = compas_rhino._get_rhino_scripts_path(version)
 
     # This is for old installs
