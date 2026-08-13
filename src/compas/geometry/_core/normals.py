@@ -1,11 +1,12 @@
 from typing import Sequence
 
-from ._algebra import cross_vectors
-from ._algebra import cross_vectors_xy
-from ._algebra import length_vector
-from ._algebra import normalize_vector
-from ._algebra import subtract_vectors
-from ._algebra import subtract_vectors_xy
+from compas.linalg.vectors import cross_vectors
+from compas.linalg.vectors import cross_vectors_xy
+from compas.linalg.vectors import length_vector
+from compas.linalg.vectors import normalize_vector
+from compas.linalg.vectors import subtract_vectors
+from compas.linalg.vectors import subtract_vectors_xy
+
 from .centroids import centroid_points
 
 

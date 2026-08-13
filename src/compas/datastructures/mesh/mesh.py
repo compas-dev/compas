@@ -59,31 +59,31 @@ from compas.geometry import Polyhedron
 from compas.geometry import Shape  # noqa: F401
 from compas.geometry import Transformation
 from compas.geometry import Vector
-from compas.geometry import add_vectors
 from compas.geometry import angle_points
 from compas.geometry import area_polygon
 from compas.geometry import bestfit_plane
 from compas.geometry import bounding_box
 from compas.geometry import centroid_points
 from compas.geometry import centroid_polygon
-from compas.geometry import cross_vectors
 from compas.geometry import distance_line_line
 from compas.geometry import distance_point_plane
 from compas.geometry import distance_point_point
-from compas.geometry import dot_vectors
-from compas.geometry import length_vector
 from compas.geometry import midpoint_line
 from compas.geometry import normal_polygon
-from compas.geometry import normalize_vector
 from compas.geometry import oriented_bounding_box
-from compas.geometry import scale_vector
-from compas.geometry import subtract_vectors
-from compas.geometry import sum_vectors
 from compas.geometry import transform_points
-from compas.geometry import vector_average
 from compas.itertools import linspace
 from compas.itertools import pairwise
 from compas.itertools import window
+from compas.linalg.vectors import add_vectors
+from compas.linalg.vectors import cross_vectors
+from compas.linalg.vectors import dot_vectors
+from compas.linalg.vectors import length_vector
+from compas.linalg.vectors import normalize_vector
+from compas.linalg.vectors import scale_vector
+from compas.linalg.vectors import subtract_vectors
+from compas.linalg.vectors import sum_vectors
+from compas.linalg.vectors import vector_average
 from compas.tolerance import TOL
 from compas.topology import breadth_first_traverse
 from compas.topology import connected_components
@@ -5251,7 +5251,7 @@ class Mesh(Datastructure):
         Examples
         --------
         >>> from compas.datastructures import Mesh
-        >>> from compas.geometry import matrix_from_axis_and_angle
+        >>> from compas.linalg import matrix_from_axis_and_angle
         >>> mesh = Mesh.from_polyhedron(6)
         >>> T = matrix_from_axis_and_angle([0, 0, 1], math.pi / 4)
         >>> mesh.transform(T)
@@ -5277,7 +5277,7 @@ class Mesh(Datastructure):
         Examples
         --------
         >>> from compas.datastructures import Mesh
-        >>> from compas.geometry import matrix_from_axis_and_angle
+        >>> from compas.linalg import matrix_from_axis_and_angle
         >>> mesh = Mesh.from_polyhedron(6)
         >>> T = matrix_from_axis_and_angle([0, 0, 1], math.pi / 4)
         >>> mesh.transform_numpy(T)
@@ -5307,7 +5307,7 @@ class Mesh(Datastructure):
             The adjacency matrix.
 
         """
-        from compas.matrices import adjacency_matrix
+        from compas.linalg.operators import adjacency_matrix
 
         vertex_index = self.vertex_index()
         adjacency = [[vertex_index[nbr] for nbr in self.vertex_neighbors(vertex)] for vertex in self.vertices()]
@@ -5327,7 +5327,7 @@ class Mesh(Datastructure):
             The connectivity matrix.
 
         """
-        from compas.matrices import connectivity_matrix
+        from compas.linalg.operators import connectivity_matrix
 
         vertex_index = self.vertex_index()
         edges = [(vertex_index[u], vertex_index[v]) for u, v in self.edges()]
@@ -5347,7 +5347,7 @@ class Mesh(Datastructure):
             The degree matrix.
 
         """
-        from compas.matrices import degree_matrix
+        from compas.linalg.operators import degree_matrix
 
         vertex_index = self.vertex_index()
         adjacency = [[vertex_index[nbr] for nbr in self.vertex_neighbors(vertex)] for vertex in self.vertices()]
@@ -5401,7 +5401,7 @@ class Mesh(Datastructure):
         True
 
         """
-        from compas.matrices import face_matrix
+        from compas.linalg.operators import face_matrix
 
         vertex_index = self.vertex_index()
         faces = [[vertex_index[vertex] for vertex in self.face_vertices(face)] for face in self.faces()]
@@ -5459,7 +5459,7 @@ class Mesh(Datastructure):
         >>> d = L.dot(xyz)
 
         """
-        from compas.matrices import laplacian_matrix
+        from compas.linalg.operators import laplacian_matrix
 
         vertex_index = self.vertex_index()
         edges = [(vertex_index[u], vertex_index[v]) for u, v in self.edges()]

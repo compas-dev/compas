@@ -6,12 +6,12 @@ from random import random
 from compas.geometry import Quaternion
 from compas.tolerance import TOL
 from compas.geometry import Frame
-from compas.geometry import quaternion_canonize
-from compas.geometry import quaternion_conjugate
-from compas.geometry import quaternion_is_unit
-from compas.geometry import quaternion_multiply
-from compas.geometry import quaternion_norm
-from compas.geometry import quaternion_unitize
+from compas.linalg import quaternion_canonize
+from compas.linalg import quaternion_conjugate
+from compas.linalg import quaternion_is_unit
+from compas.linalg import quaternion_multiply
+from compas.linalg import quaternion_norm
+from compas.linalg import quaternion_unitize
 
 
 @pytest.mark.parametrize(

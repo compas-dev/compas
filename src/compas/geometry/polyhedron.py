@@ -426,9 +426,9 @@ class Polyhedron(Geometry):
         from scipy.spatial import HalfspaceIntersection  # type: ignore
 
         from compas.datastructures import Mesh
-        from compas.geometry import cross_vectors
-        from compas.geometry import dot_vectors
-        from compas.geometry import length_vector
+        from compas.linalg.vectors import cross_vectors
+        from compas.linalg.vectors import dot_vectors
+        from compas.linalg.vectors import length_vector
 
         halfspaces = asarray(halfspaces, dtype=float)
         interior_point = asarray(interior_point, dtype=float)

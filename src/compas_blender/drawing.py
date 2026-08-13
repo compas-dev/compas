@@ -8,7 +8,7 @@ import bpy  # type: ignore
 
 from compas.geometry import centroid_points
 from compas.geometry import distance_point_point
-from compas.geometry import subtract_vectors
+from compas.linalg.vectors import subtract_vectors
 from compas_blender.collections import create_collection
 
 RGBColor = Union[Tuple[int, int, int], Tuple[float, float, float]]

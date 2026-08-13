@@ -24,16 +24,16 @@ from compas.geometry import Box
 from compas.geometry import Line
 from compas.geometry import Point
 from compas.geometry import Vector
-from compas.geometry import add_vectors
 from compas.geometry import bounding_box
 from compas.geometry import centroid_points
 from compas.geometry import distance_point_point
 from compas.geometry import midpoint_line
-from compas.geometry import normalize_vector
 from compas.geometry import oriented_bounding_box
-from compas.geometry import scale_vector
-from compas.geometry import subtract_vectors
 from compas.geometry import transform_points
+from compas.linalg.vectors import add_vectors
+from compas.linalg.vectors import normalize_vector
+from compas.linalg.vectors import scale_vector
+from compas.linalg.vectors import subtract_vectors
 from compas.tolerance import TOL
 from compas.topology import astar_shortest_path
 from compas.topology import breadth_first_traverse
@@ -2620,7 +2620,7 @@ class Graph(Datastructure):
             Constructed adjacency matrix.
 
         """
-        from compas.matrices import adjacency_matrix
+        from compas.linalg.operators import adjacency_matrix
 
         node_index = self.node_index()
         adjacency = [[node_index[nbr] for nbr in self.neighbors(key)] for key in self.nodes()]
@@ -2640,7 +2640,7 @@ class Graph(Datastructure):
             Constructed connectivity matrix.
 
         """
-        from compas.matrices import connectivity_matrix
+        from compas.linalg.operators import connectivity_matrix
 
         node_index = self.node_index()
         edges = [(node_index[u], node_index[v]) for u, v in self.edges()]
@@ -2660,7 +2660,7 @@ class Graph(Datastructure):
             Constructed degree matrix.
 
         """
-        from compas.matrices import degree_matrix
+        from compas.linalg.operators import degree_matrix
 
         node_index = self.node_index()
         adjacency = [[node_index[nbr] for nbr in self.neighbors(key)] for key in self.nodes()]
@@ -2688,7 +2688,7 @@ class Graph(Datastructure):
         vectors could be used in a more natural way ``c = xyz + d``.
 
         """
-        from compas.matrices import laplacian_matrix
+        from compas.linalg.operators import laplacian_matrix
 
         node_index = self.node_index()
         edges = [(node_index[u], node_index[v]) for u, v in self.edges()]

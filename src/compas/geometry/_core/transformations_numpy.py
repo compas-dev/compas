@@ -10,7 +10,7 @@ from numpy.typing import ArrayLike
 from numpy.typing import NDArray
 from scipy.linalg import solve
 
-from ._algebra import cross_vectors
+from compas.linalg.vectors import cross_vectors
 
 
 def transform_points_numpy(points: ArrayLike, T: ArrayLike) -> NDArray[Any]:
@@ -30,7 +30,7 @@ def transform_points_numpy(points: ArrayLike, T: ArrayLike) -> NDArray[Any]:
 
     Examples
     --------
-    >>> from compas.geometry import matrix_from_axis_and_angle
+    >>> from compas.linalg import matrix_from_axis_and_angle
     >>> points = [[1, 0, 0], [1, 2, 4], [4, 7, 1]]
     >>> T = matrix_from_axis_and_angle([0, 2, 0], math.radians(45), point=[4, 5, 6])
     >>> points_transformed = transform_points_numpy(points, T)
@@ -58,7 +58,7 @@ def transform_vectors_numpy(vectors: ArrayLike, T: ArrayLike) -> NDArray[Any]:
 
     Examples
     --------
-    >>> from compas.geometry import matrix_from_axis_and_angle
+    >>> from compas.linalg import matrix_from_axis_and_angle
     >>> vectors = [[1, 0, 0], [1, 2, 4], [4, 7, 1]]
     >>> T = matrix_from_axis_and_angle([0, 2, 0], math.radians(45), point=[4, 5, 6])
     >>> vectors_transformed = transform_vectors_numpy(vectors, T)

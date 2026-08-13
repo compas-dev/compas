@@ -6,15 +6,15 @@ from typing import Sequence
 from compas.geometry import area_triangle
 from compas.geometry import centroid_points
 from compas.geometry import closest_point_on_segment
-from compas.geometry import cross_vectors
 from compas.geometry import distance_point_line
 from compas.geometry import distance_point_plane
 from compas.geometry import distance_point_point
-from compas.geometry import dot_vectors
-from compas.geometry import length_vector
 from compas.geometry import normal_polygon
-from compas.geometry import subtract_vectors
 from compas.itertools import window
+from compas.linalg.vectors import cross_vectors
+from compas.linalg.vectors import dot_vectors
+from compas.linalg.vectors import length_vector
+from compas.linalg.vectors import subtract_vectors
 from compas.tolerance import TOL
 
 # =============================================================================

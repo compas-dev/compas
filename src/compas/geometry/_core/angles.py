@@ -4,15 +4,14 @@ from math import pi
 from typing import Optional
 from typing import Sequence
 
+from compas.linalg.vectors import cross_vectors
+from compas.linalg.vectors import dot_vectors
+from compas.linalg.vectors import dot_vectors_xy
+from compas.linalg.vectors import length_vector
+from compas.linalg.vectors import length_vector_xy
+from compas.linalg.vectors import subtract_vectors
+from compas.linalg.vectors import subtract_vectors_xy
 from compas.tolerance import TOL
-
-from ._algebra import cross_vectors
-from ._algebra import dot_vectors
-from ._algebra import dot_vectors_xy
-from ._algebra import length_vector
-from ._algebra import length_vector_xy
-from ._algebra import subtract_vectors
-from ._algebra import subtract_vectors_xy
 
 
 def angle_vectors(u: Sequence[float], v: Sequence[float], deg: bool = False, tol: Optional[float] = None) -> float:

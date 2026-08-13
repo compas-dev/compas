@@ -10,11 +10,11 @@ from numpy import vstack
 from numpy import zeros
 from scipy.spatial import ConvexHull
 
-from compas.geometry import length_vector
 from compas.geometry import local_axes
 from compas.geometry import local_to_world_coordinates_numpy
 from compas.geometry import pca_numpy
 from compas.geometry import world_to_local_coordinates_numpy
+from compas.linalg.vectors import length_vector
 from compas.tolerance import TOL
 
 from .bbox import bounding_box
@@ -69,7 +69,7 @@ def oriented_bounding_box_numpy(points, tol=None):
 
     Compute the volume of the oriented bounding box.
 
-    >>> from compas.geometry import length_vector, subtract_vectors, close
+    >>> from compas.linalg import length_vector, subtract_vectors, close
     >>> bbox = oriented_bounding_box_numpy(points)
     >>> a = length_vector(subtract_vectors(bbox[1], bbox[0]))
     >>> b = length_vector(subtract_vectors(bbox[3], bbox[0]))

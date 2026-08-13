@@ -1,5 +1,5 @@
-from compas.geometry import dot_vectors
-from compas.geometry import subtract_vectors
+from compas.linalg.vectors import dot_vectors
+from compas.linalg.vectors import subtract_vectors
 
 
 def barycentric_coordinates(point, triangle):

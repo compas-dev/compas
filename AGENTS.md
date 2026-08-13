@@ -88,7 +88,7 @@ These instructions apply to the entire repository. Preserve unrelated working-tr
 
 ## Known Modernization Follow-ups
 
-- Before changing `compas.geometry._core._algebra`, add regression tests and resolve the intended behavior of the following existing edge cases:
+- Before changing the corresponding functions in `compas.linalg.vectors` or `compas.linalg.matrices`, add regression tests and resolve the intended behavior of the following existing edge cases:
   - `vector_variance` currently computes the square root of the variance, and `vector_standard_deviation` takes another square root.
   - `orthonormalize_vectors` tests residual components with `axis > 1e-10` rather than `abs(axis) > 1e-10`, which can discard residuals containing only negative components.
   - `matrix_determinant` and `matrix_inverse` do not correctly support 0x0 or 1x1 matrices.

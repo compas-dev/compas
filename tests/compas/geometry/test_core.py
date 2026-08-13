@@ -21,9 +21,9 @@ from compas.geometry import centroid_polygon_edges
 from compas.geometry import centroid_polygon_edges_xy
 from compas.geometry import centroid_polygon_xy
 from compas.geometry import centroid_polyhedron
-from compas.geometry import length_vector
-from compas.geometry import subtract_vectors
-from compas.geometry import square_vectors
+from compas.linalg import length_vector
+from compas.linalg import subtract_vectors
+from compas.linalg import square_vectors
 from compas.geometry import volume_polyhedron
 from compas.geometry import area_polygon
 from compas.geometry import area_polygon_xy
@@ -32,8 +32,8 @@ from compas.geometry import area_triangle_xy
 from compas.geometry import normal_polygon
 from compas.geometry import normal_triangle
 from compas.geometry import normal_triangle_xy
-from compas.geometry import normalize_vector
-from compas.geometry import normalize_vector_xy
+from compas.linalg import normalize_vector
+from compas.linalg import normalize_vector_xy
 from compas.geometry import midpoint_line
 from compas.geometry import midpoint_line_xy
 from compas.geometry import midpoint_point_point

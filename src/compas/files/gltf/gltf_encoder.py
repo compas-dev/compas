@@ -29,9 +29,7 @@ from .gltf_types import GLTFFormat
 
 
 class GLTFEncoder:
-    """Encode a semantic glTF document without writing targets.
-
-    """
+    """Encode a semantic glTF document without writing targets."""
 
     def __init__(
         self,
@@ -524,7 +522,7 @@ class GLTFEncoder:
         return result
 
     def _node_json(self, item):
-        from compas.geometry import identity_matrix
+        from compas.linalg.transformations import identity_matrix
 
         from .helpers import matrix_to_col_major_order
 
@@ -575,17 +573,28 @@ class GLTFEncoder:
     def _extension_json(self, item):
         result = self._common_json(item)
         fields = {
-            "transmission_factor": "transmissionFactor", "specular_factor": "specularFactor",
-            "specular_color_factor": "specularColorFactor", "ior": "ior", "clearcoat_factor": "clearcoatFactor",
-            "clearcoat_roughness_factor": "clearcoatRoughnessFactor", "offset": "offset", "rotation": "rotation",
-            "scale": "scale", "tex_coord": "texCoord", "diffuse_factor": "diffuseFactor",
+            "transmission_factor": "transmissionFactor",
+            "specular_factor": "specularFactor",
+            "specular_color_factor": "specularColorFactor",
+            "ior": "ior",
+            "clearcoat_factor": "clearcoatFactor",
+            "clearcoat_roughness_factor": "clearcoatRoughnessFactor",
+            "offset": "offset",
+            "rotation": "rotation",
+            "scale": "scale",
+            "tex_coord": "texCoord",
+            "diffuse_factor": "diffuseFactor",
             "glossiness_factor": "glossinessFactor",
         }
         textures = {
-            "transmission_texture": "transmissionTexture", "specular_texture": "specularTexture",
-            "specular_color_texture": "specularColorTexture", "clearcoat_texture": "clearcoatTexture",
-            "clearcoat_roughness_texture": "clearcoatRoughnessTexture", "clearcoat_normal_texture": "clearcoatNormalTexture",
-            "diffuse_texture": "diffuseTexture", "specular_glossiness_texture": "specularGlossinessTexture",
+            "transmission_texture": "transmissionTexture",
+            "specular_texture": "specularTexture",
+            "specular_color_texture": "specularColorTexture",
+            "clearcoat_texture": "clearcoatTexture",
+            "clearcoat_roughness_texture": "clearcoatRoughnessTexture",
+            "clearcoat_normal_texture": "clearcoatNormalTexture",
+            "diffuse_texture": "diffuseTexture",
+            "specular_glossiness_texture": "specularGlossinessTexture",
         }
         for attr, key in fields.items():
             if hasattr(item, attr) and getattr(item, attr) is not None:

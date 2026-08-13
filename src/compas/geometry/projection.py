@@ -13,12 +13,12 @@ Ippoliti for providing code and documentation.
 """
 
 from compas.geometry import Transformation
-from compas.geometry import decompose_matrix
-from compas.geometry import matrix_from_orthogonal_projection
-from compas.geometry import matrix_from_parallel_projection
-from compas.geometry import matrix_from_perspective_entries
-from compas.geometry import matrix_from_perspective_projection
 from compas.itertools import flatten
+from compas.linalg.transformations import decompose_matrix
+from compas.linalg.transformations import matrix_from_orthogonal_projection
+from compas.linalg.transformations import matrix_from_parallel_projection
+from compas.linalg.transformations import matrix_from_perspective_entries
+from compas.linalg.transformations import matrix_from_perspective_projection
 from compas.tolerance import TOL
 
 

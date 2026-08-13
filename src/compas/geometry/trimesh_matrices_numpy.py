@@ -5,10 +5,10 @@ from numpy import zeros
 from scipy.sparse import coo_matrix
 from scipy.sparse import spdiags
 
-from compas.geometry import cross_vectors
-from compas.geometry import dot_vectors
-from compas.geometry import length_vector
-from compas.linalg import normrow
+from compas.linalg.decompositions import normrow
+from compas.linalg.vectors import cross_vectors
+from compas.linalg.vectors import dot_vectors
+from compas.linalg.vectors import length_vector
 
 
 def trimesh_edge_cotangent(mesh, edge):

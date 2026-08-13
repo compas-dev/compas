@@ -9,7 +9,7 @@ from scipy.spatial.distance import cdist
 
 from compas.geometry import pca_numpy
 from compas.geometry import transform_points_numpy
-from compas.linalg import normrow
+from compas.linalg.decompositions import normrow
 from compas.tolerance import TOL
 
 

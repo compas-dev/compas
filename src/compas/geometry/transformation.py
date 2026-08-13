@@ -13,17 +13,17 @@ Ippoliti for providing code and documentation.
 """
 
 from compas.data import Data
-from compas.geometry import basis_vectors_from_matrix
-from compas.geometry import decompose_matrix
-from compas.geometry import identity_matrix
-from compas.geometry import matrix_determinant
-from compas.geometry import matrix_from_euler_angles
-from compas.geometry import matrix_from_frame
-from compas.geometry import matrix_from_translation
-from compas.geometry import matrix_inverse
-from compas.geometry import multiply_matrices
-from compas.geometry import translation_from_matrix
-from compas.geometry import transpose_matrix
+from compas.linalg.matrices import matrix_determinant
+from compas.linalg.matrices import matrix_inverse
+from compas.linalg.matrices import multiply_matrices
+from compas.linalg.matrices import transpose_matrix
+from compas.linalg.transformations import basis_vectors_from_matrix
+from compas.linalg.transformations import decompose_matrix
+from compas.linalg.transformations import identity_matrix
+from compas.linalg.transformations import matrix_from_euler_angles
+from compas.linalg.transformations import matrix_from_frame
+from compas.linalg.transformations import matrix_from_translation
+from compas.linalg.transformations import translation_from_matrix
 from compas.tolerance import TOL
 
 

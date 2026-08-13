@@ -13,12 +13,12 @@ Ippoliti for providing code and documentation.
 """
 
 from compas.geometry import Transformation
-from compas.geometry import decompose_matrix
-from compas.geometry import matrix_from_frame
-from compas.geometry import matrix_from_scale_factors
-from compas.geometry import matrix_inverse
-from compas.geometry import multiply_matrices
 from compas.itertools import flatten
+from compas.linalg.matrices import matrix_inverse
+from compas.linalg.matrices import multiply_matrices
+from compas.linalg.transformations import decompose_matrix
+from compas.linalg.transformations import matrix_from_frame
+from compas.linalg.transformations import matrix_from_scale_factors
 from compas.tolerance import TOL
 
 

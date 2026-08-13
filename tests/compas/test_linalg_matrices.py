@@ -1,11 +1,13 @@
+"""Tests for the matrix constructors in `compas.linalg`."""
+
 import numpy as np
 from scipy.sparse import spmatrix
 
-from compas.matrices import adjacency_matrix
-from compas.matrices import connectivity_matrix
-from compas.matrices import degree_matrix
-from compas.matrices import face_matrix
-from compas.matrices import laplacian_matrix
+from compas.linalg import adjacency_matrix
+from compas.linalg import connectivity_matrix
+from compas.linalg import degree_matrix
+from compas.linalg import face_matrix
+from compas.linalg import laplacian_matrix
 
 
 def test_matrix_return_formats():

@@ -40,23 +40,23 @@ from compas.geometry import Polygon
 from compas.geometry import Polyhedron
 from compas.geometry import Transformation
 from compas.geometry import Vector
-from compas.geometry import add_vectors
 from compas.geometry import bestfit_plane
 from compas.geometry import bounding_box
 from compas.geometry import centroid_points
 from compas.geometry import centroid_polygon
 from compas.geometry import centroid_polyhedron
 from compas.geometry import distance_point_point
-from compas.geometry import length_vector
 from compas.geometry import normal_polygon
-from compas.geometry import normalize_vector
 from compas.geometry import oriented_bounding_box
 from compas.geometry import project_point_plane
-from compas.geometry import scale_vector
-from compas.geometry import subtract_vectors
 from compas.geometry import transform_points
 from compas.itertools import linspace
 from compas.itertools import pairwise
+from compas.linalg.vectors import add_vectors
+from compas.linalg.vectors import length_vector
+from compas.linalg.vectors import normalize_vector
+from compas.linalg.vectors import scale_vector
+from compas.linalg.vectors import subtract_vectors
 from compas.tolerance import TOL
 
 from .types import AttributeDict
@@ -4712,7 +4712,7 @@ class VolMesh(Datastructure):
         Examples
         --------
         >>> from compas.datastructures import Mesh
-        >>> from compas.geometry import matrix_from_axis_and_angle
+        >>> from compas.linalg import matrix_from_axis_and_angle
         >>> mesh = Mesh.from_polyhedron(6)
         >>> T = matrix_from_axis_and_angle([0, 0, 1], math.pi / 4)
         >>> mesh.transform(T)

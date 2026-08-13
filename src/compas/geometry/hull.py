@@ -1,7 +1,7 @@
-from compas.geometry import cross_vectors
-from compas.geometry import cross_vectors_xy
-from compas.geometry import dot_vectors
-from compas.geometry import subtract_vectors
+from compas.linalg.vectors import cross_vectors
+from compas.linalg.vectors import cross_vectors_xy
+from compas.linalg.vectors import dot_vectors
+from compas.linalg.vectors import subtract_vectors
 
 
 def convex_hull(points):

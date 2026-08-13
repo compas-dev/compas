@@ -2,7 +2,7 @@ from compas.geometry import Frame
 from compas.geometry import Rotation
 from compas.geometry import Transformation
 from compas.tolerance import TOL
-from compas.geometry import normalize_vector
+from compas.linalg import normalize_vector
 
 
 def test_from_basis_vectors():

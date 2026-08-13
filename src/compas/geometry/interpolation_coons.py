@@ -1,8 +1,8 @@
-from compas.geometry import add_vectors
-from compas.geometry import scale_vector
-from compas.geometry import subtract_vectors
-from compas.geometry import sum_vectors
 from compas.itertools import normalize_values
+from compas.linalg.vectors import add_vectors
+from compas.linalg.vectors import scale_vector
+from compas.linalg.vectors import subtract_vectors
+from compas.linalg.vectors import sum_vectors
 
 
 def discrete_coons_patch(ab, bc, dc, ad):

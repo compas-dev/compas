@@ -13,10 +13,10 @@ Ippoliti for providing code and documentation.
 """
 
 from compas.geometry import Transformation
-from compas.geometry import decompose_matrix
-from compas.geometry import matrix_from_shear
-from compas.geometry import matrix_from_shear_entries
 from compas.itertools import flatten
+from compas.linalg.transformations import decompose_matrix
+from compas.linalg.transformations import matrix_from_shear
+from compas.linalg.transformations import matrix_from_shear_entries
 from compas.tolerance import TOL
 
 
@@ -81,7 +81,7 @@ class Shear(Transformation):
 
         Examples
         --------
-        >>> from compas.geometry import cross_vectors
+        >>> from compas.linalg import cross_vectors
         >>> angle = 0.1
         >>> direction = [0.1, 0.2, 0.3]
         >>> point = [4, 3, 1]

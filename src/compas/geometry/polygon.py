@@ -273,8 +273,8 @@ class Polygon(Geometry):
 
         Examples
         --------
-        >>> from compas.geometry import dot_vectors
-        >>> from compas.geometry import subtract_vectors
+        >>> from compas.linalg import dot_vectors
+        >>> from compas.linalg import subtract_vectors
         >>> pentagon = Polygon.from_sides_and_radius_xy(5, 1.0)
         >>> len(pentagon.lines) == 5
         True

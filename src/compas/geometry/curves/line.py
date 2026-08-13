@@ -1,7 +1,7 @@
 from compas.geometry import Frame
 from compas.geometry import Point
 from compas.geometry import Vector
-from compas.geometry import add_vectors
+from compas.linalg.vectors import add_vectors
 
 from .curve import Curve
 

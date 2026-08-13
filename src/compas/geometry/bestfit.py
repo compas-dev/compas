@@ -1,6 +1,6 @@
 from compas.geometry import centroid_points
-from compas.geometry import normalize_vector
-from compas.geometry import subtract_vectors
+from compas.linalg.vectors import normalize_vector
+from compas.linalg.vectors import subtract_vectors
 
 
 def bestfit_plane(points):

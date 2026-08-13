@@ -1,10 +1,11 @@
-from pathlib import Path
 import math
+from pathlib import Path
+
 import numpy
 import pytest
 
 import compas
-from compas.geometry import allclose
+from compas.linalg import allclose
 
 
 def pytest_ignore_collect(collection_path: Path, config):

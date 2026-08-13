@@ -17,8 +17,8 @@ from compas.files.gltf.gltf_mesh import GLTFMesh
 from compas.files.gltf.gltf_node import GLTFNode
 from compas.files.gltf.gltf_scene import GLTFScene
 from compas.files.gltf.helpers import get_weighted_mesh_vertices
-from compas.geometry import multiply_matrices
 from compas.geometry import transform_points
+from compas.linalg.matrices import multiply_matrices
 
 if TYPE_CHECKING:
     from compas.datastructures import Mesh
@@ -112,9 +112,7 @@ class GLTFDocument:
             visit(node_key)
 
     def validate(self) -> None:
-        """Validate references and scene-graph structure.
-
-        """
+        """Validate references and scene-graph structure."""
         if self.asset.get("version") != "2.0":
             raise ValueError("glTF asset version 2.0 is required.")
         used = set(self.extensions_used or [])
@@ -214,9 +212,7 @@ class GLTFDocument:
         return content
 
     def remove_orphans(self) -> None:
-        """Remove unreachable objects.
-
-        """
+        """Remove unreachable objects."""
         node_visit_log = {key: False for key in self.nodes}
         mesh_visit_log = {key: False for key in self.meshes}
         camera_visit_log = {key: False for key in self.cameras}
@@ -251,11 +247,7 @@ class GLTFDocument:
 
         # remove animations referencing no existing nodes
         for animation_key, animation in list(self.animations.items()):
-            animation.channels = [
-                channel
-                for channel in animation.channels
-                if channel.target.node is None or node_visit_log[channel.target.node]
-            ]
+            animation.channels = [channel for channel in animation.channels if channel.target.node is None or node_visit_log[channel.target.node]]
             visited_sampler_keys = {channel.sampler for channel in animation.channels}
             animation.samplers_dict = {key: animation.samplers_dict[key] for key in animation.samplers_dict if key in visited_sampler_keys}
             if not animation.samplers_dict:
@@ -304,9 +296,7 @@ class GLTFDocument:
                 del dictionary[key]
 
     def update_node_transforms_and_positions(self) -> None:
-        """Update transforms and positions throughout all scenes.
-
-        """
+        """Update transforms and positions throughout all scenes."""
         for scene in self.scenes.values():
             self.update_scene_transforms_and_positions(scene)
 
@@ -497,9 +487,7 @@ class GLTFDocument:
         """
         return GLTFScene(self, name=name, extras=extras)
 
-    def add_node_to_scene(
-        self, scene: GLTFScene, node_name: Optional[str] = None, node_extras: Any = None
-    ) -> GLTFNode:
+    def add_node_to_scene(self, scene: GLTFScene, node_name: Optional[str] = None, node_extras: Any = None) -> GLTFNode:
         """Create a node and add it as a scene root.
 
         Parameters
@@ -522,9 +510,7 @@ class GLTFDocument:
         scene.children.append(node.key)
         return node
 
-    def add_child_to_node(
-        self, parent_node: GLTFNode, child_name: Optional[str] = None, child_extras: Any = None
-    ) -> GLTFNode:
+    def add_child_to_node(self, parent_node: GLTFNode, child_name: Optional[str] = None, child_extras: Any = None) -> GLTFNode:
         """Create a node and add it as a child of another node.
 
         Parameters

@@ -1,18 +1,18 @@
 from compas.geometry import Geometry
 from compas.geometry import Transformation
-from compas.geometry import argmax
-from compas.geometry import axis_angle_vector_from_matrix
-from compas.geometry import basis_vectors_from_matrix
-from compas.geometry import cross_vectors
-from compas.geometry import decompose_matrix
-from compas.geometry import euler_angles_from_matrix
-from compas.geometry import matrix_from_axis_angle_vector
-from compas.geometry import matrix_from_basis_vectors
-from compas.geometry import matrix_from_euler_angles
-from compas.geometry import matrix_from_quaternion
-from compas.geometry import quaternion_from_matrix
-from compas.geometry import subtract_vectors
 from compas.itertools import linspace
+from compas.linalg.transformations import axis_angle_vector_from_matrix
+from compas.linalg.transformations import basis_vectors_from_matrix
+from compas.linalg.transformations import decompose_matrix
+from compas.linalg.transformations import euler_angles_from_matrix
+from compas.linalg.transformations import matrix_from_axis_angle_vector
+from compas.linalg.transformations import matrix_from_basis_vectors
+from compas.linalg.transformations import matrix_from_euler_angles
+from compas.linalg.transformations import matrix_from_quaternion
+from compas.linalg.transformations import quaternion_from_matrix
+from compas.linalg.vectors import argmax
+from compas.linalg.vectors import cross_vectors
+from compas.linalg.vectors import subtract_vectors
 
 from .point import Point
 from .quaternion import Quaternion
@@ -385,7 +385,7 @@ class Frame(Geometry):
 
         Examples
         --------
-        >>> from compas.geometry import matrix_from_euler_angles
+        >>> from compas.linalg import matrix_from_euler_angles
         >>> from compas.tolerance import TOL
         >>> ea1 = [0.5, 0.4, 0.8]
         >>> M = matrix_from_euler_angles(ea1)

@@ -13,18 +13,18 @@ Ippoliti for providing code and documentation.
 """
 
 from compas.geometry import Transformation
-from compas.geometry import axis_and_angle_from_matrix
-from compas.geometry import basis_vectors_from_matrix
-from compas.geometry import cross_vectors
-from compas.geometry import decompose_matrix
-from compas.geometry import euler_angles_from_matrix
-from compas.geometry import length_vector
-from compas.geometry import matrix_from_axis_and_angle
-from compas.geometry import matrix_from_euler_angles
-from compas.geometry import matrix_from_frame
-from compas.geometry import matrix_from_quaternion
-from compas.geometry import normalize_vector
 from compas.itertools import flatten
+from compas.linalg.transformations import axis_and_angle_from_matrix
+from compas.linalg.transformations import basis_vectors_from_matrix
+from compas.linalg.transformations import decompose_matrix
+from compas.linalg.transformations import euler_angles_from_matrix
+from compas.linalg.transformations import matrix_from_axis_and_angle
+from compas.linalg.transformations import matrix_from_euler_angles
+from compas.linalg.transformations import matrix_from_frame
+from compas.linalg.transformations import matrix_from_quaternion
+from compas.linalg.vectors import cross_vectors
+from compas.linalg.vectors import length_vector
+from compas.linalg.vectors import normalize_vector
 from compas.tolerance import TOL
 
 

@@ -5,10 +5,10 @@ from typing import Type
 from typing import TypeVar
 
 from compas.geometry import Plane
-from compas.geometry import dot_vectors
 from compas.geometry import intersection_segment_plane
-from compas.geometry import length_vector
-from compas.geometry import subtract_vectors
+from compas.linalg.vectors import dot_vectors
+from compas.linalg.vectors import length_vector
+from compas.linalg.vectors import subtract_vectors
 
 from .types import Vertex
 

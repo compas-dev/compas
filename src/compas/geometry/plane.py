@@ -2,7 +2,7 @@ from math import sqrt
 
 from compas.geometry import Geometry
 from compas.geometry import bestfit_plane
-from compas.geometry import cross_vectors
+from compas.linalg.vectors import cross_vectors
 from compas.tolerance import TOL
 
 from .point import Point

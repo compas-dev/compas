@@ -13,23 +13,22 @@ if TYPE_CHECKING:
     from numpy.typing import NDArray
 
 from compas.itertools import pairwise
+from compas.linalg.vectors import add_vectors
+from compas.linalg.vectors import add_vectors_xy
+from compas.linalg.vectors import cross_vectors
+from compas.linalg.vectors import cross_vectors_xy
+from compas.linalg.vectors import dot_vectors
+from compas.linalg.vectors import length_vector
+from compas.linalg.vectors import length_vector_sqrd
+from compas.linalg.vectors import length_vector_sqrd_xy
+from compas.linalg.vectors import length_vector_xy
+from compas.linalg.vectors import normalize_vector
+from compas.linalg.vectors import scale_vector
+from compas.linalg.vectors import subtract_vectors
+from compas.linalg.vectors import subtract_vectors_xy
+from compas.linalg.vectors import vector_component
+from compas.linalg.vectors import vector_component_xy
 from compas.tolerance import TOL
-
-from ._algebra import add_vectors
-from ._algebra import add_vectors_xy
-from ._algebra import cross_vectors
-from ._algebra import cross_vectors_xy
-from ._algebra import dot_vectors
-from ._algebra import length_vector
-from ._algebra import length_vector_sqrd
-from ._algebra import length_vector_sqrd_xy
-from ._algebra import length_vector_xy
-from ._algebra import normalize_vector
-from ._algebra import scale_vector
-from ._algebra import subtract_vectors
-from ._algebra import subtract_vectors_xy
-from ._algebra import vector_component
-from ._algebra import vector_component_xy
 
 
 def distance_point_point(a: Sequence[float], b: Sequence[float]) -> float:
@@ -390,9 +389,7 @@ def distance_point_plane_signed(point: Sequence[float], plane: Sequence[Sequence
     return dot_vectors(vector, normal)
 
 
-def distance_line_line(
-    l1: Sequence[Sequence[float]], l2: Sequence[Sequence[float]], tol: Optional[float] = None
-) -> float:
+def distance_line_line(l1: Sequence[Sequence[float]], l2: Sequence[Sequence[float]], tol: Optional[float] = None) -> float:
     r"""Compute the shortest distance between two lines.
 
     Parameters
@@ -443,9 +440,7 @@ def distance_line_line(
 # ==============================================================================
 
 
-def sort_points(
-    point: Sequence[float], cloud: Sequence[Sequence[float]]
-) -> list[tuple[float, Sequence[float], int]]:
+def sort_points(point: Sequence[float], cloud: Sequence[Sequence[float]]) -> list[tuple[float, Sequence[float], int]]:
     """Sorts points of a pointcloud based on their distance from a given point.
 
     Parameters
@@ -471,9 +466,7 @@ def sort_points(
     return sorted(zip(minsq, cloud, range(len(cloud))), key=lambda x: x[0])
 
 
-def sort_points_xy(
-    point: Sequence[float], cloud: Sequence[Sequence[float]]
-) -> list[tuple[float, Sequence[float], int]]:
+def sort_points_xy(point: Sequence[float], cloud: Sequence[Sequence[float]]) -> list[tuple[float, Sequence[float], int]]:
     """Sorts points of a pointcloud based on their distance from a given point,
     assuming all points lie in the XY plane.
 
@@ -500,9 +493,7 @@ def sort_points_xy(
     return sorted(zip(minsq, cloud, range(len(cloud))), key=lambda x: x[0])
 
 
-def closest_point_in_cloud(
-    point: Sequence[float], cloud: Sequence[Sequence[float]]
-) -> tuple[float, Sequence[float], int]:
+def closest_point_in_cloud(point: Sequence[float], cloud: Sequence[Sequence[float]]) -> tuple[float, Sequence[float], int]:
     """Calculates the closest point in a pointcloud.
 
     Parameters
@@ -619,9 +610,7 @@ def closest_points_in_cloud_numpy(
     return indices
 
 
-def closest_point_in_cloud_xy(
-    point: Sequence[float], cloud: Sequence[Sequence[float]]
-) -> tuple[float, Sequence[float], int]:
+def closest_point_in_cloud_xy(point: Sequence[float], cloud: Sequence[Sequence[float]]) -> tuple[float, Sequence[float], int]:
     """Calculates the closest point in a list of points in the XY-plane.
 
     Parameters
@@ -871,9 +860,7 @@ def closest_point_on_plane(point: Sequence[float], plane: Sequence[Sequence[floa
     return [x1 - k * a, y1 - k * b, z1 - k * c]
 
 
-def closest_line_to_point(
-    point: Sequence[float], lines: Sequence[Sequence[Sequence[float]]]
-) -> Sequence[Sequence[float]]:
+def closest_line_to_point(point: Sequence[float], lines: Sequence[Sequence[Sequence[float]]]) -> Sequence[Sequence[float]]:
     """Compute closest line to a point from a list of lines.
 
     Parameters

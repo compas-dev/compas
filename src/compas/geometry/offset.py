@@ -1,15 +1,15 @@
 from compas.data.validators import is_item_iterable
-from compas.geometry import add_vectors
 from compas.geometry import centroid_points
-from compas.geometry import cross_vectors
 from compas.geometry import intersection_line_line
 from compas.geometry import is_colinear
 from compas.geometry import normal_polygon
-from compas.geometry import normalize_vector
-from compas.geometry import scale_vector
-from compas.geometry import subtract_vectors
 from compas.itertools import iterable_like
 from compas.itertools import pairwise
+from compas.linalg.vectors import add_vectors
+from compas.linalg.vectors import cross_vectors
+from compas.linalg.vectors import normalize_vector
+from compas.linalg.vectors import scale_vector
+from compas.linalg.vectors import subtract_vectors
 
 
 def intersect_lines(l1, l2, tol):

@@ -7,11 +7,11 @@ from typing import Union
 from typing import cast
 
 from compas.files.gltf.gltf_children import GLTFChildren
-from compas.geometry import identity_matrix
-from compas.geometry import matrix_from_quaternion
-from compas.geometry import matrix_from_scale_factors
-from compas.geometry import matrix_from_translation
-from compas.geometry import multiply_matrices
+from compas.linalg.matrices import multiply_matrices
+from compas.linalg.transformations import identity_matrix
+from compas.linalg.transformations import matrix_from_quaternion
+from compas.linalg.transformations import matrix_from_scale_factors
+from compas.linalg.transformations import matrix_from_translation
 
 if TYPE_CHECKING:
     from compas.datastructures import Mesh

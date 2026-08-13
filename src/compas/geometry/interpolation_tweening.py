@@ -1,7 +1,7 @@
-from compas.geometry import add_vectors
 from compas.geometry import distance_point_point
-from compas.geometry import scale_vector
-from compas.geometry import subtract_vectors
+from compas.linalg.vectors import add_vectors
+from compas.linalg.vectors import scale_vector
+from compas.linalg.vectors import subtract_vectors
 
 
 def tween_points(points1, points2, num):

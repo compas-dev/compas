@@ -3,13 +3,13 @@ from sys import float_info
 
 from compas.geometry import Geometry
 from compas.geometry import Rotation
-from compas.geometry import quaternion_canonize
-from compas.geometry import quaternion_conjugate
-from compas.geometry import quaternion_from_matrix
-from compas.geometry import quaternion_is_unit
-from compas.geometry import quaternion_multiply
-from compas.geometry import quaternion_norm
-from compas.geometry import quaternion_unitize
+from compas.linalg.quaternions import quaternion_canonize
+from compas.linalg.quaternions import quaternion_conjugate
+from compas.linalg.quaternions import quaternion_is_unit
+from compas.linalg.quaternions import quaternion_multiply
+from compas.linalg.quaternions import quaternion_norm
+from compas.linalg.quaternions import quaternion_unitize
+from compas.linalg.transformations import quaternion_from_matrix
 from compas.tolerance import TOL
 
 
@@ -324,7 +324,7 @@ class Quaternion(Geometry):
 
         Examples
         --------
-        >>> from compas.geometry import matrix_from_euler_angles
+        >>> from compas.linalg import matrix_from_euler_angles
         >>> ea = [0.2, 0.6, 0.2]
         >>> M = matrix_from_euler_angles(ea)
         >>> Quaternion.from_matrix(M)

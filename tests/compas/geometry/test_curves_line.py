@@ -3,10 +3,10 @@ import pytest
 import json
 import compas
 
-from compas.geometry import add_vectors
-from compas.geometry import scale_vector
-from compas.geometry import normalize_vector
-from compas.geometry import subtract_vectors
+from compas.linalg import add_vectors
+from compas.linalg import scale_vector
+from compas.linalg import normalize_vector
+from compas.linalg import subtract_vectors
 from compas.geometry import distance_point_point
 from compas.geometry import Point
 from compas.geometry import Vector

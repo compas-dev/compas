@@ -2,11 +2,11 @@ from compas.geometry import Geometry
 from compas.geometry import angle_vectors
 from compas.geometry import angle_vectors_signed
 from compas.geometry import angles_vectors
-from compas.geometry import cross_vectors
-from compas.geometry import dot_vectors
-from compas.geometry import length_vector
-from compas.geometry import subtract_vectors
 from compas.geometry import transform_vectors
+from compas.linalg.vectors import cross_vectors
+from compas.linalg.vectors import dot_vectors
+from compas.linalg.vectors import length_vector
+from compas.linalg.vectors import subtract_vectors
 from compas.tolerance import TOL
 
 
