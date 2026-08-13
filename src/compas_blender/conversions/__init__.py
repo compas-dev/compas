@@ -1,5 +1,6 @@
 """
 This package provides functions to convert between COMPAS data/objects and Blender data/objects.
+
 """
 
 from .colors import color_to_blender_material

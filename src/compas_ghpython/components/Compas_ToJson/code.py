@@ -1,5 +1,6 @@
 """
 Serializes COMPAS objects to JSON.
+
 """
 
 from ghpythonlib.componentbase import executingcomponent as component

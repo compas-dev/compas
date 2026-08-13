@@ -1,8 +1,8 @@
 """
 This package provides a small set of functions to easily install and uninstall user-defined GH Components.
+
 """
 
-from __future__ import absolute_import
 
 import glob
 import os
@@ -31,6 +31,7 @@ def install_userobjects(source):
     -------
     list
         List of tuples (name, success) indicating whether each of the user objects was successfully installed.
+
     """
     version = get_version_from_args()
 
@@ -76,6 +77,7 @@ def uninstall_userobjects(userobjects=None):
     -------
     list
         List of tuples (name, success) indicating whether each of the user objects was successfully removed.
+
     """
     version = get_version_from_args()
     dstdir = get_grasshopper_userobjects_path(version)

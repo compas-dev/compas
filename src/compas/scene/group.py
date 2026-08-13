@@ -73,6 +73,7 @@ class Group(SceneObject):
         ------
         ValueError
             If the scene object does not have an associated scene node.
+
         """
         group_kwargs = self.kwargs.copy()
         group_kwargs.update(kwargs)

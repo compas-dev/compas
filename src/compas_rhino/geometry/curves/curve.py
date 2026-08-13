@@ -164,6 +164,7 @@ class RhinoCurve(Curve):
         -------
         :class:`compas.geometry.Polyline`
             The polyline representation of the curve.
+
         """
         curve_polyline = self.native_curve.ToPolyline(tolerance, angle_tolerance, minimum_lenght, maximum_length)
         polyline_created, polyline = curve_polyline.TryGetPolyline()

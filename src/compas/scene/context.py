@@ -22,6 +22,7 @@ def clear(guids=None):
     Returns
     -------
     None
+
     """
     raise NotImplementedError
 

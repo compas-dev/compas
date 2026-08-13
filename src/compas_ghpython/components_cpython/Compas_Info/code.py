@@ -1,6 +1,7 @@
 # r: compas>=2.14.1
 """
 Displays information about the active COMPAS environment.
+
 """
 
 import os

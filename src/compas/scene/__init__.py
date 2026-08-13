@@ -2,6 +2,7 @@
 This package defines sceneobjects for visualising COMPAS items (geometry & datastructures).
 Every item type is paired with a corresponding scene object type that is capable of visualizing the data of the object.
 The scene objects are implemented as pluggables, and automatically switch between plugins depending on the contexct in which they are used.
+
 """
 # ruff: noqa: F401
 

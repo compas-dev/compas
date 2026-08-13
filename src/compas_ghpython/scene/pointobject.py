@@ -1,6 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
 from compas.scene import GeometryObject
 from compas_rhino import conversions
@@ -18,6 +15,7 @@ class PointObject(GHSceneObject, GeometryObject):
         -------
         list[:rhino:`Rhino.Geometry.Point3d`]
             List of created Rhino points.
+
         """
         geometry = conversions.point_to_rhino(self.geometry)
         geometry.Transform(conversions.transformation_to_rhino(self.worldtransformation))

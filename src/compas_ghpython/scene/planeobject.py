@@ -1,6 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
 from compas.geometry import Frame
 from compas.scene import GeometryObject
@@ -38,6 +35,7 @@ class PlaneObject(GHSceneObject, GeometryObject):
         -------
         list[:rhino:`Rhino.Geometry.Line`, :rhino:`Rhino.Geometry.Mesh`]
             List of created Rhino geometries.
+
         """
         frame = Frame.from_plane(self._item)
         normal = conversions.line_to_rhino([frame.to_world_coordinates([0, 0, 0]), frame.to_world_coordinates([0, 0, self.scale])])

@@ -42,5 +42,6 @@ class BrepVertex(Data):
         -------
         :class:`compas.geometry.BrepVertex`
             The created vertex
+
         """
         raise NotImplementedError

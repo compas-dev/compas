@@ -153,6 +153,7 @@ class Scene(Tree):
         -------
         :class:`compas.scene.SceneObject`
             The scene object associated with the item.
+
         """
 
         parent = parent or self.root

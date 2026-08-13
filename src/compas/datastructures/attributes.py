@@ -55,24 +55,34 @@ class AttributeView(MutableMapping[str, Any]):
 
 class NodeAttributeView(AttributeView):
     """Mutable Mapping that provides a read/write view of the custom attributes of a node
-    combined with the default attributes of all nodes."""
+    combined with the default attributes of all nodes.
+
+    """
 
 
 class VertexAttributeView(AttributeView):
     """Mutable Mapping that provides a read/write view of the custom attributes of a vertex
-    combined with the default attributes of all vertices."""
+    combined with the default attributes of all vertices.
+
+    """
 
 
 class EdgeAttributeView(AttributeView):
     """Mutable Mapping that provides a read/write view of the custom attributes of an edge
-    combined with the default attributes of all edges."""
+    combined with the default attributes of all edges.
+
+    """
 
 
 class FaceAttributeView(AttributeView):
     """Mutable Mapping that provides a read/write view of the custom attributes of a face
-    combined with the default attributes of all faces."""
+    combined with the default attributes of all faces.
+
+    """
 
 
 class CellAttributeView(AttributeView):
     """Mutable Mapping that provides a read/write view of the custom attributes of a cell
-    combined with the default attributes of all cells."""
+    combined with the default attributes of all cells.
+
+    """

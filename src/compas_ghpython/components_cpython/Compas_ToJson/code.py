@@ -1,6 +1,7 @@
 # r: compas>=2.14.1
 """
 Serializes COMPAS objects to JSON.
+
 """
 
 from typing import Any

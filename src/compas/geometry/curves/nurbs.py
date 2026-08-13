@@ -356,6 +356,7 @@ class NurbsCurve(Curve):
         Returns
         -------
         :class:`compas.geometry.NurbsCurve`
+
         """
         return nurbscurve_from_step(cls, filepath)
 

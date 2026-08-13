@@ -225,6 +225,7 @@ class RhinoBrepEdge(BrepEdge):
         -------
         float
             The parameter of the closest point on the edge.
+
         """
         rgpoint = Rhino.Geometry.Point3d(point.x, point.y, point.z)
         success, parameter = self._edge.ClosestPoint(rgpoint)
@@ -245,6 +246,7 @@ class RhinoBrepEdge(BrepEdge):
         -------
         :class:`compas.geometry.Point`
             The point on the edge at the given parameter.
+
         """
         rgpoint = self._edge.PointAt(parameter)
         return point_to_compas(rgpoint)

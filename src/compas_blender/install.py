@@ -252,6 +252,7 @@ def installable_blender_packages():
     -------
     :obj:`list` of :obj:`str`
         List of package names to make available inside Blender.
+
     """
     pass
 

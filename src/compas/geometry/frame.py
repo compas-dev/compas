@@ -636,6 +636,7 @@ class Frame(Geometry):
         >>> start_frame = frame1.interpolate_frame(frame2, 0)
         >>> TOL.is_allclose(start_frame.point, frame1.point) and TOL.is_allclose(start_frame.quaternion, frame1.quaternion)
         True
+
         """
         quat1 = Quaternion.from_frame(self)
         quat2 = Quaternion.from_frame(other)
@@ -671,6 +672,7 @@ class Frame(Geometry):
         >>> frames = frame1.interpolate_frames(frame2, steps)
         >>> print(len(frames) == steps)
         True
+
         """
         return [self.interpolate_frame(other, t) for t in linspace(0, 1, steps)]
 

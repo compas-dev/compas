@@ -1,6 +1,7 @@
 """
 This package provides scene object plugins for visualising COMPAS objects in Blender.
 When working in Blender, :class:`compas.scene.SceneObject` will automatically use the corresponding Blender object for each COMPAS object type.
+
 """
 
 import compas_blender

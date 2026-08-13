@@ -4,6 +4,7 @@ Notes
 -----
 A future public `off_to_string` function could expose serialization separately
 from target writing, following the XML API.
+
 """
 
 from os import PathLike

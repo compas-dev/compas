@@ -2,6 +2,7 @@
 
 The document contains normalized, zero-based references and no file, parser,
 or writer state.
+
 """
 
 from dataclasses import dataclass

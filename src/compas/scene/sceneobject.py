@@ -245,6 +245,7 @@ class SceneObject(TreeNode):
         ------
         ValueError
             If the scene object does not have an associated scene node.
+
         """
         if isinstance(item, SceneObject):
             sceneobject = item

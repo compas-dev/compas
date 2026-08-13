@@ -98,6 +98,7 @@ class Proxy(object):
     Starting a new proxy server...                          # doctest: +SKIP
     New proxy server started.                               # doctest: +SKIP
     Stopping the server proxy.                              # doctest: +SKIP
+
     """
 
     def __init__(
@@ -363,6 +364,7 @@ class Proxy(object):
 
         The process reference might not be present, e.g. in the case
         of reusing an existing connection. In that case, this is a no-op.
+
         """
         if not self._process:
             return

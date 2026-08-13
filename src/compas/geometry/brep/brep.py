@@ -444,6 +444,7 @@ class Brep(Geometry):
         Returns
         -------
         :class:`compas.geometry.Brep`
+
         """
         return from_native(native_brep)
 

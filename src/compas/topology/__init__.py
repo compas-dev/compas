@@ -1,5 +1,6 @@
 """
 Package containing topological algorithms for traversal, connectivity, combinatorics, etc.
+
 """
 # ruff: noqa: F401
 

@@ -12,6 +12,7 @@ toolkits may terminate the process during import instead of raising an
 In the future, discovery should preferably use explicit package entry points
 so that unrelated extension packages do not have to be imported merely to
 locate plugin implementations.
+
 """
 
 # The COMPAS plugin system owes a lot to pluggy, the pytest plugin framework
@@ -214,6 +215,7 @@ class PluginManager(object):
         -------
         int
             Count of successfully registered plugins in the module.
+
         """
         count = 0
 
@@ -372,6 +374,7 @@ def plugin(
         Domain name that "owns" the pluggable extension point.
         This is useful to disambiguate name collisions between extension points
         of different packages.
+
     """
 
     def setattr_hookspec_opts(func):
@@ -419,6 +422,7 @@ class Importer(object):
         -------
         module
             If importable, it returns the imported module, otherwise ``None``.
+
         """
         module = None
         try:
@@ -446,6 +450,7 @@ class Importer(object):
         -------
         bool
             ``True`` if the module can be imported correctly, otherwise ``False``.
+
         """
         if module_name not in self._cache:
             self.try_import(module_name)

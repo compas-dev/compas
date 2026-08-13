@@ -1,5 +1,6 @@
 """
 Displays information about the active COMPAS environment.
+
 """
 
 import compas_bootstrapper

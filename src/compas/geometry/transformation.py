@@ -9,6 +9,7 @@ following online resources:
 
 Many thanks to Christoph Gohlke, Martin John Baker, Sachin Joglekar and Andrew
 Ippoliti for providing code and documentation.
+
 """
 
 from compas.data import Data

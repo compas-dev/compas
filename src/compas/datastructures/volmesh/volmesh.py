@@ -6,6 +6,7 @@ Edge and face attribute data use direction-independent serialized keys through
 module-local helpers. These should be consolidated into a dedicated data-key
 generation API used consistently for storage, lookup, deletion, and
 serialization.
+
 """
 
 from collections.abc import Mapping

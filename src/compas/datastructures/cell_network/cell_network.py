@@ -770,6 +770,7 @@ class CellNetwork(Datastructure):
         Returns
         -------
         None
+
         """
         vertices = self.face_vertices(face)
         # check first
@@ -2043,6 +2044,7 @@ class CellNetwork(Datastructure):
         -------
         list[float]
             Coordinates of the vertex.
+
         """
         return [self._vertex[vertex][axis] for axis in axes]
 
@@ -2061,6 +2063,7 @@ class CellNetwork(Datastructure):
         -------
         list of list[float]
             Coordinates of the vertices.
+
         """
         return [self.vertex_coordinates(vertex, axes=axes) for vertex in vertices]
 
@@ -2076,6 +2079,7 @@ class CellNetwork(Datastructure):
         -------
         Point
             The point.
+
         """
         return Point(*self.vertex_coordinates(vertex))
 
@@ -2091,6 +2095,7 @@ class CellNetwork(Datastructure):
         -------
         list of Point
             The points.
+
         """
         return [self.vertex_point(vertex) for vertex in vertices]
 
@@ -2358,6 +2363,7 @@ class CellNetwork(Datastructure):
         ------
         KeyError
             If the edge does not exist.
+
         """
         if not self.has_edge(edge):
             raise KeyError(edge)
@@ -2651,6 +2657,7 @@ class CellNetwork(Datastructure):
         -------
         list[int]
             The identifiers of the adjacent faces.
+
         """
         u, v = edge
         faces = set()
@@ -2755,6 +2762,7 @@ class CellNetwork(Datastructure):
         tuple[list[float], list[float]]
             The coordinates of the start point.
             The coordinates of the end point.
+
         """
         u, v = edge
         return self.vertex_coordinates(u, axes=axes), self.vertex_coordinates(v, axes=axes)
@@ -2771,6 +2779,7 @@ class CellNetwork(Datastructure):
         -------
         Point
             The start point.
+
         """
         return self.vertex_point(edge[0])
 
@@ -2786,6 +2795,7 @@ class CellNetwork(Datastructure):
         -------
         Point
             The end point.
+
         """
         return self.vertex_point(edge[1])
 
@@ -2855,6 +2865,7 @@ class CellNetwork(Datastructure):
         -------
         Vector
             The vector from start to end.
+
         """
         a, b = self.edge_coordinates(edge)
         return Vector.from_start_end(a, b)
@@ -2871,6 +2882,7 @@ class CellNetwork(Datastructure):
         -------
         Vector
             The direction vector of the edge.
+
         """
         return Vector(*normalize_vector(self.edge_vector(edge)))
 
@@ -2886,6 +2898,7 @@ class CellNetwork(Datastructure):
         -------
         Line
             The line.
+
         """
         return Line(*self.edge_coordinates(edge))
 
@@ -2901,6 +2914,7 @@ class CellNetwork(Datastructure):
         -------
         float
             The length of the edge.
+
         """
         a, b = self.edge_coordinates(edge)
         return distance_point_point(a, b)
@@ -4726,6 +4740,7 @@ class CellNetwork(Datastructure):
         See Also
         --------
         cell_face_neighbors
+
         """
         nbrs = []
         for face in self.cell_faces(cell):
@@ -4798,6 +4813,7 @@ class CellNetwork(Datastructure):
         See Also
         --------
         cell_polygon, cell_centroid, cell_center
+
         """
         return [self.vertex_point(vertex) for vertex in self.cell_vertices(cell)]
 
@@ -4817,6 +4833,7 @@ class CellNetwork(Datastructure):
         See Also
         --------
         cell_center
+
         """
         vertices = self.cell_vertices(cell)
         return Point(*centroid_points([self.vertex_coordinates(vertex) for vertex in vertices]))
@@ -4837,6 +4854,7 @@ class CellNetwork(Datastructure):
         See Also
         --------
         cell_centroid
+
         """
         vertices, faces = self.cell_to_vertices_and_faces(cell)
         return Point(*centroid_polyhedron((vertices, faces)))

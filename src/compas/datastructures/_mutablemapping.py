@@ -15,6 +15,7 @@ The decision to avoid abstract base classes and metaclasses should be revisited.
 It was made to work around performance and compatibility problems in IronPython
 2.7, but those constraints no longer apply as support for Python 2.7-era
 environments is phased out.
+
 """
 
 import collections.abc as stdlib_collections
@@ -36,6 +37,7 @@ class Mapping(Generic[K, V]):
     pairs.
     This class provides concrete generic implementations of all
     methods except for __getitem__, __iter__, and __len__.
+
     """
 
     __slots__ = ()
@@ -96,6 +98,7 @@ class MutableMapping(Mapping[K, V]):
     This class provides concrete generic implementations of all
     methods except for __getitem__, __setitem__, __delitem__,
     __iter__, and __len__.
+
     """
 
     __slots__ = ()
@@ -117,6 +120,7 @@ class MutableMapping(Mapping[K, V]):
     def pop(self, key: K, default: Any = __marker) -> Any:
         """D.pop(k[,d]) => v, remove specified key and return the corresponding value.
         If key is not found, d is returned if given, otherwise KeyError is raised.
+
         """
         try:
             value = self[key]
@@ -131,6 +135,7 @@ class MutableMapping(Mapping[K, V]):
     def popitem(self) -> tuple[K, V]:
         """D.popitem() => (k, v), remove and return some (key, value) pair
         as a 2-tuple; but raise KeyError if D is empty.
+
         """
         try:
             key = next(iter(self))
@@ -154,6 +159,7 @@ class MutableMapping(Mapping[K, V]):
         If E present and has a .keys() method, does: for k in E: D[k] = E[k]
         If E present and lacks .keys() method, does: for (k, v) in E: D[k] = v
         In either case, this is followed by: for k, v in F.items(): D[k] = v
+
         """
         if not args:
             raise TypeError("'update' of 'MutableMapping' object needs an argument")

@@ -85,6 +85,7 @@ def open_file(file_or_filename, mode="r"):
     -------
     file-like object
         File object already opened.
+
     """
     file = file_or_filename
     close_source = False
@@ -121,6 +122,7 @@ def iter_file(file, size=65536):
     -------
     bytes
         Byte array chunks read from the file.
+
     """
     while True:
         data = file.read(size)

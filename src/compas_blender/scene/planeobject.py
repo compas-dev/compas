@@ -49,6 +49,7 @@ class PlaneObject(BlenderSceneObject, GeometryObject):
         -------
         list[:blender:`bpy.types.Object`]
             The objects created in Blender.
+
         """
 
         objects = []

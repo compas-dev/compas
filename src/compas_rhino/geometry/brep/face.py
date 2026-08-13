@@ -322,6 +322,7 @@ class RhinoBrepFace(BrepFace):
         -------
         :class:`compas.geometry.Point`
             The point at the given uv parameters.
+
         """
         rgpoint = self._face.PointAt(u, v)
         return point_to_compas(rgpoint)
@@ -361,6 +362,7 @@ class RhinoBrepFace(BrepFace):
         -------
         bool
             True if the point is on the face (inside or on the boundary), False otherwise.
+
         """
         relation = self._face.IsPointOnFace(u, v)
         if relation in (Rhino.Geometry.PointFaceRelation.Interior, Rhino.Geometry.PointFaceRelation.Boundary):
@@ -382,6 +384,7 @@ class RhinoBrepFace(BrepFace):
         -------
         bool
             True if the point is on the boundary of the face, False otherwise.
+
         """
         relation = self._face.IsPointOnFace(u, v)
         if relation == Rhino.Geometry.PointFaceRelation.Boundary:

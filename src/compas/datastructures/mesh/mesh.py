@@ -14,6 +14,7 @@ the short term. Longer term, ``edgedata`` should use canonical ``Edge`` tuples
 internally, with conversion to a JSON-compatible representation confined to
 ``__data__`` and ``__from_data__``. At that point, an ``edge_key`` helper should
 return the canonical tuple rather than a serialized string.
+
 """
 
 from collections.abc import Mapping
@@ -4434,6 +4435,7 @@ class Mesh(Datastructure):
         -------
         Point
             The point of the vertex.
+
         """
         return Point(*self.vertex_coordinates(key))
 
@@ -4449,6 +4451,7 @@ class Mesh(Datastructure):
         -------
         list[Point]
             The points of the vertices.
+
         """
         return [self.vertex_point(vertex) for vertex in vertices]
 

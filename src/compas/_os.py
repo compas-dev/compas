@@ -2,6 +2,7 @@
 """
 These are internal functions of the framework.
 Not intended to be used outside compas* packages.
+
 """
 
 import os
@@ -193,6 +194,7 @@ def select_python(python_executable):
     python_executable : str
         Select which python executable you want to use,
         either `python` or `pythonw`.
+
     """
     if PYTHON_DIRECTORY and os.path.exists(PYTHON_DIRECTORY):
         python_executables = [python_executable] if python_executable else ["pythonw", "python"]
@@ -237,6 +239,7 @@ def prepare_environment(env=None):
     -------
     dict
         Updated environment variable dictionary.
+
     """
 
     if env is None:
@@ -268,6 +271,7 @@ def realpath(path):
     except when inside IronPython because (guess what?) it is broken and
     doesn't really eliminate sym links, so, we fallback to a different
     way to identifying symlinks in that situation.
+
     """
     if not PY3 and is_ironpython():
         if is_windows():
@@ -390,6 +394,7 @@ def create_symlink(source, link_name):
     -----
     This function is a polyfill of the native ``os.symlink``
     for Python 2.x on Windows platforms.
+
     """
     create_symlinks([(source, link_name)], raise_on_error=True)
 
@@ -401,6 +406,7 @@ def create_symlinks(symlinks, raise_on_error=False):
     ----------
     symlinks: list[str]ing tuples
         List of ``source`` and ``link_name`` of the symlinks as tuples.
+
     """
     symlink, allow_polyfill_retry = _get_symlink_function()
 
@@ -421,6 +427,7 @@ def remove_symlink(symlink):
     ----------
     symlink : str
         Symlink to remove.
+
     """
     # Broken links return False on .exists(), so we need to check .islink() as well
     if not (os.path.islink(symlink) or os.path.exists(symlink)):
@@ -456,6 +463,7 @@ def remove_symlinks(symlinks, raise_on_error=False):
     list
         If ``raise_on_error`` is ``False``, returns a list
         of bools indicating which links were successfully removed.
+
     """
     result = []
 
@@ -512,6 +520,7 @@ def is_admin():
     -------
     bool
         True if the user is administrator, otherwise False.
+
     """
     if not is_windows():
         return os.getuid() == 0
@@ -531,6 +540,7 @@ def _run_command_as_admin(command, arguments):
         Command name.
     arguments : list[str]
         List of arguments.
+
     """
     _handle, temp_path = tempfile.mkstemp(suffix=".cmd", text=True)
 
@@ -553,6 +563,7 @@ def _run_as_admin(command):
     -------
     int
         Exit code of the process.
+
     """
 
     if not is_windows():
@@ -619,6 +630,7 @@ def user_data_dir(appname=None, appauthor=None, version=None, roaming=False):
     -------
     str
         Full path to the user-specific data dir.
+
     """
     if is_windows():
         if appauthor is None:
@@ -657,6 +669,7 @@ def _get_win_folder_from_registry(csidl_name):
     """This is a fallback technique at best. I'm not sure if using the
     registry for this guarantees us the correct answer for all CSIDL_*
     names.
+
     """
     if PY3:
         import winreg as _winreg

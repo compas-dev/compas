@@ -386,6 +386,7 @@ def take(n, iterable):
     --------
     >>> take(5, range(100))
     [0, 1, 2, 3, 4]
+
     """
     return list(islice(iterable, n))
 
@@ -399,6 +400,7 @@ def padnone(iterable):
     """Returns the sequence elements and then returns None indefinitely.
 
     Useful for emulating the behavior of the built-in map() function.
+
     """
     return chain(iterable, repeat(None))
 

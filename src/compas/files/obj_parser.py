@@ -2,6 +2,7 @@
 
 The parser decodes OBJ source bytes, produces logical statements, and converts
 them into a structured document.
+
 """
 
 from dataclasses import dataclass

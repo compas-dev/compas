@@ -142,6 +142,7 @@ def json_dumpz(data: Any, zip_filename: ZipFile, pretty: bool = False, compact: 
     compas.data.json_load
     compas.data.json_loads
     compas.data.json_loadz
+
     """
     json_str = json_dumps(data, pretty=pretty, compact=compact, minimal=minimal)
 
@@ -168,6 +169,7 @@ def json_loadz(zip_file: ZipFile) -> Any:
     compas.data.json_dumps
     compas.data.json_dumpz
     compas.data.json_loads
+
     """
     with zipfile.ZipFile(zip_file) as zf:
         with zf.open(_JSON_CONTENT_FILENAME) as f:

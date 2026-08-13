@@ -248,6 +248,7 @@ class GLTFMesh:
         -------
         GLTFMesh
             Created mesh data.
+
         """
         vertices, faces = mesh.to_vertices_and_faces()
         texture_coordinates = mesh.vertices_attribute("texture_coordinate")

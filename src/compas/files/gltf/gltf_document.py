@@ -349,6 +349,7 @@ class GLTFDocument:
         -------
         list[tuple[int, ...]] | None
             Mesh faces, if the node references a mesh.
+
         """
         if node.mesh_key is None:
             return None
@@ -369,6 +370,7 @@ class GLTFDocument:
         -------
         list[tuple[float, ...]] | None
             Mesh vertices, with node morph weights applied when present.
+
         """
         if node.mesh_key is None:
             return None
@@ -391,6 +393,7 @@ class GLTFDocument:
         -------
         GLTFNode | None
             Matching node, if found.
+
         """
         for key in self.nodes:
             if self.nodes[key].name == name:
@@ -416,6 +419,7 @@ class GLTFDocument:
         -------
         int
             Assigned material key.
+
         """
         key = self._get_next_available_key(self.materials)
         self.materials[key] = material
@@ -433,6 +437,7 @@ class GLTFDocument:
         -------
         int
             Assigned texture key.
+
         """
         key = self._get_next_available_key(self.textures)
         self.textures[key] = texture
@@ -450,6 +455,7 @@ class GLTFDocument:
         -------
         int
             Assigned image key.
+
         """
         key = self._get_next_available_key(self.images)
         self.images[key] = image
@@ -467,6 +473,7 @@ class GLTFDocument:
         -------
         int | None
             Matching material key, if found.
+
         """
         for key, material in self.materials.items():
             if material.name == name:
@@ -486,6 +493,7 @@ class GLTFDocument:
         Returns
         -------
         GLTFScene
+
         """
         return GLTFScene(self, name=name, extras=extras)
 
@@ -506,6 +514,7 @@ class GLTFDocument:
         Returns
         -------
         GLTFNode
+
         """
         if scene not in self.scenes.values():
             raise ValueError("Cannot find glTF scene.")
@@ -530,6 +539,7 @@ class GLTFDocument:
         Returns
         -------
         GLTFNode
+
         """
         child_node = GLTFNode(self, child_name, child_extras)
         parent_node.children.append(child_node.key)
@@ -546,6 +556,7 @@ class GLTFDocument:
         Returns
         -------
         GLTFMesh
+
         """
         return GLTFMesh.from_mesh(self, mesh)
 
@@ -562,6 +573,7 @@ class GLTFDocument:
         Returns
         -------
         GLTFMesh
+
         """
         if isinstance(mesh, int):
             mesh_data = self.meshes[mesh]
@@ -582,6 +594,7 @@ class GLTFDocument:
         -------
         dict[int, GLTFNode]
             Nodes keyed by document key.
+
         """
         node_dict = {}
 
@@ -607,6 +620,7 @@ class GLTFDocument:
         -------
         tuple[dict[Any, Any], list[tuple[Any, int]]]
             Node positions and hierarchy edges.
+
         """
         positions_dict: dict[Any, Any] = {"root": [0, 0, 0]}
         edges_list: list[tuple[Any, int]] = []

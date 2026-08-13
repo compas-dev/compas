@@ -64,6 +64,7 @@ def warning(component, message):
         The component instance. Pre-Rhino8 use `self`. Post-Rhino8 use `ghenv.Component`.
     message : str
         The message to display.
+
     """
     component.AddRuntimeMessage(Grasshopper.Kernel.GH_RuntimeMessageLevel.Warning, message)
 
@@ -77,6 +78,7 @@ def error(component, message):
         The component instance. Pre-Rhino8 use `self`. Post-Rhino8 use `ghenv.Component`.
     message : str
         The message to display.
+
     """
     component.AddRuntimeMessage(Grasshopper.Kernel.GH_RuntimeMessageLevel.Error, message)
 
@@ -90,6 +92,7 @@ def remark(component, message):
         The component instance. Pre-Rhino8 use `self`. Post-Rhino8 use `ghenv.Component`.
     message : str
         The message to display.
+
     """
     component.AddRuntimeMessage(Grasshopper.Kernel.GH_RuntimeMessageLevel.Remark, message)
 
@@ -103,6 +106,7 @@ def message(component, message):
         The component instance. Pre-Rhino8 use `self`. Post-Rhino8 use `ghenv.Component`.
     message : str
         The message to display.
+
     """
     component.Message = message
 

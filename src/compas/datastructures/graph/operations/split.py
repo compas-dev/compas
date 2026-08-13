@@ -33,6 +33,7 @@ def graph_split_edge(
     ------
     ValueError
         If `t` is not in the range 0-1.
+
     """
     u, v = edge
     if not graph.has_edge(edge):

@@ -8,6 +8,7 @@ this becomes significant for large documents.
 
 A future public `obj_to_string` function could expose serialization separately
 from target writing, following the XML API.
+
 """
 
 from os import PathLike

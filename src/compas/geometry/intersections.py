@@ -573,6 +573,7 @@ def intersection_segment_polyline(segment, polyline, tol=None):
 
     >>> distance_point_point((0.5, 0.0, 0.25), x) < 1e-6
     True
+
     """
     for cd in pairwise(polyline):
         pt = intersection_segment_segment(segment, cd, tol)

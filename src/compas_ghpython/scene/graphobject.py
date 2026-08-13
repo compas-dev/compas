@@ -1,6 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
 from compas.scene import GraphObject as BaseGraphObject
 from compas_rhino import conversions
@@ -18,6 +15,7 @@ class GraphObject(GHSceneObject, BaseGraphObject):
         -------
         list[:rhino:`Rhino.Geometry.Point3d`, :rhino:`Rhino.Geometry.Line`]
             List of created Rhino geometries.
+
         """
         self._guids = self.draw_edges() + self.draw_nodes()
         return self.guids

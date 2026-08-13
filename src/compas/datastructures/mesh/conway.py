@@ -3,6 +3,7 @@
 The topological count relationships documented by these operators assume a
 closed manifold seed mesh. Boundary vertices and edges are omitted by some
 operators, so the same relationships do not generally hold for open meshes.
+
 """
 
 from typing import TYPE_CHECKING

@@ -277,6 +277,7 @@ def installable_rhino_packages():
     -------
     :obj:`list` of :obj:`str`
         List of package names to make available inside Rhino.
+
     """
     pass
 
@@ -307,6 +308,7 @@ def after_rhino_install(installed_packages):
     -------
     :obj:`list` of 3-tuple (str, str, bool)
         List containing a 3-tuple with component name, message and True/False success flag.
+
     """
     pass
 

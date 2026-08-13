@@ -7,6 +7,7 @@ seemlessly from any other Python environment through a "Remote Procedure Call" o
 Through RPC, COMPAS can be used as a server for remote clients, and as a client for remote servers.
 A typical use case is to run algorithms that require packages like ``numpy`` or ``scipy`` on a remote server,
 when working in Rhino. Or to use COMPAS in a browser application.
+
 """
 # ruff: noqa: F401
 

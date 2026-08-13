@@ -265,6 +265,7 @@ class GLTFNode:
         -------
         GLTFNode
             Created child node.
+
         """
         return self.context.add_child_to_node(self, child_name, child_extras)
 

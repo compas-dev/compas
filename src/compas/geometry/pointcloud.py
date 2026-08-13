@@ -263,6 +263,7 @@ class Pointcloud(Geometry):
         -------
         None
             The cloud is modified in place.
+
         """
         for index, point in enumerate(transform_points(self.points, T)):
             self.points[index].x = point[0]

@@ -25,6 +25,7 @@ class DevTools(object):
         -------
         list
             List of unloaded module names.
+
         """
         to_remove = [name for name in sys.modules if name.startswith(top_level_module_name)]
 
@@ -37,14 +38,18 @@ class DevTools(object):
     def enable_reloader(cls):
         """Enables the code reload on the current folder.
 
-        The file must have been saved already in order for this to work."""
+        The file must have been saved already in order for this to work.
+
+        """
         cls._manage_reloader(enable=True)
 
     @classmethod
     def disable_reloader(cls):
         """Disables the code reload on the current folder.
 
-        The file must have been saved already in order for this to work."""
+        The file must have been saved already in order for this to work.
+
+        """
         cls._manage_reloader(enable=False)
 
     @classmethod

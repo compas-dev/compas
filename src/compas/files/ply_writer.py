@@ -4,6 +4,7 @@ Notes
 -----
 A future public `ply_to_bytes` function could expose serialization separately
 from target writing, following the XML API.
+
 """
 
 from typing import Optional
