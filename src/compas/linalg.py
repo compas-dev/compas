@@ -1,50 +1,62 @@
 import sys
 from functools import wraps
+from typing import Any
+from typing import Callable
+from typing import Literal
+from typing import Optional
+from typing import Sequence
+from typing import Union
+from typing import cast
+from typing import overload
 
 from numpy import absolute
 from numpy import array
 from numpy import asarray
 from numpy import atleast_2d
+from numpy import bool_
 from numpy import cross
+from numpy import integer
 from numpy import nan_to_num
 from numpy import nonzero
 from numpy import sum
 from numpy.linalg import cond
-from scipy.linalg import cho_factor  # type: ignore
-from scipy.linalg import cho_solve  # type: ignore
-from scipy.linalg import lstsq  # type: ignore
-from scipy.linalg import qr  # type: ignore
-from scipy.linalg import svd  # type: ignore
-from scipy.sparse.linalg import factorized  # type: ignore
-from scipy.sparse.linalg import spsolve  # type: ignore
+from numpy.typing import ArrayLike
+from numpy.typing import NDArray
+from scipy.linalg import cho_factor
+from scipy.linalg import cho_solve
+from scipy.linalg import lstsq
+from scipy.linalg import qr
+from scipy.linalg import svd
+from scipy.sparse.linalg import factorized
+from scipy.sparse.linalg import spsolve
 
 # ==============================================================================
 # Fundamentals
 # ==============================================================================
 
 
-def nullspace(A, tol=0.001):
+def nullspace(A: ArrayLike, tol: float = 0.001) -> NDArray[Any]:
     r"""Calculates the nullspace of the input matrix A.
 
     Parameters
     ----------
-    A : array-like
+    A
         Matrix A represented as an array or list.
-    tol : float
+    tol
         Tolerance.
 
     Returns
     -------
-    array
+    NDArray[Any]
         Null(A).
 
     Notes
     -----
     The nullspace is the set of vector solutions to the equation
 
-    .. math::
-
-        \mathbf{A} \mathbf{x} = 0
+    $$
+    \mathbf{A} \mathbf{x} = 0
+    $$
 
     where 0 is a vector of zeros.
 
@@ -72,19 +84,19 @@ def nullspace(A, tol=0.001):
     return null
 
 
-def rank(A, tol=0.001):
+def rank(A: ArrayLike, tol: float = 0.001) -> integer[Any]:
     r"""Calculates the rank of the input matrix A.
 
     Parameters
     ----------
-    A : array-like
+    A
         Matrix A represented as an array or list.
-    tol : float
+    tol
         Tolerance.
 
     Returns
     -------
-    int
+    numpy.integer[Any]
         rank(A)
 
     Notes
@@ -94,37 +106,43 @@ def rank(A, tol=0.001):
 
     Examples
     --------
-    >>> rank([[1, 2, 1], [-2, -3, 1], [3, 5, 0]])
+    >>> int(rank([[1, 2, 1], [-2, -3, 1], [3, 5, 0]]))
     2
 
     """
     A = atleast_2d(asarray(A, dtype=float))
-    s = svd(A, compute_uv=False)
+    # SciPy's return type does not narrow to an array when compute_uv is False.
+    s = cast(NDArray[Any], svd(A, compute_uv=False))
     tol = s[0] * tol
     r = (s >= tol).sum()
     return r
 
 
-def dof(A, tol=0.001, condition=False):
+@overload
+def dof(A: ArrayLike, tol: float = 0.001, condition: Literal[False] = False) -> tuple[integer[Any], integer[Any]]: ...
+
+
+@overload
+def dof(A: ArrayLike, tol: float, condition: Literal[True]) -> tuple[integer[Any], integer[Any], float]: ...
+
+
+def dof(A: ArrayLike, tol: float = 0.001, condition: bool = False) -> Union[tuple[integer[Any], integer[Any]], tuple[integer[Any], integer[Any], float]]:
     r"""Returns the degrees-of-freedom of the input matrix A.
 
     Parameters
     ----------
-    A : array-like
+    A
         Matrix A represented as an array or list.
-    tol : float (0.001)
+    tol
         Tolerance.
-    condition : bool (False)
+    condition
         Return the condition number of the matrix.
 
     Returns
     -------
-    int
-        Column degrees-of-freedom.
-    int
-        Row degrees-of-freedom.
-    float
-        Condition number, if ``condition`` is ``True``.
+    tuple[numpy.integer[Any], numpy.integer[Any]] | tuple[numpy.integer[Any], numpy.integer[Any], float]
+        The column and row degrees of freedom. If `condition` is `True`,
+        the condition number is included as the third element.
 
     Notes
     -----
@@ -148,17 +166,17 @@ def dof(A, tol=0.001, condition=False):
     return k, m
 
 
-def pivots(U, tol=None):
+def pivots(U: ArrayLike, tol: Optional[float] = None) -> list[int]:
     r"""Identify the pivots of input matrix U.
 
     Parameters
     ----------
-    U : array-like
+    U
         Matrix U represented as an array or list.
 
     Returns
     -------
-    list
+    list[int]
         Pivot column indices.
 
     Notes
@@ -186,17 +204,17 @@ def pivots(U, tol=None):
     return pivots
 
 
-def nonpivots(U, tol=None):
+def nonpivots(U: ArrayLike, tol: Optional[float] = None) -> list[int]:
     r"""Identify the non-pivots of input matrix U.
 
     Parameters
     ----------
-    U : array-like
+    U
         Matrix U represented as an array or list.
 
     Returns
     -------
-    list
+    list[int]
         Non-pivot column indices.
 
     Notes
@@ -217,28 +235,24 @@ def nonpivots(U, tol=None):
     return list(set(range(U.shape[1])) - set(cols))
 
 
-def rref(A, tol=None):
+def rref(A: ArrayLike, tol: Optional[float] = None) -> Optional[NDArray[Any]]:
     r"""Reduced row-echelon form of matrix A.
 
     Parameters
     ----------
-    A : array-like
+    A
         Matrix A represented as an array or list.
-    tol : float
+    tol
         Tolerance.
 
     Returns
     -------
-    array
+    NDArray[Any]
         RREF of A.
 
     Notes
     -----
     A matrix is in reduced row-echelon form after Gauss-Jordan elimination.
-
-    Examples
-    --------
-    >>>
 
     """
     A = atleast_2d(asarray(A, dtype=float))
@@ -247,7 +261,8 @@ def rref(A, tol=None):
     # to have non-decreasing absolute values on the diagonal of R
     # column pivoting ensures that the largest absolute value is used
     # as leading element
-    _, U = qr(A)  # type: ignore
+    # SciPy's return type does not narrow to the default two-array QR result.
+    _, U = cast(tuple[NDArray[Any], NDArray[Any]], qr(A))
     lead_pos = 0
     num_rows, num_cols = U.shape
     for r in range(num_rows):
@@ -263,7 +278,7 @@ def rref(A, tol=None):
                 if lead_pos == num_cols:
                     return
         # swap the row with the nonzero lead with the current row
-        U[[i, r]] = U[[r, i]]  # type: ignore
+        U[[i, r]] = U[[r, i]]
         # "normalize" the values of the row
         lead_val = U[r][lead_pos]
         U[r] = U[r] / lead_val
@@ -283,13 +298,13 @@ def rref(A, tol=None):
 
 
 class Memoized:
-    """"""
+    """Cache function results by their final argument."""
 
-    def __init__(self, f):
+    def __init__(self, f: Callable[..., Any]) -> None:
         self.f = f
         self.memo = {}
 
-    def __call__(self, *args):
+    def __call__(self, *args: Any) -> Any:
         key = args[-1]
         if key in self.memo:
             return self.memo[key]
@@ -297,11 +312,11 @@ class Memoized:
         return res
 
 
-def memoize(f):
+def memoize(f: Callable[..., Any]) -> Callable[..., Any]:
     memo = {}
 
     @wraps(f)
-    def wrapper(*args):
+    def wrapper(*args: Any) -> Any:
         key = args[-1]
         if key in memo:
             return memo[key]
@@ -311,17 +326,17 @@ def memoize(f):
     return wrapper
 
 
-def _chofactor(A):
+def _chofactor(A: ArrayLike) -> tuple[NDArray[Any], bool_]:
     r"""Returns the Cholesky factorisation/decomposition matrix.
 
     Parameters
     ----------
-    A : array
+    A
         Matrix A represented as an (m x m) array.
 
     Returns
     -------
-    array
+    NDArray[Any]
         Matrix (m x m) with upper/lower triangle containing Cholesky factor of A.
 
     Notes
@@ -329,32 +344,33 @@ def _chofactor(A):
     The Cholesky factorisation decomposes a Hermitian positive-definite matrix
     into the product of a lower/upper triangular matrix and its transpose.
 
-    .. math::
-
-        \mathbf{A} = \mathbf{L} \mathbf{L}^{\mathrm{T}}
+    $$
+    \mathbf{A} = \mathbf{L} \mathbf{L}^{\mathrm{T}}
+    $$
 
     Examples
     --------
     >>> _chofactor(array([[25, 15, -5], [15, 18, 0], [-5, 0, 11]]))
     (array([[ 5.,  3., -1.],
            [15.,  3.,  1.],
-           [-5.,  0.,  3.]]), False)
+           [-5.,  0.,  3.]]), array(False))
 
     """
-    return cho_factor(A)
+    # SciPy's return type does not describe the NumPy boolean scalar precisely.
+    return cast(tuple[NDArray[Any], bool_], cho_factor(A))
 
 
-def _lufactorized(A):
+def _lufactorized(A: Any) -> Callable[[ArrayLike], NDArray[Any]]:
     r"""Return a function for solving a sparse linear system (LU decomposition).
 
     Parameters
     ----------
-    A : array
+    A
         Matrix A represented as an (m x n) array.
 
     Returns
     -------
-    callable
+    Callable[[ArrayLike], NDArray[Any]]
         Function to solve linear system with input matrix (n x 1).
 
     Notes
@@ -362,9 +378,9 @@ def _lufactorized(A):
     LU decomposition factors a matrix as the product of a lower triangular and
     an upper triangular matrix L and U.
 
-    .. math::
-
-        \mathbf{A} = \mathbf{L} \mathbf{U}
+    $$
+    \mathbf{A} = \mathbf{L} \mathbf{U}
+    $$
 
     Examples
     --------
@@ -385,22 +401,21 @@ lufactorized = memoize(_lufactorized)
 # ------------------------------------------------------------------------------
 
 
-def uvw_lengths(C, X):
+def uvw_lengths(C: Any, X: ArrayLike) -> tuple[NDArray[Any], NDArray[Any]]:
     r"""Calculates the lengths and co-ordinate differences.
 
     Parameters
     ----------
-    C : sparse
+    C
         Connectivity matrix (m x n).
-    X : array
+    X
         Co-ordinates of vertices/points (n x 3).
 
     Returns
     -------
-    array
-        Vectors of co-ordinate differences in x, y and z (m x 3).
-    array
-        Lengths of members (m x 1).
+    tuple[NDArray[Any], NDArray[Any]]
+        The coordinate-difference vectors with shape `(m, 3)`, followed by
+        the member lengths with shape `(m, 1)`.
 
     Examples
     --------
@@ -417,17 +432,17 @@ def uvw_lengths(C, X):
     return uvw, normrow(uvw)
 
 
-def normrow(A):
+def normrow(A: ArrayLike) -> NDArray[Any]:
     """Calculates the 2-norm of each row of matrix A.
 
     Parameters
     ----------
-    A : array
+    A
         Matrix A represented as an (m x n) array.
 
     Returns
     -------
-    array
+    NDArray[Any]
         Column vector (m x 1) of values.
 
     Notes
@@ -460,19 +475,19 @@ def normrow(A):
     return (sum(A**2, axis=1) ** 0.5).reshape((-1, 1))
 
 
-def normalizerow(A, do_nan_to_num=True):
+def normalizerow(A: ArrayLike, do_nan_to_num: bool = True) -> NDArray[Any]:
     """Normalise the rows of matrix A.
 
     Parameters
     ----------
-    A : array
+    A
         Matrix A represented as an (m x n) array.
-    do_nan_to_num : bool
+    do_nan_to_num
         Convert NaNs and INF to numbers, default=True.
 
     Returns
     -------
-    array
+    NDArray[Any]
         Matrix of normalized row vectors (m x n).
 
     Notes
@@ -508,19 +523,19 @@ def normalizerow(A, do_nan_to_num=True):
         return A / normrow(A)
 
 
-def rot90(vectors, axes):
+def rot90(vectors: ArrayLike, axes: ArrayLike) -> NDArray[Any]:
     """Rotate an array of vectors through 90 degrees around an array of axes.
 
     Parameters
     ----------
-    vectors : array
+    vectors
         An array of row vectors (m x 3).
-    axes : array
+    axes
         An array of axes (m x 3).
 
     Returns
     -------
-    array
+    NDArray[Any]
         Matrix of row vectors (m x 3).
 
     Notes
@@ -538,7 +553,10 @@ def rot90(vectors, axes):
            [ 5.3748385 , -7.5247739 ,  4.2998708 ]])
 
     """
-    return normalizerow(cross(axes, vectors)) * normrow(vectors)
+    # NumPy's cross type accepts a narrower input contract than ArrayLike.
+    vectors_array = asarray(vectors)
+    axes_array = asarray(axes)
+    return normalizerow(cross(axes_array, vectors_array)) * normrow(vectors_array)
 
 
 # ==============================================================================
@@ -546,31 +564,32 @@ def rot90(vectors, axes):
 # ==============================================================================
 
 
-def solve_with_known(A, b, x, known):
+def solve_with_known(A: NDArray[Any], b: NDArray[Any], x: NDArray[Any], known: Sequence[int]) -> NDArray[Any]:
     r"""Solve a system of linear equations with part of solution known.
 
     Parameters
     ----------
-    A : array
+    A
         Coefficient matrix represented as an (m x n) array.
-    b : array
+    b
         Right-hand-side represented as an (m x 1) array.
-    x : array
+    x
         Unknowns/knowns represented as an (n x 1) array.
-    known : list
-        The indices of the known elements of ``x``.
+    known
+        The indices of the known elements of `x`.
 
     Returns
     -------
-    array: (n x 1) vector solution.
+    NDArray[Any]
+        The solution vector with shape `(n, 1)`.
 
     Notes
     -----
     Computes the solution of the system of linear equations.
 
-    .. math::
-
-        \mathbf{A} \mathbf{x} = \mathbf{b}
+    $$
+    \mathbf{A} \mathbf{x} = \mathbf{b}
+    $$
 
     """
     eps = 1 / sys.float_info.epsilon
@@ -587,32 +606,32 @@ def solve_with_known(A, b, x, known):
     return x
 
 
-def spsolve_with_known(A, b, x, known):
+def spsolve_with_known(A: Any, b: NDArray[Any], x: NDArray[Any], known: Sequence[int]) -> NDArray[Any]:
     r"""Solve (sparse) a system of linear equations with part of solution known.
 
     Parameters
     ----------
-    A : array
+    A
         Coefficient matrix (sparse) represented as an (m x n) array.
-    b : array
+    b
         Right-hand-side represented as an (m x 1) array.
-    x : array
+    x
         Unknowns/knowns represented as an (n x 1) array.
-    known : list
-        The indices of the known elements of ``x``.
+    known
+        The indices of the known elements of `x`.
 
     Returns
     -------
-    array
+    NDArray[Any]
         (n x 1) vector solution.
 
     Notes
     -----
     Computes the solution (using spsolve) of the system of linear equations.
 
-    .. math::
-
-        \mathbf{A} \mathbf{x} = \mathbf{b}
+    $$
+    \mathbf{A} \mathbf{x} = \mathbf{b}
+    $$
 
     Same function as solve_with_known, but for sparse matrix A.
 
