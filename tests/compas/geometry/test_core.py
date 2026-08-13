@@ -75,9 +75,9 @@ def test_angle_vectors_fails_when_input_is_zero(u, v):
 
 
 def test_angle_vectors_fails_when_input_is_zero_within_tolerance():
-    # length_vector(u) * length_vector(v) == 1e-4, which is zero within tol=1e-3
+    # length_vector(u) == 1e-4, which is zero within tol=1e-3
     with pytest.raises(ValueError):
-        angle_vectors([1e-2, 0.0, 0.0], [0.0, 1e-2, 0.0], tol=1e-3)
+        angle_vectors([1e-4, 0.0, 0.0], [0.0, 1e-2, 0.0], tol=1e-3)
 
 
 def test_angle_vectors_when_input_is_not_zero_within_tolerance():

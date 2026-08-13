@@ -49,10 +49,13 @@ def angle_vectors(u, v, deg=False, tol=None):
     1.57079
 
     """
-    L = length_vector(u) * length_vector(v)
-    if TOL.is_zero(L, tol):
+    len_u = length_vector(u)
+    len_v = length_vector(v)
+
+    if TOL.is_zero(len_u, tol) or TOL.is_zero(len_v, tol):
         raise ValueError("Cannot compute the angle between one or more zero-length vectors.")
-    a = dot_vectors(u, v) / L
+
+    a = dot_vectors(u, v) / (len_u * len_v)
     a = max(min(a, 1), -1)
     angle = acos(a)
 
