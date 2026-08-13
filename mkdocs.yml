@@ -1,0 +1,162 @@
+site_name: COMPAS
+site_url: https://github.com/compas-dev/compas/
+
+repo_name: compas-dev/compas
+repo_url: https://github.com/compas-dev/compas/
+
+copyright: Copyright &copy; 2013 - 2027, ETH Zurich; Copyright &copy; 2017 - 2026, COMPAS Association
+
+extra:
+  homepage: https://compas-dev.github.io/compas/
+
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue
+      accent: light blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: blue
+      accent: light blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  font:
+    text: Roboto
+    code: Roboto Mono
+  logo: assets/logos/compas_icon_white.png
+  favicon: public/favicon.ico
+  features:
+    - content.code.copy
+    - content.footnote.tooltips
+    - navigation.expand
+    - navigation.footer
+    - navigation.sections
+    - navigation.top
+    - navigation.tabs
+    - search.highlight
+    - search.suggest
+    - toc.follow
+
+markdown_extensions:
+  - abbr
+  - attr_list
+  - admonition
+  - callouts:
+      strip_period: no
+  - footnotes
+  - md_in_html
+  - pymdownx.blocks.caption
+  - pymdownx.caret
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets:
+      check_paths: true
+  - pymdownx.superfences
+  - toc:
+      permalink: "¤"
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+
+plugins:
+  - search
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          paths: [src] # search packages in the src folder
+          inventories:
+            - https://docs.python.org/3/objects.inv
+          options:
+            allow_inspection: true
+            backlinks: tree
+            docstring_options:
+              ignore_init_summary: true
+              trim_doctest_flags: true
+            docstring_style: numpy
+            docstring_section_style: table
+            filters: public
+            group_by_category: true
+            heading_level: 1
+            inheritance_diagram_direction: TD
+            inherited_members: false
+            line_length: 88
+            merge_init_into_class: true
+            modernize_annotations: true
+            parameter_headings: false
+            preload_modules: [mkdocstrings, compas]
+            relative_crossrefs: true
+            scoped_crossrefs: true
+            separate_signature: true
+            show_bases: false
+            show_category_heading: true
+            show_docstring_attributes: true
+            show_docstring_functions: true
+            show_docstring_modules: false
+            show_if_no_docstring: false
+            show_inheritance_diagram: false
+            show_root_heading: true
+            show_root_full_path: true
+            show_signature: true
+            show_signature_annotations: true
+            show_signature_type_parameters: true
+            show_source: false
+            show_submodules: false
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
+            signature_crossrefs: true
+            summary:
+              modules: false
+            type_parameter_headings: true
+            unwrap_annotated: true
+
+nav:
+  - Getting Started:
+      - Introduction: index.md
+      - Installation: installation.md
+      - License: license.md
+      - Acknowledgements: acknowledgements.md
+      - Changelog: changelog.md
+  - Examples:
+      - Booleans: examples/example_booleans.md
+  - API Reference:
+      - compas_cgal.booleans: api/compas_cgal.booleans.md
+      - compas_cgal.geodesics: api/compas_cgal.geodesics.md
+      - compas_cgal.intersections: api/compas_cgal.intersections.md
+      - compas_cgal.isolines: api/compas_cgal.isolines.md
+      - compas_cgal.measure: api/compas_cgal.measure.md
+      - compas_cgal.meshing: api/compas_cgal.meshing.md
+      - compas_cgal.polylines: api/compas_cgal.polylines.md
+      - compas_cgal.projection: api/compas_cgal.projection.md
+      - compas_cgal.reconstruction: api/compas_cgal.reconstruction.md
+      - compas_cgal.skeletonization: api/compas_cgal.skeletonization.md
+      - compas_cgal.slicer: api/compas_cgal.slicer.md
+      - compas_cgal.straight_skeleton_2: api/compas_cgal.straight_skeleton_2.md
+      - compas_cgal.subdivision: api/compas_cgal.subdivision.md
+      - compas_cgal.triangulation: api/compas_cgal.triangulation.md
+      - compas_cgal.types: api/compas_cgal.types.md
+  - Dev Guide:
