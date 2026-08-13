@@ -13,9 +13,12 @@ from compas.geometry import basis_vectors_from_matrix
 from compas.geometry import compose_matrix
 from compas.geometry import cross_vectors
 from compas.geometry import decompose_matrix
+from compas.geometry import dehomogenize_vectors
 from compas.geometry import euler_angles_from_matrix
 from compas.geometry import euler_angles_from_quaternion
 from compas.geometry import identity_matrix
+from compas.geometry import homogenize_vectors
+from compas.geometry import is_matrix_square
 from compas.geometry import matrix_determinant
 from compas.geometry import matrix_from_axis_and_angle
 from compas.geometry import matrix_from_axis_angle_vector
@@ -32,11 +35,15 @@ from compas.geometry import matrix_from_shear
 from compas.geometry import matrix_from_shear_entries
 from compas.geometry import matrix_from_translation
 from compas.geometry import matrix_inverse
+from compas.geometry import matrix_minor
+from compas.geometry import multiply_matrices
+from compas.geometry import multiply_matrix_vector
 from compas.geometry import normalize_vector
 from compas.geometry import quaternion_from_axis_angle
 from compas.geometry import quaternion_from_euler_angles
 from compas.geometry import quaternion_from_matrix
 from compas.geometry import translation_from_matrix
+from compas.geometry import transpose_matrix
 
 
 @pytest.fixture
@@ -73,6 +80,39 @@ def test_matrix_inverse(R, T):
             [-0.0, 0.0, -0.0, 1.0],
         ],
     )
+
+
+def test_matrix_inverse_rejects_singular_matrix():
+    with pytest.raises(ValueError, match="singular"):
+        matrix_inverse([[1.0, 2.0], [2.0, 4.0]])
+
+
+def test_decompose_matrix_rejects_singular_matrix():
+    with pytest.raises(ValueError, match="singular"):
+        decompose_matrix([[0.0] * 4 for _ in range(4)])
+
+
+def test_general_matrix_operations_accept_tuple_data():
+    matrix = ((1.0, 2.0), (3.0, 4.0))
+    assert transpose_matrix(matrix) == [[1.0, 3.0], [2.0, 4.0]]
+    assert matrix_minor(matrix, 0, 0) == [[4.0]]
+    assert matrix_determinant(matrix) == -2.0
+    assert multiply_matrices(matrix, ((1.0, 0.0), (0.0, 1.0))) == [[1.0, 2.0], [3.0, 4.0]]
+    assert multiply_matrix_vector(matrix, (1.0, 2.0)) == [5.0, 11.0]
+
+
+def test_matrix_shape_validation():
+    assert is_matrix_square(((1.0, 0.0), (0.0, 1.0)))
+    assert not is_matrix_square(((1.0, 0.0),))
+    with pytest.raises(Exception, match="shapes are not compatible"):
+        multiply_matrices([[1.0, 2.0]], [[1.0, 2.0]])
+    with pytest.raises(Exception, match="vector length"):
+        multiply_matrix_vector([[1.0, 2.0]], [1.0])
+
+
+def test_homogenize_dehomogenize_roundtrip():
+    vectors = ((2.0, 4.0, 6.0), (-2.0, 0.0, 8.0))
+    assert dehomogenize_vectors(homogenize_vectors(vectors, w=2.0)) == [[2.0, 4.0, 6.0], [-2.0, 0.0, 8.0]]
 
 
 def test_decompose_matrix(R, T):

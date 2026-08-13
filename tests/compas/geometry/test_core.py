@@ -11,16 +11,33 @@ from compas.geometry import angle_planes
 from compas.geometry import angles_vectors
 from compas.geometry import angle_vectors_signed
 from compas.geometry import angle_vectors_projected
+from compas.geometry import angle_vectors_xy
+from compas.geometry import angles_vectors_xy
 from compas.geometry import centroid_points
+from compas.geometry import centroid_points_weighted
+from compas.geometry import centroid_points_xy
+from compas.geometry import centroid_polygon
+from compas.geometry import centroid_polygon_edges
+from compas.geometry import centroid_polygon_edges_xy
+from compas.geometry import centroid_polygon_xy
 from compas.geometry import centroid_polyhedron
 from compas.geometry import length_vector
 from compas.geometry import subtract_vectors
+from compas.geometry import square_vectors
 from compas.geometry import volume_polyhedron
 from compas.geometry import area_polygon
 from compas.geometry import area_polygon_xy
 from compas.geometry import area_triangle
 from compas.geometry import area_triangle_xy
 from compas.geometry import normal_polygon
+from compas.geometry import normal_triangle
+from compas.geometry import normal_triangle_xy
+from compas.geometry import normalize_vector
+from compas.geometry import normalize_vector_xy
+from compas.geometry import midpoint_line
+from compas.geometry import midpoint_line_xy
+from compas.geometry import midpoint_point_point
+from compas.geometry import midpoint_point_point_xy
 
 
 @pytest.fixture
@@ -61,6 +78,28 @@ def test_angle_vectors(u, v, angle):
     assert TOL.is_close(angle_vectors(u, v), angle)
 
 
+@pytest.mark.parametrize(
+    ("u", "v"),
+    [
+        ([0.0, 0.0, 0.0], [0.0, 0.0, 0.0]),
+        ([0.0, 0.0, 0.0], [1.0, 0.0, 0.0]),
+        ([1.0, 0.0, 0.0], [0.0, 0.0, 0.0]),
+    ],
+)
+def test_angle_vectors_returns_zero_for_zero_length_input(u, v):
+    assert angle_vectors(u, v) == 0
+
+
+def test_angle_vectors_opposite_and_degrees():
+    assert TOL.is_close(angle_vectors([1, 0, 0], [-1, 0, 0]), pi)
+    assert TOL.is_close(angle_vectors([1, 0, 0], [0, 1, 0], deg=True), 90.0)
+
+
+def test_angle_vectors_xy_ignores_z_and_supports_degrees():
+    assert TOL.is_close(angle_vectors_xy([1, 0, 100], [0, 1, -100]), pi / 2)
+    assert TOL.is_close(angle_vectors_xy([1, 0], [-1, 0], deg=True), 180.0)
+
+
 # @pytest.mark.parametrize(
 #     ("u", "v"),
 #     [
@@ -91,6 +130,10 @@ def test_angle_vectors(u, v, angle):
 def test_angles_vectors(u, v, angles):
     a, b = angles
     assert TOL.is_allclose(angles_vectors(u, v), (a, b))
+
+
+def test_angles_vectors_xy_degrees():
+    assert TOL.is_allclose(angles_vectors_xy([1, 0], [0, 1], deg=True), (90.0, 270.0))
 
 
 # @pytest.mark.parametrize(
@@ -138,6 +181,11 @@ def test_angle_vectors_signed(u, v, normal, result):
     assert TOL.is_close(angle_vectors_signed(u, v, normal), result)
 
 
+def test_angle_vectors_signed_parallel_and_antiparallel():
+    assert angle_vectors_signed([1, 0, 0], [1, 0, 0], [0, 0, 1]) == 0
+    assert TOL.is_close(angle_vectors_signed([1, 0, 0], [-1, 0, 0], [0, 0, 1]), pi)
+
+
 @pytest.mark.parametrize(
     "u,v,normal,result",
     [
@@ -152,6 +200,27 @@ def test_angle_vectors_projected(u, v, normal, result):
 # ==============================================================================
 # average
 # ==============================================================================
+
+
+def test_square_vectors():
+    assert square_vectors([[1.0, -2.0, 3.0], [0.0, 4.0, -5.0]]) == [[1.0, 4.0, 9.0], [0.0, 16.0, 25.0]]
+
+
+@pytest.mark.parametrize("normalize", [normalize_vector, normalize_vector_xy])
+def test_normalize_zero_vector_preserves_input_container(normalize):
+    vector_list = [0.0, 0.0, 0.0]
+    vector_tuple = (0.0, 0.0, 0.0)
+
+    assert normalize(vector_list) is vector_list
+    assert normalize(vector_tuple) is vector_tuple
+
+
+@pytest.mark.parametrize("normalize", [normalize_vector, normalize_vector_xy])
+def test_normalize_nonzero_vector_returns_list(normalize):
+    result = normalize((2.0, 0.0, 0.0))
+
+    assert isinstance(result, list)
+    assert result == [1.0, 0.0, 0.0]
 
 
 @pytest.mark.parametrize(
@@ -202,6 +271,52 @@ def test_centroid_points_fails_when_input_is_not_list_of_lists(points):
 def test_centroid_points_fails_when_input_is_not_complete_points(points):
     with pytest.raises(ValueError):
         centroid_points(points)
+
+
+def test_midpoint_functions_accept_raw_coordinate_sequences():
+    line = ((0.0, 2.0, 4.0), (2.0, 4.0, 8.0))
+
+    assert midpoint_point_point(*line) == [1.0, 3.0, 6.0]
+    assert midpoint_line(line) == [1.0, 3.0, 6.0]
+    assert midpoint_point_point_xy(*line) == [1.0, 3.0, 0.0]
+    assert midpoint_line_xy(line) == [1.0, 3.0, 0.0]
+
+
+def test_centroid_points_xy_ignores_z_coordinates():
+    points = ((0.0, 0.0, 100.0), (2.0, 4.0, -100.0))
+
+    assert centroid_points_xy(points) == [1.0, 2.0, 0.0]
+
+
+def test_centroid_points_weighted_supports_negative_weights():
+    points = ((0.0, 0.0, 0.0), (2.0, 4.0, 6.0))
+
+    assert centroid_points_weighted(points, (-1.0, 2.0)) == [4.0, 8.0, 12.0]
+
+
+@pytest.mark.parametrize("centroid", [centroid_polygon, centroid_polygon_xy])
+def test_centroid_polygon_requires_three_points(centroid):
+    with pytest.raises(ValueError, match="At least three points required"):
+        centroid(((0.0, 0.0, 0.0), (1.0, 0.0, 0.0)))
+
+
+@pytest.mark.parametrize("centroid", [centroid_polygon, centroid_polygon_xy])
+def test_centroid_polygon_is_independent_of_winding(centroid):
+    polygon = [(0.0, 0.0, 3.0), (2.0, 0.0, 3.0), (2.0, 2.0, 3.0), (0.0, 2.0, 3.0)]
+
+    assert TOL.is_allclose(centroid(polygon), centroid(list(reversed(polygon))))
+
+
+def test_centroid_polygon_degenerate_input_preserves_first_vertex():
+    polygon = ((1.0, 2.0, 3.0), (1.0, 2.0, 3.0), (1.0, 2.0, 3.0), (1.0, 2.0, 3.0))
+
+    assert centroid_polygon(polygon) is polygon[0]
+
+
+@pytest.mark.parametrize("centroid", [centroid_polygon_edges, centroid_polygon_edges_xy])
+def test_centroid_polygon_edges_degenerate_boundary_preserves_zero_division_error(centroid):
+    with pytest.raises(ZeroDivisionError):
+        centroid(((1.0, 2.0, 3.0), (1.0, 2.0, 3.0), (1.0, 2.0, 3.0)))
 
 
 @pytest.mark.parametrize(
@@ -263,6 +378,12 @@ def test_area_polygon():
     assert area_polygon(polygon_) >= 0
 
 
+def test_polygon_area_is_independent_of_winding():
+    polygon = [[0, 0, 0], [2, 0, 0], [2, 1, 0], [1, 0.5, 0], [0, 1, 0]]
+    assert TOL.is_close(area_polygon(polygon), area_polygon(list(reversed(polygon))))
+    assert TOL.is_close(area_polygon_xy(polygon), area_polygon_xy(list(reversed(polygon))))
+
+
 # ==============================================================================
 # normals
 # ==============================================================================\
@@ -274,3 +395,28 @@ def test_normal_polygon():
     area = area_polygon(polygon)
     assert TOL.is_close(area, 100.0)
     assert TOL.is_close(area, length_vector(normal))
+
+
+def test_polygon_normal_changes_sign_with_winding():
+    polygon = [[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]]
+    normal = normal_polygon(polygon)
+    reversed_normal = normal_polygon(list(reversed(polygon)))
+    assert TOL.is_allclose(reversed_normal, [-value for value in normal])
+
+
+def test_normal_polygon_requires_three_points():
+    with pytest.raises(ValueError, match="At least three points required"):
+        normal_polygon([[0, 0, 0], [1, 0, 0]])
+
+
+@pytest.mark.parametrize("normal", [normal_triangle, normal_triangle_xy])
+@pytest.mark.parametrize("triangle", [[], [[0, 0, 0]], [[0, 0, 0], [1, 0, 0]], [[0, 0, 0]] * 4])
+def test_normal_triangle_requires_exactly_three_points(normal, triangle):
+    with pytest.raises(ValueError, match="Three points are required"):
+        normal(triangle)
+
+
+@pytest.mark.parametrize("normal", [normal_triangle, normal_triangle_xy])
+def test_normal_triangle_degenerate_input_preserves_zero_division_error(normal):
+    with pytest.raises(ZeroDivisionError):
+        normal([[0, 0, 0], [1, 0, 0], [2, 0, 0]])

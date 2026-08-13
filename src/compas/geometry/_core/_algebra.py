@@ -8,6 +8,10 @@ from math import pi
 from math import sin
 from math import sqrt
 from math import tan
+from typing import Optional
+from typing import Protocol
+from typing import Sequence
+from typing import overload
 
 from compas.tolerance import TOL
 
@@ -42,61 +46,71 @@ _SPEC2TUPLE = {
 _NEXT_SPEC = [1, 2, 0, 1]
 
 
-def vector_average(vector):
+class _FrameLike(Protocol):
+    point: Sequence[float]
+    xaxis: Sequence[float]
+    yaxis: Sequence[float]
+    zaxis: Sequence[float]
+
+
+def vector_average(vector: Sequence[float]) -> float:
     """Average of a vector.
 
     Parameters
     ----------
-    vector : [float, float, float] | :class:`compas.geometry.Vector`
+    vector
         List of values.
 
     Returns
     -------
     float
         The mean value.
+
     """
     return sum(vector) / float(len(vector))
 
 
-def vector_variance(vector):
+def vector_variance(vector: Sequence[float]) -> float:
     """Variance of a vector.
 
     Parameters
     ----------
-    vector : [float, float, float] | :class:`compas.geometry.Vector`
+    vector
         List of values.
 
     Returns
     -------
     float
         The variance value.
+
     """
     m = vector_average(vector)
     return (sum([(i - m) ** 2 for i in vector]) / float(len(vector))) ** 0.5
 
 
-def vector_standard_deviation(vector):
+def vector_standard_deviation(vector: Sequence[float]) -> float:
     """Standard deviation of a vector.
 
     Parameters
     ----------
-    vector : [float, float, float] | :class:`compas.geometry.Vector`
+    vector
         List of values.
 
     Returns
     -------
     float
         The standard deviation value.
+
     """
     return vector_variance(vector) ** 0.5
 
 
-def argmax(values):
+def argmax(values: Sequence[float]) -> int:
     """Returns the index of the first maximum value within an array.
 
     Parameters
     ----------
-    values : sequence[float]
+    values
         A list of values.
 
     Returns
@@ -106,11 +120,11 @@ def argmax(values):
 
     Notes
     -----
-    NumPy's *argmax* function [1]_ is different, it returns an array of indices.
+    NumPy's `argmax` function is different: it returns an array of indices.[^argmax-numpy]
 
     References
     ----------
-    .. [1] https://numpy.org/doc/stable/reference/generated/numpy.argmax.html
+    [^argmax-numpy]: [NumPy `argmax`](https://numpy.org/doc/stable/reference/generated/numpy.argmax.html)
 
     Examples
     --------
@@ -121,12 +135,12 @@ def argmax(values):
     return max(range(len(values)), key=lambda i: values[i])  # type: ignore
 
 
-def argmin(values):
+def argmin(values: Sequence[float]) -> int:
     """Returns the index of the first minimum value within an array.
 
     Parameters
     ----------
-    values : sequence[float]
+    values
         A list of values.
 
     Returns
@@ -136,11 +150,11 @@ def argmin(values):
 
     Notes
     -----
-    NumPy's *argmin* function [1]_ is different, it returns an array of indices.
+    NumPy's `argmin` function is different: it returns an array of indices.[^argmin-numpy]
 
     References
     ----------
-    .. [1] https://numpy.org/doc/stable/reference/generated/numpy.argmin.html
+    [^argmin-numpy]: [NumPy `argmin`](https://numpy.org/doc/stable/reference/generated/numpy.argmin.html)
 
     Examples
     --------
@@ -157,22 +171,22 @@ def argmin(values):
 # ==============================================================================
 
 
-def sum_vectors(vectors, axis=0):
+def sum_vectors(vectors: Sequence[Sequence[float]], axis: int = 0) -> list[float]:
     """Calculate the sum of a series of vectors along the specified axis.
 
     Parameters
     ----------
-    vectors : sequence[[float, float, float] | :class:`compas.geometry.Vector`]
+    vectors
         A list of vectors.
-    axis : int, optional
-        If ``axis == 0``, the sum is taken per column.
-        If ``axis == 1``, the sum is taken per row.
+    axis
+        If `axis == 0`, the sum is taken per column.
+        If `axis == 1`, the sum is taken per row.
 
     Returns
     -------
     list[float]
-        The length of the list is ``len(vectors[0])``, if ``axis == 0``.
-        The length is ``len(vectors)``, otherwise.
+        The length of the list is `len(vectors[0])`, if `axis == 0`.
+        The length is `len(vectors)`, otherwise.
 
     Examples
     --------
@@ -184,16 +198,16 @@ def sum_vectors(vectors, axis=0):
 
     """
     if axis == 0:
-        vectors = zip(*vectors)
+        return [sum(vector) for vector in zip(*vectors)]
     return [sum(vector) for vector in vectors]
 
 
-def norm_vector(vector):
+def norm_vector(vector: Sequence[float]) -> float:
     """Calculate the length of a vector.
 
     Parameters
     ----------
-    vector : [float, float, float] | :class:`compas.geometry.Vector`
+    vector
         XYZ components of the vector.
 
     Returns
@@ -213,13 +227,13 @@ def norm_vector(vector):
     return sqrt(sum(axis**2 for axis in vector))
 
 
-def norm_vectors(vectors):
+def norm_vectors(vectors: Sequence[Sequence[float]]) -> list[float]:
     """
     Calculate the norm of each vector in a list of vectors.
 
     Parameters
     ----------
-    vectors : sequence[[float, float, float] | :class:`compas.geometry.Vector`]
+    vectors
         A list of vectors
 
     Returns
@@ -236,12 +250,12 @@ def norm_vectors(vectors):
     return [norm_vector(vector) for vector in vectors]
 
 
-def length_vector(vector):
+def length_vector(vector: Sequence[float]) -> float:
     """Calculate the length of the vector.
 
     Parameters
     ----------
-    vector : [float, float, float] | :class:`compas.geometry.Vector`
+    vector
         XYZ components of the vector.
 
     Returns
@@ -261,12 +275,12 @@ def length_vector(vector):
     return sqrt(length_vector_sqrd(vector))
 
 
-def length_vector_xy(vector):
+def length_vector_xy(vector: Sequence[float]) -> float:
     """Compute the length of a vector, assuming it lies in the XY plane.
 
     Parameters
     ----------
-    vector : [float, float, float] | :class:`compas.geometry.Vector`
+    vector
         XY(Z) components of the vector.
 
     Returns
@@ -289,12 +303,12 @@ def length_vector_xy(vector):
     return sqrt(length_vector_sqrd_xy(vector))
 
 
-def length_vector_sqrd(vector):
+def length_vector_sqrd(vector: Sequence[float]) -> float:
     """Compute the squared length of a vector.
 
     Parameters
     ----------
-    vector : [float, float, float] | :class:`compas.geometry.Vector`
+    vector
         XYZ components of the vector.
 
     Returns
@@ -311,12 +325,12 @@ def length_vector_sqrd(vector):
     return vector[0] ** 2 + vector[1] ** 2 + vector[2] ** 2
 
 
-def length_vector_sqrd_xy(vector):
+def length_vector_sqrd_xy(vector: Sequence[float]) -> float:
     """Compute the squared length of a vector, assuming it lies in the XY plane.
 
     Parameters
     ----------
-    vector : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
+    vector
         XY(Z) components of the vector.
 
     Returns
@@ -347,19 +361,19 @@ def length_vector_sqrd_xy(vector):
 # ==============================================================================
 
 
-def scale_vector(vector, factor):
+def scale_vector(vector: Sequence[float], factor: float) -> list[float]:
     """Scale a vector by a given factor.
 
     Parameters
     ----------
-    vector : [float, float, float] | :class:`compas.geometry.Vector`
+    vector
         XYZ components of the vector.
-    factor : float
+    factor
         The scaling factor.
 
     Returns
     -------
-    [float, float, float]
+    list[float]
         The scaled vector.
 
     Examples
@@ -375,19 +389,19 @@ def scale_vector(vector, factor):
     return [axis * factor for axis in vector]
 
 
-def scale_vector_xy(vector, factor):
+def scale_vector_xy(vector: Sequence[float], factor: float) -> list[float]:
     """Scale a vector by a given factor, assuming it lies in the XY plane.
 
     Parameters
     ----------
-    vector : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
+    vector
         XY(Z) components of the vector.
-    scale : float
+    factor
         Scale factor.
 
     Returns
     -------
-    [float, float, 0.0]
+    list[float]
         The scaled vector in the XY-plane.
 
     Examples
@@ -399,68 +413,64 @@ def scale_vector_xy(vector, factor):
     return [vector[0] * factor, vector[1] * factor, 0.0]
 
 
-def scale_vectors(vectors, factor):
+def scale_vectors(vectors: Sequence[Sequence[float]], factor: float) -> list[list[float]]:
     """Scale multiple vectors by a given factor.
 
     Parameters
     ----------
-    vectors : sequence[[float, float, float] | :class:`compas.geometry.Vector`]
+    vectors
         A list of vectors.
-    factor : float
+    factor
         The scaling factor.
 
     Returns
     -------
-    list[[float, float, float]]
+    list[list[float]]
         The scaled vectors.
-
-    Examples
-    --------
-    >>>
 
     """
     return [scale_vector(vector, factor) for vector in vectors]
 
 
-def scale_vectors_xy(vectors, factor):
+def scale_vectors_xy(vectors: Sequence[Sequence[float]], factor: float) -> list[list[float]]:
     """Scale multiple vectors by a given factor, assuming they lie in the XY plane.
 
     Parameters
     ----------
-    vectors : sequence[[float, float] or [float, float, float] | :class:`compas.geometry.Vector`]
+    vectors
         A list of vectors.
-    factor : float
+    factor
         The scaling factor.
 
     Returns
     -------
-    list[[float, float, 0.0]]
+    list[list[float]]
         The scaled vectors in the XY plane.
-
-    Examples
-    --------
-    >>>
 
     """
     return [scale_vector_xy(vector, factor) for vector in vectors]
 
 
-def normalize_vector(vector):
+@overload
+def normalize_vector(vector: list[float]) -> list[float]: ...
+
+
+@overload
+def normalize_vector(vector: Sequence[float]) -> Sequence[float]: ...
+
+
+def normalize_vector(vector: Sequence[float]) -> Sequence[float]:
     """Normalise a given vector.
 
     Parameters
     ----------
-    vector : [float, float, float] | :class:`compas.geometry.Vector`
+    vector
         XYZ components of the vector.
 
     Returns
     -------
-    [float, float, float]
+    Sequence[float]
         The normalized vector.
-
-    Examples
-    --------
-    >>>
 
     """
     length = length_vector(vector)
@@ -469,22 +479,26 @@ def normalize_vector(vector):
     return [vector[0] / length, vector[1] / length, vector[2] / length]
 
 
-def normalize_vector_xy(vector):
+@overload
+def normalize_vector_xy(vector: list[float]) -> list[float]: ...
+
+
+@overload
+def normalize_vector_xy(vector: Sequence[float]) -> Sequence[float]: ...
+
+
+def normalize_vector_xy(vector: Sequence[float]) -> Sequence[float]:
     """Normalize a vector, assuming it lies in the XY-plane.
 
     Parameters
     ----------
-    vector : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
+    vector
         XY(Z) components of the vector.
 
     Returns
     -------
-    [float, float, 0.0]
+    Sequence[float]
         The normalized vector in the XY-plane.
-
-    Examples
-    --------
-    >>>
 
     """
     length = length_vector_xy(vector)
@@ -493,134 +507,110 @@ def normalize_vector_xy(vector):
     return [vector[0] / length, vector[1] / length, 0.0]
 
 
-def normalize_vectors(vectors):
+def normalize_vectors(vectors: Sequence[Sequence[float]]) -> list[Sequence[float]]:
     """Normalise multiple vectors.
 
     Parameters
     ----------
-    vectors : sequence[[float, float, float] | :class:`compas.geometry.Vector`]
+    vectors
         A list of vectors.
 
     Returns
     -------
-    list[[float, float, float]]
+    list[Sequence[float]]
         The normalized vectors.
-
-    Examples
-    --------
-    >>>
 
     """
     return [normalize_vector(vector) for vector in vectors]
 
 
-def normalize_vectors_xy(vectors):
+def normalize_vectors_xy(vectors: Sequence[Sequence[float]]) -> list[Sequence[float]]:
     """Normalise multiple vectors, assuming they lie in the XY plane.
 
     Parameters
     ----------
-    vectors : sequence[[float, float] or [float, float, float] | :class:`compas.geometry.Vector`]
+    vectors
         A list of vectors.
 
     Returns
     -------
-    list[[float, float, 0.0]]
+    list[Sequence[float]]
         The normalized vectors in the XY plane.
-
-    Examples
-    --------
-    >>>
 
     """
     return [normalize_vector_xy(vector) for vector in vectors]
 
 
-def power_vector(vector, power):
+def power_vector(vector: Sequence[float], power: float) -> list[float]:
     """Raise a vector to the given power.
 
     Parameters
     ----------
-    vector : [float, float, float] | :class:`compas.geometry.Vector`
+    vector
         XYZ components of the vector.
-    power : int, float
+    power
         The power to which to raise the vector.
 
     Returns
     -------
-    [float, float, float]
+    list[float]
         The raised vector.
-
-    Examples
-    --------
-    >>>
 
     """
     return [axis**power for axis in vector]
 
 
-def power_vectors(vectors, power):
+def power_vectors(vectors: Sequence[Sequence[float]], power: float) -> list[list[float]]:
     """Raise a list of vectors to the given power.
 
     Parameters
     ----------
-    vectors : sequence[[float, float, float] | :class:`compas.geometry.Vector`]
+    vectors
         A list of vectors.
-    power : int, float
+    power
         The power to which to raise the vectors.
 
     Returns
     -------
-    list[[float, float, float]]
+    list[list[float]]
         The raised vectors.
-
-    Examples
-    --------
-    >>>
 
     """
     return [power_vector(vector, power) for vector in vectors]
 
 
-def square_vector(vector):
+def square_vector(vector: Sequence[float]) -> list[float]:
     """Raise a vector to the power 2.
 
     Parameters
     ----------
-    vector : [float, float, float] | :class:`compas.geometry.Vector`
+    vector
         XYZ components of the vector.
 
     Returns
     -------
-    [float, float, float]
+    list[float]
         The squared vector.
-
-    Examples
-    --------
-    >>>
 
     """
     return power_vector(vector, 2)
 
 
-def square_vectors(vectors):
+def square_vectors(vectors: Sequence[Sequence[float]]) -> list[list[float]]:
     """Raise a multiple vectors to the power 2.
 
     Parameters
     ----------
-    vectors : sequence[[float, float, float] | :class:`compas.geometry.Vector`]
+    vectors
         A list of vectors.
 
     Returns
     -------
-    [float, float, float]]
+    list[list[float]]
         The squared vectors.
 
-    Examples
-    --------
-    >>>
-
     """
-    return [square_vectors(vector) for vector in vectors]
+    return [square_vector(vector) for vector in vectors]
 
 
 # ==============================================================================
@@ -630,181 +620,153 @@ def square_vectors(vectors):
 # ==============================================================================
 
 
-def add_vectors(u, v):
+def add_vectors(u: Sequence[float], v: Sequence[float]) -> list[float]:
     """Add two vectors.
 
     Parameters
     ----------
-    u : [float, float, float] | :class:`compas.geometry.Vector`
+    u
         XYZ components of the first vector.
-    v : [float, float, float] | :class:`compas.geometry.Vector`
+    v
         XYZ components of the second vector.
 
     Returns
     -------
-    [float, float, float]
+    list[float]
         The resulting vector.
 
     """
     return [a + b for (a, b) in zip(u, v)]
 
 
-def add_vectors_xy(u, v):
+def add_vectors_xy(u: Sequence[float], v: Sequence[float]) -> list[float]:
     """Add two vectors, assuming they lie in the XY-plane.
 
     Parameters
     ----------
-    u : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
+    u
         XY(Z) components of the first vector.
-    v : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
+    v
         XY(Z) components of the second vector.
 
     Returns
     -------
-    [float, float, 0.0]
+    list[float]
         Resulting vector in the XY-plane.
-
-    Examples
-    --------
-    >>>
 
     """
     return [u[0] + v[0], u[1] + v[1], 0.0]
 
 
-def subtract_vectors(u, v):
+def subtract_vectors(u: Sequence[float], v: Sequence[float]) -> list[float]:
     """Subtract one vector from another.
 
     Parameters
     ----------
-    u : [float, float, float] | :class:`compas.geometry.Vector`
+    u
         XYZ components of the first vector.
-    v : [float, float, float] | :class:`compas.geometry.Vector`
+    v
         XYZ components of the second vector.
 
     Returns
     -------
-    [float, float, float]
+    list[float]
         The resulting vector.
-
-    Examples
-    --------
-    >>>
 
     """
     return [a - b for (a, b) in zip(u, v)]
 
 
-def subtract_vectors_xy(u, v):
+def subtract_vectors_xy(u: Sequence[float], v: Sequence[float]) -> list[float]:
     """Subtract one vector from another, assuming they lie in the XY plane.
 
     Parameters
     ----------
-    u : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
+    u
         The XY(Z) components of the first vector.
-    v : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
+    v
         The XY(Z) components of the second vector.
 
     Returns
     -------
-    [float, float, 0.0]
+    list[float]
         Resulting vector in the XY-plane.
-
-    Examples
-    --------
-    >>>
 
     """
     return [u[0] - v[0], u[1] - v[1], 0.0]
 
 
-def multiply_vectors(u, v):
+def multiply_vectors(u: Sequence[float], v: Sequence[float]) -> list[float]:
     """Element-wise multiplication of two vectors.
 
     Parameters
     ----------
-    u : [float, float, float] | :class:`compas.geometry.Vector`
+    u
         The XYZ components of the first vector.
-    v : l[float, float, float] | :class:`compas.geometry.Vector`
+    v
         The XYZ components of the second vector.
 
     Returns
     -------
-    [float, float, float]
+    list[float]
         Resulting vector.
-
-    Examples
-    --------
-    >>>
 
     """
     return [a * b for (a, b) in zip(u, v)]
 
 
-def multiply_vectors_xy(u, v):
+def multiply_vectors_xy(u: Sequence[float], v: Sequence[float]) -> list[float]:
     """Element-wise multiplication of two vectors assumed to lie in the XY plane.
 
     Parameters
     ----------
-    u : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
+    u
         The XY(Z) components of the first vector.
-    v : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
+    v
         The XY(Z) components of the second vector.
 
     Returns
     -------
-    [float, float, 0.0]
+    list[float]
         Resulting vector in the XY plane.
-
-    Examples
-    --------
-    >>>
 
     """
     return [u[0] * v[0], u[1] * v[1], 0.0]
 
 
-def divide_vectors(u, v):
+def divide_vectors(u: Sequence[float], v: Sequence[float]) -> list[float]:
     """Element-wise division of two vectors.
 
     Parameters
     ----------
-    u : [float, float, float] | :class:`compas.geometry.Vector`
+    u
         The XYZ components of the first vector.
-    v : [float, float, float] | :class:`compas.geometry.Vector`
+    v
         The XYZ components of the second vector.
 
     Returns
     -------
-    [float, float, float]
+    list[float]
         Resulting vector.
-
-    Examples
-    --------
-    >>>
 
     """
     return [a / b for (a, b) in zip(u, v)]
 
 
-def divide_vectors_xy(u, v):
+def divide_vectors_xy(u: Sequence[float], v: Sequence[float]) -> list[float]:
     """Element-wise division of two vectors assumed to lie in the XY plane.
 
     Parameters
     ----------
-    u : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
+    u
         The XY(Z) components of the first vector.
-    v : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
+    v
         The XY(Z) components of the second vector.
 
     Returns
     -------
-    [float, float, 0.0]
+    list[float]
         Resulting vector in the XY plane.
-
-    Examples
-    --------
-    >>>
 
     """
     return [u[0] / v[0], u[1] / v[1], 0.0]
@@ -815,41 +777,38 @@ def divide_vectors_xy(u, v):
 # ==============================================================================
 
 
-def cross_vectors(u, v):
+def cross_vectors(u: Sequence[float], v: Sequence[float]) -> list[float]:
     r"""Compute the cross product of two vectors.
 
     Parameters
     ----------
-    u : [float, float, float] | :class:`compas.geometry.Vector`
+    u
         XYZ components of the first vector.
-    v : [float, float, float] | :class:`compas.geometry.Vector`
+    v
         XYZ components of the second vector.
 
     Returns
     -------
-    [float, float, float]
+    list[float]
         The cross product of the two vectors.
 
     Notes
     -----
-    The xyz components of the cross product of two vectors :math:`\mathbf{u}`
-    and :math:`\mathbf{v}` can be computed as the *minors* of the following matrix:
+    The xyz components of the cross product of two vectors $\mathbf{u}$
+    and $\mathbf{v}$ can be computed as the *minors* of the following matrix:
 
-    .. math::
-       :nowrap:
-
+    $$
         \begin{bmatrix}
         x & y & z \\
         u_{x} & u_{y} & u_{z} \\
         v_{x} & v_{y} & v_{z}
         \end{bmatrix}
+    $$
 
     Therefore, the cross product can be written as:
 
-    .. math::
-       :nowrap:
-
-        \begin{eqnarray}
+    $$
+        \begin{aligned}
             \mathbf{u} \times \mathbf{v}
             & =
             \begin{bmatrix}
@@ -857,7 +816,8 @@ def cross_vectors(u, v):
             u_{z} * v_{x} - u_{x} * v_{z} \\
             u_{x} * v_{y} - u_{y} * v_{x}
             \end{bmatrix}
-        \end{eqnarray}
+        \end{aligned}
+    $$
 
     Examples
     --------
@@ -872,19 +832,19 @@ def cross_vectors(u, v):
     ]
 
 
-def cross_vectors_xy(u, v):
+def cross_vectors_xy(u: Sequence[float], v: Sequence[float]) -> list[float]:
     """Compute the cross product of two vectors, assuming they lie in the XY-plane.
 
     Parameters
     ----------
-    u : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
+    u
         XY(Z) coordinates of the first vector.
-    v : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
+    v
         XY(Z) coordinates of the second vector.
 
     Returns
     -------
-    [float, float, float]
+    list[float]
         The cross product of the two vectors.
         This vector will be perpendicular to the XY plane.
 
@@ -903,14 +863,14 @@ def cross_vectors_xy(u, v):
     return [0.0, 0.0, u[0] * v[1] - u[1] * v[0]]
 
 
-def dot_vectors(u, v):
+def dot_vectors(u: Sequence[float], v: Sequence[float]) -> float:
     """Compute the dot product of two vectors.
 
     Parameters
     ----------
-    u : [float, float, float] | :class:`compas.geometry.Vector`
+    u
         XYZ components of the first vector.
-    v : [float, float, float] | :class:`compas.geometry.Vector`
+    v
         XYZ components of the second vector.
 
     Returns
@@ -927,14 +887,14 @@ def dot_vectors(u, v):
     return sum(a * b for a, b in zip(u, v))
 
 
-def dot_vectors_xy(u, v):
+def dot_vectors_xy(u: Sequence[float], v: Sequence[float]) -> float:
     """Compute the dot product of two vectors, assuming they lie in the XY-plane.
 
     Parameters
     ----------
-    u : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
+    u
         XY(Z) coordinates of the first vector.
-    v : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
+    v
         XY(Z) coordinates of the second vector.
 
     Returns
@@ -957,31 +917,30 @@ def dot_vectors_xy(u, v):
     return u[0] * v[0] + u[1] * v[1]
 
 
-def vector_component(u, v):
+def vector_component(u: Sequence[float], v: Sequence[float]) -> list[float]:
     """Compute the component of u in the direction of v.
 
     Parameters
     ----------
-    u : [float, float, float] | :class:`compas.geometry.Vector`
+    u
         XYZ components of the vector.
-    v : [float, float, float] | :class:`compas.geometry.Vector`
+    v
         XYZ components of the direction.
 
     Returns
     -------
-    [float, float, float]
+    list[float]
         The component of u in the direction of v.
 
     Notes
     -----
     This is similar to computing direction cosines, or to the projection of
-    a vector onto another vector. See the respective Wikipedia pages ([1]_, [2]_)
-    for more info.
+    a vector onto another vector.[^vector-component-direction-cosine] [^vector-component-projection]
 
     References
     ----------
-    .. [1] *Direction cosine*. Available at https://en.wikipedia.org/wiki/Direction_cosine.
-    .. [2] *Vector projection*. Available at https://en.wikipedia.org/wiki/Vector_projection.
+    [^vector-component-direction-cosine]: [Direction cosine](https://en.wikipedia.org/wiki/Direction_cosine)
+    [^vector-component-projection]: [Vector projection](https://en.wikipedia.org/wiki/Vector_projection)
 
     Examples
     --------
@@ -996,31 +955,30 @@ def vector_component(u, v):
     return scale_vector(v, x)
 
 
-def vector_component_xy(u, v):
+def vector_component_xy(u: Sequence[float], v: Sequence[float]) -> list[float]:
     """Compute the component of u in the direction of v, assuming they lie in the XY-plane.
 
     Parameters
     ----------
-    u : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
+    u
         XYZ components of the vector.
-    v : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
+    v
         XYZ components of the direction.
 
     Returns
     -------
-    [float, float, 0.0]
+    list[float]
         The component of u in the XY plane, in the direction of v.
 
     Notes
     -----
     This is similar to computing direction cosines, or to the projection of
-    a vector onto another vector. See the respective Wikipedia pages ([1]_, [2]_)
-    for more info.
+    a vector onto another vector.[^vector-component-xy-direction-cosine] [^vector-component-xy-projection]
 
     References
     ----------
-    .. [1] *Direction cosine*. Available at https://en.wikipedia.org/wiki/Direction_cosine.
-    .. [2] *Vector projection*. Available at https://en.wikipedia.org/wiki/Vector_projection.
+    [^vector-component-xy-direction-cosine]: [Direction cosine](https://en.wikipedia.org/wiki/Direction_cosine)
+    [^vector-component-xy-projection]: [Vector projection](https://en.wikipedia.org/wiki/Vector_projection)
 
     Examples
     --------
@@ -1040,19 +998,19 @@ def vector_component_xy(u, v):
 # ==============================================================================
 
 
-def homogenize_vectors(vectors, w=1.0):
+def homogenize_vectors(vectors: Sequence[Sequence[float]], w: float = 1.0) -> list[list[float]]:
     """Homogenise a list of vectors.
 
     Parameters
     ----------
-    vectors : sequence[[float, float, float] | :class:`compas.geometry.Vector`]
+    vectors
         A list of vectors.
-    w : float, optional
+    w
         Homogenisation parameter.
 
     Returns
     -------
-    list[[float, float, float]]
+    list[list[float]]
         Homogenised vectors.
 
     Notes
@@ -1071,38 +1029,34 @@ def homogenize_vectors(vectors, w=1.0):
     return [[x / w, y / w, z / w, w] for x, y, z in vectors]
 
 
-def dehomogenize_vectors(vectors):
+def dehomogenize_vectors(vectors: Sequence[Sequence[float]]) -> list[list[float]]:
     """Dehomogenise a list of vectors.
 
     Parameters
     ----------
-    vectors : sequence[[float, float, float] | :class:`compas.geometry.Vector`]
+    vectors
         A list of vectors.
 
     Returns
     -------
-    list[float, float, float]
+    list[list[float]]
         Dehomogenised vectors.
-
-    Examples
-    --------
-    >>>
 
     """
     return [[x * w, y * w, z * w] for x, y, z, w in vectors]
 
 
-def orthonormalize_vectors(vectors):
+def orthonormalize_vectors(vectors: Sequence[Sequence[float]]) -> list[Sequence[float]]:
     """Orthonormalize a set of vectors.
 
     Parameters
     ----------
-    vectors : sequence[[float, float, float] | :class:`compas.geometry.Vector`]
+    vectors
         The set of vectors to othonormalize.
 
     Returns
     -------
-    list[[float, float, float]]
+    list[Sequence[float]]
         An othonormal basis for the input vectors.
 
     Notes
@@ -1134,12 +1088,12 @@ def orthonormalize_vectors(vectors):
 # =============================================================================
 
 
-def transpose_matrix(M):
+def transpose_matrix(M: Sequence[Sequence[float]]) -> list[list[float]]:
     """Transpose a matrix.
 
     Parameters
     ----------
-    M : list[list[float]] | :class:`compas.geometry.Transformation`
+    M
         The matrix to be transposed.
 
     Returns
@@ -1151,14 +1105,14 @@ def transpose_matrix(M):
     return list(map(list, zip(*list(M))))
 
 
-def multiply_matrices(A, B):
+def multiply_matrices(A: Sequence[Sequence[float]], B: Sequence[Sequence[float]]) -> list[list[float]]:
     r"""Mutliply a matrix with a matrix.
 
     Parameters
     ----------
-    A : list[list[float]] | :class:`compas.geometry.Transformation`
+    A
         The first matrix.
-    B : list[list[float]] | :class:`compas.geometry.Transformation`
+    B
         The second matrix.
 
     Returns
@@ -1176,11 +1130,11 @@ def multiply_matrices(A, B):
     -----
     This is a pure Python version of the following linear algebra procedure:
 
-    .. math::
-
+    $$
         \mathbf{A} \cdot \mathbf{B} = \mathbf{C}
+    $$
 
-    with :math:`\mathbf{A}` [m x n], :math:`\mathbf{B}` [n x o], and :math:`\mathbf{C}` [m x o].
+    with $\mathbf{A}$ [m x n], $\mathbf{B}$ [n x o], and $\mathbf{C}$ [m x o].
 
     Examples
     --------
@@ -1202,19 +1156,19 @@ def multiply_matrices(A, B):
     return [[dot_vectors(row, col) for col in B] for row in A]
 
 
-def multiply_matrix_vector(A, b):
+def multiply_matrix_vector(A: Sequence[Sequence[float]], b: Sequence[float]) -> list[float]:
     r"""Multiply a matrix with a vector.
 
     Parameters
     ----------
-    A : list[list[float]] | :class:`compas.geometry.Transformation`
+    A
         The matrix.
-    b : [float, float, float] | :class:`compas.geometry.Vector`
+    b
         The vector.
 
     Returns
     -------
-    [float, float, float]
+    list[float]
         The resulting vector.
 
     Raises
@@ -1226,12 +1180,12 @@ def multiply_matrix_vector(A, b):
     -----
     This is a Python version of the following linear algebra procedure:
 
-    .. math::
-
+    $$
         \mathbf{A} \cdot \mathbf{x} = \mathbf{b}
+    $$
 
-    with :math:`\mathbf{A}` a *m* by *n* matrix, :math:`\mathbf{x}` a vector of
-    length *n*, and :math:`\mathbf{b}` a vector of length *m*.
+    with $\mathbf{A}$ an *m* by *n* matrix, $\mathbf{x}$ a vector of
+    length *n*, and $\mathbf{b}$ a vector of length *m*.
 
     Examples
     --------
@@ -1247,12 +1201,12 @@ def multiply_matrix_vector(A, b):
     return [dot_vectors(row, b) for row in A]
 
 
-def is_matrix_square(M):
+def is_matrix_square(M: Sequence[Sequence[float]]) -> bool:
     """Verify that a matrix is square.
 
     Parameters
     ----------
-    M : list[list[float]]
+    M
         The matrix.
 
     Returns
@@ -1260,10 +1214,6 @@ def is_matrix_square(M):
     bool
         True if the length of every row is equal to the number of rows.
         False otherwise.
-
-    See Also
-    --------
-    is_matrix_symmetric
 
     Examples
     --------
@@ -1279,16 +1229,16 @@ def is_matrix_square(M):
     return True
 
 
-def matrix_minor(M, i, j):
+def matrix_minor(M: Sequence[Sequence[float]], i: int, j: int) -> list[list[float]]:
     """Construct the minor corresponding to an element of a matrix.
 
     Parameters
     ----------
-    M : list[list[float]]
+    M
         The matrix.
-    i : int
+    i
         Row index of the minor.
-    j : int
+    j
         Column index of the minor.
 
     Returns
@@ -1298,21 +1248,21 @@ def matrix_minor(M, i, j):
 
     See Also
     --------
-    matrix_determinant
-    matrix_inverse
+    [`matrix_determinant`][compas.geometry.matrix_determinant]
+    [`matrix_inverse`][compas.geometry.matrix_inverse]
 
     """
-    return [row[:j] + row[j + 1 :] for row in (M[:i] + M[i + 1 :])]
+    return [list(row[:j]) + list(row[j + 1 :]) for index, row in enumerate(M) if index != i]
 
 
-def matrix_determinant(M, check=True):
+def matrix_determinant(M: Sequence[Sequence[float]], check: bool = True) -> float:
     """Calculates the determinant of a square matrix M.
 
     Parameters
     ----------
-    M : list[list[float]]
+    M
         A square matrix of any dimension.
-    check : bool
+    check
         If True, checks if the matrix is square.
 
     Raises
@@ -1327,8 +1277,8 @@ def matrix_determinant(M, check=True):
 
     See Also
     --------
-    matrix_minor
-    matrix_inverse
+    [`matrix_minor`][compas.geometry.matrix_minor]
+    [`matrix_inverse`][compas.geometry.matrix_inverse]
 
     Examples
     --------
@@ -1352,12 +1302,12 @@ def matrix_determinant(M, check=True):
     return D
 
 
-def matrix_inverse(M):
+def matrix_inverse(M: Sequence[Sequence[float]]) -> list[list[float]]:
     """Calculates the inverse of a square matrix M.
 
     Parameters
     ----------
-    M : list[list[float]]
+    M
         A square matrix of any dimension.
 
     Returns
@@ -1376,8 +1326,8 @@ def matrix_inverse(M):
 
     See Also
     --------
-    matrix_minor
-    matrix_determinant
+    [`matrix_minor`][compas.geometry.matrix_minor]
+    [`matrix_determinant`][compas.geometry.matrix_determinant]
 
     Examples
     --------
@@ -1399,7 +1349,7 @@ def matrix_inverse(M):
     D = matrix_determinant(M)
 
     if D == 0:
-        ValueError("The matrix is singular.")
+        raise ValueError("The matrix is singular.")
 
     if len(M) == 2:
         return [[M[1][1] / D, -1 * M[0][1] / D], [-1 * M[1][0] / D, M[0][0] / D]]
@@ -1425,13 +1375,15 @@ def matrix_inverse(M):
 # =============================================================================
 
 
-def decompose_matrix(M):
+def decompose_matrix(
+    M: Sequence[Sequence[float]],
+) -> tuple[list[float], list[float], list[float], list[float], list[float]]:
     """Calculates the components of rotation, translation, scale, shear, and
-    perspective of a given transformation matrix M. [1]_
+    perspective of a given transformation matrix `M`.[^decompose-matrix-slabaugh]
 
     Parameters
     ----------
-    M : list[list[float]]
+    M
         The square matrix of any dimension.
 
     Raises
@@ -1441,20 +1393,13 @@ def decompose_matrix(M):
 
     Returns
     -------
-    scale : [float, float, float]
-        The 3 scale factors in x-, y-, and z-direction.
-    shear : [float, float, float]
-        The 3 shear factors for x-y, x-z, and y-z axes.
-    angles : [float, float, float]
-        The rotation specified through the 3 Euler angles about static x, y, z axes.
-    translation : [float, float, float]
-        The 3 values of translation.
-    perspective : [float, float, float, float]
-        The 4 perspective entries of the matrix.
+    tuple[list[float], list[float], list[float], list[float], list[float]]
+        The scale factors, shear factors, Euler angles, translation values,
+        and perspective entries, in that order.
 
     See Also
     --------
-    compose_matrix
+    [`compose_matrix`][compas.geometry.compose_matrix]
 
     Examples
     --------
@@ -1476,13 +1421,12 @@ def decompose_matrix(M):
 
     References
     ----------
-    .. [1] Slabaugh, 1999. *Computing Euler angles from a rotation matrix*.
-           Available at: http://www.gregslabaugh.net/publications/euler.pdf
+    [^decompose-matrix-slabaugh]: Slabaugh, G. [*Computing Euler Angles from a Rotation Matrix*](http://www.gregslabaugh.net/publications/euler.pdf), 1999.
 
     """
     detM = matrix_determinant(M)  # raises ValueError if matrix is not squared
     if detM == 0:
-        ValueError("The matrix is singular.")
+        raise ValueError("The matrix is singular.")
 
     Mt = transpose_matrix(M)
     if TOL.is_zero(Mt[3][3]):
@@ -1494,9 +1438,9 @@ def decompose_matrix(M):
 
     # copy Mt[:3, :3] into row
     row = [
-        [0, 0, 0],
-        [0, 0, 0],
-        [0, 0, 0],
+        [0.0, 0.0, 0.0],
+        [0.0, 0.0, 0.0],
+        [0.0, 0.0, 0.0],
     ]
     for i in range(3):
         for j in range(3):
@@ -1512,7 +1456,7 @@ def decompose_matrix(M):
 
     scale[0] = norm_vector(row[0])
     for i in range(3):
-        row[0][i] /= scale[0]  # type: ignore
+        row[0][i] /= scale[0]
 
     shear[0] = dot_vectors(row[0], row[1])
     for i in range(3):
@@ -1520,7 +1464,7 @@ def decompose_matrix(M):
 
     scale[1] = norm_vector(row[1])
     for i in range(3):
-        row[1][i] /= scale[1]  # type: ignore
+        row[1][i] /= scale[1]
 
     shear[1] = dot_vectors(row[0], row[2])
     for i in range(3):
@@ -1535,7 +1479,7 @@ def decompose_matrix(M):
 
     scale[2] = norm_vector(row[2])
     for i in range(3):
-        row[2][i] /= scale[2]  # type: ignore
+        row[2][i] /= scale[2]
 
     shear[0] /= scale[1]
     shear[1] /= scale[2]
@@ -1577,20 +1521,26 @@ def decompose_matrix(M):
     return scale, shear, angles, translation, perspective
 
 
-def compose_matrix(scale=None, shear=None, angles=None, translation=None, perspective=None):
+def compose_matrix(
+    scale: Optional[Sequence[float]] = None,
+    shear: Optional[Sequence[float]] = None,
+    angles: Optional[Sequence[float]] = None,
+    translation: Optional[Sequence[float]] = None,
+    perspective: Optional[Sequence[float]] = None,
+) -> list[list[float]]:
     """Calculates a matrix from the components of scale, shear, euler_angles, translation and perspective.
 
     Parameters
     ----------
-    scale : [float, float, float]
+    scale
         The 3 scale factors in x-, y-, and z-direction.
-    shear : [float, float, float]
+    shear
         The 3 shear factors for x-y, x-z, and y-z axes.
-    angles : [float, float, float]
+    angles
         The rotation specified through the 3 Euler angles about static x, y, z axes.
-    translation : [float, float, float]
+    translation
         The 3 values of translation.
-    perspective : [float, float, float, float]
+    perspective
         The 4 perspective entries of the matrix.
 
     Returns
@@ -1600,7 +1550,7 @@ def compose_matrix(scale=None, shear=None, angles=None, translation=None, perspe
 
     See Also
     --------
-    decompose_matrix
+    [`decompose_matrix`][compas.geometry.decompose_matrix]
 
     Examples
     --------
@@ -1639,32 +1589,32 @@ def compose_matrix(scale=None, shear=None, angles=None, translation=None, perspe
     return M
 
 
-def identity_matrix(dim):
+def identity_matrix(dim: int) -> list[list[float]]:
     """Construct an identity matrix.
 
     Parameters
     ----------
-    dim : int
+    dim
         The number of rows and/or columns of the matrix.
 
     Returns
     -------
-    list of list
+    list[list[float]]
         A list of `dim` lists, with each list containing `dim` elements.
         The items on the "diagonal" are one.
         All other items are zero.
 
     See Also
     --------
-    matrix_from_frame
-    matrix_from_frame_to_frame
-    matrix_from_euler_angles
-    matrix_from_axis_and_angle
-    matrix_from_basis_vectors
-    matrix_from_translation
-    matrix_from_scale_factors
-    matrix_from_shear_entries
-    matrix_from_perspective_entries
+    [`matrix_from_frame`][compas.geometry.matrix_from_frame]
+    [`matrix_from_frame_to_frame`][compas.geometry.matrix_from_frame_to_frame]
+    [`matrix_from_euler_angles`][compas.geometry.matrix_from_euler_angles]
+    [`matrix_from_axis_and_angle`][compas.geometry.matrix_from_axis_and_angle]
+    [`matrix_from_basis_vectors`][compas.geometry.matrix_from_basis_vectors]
+    [`matrix_from_translation`][compas.geometry.matrix_from_translation]
+    [`matrix_from_scale_factors`][compas.geometry.matrix_from_scale_factors]
+    [`matrix_from_shear_entries`][compas.geometry.matrix_from_shear_entries]
+    [`matrix_from_perspective_entries`][compas.geometry.matrix_from_perspective_entries]
 
     Examples
     --------
@@ -1675,12 +1625,12 @@ def identity_matrix(dim):
     return [[1.0 if i == j else 0.0 for i in range(dim)] for j in range(dim)]
 
 
-def matrix_from_frame(frame):
+def matrix_from_frame(frame: _FrameLike) -> list[list[float]]:
     """Computes a change of basis transformation from world XY to the frame.
 
     Parameters
     ----------
-    frame : :class:`compas.geometry.Frame`
+    frame
         A frame describing the targeted Cartesian coordinate system
 
     Returns
@@ -1704,7 +1654,7 @@ def matrix_from_frame(frame):
     return M
 
 
-def matrix_from_frame_to_frame(frame_from, frame_to):
+def matrix_from_frame_to_frame(frame_from: _FrameLike, frame_to: _FrameLike) -> list[list[float]]:
     """Computes a transformation between two frames.
 
     This transformation allows to transform geometry from one Cartesian
@@ -1713,9 +1663,9 @@ def matrix_from_frame_to_frame(frame_from, frame_to):
 
     Parameters
     ----------
-    frame_from : :class:`compas.geometry.Frame`
+    frame_from
         A frame defining the original Cartesian coordinate system
-    frame_to : :class:`compas.geometry.Frame`
+    frame_to
         A frame defining the targeted Cartesian coordinate system
 
     Returns
@@ -1730,13 +1680,14 @@ def matrix_from_frame_to_frame(frame_from, frame_to):
     >>> f1 = Frame([2, 2, 2], [0.12, 0.58, 0.81], [-0.80, 0.53, -0.26])
     >>> f2 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
     >>> T = matrix_from_frame_to_frame(f1, f2)
+
     """
     T1 = matrix_from_frame(frame_from)
     T2 = matrix_from_frame(frame_to)
     return multiply_matrices(T2, matrix_inverse(T1))
 
 
-def matrix_from_change_of_basis(frame_from, frame_to):
+def matrix_from_change_of_basis(frame_from: _FrameLike, frame_to: _FrameLike) -> list[list[float]]:
     """Computes a change of basis transformation between two frames.
 
     A basis change is essentially a remapping of geometry from one
@@ -1744,9 +1695,9 @@ def matrix_from_change_of_basis(frame_from, frame_to):
 
     Parameters
     ----------
-    frame_from : :class:`compas.geometry.Frame`
+    frame_from
         A frame defining the original Cartesian coordinate system
-    frame_to : :class:`compas.geometry.Frame`
+    frame_to
         A frame defining the targeted Cartesian coordinate system
 
     Returns
@@ -1767,7 +1718,7 @@ def matrix_from_change_of_basis(frame_from, frame_to):
     return multiply_matrices(matrix_inverse(T2), T1)
 
 
-def matrix_from_euler_angles(euler_angles, static=True, axes="xyz"):
+def matrix_from_euler_angles(euler_angles: Sequence[float], static: bool = True, axes: str = "xyz") -> list[list[float]]:
     """Calculates a rotation matrix from Euler angles.
 
     In 3D space any orientation can be achieved by composing three elemental
@@ -1778,12 +1729,12 @@ def matrix_from_euler_angles(euler_angles, static=True, axes="xyz"):
 
     Parameters
     ----------
-    euler_angles : [float, float, float]
+    euler_angles
         Three numbers that represent the angles of rotations about the defined axes.
-    static : bool, optional
+    static
         If True the rotations are applied to a static frame.
         If False, to a rotational.
-    axes : Literal['xyz', 'yzx', 'zxy'], optional
+    axes
         A 3 character string specifying order of the axes.
 
     Returns
@@ -1850,18 +1801,18 @@ def matrix_from_euler_angles(euler_angles, static=True, axes="xyz"):
     return M
 
 
-def euler_angles_from_matrix(M, static=True, axes="xyz"):
+def euler_angles_from_matrix(M: Sequence[Sequence[float]], static: bool = True, axes: str = "xyz") -> list[float]:
     """Returns Euler angles from the rotation matrix M according to specified
     axis sequence and type of rotation.
 
     Parameters
     ----------
-    M : list[list[float]]
+    M
         The 3x3 or 4x4 matrix in row-major order.
-    static : bool, optional
+    static
         If True the rotations are applied to a static frame.
         If False, to a rotational.
-    axes : str, optional
+    axes
         A 3 character string specifying order of the axes.
 
     Returns
@@ -1919,17 +1870,17 @@ def euler_angles_from_matrix(M, static=True, axes="xyz"):
     return [ax, ay, az]
 
 
-def matrix_from_axis_and_angle(axis, angle, point=None):
+def matrix_from_axis_and_angle(axis: Sequence[float], angle: float, point: Optional[Sequence[float]] = None) -> list[list[float]]:
     """Calculates a rotation matrix from an rotation axis, an angle and an optional
     point of rotation.
 
     Parameters
     ----------
-    axis : [float, float, float]
+    axis
         Three numbers that represent the axis of rotation.
-    angle : float
+    angle
         The rotation angle in radians.
-    point : [float, float, float] | :class:`compas.geometry.Point`, optional
+    point
         A point to perform a rotation around an origin other than [0, 0, 0].
 
     Returns
@@ -1988,15 +1939,15 @@ def matrix_from_axis_and_angle(axis, angle, point=None):
     return M
 
 
-def matrix_from_axis_angle_vector(axis_angle_vector, point=[0, 0, 0]):
+def matrix_from_axis_angle_vector(axis_angle_vector: Sequence[float], point: Sequence[float] = [0, 0, 0]) -> list[list[float]]:
     """Calculates a rotation matrix from an axis-angle vector.
 
     Parameters
     ----------
-    axis_angle_vector : [float, float, float]
+    axis_angle_vector
         Three numbers that represent the axis of rotation and angle of rotation
         through the vector's magnitude.
-    point : [float, float, float] | :class:`compas.geometry.Point`, optional
+    point
         A point to perform a rotation around an origin other than [0, 0, 0].
 
     Returns
@@ -2018,20 +1969,18 @@ def matrix_from_axis_angle_vector(axis_angle_vector, point=[0, 0, 0]):
     return matrix_from_axis_and_angle(axis, angle, point)
 
 
-def axis_and_angle_from_matrix(M):
+def axis_and_angle_from_matrix(M: Sequence[Sequence[float]]) -> tuple[list[float], float]:
     """Returns the axis and the angle of the rotation matrix M.
 
     Parameters
     ----------
-    M : list[list[float]]
+    M
         The 4-by-4 transformation matrix.
 
     Returns
     -------
-    [float, float, float]
-        The rotation axis.
-    float
-        The rotation angle in radians.
+    tuple[list[float], float]
+        The rotation axis and rotation angle in radians.
 
     """
     eps = 0.01  # margin to allow for rounding errors
@@ -2085,17 +2034,17 @@ def axis_and_angle_from_matrix(M):
     return [x, y, z], angle
 
 
-def axis_angle_vector_from_matrix(M):
+def axis_angle_vector_from_matrix(M: Sequence[Sequence[float]]) -> list[float]:
     """Returns the axis-angle vector of the rotation matrix M.
 
     Parameters
     ----------
-    M : list[list[float]]
+    M
         The 4-by-4 transformation matrix.
 
     Returns
     -------
-    [float, float, float]
+    list[float]
         The axis-angle vector.
 
     """
@@ -2103,12 +2052,12 @@ def axis_angle_vector_from_matrix(M):
     return scale_vector(axis, angle)
 
 
-def matrix_from_quaternion(quaternion):
+def matrix_from_quaternion(quaternion: Sequence[float]) -> list[list[float]]:
     """Calculates a rotation matrix from quaternion coefficients.
 
     Parameters
     ----------
-    quaternion : [float, float, float, float]
+    quaternion
         Four numbers that represents the four coefficient values of a quaternion.
 
     Returns
@@ -2151,17 +2100,17 @@ def matrix_from_quaternion(quaternion):
     return rotation
 
 
-def quaternion_from_matrix(M):
+def quaternion_from_matrix(M: Sequence[Sequence[float]]) -> list[float]:
     """Returns the 4 quaternion coefficients from a rotation matrix.
 
     Parameters
     ----------
-    M : list[list[float]]
+    M
         The coefficients of the rotation matrix, row per row.
 
     Returns
     -------
-    [float, float, float, float]
+    list[float]
         The quaternion coefficients.
 
     Examples
@@ -2206,14 +2155,14 @@ def quaternion_from_matrix(M):
     return [qw, qx, qy, qz]
 
 
-def matrix_from_basis_vectors(xaxis, yaxis):
+def matrix_from_basis_vectors(xaxis: Sequence[float], yaxis: Sequence[float]) -> list[list[float]]:
     """Creates a rotation matrix from basis vectors (= orthonormal vectors).
 
     Parameters
     ----------
-    xaxis : [float, float, float] | :class:`compas.geometry.Vector`
+    xaxis
         The x-axis of the frame.
-    yaxis : [float, float, float] | :class:`compas.geometry.Vector`
+    yaxis
         The y-axis of the frame.
 
     Returns
@@ -2223,12 +2172,12 @@ def matrix_from_basis_vectors(xaxis, yaxis):
 
     Notes
     -----
-    .. code-block:: none
-
+    ```text
         [ x0  y0  z0  0 ]
         [ x1  y1  z1  0 ]
         [ x2  y2  z2  0 ]
         [  0   0   0  1 ]
+    ```
 
     Examples
     --------
@@ -2249,20 +2198,18 @@ def matrix_from_basis_vectors(xaxis, yaxis):
     return R
 
 
-def basis_vectors_from_matrix(R):
+def basis_vectors_from_matrix(R: Sequence[Sequence[float]]) -> tuple[list[float], list[float]]:
     """Returns the basis vectors from the rotation matrix R.
 
     Parameters
     ----------
-    R : list[list[float]]
+    R
         A 4-by-4 transformation matrix, or a 3-by-3 rotation matrix.
 
     Returns
     -------
-    [float, float, float]
-        The first basis vector of the rotation.
-    [float, float, float]
-        The second basis vector of the rotation.
+    tuple[list[float], list[float]]
+        The first and second basis vectors of the rotation.
 
     Raises
     ------
@@ -2287,12 +2234,12 @@ def basis_vectors_from_matrix(R):
     return xaxis, yaxis
 
 
-def matrix_from_translation(translation):
+def matrix_from_translation(translation: Sequence[float]) -> list[list[float]]:
     """Returns a 4x4 translation matrix in row-major order.
 
     Parameters
     ----------
-    translation : [float, float, float]
+    translation
         The x, y and z components of the translation.
 
     Returns
@@ -2302,12 +2249,12 @@ def matrix_from_translation(translation):
 
     Notes
     -----
-    .. code-block:: none
-
+    ```text
         [ .  .  .  0 ]
         [ .  .  .  1 ]
         [ .  .  .  2 ]
         [ .  .  .  . ]
+    ```
 
     Examples
     --------
@@ -2322,29 +2269,31 @@ def matrix_from_translation(translation):
     return M
 
 
-def translation_from_matrix(M):
+def translation_from_matrix(M: Sequence[Sequence[float]]) -> list[float]:
     """Returns the 3 values of translation from the matrix M.
 
     Parameters
     ----------
-    M : list[list[float]]
+    M
         A 4-by-4 transformation matrix.
 
     Returns
     -------
-    [float, float, float]
+    list[float]
         The translation vector.
 
     """
     return [M[0][3], M[1][3], M[2][3]]
 
 
-def matrix_from_orthogonal_projection(plane):
+def matrix_from_orthogonal_projection(
+    plane: tuple[Sequence[float], Sequence[float]],
+) -> list[list[float]]:
     """Returns an orthogonal projection matrix to project onto a plane.
 
     Parameters
     ----------
-    plane : [point, normal]
+    plane
         The plane to project onto.
 
     Returns
@@ -2372,14 +2321,14 @@ def matrix_from_orthogonal_projection(plane):
     return T
 
 
-def matrix_from_parallel_projection(plane, direction):
+def matrix_from_parallel_projection(plane: tuple[Sequence[float], Sequence[float]], direction: Sequence[float]) -> list[list[float]]:
     """Returns an parallel projection matrix to project onto a plane.
 
     Parameters
     ----------
-    plane : [point, normal]
+    plane
         The plane to project onto.
-    direction : [float, float, float] | :class:`compas.geometry.Vector`
+    direction
         Direction of the projection.
 
     Returns
@@ -2409,14 +2358,14 @@ def matrix_from_parallel_projection(plane, direction):
     return T
 
 
-def matrix_from_perspective_projection(plane, center_of_projection):
+def matrix_from_perspective_projection(plane: tuple[Sequence[float], Sequence[float]], center_of_projection: Sequence[float]) -> list[list[float]]:
     """Returns a perspective projection matrix to project onto a plane along lines that emanate from a single point, called the center of projection.
 
     Parameters
     ----------
-    plane : [point, normal]
+    plane
         The plane to project onto.
-    center_of_projection : [float, float, float] | :class:`compas.geometry.Point`
+    center_of_projection
         The camera view point.
 
     Returns
@@ -2453,12 +2402,12 @@ def matrix_from_perspective_projection(plane, center_of_projection):
     return T
 
 
-def matrix_from_perspective_entries(perspective):
+def matrix_from_perspective_entries(perspective: Sequence[float]) -> list[list[float]]:
     """Returns a matrix from perspective entries.
 
     Parameters
     ----------
-    values : [float, float, float, float]
+    perspective
         The 4 perspective entries of a matrix.
 
     Returns
@@ -2468,12 +2417,12 @@ def matrix_from_perspective_entries(perspective):
 
     Notes
     -----
-    .. code-block:: none
-
+    ```text
         [ .  .  .  . ]
         [ .  .  .  . ]
         [ .  .  .  . ]
         [ 0  1  2  3 ]
+    ```
 
     """
     M = identity_matrix(4)
@@ -2484,12 +2433,12 @@ def matrix_from_perspective_entries(perspective):
     return M
 
 
-def matrix_from_shear_entries(shear_entries):
+def matrix_from_shear_entries(shear_entries: Sequence[float]) -> list[list[float]]:
     """Returns a shear matrix from the 3 factors for x-y, x-z, and y-z axes.
 
     Parameters
     ----------
-    shear_entries : [float, float, float]
+    shear_entries
         The 3 shear factors for x-y, x-z, and y-z axes.
 
     Returns
@@ -2499,12 +2448,12 @@ def matrix_from_shear_entries(shear_entries):
 
     Notes
     -----
-    .. code-block:: none
-
+    ```text
         [ .  0  1  . ]
         [ .  .  2  . ]
         [ .  .  .  . ]
         [ .  .  .  . ]
+    ```
 
     Examples
     --------
@@ -2518,20 +2467,20 @@ def matrix_from_shear_entries(shear_entries):
     return M
 
 
-def matrix_from_shear(angle, direction, point, normal):
+def matrix_from_shear(angle: float, direction: Sequence[float], point: Sequence[float], normal: Sequence[float]) -> list[list[float]]:
     """Constructs a shear matrix by an angle along the direction vector on the
     shear plane (defined by point and normal).
 
     Parameters
     ----------
-    angle : float
+    angle
         The angle in radians.
-    direction : [float, float, float] | :class:`compas.geometry.Vector`
+    direction
         The direction vector as list of 3 numbers.
         It must be orthogonal to the normal vector.
-    point : [float, float, float] | :class:`compas.geometry.Point`
+    point
         The point of the shear plane as list of 3 numbers.
-    normal : [float, float, float] | :class:`compas.geometry.Vector`
+    normal
         The normal of the shear plane as list of 3 numbers.
 
     Returns
@@ -2578,12 +2527,12 @@ def matrix_from_shear(angle, direction, point, normal):
     return M
 
 
-def matrix_from_scale_factors(scale_factors):
+def matrix_from_scale_factors(scale_factors: Sequence[float]) -> list[list[float]]:
     """Returns a 4x4 scaling transformation.
 
     Parameters
     ----------
-    scale_factors : [float, float, float]
+    scale_factors
         Three numbers defining the scaling factors in x, y, and z respectively.
 
     Returns
@@ -2593,12 +2542,12 @@ def matrix_from_scale_factors(scale_factors):
 
     Notes
     -----
-    .. code-block:: python
-
+    ```text
         [ 0  .  .  . ]
         [ .  1  .  . ]
         [ .  .  2  . ]
         [ .  .  .  . ]
+    ```
 
     Examples
     --------
@@ -2613,23 +2562,23 @@ def matrix_from_scale_factors(scale_factors):
     return M
 
 
-def quaternion_from_euler_angles(e, static=True, axes="xyz"):
+def quaternion_from_euler_angles(e: Sequence[float], static: bool = True, axes: str = "xyz") -> list[float]:
     """Returns a quaternion from Euler angles.
 
     Parameters
     ----------
-    euler_angles : [float, float, float]
+    e
         Three numbers that represent the angles of rotations about the specified axes.
-    static : bool, optional
+    static
         If True, the rotations are applied to a static frame.
         If False, the rotations are applied to a rotational frame.
-    axes : str, optional
+    axes
         A three-character string specifying the order of the axes.
 
     Returns
     -------
-    [float, float, float, float]
-        Quaternion as a list of four real values ``[w, x, y, z]``.
+    list[float]
+        Quaternion as a list of four real values `[w, x, y, z]`.
 
     """
     m = matrix_from_euler_angles(e, static, axes)
@@ -2637,23 +2586,23 @@ def quaternion_from_euler_angles(e, static=True, axes="xyz"):
     return q
 
 
-def euler_angles_from_quaternion(q, static=True, axes="xyz"):
+def euler_angles_from_quaternion(q: Sequence[float], static: bool = True, axes: str = "xyz") -> list[float]:
     """Returns Euler angles from a quaternion.
 
     Parameters
     ----------
-    quaternion : [float, float, float, float]
-        Quaternion as a list of four real values ``[w, x, y, z]``.
-    static : bool, optional
+    q
+        Quaternion as a list of four real values `[w, x, y, z]`.
+    static
         If True, the rotations are applied to a static frame.
         If False, the rotations are applied to a rotational frame.
-    axes : str, optional
+    axes
         A three-character string specifying the order of the axes.
 
     Returns
     -------
-    [float, float, float]
-        Euler angles as a list of three real values ``[a, b, c]``.
+    list[float]
+        Euler angles as a list of three real values `[a, b, c]`.
 
     """
     m = matrix_from_quaternion(q)
@@ -2661,20 +2610,20 @@ def euler_angles_from_quaternion(q, static=True, axes="xyz"):
     return e
 
 
-def quaternion_from_axis_angle(axis, angle):
+def quaternion_from_axis_angle(axis: Sequence[float], angle: float) -> list[float]:
     """Returns a quaternion describing a rotation around the given axis by the given angle.
 
     Parameters
     ----------
-    axis : [float, float, float] | :class:`compas.geometry.Vector`
+    axis
         XYZ coordinates of the rotation axis vector.
-    angle : float
+    angle
         Angle of rotation in radians.
 
     Returns
     -------
-    [float, float, float, float]
-        Quaternion as a list of four real values ``[qw, qx, qy, qz]``.
+    list[float]
+        Quaternion as a list of four real values `[qw, qx, qy, qz]`.
 
     Examples
     --------
@@ -2690,20 +2639,18 @@ def quaternion_from_axis_angle(axis, angle):
     return q
 
 
-def axis_angle_from_quaternion(q):
+def axis_angle_from_quaternion(q: Sequence[float]) -> tuple[list[float], float]:
     """Returns an axis and an angle of rotation from the given quaternion.
 
     Parameters
     ----------
-    q : [float, float, float, float]
-        Quaternion as a list of four real values ``[qw, qx, qy, qz]``.
+    q
+        Quaternion as a list of four real values `[qw, qx, qy, qz]`.
 
     Returns
     -------
-    axis : [float, float, float]
-        XYZ coordinates of the rotation axis vector.
-    angle : float
-        Angle of rotation in radians.
+    tuple[list[float], float]
+        The rotation axis and rotation angle in radians.
 
     Examples
     --------
@@ -2737,16 +2684,16 @@ def axis_angle_from_quaternion(q):
 # =============================================================================
 
 
-def close(value1, value2, tol=1e-05):
+def close(value1: float, value2: float, tol: float = 1e-05) -> bool:
     """Returns True if two values are equal within a tolerance.
 
     Parameters
     ----------
-    value1 : float or int
-    value2 : float or int
-    tol : float, optional
+    value1
+    value2
+    tol
         The absolute tolerance for comparing values.
-        Default is :attr:`TOL.absolute`.
+        Default is `TOL.absolute`.
 
     Returns
     -------
@@ -2756,30 +2703,29 @@ def close(value1, value2, tol=1e-05):
 
     Warnings
     --------
-    .. deprecated:: 2.0
-        Will be removed in 2.1
-        Use :func:`TOL.is_close` instead.
+    Deprecated since version 2.0. This function will be removed in version 2.1.
+    Use [`TOL.is_close`][compas.tolerance.Tolerance.is_close] instead.
 
     The tolerance value used by this function is an absolute tolerance.
     It is more accurate to use a combination of absolute and relative tolerance.
-    Therefor, use :func:`TOL.is_close` instead.
+    Therefore, use [`TOL.is_close`][compas.tolerance.Tolerance.is_close] instead.
 
     """
     return TOL.is_close(value1, value2, rtol=0.0, atol=tol)
 
 
-def allclose(l1, l2, tol=None):
+def allclose(l1: Sequence[float], l2: Sequence[float], tol: Optional[float] = None) -> bool:
     """Returns True if two lists are element-wise equal within a tolerance.
 
     Parameters
     ----------
-    l1 : sequence[float]
+    l1
         The first list of values.
-    l2 : sequence[float]
+    l2
         The second list of values.
-    tol : float, optional
+    tol
         The absolute tolerance for comparing values.
-        Default is :attr:`TOL.absolute`.
+        Default is `TOL.absolute`.
 
     Returns
     -------
@@ -2789,21 +2735,20 @@ def allclose(l1, l2, tol=None):
 
     Warnings
     --------
-    .. deprecated:: 2.0
-        Will be removed in 2.1
-        Use :func:`TOL.is_close` instead.
+    Deprecated since version 2.0. This function will be removed in version 2.1.
+    Use [`TOL.is_allclose`][compas.tolerance.Tolerance.is_allclose] instead.
 
     The tolerance value used by this function is an absolute tolerance.
     It is more accurate to use a combination of absolute and relative tolerance.
-    Therefor, use :func:`TOL.is_allclose` instead.
+    Therefore, use [`TOL.is_allclose`][compas.tolerance.Tolerance.is_allclose] instead.
 
     Notes
     -----
-    The function is similar to NumPy's *allclose* function [1]_.
+    The function is similar to NumPy's `allclose` function.[^allclose-numpy]
 
     References
     ----------
-    .. [1] https://docs.scipy.org/doc/numpy/reference/generated/numpy.allclose.html
+    [^allclose-numpy]: [NumPy `allclose`](https://numpy.org/doc/stable/reference/generated/numpy.allclose.html)
 
     """
     return TOL.is_allclose(l1, l2, atol=tol)

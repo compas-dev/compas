@@ -1,6 +1,8 @@
 from math import acos
 from math import degrees
 from math import pi
+from typing import Optional
+from typing import Sequence
 
 from compas.tolerance import TOL
 
@@ -13,25 +15,25 @@ from ._algebra import subtract_vectors
 from ._algebra import subtract_vectors_xy
 
 
-def angle_vectors(u, v, deg=False, tol=None):
+def angle_vectors(u: Sequence[float], v: Sequence[float], deg: bool = False, tol: Optional[float] = None) -> float:
     """Compute the smallest angle between two vectors.
 
     Parameters
     ----------
-    u : [float, float, float] | :class:`compas.geometry.Vector`
+    u
         XYZ components of the first vector.
-    v : [float, float, float] | :class:`compas.geometry.Vector`
+    v
         XYZ components of the second vector.
-    deg : bool, optional
+    deg
         If True, returns the angle in degrees.
-    tol : float, optional
+    tol
         The tolerance for comparing values to zero.
-        Default is :attr:`TOL.absolute`.
+        Default is `TOL.absolute`.
 
     Returns
     -------
     float
-        The smallest angle in radians (in degrees if ``deg == True``).
+        The smallest angle in radians (in degrees if `deg == True`).
         The angle is always positive.
 
     Examples
@@ -71,24 +73,30 @@ def angle_vectors(u, v, deg=False, tol=None):
     return angle
 
 
-def angle_vectors_signed(u, v, normal, deg=False, tol=None):
+def angle_vectors_signed(
+    u: Sequence[float],
+    v: Sequence[float],
+    normal: Sequence[float],
+    deg: bool = False,
+    tol: Optional[float] = None,
+) -> float:
     """Computes the signed angle between two vectors.
 
     Returns the smallest angle between 2 vectors, with the sign of the angle based on the direction of the normal vector according to the right hand rule of rotation.
 
     Parameters
     ----------
-    u : [float, float, float] | :class:`compas.geometry.Vector`
+    u
         XYZ components of the first vector.
-    v : [float, float, float] | :class:`compas.geometry.Vector`
+    v
         XYZ components of the second vector.
-    normal : [float, float, float] | :class:`compas.geometry.Vector`
+    normal
         XYZ components of the plane's normal spanned by u and v.
-    deg : bool, optional
+    deg
         If True, returns the angle in degrees.
-    tol : float, optional
+    tol
         The tolerance for comparing values to zero.
-        Default is :attr:`TOL.absolute`.
+        Default is `TOL.absolute`.
 
 
     Returns
@@ -116,7 +124,13 @@ def angle_vectors_signed(u, v, normal, deg=False, tol=None):
         return angle
 
 
-def angle_vectors_projected(u, v, normal, deg=False, tol=None):
+def angle_vectors_projected(
+    u: Sequence[float],
+    v: Sequence[float],
+    normal: Sequence[float],
+    deg: bool = False,
+    tol: Optional[float] = None,
+) -> float:
     """Computes the signed angle between two vectors.
 
     Retuns the angle between 2 vectors projected onto a plane defined by a normal vector.
@@ -124,17 +138,17 @@ def angle_vectors_projected(u, v, normal, deg=False, tol=None):
 
     Parameters
     ----------
-    u : [float, float, float] | :class:`compas.geometry.Vector`
+    u
         XYZ components of the first vector.
-    v : [float, float, float] | :class:`compas.geometry.Vector`
+    v
         XYZ components of the second vector.
-    normal : [float, float, float] | :class:`compas.geometry.Vector`
+    normal
         XYZ components of the plane's normal spanned by u and v.
-    deg : bool, optional
+    deg
         If True, returns the angle in degrees.
-    tol : float, optional
+    tol
         The tolerance for comparing values to zero.
-        Default is :attr:`TOL.absolute`.
+        Default is `TOL.absolute`.
 
     Returns
     -------
@@ -154,30 +168,26 @@ def angle_vectors_projected(u, v, normal, deg=False, tol=None):
     return angle_vectors_signed(u_cross, v_cross, normal, deg, tol)
 
 
-def angle_vectors_xy(u, v, deg=False, tol=None):
+def angle_vectors_xy(u: Sequence[float], v: Sequence[float], deg: bool = False, tol: Optional[float] = None) -> float:
     """Compute the smallest angle between the XY components of two vectors.
 
     Parameters
     ----------
-    u : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
+    u
         The first 2D or 3D vector (Z will be ignored).
-    v : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
+    v
         The second 2D or 3D vector (Z will be ignored).
-    deg : bool, optional
+    deg
         If True, returns the angle in degrees.
-    tol : float, optional
+    tol
         The tolerance for comparing values to zero.
-        Default is :attr:`TOL.absolute`.
+        Default is `TOL.absolute`.
 
     Returns
     -------
     float
-        The smallest angle in radians (in degrees if ``deg == True``).
+        The smallest angle in radians (in degrees if `deg == True`).
         The angle is always positive.
-
-    Examples
-    --------
-    >>>
 
     """
     L = length_vector_xy(u) * length_vector_xy(v)
@@ -190,34 +200,34 @@ def angle_vectors_xy(u, v, deg=False, tol=None):
     return acos(a)
 
 
-def angle_points(a, b, c, deg=False):
+def angle_points(a: Sequence[float], b: Sequence[float], c: Sequence[float], deg: bool = False) -> float:
     r"""Compute the smallest angle between the vectors defined by three points.
 
     Parameters
     ----------
-    a : [float, float, float] | :class:`compas.geometry.Point`
+    a
         XYZ coordinates.
-    b : [float, float, float] | :class:`compas.geometry.Point`
+    b
         XYZ coordinates.
-    c : [float, float, float] | :class:`compas.geometry.Point`
+    c
         XYZ coordinates.
-    deg : bool, optional
+    deg
         If True, returns the angle in degrees.
 
     Returns
     -------
     float
-        The smallest angle in radians (in degrees if ``deg == True``).
+        The smallest angle in radians (in degrees if `deg == True`).
         The angle is always positive.
 
     Notes
     -----
     The vectors are defined in the following way
 
-    .. math::
-
+    $$
         \mathbf{u} = \mathbf{b} - \mathbf{a} \\
         \mathbf{v} = \mathbf{c} - \mathbf{a}
+    $$
 
     Z components may be provided, but are simply ignored.
 
@@ -227,34 +237,34 @@ def angle_points(a, b, c, deg=False):
     return angle_vectors(u, v, deg)
 
 
-def angle_points_xy(a, b, c, deg=False):
+def angle_points_xy(a: Sequence[float], b: Sequence[float], c: Sequence[float], deg: bool = False) -> float:
     r"""Compute the smallest angle between the vectors defined by the XY components of three points.
 
     Parameters
     ----------
-    a : [float, float] or [float, float, float] | :class:`compas.geometry.Point`
+    a
         XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
-    b : [float, float] or [float, float, float] | :class:`compas.geometry.Point`
+    b
         XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
-    c : [float, float] or [float, float, float] | :class:`compas.geometry.Point`
+    c
         XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
-    deg : bool, optional
+    deg
         If True, returns the angle in degrees.
 
     Returns
     -------
     float
-        The smallest angle in radians (in degrees if ``deg == True``).
+        The smallest angle in radians (in degrees if `deg == True`).
         The angle is always positive.
 
     Notes
     -----
     The vectors are defined in the following way
 
-    .. math::
-
+    $$
         \mathbf{u} = \mathbf{b} - \mathbf{a} \\
         \mathbf{v} = \mathbf{c} - \mathbf{a}
+    $$
 
     Z components may be provided, but are simply ignored.
 
@@ -264,28 +274,22 @@ def angle_points_xy(a, b, c, deg=False):
     return angle_vectors_xy(u, v, deg)
 
 
-def angles_vectors(u, v, deg=False):
+def angles_vectors(u: Sequence[float], v: Sequence[float], deg: bool = False) -> tuple[float, float]:
     """Compute the the 2 angles formed by a pair of vectors.
 
     Parameters
     ----------
-    u : [float, float, float] | :class:`compas.geometry.Vector`
+    u
         XYZ components of the first vector.
-    v : [float, float, float] | :class:`compas.geometry.Vector`
+    v
         XYZ components of the second vector.
-    deg : bool, optional
+    deg
         If True, returns the angle in degrees.
 
     Returns
     -------
-    float
-        The smallest angle in radians, or in degrees if ``deg == True``.
-    float
-        The other angle.
-
-    Examples
-    --------
-    >>>
+    tuple[float, float]
+        The smallest angle and the other angle, in radians or degrees if `deg == True`.
 
     """
     if deg:
@@ -295,32 +299,26 @@ def angles_vectors(u, v, deg=False):
     return a, pi * 2 - a
 
 
-def angles_vectors_xy(u, v, deg=False):
+def angles_vectors_xy(u: Sequence[float], v: Sequence[float], deg: bool = False) -> tuple[float, float]:
     """Compute the angles between the XY components of two vectors.
 
     Parameters
     ----------
-    u : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
+    u
         XY(Z) coordinates of the first vector.
-    v : [float, float] or [float, float, float] | :class:`compas.geometry.Vector`
+    v
         XY(Z) coordinates of the second vector.
-    deg : bool, optional
+    deg
         If True, returns the angle in degrees.
 
     Returns
     -------
-    float
-        The smallest angle in radians, or in degrees if ``deg == True``.
-    float
-        The other angle.
+    tuple[float, float]
+        The smallest angle and the other angle, in radians or degrees if `deg == True`.
 
     Notes
     -----
     Z components may be provided, but are simply ignored.
-
-    Examples
-    --------
-    >>>
 
     """
     if deg:
@@ -330,39 +328,33 @@ def angles_vectors_xy(u, v, deg=False):
     return a, pi * 2 - a
 
 
-def angles_points(a, b, c, deg=False):
+def angles_points(a: Sequence[float], b: Sequence[float], c: Sequence[float], deg: bool = False) -> tuple[float, float]:
     r"""Compute the two angles between two vectors defined by three points.
 
     Parameters
     ----------
-    a : [float, float, float] | :class:`compas.geometry.Point`
+    a
         XYZ coordinates.
-    b : [float, float, float] | :class:`compas.geometry.Point`
+    b
         XYZ coordinates.
-    c : [float, float, float] | :class:`compas.geometry.Point`
+    c
         XYZ coordinates.
-    deg : bool, optional
+    deg
         If True, returns the angle in degrees.
 
     Returns
     -------
-    float
-        The smallest angle in radians, or in degrees if ``deg == True``.
-    float
-        The other angle.
+    tuple[float, float]
+        The smallest angle and the other angle, in radians or degrees if `deg == True`.
 
     Notes
     -----
     The vectors are defined in the following way
 
-    .. math::
-
+    $$
         \mathbf{u} = \mathbf{b} - \mathbf{a} \\
         \mathbf{v} = \mathbf{c} - \mathbf{a}
-
-    Examples
-    --------
-    >>>
+    $$
 
     """
     u = subtract_vectors(b, a)
@@ -370,41 +362,35 @@ def angles_points(a, b, c, deg=False):
     return angles_vectors(u, v, deg)
 
 
-def angles_points_xy(a, b, c, deg=False):
+def angles_points_xy(a: Sequence[float], b: Sequence[float], c: Sequence[float], deg: bool = False) -> tuple[float, float]:
     r"""Compute the two angles between the two vectors defined by the XY components of three points.
 
     Parameters
     ----------
-    a : [float, float] or [float, float, float] | :class:`compas.geometry.Point`
+    a
         XY(Z) coordinates.
-    b : [float, float] or [float, float, float] | :class:`compas.geometry.Point`
+    b
         XY(Z) coordinates.
-    c : [float, float] or [float, float, float] | :class:`compas.geometry.Point`
+    c
         XY(Z) coordinates.
-    deg : bool, optional
+    deg
         If True, returns the angle in degrees.
 
     Returns
     -------
-    float
-        The smallest angle in radians, or in degrees if ``deg == True``.
-    float
-        The other angle.
+    tuple[float, float]
+        The smallest angle and the other angle, in radians or degrees if `deg == True`.
 
     Notes
     -----
     The vectors are defined in the following way
 
-    .. math::
-
+    $$
         \mathbf{u} = \mathbf{b} - \mathbf{a} \\
         \mathbf{v} = \mathbf{c} - \mathbf{a}
+    $$
 
     Z components may be provided, but are simply ignored.
-
-    Examples
-    --------
-    >>>
 
     """
     u = subtract_vectors_xy(b, a)
@@ -412,24 +398,26 @@ def angles_points_xy(a, b, c, deg=False):
     return angles_vectors_xy(u, v, deg)
 
 
-def angle_planes(a, b, deg=False):
+def angle_planes(
+    a: tuple[Sequence[float], Sequence[float]],
+    b: tuple[Sequence[float], Sequence[float]],
+    deg: bool = False,
+) -> float:
     """Compute the smallest angle between the two normal vectors of two planes.
 
     Parameters
     ----------
-    a : [point, vector]
+    a
         The first plane.
-    b : [point, vector]
+    b
         The second plane.
-    deg : bool, optional
+    deg
         If True, returns the angle in degrees.
 
     Returns
     -------
     float
-        The smallest angle in radians, or in degrees if ``deg == True``.
-    float
-        The other angle.
+        The smallest angle in radians, or in degrees if `deg == True`.
 
     Examples
     --------
@@ -437,5 +425,6 @@ def angle_planes(a, b, deg=False):
     >>> plane_b = [0.0, 0.0, 0.0], [1.0, 0.0, 0.0]
     >>> angle_planes(plane_a, plane_b, True)
     90.0
+
     """
     return angle_vectors(a[1], b[1], deg)

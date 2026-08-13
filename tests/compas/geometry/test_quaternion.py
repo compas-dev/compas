@@ -6,6 +6,12 @@ from random import random
 from compas.geometry import Quaternion
 from compas.tolerance import TOL
 from compas.geometry import Frame
+from compas.geometry import quaternion_canonize
+from compas.geometry import quaternion_conjugate
+from compas.geometry import quaternion_is_unit
+from compas.geometry import quaternion_multiply
+from compas.geometry import quaternion_norm
+from compas.geometry import quaternion_unitize
 
 
 @pytest.mark.parametrize(
@@ -151,3 +157,46 @@ def test_quaternion_other_methods():
 
     value = TOL.format_number(0.5)
     assert str(canonized) == str("Quaternion(" + value + ", -" + value + ", -" + value + ", -" + value + ")")
+
+
+# =============================================================================
+# Core helpers
+# =============================================================================
+
+
+def test_quaternion_norm_and_unitize():
+    assert TOL.is_close(quaternion_norm((1.0, 2.0, 3.0, 4.0)), 30**0.5)
+    assert TOL.is_allclose(quaternion_unitize((2.0, 0.0, 0.0, 0.0)), [1.0, 0.0, 0.0, 0.0])
+
+
+def test_quaternion_unitize_rejects_zero_length():
+    with pytest.raises(ValueError, match="zero length"):
+        quaternion_unitize((0.0, 0.0, 0.0, 0.0))
+
+
+def test_quaternion_is_unit_respects_tolerance():
+    quaternion = (1.0 + 1e-4, 0.0, 0.0, 0.0)
+    assert quaternion_is_unit(quaternion, tol=1e-3)
+    assert not quaternion_is_unit(quaternion, tol=1e-6)
+
+
+def test_quaternion_multiply_identity():
+    quaternion = [0.5, 0.5, 0.5, 0.5]
+    identity = [1.0, 0.0, 0.0, 0.0]
+    assert quaternion_multiply(identity, quaternion) == quaternion
+    assert quaternion_multiply(quaternion, identity) == quaternion
+
+
+def test_quaternion_canonize_negates_negative_scalar():
+    assert quaternion_canonize((-1.0, 2.0, -3.0, 4.0)) == [1.0, -2.0, 3.0, -4.0]
+
+
+@pytest.mark.parametrize("quaternion", [(1.0, 2.0, 3.0, 4.0), [1.0, 2.0, 3.0, 4.0]])
+def test_quaternion_canonize_preserves_input_container_for_nonnegative_scalar(quaternion):
+    result = quaternion_canonize(quaternion)
+    assert result == quaternion
+    assert type(result) is type(quaternion)
+
+
+def test_quaternion_conjugate():
+    assert quaternion_conjugate((1.0, 2.0, 3.0, 4.0)) == [1.0, -2.0, -3.0, -4.0]

@@ -1,9 +1,9 @@
-from __future__ import division
 import pytest
 import json
 import compas
 from random import random
 from compas.geometry import Point
+from compas.geometry import Translation
 from compas.tolerance import TOL
 
 
@@ -63,6 +63,25 @@ def test_point_equality():
     assert not (p1 != p2)
     assert p1 != p3
     assert not (p1 == p3)
+
+
+def test_geometry_copying_transform_helpers_preserve_subclass_and_original():
+    point = Point(1.0, 0.0, 0.0)
+
+    transformed = point.transformed(Translation.from_vector([1.0, 2.0, 3.0]))
+    translated = point.translated([1.0, 2.0, 3.0])
+    scaled = point.scaled(2.0, 3.0, 4.0)
+    rotated = point.rotated(0.5 * 3.141592653589793, axis=[0.0, 0.0, 1.0])
+
+    assert isinstance(transformed, Point)
+    assert isinstance(translated, Point)
+    assert isinstance(scaled, Point)
+    assert isinstance(rotated, Point)
+    assert point == Point(1.0, 0.0, 0.0)
+    assert transformed == Point(2.0, 2.0, 3.0)
+    assert translated == Point(2.0, 2.0, 3.0)
+    assert scaled == Point(2.0, 0.0, 0.0)
+    assert TOL.is_allclose(rotated, [0.0, 1.0, 0.0])
 
 
 def test_point_comparison_relative():

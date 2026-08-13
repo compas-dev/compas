@@ -1,20 +1,23 @@
 from math import sqrt
+from typing import Sequence
 
 
-def tangent_points_to_circle_xy(circle, point):
+def tangent_points_to_circle_xy(
+    circle: tuple[tuple[Sequence[float], Sequence[float]], float], point: Sequence[float]
+) -> tuple[tuple[float, float, int], tuple[float, float, int]]:
     """Calculates the tangent points on a circle in the XY plane.
 
     Parameters
     ----------
-    circle : [plane, float]
+    circle
         Plane and radius of the circle.
-    point : [float, float] or [float, float, float] | :class:`compas.geometry.Point`
+    point
         XY(Z) coordinates of a point in the xy plane.
 
     Returns
     -------
-    tuple[[float, float, 0.0], [float, float, 0.0]]
-        the tangent points on the circle.
+    tuple[tuple[float, float, int], tuple[float, float, int]]
+        The tangent points on the circle.
 
     Examples
     --------

@@ -1,4 +1,5 @@
 from math import fabs
+from typing import Sequence
 
 from compas.itertools import pairwise
 
@@ -14,12 +15,12 @@ from .normals import normal_triangle
 from .normals import normal_triangle_xy
 
 
-def area_triangle(triangle):
+def area_triangle(triangle: Sequence[Sequence[float]]) -> float:
     """Compute the area of a triangle defined by three points.
 
     Parameters
     ----------
-    triangle : [point, point, point] | :class:`compas.geometry.Polygon`
+    triangle
         XYZ coordinates of the corners of the triangle.
 
     Returns
@@ -29,20 +30,20 @@ def area_triangle(triangle):
 
     See Also
     --------
-    area_triangle_xy
-    area_polygon
-    area_polygon_xy
+    [`area_triangle_xy`][compas.geometry.area_triangle_xy]
+    [`area_polygon`][compas.geometry.area_polygon]
+    [`area_polygon_xy`][compas.geometry.area_polygon_xy]
 
     """
     return 0.5 * length_vector(normal_triangle(triangle, False))
 
 
-def area_triangle_xy(triangle):
+def area_triangle_xy(triangle: Sequence[Sequence[float]]) -> float:
     """Compute the area of a triangle defined by three points lying in the XY-plane.
 
     Parameters
     ----------
-    triangle : [point, point, point] | :class:`compas.geometry.Polygon`
+    triangle
         XY(Z) coordinates of the corners of the triangle.
 
     Returns
@@ -52,20 +53,20 @@ def area_triangle_xy(triangle):
 
     See Also
     --------
-    area_triangle
-    area_polygon
-    area_polygon_xy
+    [`area_triangle`][compas.geometry.area_triangle]
+    [`area_polygon`][compas.geometry.area_polygon]
+    [`area_polygon_xy`][compas.geometry.area_polygon_xy]
 
     """
     return 0.5 * length_vector(normal_triangle_xy(triangle, False))
 
 
-def area_polygon(polygon):
+def area_polygon(polygon: Sequence[Sequence[float]]) -> float:
     """Compute the area of a polygon.
 
     Parameters
     ----------
-    polygon : sequence[point] | :class:`compas.geometry.Polygon`
+    polygon
         The XYZ coordinates of the vertices/corners of the polygon.
         The vertices are assumed to be in order.
         The polygon is assumed to be closed:
@@ -78,8 +79,8 @@ def area_polygon(polygon):
 
     See Also
     --------
-    area_polygon_xy
-    area_triangle
+    [`area_polygon_xy`][compas.geometry.area_polygon_xy]
+    [`area_triangle`][compas.geometry.area_triangle]
 
     """
     o = centroid_points(polygon)
@@ -101,12 +102,12 @@ def area_polygon(polygon):
     return abs(area)
 
 
-def area_polygon_xy(polygon):
+def area_polygon_xy(polygon: Sequence[Sequence[float]]) -> float:
     """Compute the area of a polygon lying in the XY-plane.
 
     Parameters
     ----------
-    polygon : sequence[point] | :class:`compas.geometry.Polygon`
+    polygon
         A sequence of XY(Z) coordinates of 2D or 3D points
         representing the locations of the corners of a polygon.
         The vertices are assumed to be in order. The polygon is assumed to be closed:
@@ -119,8 +120,8 @@ def area_polygon_xy(polygon):
 
     See Also
     --------
-    area_polygon
-    area_triangle_xy
+    [`area_polygon`][compas.geometry.area_polygon]
+    [`area_triangle_xy`][compas.geometry.area_triangle_xy]
 
     """
     o = centroid_points_xy(polygon)
@@ -134,12 +135,12 @@ def area_polygon_xy(polygon):
     return fabs(a)
 
 
-def volume_polyhedron(polyhedron):
+def volume_polyhedron(polyhedron: tuple[list[list[float]], Sequence[list[int]]]) -> float:
     r"""Compute the volume of a polyhedron represented by a closed mesh.
 
     Parameters
     ----------
-    polyhedron : tuple[sequence[[float, float, float] | :class:`compas.geometry.Point`], sequence[sequence[int]]]
+    polyhedron
         The vertices and faces of the polyhedron.
 
     Returns
@@ -157,22 +158,20 @@ def volume_polyhedron(polyhedron):
     This implementation is based on the divergence theorem, the fact that the
     *area vector* is constant for each face, and the fact that the area of each
     face can be computed as half the length of the cross product of two adjacent
-    edge vectors [1]_.
+    edge vectors.[^volume-polyhedron-nurnberg]
 
-    .. math::
-        :nowrap:
-
-        \begin{align}
+    $$
+        \begin{aligned}
             V  = \int_{P} 1
               &= \frac{1}{3} \int_{\partial P} \mathbf{x} \cdot \mathbf{n} \\
               &= \frac{1}{3} \sum_{i=0}^{N-1} \int{A_{i}} a_{i} \cdot n_{i} \\
               &= \frac{1}{6} \sum_{i=0}^{N-1} a_{i} \cdot \hat n_{i}
-        \end{align}
+        \end{aligned}
+    $$
 
     References
     ----------
-    .. [1] Nurnberg, R. *Calculating the area and centroid of a polygon in 2d*.
-           Available at: http://wwwf.imperial.ac.uk/~rn/centroid.pdf
+    [^volume-polyhedron-nurnberg]: Nurnberg, R. [*Calculating the Area and Centroid of a Polygon in 2D*](http://wwwf.imperial.ac.uk/~rn/centroid.pdf).
 
     """
     xyz, faces = polyhedron

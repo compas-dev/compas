@@ -1,3 +1,5 @@
+from typing import Sequence
+
 from ._algebra import cross_vectors
 from ._algebra import cross_vectors_xy
 from ._algebra import length_vector
@@ -7,19 +9,19 @@ from ._algebra import subtract_vectors_xy
 from .centroids import centroid_points
 
 
-def normal_polygon(polygon, unitized=True):
+def normal_polygon(polygon: Sequence[Sequence[float]], unitized: bool = True) -> list[float]:
     """Compute the normal of a polygon defined by a sequence of points.
 
     Parameters
     ----------
-    polygon : sequence[point] | :class:`compas.geometry.Polygon`
+    polygon
         A list of polygon point coordinates.
-    unitized : bool, optional
+    unitized
         If True, unitize the normal vector.
 
     Returns
     -------
-    [float, float, float]
+    list[float]
         The normal vector.
 
     Raises
@@ -29,8 +31,8 @@ def normal_polygon(polygon, unitized=True):
 
     See Also
     --------
-    normal_triangle
-    normal_triangle_xy
+    [`normal_triangle`][compas.geometry.normal_triangle]
+    [`normal_triangle_xy`][compas.geometry.normal_triangle_xy]
 
     Notes
     -----
@@ -67,19 +69,19 @@ def normal_polygon(polygon, unitized=True):
     return normalize_vector([nx, ny, nz])
 
 
-def normal_triangle(triangle, unitized=True):
+def normal_triangle(triangle: Sequence[Sequence[float]], unitized: bool = True) -> list[float]:
     """Compute the normal vector of a triangle.
 
     Parameters
     ----------
-    triangle : [point, point, point] | :class:`compas.geometry.Polygon`
+    triangle
         A list of triangle point coordinates.
-    unitized : bool, optional
+    unitized
         If True, unitize the normal vector.
 
     Returns
     -------
-    [float, float, float]
+    list[float]
         The normal vector.
 
     Raises
@@ -89,8 +91,8 @@ def normal_triangle(triangle, unitized=True):
 
     See Also
     --------
-    normal_polygon
-    normal_triangle_xy
+    [`normal_polygon`][compas.geometry.normal_polygon]
+    [`normal_triangle_xy`][compas.geometry.normal_triangle_xy]
 
     """
     if len(triangle) != 3:
@@ -106,20 +108,20 @@ def normal_triangle(triangle, unitized=True):
     return [lvec * n[0], lvec * n[1], lvec * n[2]]
 
 
-def normal_triangle_xy(triangle, unitized=True):
+def normal_triangle_xy(triangle: Sequence[Sequence[float]], unitized: bool = True) -> list[float]:
     """Compute the normal vector of a triangle assumed to lie in the XY plane.
 
     Parameters
     ----------
-    triangle : [point, point, point] | :class:`compas.geometry.Polygon`
+    triangle
         A list of triangle point coordinates.
         Z-coordinates are ignored.
-    unitized : bool, optional
+    unitized
         If True, unitize the normal vector.
 
     Returns
     -------
-    [float, float, float]
+    list[float]
         The normal vector, which is a vector perpendicular to the XY plane.
 
     Raises
@@ -129,8 +131,8 @@ def normal_triangle_xy(triangle, unitized=True):
 
     See Also
     --------
-    normal_polygon
-    normal_triangle
+    [`normal_polygon`][compas.geometry.normal_polygon]
+    [`normal_triangle`][compas.geometry.normal_triangle]
 
     """
     if len(triangle) != 3:

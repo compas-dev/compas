@@ -1,15 +1,17 @@
 import math
+from typing import Optional
+from typing import Sequence
 
 from compas.tolerance import TOL
 
 
-def quaternion_norm(q):
+def quaternion_norm(q: Sequence[float]) -> float:
     """Calculates the length (euclidean norm) of a quaternion.
 
     Parameters
     ----------
-    q : [float, float, float, float] | :class:`compas.geometry.Quaternion`
-        Quaternion or sequence of four floats ``[w, x, y, z]``.
+    q
+        Sequence of four floats `[w, x, y, z]`.
 
     Returns
     -------
@@ -18,40 +20,40 @@ def quaternion_norm(q):
 
     See Also
     --------
-    quaternion_is_unit
-    quaternion_unitize
-    quaternion_multiply
-    quaternion_canonize
-    quaternion_conjugate
+    [`quaternion_is_unit`][compas.geometry.quaternion_is_unit]
+    [`quaternion_unitize`][compas.geometry.quaternion_unitize]
+    [`quaternion_multiply`][compas.geometry.quaternion_multiply]
+    [`quaternion_canonize`][compas.geometry.quaternion_canonize]
+    [`quaternion_conjugate`][compas.geometry.quaternion_conjugate]
 
     References
     ----------
-    * Quaternion Norm: http://mathworld.wolfram.com/QuaternionNorm.html
+    * [Quaternion Norm](https://mathworld.wolfram.com/QuaternionNorm.html)
 
     """
     return math.sqrt(sum([x * x for x in q]))
 
 
-def quaternion_unitize(q):
+def quaternion_unitize(q: Sequence[float]) -> list[float]:
     """Makes a quaternion unit-length.
 
     Parameters
     ----------
-    q : [float, float, float, float] | :class:`compas.geometry.Quaternion`
-        Quaternion or sequence of four floats ``[w, x, y, z]``.
+    q
+        Sequence of four floats `[w, x, y, z]`.
 
     Returns
     -------
-    [float, float, float, float]
-        Quaternion of length 1 as a list of four real values ``[nw, nx, ny, nz]``.
+    list[float]
+        Quaternion of length 1 as a list of four real values `[nw, nx, ny, nz]`.
 
     See Also
     --------
-    quaternion_is_unit
-    quaternion_norm
-    quaternion_multiply
-    quaternion_canonize
-    quaternion_conjugate
+    [`quaternion_is_unit`][compas.geometry.quaternion_is_unit]
+    [`quaternion_norm`][compas.geometry.quaternion_norm]
+    [`quaternion_multiply`][compas.geometry.quaternion_multiply]
+    [`quaternion_canonize`][compas.geometry.quaternion_canonize]
+    [`quaternion_conjugate`][compas.geometry.quaternion_conjugate]
 
     """
     n = quaternion_norm(q)
@@ -62,16 +64,16 @@ def quaternion_unitize(q):
     return [x / n for x in q]
 
 
-def quaternion_is_unit(q, tol=None):
+def quaternion_is_unit(q: Sequence[float], tol: Optional[float] = None) -> bool:
     """Checks if a quaternion is unit-length.
 
     Parameters
     ----------
-    q : [float, float, float, float] | :class:`compas.geometry.Quaternion`
-        Quaternion or sequence of four floats ``[w, x, y, z]``.
-    tol : float, optional
+    q
+        Sequence of four floats `[w, x, y, z]`.
+    tol
         The tolerance for comparing the quaternion norm to 1.
-        Default is :attr:`TOL.absolute`.
+        Default is `TOL.absolute`.
 
     Returns
     -------
@@ -81,50 +83,50 @@ def quaternion_is_unit(q, tol=None):
 
     See Also
     --------
-    quaternion_unitize
-    quaternion_norm
-    quaternion_multiply
-    quaternion_canonize
-    quaternion_conjugate
+    [`quaternion_unitize`][compas.geometry.quaternion_unitize]
+    [`quaternion_norm`][compas.geometry.quaternion_norm]
+    [`quaternion_multiply`][compas.geometry.quaternion_multiply]
+    [`quaternion_canonize`][compas.geometry.quaternion_canonize]
+    [`quaternion_conjugate`][compas.geometry.quaternion_conjugate]
 
     """
     n = quaternion_norm(q)
     return TOL.is_close(n, 1.0, rtol=0.0, atol=tol)
 
 
-def quaternion_multiply(r, q):
+def quaternion_multiply(r: Sequence[float], q: Sequence[float]) -> list[float]:
     """Multiplies two quaternions.
 
     Parameters
     ----------
-    r : [float, float, float, float] | :class:`compas.geometry.Quaternion`
-        Quaternion or sequence of four floats ``[w, x, y, z]``.
-    q : [float, float, float, float] | :class:`compas.geometry.Quaternion`
-        Quaternion or sequence of four floats ``[w, x, y, z]``.
+    r
+        Sequence of four floats `[w, x, y, z]`.
+    q
+        Sequence of four floats `[w, x, y, z]`.
 
     Returns
     -------
-    [float, float, float, float]
-        Quaternion :math:`p = rq` as a list of four real values ``[pw, px, py, pz]``.
+    list[float]
+        Quaternion `p = rq` as a list of four real values `[pw, px, py, pz]`.
 
     See Also
     --------
-    quaternion_is_unit
-    quaternion_norm
-    quaternion_unitize
-    quaternion_canonize
-    quaternion_conjugate
+    [`quaternion_is_unit`][compas.geometry.quaternion_is_unit]
+    [`quaternion_norm`][compas.geometry.quaternion_norm]
+    [`quaternion_unitize`][compas.geometry.quaternion_unitize]
+    [`quaternion_canonize`][compas.geometry.quaternion_canonize]
+    [`quaternion_conjugate`][compas.geometry.quaternion_conjugate]
 
     Notes
     -----
-    Multiplication of two quaternions :math:`p = rq` can be interpreted as applying rotation :math:`r` to an orientation :math:`q`,
-    provided that both :math:`r` and :math:`q` are unit-length.
+    Multiplication of two quaternions `p = rq` can be interpreted as applying rotation `r` to an orientation `q`,
+    provided that both `r` and `q` are unit-length.
     The result is also unit-length.
     Multiplication of quaternions is not commutative!
 
     References
     ----------
-    * Quaternion: http://mathworld.wolfram.com/Quaternion.html
+    * [Quaternion](https://mathworld.wolfram.com/Quaternion.html)
 
     """
     rw, rx, ry, rz = r
@@ -136,26 +138,26 @@ def quaternion_multiply(r, q):
     return [pw, px, py, pz]
 
 
-def quaternion_canonize(q):
+def quaternion_canonize(q: Sequence[float]) -> Sequence[float]:
     """Converts a quaternion into a canonic form if needed.
 
     Parameters
     ----------
-    q : [float, float, float, float] | :class:`compas.geometry.Quaternion`
-        Quaternion or sequence of four floats ``[w, x, y, z]``.
+    q
+        Sequence of four floats `[w, x, y, z]`.
 
     Returns
     -------
-    [float, float, float, float]
-        Quaternion in a canonic form as a list of four real values ``[cw, cx, cy, cz]``.
+    Sequence[float]
+        Quaternion in canonic form as a sequence of four real values `[cw, cx, cy, cz]`.
 
     See Also
     --------
-    quaternion_is_unit
-    quaternion_norm
-    quaternion_unitize
-    quaternion_multiply
-    quaternion_conjugate
+    [`quaternion_is_unit`][compas.geometry.quaternion_is_unit]
+    [`quaternion_norm`][compas.geometry.quaternion_norm]
+    [`quaternion_unitize`][compas.geometry.quaternion_unitize]
+    [`quaternion_multiply`][compas.geometry.quaternion_multiply]
+    [`quaternion_conjugate`][compas.geometry.quaternion_conjugate]
 
     Notes
     -----
@@ -167,30 +169,30 @@ def quaternion_canonize(q):
     return q[:]
 
 
-def quaternion_conjugate(q):
+def quaternion_conjugate(q: Sequence[float]) -> list[float]:
     """Conjugate of a quaternion.
 
     Parameters
     ----------
-    q : [float, float, float, float] | :class:`compas.geometry.Quaternion`
-        Quaternion or sequence of four floats ``[w, x, y, z]``.
+    q
+        Sequence of four floats `[w, x, y, z]`.
 
     Returns
     -------
-    [float, float, float, float]
-        Conjugate quaternion as a list of four real values ``[cw, cx, cy, cz]``.
+    list[float]
+        Conjugate quaternion as a list of four real values `[cw, cx, cy, cz]`.
 
     See Also
     --------
-    quaternion_is_unit
-    quaternion_norm
-    quaternion_unitize
-    quaternion_multiply
-    quaternion_canonize
+    [`quaternion_is_unit`][compas.geometry.quaternion_is_unit]
+    [`quaternion_norm`][compas.geometry.quaternion_norm]
+    [`quaternion_unitize`][compas.geometry.quaternion_unitize]
+    [`quaternion_multiply`][compas.geometry.quaternion_multiply]
+    [`quaternion_canonize`][compas.geometry.quaternion_canonize]
 
     References
     ----------
-    *  Quaternion Conjugate: http://mathworld.wolfram.com/QuaternionConjugate.html
+    * [Quaternion Conjugate](https://mathworld.wolfram.com/QuaternionConjugate.html)
 
     """
     return [q[0], -q[1], -q[2], -q[3]]
