@@ -1,3 +1,13 @@
+from typing import TYPE_CHECKING
+from typing import Iterator
+from typing import Optional
+from typing import Sequence
+from typing import Union
+from typing import cast
+from typing import overload
+
+from typing_extensions import Self
+
 from compas.geometry import centroid_points
 from compas.geometry import distance_point_line
 from compas.geometry import distance_point_plane
@@ -13,8 +23,27 @@ from compas.geometry import normal_polygon
 from compas.geometry import transform_points
 from compas.tolerance import TOL
 
+from ._core._typing import CoordinateType
 from .geometry import Geometry
 from .vector import Vector
+
+if TYPE_CHECKING:
+    from compas.geometry import Circle
+    from compas.geometry import Curve
+    from compas.geometry import Line
+    from compas.geometry import Plane
+    from compas.geometry import Polygon
+    from compas.geometry import Polyhedron
+    from compas.geometry import Polyline
+    from compas.geometry import Transformation
+
+
+_LineType = Union["Line", Sequence[CoordinateType]]
+_PlaneType = Union["Plane", Sequence[CoordinateType]]
+_PolygonType = Union["Polygon", Sequence[CoordinateType]]
+_PolylineType = Union["Polyline", Sequence[CoordinateType]]
+_TriangleType = Union["Polygon", Sequence[CoordinateType]]
+_TransformationType = Union["Transformation", Sequence[Sequence[float]]]
 
 
 class Point(Geometry):
@@ -22,22 +51,22 @@ class Point(Geometry):
 
     Parameters
     ----------
-    x : float
+    x
         The X coordinate of the point.
-    y : float
+    y
         The Y coordinate of the point.
-    z : float, optional
+    z
         The Z coordinate of the point.
-    name : str, optional
+    name
         The name of the point.
 
     Attributes
     ----------
-    x : float
+    x
         The X coordinate of the point.
-    y : float
+    y
         The Y coordinate of the point.
-    z : float
+    z
         The Z coordinate of the point.
 
     Notes
@@ -45,12 +74,11 @@ class Point(Geometry):
     A `Point` object supports direct access to its xyz coordinates through
     the dot notation, as well list-style access using indices. Indexed
     access is implemented such that the `Point` behaves like a circular
-    list [1]_.
+    list.[^point-circular-list]
 
     References
     ----------
-    .. [1] Stack Overflow. *Pythonic Circular List*.
-           Available at: https://stackoverflow.com/questions/8951020/pythonic-circular-list.
+    [^point-circular-list]: Stack Overflow. [*Pythonic Circular List*](https://stackoverflow.com/questions/8951020/pythonic-circular-list).
 
     Examples
     --------
@@ -105,22 +133,16 @@ class Point(Geometry):
 
     """
 
-    DATASCHEMA = {
-        "type": "array",
-        "minItems": 3,
-        "maxItems": 3,
-        "items": {"type": "number"},
-    }
-
     @property
-    def __data__(self):
+    def __data__(self) -> list[float]:  # type: ignore[override]
         return list(self)
 
     @classmethod
-    def __from_data__(cls, data):
-        return cls(*data)
+    def __from_data__(cls, data: Sequence[float]) -> Self:  # type: ignore[override]
+        coordinates = cast(tuple[float, float, float], data)
+        return cls(*coordinates)
 
-    def __init__(self, x, y, z=0.0, name=None):
+    def __init__(self, x: Union[float, str], y: Union[float, str], z: Union[float, str] = 0.0, name: Optional[str] = None) -> None:
         super(Point, self).__init__(name=name)
         self._x = 0.0
         self._y = 0.0
@@ -129,7 +151,7 @@ class Point(Geometry):
         self.y = y
         self.z = z
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "{0}(x={1}, y={2}, z={3})".format(
             type(self).__name__,
             self.x,
@@ -137,7 +159,7 @@ class Point(Geometry):
             self.z,
         )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "{0}(x={1}, y={2}, z={3})".format(
             type(self).__name__,
             TOL.format_number(self.x),
@@ -145,10 +167,16 @@ class Point(Geometry):
             TOL.format_number(self.z),
         )
 
-    def __len__(self):
+    def __len__(self) -> int:
         return 3
 
-    def __getitem__(self, key):
+    @overload
+    def __getitem__(self, key: int) -> float: ...
+
+    @overload
+    def __getitem__(self, key: slice) -> list[float]: ...
+
+    def __getitem__(self, key: Union[int, slice]) -> Union[float, list[float]]:
         if isinstance(key, slice):
             return [self[i] for i in range(*key.indices(len(self)))]
         i = key % 3
@@ -160,7 +188,7 @@ class Point(Geometry):
             return self.z
         raise KeyError
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key: int, value: float) -> None:
         i = key % 3
         if i == 0:
             self.x = value
@@ -173,55 +201,55 @@ class Point(Geometry):
             return
         raise KeyError
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[float]:
         return iter([self.x, self.y, self.z])
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
         return TOL.is_allclose(self, other)
 
-    def __add__(self, other):
+    def __add__(self, other: CoordinateType) -> "Point":
         return Point(self.x + other[0], self.y + other[1], self.z + other[2])
 
-    def __sub__(self, other):
+    def __sub__(self, other: CoordinateType) -> Vector:
         x = self.x - other[0]
         y = self.y - other[1]
         z = self.z - other[2]
         return Vector(x, y, z)
 
-    def __mul__(self, n):
+    def __mul__(self, n: float) -> "Point":
         return Point(n * self.x, n * self.y, n * self.z)
 
-    def __truediv__(self, n):
+    def __truediv__(self, n: float) -> "Point":
         return Point(self.x / n, self.y / n, self.z / n)
 
-    def __pow__(self, n):
+    def __pow__(self, n: float) -> "Point":
         return Point(self.x**n, self.y**n, self.z**n)
 
-    def __iadd__(self, other):
+    def __iadd__(self, other: CoordinateType) -> Self:
         self.x += other[0]
         self.y += other[1]
         self.z += other[2]
         return self
 
-    def __isub__(self, other):
+    def __isub__(self, other: CoordinateType) -> Self:
         self.x -= other[0]
         self.y -= other[1]
         self.z -= other[2]
         return self
 
-    def __imul__(self, n):
+    def __imul__(self, n: float) -> Self:
         self.x *= n
         self.y *= n
         self.z *= n
         return self
 
-    def __itruediv__(self, n):
+    def __itruediv__(self, n: float) -> Self:
         self.x /= n
         self.y /= n
         self.z /= n
         return self
 
-    def __ipow__(self, n):
+    def __ipow__(self, n: float) -> Self:
         self.x **= n
         self.y **= n
         self.z **= n
@@ -232,39 +260,39 @@ class Point(Geometry):
     # ==========================================================================
 
     @property
-    def x(self):
+    def x(self) -> float:
         return self._x
 
     @x.setter
-    def x(self, x):
+    def x(self, x: Union[float, str]) -> None:
         self._x = float(x)
 
     @property
-    def y(self):
+    def y(self) -> float:
         return self._y
 
     @y.setter
-    def y(self, y):
+    def y(self, y: Union[float, str]) -> None:
         self._y = float(y)
 
     @property
-    def z(self):
+    def z(self) -> float:
         return self._z
 
     @z.setter
-    def z(self, z):
+    def z(self, z: Union[float, str]) -> None:
         self._z = float(z)
 
     # ==========================================================================
     # Methods
     # ==========================================================================
 
-    def distance_to_point(self, point):
+    def distance_to_point(self, point: CoordinateType) -> float:
         """Compute the distance to another point.
 
         Parameters
         ----------
-        point : [float, float, float] | :class:`compas.geometry.Point`
+        point
             The other point.
 
         Returns
@@ -282,12 +310,12 @@ class Point(Geometry):
         """
         return distance_point_point(self, point)
 
-    def distance_to_line(self, line):
+    def distance_to_line(self, line: _LineType) -> float:
         """Compute the distance to a line.
 
         Parameters
         ----------
-        line : [point, point] | :class:`compas.geometry.Line`
+        line
             The line.
 
         Returns
@@ -306,12 +334,12 @@ class Point(Geometry):
         """
         return distance_point_line(self, line)
 
-    def distance_to_plane(self, plane):
+    def distance_to_plane(self, plane: _PlaneType) -> float:
         """Compute the distance to a plane.
 
         Parameters
         ----------
-        plane : [point, vector] | :class:`compas.geometry.Plane`
+        plane
             The plane.
 
         Returns
@@ -335,7 +363,7 @@ class Point(Geometry):
     # 2D predicates
     # ==========================================================================
 
-    def in_polygon(self, polygon):
+    def in_polygon(self, polygon: _PolygonType) -> bool:
         """Determine if the point lies inside the given polygon.
 
         For this test, the point and polygon are assumed to lie in the XY plane.
@@ -347,7 +375,7 @@ class Point(Geometry):
 
         Parameters
         ----------
-        polygon : sequence[point] | :class:`compas.geometry.Polygon`
+        polygon
             The polygon.
 
         Returns
@@ -358,7 +386,7 @@ class Point(Geometry):
 
         See Also
         --------
-        :meth:`in_convex_polygon`
+        [`Point.in_convex_polygon`][compas.geometry.Point.in_convex_polygon]
 
         Examples
         --------
@@ -371,7 +399,7 @@ class Point(Geometry):
         """
         return is_point_in_polygon_xy(self, polygon)
 
-    def in_convex_polygon(self, polygon):
+    def in_convex_polygon(self, polygon: _PolygonType) -> bool:
         """Determine if the point lies inside the given convex polygon.
 
         For this test, the point and polygon are assumed to lie in the XY plane.
@@ -384,7 +412,7 @@ class Point(Geometry):
 
         Parameters
         ----------
-        polygon : sequence[point] | :class:`compas.geometry.Polygon`
+        polygon
             The polygon.
 
         Returns
@@ -395,7 +423,7 @@ class Point(Geometry):
 
         See Also
         --------
-        :meth:`in_polygon`
+        [`Point.in_polygon`][compas.geometry.Point.in_polygon]
 
         Examples
         --------
@@ -412,16 +440,16 @@ class Point(Geometry):
     # 3D predicates
     # ==========================================================================
 
-    def on_line(self, line, tol=None):
+    def on_line(self, line: _LineType, tol: Optional[float] = None) -> bool:
         """Determine if the point lies on the given line.
 
         Parameters
         ----------
-        line : [point, point] | :class:`compas.geometry.Line`
+        line
             The line.
-        tol : float, optional
+        tol
             A tolerance value for the distance between the point and the line.
-            Default is :attr:`TOL.absolute`.
+            Default is `TOL.absolute`.
 
         Returns
         -------
@@ -440,16 +468,16 @@ class Point(Geometry):
         """
         return TOL.is_zero(self.distance_to_line(line), tol)
 
-    def on_segment(self, segment, tol=None):
+    def on_segment(self, segment: _LineType, tol: Optional[float] = None) -> bool:
         """Determine if the point lies on the given segment.
 
         Parameters
         ----------
-        segment : [point, point] | :class:`compas.geometry.Line`
+        segment
             The segment.
-        tol : float, optional
+        tol
             A tolerance value for the distance between the point and the segment.
-            Default is :attr:`TOL.absolute`.
+            Default is `TOL.absolute`.
 
         Returns
         -------
@@ -468,12 +496,12 @@ class Point(Geometry):
         """
         return is_point_on_segment(self, segment, tol=tol)
 
-    def on_polyline(self, polyline):
+    def on_polyline(self, polyline: _PolylineType) -> bool:
         """Determine if the point lies on the given polyline.
 
         Parameters
         ----------
-        polyline : sequence[point] | :class:`compas.geometry.Polyline`
+        polyline
             The polyline.
 
         Returns
@@ -493,16 +521,16 @@ class Point(Geometry):
         """
         return is_point_on_polyline(self, polyline)
 
-    def on_plane(self, plane, tol=None):
+    def on_plane(self, plane: _PlaneType, tol: Optional[float] = None) -> bool:
         """Determine if the point lies on the given plane.
 
         Parameters
         ----------
-        plane : :class:`compas.geometry.Plane`
+        plane
             The plane.
-        tol : float, optional
+        tol
             A tolerance value for the distance between the point and the plane.
-            Default is :attr:`TOL.absolute`.
+            Default is `TOL.absolute`.
 
         Returns
         -------
@@ -522,16 +550,16 @@ class Point(Geometry):
         """
         return TOL.is_zero(self.distance_to_plane(plane), tol)
 
-    def on_circle(self, circle, tol=None):
+    def on_circle(self, circle: "Circle", tol: Optional[float] = None) -> bool:
         """Determine if the point lies on the given circle.
 
         Parameters
         ----------
-        circle : :class:`compas.geometry.Circle`
+        circle
             The circle.
-        tol : float, optional
+        tol
             A tolerance value for the distance between the point and the circle.
-            Default is :attr:`TOL.absolute`.
+            Default is `TOL.absolute`.
 
         Returns
         -------
@@ -544,14 +572,14 @@ class Point(Geometry):
             return False
         return TOL.is_close(self.distance_to_point(circle.center), circle.radius, rtol=0, atol=tol)
 
-    def on_curve(self, curve, tol=None):
+    def on_curve(self, curve: "Curve", tol: Optional[float] = None) -> bool:
         """Determine if the point lies on the given curve.
 
         Parameters
         ----------
-        curve : :class:`compas.geometry.Curve`
+        curve
             The curve.
-        tol : float, optional
+        tol
             A tolerance value for the distance between the point and the curve.
 
         Returns
@@ -563,12 +591,12 @@ class Point(Geometry):
         """
         return TOL.is_zero(self.distance_to_point(curve.closest_point(self)), tol)
 
-    def in_triangle(self, triangle):
+    def in_triangle(self, triangle: _TriangleType) -> bool:
         """Determine if the point lies inside the given triangle.
 
         Parameters
         ----------
-        triangle : [point, point, point] | :class:`compas.geometry.Polygon`
+        triangle
             The triangle.
 
         Returns
@@ -588,12 +616,12 @@ class Point(Geometry):
         """
         return is_point_in_triangle(self, triangle)
 
-    def in_circle(self, circle):
+    def in_circle(self, circle: "Circle") -> bool:
         """Determine if the point lies inside the given circle.
 
         Parameters
         ----------
-        circle : :class:`compas.geometry.Circle`
+        circle
             The circle.
 
         Returns
@@ -615,7 +643,7 @@ class Point(Geometry):
         """
         return is_point_in_circle(self, (circle.plane, circle.radius))
 
-    def in_polyhedron(self, polyhedron):
+    def in_polyhedron(self, polyhedron: "Polyhedron") -> bool:
         """Determine if the point lies inside the given polyhedron.
 
         This method verifies that the point lies behind the planes of all the faces of the polyhedron.
@@ -624,7 +652,7 @@ class Point(Geometry):
 
         Parameters
         ----------
-        polyhedron : [vertices, faces] | :class:`compas.geometry.Polyhedron`
+        polyhedron
             The polyhedron.
 
         Returns
@@ -643,12 +671,12 @@ class Point(Geometry):
     # Transformations
     # ==========================================================================
 
-    def transform(self, T):
+    def transform(self, transformation: _TransformationType) -> None:
         """Transform this point.
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation` | list[list[float]]
+        transformation
             The transformation matrix.
 
         Examples
@@ -661,7 +689,7 @@ class Point(Geometry):
         True
 
         """
-        point = transform_points([self], T)[0]
-        self.x = point[0]
-        self.y = point[1]
-        self.z = point[2]
+        transformed_point = transform_points([self], transformation)[0]
+        self.x = transformed_point[0]
+        self.y = transformed_point[1]
+        self.z = transformed_point[2]

@@ -2,7 +2,13 @@ import pytest
 import json
 import compas
 from random import random
+from compas.geometry import Circle
+from compas.geometry import Line
+from compas.geometry import Plane
 from compas.geometry import Point
+from compas.geometry import Polygon
+from compas.geometry import Polyhedron
+from compas.geometry import Polyline
 from compas.geometry import Translation
 from compas.tolerance import TOL
 
@@ -116,50 +122,67 @@ def test_point_data():
     assert point.__data__ == other.__data__
     assert point.guid != other.guid
 
-    if not compas.IPY:
-        assert Point.validate_data(point.__data__)
-        assert Point.validate_data(other.__data__)
-
 
 def test_point_distance_to_point():
-    pass
+    assert Point(1.0, 2.0, 3.0).distance_to_point([4.0, 6.0, 3.0]) == 5.0
 
 
 def test_point_distance_to_line():
-    pass
+    line = Line([0.0, 0.0, 0.0], [0.0, 1.0, 0.0])
+    assert Point(2.0, 0.0, 0.0).distance_to_line(line) == 2.0
 
 
 def test_point_distance_to_plane():
-    pass
+    plane = Plane([0.0, 0.0, 2.0], [0.0, 0.0, 1.0])
+    assert Point(0.0, 0.0, -1.0).distance_to_plane(plane) == 3.0
 
 
 def test_point_on_line():
-    pass
+    line = Line([0.0, 0.0, 0.0], [1.0, 0.0, 0.0])
+    assert Point(2.0, 0.0, 0.0).on_line(line)
+    assert not Point(2.0, 1.0, 0.0).on_line(line)
 
 
 def test_point_on_segment():
-    pass
+    segment = Line([0.0, 0.0, 0.0], [1.0, 0.0, 0.0])
+    assert Point(0.5, 0.0, 0.0).on_segment(segment)
+    assert not Point(2.0, 0.0, 0.0).on_segment(segment)
 
 
 def test_point_on_polyline():
-    pass
+    polyline = Polyline([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]])
+    assert Point(1.0, 0.5, 0.0).on_polyline(polyline)
+    assert not Point(0.5, 0.5, 0.0).on_polyline(polyline)
 
 
 def test_point_on_circle():
-    pass
+    circle = Circle(1.0)
+    assert Point(1.0, 0.0, 0.0).on_circle(circle)
+    assert not Point(0.0, 0.0, 0.0).on_circle(circle)
+    assert not Point(1.0, 0.0, 1.0).on_circle(circle)
 
 
 def test_point_in_triangle():
-    pass
+    triangle = Polygon([[0.0, 0.0, 0.0], [2.0, 0.0, 0.0], [0.0, 2.0, 0.0]])
+    assert Point(0.5, 0.5, 0.0).in_triangle(triangle)
+    assert not Point(2.0, 2.0, 0.0).in_triangle(triangle)
 
 
 def test_point_in_polygon():
-    pass
+    polygon = Polygon([[0.0, 0.0, 0.0], [2.0, 0.0, 0.0], [2.0, 2.0, 0.0], [0.0, 2.0, 0.0]])
+    assert Point(1.0, 1.0, 0.0).in_polygon(polygon)
+    assert Point(1.0, 1.0, 0.0).in_convex_polygon(polygon)
+    assert not Point(3.0, 1.0, 0.0).in_polygon(polygon)
 
 
 def test_point_in_circle():
-    pass
+    circle = Circle(2.0)
+    assert Point(1.0, 0.0, 0.0).in_circle(circle)
+    assert not Point(3.0, 0.0, 0.0).in_circle(circle)
 
 
 def test_point_in_polyhedron():
-    pass
+    tetrahedron = Polyhedron.from_platonicsolid(4)
+    tetrahedron.faces = [list(reversed(face)) for face in tetrahedron.faces]
+    assert Point(0.0, 0.0, 0.0).in_polyhedron(tetrahedron)
+    assert not Point(10.0, 10.0, 10.0).in_polyhedron(tetrahedron)
