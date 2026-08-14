@@ -17,6 +17,9 @@ from compas.linalg.vectors import length_vector
 from compas.linalg.vectors import subtract_vectors
 from compas.tolerance import TOL
 
+from ._typing import CoordinatesType
+from ._typing import CoordinateType
+
 # =============================================================================
 # =============================================================================
 # =============================================================================
@@ -476,7 +479,7 @@ def is_polyhedron_convex(polyhedron: Sequence[Any]) -> bool:
 # =============================================================================
 
 
-def is_point_on_plane(point: Sequence[float], plane: Sequence[Sequence[float]], tol: Optional[float] = None) -> bool:
+def is_point_on_plane(point: CoordinateType, plane: CoordinatesType, tol: Optional[float] = None) -> bool:
     """Determine if a point lies on a plane.
 
     Parameters
@@ -516,7 +519,7 @@ def is_point_on_plane(point: Sequence[float], plane: Sequence[Sequence[float]], 
 # =============================================================================
 
 
-def is_point_on_line(point: Sequence[float], line: Sequence[Sequence[float]], tol: Optional[float] = None) -> bool:
+def is_point_on_line(point: CoordinateType, line: CoordinatesType, tol: Optional[float] = None) -> bool:
     """Determine if a point lies on a line.
 
     Parameters
@@ -539,7 +542,7 @@ def is_point_on_line(point: Sequence[float], line: Sequence[Sequence[float]], to
     return TOL.is_zero(distance_point_line(point, line), tol)
 
 
-def is_point_on_segment(point: Sequence[float], segment: Sequence[Sequence[float]], tol: Optional[float] = None) -> bool:
+def is_point_on_segment(point: CoordinateType, segment: CoordinatesType, tol: Optional[float] = None) -> bool:
     """Determine if a point lies on a given line segment.
 
     Parameters
@@ -576,7 +579,7 @@ def is_point_on_segment(point: Sequence[float], segment: Sequence[Sequence[float
     return False
 
 
-def is_point_on_polyline(point: Sequence[float], polyline: Sequence[Sequence[float]], tol: Optional[float] = None) -> bool:
+def is_point_on_polyline(point: CoordinateType, polyline: CoordinatesType, tol: Optional[float] = None) -> bool:
     """Determine if a point is on a polyline.
 
     Parameters
@@ -666,7 +669,7 @@ def is_point_on_circle(point: Sequence[float], circle: Sequence[Any], tol: Optio
 # =============================================================================
 
 
-def is_point_in_circle(point: Sequence[float], circle: Sequence[Any], tol: Optional[float] = None) -> bool:
+def is_point_in_circle(point: CoordinateType, circle: Sequence[Any], tol: Optional[float] = None) -> bool:
     """Determine if a point lies in a circle.
 
     Parameters
@@ -689,7 +692,7 @@ def is_point_in_circle(point: Sequence[float], circle: Sequence[Any], tol: Optio
     return False
 
 
-def is_point_in_triangle(point: Sequence[float], triangle: Sequence[Sequence[float]], tol: Optional[float] = None) -> bool:
+def is_point_in_triangle(point: CoordinateType, triangle: CoordinatesType, tol: Optional[float] = None) -> bool:
     """Determine if a point is in the interior of a triangle.
 
     Parameters
@@ -711,7 +714,7 @@ def is_point_in_triangle(point: Sequence[float], triangle: Sequence[Sequence[flo
 
     """
 
-    def is_on_same_side(p1: Sequence[float], p2: Sequence[float], segment: Sequence[Sequence[float]]) -> bool:
+    def is_on_same_side(p1: CoordinateType, p2: CoordinateType, segment: CoordinatesType) -> bool:
         a, b = segment
         v = subtract_vectors(b, a)
         c1 = cross_vectors(v, subtract_vectors(p1, a))
@@ -854,7 +857,7 @@ def is_point_infrontof_plane(point: Sequence[float], plane: Sequence[Sequence[fl
     return TOL.is_positive(dot_vectors(subtract_vectors(point, plane[0]), plane[1]), tol)
 
 
-def is_point_behind_plane(point: Sequence[float], plane: Sequence[Sequence[float]], tol: Optional[float] = None) -> bool:
+def is_point_behind_plane(point: CoordinateType, plane: CoordinatesType, tol: Optional[float] = None) -> bool:
     """Determine if a point lies behind a plane.
 
     Parameters

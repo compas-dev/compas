@@ -57,10 +57,6 @@ def test_line_data():
     assert line.start == other.start
     assert line.end == other.end
 
-    if not compas.IPY:
-        assert Line.validate_data(line.__data__)
-        assert Line.validate_data(other.__data__)
-
 
 # =============================================================================
 # Constructors

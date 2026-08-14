@@ -13,6 +13,8 @@ from compas.linalg.vectors import subtract_vectors
 from compas.linalg.vectors import subtract_vectors_xy
 from compas.linalg.vectors import sum_vectors
 
+from ._typing import CoordinatesType
+
 
 def midpoint_point_point(a: Sequence[float], b: Sequence[float]) -> list[float]:
     """Compute the midpoint of two points.
@@ -96,7 +98,7 @@ def midpoint_line_xy(line: Sequence[Sequence[float]]) -> list[float]:
     return midpoint_point_point_xy(*line)
 
 
-def centroid_points(points: Sequence[Sequence[float]]) -> list[float]:
+def centroid_points(points: CoordinatesType) -> list[float]:
     """Compute the centroid of a set of points.
 
     Parameters

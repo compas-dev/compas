@@ -418,25 +418,3 @@ class Data:
         if as_string:
             return h.hexdigest()
         return h.digest()
-
-    @classmethod
-    def validate_data(cls, data: dict[str, Any]) -> dict[str, Any]:
-        """Validate the data against the object's data schema.
-
-        The data is the raw data that can be used to construct an object of this type with the classmethod ``__from_data__``.
-
-        Parameters
-        ----------
-        data
-            The data for validation.
-
-        Returns
-        -------
-        dict
-
-        """
-        from jsonschema import Draft202012Validator
-
-        validator = Draft202012Validator(cls.DATASCHEMA)  # type: ignore
-        validator.validate(data)
-        return data

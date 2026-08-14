@@ -31,13 +31,6 @@ class Pointcloud(Geometry):
 
     """
 
-    DATASCHEMA = {
-        "type": "object",
-        "properties": {
-            "points": {"type": "array", "items": Point.DATASCHEMA, "minItems": 1},
-        },
-        "required": ["points"],
-    }
 
     @property
     def __data__(self):

@@ -49,10 +49,6 @@ def test_frame_data():
     assert TOL.is_allclose(frame.yaxis, other.yaxis)
     assert frame.guid != other.guid
 
-    if not compas.IPY:
-        assert Frame.validate_data(frame.__data__)
-        assert Frame.validate_data(other.__data__)
-
 
 def test_frame_predefined():
     frame = Frame.worldXY()

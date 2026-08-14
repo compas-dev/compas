@@ -112,18 +112,6 @@ class Arc(Curve):
 
     """
 
-    DATASCHEMA = {
-        "value": {
-            "type": "object",
-            "properties": {
-                "radius": {"type": "number", "minimum": 0},
-                "start_angle": {"type": "number", "minimum": 0, "optional": True},
-                "end_angle": {"type": "number", "minimum": 0},
-                "frame": Frame.DATASCHEMA,
-            },
-            "required": ["frame", "radius", "start_angle", "end_angle"],
-        }
-    }
 
     @property
     def __data__(self):

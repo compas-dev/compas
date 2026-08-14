@@ -109,10 +109,6 @@ def test_plane_data():
     assert plane.ysize == ysize
     assert plane.frame == Frame.worldXY()
 
-    if not compas.IPY:
-        assert PlanarSurface.validate_data(plane.__data__)
-        assert PlanarSurface.validate_data(other.__data__)
-
 
 # =============================================================================
 # Constructors

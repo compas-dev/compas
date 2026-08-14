@@ -38,10 +38,6 @@ def test_polyline_data():
 
     assert curve.points == other.points
 
-    if not compas.IPY:
-        assert Polyline.validate_data(curve.__data__)
-        assert Polyline.validate_data(other.__data__)
-
 
 # =============================================================================
 # Constructors

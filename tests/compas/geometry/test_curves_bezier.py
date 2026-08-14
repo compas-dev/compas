@@ -38,10 +38,6 @@ def test_bezier_data():
     assert TOL.is_allclose(curve.frame.xaxis, other.frame.xaxis)
     assert TOL.is_allclose(curve.frame.yaxis, other.frame.yaxis)
 
-    if not compas.IPY:
-        assert Bezier.validate_data(curve.__data__)
-        assert Bezier.validate_data(other.__data__)
-
 
 # =============================================================================
 # Constructors

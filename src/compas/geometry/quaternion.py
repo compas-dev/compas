@@ -115,16 +115,6 @@ class Quaternion(Geometry):
 
     """
 
-    DATASCHEMA = {
-        "type": "object",
-        "properties": {
-            "w": {"type": "number"},
-            "x": {"type": "number"},
-            "y": {"type": "number"},
-            "z": {"type": "number"},
-        },
-        "required": ["w", "x", "y", "z"],
-    }
 
     @property
     def __data__(self):

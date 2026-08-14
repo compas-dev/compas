@@ -7,6 +7,9 @@ from compas.geometry import distance_point_line_xy
 from compas.geometry import distance_point_point_xy
 from compas.tolerance import TOL
 
+from ._typing import CoordinatesType
+from ._typing import CoordinateType
+
 # =============================================================================
 # =============================================================================
 # =============================================================================
@@ -24,7 +27,7 @@ from compas.tolerance import TOL
 # =============================================================================
 
 
-def is_ccw_xy(a: Sequence[float], b: Sequence[float], c: Sequence[float], colinear: bool = False) -> bool:
+def is_ccw_xy(a: CoordinateType, b: CoordinateType, c: CoordinateType, colinear: bool = False) -> bool:
     """Determine if c is on the left of ab when looking from a to b,
     and assuming that all points lie in the XY plane.
 
@@ -356,7 +359,7 @@ def is_point_in_triangle_xy(point: Sequence[float], triangle: Sequence[Sequence[
     return True
 
 
-def is_point_in_convex_polygon_xy(point: Sequence[float], polygon: Sequence[Sequence[float]]) -> bool:
+def is_point_in_convex_polygon_xy(point: CoordinateType, polygon: CoordinatesType) -> bool:
     """Determine if a point is in the interior of a convex polygon lying on the XY-plane.
 
     Parameters
@@ -397,7 +400,7 @@ def is_point_in_convex_polygon_xy(point: Sequence[float], polygon: Sequence[Sequ
     return True
 
 
-def is_point_in_polygon_xy(point: Sequence[float], polygon: Sequence[Sequence[float]]) -> bool:
+def is_point_in_polygon_xy(point: CoordinateType, polygon: CoordinatesType) -> bool:
     """Determine if a point is in the interior of a polygon lying on the XY-plane.
 
     Parameters

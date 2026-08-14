@@ -30,8 +30,11 @@ from compas.linalg.vectors import vector_component
 from compas.linalg.vectors import vector_component_xy
 from compas.tolerance import TOL
 
+from ._typing import CoordinatesType
+from ._typing import CoordinateType
 
-def distance_point_point(a: Sequence[float], b: Sequence[float]) -> float:
+
+def distance_point_point(a: CoordinateType, b: CoordinateType) -> float:
     """Compute the distance between two points.
 
     Parameters
@@ -91,7 +94,7 @@ def distance_point_point_xy(a: Sequence[float], b: Sequence[float]) -> float:
     return length_vector_xy(ab)
 
 
-def distance_point_point_sqrd(a: Sequence[float], b: Sequence[float]) -> float:
+def distance_point_point_sqrd(a: CoordinateType, b: CoordinateType) -> float:
     """Compute the squared distance between points `a` and `b`.
 
     Parameters
@@ -151,7 +154,7 @@ def distance_point_point_sqrd_xy(a: Sequence[float], b: Sequence[float]) -> floa
     return length_vector_sqrd_xy(ab)
 
 
-def distance_point_line(point: Sequence[float], line: Sequence[Sequence[float]]) -> float:
+def distance_point_line(point: CoordinateType, line: CoordinatesType) -> float:
     """Compute the distance between a point and a line.
 
     Parameters
@@ -289,7 +292,7 @@ def distance_point_line_sqrd_xy(point: Sequence[float], line: Sequence[Sequence[
     return length / length_ab
 
 
-def distance_point_plane(point: Sequence[float], plane: Sequence[Sequence[float]]) -> float:
+def distance_point_plane(point: CoordinateType, plane: CoordinatesType) -> float:
     r"""Compute the distance from a point to a plane defined by origin point and normal.
 
     Parameters
@@ -338,7 +341,7 @@ def distance_point_plane(point: Sequence[float], plane: Sequence[Sequence[float]
     return fabs(distance_point_plane_signed(point, plane))
 
 
-def distance_point_plane_signed(point: Sequence[float], plane: Sequence[Sequence[float]]) -> float:
+def distance_point_plane_signed(point: CoordinateType, plane: CoordinatesType) -> float:
     r"""Compute the signed distance from a point to a plane defined by origin point and normal.
 
     Parameters
@@ -635,7 +638,7 @@ def closest_point_in_cloud_xy(point: Sequence[float], cloud: Sequence[Sequence[f
     return sqrt(d), xyz, index
 
 
-def closest_point_on_line(point: Sequence[float], line: Sequence[Sequence[float]]) -> list[float]:
+def closest_point_on_line(point: CoordinateType, line: CoordinatesType) -> list[float]:
     """Computes closest point on line to a given point.
 
     Parameters
@@ -685,7 +688,7 @@ def closest_point_on_line_xy(point: Sequence[float], line: Sequence[Sequence[flo
     return add_vectors_xy(a, c)
 
 
-def closest_point_on_segment(point: Sequence[float], segment: Sequence[Sequence[float]]) -> Sequence[float]:
+def closest_point_on_segment(point: CoordinateType, segment: CoordinatesType) -> CoordinateType:
     """Computes closest point on line segment (p1, p2) to test point.
 
     Parameters

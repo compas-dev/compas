@@ -106,10 +106,6 @@ def test_arc_data():
     assert TOL.is_allclose(arc.frame.xaxis, other.frame.xaxis)
     assert TOL.is_allclose(arc.frame.yaxis, other.frame.yaxis)
 
-    if not compas.IPY:
-        assert Arc.validate_data(arc.__data__)
-        assert Arc.validate_data(other.__data__)
-
 
 # =============================================================================
 # Constructors

@@ -78,14 +78,6 @@ class Parabola(Conic):
 
     """
 
-    DATASCHEMA = {
-        "type": "object",
-        "properties": {
-            "focal": {"type": "number", "minimum": 0},
-            "frame": Frame.DATASCHEMA,
-        },
-        "required": ["focal", "frame"],
-    }
 
     @property
     def __data__(self):

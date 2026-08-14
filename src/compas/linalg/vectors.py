@@ -1,4 +1,5 @@
 from math import sqrt
+from typing import Iterable
 from typing import Optional
 from typing import Sequence
 from typing import overload
@@ -603,7 +604,7 @@ def square_vectors(vectors: Sequence[Sequence[float]]) -> list[list[float]]:
 # ==============================================================================
 
 
-def add_vectors(u: Sequence[float], v: Sequence[float]) -> list[float]:
+def add_vectors(u: Iterable[float], v: Iterable[float]) -> list[float]:
     """Add two vectors.
 
     Parameters
@@ -641,7 +642,7 @@ def add_vectors_xy(u: Sequence[float], v: Sequence[float]) -> list[float]:
     return [u[0] + v[0], u[1] + v[1], 0.0]
 
 
-def subtract_vectors(u: Sequence[float], v: Sequence[float]) -> list[float]:
+def subtract_vectors(u: Iterable[float], v: Iterable[float]) -> list[float]:
     """Subtract one vector from another.
 
     Parameters
@@ -846,7 +847,7 @@ def cross_vectors_xy(u: Sequence[float], v: Sequence[float]) -> list[float]:
     return [0.0, 0.0, u[0] * v[1] - u[1] * v[0]]
 
 
-def dot_vectors(u: Sequence[float], v: Sequence[float]) -> float:
+def dot_vectors(u: Iterable[float], v: Iterable[float]) -> float:
     """Compute the dot product of two vectors.
 
     Parameters

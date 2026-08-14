@@ -31,15 +31,6 @@ class ToroidalSurface(Surface):
 
     """
 
-    DATASCHEMA = {
-        "type": "object",
-        "properties": {
-            "radius_axis": {"type": "number", "minimum": 0},
-            "radius_pipe": {"type": "number", "minimum": 0},
-            "frame": Frame.DATASCHEMA,
-        },
-        "required": ["radius_axis", "radius_pipe", "frame"],
-    }
 
     @property
     def __data__(self):

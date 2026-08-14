@@ -67,15 +67,6 @@ class Frame(Geometry):
 
     """
 
-    DATASCHEMA = {
-        "type": "object",
-        "properties": {
-            "point": Point.DATASCHEMA,
-            "xaxis": Vector.DATASCHEMA,
-            "yaxis": Vector.DATASCHEMA,
-        },
-        "required": ["point", "xaxis", "yaxis"],
-    }
 
     @property
     def __data__(self):

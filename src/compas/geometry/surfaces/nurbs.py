@@ -101,23 +101,6 @@ class NurbsSurface(Surface):
 
     """
 
-    DATASCHEMA = {
-        "type": "object",
-        "properties": {
-            "points": {"type": "array", "items": {"type": "array", "items": Point.DATASCHEMA}},
-            "weights": {"type": "array", "items": {"type": "array", "items": {"type": "number"}}},
-            "knots_u": {"type": "array", "items": {"type": "number"}},
-            "knots_v": {"type": "array", "items": {"type": "number"}},
-            "mults_u": {"type": "array", "items": {"type": "integer"}},
-            "mults_v": {"type": "array", "items": {"type": "integer"}},
-            "degree_u": {"type": "integer", "exclusiveMinimum": 0},
-            "degree_v": {"type": "integer", "exclusiveMinimum": 0},
-            "is_periodic_u": {"type": "boolean"},
-            "is_periodic_v": {"type": "boolean"},
-        },
-        "additionalProperties": False,
-        "minProperties": 10,
-    }
 
     @property
     def __dtype__(self):

@@ -33,14 +33,6 @@ class SphericalSurface(Surface):
 
     """
 
-    DATASCHEMA = {
-        "type": "object",
-        "properties": {
-            "radius": {"type": "number", "minimum": 0},
-            "frame": Frame.DATASCHEMA,
-        },
-        "required": ["radius", "frame"],
-    }
 
     @property
     def __data__(self):

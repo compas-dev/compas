@@ -65,10 +65,6 @@ def test_quaternion_data():
     assert quaternion.y == other.y
     assert quaternion.z == other.z
 
-    if not compas.IPY:
-        assert Quaternion.validate_data(quaternion.__data__)
-        assert Quaternion.validate_data(other.__data__)
-
 
 # =============================================================================
 # Properties and Geometry

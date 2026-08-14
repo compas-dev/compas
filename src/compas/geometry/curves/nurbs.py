@@ -62,19 +62,6 @@ class NurbsCurve(Curve):
 
     """
 
-    DATASCHEMA = {
-        "type": "object",
-        "properties": {
-            "points": {"type": "array", "minItems": 2, "items": Point.DATASCHEMA},
-            "weights": {"type": "array", "items": {"type": "number"}},
-            "knots": {"type": "array", "items": {"type": "number"}},
-            "multiplicities": {"type": "array", "items": {"type": "integer"}},
-            "degree": {"type": "integer", "exclusiveMinimum": 0},
-            "is_periodic": {"type": "boolean"},
-        },
-        "additionalProperties": False,
-        "minProperties": 6,
-    }
 
     @property
     def __dtype__(self):

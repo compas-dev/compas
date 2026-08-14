@@ -47,10 +47,6 @@ def test_polygon_data():
     assert polygon.points == other.points
     assert polygon.__data__ == other.__data__
 
-    if not compas.IPY:
-        assert Polygon.validate_data(polygon.__data__)
-        assert Polygon.validate_data(other.__data__)
-
 
 def test_polygon__eq__():
     points1 = [[0, 0, x] for x in range(5)]

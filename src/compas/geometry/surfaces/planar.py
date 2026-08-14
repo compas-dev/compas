@@ -23,15 +23,6 @@ class PlanarSurface(Surface):
 
     """
 
-    DATASCHEMA = {
-        "type": "object",
-        "properties": {
-            "xsize": {"type": "number", "minimum": 0},
-            "ysize": {"type": "number", "minimum": 0},
-            "frame": Frame.DATASCHEMA,
-        },
-        "required": ["xsize", "ysize", "frame"],
-    }
 
     @property
     def __data__(self):

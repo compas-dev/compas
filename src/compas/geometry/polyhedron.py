@@ -168,31 +168,6 @@ class Polyhedron(Geometry):
 
     """
 
-    DATASCHEMA = {
-        "type": "object",
-        "properties": {
-            "vertices": {
-                "type": "array",
-                "minItems": 4,
-                "items": {
-                    "type": "array",
-                    "minItems": 3,
-                    "maxItems": 3,
-                    "items": {"type": "number"},
-                },
-            },
-            "faces": {
-                "type": "array",
-                "minItems": 4,
-                "items": {
-                    "type": "array",
-                    "minItems": 3,
-                    "items": {"type": "integer", "minimum": 0},
-                },
-            },
-        },
-        "required": ["vertices", "faces"],
-    }
 
     @property
     def __data__(self):

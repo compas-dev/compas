@@ -67,14 +67,6 @@ class Line(Curve):
     def __new__(cls, *args, **kwargs):
         return object.__new__(cls)
 
-    DATASCHEMA = {
-        "type": "object",
-        "properties": {
-            "start": Point.DATASCHEMA,
-            "end": Point.DATASCHEMA,
-        },
-        "required": ["start", "end"],
-    }
 
     @property
     def __data__(self):

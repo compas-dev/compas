@@ -42,14 +42,6 @@ class Plane(Geometry):
 
     """
 
-    DATASCHEMA = {
-        "type": "object",
-        "properties": {
-            "point": Point.DATASCHEMA,
-            "normal": Vector.DATASCHEMA,
-        },
-        "required": ["point", "normal"],
-    }
 
     @property
     def __data__(self):

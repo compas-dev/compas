@@ -74,10 +74,6 @@ def test_cylinder_data():
     assert cylinder.radius == radius
     assert cylinder.frame == Frame.worldXY()
 
-    if not compas.IPY:
-        assert CylindricalSurface.validate_data(cylinder.__data__)
-        assert CylindricalSurface.validate_data(other.__data__)
-
 
 # =============================================================================
 # Constructors

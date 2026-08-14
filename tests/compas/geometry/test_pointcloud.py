@@ -34,10 +34,6 @@ def test_pointcloud_data():
     assert pointcloud.points == other.points
     assert pointcloud.__data__ == other.__data__
 
-    if not compas.IPY:
-        assert Pointcloud.validate_data(pointcloud.__data__)
-        assert Pointcloud.validate_data(other.__data__)
-
 
 def test_pointcloud__eq__():
     a = Pointcloud.from_bounds(10, 10, 10, 10)

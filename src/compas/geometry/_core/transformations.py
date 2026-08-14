@@ -1,4 +1,5 @@
 import math
+from typing import Iterable
 from typing import Optional
 from typing import Sequence
 
@@ -81,7 +82,7 @@ def orthonormalize_axes(xaxis: Sequence[float], yaxis: Sequence[float]) -> tuple
     return xaxis, yaxis
 
 
-def homogenize(xyz: Sequence[Sequence[float]], w: float = 1.0) -> list[list[float]]:
+def homogenize(xyz: Iterable[Iterable[float]], w: float = 1.0) -> list[list[float]]:
     """Homogenise a list of vectors.
 
     Parameters
@@ -190,7 +191,7 @@ def dehomogenize_and_unflatten_frames(
 # ==============================================================================
 
 
-def transform_points(points: Sequence[Sequence[float]], T: Sequence[Sequence[float]]) -> list[list[float]]:
+def transform_points(points: Iterable[Iterable[float]], T: Iterable[Iterable[float]]) -> list[list[float]]:
     """Transform multiple points with one transformation matrix.
 
     Parameters

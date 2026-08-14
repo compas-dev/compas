@@ -57,10 +57,6 @@ def test_parabola_data():
     assert TOL.is_allclose(parabola.frame.xaxis, other.frame.xaxis)
     assert TOL.is_allclose(parabola.frame.yaxis, other.frame.yaxis)
 
-    if not compas.IPY:
-        assert Parabola.validate_data(parabola.__data__)
-        assert Parabola.validate_data(other.__data__)
-
 
 # =============================================================================
 # Constructors

@@ -127,10 +127,6 @@ def test_vector_data():
     assert vector.__data__ == other.__data__
     assert vector.guid != other.guid
 
-    if not compas.IPY:
-        assert Vector.validate_data(vector.__data__)
-        assert Vector.validate_data(other.__data__)
-
 
 def test_cross_vectors():
     vec_list1 = [[1, 2, 3], [7, 8, 9]]

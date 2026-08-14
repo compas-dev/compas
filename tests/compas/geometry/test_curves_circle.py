@@ -88,10 +88,6 @@ def test_circle_data():
     assert TOL.is_allclose(circle.frame.xaxis, other.frame.xaxis)
     assert TOL.is_allclose(circle.frame.yaxis, other.frame.yaxis)
 
-    if not compas.IPY:
-        assert Circle.validate_data(circle.__data__)
-        assert Circle.validate_data(other.__data__)
-
 
 # =============================================================================
 # Constructors

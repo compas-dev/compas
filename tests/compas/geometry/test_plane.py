@@ -41,10 +41,6 @@ def test_plane_data():
     assert TOL.is_allclose(other.normal, plane.normal)
     assert plane.guid != other.guid
 
-    if not compas.IPY:
-        assert Plane.validate_data(plane.__data__)
-        assert Plane.validate_data(other.__data__)
-
 
 def test_plane_predefined():
     plane = Plane.worldXY()

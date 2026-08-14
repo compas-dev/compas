@@ -79,23 +79,6 @@ class Transformation(Data):
 
     """
 
-    DATASCHEMA = {
-        "type": "object",
-        "properties": {
-            "matrix": {
-                "type": "array",
-                "items": {
-                    "type": "array",
-                    "items": {"type": "number"},
-                    "minItems": 4,
-                    "maxItems": 4,
-                },
-                "minItems": 4,
-                "maxItems": 4,
-            },
-        },
-        "required": ["matrix"],
-    }
 
     @property
     def __data__(self):

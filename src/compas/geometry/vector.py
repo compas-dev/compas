@@ -1,3 +1,7 @@
+from typing import Iterator
+from typing import Union
+from typing import overload
+
 from compas.geometry import Geometry
 from compas.geometry import angle_vectors
 from compas.geometry import angle_vectors_signed
@@ -72,12 +76,6 @@ class Vector(Geometry):
 
     """
 
-    DATASCHEMA = {
-        "type": "array",
-        "minItems": 3,
-        "maxItems": 3,
-        "items": {"type": "number"},
-    }
 
     @property
     def __data__(self):
@@ -117,7 +115,13 @@ class Vector(Geometry):
     def __len__(self):
         return 3
 
-    def __getitem__(self, key):
+    @overload
+    def __getitem__(self, key: int) -> float: ...
+
+    @overload
+    def __getitem__(self, key: slice) -> list[float]: ...
+
+    def __getitem__(self, key: Union[int, slice]) -> Union[float, list[float]]:
         if isinstance(key, slice):
             return [self[i] for i in range(*key.indices(len(self)))]
         i = key % 3
@@ -142,7 +146,7 @@ class Vector(Geometry):
             return
         raise KeyError
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[float]:
         return iter([self.x, self.y, self.z])
 
     def __eq__(self, other):

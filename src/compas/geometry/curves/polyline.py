@@ -67,13 +67,6 @@ class Polyline(Curve):
 
     """
 
-    DATASCHEMA = {
-        "type": "object",
-        "properties": {
-            "points": {"type": "array", "minItems": 2, "items": Point.DATASCHEMA},
-        },
-        "required": ["points"],
-    }
 
     @property
     def __data__(self):

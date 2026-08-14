@@ -82,10 +82,6 @@ def test_torus_data():
     assert torus.radius_pipe == other.radius_pipe
     assert torus.frame == frame
 
-    if not compas.IPY:
-        assert ToroidalSurface.validate_data(torus.__data__)
-        assert ToroidalSurface.validate_data(other.__data__)
-
 
 # =============================================================================
 # Constructors

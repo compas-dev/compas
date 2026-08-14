@@ -100,10 +100,6 @@ def test_ellipse_data():
     assert TOL.is_allclose(ellipse.frame.xaxis, other.frame.xaxis)
     assert TOL.is_allclose(ellipse.frame.yaxis, other.frame.yaxis)
 
-    if not compas.IPY:
-        assert Ellipse.validate_data(ellipse.__data__)
-        assert Ellipse.validate_data(other.__data__)
-
 
 # =============================================================================
 # Constructors

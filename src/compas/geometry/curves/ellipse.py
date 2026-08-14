@@ -108,15 +108,6 @@ class Ellipse(Conic):
 
     """
 
-    DATASCHEMA = {
-        "type": "object",
-        "properties": {
-            "major": {"type": "number", "minimum": 0},
-            "minor": {"type": "number", "minimum": 0},
-            "frame": Frame.DATASCHEMA,
-        },
-        "required": ["major", "minor", "frame"],
-    }
 
     @property
     def __data__(self):

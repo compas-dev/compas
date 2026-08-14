@@ -83,10 +83,6 @@ def test_cone_data():
     assert cone.height == height
     assert cone.frame == Frame.worldXY()
 
-    if not compas.IPY:
-        assert ConicalSurface.validate_data(cone.__data__)
-        assert ConicalSurface.validate_data(other.__data__)
-
 
 # =============================================================================
 # Constructors

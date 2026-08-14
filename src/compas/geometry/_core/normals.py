@@ -7,10 +7,11 @@ from compas.linalg.vectors import normalize_vector
 from compas.linalg.vectors import subtract_vectors
 from compas.linalg.vectors import subtract_vectors_xy
 
+from ._typing import CoordinatesType
 from .centroids import centroid_points
 
 
-def normal_polygon(polygon: Sequence[Sequence[float]], unitized: bool = True) -> list[float]:
+def normal_polygon(polygon: CoordinatesType, unitized: bool = True) -> list[float]:
     """Compute the normal of a polygon defined by a sequence of points.
 
     Parameters

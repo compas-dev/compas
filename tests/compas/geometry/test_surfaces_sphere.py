@@ -73,10 +73,6 @@ def test_spherical_surface_data():
     assert surf.radius == radius
     assert surf.frame == Frame.worldXY()
 
-    if not compas.IPY:
-        assert SphericalSurface.validate_data(surf.__data__)
-        assert SphericalSurface.validate_data(other.__data__)
-
 
 # =============================================================================
 # Constructors

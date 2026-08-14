@@ -70,15 +70,6 @@ class Cylinder(Shape):
 
     """
 
-    DATASCHEMA = {
-        "type": "object",
-        "properties": {
-            "radius": {"type": "number", "minimum": 0},
-            "height": {"type": "number", "minimum": 0},
-            "frame": Frame.DATASCHEMA,
-        },
-        "required": ["radius", "height", "frame"],
-    }
 
     @property
     def __data__(self):

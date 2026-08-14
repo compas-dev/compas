@@ -1,3 +1,4 @@
+from typing import Iterable
 from typing import Sequence
 
 from .vectors import dot_vectors
@@ -7,7 +8,7 @@ from .vectors import dot_vectors
 # =============================================================================
 
 
-def transpose_matrix(M: Sequence[Sequence[float]]) -> list[list[float]]:
+def transpose_matrix(M: Iterable[Iterable[float]]) -> list[list[float]]:
     """Transpose a matrix.
 
     Parameters

@@ -79,10 +79,6 @@ def test_hyperbola_data():
     assert TOL.is_allclose(hyperbola.frame.xaxis, other.frame.xaxis)
     assert TOL.is_allclose(hyperbola.frame.yaxis, other.frame.yaxis)
 
-    if not compas.IPY:
-        assert Hyperbola.validate_data(hyperbola.__data__)
-        assert Hyperbola.validate_data(other.__data__)
-
 
 # =============================================================================
 # Constructors
