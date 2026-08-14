@@ -23,27 +23,20 @@ from compas.geometry import normal_polygon
 from compas.geometry import transform_points
 from compas.tolerance import TOL
 
-from ._core._typing import CoordinateType
+from ._typing import CoordinateType
+from ._typing import LineType
+from ._typing import PlaneType
+from ._typing import PolygonType
+from ._typing import PolylineType
+from ._typing import TransformationType
+from ._typing import TriangleType
 from .geometry import Geometry
 from .vector import Vector
 
 if TYPE_CHECKING:
     from compas.geometry import Circle
     from compas.geometry import Curve
-    from compas.geometry import Line
-    from compas.geometry import Plane
-    from compas.geometry import Polygon
     from compas.geometry import Polyhedron
-    from compas.geometry import Polyline
-    from compas.geometry import Transformation
-
-
-_LineType = Union["Line", Sequence[CoordinateType]]
-_PlaneType = Union["Plane", Sequence[CoordinateType]]
-_PolygonType = Union["Polygon", Sequence[CoordinateType]]
-_PolylineType = Union["Polyline", Sequence[CoordinateType]]
-_TriangleType = Union["Polygon", Sequence[CoordinateType]]
-_TransformationType = Union["Transformation", Sequence[Sequence[float]]]
 
 
 class Point(Geometry):
@@ -310,7 +303,7 @@ class Point(Geometry):
         """
         return distance_point_point(self, point)
 
-    def distance_to_line(self, line: _LineType) -> float:
+    def distance_to_line(self, line: LineType) -> float:
         """Compute the distance to a line.
 
         Parameters
@@ -334,7 +327,7 @@ class Point(Geometry):
         """
         return distance_point_line(self, line)
 
-    def distance_to_plane(self, plane: _PlaneType) -> float:
+    def distance_to_plane(self, plane: PlaneType) -> float:
         """Compute the distance to a plane.
 
         Parameters
@@ -363,7 +356,7 @@ class Point(Geometry):
     # 2D predicates
     # ==========================================================================
 
-    def in_polygon(self, polygon: _PolygonType) -> bool:
+    def in_polygon(self, polygon: PolygonType) -> bool:
         """Determine if the point lies inside the given polygon.
 
         For this test, the point and polygon are assumed to lie in the XY plane.
@@ -399,7 +392,7 @@ class Point(Geometry):
         """
         return is_point_in_polygon_xy(self, polygon)
 
-    def in_convex_polygon(self, polygon: _PolygonType) -> bool:
+    def in_convex_polygon(self, polygon: PolygonType) -> bool:
         """Determine if the point lies inside the given convex polygon.
 
         For this test, the point and polygon are assumed to lie in the XY plane.
@@ -440,7 +433,7 @@ class Point(Geometry):
     # 3D predicates
     # ==========================================================================
 
-    def on_line(self, line: _LineType, tol: Optional[float] = None) -> bool:
+    def on_line(self, line: LineType, tol: Optional[float] = None) -> bool:
         """Determine if the point lies on the given line.
 
         Parameters
@@ -468,7 +461,7 @@ class Point(Geometry):
         """
         return TOL.is_zero(self.distance_to_line(line), tol)
 
-    def on_segment(self, segment: _LineType, tol: Optional[float] = None) -> bool:
+    def on_segment(self, segment: LineType, tol: Optional[float] = None) -> bool:
         """Determine if the point lies on the given segment.
 
         Parameters
@@ -496,7 +489,7 @@ class Point(Geometry):
         """
         return is_point_on_segment(self, segment, tol=tol)
 
-    def on_polyline(self, polyline: _PolylineType) -> bool:
+    def on_polyline(self, polyline: PolylineType) -> bool:
         """Determine if the point lies on the given polyline.
 
         Parameters
@@ -521,7 +514,7 @@ class Point(Geometry):
         """
         return is_point_on_polyline(self, polyline)
 
-    def on_plane(self, plane: _PlaneType, tol: Optional[float] = None) -> bool:
+    def on_plane(self, plane: PlaneType, tol: Optional[float] = None) -> bool:
         """Determine if the point lies on the given plane.
 
         Parameters
@@ -591,7 +584,7 @@ class Point(Geometry):
         """
         return TOL.is_zero(self.distance_to_point(curve.closest_point(self)), tol)
 
-    def in_triangle(self, triangle: _TriangleType) -> bool:
+    def in_triangle(self, triangle: TriangleType) -> bool:
         """Determine if the point lies inside the given triangle.
 
         Parameters
@@ -671,7 +664,7 @@ class Point(Geometry):
     # Transformations
     # ==========================================================================
 
-    def transform(self, transformation: _TransformationType) -> None:
+    def transform(self, transformation: TransformationType) -> None:
         """Transform this point.
 
         Parameters

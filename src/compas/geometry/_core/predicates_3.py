@@ -17,8 +17,8 @@ from compas.linalg.vectors import length_vector
 from compas.linalg.vectors import subtract_vectors
 from compas.tolerance import TOL
 
-from ._typing import CoordinatesType
-from ._typing import CoordinateType
+from compas.geometry._typing import CoordinatesType
+from compas.geometry._typing import CoordinateType
 
 # =============================================================================
 # =============================================================================

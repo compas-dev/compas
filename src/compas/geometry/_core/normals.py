@@ -7,7 +7,7 @@ from compas.linalg.vectors import normalize_vector
 from compas.linalg.vectors import subtract_vectors
 from compas.linalg.vectors import subtract_vectors_xy
 
-from ._typing import CoordinatesType
+from compas.geometry._typing import CoordinatesType
 from .centroids import centroid_points
 
 

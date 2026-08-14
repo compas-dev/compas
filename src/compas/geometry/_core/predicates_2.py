@@ -7,8 +7,8 @@ from compas.geometry import distance_point_line_xy
 from compas.geometry import distance_point_point_xy
 from compas.tolerance import TOL
 
-from ._typing import CoordinatesType
-from ._typing import CoordinateType
+from compas.geometry._typing import CoordinatesType
+from compas.geometry._typing import CoordinateType
 
 # =============================================================================
 # =============================================================================

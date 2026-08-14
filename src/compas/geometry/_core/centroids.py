@@ -13,7 +13,7 @@ from compas.linalg.vectors import subtract_vectors
 from compas.linalg.vectors import subtract_vectors_xy
 from compas.linalg.vectors import sum_vectors
 
-from ._typing import CoordinatesType
+from compas.geometry._typing import CoordinatesType
 
 
 def midpoint_point_point(a: Sequence[float], b: Sequence[float]) -> list[float]:

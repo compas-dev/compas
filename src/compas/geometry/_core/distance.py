@@ -30,8 +30,8 @@ from compas.linalg.vectors import vector_component
 from compas.linalg.vectors import vector_component_xy
 from compas.tolerance import TOL
 
-from ._typing import CoordinatesType
-from ._typing import CoordinateType
+from compas.geometry._typing import CoordinatesType
+from compas.geometry._typing import CoordinateType
 
 
 def distance_point_point(a: CoordinateType, b: CoordinateType) -> float:
