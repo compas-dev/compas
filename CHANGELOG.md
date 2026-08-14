@@ -22,6 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed `NotImplementedErorr` when calling `BrepLoop.vertices`.
 * Fixed `python -m compas` to detect extensions based on `importlib` rather than `pkg_resources`.
 * `compas_rhino.uninstall` will try to remove compas packages from all possible install locations.
+* Changed `angle_vectors_projected` to raise `ValueError` when an input vector is parallel to projection normal.
+* Changed `angle_vectors` to raise `ValueError` when one of the input vectors is a zero-length vector instead of returning 0.
 
 ### Removed
 

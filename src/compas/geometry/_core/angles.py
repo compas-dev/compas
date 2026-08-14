@@ -32,6 +32,11 @@ def angle_vectors(u, v, deg=False, tol=None):
         The tolerance for comparing values to zero.
         Default is :attr:`TOL.absolute`.
 
+    Raises
+    ------
+    ValueError
+        If one of the input vectors is a zero-length vector.
+
     Returns
     -------
     float
@@ -44,31 +49,15 @@ def angle_vectors(u, v, deg=False, tol=None):
     1.57079
 
     """
-    L = length_vector(u) * length_vector(v)
-    if TOL.is_zero(L, tol):
-        return 0
-    a = dot_vectors(u, v) / L
+    len_u = length_vector(u)
+    len_v = length_vector(v)
+
+    if TOL.is_zero(len_u, tol) or TOL.is_zero(len_v, tol):
+        raise ValueError("Cannot compute the angle between one or more zero-length vectors.")
+
+    a = dot_vectors(u, v) / (len_u * len_v)
     a = max(min(a, 1), -1)
     angle = acos(a)
-
-    # a = length_vector(u)
-    # b = length_vector(v)
-    # if a < tol or b < tol:
-    #     return 0
-    # c = length_vector(subtract_vectors(u, v))
-    # if c < tol:
-    #     return 0
-    # if b >= c and c >= 0:
-    #     mu = c - (a - b)
-    # elif c > b and b >= 0:
-    #     mu = b - (a - c)
-    # else:
-    #     raise Exception("Invalid input vectors.")
-    # angle = 2 * atan(sqrt(((a - b) + c) * mu / ((a + (b + c)) * ((a - c) + b))))
-
-    # a = normalize_vector(u)
-    # b = normalize_vector(v)
-    # angle = 2 * atan2(length_vector(subtract_vectors(a, b)), length_vector(add_vectors(a, b)))
 
     if deg:
         return degrees(angle)
@@ -140,6 +129,11 @@ def angle_vectors_projected(u, v, normal, deg=False, tol=None):
         The tolerance for comparing values to zero.
         Default is :attr:`TOL.absolute`.
 
+    Raises
+    ------
+    ValueError
+        If one of the input vectors is parallel to the normal vector.
+
     Returns
     -------
     float
@@ -155,7 +149,7 @@ def angle_vectors_projected(u, v, normal, deg=False, tol=None):
     u_cross = cross_vectors(u, normal)
     v_cross = cross_vectors(v, normal)
 
-    if TOL.is_allclose(u_cross, [0.0, 0.0, 0.0]) or TOL.is_allclose(v_cross, [0.0, 0.0, 0.0]):
+    if TOL.is_zero(length_vector(u_cross), tol) or TOL.is_zero(length_vector(v_cross), tol):
         raise ValueError("Cannot compute angle between vectors projected onto a plane defined by the normal vector. One of the vectors is parallel to the normal vector.")
 
     return angle_vectors_signed(u_cross, v_cross, normal, deg, tol)
@@ -282,6 +276,11 @@ def angles_vectors(u, v, deg=False):
         XYZ components of the second vector.
     deg : bool, optional
         If True, returns the angle in degrees.
+
+    Raises
+    ------
+    ValueError
+        If one of the input vectors is a zero-length vector.
 
     Returns
     -------

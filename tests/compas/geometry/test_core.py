@@ -61,17 +61,28 @@ def test_angle_vectors(u, v, angle):
     assert TOL.is_close(angle_vectors(u, v), angle)
 
 
-# @pytest.mark.parametrize(
-#     ("u", "v"),
-#     [
-#         ([0.0, 0.0, 0.0], [0.0, 0.0, 0.0]),
-#         ([0.0, 0.0, 0.0], [1.0, 0.0, 0.0]),
-#         ([1.0, 0.0, 0.0], [0.0, 0.0, 0.0]),
-#     ],
-# )
-# def test_angle_vectors_fails_when_input_is_zero(u, v):
-#     with pytest.raises(ZeroDivisionError):
-#         angle_vectors(u, v)
+@pytest.mark.parametrize(
+    ("u", "v"),
+    [
+        ([1.0, 0.0, 0.0], [0.0, 0.0, 0.0]),
+        ([0.0, 0.0, 0.0], [1.0, 0.0, 0.0]),
+        ([0.0, 0.0, 0.0], [0.0, 0.0, 0.0]),
+    ],
+)
+def test_angle_vectors_fails_when_input_is_zero(u, v):
+    with pytest.raises(ValueError):
+        angle_vectors(u, v)
+
+
+def test_angle_vectors_fails_when_input_is_zero_within_tolerance():
+    # length_vector(u) == 1e-4, which is zero within tol=1e-3
+    with pytest.raises(ValueError):
+        angle_vectors([1e-4, 0.0, 0.0], [0.0, 1e-2, 0.0], tol=1e-3)
+
+
+def test_angle_vectors_when_input_is_not_zero_within_tolerance():
+    # length_vector(u) * length_vector(v) == 1e-4, which is not zero within tol=1e-6
+    assert TOL.is_close(angle_vectors([1e-2, 0.0, 0.0], [0.0, 1e-2, 0.0], tol=1e-6), pi / 2)
 
 
 @pytest.mark.parametrize(
@@ -93,17 +104,17 @@ def test_angles_vectors(u, v, angles):
     assert TOL.is_allclose(angles_vectors(u, v), (a, b))
 
 
-# @pytest.mark.parametrize(
-#     ("u", "v"),
-#     [
-#         ([0.0, 0.0, 0.0], [0.0, 0.0, 0.0]),
-#         ([0.0, 0.0, 0.0], [1.0, 0.0, 0.0]),
-#         ([1.0, 0.0, 0.0], [0.0, 0.0, 0.0]),
-#     ],
-# )
-# def test_angles_vectors_fails_when_input_is_zero(u, v):
-#     with pytest.raises(ZeroDivisionError):
-#         angles_vectors(u, v)
+@pytest.mark.parametrize(
+    ("u", "v"),
+    [
+        ([1.0, 0.0, 0.0], [0.0, 0.0, 0.0]),
+        ([0.0, 0.0, 0.0], [1.0, 0.0, 0.0]),
+        ([0.0, 0.0, 0.0], [0.0, 0.0, 0.0]),
+    ],
+)
+def test_angles_vectors_fails_when_input_is_zero(u, v):
+    with pytest.raises(ValueError):
+        angles_vectors(u, v)
 
 
 @pytest.mark.parametrize(
@@ -147,6 +158,11 @@ def test_angle_vectors_signed(u, v, normal, result):
 )
 def test_angle_vectors_projected(u, v, normal, result):
     assert TOL.is_close(angle_vectors_projected(u, v, normal), result)
+
+
+def test_angle_vectors_projected_fails_when_input_is_parallel_to_normal():
+    with pytest.raises(ValueError):
+        angle_vectors_projected([1, 0, 0], [0, 1, 0], [1, 0, 0])
 
 
 # ==============================================================================
