@@ -14,6 +14,7 @@ class FloatSequence(Protocol):
 
 
 FloatSequenceType = Union[FloatSequence, Sequence[float]]
+RawCoordinateType = Union[list[float], tuple[float, float], tuple[float, float, float]]
 
 
 class Coordinate(FloatSequence, Protocol):

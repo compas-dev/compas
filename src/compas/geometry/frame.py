@@ -1,3 +1,17 @@
+from typing import Iterator
+from typing import MutableSequence
+from typing import Optional
+from typing import Sequence
+from typing import TypeVar
+from typing import Union
+from typing import overload
+
+from typing_extensions import Self
+
+from compas._typing import Coordinates
+from compas._typing import CoordinatesType
+from compas._typing import CoordinateType
+from compas._typing import RawCoordinateType
 from compas.geometry import Geometry
 from compas.geometry import Transformation
 from compas.itertools import linspace
@@ -14,9 +28,14 @@ from compas.linalg.vectors import argmax
 from compas.linalg.vectors import cross_vectors
 from compas.linalg.vectors import subtract_vectors
 
+from ._typing import PlaneType
+from ._typing import QuaternionType
+from ._typing import TransformationType
 from .point import Point
 from .quaternion import Quaternion
 from .vector import Vector
+
+GeometryType = TypeVar("GeometryType", bound=Geometry)
 
 
 class Frame(Geometry):
@@ -67,16 +86,21 @@ class Frame(Geometry):
 
     """
 
-
     @property
-    def __data__(self):
+    def __data__(self) -> dict[str, list[float]]:
         return {
             "point": self.point.__data__,
             "xaxis": self.xaxis.__data__,
             "yaxis": self.yaxis.__data__,
         }
 
-    def __init__(self, point, xaxis=None, yaxis=None, name=None):
+    def __init__(
+        self,
+        point: CoordinateType,
+        xaxis: Optional[CoordinateType] = None,
+        yaxis: Optional[CoordinateType] = None,
+        name: Optional[str] = None,
+    ) -> None:
         super(Frame, self).__init__(name=name)
         self._point = None
         self._xaxis = None
@@ -86,7 +110,7 @@ class Frame(Geometry):
         self.xaxis = Vector(1, 0, 0) if xaxis is None else xaxis
         self.yaxis = Vector(0, 1, 0) if yaxis is None else yaxis
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "{0}(point={1!r}, xaxis={2!r}, yaxis={3!r})".format(
             type(self).__name__,
             self.point,
@@ -94,7 +118,7 @@ class Frame(Geometry):
             self.yaxis,
         )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "{0}(point={1}, xaxis={2}, yaxis={3})".format(
             type(self).__name__,
             str(self.point),
@@ -102,10 +126,10 @@ class Frame(Geometry):
             str(self.yaxis),
         )
 
-    def __len__(self):
+    def __len__(self) -> int:
         return 3
 
-    def __getitem__(self, key):
+    def __getitem__(self, key: int) -> Union[Point, Vector]:
         if key == 0:
             return self.point
         if key == 1:
@@ -114,7 +138,7 @@ class Frame(Geometry):
             return self.yaxis
         raise KeyError
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key: int, value: CoordinateType) -> None:
         if key == 0:
             self.point = value
             return
@@ -125,11 +149,13 @@ class Frame(Geometry):
             self.yaxis = value
         raise KeyError
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[Union[Point, Vector]]:
         return iter([self.point, self.xaxis, self.yaxis])
 
-    def __eq__(self, other):
-        if not hasattr(other, "__iter__") or not hasattr(other, "__len__") or len(self) != len(other):
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Coordinates):
+            return False
+        if len(self) != len(other):
             return False
         return self.point == other[0] and self.xaxis == other[1] and self.yaxis == other[2]
 
@@ -138,37 +164,44 @@ class Frame(Geometry):
     # ==========================================================================
 
     @property
-    def point(self):
+    def point(self) -> Point:
         if not self._point:
             raise ValueError("The frame has no origin.")
         return self._point
 
     @point.setter
-    def point(self, point):
-        self._point = Point(*point)
+    def point(self, point: CoordinateType) -> None:
+        z = point[2] if len(point) > 2 else 0.0
+        self._point = Point(point[0], point[1], z)
 
     @property
-    def xaxis(self):
+    def xaxis(self) -> Vector:
         if not self._xaxis:
             raise ValueError("The frame has no x-axis.")
         return self._xaxis
 
     @xaxis.setter
-    def xaxis(self, vector):
-        xaxis = Vector(*vector)
+    def xaxis(self, vector: CoordinateType) -> None:
+        # Indexed access preserves the 2D default for z and prevents a possible
+        # extra component from being interpreted as the Vector name.
+        z = vector[2] if len(vector) > 2 else 0.0
+        xaxis = Vector(vector[0], vector[1], z)
         xaxis.unitize()
         self._xaxis = xaxis
         self._zaxis = None
 
     @property
-    def yaxis(self):
+    def yaxis(self) -> Vector:
         if not self._yaxis:
             raise ValueError("The frame has no y-axis.")
         return self._yaxis
 
     @yaxis.setter
-    def yaxis(self, vector):
-        yaxis = Vector(*vector)
+    def yaxis(self, vector: CoordinateType) -> None:
+        # Indexed access preserves the 2D default for z and prevents a possible
+        # extra component from being interpreted as the Vector name.
+        z = vector[2] if len(vector) > 2 else 0.0
+        yaxis = Vector(vector[0], vector[1], z)
         yaxis.unitize()
         zaxis = self.xaxis.cross(yaxis)
         zaxis.unitize()
@@ -176,39 +209,41 @@ class Frame(Geometry):
         self._zaxis = None
 
     @property
-    def normal(self):
+    def normal(self) -> Vector:
         return self.zaxis
 
     @property
-    def zaxis(self):
+    def zaxis(self) -> Vector:
         if not self._zaxis:
             self._zaxis = self.xaxis.cross(self.yaxis)
         return self._zaxis
 
-    def axes(self):
+    def axes(self) -> list[Vector]:
         return [self.xaxis, self.yaxis, self.zaxis]
 
     @property
-    def quaternion(self):
+    def quaternion(self) -> Quaternion:
         R = matrix_from_basis_vectors(self.xaxis, self.yaxis)
-        return Quaternion(*quaternion_from_matrix(R))
+        values = quaternion_from_matrix(R)
+        return Quaternion(values[0], values[1], values[2], values[3])
 
     @property
-    def axis_angle_vector(self):
+    def axis_angle_vector(self) -> Vector:
         R = matrix_from_basis_vectors(self.xaxis, self.yaxis)
-        return Vector(*axis_angle_vector_from_matrix(R))
+        values = axis_angle_vector_from_matrix(R)
+        return Vector(values[0], values[1], values[2])
 
     # ==========================================================================
     # Constructors
     # ==========================================================================
 
     @classmethod
-    def worldXY(cls):  # type: () -> Frame
+    def worldXY(cls) -> Self:
         """Construct the world XY frame.
 
         Returns
         -------
-        :class:`compas.geometry.Frame`
+        Self
             The world XY frame.
 
         Examples
@@ -225,12 +260,12 @@ class Frame(Geometry):
         return cls([0, 0, 0], [1, 0, 0], [0, 1, 0])
 
     @classmethod
-    def worldZX(cls):  # type: () -> Frame
+    def worldZX(cls) -> Self:
         """Construct the world ZX frame.
 
         Returns
         -------
-        :class:`compas.geometry.Frame`
+        Self
             The world ZX frame.
 
         Examples
@@ -247,12 +282,12 @@ class Frame(Geometry):
         return cls([0, 0, 0], [0, 0, 1], [1, 0, 0])
 
     @classmethod
-    def worldYZ(cls):  # type: () -> Frame
+    def worldYZ(cls) -> Self:
         """Construct the world YZ frame.
 
         Returns
         -------
-        :class:`compas.geometry.Frame`
+        Self
             The world YZ frame.
 
         Examples
@@ -269,21 +304,21 @@ class Frame(Geometry):
         return cls([0, 0, 0], [0, 1, 0], [0, 0, 1])
 
     @classmethod
-    def from_points(cls, point, point_xaxis, point_xyplane):  # type: (...) -> Frame
+    def from_points(cls, point: CoordinateType, point_xaxis: CoordinateType, point_xyplane: CoordinateType) -> Self:
         """Constructs a frame from 3 points.
 
         Parameters
         ----------
-        point : [float, float, float] | :class:`compas.geometry.Point`
+        point
             The origin of the frame.
-        point_xaxis : [float, float, float] | :class:`compas.geometry.Point`
+        point_xaxis
             A point on the x-axis of the frame.
-        point_xyplane : [float, float, float] | :class:`compas.geometry.Point`
+        point_xyplane
             A point within the xy-plane of the frame.
 
         Returns
         -------
-        :class:`compas.geometry.Frame`
+        Self
             The constructed frame.
 
         Examples
@@ -303,19 +338,19 @@ class Frame(Geometry):
         return cls(point, xaxis, yaxis)
 
     @classmethod
-    def from_rotation(cls, rotation, point=[0, 0, 0]):  # type: (...) -> Frame
+    def from_rotation(cls, rotation: Transformation, point: CoordinateType = (0, 0, 0)) -> Self:
         """Constructs a frame from a Rotation.
 
         Parameters
         ----------
-        rotation : :class:`compas.geometry.Rotation`
+        rotation
             The rotation defines the orientation of the frame.
-        point : [float, float, float] | :class:`compas.geometry.Point`, optional
+        point
             The origin of the frame.
 
         Returns
         -------
-        :class:`compas.geometry.Frame`
+        Self
             The constructed frame.
 
         Examples
@@ -332,18 +367,18 @@ class Frame(Geometry):
         return cls(point, xaxis, yaxis)
 
     @classmethod
-    def from_transformation(cls, transformation):  # type: (...) -> Frame
+    def from_transformation(cls, transformation: Transformation) -> Self:
         """Constructs a frame from a Transformation.
 
         Parameters
         ----------
-        transformation : :class:`compas.geometry.Transformation`
+        transformation
             The transformation defines the orientation of the frame through the
             rotation and the origin through the translation.
 
         Returns
         -------
-        :class:`compas.geometry.Frame`
+        Self
             The constructed frame.
 
         Examples
@@ -361,17 +396,17 @@ class Frame(Geometry):
         return cls(point, xaxis, yaxis)
 
     @classmethod
-    def from_matrix(cls, matrix):  # type: (...) -> Frame
+    def from_matrix(cls, matrix: CoordinatesType) -> Self:
         """Construct a frame from a matrix.
 
         Parameters
         ----------
-        matrix : list[list[float]]
+        matrix
             The 4x4 transformation matrix in row-major order.
 
         Returns
         -------
-        :class:`compas.geometry.Frame`
+        Self
             The constructed frame.
 
         Examples
@@ -392,17 +427,17 @@ class Frame(Geometry):
         return cls(point, xaxis, yaxis)
 
     @classmethod
-    def from_list(cls, values):  # type: (...) -> Frame
+    def from_list(cls, values: MutableSequence[float]) -> Self:
         """Construct a frame from a list of 12 or 16 float values.
 
         Parameters
         ----------
-        values : list[float]
+        values
             The list of 12 or 16 values representing a 4x4 matrix.
 
         Returns
         -------
-        :class:`compas.geometry.Frame`
+        Self
             The constructed frame.
 
         Raises
@@ -434,19 +469,19 @@ class Frame(Geometry):
         return cls.from_matrix(matrix)
 
     @classmethod
-    def from_quaternion(cls, quaternion, point=[0, 0, 0]):  # type: (...) -> Frame
+    def from_quaternion(cls, quaternion: QuaternionType, point: CoordinateType = (0, 0, 0)) -> Self:
         """Construct a frame from a rotation represented by quaternion coefficients.
 
         Parameters
         ----------
-        quaternion : [float, float, float, float] | :class:`compas.geometry.Quaternion`
+        quaternion
             Four numbers that represent the four coefficient values of a quaternion.
-        point : [float, float, float] | :class:`compas.geometry.Point`, optional
+        point
             The point of the frame.
 
         Returns
         -------
-        :class:`compas.geometry.Frame`
+        Self
             The constructed frame.
 
         Examples
@@ -464,20 +499,20 @@ class Frame(Geometry):
         return cls(point, xaxis, yaxis)
 
     @classmethod
-    def from_axis_angle_vector(cls, axis_angle_vector, point=[0, 0, 0]):  # type: (...) -> Frame
+    def from_axis_angle_vector(cls, axis_angle_vector: CoordinateType, point: CoordinateType = (0, 0, 0)) -> Self:
         """Construct a frame from an axis-angle vector representing the rotation.
 
         Parameters
         ----------
-        axis_angle_vector : [float, float, float]
+        axis_angle_vector
             Three numbers that represent the axis of rotation and angle of
             rotation by its magnitude.
-        point : [float, float, float] | :class:`compas.geometry.Point`, optional
+        point
             The point of the frame.
 
         Returns
         -------
-        :class:`compas.geometry.Frame`
+        Self
             The constructed frame.
 
         Examples
@@ -495,24 +530,30 @@ class Frame(Geometry):
         return cls(point, xaxis, yaxis)
 
     @classmethod
-    def from_euler_angles(cls, euler_angles, static=True, axes="xyz", point=[0, 0, 0]):  # type: (...) -> Frame
+    def from_euler_angles(
+        cls,
+        euler_angles: Sequence[float],
+        static: bool = True,
+        axes: str = "xyz",
+        point: CoordinateType = (0, 0, 0),
+    ) -> Self:
         """Construct a frame from a rotation represented by Euler angles.
 
         Parameters
         ----------
-        euler_angles : [float, float, float]
+        euler_angles
             Three numbers that represent the angles of rotations about the defined axes.
-        static : bool, optional
+        static
             If True, the rotations are applied to a static frame.
             If False, to a rotational.
-        axes : str, optional
+        axes
             A 3 character string specifying the order of the axes.
-        point : [float, float, float] | :class:`compas.geometry.Point`, optional
+        point
             The point of the frame.
 
         Returns
         -------
-        :class:`compas.geometry.Frame`
+        Self
             The constructed frame.
 
         Examples
@@ -530,19 +571,19 @@ class Frame(Geometry):
         return cls(point, xaxis, yaxis)
 
     @classmethod
-    def from_plane(cls, plane):  # type: (...) -> Frame
+    def from_plane(cls, plane: PlaneType) -> Self:
         """Constructs a frame from a plane.
 
         Xaxis and yaxis are arbitrarily selected based on the plane's normal.
 
         Parameters
         ----------
-        plane : [point, vector] | :class:`compas.geometry.Plane`
+        plane
             A plane.
 
         Returns
         -------
-        :class:`compas.geometry.Frame`
+        Self
             The constructed frame.
 
         Examples
@@ -575,12 +616,12 @@ class Frame(Geometry):
     # Conversions
     # ==========================================================================
 
-    def to_transformation(self):
+    def to_transformation(self) -> Transformation:
         """Convert the frame to a transformation.
 
         Returns
         -------
-        :class:`compas.geometry.Transformation`
+        Transformation
             The transformation.
 
         """
@@ -590,34 +631,35 @@ class Frame(Geometry):
     # Methods
     # ==========================================================================
 
-    def invert(self):
+    def invert(self) -> None:
         """Invert the frame while keeping the X axis fixed."""
         self._yaxis = self.yaxis * -1
         self._zaxis = None
 
     flip = invert
 
-    def inverted(self):
+    def inverted(self) -> Self:
         """Return an inverted copy of the frame."""
-        frame = self.copy()  # type: Frame
+        frame = self.copy()
         frame.invert()
         return frame
 
     flipped = inverted
 
-    def interpolate_frame(self, other, t):
+    def interpolate_frame(self, other: "Frame", t: float) -> Self:
         """Interpolates between two frames at a given parameter t in the range [0, 1]
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Frame`
-        t : float
+        other
+            The other frame.
+        t
             A parameter in the range [0-1].
 
         Returns
         -------
-        :class:`compas.geometry.Frame`
-            A list of the interpolated :class:`compas.geometry.Frame` instances.
+        Self
+            The interpolated frame.
 
         Examples
         --------
@@ -638,22 +680,24 @@ class Frame(Geometry):
         rot_interpolated = quat1.slerp(quat2, t)
 
         # Create a new frame with the interpolated position and orientation
-        interpolated_frame = Frame.from_quaternion(rot_interpolated, point=origin_interpolated)
+        interpolated_frame = type(self).from_quaternion(rot_interpolated, point=origin_interpolated)
 
         return interpolated_frame
 
-    def interpolate_frames(self, other, steps):
+    def interpolate_frames(self, other: "Frame", steps: int) -> list[Self]:
         """Generates a specified number of interpolated frames between two given frames
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Frame`
-        steps : int
+        other
+            The other frame.
+        steps
             The number of interpolated frames to return.
 
         Returns
         -------
-        list of :class:`compas.geometry.Frame`
+        list[Self]
+            The interpolated frames.
 
         Examples
         --------
@@ -667,15 +711,15 @@ class Frame(Geometry):
         """
         return [self.interpolate_frame(other, t) for t in linspace(0, 1, steps)]
 
-    def euler_angles(self, static=True, axes="xyz"):
+    def euler_angles(self, static: bool = True, axes: str = "xyz") -> list[float]:
         """The Euler angles from the rotation given by the frame.
 
         Parameters
         ----------
-        static : bool, optional
+        static
             If True the rotations are applied to a static frame.
             If False, to a rotational.
-        axes : str, optional
+        axes
             A 3 character string specifying the order of the axes.
 
         Returns
@@ -696,17 +740,23 @@ class Frame(Geometry):
         R = matrix_from_basis_vectors(self.xaxis, self.yaxis)
         return euler_angles_from_matrix(R, static, axes)
 
-    def to_local_coordinates(self, obj_in_wcf):
+    @overload
+    def to_local_coordinates(self, obj_in_wcf: RawCoordinateType) -> Point: ...
+
+    @overload
+    def to_local_coordinates(self, obj_in_wcf: GeometryType) -> GeometryType: ...
+
+    def to_local_coordinates(self, obj_in_wcf: Union[RawCoordinateType, GeometryType]) -> Union[Point, GeometryType]:
         """Returns the object's coordinates in the local coordinate system of the frame.
 
         Parameters
         ----------
-        obj_in_wcf : [float, float, float] | :class:`compas.geometry.Geometry`
+        obj_in_wcf
             An object in the world coordinate frame.
 
         Returns
         -------
-        :class:`compas.geometry.Geometry`
+        Union[Point, Geometry]
             The object in the local coordinate system of the frame.
 
         Notes
@@ -725,20 +775,27 @@ class Frame(Geometry):
         """
         T = Transformation.from_change_of_basis(Frame.worldXY(), self)
         if isinstance(obj_in_wcf, (list, tuple)):
-            return Point(*obj_in_wcf).transformed(T)
+            z = obj_in_wcf[2] if len(obj_in_wcf) > 2 else 0.0
+            return Point(obj_in_wcf[0], obj_in_wcf[1], z).transformed(T)
         return obj_in_wcf.transformed(T)
 
-    def to_world_coordinates(self, obj_in_lcf):
+    @overload
+    def to_world_coordinates(self, obj_in_lcf: RawCoordinateType) -> Point: ...
+
+    @overload
+    def to_world_coordinates(self, obj_in_lcf: GeometryType) -> GeometryType: ...
+
+    def to_world_coordinates(self, obj_in_lcf: Union[RawCoordinateType, GeometryType]) -> Union[Point, GeometryType]:
         """Returns the object's coordinates in the global coordinate frame.
 
         Parameters
         ----------
-        obj_in_lcf : [float, float, float] | :class:`compas.geometry.Geometry`
+        obj_in_lcf
             An object in local coordinate system of the frame.
 
         Returns
         -------
-        :class:`compas.geometry.Geometry`
+        Union[Point, Geometry]
             The object in the world coordinate frame.
 
         Notes
@@ -756,16 +813,17 @@ class Frame(Geometry):
 
         """
         T = Transformation.from_change_of_basis(self, Frame.worldXY())
-        if isinstance(obj_in_lcf, list):
-            return Point(*obj_in_lcf).transformed(T)
+        if isinstance(obj_in_lcf, (list, tuple)):
+            z = obj_in_lcf[2] if len(obj_in_lcf) > 2 else 0.0
+            return Point(obj_in_lcf[0], obj_in_lcf[1], z).transformed(T)
         return obj_in_lcf.transformed(T)
 
-    def transform(self, T):
+    def transform(self, transformation: TransformationType) -> None:
         """Transform the frame.
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation`
+        transformation
             The transformation.
 
         Examples
@@ -779,7 +837,11 @@ class Frame(Geometry):
         True
 
         """
-        X = T * Transformation.from_frame(self)
+        # Frame transformation uses concatenation, so raw matrix inputs need the
+        # same lightweight wrapper accepted by the base geometry API.
+        if not isinstance(transformation, Transformation):
+            transformation = Transformation(transformation)
+        X = transformation * Transformation.from_frame(self)
         point = X.translation_vector
         xaxis, yaxis = X.basis_vectors
         self.point = point
