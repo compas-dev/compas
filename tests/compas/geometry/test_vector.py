@@ -119,6 +119,16 @@ def test_vector_inplace_operators():
     pass
 
 
+def test_vector_scale():
+    vector = Vector(1.0, 2.0, 3.0)
+    vector.scale(2.0, 3.0, 4.0)
+    assert vector == [2.0, 6.0, 12.0]
+
+    scaled = vector.scaled(0.5)
+    assert scaled == [1.0, 3.0, 6.0]
+    assert scaled is not vector
+
+
 def test_vector_data():
     vector = Vector(random(), random(), random())
     other = Vector.__from_data__(json.loads(json.dumps(vector.__data__)))

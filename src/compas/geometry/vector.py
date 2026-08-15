@@ -1,6 +1,7 @@
 from typing import Iterator
 from typing import Optional
 from typing import Sequence
+from typing import Type
 from typing import Union
 from typing import cast
 from typing import overload
@@ -599,8 +600,16 @@ class Vector(Geometry):
     # Helpers
     # ==========================================================================
 
-    def copy(self) -> Self:
+    def copy(self, cls: Optional[Type[Self]] = None, copy_guid: bool = False) -> Self:  # type: ignore[override]
         """Make a copy of this vector.
+
+        Parameters
+        ----------
+        cls
+            The type of vector to return.
+            Defaults to the type of the current vector.
+        copy_guid
+            If True, the copy will have the same GUID as the original.
 
         Returns
         -------
@@ -617,8 +626,12 @@ class Vector(Geometry):
         False
 
         """
-        cls = type(self)
-        return cls(self.x, self.y, self.z)
+        if cls is None:
+            cls = type(self)
+        vector = cls.__from_data__([self.x, self.y, self.z])
+        if copy_guid:
+            vector._guid = self.guid
+        return vector
 
     # ==========================================================================
     # Methods
@@ -708,13 +721,19 @@ class Vector(Geometry):
 
     flipped = inverted
 
-    def scale(self, n: float) -> None:
-        """Scale this vector by a factor n.
+    def scale(self, x: float, y: Optional[float] = None, z: Optional[float] = None) -> None:
+        """Scale this vector by one or more factors.
 
         Parameters
         ----------
-        n
-            The scaling factor.
+        x
+            The scaling factor in the X direction.
+        y
+            The scaling factor in the Y direction.
+            Defaults to `x`.
+        z
+            The scaling factor in the Z direction.
+            Defaults to `x`.
 
         Examples
         --------
@@ -724,17 +743,27 @@ class Vector(Geometry):
         3.0
 
         """
-        self.x *= n
-        self.y *= n
-        self.z *= n
+        if y is None:
+            y = x
+        if z is None:
+            z = x
+        self.x *= x
+        self.y *= y
+        self.z *= z
 
-    def scaled(self, n: float) -> Self:
+    def scaled(self, x: float, y: Optional[float] = None, z: Optional[float] = None) -> Self:
         """Returns a scaled copy of this vector.
 
         Parameters
         ----------
-        n
-            The scaling factor.
+        x
+            The scaling factor in the X direction.
+        y
+            The scaling factor in the Y direction.
+            Defaults to `x`.
+        z
+            The scaling factor in the Z direction.
+            Defaults to `x`.
 
         Returns
         -------
@@ -752,7 +781,7 @@ class Vector(Geometry):
 
         """
         v = self.copy()
-        v.scale(n)
+        v.scale(x, y, z)
         return v
 
     def dot(self, other: CoordinateType) -> float:
