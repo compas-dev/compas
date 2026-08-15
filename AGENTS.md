@@ -16,17 +16,23 @@ These instructions apply to the entire repository. Preserve unrelated working-tr
 ## Compatibility and Typing
 
 - Support Python 3.9 as declared in `pyproject.toml`.
+- Replace Python 2 compatibility forms such as `super(Class, self)` with zero-argument `super()` when touching a class. Preserve explicit arguments to `super(...)` only where they are semantically required, such as selecting a different point in the MRO.
 - Use `typing.Union[...]` for type unions in annotations and type comments. Do not use PEP 604 `X | Y` unions for now. The `|` notation may remain in docstrings and prose.
 - Prefer annotations that describe what runtime code already accepts. Do not add conversions solely to satisfy a narrow annotation.
+- Numeric coordinate and component parameters should be annotated as `float`, not as `Union[float, str]`. Integer arguments are valid for parameters annotated as `float` under Python's numeric typing rules; accepting integers does not require adding strings to the type or adding a runtime conversion.
+- Model fixed-size coordinate data as having two or three components whenever the type system can express that constraint. Do not broaden a fixed-size coordinate alias to an arbitrary-length collection merely to accommodate a lower-level function.
 - Geometry objects such as `Point` and `Vector` are iterable and support indexing/unpacking. Pass them directly when an API consumes coordinate iterables; avoid unnecessary `list(...)` allocation.
 - Functions in `compas.geometry._core` should be typed against raw numerical data structures and primitives. They should remain unaware of geometry object types and should not import geometry classes.
+- Put broadly reusable structural and raw-data typing helpers in `compas._typing`. Keep unions that mention geometry classes, such as `LineType` and `PlaneType`, in `compas.geometry._typing`; define an alias locally only when it is genuinely private to one module.
+- At public geometry API boundaries, use the appropriate object-aware union such as `LineType` when callers may pass either a geometry object or raw data. Coordinate-like objects that already satisfy the shared structural `CoordinateType` do not need separate `PointType` or `VectorType` unions. Do not solve boundary typing by progressively broadening every low-level helper.
 - When a public method has getter/setter modes or return types controlled by arguments, use overloads to describe the distinct call shapes rather than falling back to `Any`.
 - Preserve subclass behavior. Constructors and algorithms that accept or infer `cls` should continue returning the expected subclass.
 - Prefer standard library types over typing imports: `list[tuple[...]]` instead of `List[Tuple[...]]`.
-- Use `cast` only when absolutely necessary.
+- Prefer correcting the source annotation, protocol, or overload over using `cast`. Use `cast` only when the type system cannot express a valid runtime invariant cleanly.
 - Avoid broad `Any` unless unavoidable.
 - Avoid importing heavy optional dependencies only for typing; use `TYPE_CHECKING` when needed.
 - Use `Self` for the return type of (class)methods that return an instance of the current type or a subtype.
+- Replace string-quoted return annotations with `Self` whenever the result is the current instance type and subclass preservation is intended. Keep a quoted concrete class only when the method deliberately returns that exact class rather than the receiver's type.
 
 ## Runtime-Behavior Preservation
 
@@ -35,6 +41,9 @@ These instructions apply to the entire repository. Preserve unrelated working-tr
 - Prefer fixing types at API boundaries over changing runtime values inside algorithms.
 - When modernization or typing requires a small, non-obvious change to a function body, add a concise comment explaining why the change is necessary and which input contract or invariant it preserves.
 - Keep diffs narrow. Do not fold speculative architecture changes into typing, documentation, or compatibility patches.
+- Remove obsolete compatibility parameters when their removal is explicitly part of the task instead of preserving hidden aliases or branching logic. Update the implementation, documentation, and tests together.
+- Use names that reflect cardinality: a collection of returned points should have a plural name such as `points`, not `point`.
+- Keep a short expression on one line when it remains within the formatter's line-length limit and splitting it does not improve readability.
 
 ## Tests and Validation
 
@@ -43,6 +52,8 @@ These instructions apply to the entire repository. Preserve unrelated working-tr
 - Use the repository commands documented in `CONTRIBUTING.md`: `invoke test`, `invoke lint`, and `invoke format`. Direct `pytest` and `ruff` invocations are appropriate for focused checks.
 - Always run `git diff --check` for changed patches.
 - For annotation work, supplement tests with AST/static checks where useful so type comments and less obvious annotation sites are not missed.
+- Add direct tests for modernized public classes, including construction, sequence behavior, operators, reflected and in-place operators, property setters, transformations, and subclass-preserving constructors where applicable.
+- Prefer behavioral tests over tests that merely assert the presence or shape of implementation metadata.
 
 ## Documentation and Public API
 
@@ -80,7 +91,12 @@ These instructions apply to the entire repository. Preserve unrelated working-tr
 - For uncited further reading, use a Markdown list in `References`. Do not use reStructuredText citations such as `[1]_` or `.. [1]`.
 - Use `$...$` for inline mathematics and `$$...$$` for display mathematics. Math rendering is provided by `pymdownx.arithmatex` and MathJax; do not use `:math:` roles or `.. math::` directives.
 - Keep examples valid as doctests where they are intended to execute. A Markdown migration must not change the example's runtime meaning.
+- Document public dunder behavior in the class docstring when it forms part of the user-facing API. Cover ordinary, reflected, and in-place arithmetic variants as applicable, and include a short executable example for each behavior.
+- Add short examples for public classmethods that serve as alternative constructors. Do not add `from_data` or implementation-level deserialization hooks to this constructor overview.
+- Do not manually add `Attributes` lists to class docstrings when mkdocstrings can generate them from the class members.
+- Document non-obvious setter side effects. In particular, note when setting one frame axis normalizes it or recomputes another axis to preserve orthonormality.
 - Do not expose implementation-only payload, encoder, or helper types without a clear public use case.
+- Remove `DATASCHEMA` declarations from modernized objects and remove tests that exist only to validate those declarations. Do not introduce replacement schema metadata unless a current public use case requires it.
 - Preserve existing convenience APIs during architectural refactors unless the task explicitly includes a deprecation or breaking-change plan.
 - When compatibility requires accepting both documents and native COMPAS objects, make the behavior explicit with overloads or documented wrappers rather than untyped `Any`.
 - Remove empty `Examples` sections.
