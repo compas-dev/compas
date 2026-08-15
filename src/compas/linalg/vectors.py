@@ -4,6 +4,7 @@ from typing import Optional
 from typing import Sequence
 from typing import overload
 
+from compas._typing import CoordinateType
 from compas.tolerance import TOL
 
 _SPEC2TUPLE = {
@@ -234,7 +235,7 @@ def norm_vectors(vectors: Sequence[Sequence[float]]) -> list[float]:
     return [norm_vector(vector) for vector in vectors]
 
 
-def length_vector(vector: Sequence[float]) -> float:
+def length_vector(vector: CoordinateType) -> float:
     """Calculate the length of the vector.
 
     Parameters
@@ -642,7 +643,7 @@ def add_vectors_xy(u: Sequence[float], v: Sequence[float]) -> list[float]:
     return [u[0] + v[0], u[1] + v[1], 0.0]
 
 
-def subtract_vectors(u: Iterable[float], v: Iterable[float]) -> list[float]:
+def subtract_vectors(u: CoordinateType, v: CoordinateType) -> list[float]:
     """Subtract one vector from another.
 
     Parameters
@@ -761,7 +762,7 @@ def divide_vectors_xy(u: Sequence[float], v: Sequence[float]) -> list[float]:
 # ==============================================================================
 
 
-def cross_vectors(u: Sequence[float], v: Sequence[float]) -> list[float]:
+def cross_vectors(u: CoordinateType, v: CoordinateType) -> list[float]:
     r"""Compute the cross product of two vectors.
 
     Parameters
@@ -847,7 +848,7 @@ def cross_vectors_xy(u: Sequence[float], v: Sequence[float]) -> list[float]:
     return [0.0, 0.0, u[0] * v[1] - u[1] * v[0]]
 
 
-def dot_vectors(u: Iterable[float], v: Iterable[float]) -> float:
+def dot_vectors(u: CoordinateType, v: CoordinateType) -> float:
     """Compute the dot product of two vectors.
 
     Parameters

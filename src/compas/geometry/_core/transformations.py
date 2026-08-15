@@ -3,6 +3,7 @@ from typing import Iterable
 from typing import Optional
 from typing import Sequence
 
+from compas._typing import CoordinatesType
 from compas.linalg.matrices import multiply_matrices
 from compas.linalg.matrices import multiply_matrix_vector
 from compas.linalg.matrices import transpose_matrix
@@ -216,7 +217,7 @@ def transform_points(points: Iterable[Iterable[float]], T: Iterable[Iterable[flo
     return dehomogenize(multiply_matrices(homogenize(points, w=1.0), transpose_matrix(T)))
 
 
-def transform_vectors(vectors: Sequence[Sequence[float]], T: Sequence[Sequence[float]]) -> list[list[float]]:
+def transform_vectors(vectors: CoordinatesType, T: CoordinatesType) -> list[list[float]]:
     """Transform multiple vectors with one transformation matrix.
 
     Parameters

@@ -4,6 +4,7 @@ from math import pi
 from typing import Optional
 from typing import Sequence
 
+from compas._typing import CoordinateType
 from compas.linalg.vectors import cross_vectors
 from compas.linalg.vectors import dot_vectors
 from compas.linalg.vectors import dot_vectors_xy
@@ -14,7 +15,7 @@ from compas.linalg.vectors import subtract_vectors_xy
 from compas.tolerance import TOL
 
 
-def angle_vectors(u: Sequence[float], v: Sequence[float], deg: bool = False, tol: Optional[float] = None) -> float:
+def angle_vectors(u: CoordinateType, v: CoordinateType, deg: bool = False, tol: Optional[float] = None) -> float:
     """Compute the smallest angle between two vectors.
 
     Parameters
@@ -73,9 +74,9 @@ def angle_vectors(u: Sequence[float], v: Sequence[float], deg: bool = False, tol
 
 
 def angle_vectors_signed(
-    u: Sequence[float],
-    v: Sequence[float],
-    normal: Sequence[float],
+    u: CoordinateType,
+    v: CoordinateType,
+    normal: CoordinateType,
     deg: bool = False,
     tol: Optional[float] = None,
 ) -> float:
@@ -273,7 +274,7 @@ def angle_points_xy(a: Sequence[float], b: Sequence[float], c: Sequence[float], 
     return angle_vectors_xy(u, v, deg)
 
 
-def angles_vectors(u: Sequence[float], v: Sequence[float], deg: bool = False) -> tuple[float, float]:
+def angles_vectors(u: CoordinateType, v: CoordinateType, deg: bool = False) -> tuple[float, float]:
     """Compute the the 2 angles formed by a pair of vectors.
 
     Parameters

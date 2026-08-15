@@ -2,13 +2,12 @@ from typing import Any
 from typing import Optional
 from typing import Sequence
 
+from compas._typing import CoordinatesType
+from compas._typing import CoordinateType
 from compas.geometry import closest_point_on_segment_xy
 from compas.geometry import distance_point_line_xy
 from compas.geometry import distance_point_point_xy
 from compas.tolerance import TOL
-
-from compas.geometry._typing import CoordinatesType
-from compas.geometry._typing import CoordinateType
 
 # =============================================================================
 # =============================================================================

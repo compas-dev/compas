@@ -12,6 +12,8 @@ if TYPE_CHECKING:
     from numpy.typing import ArrayLike
     from numpy.typing import NDArray
 
+from compas._typing import CoordinatesType
+from compas._typing import CoordinateType
 from compas.itertools import pairwise
 from compas.linalg.vectors import add_vectors
 from compas.linalg.vectors import add_vectors_xy
@@ -29,9 +31,6 @@ from compas.linalg.vectors import subtract_vectors_xy
 from compas.linalg.vectors import vector_component
 from compas.linalg.vectors import vector_component_xy
 from compas.tolerance import TOL
-
-from compas.geometry._typing import CoordinatesType
-from compas.geometry._typing import CoordinateType
 
 
 def distance_point_point(a: CoordinateType, b: CoordinateType) -> float:

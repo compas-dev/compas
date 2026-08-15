@@ -3,6 +3,8 @@ from typing import Any
 from typing import Optional
 from typing import Sequence
 
+from compas._typing import CoordinatesType
+from compas._typing import CoordinateType
 from compas.geometry import area_triangle
 from compas.geometry import centroid_points
 from compas.geometry import closest_point_on_segment
@@ -16,9 +18,6 @@ from compas.linalg.vectors import dot_vectors
 from compas.linalg.vectors import length_vector
 from compas.linalg.vectors import subtract_vectors
 from compas.tolerance import TOL
-
-from compas.geometry._typing import CoordinatesType
-from compas.geometry._typing import CoordinateType
 
 # =============================================================================
 # =============================================================================

@@ -1,6 +1,7 @@
 from math import fabs
 from typing import Sequence
 
+from compas._typing import CoordinatesType
 from compas.itertools import pairwise
 from compas.linalg.vectors import add_vectors
 from compas.linalg.vectors import cross_vectors
@@ -12,8 +13,6 @@ from compas.linalg.vectors import scale_vector
 from compas.linalg.vectors import subtract_vectors
 from compas.linalg.vectors import subtract_vectors_xy
 from compas.linalg.vectors import sum_vectors
-
-from compas.geometry._typing import CoordinatesType
 
 
 def midpoint_point_point(a: Sequence[float], b: Sequence[float]) -> list[float]:

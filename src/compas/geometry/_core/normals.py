@@ -1,5 +1,6 @@
 from typing import Sequence
 
+from compas._typing import CoordinatesType
 from compas.linalg.vectors import cross_vectors
 from compas.linalg.vectors import cross_vectors_xy
 from compas.linalg.vectors import length_vector
@@ -7,7 +8,6 @@ from compas.linalg.vectors import normalize_vector
 from compas.linalg.vectors import subtract_vectors
 from compas.linalg.vectors import subtract_vectors_xy
 
-from compas.geometry._typing import CoordinatesType
 from .centroids import centroid_points
 
 
