@@ -135,7 +135,7 @@ class Point(Geometry):
         coordinates = cast(tuple[float, float, float], data)
         return cls(*coordinates)
 
-    def __init__(self, x: Union[float, str], y: Union[float, str], z: Union[float, str] = 0.0, name: Optional[str] = None) -> None:
+    def __init__(self, x: float, y: float, z: float = 0.0, name: Optional[str] = None) -> None:
         super(Point, self).__init__(name=name)
         self._x = 0.0
         self._y = 0.0
@@ -257,7 +257,7 @@ class Point(Geometry):
         return self._x
 
     @x.setter
-    def x(self, x: Union[float, str]) -> None:
+    def x(self, x: float) -> None:
         self._x = float(x)
 
     @property
@@ -265,7 +265,7 @@ class Point(Geometry):
         return self._y
 
     @y.setter
-    def y(self, y: Union[float, str]) -> None:
+    def y(self, y: float) -> None:
         self._y = float(y)
 
     @property
@@ -273,7 +273,7 @@ class Point(Geometry):
         return self._z
 
     @z.setter
-    def z(self, z: Union[float, str]) -> None:
+    def z(self, z: float) -> None:
         self._z = float(z)
 
     # ==========================================================================
