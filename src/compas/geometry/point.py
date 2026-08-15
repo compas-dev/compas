@@ -201,42 +201,114 @@ class Point(Geometry):
         return TOL.is_allclose(self, other)
 
     def __add__(self, other: CoordinateType) -> "Point":
+        """Return the coordinate-wise sum of this point and another coordinate.
+
+        Examples
+        --------
+        >>> list(Point(1, 2, 3) + [4, 5, 6])
+        [5.0, 7.0, 9.0]
+
+        """
         return Point(self.x + other[0], self.y + other[1], self.z + other[2])
 
     def __sub__(self, other: CoordinateType) -> Vector:
+        """Return the displacement vector from another coordinate to this point.
+
+        Examples
+        --------
+        >>> list(Point(4, 5, 6) - [1, 2, 3])
+        [3.0, 3.0, 3.0]
+
+        """
         x = self.x - other[0]
         y = self.y - other[1]
         z = self.z - other[2]
         return Vector(x, y, z)
 
     def __mul__(self, n: float) -> "Point":
+        """Return a point with every coordinate multiplied by a scalar.
+
+        Examples
+        --------
+        >>> list(Point(1, 2, 3) * 2)
+        [2.0, 4.0, 6.0]
+
+        """
         return Point(n * self.x, n * self.y, n * self.z)
 
     def __truediv__(self, n: float) -> "Point":
+        """Return a point with every coordinate divided by a scalar.
+
+        Examples
+        --------
+        >>> list(Point(2, 4, 6) / 2)
+        [1.0, 2.0, 3.0]
+
+        """
         return Point(self.x / n, self.y / n, self.z / n)
 
     def __pow__(self, n: float) -> "Point":
         return Point(self.x**n, self.y**n, self.z**n)
 
     def __iadd__(self, other: CoordinateType) -> Self:
+        """Add another coordinate to this point in place and return this point.
+
+        Examples
+        --------
+        >>> point = Point(1, 2, 3)
+        >>> point += [4, 5, 6]
+        >>> list(point)
+        [5.0, 7.0, 9.0]
+
+        """
         self.x += other[0]
         self.y += other[1]
         self.z += other[2]
         return self
 
     def __isub__(self, other: CoordinateType) -> Self:
+        """Subtract another coordinate from this point in place and return this point.
+
+        Examples
+        --------
+        >>> point = Point(4, 5, 6)
+        >>> point -= [1, 2, 3]
+        >>> list(point)
+        [3.0, 3.0, 3.0]
+
+        """
         self.x -= other[0]
         self.y -= other[1]
         self.z -= other[2]
         return self
 
     def __imul__(self, n: float) -> Self:
+        """Multiply every coordinate by a scalar in place and return this point.
+
+        Examples
+        --------
+        >>> point = Point(1, 2, 3)
+        >>> point *= 2
+        >>> list(point)
+        [2.0, 4.0, 6.0]
+
+        """
         self.x *= n
         self.y *= n
         self.z *= n
         return self
 
     def __itruediv__(self, n: float) -> Self:
+        """Divide every coordinate by a scalar in place and return this point.
+
+        Examples
+        --------
+        >>> point = Point(2, 4, 6)
+        >>> point /= 2
+        >>> list(point)
+        [1.0, 2.0, 3.0]
+
+        """
         self.x /= n
         self.y /= n
         self.z /= n

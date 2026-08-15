@@ -162,12 +162,36 @@ class Vector(Geometry):
         return TOL.is_allclose(self, other)
 
     def __add__(self, other: CoordinateType) -> "Vector":
+        """Return the coordinate-wise sum of this vector and another coordinate.
+
+        Examples
+        --------
+        >>> list(Vector(1, 2, 3) + [4, 5, 6])
+        [5.0, 7.0, 9.0]
+
+        """
         return Vector(self.x + other[0], self.y + other[1], self.z + other[2])
 
     def __sub__(self, other: CoordinateType) -> "Vector":
+        """Return the coordinate-wise difference with another coordinate.
+
+        Examples
+        --------
+        >>> list(Vector(4, 5, 6) - [1, 2, 3])
+        [3.0, 3.0, 3.0]
+
+        """
         return Vector(self.x - other[0], self.y - other[1], self.z - other[2])
 
     def __mul__(self, other: Union[float, CoordinateType]) -> "Vector":
+        """Multiply by a scalar or multiply component-wise by another coordinate.
+
+        Examples
+        --------
+        >>> list(Vector(1, 2, 3) * [2, 3, 4])
+        [2.0, 6.0, 12.0]
+
+        """
         if isinstance(other, (int, float)):
             return Vector(self.x * other, self.y * other, self.z * other)
 
@@ -178,6 +202,14 @@ class Vector(Geometry):
             raise TypeError("Cannot cast {} {} to Vector".format(other, type(other)))
 
     def __truediv__(self, other: Union[float, CoordinateType]) -> "Vector":
+        """Divide by a scalar or divide component-wise by another coordinate.
+
+        Examples
+        --------
+        >>> list(Vector(2, 6, 12) / [2, 3, 4])
+        [1.0, 2.0, 3.0]
+
+        """
         if isinstance(other, (int, float)):
             return Vector(self.x / other, self.y / other, self.z / other)
 
@@ -194,24 +226,64 @@ class Vector(Geometry):
         return self.scaled(-1.0)
 
     def __iadd__(self, other: CoordinateType) -> Self:
+        """Add another coordinate to this vector in place and return this vector.
+
+        Examples
+        --------
+        >>> vector = Vector(1, 2, 3)
+        >>> vector += [4, 5, 6]
+        >>> list(vector)
+        [5.0, 7.0, 9.0]
+
+        """
         self.x += other[0]
         self.y += other[1]
         self.z += other[2]
         return self
 
     def __isub__(self, other: CoordinateType) -> Self:
+        """Subtract another coordinate from this vector in place and return this vector.
+
+        Examples
+        --------
+        >>> vector = Vector(4, 5, 6)
+        >>> vector -= [1, 2, 3]
+        >>> list(vector)
+        [3.0, 3.0, 3.0]
+
+        """
         self.x -= other[0]
         self.y -= other[1]
         self.z -= other[2]
         return self
 
     def __imul__(self, n: float) -> Self:
+        """Multiply this vector by a scalar in place and return this vector.
+
+        Examples
+        --------
+        >>> vector = Vector(1, 2, 3)
+        >>> vector *= 2
+        >>> list(vector)
+        [2.0, 4.0, 6.0]
+
+        """
         self.x *= n
         self.y *= n
         self.z *= n
         return self
 
     def __itruediv__(self, n: float) -> Self:
+        """Divide this vector by a scalar in place and return this vector.
+
+        Examples
+        --------
+        >>> vector = Vector(2, 4, 6)
+        >>> vector /= 2
+        >>> list(vector)
+        [1.0, 2.0, 3.0]
+
+        """
         self.x /= n
         self.y /= n
         self.z /= n
@@ -223,13 +295,37 @@ class Vector(Geometry):
         self.z **= n
         return self
 
-    def __rmul__(self, n: float) -> "Vector":
-        return self.__mul__(n)
+    def __rmul__(self, other: Union[float, CoordinateType]) -> "Vector":
+        """Multiply by a scalar or component-wise coordinate on the left.
+
+        Examples
+        --------
+        >>> list([2, 3, 4] * Vector(1, 2, 3))
+        [2.0, 6.0, 12.0]
+
+        """
+        return self.__mul__(other)
 
     def __radd__(self, other: CoordinateType) -> "Vector":
+        """Return the coordinate-wise sum with another coordinate on the left.
+
+        Examples
+        --------
+        >>> list([4, 5, 6] + Vector(1, 2, 3))
+        [5.0, 7.0, 9.0]
+
+        """
         return self.__add__(other)
 
     def __rsub__(self, other: CoordinateType) -> "Vector":
+        """Subtract this vector component-wise from a coordinate on the left.
+
+        Examples
+        --------
+        >>> list([4, 5, 6] - Vector(1, 2, 3))
+        [3.0, 3.0, 3.0]
+
+        """
         try:
             z = other[2] if len(other) > 2 else 0.0
             return Vector(other[0] - self.x, other[1] - self.y, z - self.z)
@@ -237,6 +333,14 @@ class Vector(Geometry):
             raise TypeError("Cannot cast {} {} to Vector".format(other, type(other)))
 
     def __rtruediv__(self, other: CoordinateType) -> "Vector":
+        """Divide a coordinate on the left component-wise by this vector.
+
+        Examples
+        --------
+        >>> list([2, 6, 12] / Vector(2, 3, 4))
+        [1.0, 2.0, 3.0]
+
+        """
         try:
             z = other[2] if len(other) > 2 else 0.0
             return Vector(other[0] / self.x, other[1] / self.y, z / self.z)
@@ -303,7 +407,7 @@ class Vector(Geometry):
 
         Returns
         -------
-        Vector
+        Self
             A vector with components `x = 1.0, y = 0.0, z = 0.0`.
 
         Examples
@@ -320,7 +424,7 @@ class Vector(Geometry):
 
         Returns
         -------
-        Vector
+        Self
             A vector with components `x = 0.0, y = 1.0, z = 0.0`.
 
         Examples
@@ -337,7 +441,7 @@ class Vector(Geometry):
 
         Returns
         -------
-        Vector
+        Self
             A vector with components `x = 0.0, y = 0.0, z = 1.0`.
 
         Examples
@@ -361,7 +465,7 @@ class Vector(Geometry):
 
         Returns
         -------
-        Vector
+        Self
             The vector from start to end.
 
         Examples
@@ -613,7 +717,7 @@ class Vector(Geometry):
 
         Returns
         -------
-        Vector
+        Self
             The copy.
 
         Examples
@@ -654,11 +758,11 @@ class Vector(Geometry):
         self.z = self.z / length
 
     def unitized(self) -> Self:
-        """Returns a unitized copy of this vector.
+        """Return a unitized copy of this vector.
 
         Returns
         -------
-        Vector
+        Self
             A unitized copy of the vector.
 
         Examples
@@ -676,11 +780,11 @@ class Vector(Geometry):
         return v
 
     def invert(self) -> None:
-        """Invert the direction of this vector
+        """Invert the direction of this vector.
 
         Notes
         -----
-        a negation of a vector is similar to inverting a vector
+        Negating a vector is equivalent to inverting it.
 
         Examples
         --------
@@ -701,11 +805,11 @@ class Vector(Geometry):
     flip = invert
 
     def inverted(self) -> Self:
-        """Returns a inverted copy of this vector
+        """Return an inverted copy of this vector.
 
         Returns
         -------
-        Vector
+        Self
             The inverted copy.
 
         Examples
@@ -752,7 +856,7 @@ class Vector(Geometry):
         self.z *= z
 
     def scaled(self, x: float, y: Optional[float] = None, z: Optional[float] = None) -> Self:
-        """Returns a scaled copy of this vector.
+        """Return a scaled copy of this vector.
 
         Parameters
         ----------
@@ -767,7 +871,7 @@ class Vector(Geometry):
 
         Returns
         -------
-        Vector
+        Self
             A scaled copy of the vector.
 
         Examples
@@ -960,7 +1064,7 @@ class Vector(Geometry):
 
         Returns
         -------
-        Vector
+        Self
             The transformed copy.
 
         Examples
