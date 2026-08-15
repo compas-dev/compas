@@ -1,12 +1,29 @@
 from math import sqrt
+from typing import TYPE_CHECKING
+from typing import Iterator
+from typing import Optional
+from typing import Sequence
+from typing import Union
 
+from typing_extensions import Self
+
+from compas._typing import Coordinates
+from compas._typing import CoordinatesType
+from compas._typing import CoordinateType
 from compas.geometry import Geometry
 from compas.geometry import bestfit_plane
 from compas.linalg.vectors import cross_vectors
 from compas.tolerance import TOL
 
+from ._typing import TransformationType
 from .point import Point
 from .vector import Vector
+
+if TYPE_CHECKING:
+    from compas.geometry import Curve
+    from compas.geometry import Frame
+    from compas.geometry import Line
+    from compas.geometry import Surface
 
 
 class Plane(Geometry):
@@ -14,23 +31,12 @@ class Plane(Geometry):
 
     Parameters
     ----------
-    point : [float, float, float] | :class:`compas.geometry.Point`
+    point
         The base point of the plane.
-    normal : [float, float, float] | :class:`compas.geometry.Vector`
+    normal
         The normal vector of the plane.
-    name : str, optional
+    name
         The name of the plane.
-
-    Attributes
-    ----------
-    abcd : list[float], read-only
-        The coefficients of the plane equation.
-    d : float, read-only
-        The *d* parameter of the linear equation describing the plane.
-    normal : :class:`compas.geometry.Vector`
-        The normal vector of the plane.
-    point : :class:`compas.geometry.Plane`
-        The base point of the plane.
 
     Examples
     --------
@@ -40,48 +46,81 @@ class Plane(Geometry):
     >>> print(plane.normal)
     Vector(x=0.000, y=0.000, z=1.000)
 
+    A plane behaves as a two-item sequence containing its point and normal.
+
+    >>> len(plane)
+    2
+    >>> list(plane) == [plane.point, plane.normal]
+    True
+    >>> plane[0] = [1, 2, 3]
+    >>> plane.point == [1, 2, 3]
+    True
+    >>> plane[1] = [0, 1, 0]
+    >>> plane.normal == [0, 1, 0]
+    True
+    >>> plane == [[1, 2, 3], [0, 1, 0]]
+    True
+
+    Planes can be constructed from points and vectors, equation coefficients,
+    frames, point collections, or world-axis presets.
+
+    >>> Plane.from_three_points([0, 0, 0], [1, 0, 0], [0, 1, 0]) == Plane.worldXY()
+    True
+    >>> Plane.from_point_and_two_vectors([0, 0, 0], [1, 0, 0], [0, 1, 0]) == Plane.worldXY()
+    True
+    >>> Plane.from_abcd([0, 0, 1, 0]) == Plane.worldXY()
+    True
+    >>> from compas.geometry import Frame
+    >>> Plane.from_frame(Frame.worldXY()) == Plane.worldXY()
+    True
+    >>> Plane.from_points([[0, 0, 0], [1, 0, 0], [0, 1, 0]]) == Plane.worldXY()
+    True
+    >>> Plane.worldYZ().normal == [1, 0, 0]
+    True
+    >>> Plane.worldZX().normal == [0, 1, 0]
+    True
+
     """
 
-
     @property
-    def __data__(self):
+    def __data__(self) -> dict[str, list[float]]:
         return {
             "point": self.point.__data__,
             "normal": self.normal.__data__,
         }
 
-    def __init__(self, point, normal, name=None):
-        super(Plane, self).__init__(name=name)
-        self._point = None
-        self._normal = None
+    def __init__(self, point: CoordinateType, normal: CoordinateType, name: Optional[str] = None) -> None:
+        super().__init__(name=name)
+        self._point: Optional[Point] = None
+        self._normal: Optional[Vector] = None
         self.point = point
         self.normal = normal
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "{0}(point={1!r}, normal={2!r})".format(
             type(self).__name__,
             self.point,
             self.normal,
         )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "{0}(point={1}, normal={2})".format(
             type(self).__name__,
             str(self.point),
             str(self.normal),
         )
 
-    def __len__(self):
+    def __len__(self) -> int:
         return 2
 
-    def __getitem__(self, key):
+    def __getitem__(self, key: int) -> Union[Point, Vector]:
         if key == 0:
             return self.point
         if key == 1:
             return self.normal
         raise KeyError
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key: int, value: CoordinateType) -> None:
         if key == 0:
             self.point = value
             return
@@ -90,10 +129,14 @@ class Plane(Geometry):
             return
         raise KeyError
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[Union[Point, Vector]]:
         return iter([self.point, self.normal])
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Coordinates):
+            return False
+        if len(other) != 2:
+            return False
         return self.point == other[0] and self.normal == other[1]
 
     # ==========================================================================
@@ -101,34 +144,36 @@ class Plane(Geometry):
     # ==========================================================================
 
     @property
-    def point(self):
+    def point(self) -> Point:
         if not self._point:
             raise ValueError("The plane has no point.")
         return self._point
 
     @point.setter
-    def point(self, point):
-        self._point = Point(*point)
+    def point(self, point: CoordinateType) -> None:
+        z = point[2] if len(point) > 2 else 0.0
+        self._point = Point(point[0], point[1], z)
 
     @property
-    def normal(self):
+    def normal(self) -> Vector:
         if not self._normal:
             raise ValueError("The plane has no normal.")
         return self._normal
 
     @normal.setter
-    def normal(self, vector):
-        self._normal = Vector(*vector)
+    def normal(self, vector: CoordinateType) -> None:
+        z = vector[2] if len(vector) > 2 else 0.0
+        self._normal = Vector(vector[0], vector[1], z)
         self._normal.unitize()
 
     @property
-    def d(self):
+    def d(self) -> float:
         a, b, c = self.normal
         x, y, z = self.point
         return -a * x - b * y - c * z
 
     @property
-    def abcd(self):
+    def abcd(self) -> tuple[float, float, float, float]:
         a, b, c = self.normal
         d = self.d
         return a, b, c, d
@@ -138,21 +183,21 @@ class Plane(Geometry):
     # ==========================================================================
 
     @classmethod
-    def from_three_points(cls, a, b, c):  # type: (...) -> Plane
+    def from_three_points(cls, a: CoordinateType, b: CoordinateType, c: CoordinateType) -> Self:
         """Construct a plane from three points in three-dimensional space.
 
         Parameters
         ----------
-        a : [float, float, float] | :class:`compas.geometry.Point`
+        a
             The first point.
-        b : [float, float, float] | :class:`compas.geometry.Point`
+        b
             The second point.
-        c : [float, float, float] | :class:`compas.geometry.Point`
-            The second point.
+        c
+            The third point.
 
         Returns
         -------
-        :class:`compas.geometry.Plane`
+        Plane
             A plane with base point `a` and normal vector defined as the unitized
             cross product of the vectors `ab` and `ac`.
 
@@ -165,28 +210,29 @@ class Plane(Geometry):
         Vector(x=0.000, y=0.000, z=1.000)
 
         """
-        a = Point(*a)
-        b = Point(*b)
-        c = Point(*c)
-        normal = Vector(*cross_vectors(b - a, c - a))
+        a = Point(a[0], a[1], a[2] if len(a) > 2 else 0.0)
+        b = Point(b[0], b[1], b[2] if len(b) > 2 else 0.0)
+        c = Point(c[0], c[1], c[2] if len(c) > 2 else 0.0)
+        normal_data = cross_vectors(b - a, c - a)
+        normal = Vector(normal_data[0], normal_data[1], normal_data[2])
         return cls(a, normal)
 
     @classmethod
-    def from_point_and_two_vectors(cls, point, u, v):  # type: (...) -> Plane
+    def from_point_and_two_vectors(cls, point: CoordinateType, u: CoordinateType, v: CoordinateType) -> Self:
         """Construct a plane from a base point and two vectors.
 
         Parameters
         ----------
-        point : [float, float, float] | :class:`compas.geometry.Point`
+        point
             The base point.
-        u : [float, float, float] | :class:`compas.geometry.Vector`
+        u
             The first vector.
-        v : [float, float, float] | :class:`compas.geometry.Vector`
+        v
             The second vector.
 
         Returns
         -------
-        :class:`compas.geometry.Plane`
+        Plane
             A plane with base point `point` and normal vector defined as the unitized
             cross product of vectors `u` and `v`.
 
@@ -199,72 +245,89 @@ class Plane(Geometry):
         Vector(x=0.000, y=0.000, z=1.000)
 
         """
-        normal = Vector(*cross_vectors(u, v))
+        normal_data = cross_vectors(u, v)
+        normal = Vector(normal_data[0], normal_data[1], normal_data[2])
         return cls(point, normal)
 
     @classmethod
-    def from_abcd(cls, abcd):  # type: (...) -> Plane
+    def from_abcd(cls, abcd: Sequence[float]) -> Self:
         """Construct a plane from the plane equation coefficients.
 
         Parameters
         ----------
-        abcd : [float, float, float, float]
-            The equation coefficients.
+        abcd
+            The coefficients $a$, $b$, $c$, and $d$ of the equation
+            $ax + by + cz + d = 0$.
 
         Returns
         -------
-        :class:`compas.geometry.Plane`
+        Plane
+            A plane satisfying the provided equation.
+
+        Examples
+        --------
+        >>> plane = Plane.from_abcd([0, 0, 2, -4])
+        >>> plane.point == [0, 0, 2]
+        True
+        >>> plane.normal == [0, 0, 1]
+        True
 
         """
         a, b, c, d = abcd
-        x = 1 / sqrt(a**2 + b**2 + c**2)
+        length = sqrt(a**2 + b**2 + c**2)
         normal = [a, b, c]
-        point = [a * d * x, b * d * x, c * d * x]
+        factor = -d / length**2
+        point = [a * factor, b * factor, c * factor]
         return cls(point, normal)
 
     @classmethod
-    def worldXY(cls):  # type: (...) -> Plane
+    def worldXY(cls) -> Self:
         """Construct the world XY plane.
 
         Returns
         -------
-        :class:`compas.geometry.Plane`
+        Plane
             The world XY plane.
 
         """
         return cls([0, 0, 0], [0, 0, 1])
 
     @classmethod
-    def worldYZ(cls):  # type: (...) -> Plane
+    def worldYZ(cls) -> Self:
         """Construct the world YZ plane.
 
         Returns
         -------
-        :class:`compas.geometry.Plane`
+        Plane
             The world YZ plane.
 
         """
         return cls([0, 0, 0], [1, 0, 0])
 
     @classmethod
-    def worldZX(cls):  # type: (...) -> Plane
+    def worldZX(cls) -> Self:
         """Construct the world ZX plane.
 
         Returns
         -------
-        :class:`compas.geometry.Plane`
+        Plane
             The world ZX plane.
 
         """
         return cls([0, 0, 0], [0, 1, 0])
 
     @classmethod
-    def from_frame(cls, frame):  # type: (...) -> Plane
+    def from_frame(cls, frame: "Frame") -> Self:
         """Construct a plane from a frame.
+
+        Parameters
+        ----------
+        frame
+            The frame defining the plane.
 
         Returns
         -------
-        :class:`compas.geometry.Plane`
+        Plane
             A plane with the frame's `point` and the frame's `normal`.
 
         Examples
@@ -274,31 +337,32 @@ class Plane(Geometry):
         >>> plane = Plane.from_frame(frame)
         >>> print(plane.point)
         Point(x=1.000, y=1.000, z=1.000)
-        >>> print(plane.normal)  # doctest: +SKIP
-        Vector(x=-0.299, y=-0.079, z=0.951))
+        >>> print(plane.normal)
+        Vector(x=-0.299, y=-0.079, z=0.951)
 
         """
         return cls(frame.point, frame.normal)
 
     @classmethod
-    def from_points(cls, points):  # type: (...) -> Plane
-        """Construct a plane from a list of points.
+    def from_points(cls, points: CoordinatesType) -> Self:
+        """Construct a plane from a collection of points.
 
         If the list contains more than three points, a plane is constructed that minimizes the distance to all points.
 
         Parameters
         ----------
-        points : list of [float, float, float] | :class:`compas.geometry.Point`
+        points
             The points.
 
         Returns
         -------
-        :class:`compas.geometry.Plane`
+        Plane
             The plane defined by the points.
 
         See Also
         --------
-        :func:`compas.geometry.bestfit_plane`
+        [`bestfit_plane`][compas.geometry.bestfit_plane] computes the best-fit
+        plane used for collections containing other than three points.
 
         Examples
         --------
@@ -319,17 +383,13 @@ class Plane(Geometry):
     # Transformations
     # ==========================================================================
 
-    def transform(self, T):
+    def transform(self, transformation: TransformationType) -> None:
         """Transform this plane.
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation` | list[list[float]]
+        transformation
             The transformation.
-
-        Returns
-        -------
-        None
 
         Examples
         --------
@@ -342,29 +402,29 @@ class Plane(Geometry):
         >>> plane.transform(T)
 
         """
-        self.point.transform(T)
-        self.normal.transform(T)
+        self.point.transform(transformation)
+        self.normal.transform(transformation)
 
     # ==========================================================================
     # Methods
     # ==========================================================================
 
-    def is_parallel(self, other, tol=None):
+    def is_parallel(self, other: "Plane", tol: Optional[float] = None) -> bool:
         """Verify if this plane is parallel to another plane.
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Plane`
+        other
             The other plane.
-        tol : float, optional
+        tol
             Tolerance for the dot product of the normals.
-            Default is :attr:`TOL.absolute`.
+            Default is `TOL.absolute`.
 
         Returns
         -------
         bool
-            ``True`` if the planes are parallel.
-            ``False`` otherwise.
+            `True` if the planes are parallel.
+            `False` otherwise.
 
         Examples
         --------
@@ -380,22 +440,22 @@ class Plane(Geometry):
         """
         return TOL.is_close(abs(self.normal.dot(other.normal)), 1, rtol=0, atol=tol)
 
-    def is_perpendicular(self, other, tol=None):
+    def is_perpendicular(self, other: "Plane", tol: Optional[float] = None) -> bool:
         """Verify if this plane is perpendicular to another plane.
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Plane`
+        other
             The other plane.
-        tol : float, optional
+        tol
             Tolerance for the dot product of the normals.
-            Default is :attr:`TOL.absolute`.
+            Default is `TOL.absolute`.
 
         Returns
         -------
         bool
-            ``True`` if the planes are perpendicular.
-            ``False`` otherwise.
+            `True` if the planes are perpendicular.
+            `False` otherwise.
 
         Examples
         --------
@@ -407,22 +467,22 @@ class Plane(Geometry):
         """
         return TOL.is_zero(self.normal.dot(other.normal), tol)
 
-    def contains_point(self, point, tol=None):
+    def contains_point(self, point: CoordinateType, tol: Optional[float] = None) -> bool:
         """Verify if a given point lies in the plane.
 
         Parameters
         ----------
-        point : [float, float, float] | :class:`compas.geometry.Point`
+        point
             The point.
-        tol : float, optional
+        tol
             Tolerance for the distance from the point to the plane.
-            Default is :attr:`TOL.absolute`.
+            Default is `TOL.absolute`.
 
         Returns
         -------
         bool
-            ``True`` if the point lies in the plane.
-            ``False`` otherwise.
+            `True` if the point lies in the plane.
+            `False` otherwise.
 
         Examples
         --------
@@ -436,12 +496,12 @@ class Plane(Geometry):
 
     # move to Point.distance_to_plane?
     # point.distance_to_plane(plane)
-    def distance_to_point(self, point):
+    def distance_to_point(self, point: CoordinateType) -> float:
         """Compute the distance from a given point to the plane.
 
         Parameters
         ----------
-        point : [float, float, float] | :class:`compas.geometry.Point`
+        point
             The point.
 
         Returns
@@ -462,17 +522,17 @@ class Plane(Geometry):
     # move to Point.closest_on_plane?
     # point.closest_on_plane(plane)
     # remove entirely?
-    def closest_point(self, point):
+    def closest_point(self, point: CoordinateType) -> Point:
         """Compute the closest point on the plane to a given point.
 
         Parameters
         ----------
-        point : [float, float, float] | :class:`compas.geometry.Point`
+        point
             The point.
 
         Returns
         -------
-        :class:`compas.geometry.Point`
+        Point
             The closest point on the plane.
 
         Examples
@@ -483,7 +543,7 @@ class Plane(Geometry):
         Point(x=1.000, y=1.000, z=0.000)
 
         """
-        point = Point(*point)
+        point = Point(point[0], point[1], point[2] if len(point) > 2 else 0.0)
         vector = self.point - point
         distance = self.normal.dot(vector)
         return point + self.normal.scaled(distance)
@@ -491,17 +551,20 @@ class Plane(Geometry):
     # move to Point.proejcted_on_plane?
     # point.projected_on_plane(plane)
     # point.project_on_plane(plane)
-    def projected_point(self, point, direction=None):
+    def projected_point(self, point: CoordinateType, direction: Optional[CoordinateType] = None) -> Optional[Point]:
         """Returns the projection of a given point onto the plane.
 
         Parameters
         ----------
-        point : [float, float, float] | :class:`compas.geometry.Point`
+        point
             The point.
+        direction
+            The projection direction. If omitted, the projection follows the
+            plane normal.
 
         Returns
         -------
-        :class:`compas.geometry.Point` | None
+        Optional[Point]
             The projected point, or None if a direction is given and it is parallel to the plane.
 
         Examples
@@ -524,17 +587,17 @@ class Plane(Geometry):
     # move to Point.mirrored_by_plane?
     # point.mirrored_by_plane(plane)
     # point.mirror_by_plane(plane)
-    def mirrored_point(self, point):
+    def mirrored_point(self, point: CoordinateType) -> Point:
         """Returns the mirror image of a given point.
 
         Parameters
         ----------
-        point : [float, float, float] | :class:`compas.geometry.Point`
+        point
             The point.
 
         Returns
         -------
-        :class:`compas.geometry.Point`
+        Point
             The mirrored point.
 
         Examples
@@ -545,26 +608,26 @@ class Plane(Geometry):
         Point(x=1.000, y=1.000, z=-1.000)
 
         """
-        point = Point(*point)
+        point = Point(point[0], point[1], point[2] if len(point) > 2 else 0.0)
         vector = self.point - point
         distance = self.normal.dot(vector)
         return point + self.normal.scaled(2 * distance)
 
-    def intersection_with_line(self, line, tol=None):
+    def intersection_with_line(self, line: "Line", tol: Optional[float] = None) -> Optional[Point]:
         """Compute the intersection of a plane and a line.
 
         Parameters
         ----------
-        line : :class:`compas.geometry.Line`
+        line
             The line.
-        tol : float, optional
+        tol
             Tolerance for the dot product of the line vector and the plane normal.
-            Default is :attr:`TOL.absolute`.
+            Default is `TOL.absolute`.
 
         Returns
         -------
-        :class:`compas.geometry.Point` | None
-            The intersection point, or ``None`` if the line is parallel to the plane.
+        Optional[Point]
+            The intersection point, or `None` if the line is parallel to the plane.
 
         Examples
         --------
@@ -583,17 +646,17 @@ class Plane(Geometry):
         t = (self.point - line.start).dot(self.normal) / line.vector.dot(self.normal)
         return line.point_at(t)
 
-    def intersection_with_plane(self, plane):
+    def intersection_with_plane(self, plane: "Plane") -> Optional["Line"]:
         """Compute the intersection of two planes.
 
         Parameters
         ----------
-        plane : :class:`compas.geometry.Plane`
+        plane
             The other plane.
 
         Returns
         -------
-        :class:`compas.geometry.Line` | None
+        Optional[Line]
             The intersection line, or None if the planes are parallel or coincident.
 
         Examples
@@ -614,58 +677,60 @@ class Plane(Geometry):
         # point on the line
         line = Line(self.point, self.point + self.normal.cross(direction))
         point = plane.intersection_with_line(line)
+        if point is None:
+            return None
 
         return Line(point, point + direction)
 
-    def intersections_with_curve(self, curve, tol=None):
+    def intersections_with_curve(self, curve: "Curve", tol: Optional[float] = None) -> list[Point]:
         """Compute the intersection of a plane and a curve.
 
         Parameters
         ----------
-        curve : :class:`compas.geometry.Curve`
+        curve
             The curve.
-        tol : float, optional
+        tol
             Tolerance for the dot product of the line vector and the plane normal.
-            Default is :attr:`TOL.absolute`.
+            Default is `TOL.absolute`.
 
         Returns
         -------
-        list of :class:`compas.geometry.Point`
+        list[Point]
             The intersection points.
 
         """
         raise NotImplementedError
 
-    def intersections_with_surface(self, surface):
+    def intersections_with_surface(self, surface: "Surface") -> list[Point]:
         """Compute the intersection of a plane and a surface.
 
         Parameters
         ----------
-        surface : :class:`compas.geometry.Surface`
+        surface
             The surface.
 
         Returns
         -------
-        list of :class:`compas.geometry.Point`
+        list[Point]
             The intersection points.
 
         """
         raise NotImplementedError
 
-    def offset(self, distance):
+    def offset(self, distance: float) -> Self:
         """Returns a new offset plane by a given distance.
 
         The plane normal is used as positive direction.
 
         Parameters
         ----------
-        distance: float
+        distance
             The offset distance.
 
         Returns
         -------
-        :class:`compas.geometry.Plane`
+        Plane
             The offset plane.
 
         """
-        return Plane(self.point + self.normal.scaled(distance), self.normal)
+        return type(self)(self.point + self.normal.scaled(distance), self.normal)

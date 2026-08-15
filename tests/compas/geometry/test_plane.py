@@ -1,11 +1,15 @@
-import pytest
 import json
-import compas
 from random import random
-from compas.tolerance import TOL
-from compas.geometry import Point
-from compas.geometry import Vector
+
+import pytest
+
+from compas.geometry import Frame
+from compas.geometry import Line
 from compas.geometry import Plane
+from compas.geometry import Point
+from compas.geometry import Translation
+from compas.geometry import Vector
+from compas.tolerance import TOL
 
 
 @pytest.mark.parametrize(
@@ -82,3 +86,117 @@ def test_plane_is_parallel():
     plane1 = Plane.worldXY()
     plane2 = Plane([1.0, 1.0, 1.0], [0.0, 0.0, -1.0])
     assert plane1.is_parallel(plane2)
+
+
+def test_plane_sequence_behavior():
+    plane = Plane.worldXY()
+
+    assert len(plane) == 2
+    assert list(plane) == [plane.point, plane.normal]
+    assert plane[0] is plane.point
+    assert plane[1] is plane.normal
+
+    plane[0] = [1, 2, 3]
+    plane[1] = [0, 2, 0]
+
+    assert plane.point == [1, 2, 3]
+    assert plane.normal == [0, 1, 0]
+    assert plane == [[1, 2, 3], [0, 1, 0]]
+
+    with pytest.raises(KeyError):
+        _ = plane[2]
+
+    with pytest.raises(KeyError):
+        plane[2] = [0, 0, 1]
+
+
+def test_plane_equation_coefficients():
+    plane = Plane([0, 0, 2], [0, 0, 1])
+
+    assert plane.d == -2
+    assert plane.abcd == (0, 0, 1, -2)
+
+
+def test_plane_from_abcd():
+    plane = Plane.from_abcd([0, 0, 2, -4])
+
+    assert plane.point == [0, 0, 2]
+    assert plane.normal == [0, 0, 1]
+    assert TOL.is_zero(sum(coefficient * coordinate for coefficient, coordinate in zip(plane.abcd[:3], plane.point)) + plane.abcd[3])
+
+
+def test_plane_additional_constructors():
+    frame = Frame([1, 2, 3], [1, 0, 0], [0, 1, 0])
+    from_frame = Plane.from_frame(frame)
+    from_points = Plane.from_points([[0, 0, 0], [1, 0, 0], [0, 1, 0], [1, 1, 0]])
+
+    assert from_frame.point == frame.point
+    assert from_frame.normal == frame.normal
+    assert from_points.contains_point([0, 0, 0])
+    assert from_points.normal == [0, 0, 1]
+
+
+def test_plane_transform():
+    plane = Plane.worldXY()
+    plane.transform(Translation.from_vector([1, 2, 3]))
+
+    assert plane.point == [1, 2, 3]
+    assert plane.normal == [0, 0, 1]
+
+
+def test_plane_point_relationships():
+    plane = Plane.worldXY()
+
+    assert plane.contains_point([1, 2, 0])
+    assert not plane.contains_point([1, 2, 1])
+    assert plane.distance_to_point([1, 2, 3]) == 3
+    assert plane.closest_point([1, 2, 3]) == [1, 2, 0]
+    assert plane.projected_point([1, 2, 3]) == [1, 2, 0]
+    assert plane.projected_point([1, 2, 3], [0, 0, -1]) == [1, 2, 0]
+    assert plane.projected_point([1, 2, 3], [1, 0, 0]) is None
+    assert plane.mirrored_point([1, 2, 3]) == [1, 2, -3]
+
+
+def test_plane_relationships():
+    plane = Plane.worldXY()
+
+    assert plane.is_parallel(Plane([0, 0, 1], [0, 0, -1]))
+    assert plane.is_perpendicular(Plane.worldYZ())
+    assert not plane.is_perpendicular(Plane.worldXY())
+
+
+def test_plane_intersections():
+    plane = Plane.worldXY()
+    crossing = Line([0, 0, 1], [0, 0, -1])
+    parallel = Line([0, 0, 1], [1, 0, 1])
+
+    assert plane.intersection_with_line(crossing) == [0, 0, 0]
+    assert plane.intersection_with_line(parallel) is None
+
+    line = plane.intersection_with_plane(Plane.worldYZ())
+    assert line is not None
+    assert plane.contains_point(line.start)
+    assert Plane.worldYZ().contains_point(line.start)
+    assert plane.intersection_with_plane(Plane([0, 0, 1], [0, 0, 1])) is None
+
+
+def test_plane_offset_preserves_subclass():
+    class CustomPlane(Plane):
+        pass
+
+    plane = CustomPlane.worldXY()
+    offset = plane.offset(2)
+
+    assert isinstance(offset, CustomPlane)
+    assert offset.point == [0, 0, 2]
+    assert offset.normal == plane.normal
+
+
+def test_plane_unimplemented_intersections():
+    plane = Plane.worldXY()
+
+    with pytest.raises(NotImplementedError):
+        plane.intersections_with_curve(None)
+
+    with pytest.raises(NotImplementedError):
+        plane.intersections_with_surface(None)
