@@ -111,7 +111,32 @@ def test_point_comparison_absolute():
 
 
 def test_point_inplace_operators():
-    pass
+    point = Point(2.0, 4.0, 6.0)
+    identity = id(point)
+
+    point += [1.0, 2.0, 3.0]
+    point -= [1.0, 1.0, 1.0]
+    point *= 2.0
+    point /= 4.0
+    point **= 2.0
+
+    assert id(point) == identity
+    assert point == [1.0, 6.25, 16.0]
+
+
+def test_point_sequence_behaviour():
+    point = Point(1.0, 2.0, 3.0)
+
+    assert len(point) == 3
+    assert list(point) == [1.0, 2.0, 3.0]
+    assert point[:] == [1.0, 2.0, 3.0]
+    assert point[-1] == 3.0
+    assert point[3] == 1.0
+
+    point[0] = 4.0
+    point[4] = 5.0
+    point[-1] = 6.0
+    assert point == [4.0, 5.0, 6.0]
 
 
 def test_point_data():

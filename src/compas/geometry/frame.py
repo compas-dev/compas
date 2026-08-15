@@ -43,33 +43,14 @@ class Frame(Geometry):
 
     Parameters
     ----------
-    point : [float, float, float] | :class:`compas.geometry.Point`
+    point
         The origin of the frame.
-    xaxis : [float, float, float] | :class:`compas.geometry.Vector`, optional
+    xaxis
         The x-axis of the frame. Defaults to the unit X vector.
-    yaxis : [float, float, float] | :class:`compas.geometry.Vector`, optional
+    yaxis
         The y-axis of the frame. Defaults to the unit Y vector.
-    name : str, optional
+    name
         The name of the frame.
-
-    Attributes
-    ----------
-    axes : list of :class:`compas.geometry.Vector`, read-only
-        The XYZ axes of the frame.
-    axis_angle_vector : :class:`compas.geometry.Vector`, read-only
-        The axis-angle vector representing the rotation of the frame.
-    normal : :class:`compas.geometry.Vector`, read-only
-        The normal of the base plane of the frame.
-    point : :class:`compas.geometry.Point`
-        The base point of the frame.
-    quaternion : :class:`compas.geometry.Quaternion`, read-only
-        The quaternion from the rotation given by the frame.
-    xaxis : :class:`compas.geometry.Vector`
-        The local X axis of the frame.
-    yaxis : :class:`compas.geometry.Vector`
-        The local Y axis of the frame.
-    zaxis : :class:`compas.geometry.Vector`, read-only
-        The Z axis of the frame.
 
     Notes
     -----
@@ -83,6 +64,61 @@ class Frame(Geometry):
     >>> f = Frame([0, 0, 0], [1, 0, 0], [0, 1, 0])
     >>> f = Frame(Point(0, 0, 0), Vector(1, 0, 0), Vector(0, 1, 0))
     >>> f = Frame([0, 0, 0])
+
+    `Frame` implements `__len__`, `__iter__`, `__getitem__`, and `__setitem__`.
+    Its three items are the origin, X axis, and Y axis, in that order.
+
+    >>> len(f)
+    3
+    >>> list(f) == [f.point, f.xaxis, f.yaxis]
+    True
+    >>> f[0] = [1.0, 2.0, 3.0]
+    >>> f.point == [1.0, 2.0, 3.0]
+    True
+
+    Frames compare equal to other three-item frame representations when their
+    origin and axes are equal within the configured tolerance.
+
+    >>> f == [f.point, f.xaxis, f.yaxis]
+    True
+
+    Frames can be constructed from world-axis presets or three points.
+
+    >>> Frame.worldXY() == Frame.from_points([0, 0, 0], [1, 0, 0], [0, 1, 0])
+    True
+    >>> Frame.worldZX().xaxis == [0, 0, 1]
+    True
+    >>> Frame.worldYZ().xaxis == [0, 1, 0]
+    True
+
+    Transformations, rotations, matrices, and flat matrix data can also define
+    a frame.
+
+    >>> from compas.geometry import Rotation
+    >>> from compas.geometry import Transformation
+    >>> identity = Frame.worldXY()
+    >>> Frame.from_rotation(Rotation()) == identity
+    True
+    >>> transformation = Transformation.from_frame(identity)
+    >>> Frame.from_transformation(transformation) == identity
+    True
+    >>> Frame.from_matrix(transformation.matrix) == identity
+    True
+    >>> values = [value for row in transformation.matrix for value in row]
+    >>> Frame.from_list(values) == identity
+    True
+
+    Rotation coefficients and planes provide further constructor forms.
+
+    >>> Frame.from_quaternion([1, 0, 0, 0]) == identity
+    True
+    >>> Frame.from_axis_angle_vector([0, 0, 0]) == identity
+    True
+    >>> Frame.from_euler_angles([0, 0, 0]) == identity
+    True
+    >>> from compas.geometry import Plane
+    >>> Frame.from_plane(Plane.worldXY()).normal == [0, 0, 1]
+    True
 
     """
 
@@ -101,7 +137,7 @@ class Frame(Geometry):
         yaxis: Optional[CoordinateType] = None,
         name: Optional[str] = None,
     ) -> None:
-        super(Frame, self).__init__(name=name)
+        super().__init__(name=name)
         self._point = None
         self._xaxis = None
         self._yaxis = None
@@ -147,6 +183,7 @@ class Frame(Geometry):
             return
         if key == 2:
             self.yaxis = value
+            return
         raise KeyError
 
     def __iter__(self) -> Iterator[Union[Point, Vector]]:

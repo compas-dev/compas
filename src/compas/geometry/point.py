@@ -52,15 +52,6 @@ class Point(Geometry):
     name
         The name of the point.
 
-    Attributes
-    ----------
-    x
-        The X coordinate of the point.
-    y
-        The Y coordinate of the point.
-    z
-        The Z coordinate of the point.
-
     Notes
     -----
     A `Point` object supports direct access to its xyz coordinates through
@@ -77,7 +68,8 @@ class Point(Geometry):
     >>> p1 = Point(1, 2, 3)
     >>> p2 = Point(4, 5, 6)
 
-    The XYZ coordinates of point objects can be accessed as object attributes or by trating the points as lists.
+    `Point` implements `__len__`, `__iter__`, `__getitem__`, and `__setitem__`,
+    so its coordinates can be accessed as attributes or through sequence operations.
 
     >>> p1.x
     1.0
@@ -91,16 +83,33 @@ class Point(Geometry):
     2.0
     >>> p1[2]
     3.0
+    >>> len(p1)
+    3
+    >>> list(p1)
+    [1.0, 2.0, 3.0]
+    >>> p1[0] = 1.5
+    >>> p1 == [1.5, 2.0, 3.0]
+    True
+    >>> p1.x = 1.0
 
-    Point objects support basic arithmetic operations.
+    `Point.__add__` returns a point, whereas `Point.__sub__` returns the
+    displacement vector from the right operand to the point. Multiplication
+    and division apply a scalar to every coordinate.
 
     >>> result = p1 + p2
     >>> print(result)
     Point(x=5.000, y=7.000, z=9.000)
 
+    >>> result = p2 - p1
+    >>> print(result)
+    Vector(x=3.000, y=3.000, z=3.000)
+
     >>> result = p1 * 2
     >>> print(result)
     Point(x=2.000, y=4.000, z=6.000)
+
+    >>> print(p2 / 2)
+    Point(x=2.000, y=2.500, z=3.000)
 
     >>> result = p1**2
     >>> print(result)
@@ -134,7 +143,7 @@ class Point(Geometry):
         return cls(data[0], data[1], data[2])
 
     def __init__(self, x: float, y: float, z: float = 0.0, name: Optional[str] = None) -> None:
-        super(Point, self).__init__(name=name)
+        super().__init__(name=name)
         self._x = 0.0
         self._y = 0.0
         self._z = 0.0

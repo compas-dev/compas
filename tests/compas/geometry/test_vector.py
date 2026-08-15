@@ -116,7 +116,32 @@ def test_vector_comparison_absolute():
 
 
 def test_vector_inplace_operators():
-    pass
+    vector = Vector(2.0, 4.0, 6.0)
+    identity = id(vector)
+
+    vector += [1.0, 2.0, 3.0]
+    vector -= [1.0, 1.0, 1.0]
+    vector *= 2.0
+    vector /= 4.0
+    vector **= 2.0
+
+    assert id(vector) == identity
+    assert vector == [1.0, 6.25, 16.0]
+
+
+def test_vector_sequence_behaviour():
+    vector = Vector(1.0, 2.0, 3.0)
+
+    assert len(vector) == 3
+    assert list(vector) == [1.0, 2.0, 3.0]
+    assert vector[:] == [1.0, 2.0, 3.0]
+    assert vector[-1] == 3.0
+    assert vector[3] == 1.0
+
+    vector[0] = 4.0
+    vector[4] = 5.0
+    vector[-1] = 6.0
+    assert vector == [4.0, 5.0, 6.0]
 
 
 def test_vector_scale():

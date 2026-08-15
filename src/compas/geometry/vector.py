@@ -36,17 +36,6 @@ class Vector(Geometry):
     name
         The name of the vector.
 
-    Attributes
-    ----------
-    x : float
-        The X coordinate of the point.
-    y : float
-        The Y coordinate of the point.
-    z : float
-        The Z coordinate of the point.
-    length : float, read-only
-        The length of this vector.
-
     Examples
     --------
     >>> u = Vector(1, 0, 0)
@@ -62,6 +51,17 @@ class Vector(Geometry):
     1.0
     >>> u.length
     1.0
+    >>> len(u)
+    3
+    >>> list(u)
+    [1.0, 0.0, 0.0]
+    >>> u[0] = 2.0
+    >>> u == [2.0, 0.0, 0.0]
+    True
+    >>> u.x = 1.0
+
+    Addition and subtraction operate component-wise. Multiplication and
+    division accept either a scalar or another coordinate sequence.
 
     >>> result = u + v
     >>> print(result)
@@ -75,12 +75,47 @@ class Vector(Geometry):
     >>> print(result)
     Vector(x=2.000, y=0.000, z=0.000)
 
+    >>> result = u / [2.0, 1.0, 1.0]
+    >>> print(result)
+    Vector(x=0.500, y=0.000, z=0.000)
+
+    Reflected operators apply the coordinate sequence on the left.
+
+    >>> list([2.0, 3.0, 4.0] * u)
+    [2.0, 0.0, 0.0]
+    >>> list([2.0, 3.0, 4.0] - u)
+    [1.0, 3.0, 4.0]
+
+    In-place operators modify and return the original vector.
+
+    >>> identity = id(u)
+    >>> u += [1.0, 2.0, 3.0]
+    >>> id(u) == identity
+    True
+    >>> list(u)
+    [2.0, 2.0, 3.0]
+
+    >>> u = Vector(1, 0, 0)
     >>> u.dot(v)
     0.0
 
     >>> w = u.cross(v)
     >>> print(w)
     Vector(x=0.000, y=0.000, z=1.000)
+
+    Unit vectors along the world axes are available through classmethods.
+
+    >>> Vector.Xaxis() == [1.0, 0.0, 0.0]
+    True
+    >>> Vector.Yaxis() == [0.0, 1.0, 0.0]
+    True
+    >>> Vector.Zaxis() == [0.0, 0.0, 1.0]
+    True
+
+    A vector can also be constructed from start and end coordinates.
+
+    >>> Vector.from_start_end([1.0, 2.0, 3.0], [4.0, 6.0, 3.0]) == [3.0, 4.0, 0.0]
+    True
 
     """
 
@@ -93,7 +128,7 @@ class Vector(Geometry):
         return cls(data[0], data[1], data[2])
 
     def __init__(self, x: float, y: float, z: float = 0.0, name: Optional[str] = None) -> None:
-        super(Vector, self).__init__(name=name)
+        super().__init__(name=name)
         self._x = 0.0
         self._y = 0.0
         self._z = 0.0

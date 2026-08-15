@@ -3,12 +3,15 @@ import math
 
 import pytest
 import json
-import compas
 from random import random
 from compas.tolerance import TOL
 from compas.geometry import Point
 from compas.geometry import Vector
 from compas.geometry import Frame
+from compas.geometry import Plane
+from compas.geometry import Quaternion
+from compas.geometry import Rotation
+from compas.geometry import Transformation
 
 
 @pytest.mark.parametrize(
@@ -65,6 +68,89 @@ def test_frame_predefined():
     assert frame.point == Point(0, 0, 0)
     assert frame.xaxis == Vector(0, 0, 1)
     assert frame.yaxis == Vector(1, 0, 0)
+
+
+def test_frame_sequence_behaviour():
+    frame = Frame.worldXY()
+
+    assert len(frame) == 3
+    assert list(frame) == [frame.point, frame.xaxis, frame.yaxis]
+    assert frame[0] is frame.point
+    assert frame[1] is frame.xaxis
+    assert frame[2] is frame.yaxis
+    assert frame != object()
+    assert frame != [frame.point, frame.xaxis]
+
+    frame[0] = [1.0, 2.0, 3.0]
+    frame[1] = [0.0, 1.0, 0.0]
+    frame[2] = [0.0, 0.0, 1.0]
+    assert frame == [[1.0, 2.0, 3.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
+
+    with pytest.raises(KeyError):
+        _ = frame[3]
+    with pytest.raises(KeyError):
+        frame[3] = [1.0, 0.0, 0.0]
+
+
+def test_frame_constructors():
+    expected = Frame.worldXY()
+    point = [0.0, 0.0, 0.0]
+
+    assert Frame.from_points(point, [1.0, 0.0, 0.0], [0.0, 1.0, 0.0]) == expected
+
+    rotation = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], 0.0)
+    assert Frame.from_rotation(rotation) == expected
+
+    transformation = Transformation.from_frame(expected)
+    assert Frame.from_transformation(transformation) == expected
+    assert Frame.from_matrix(transformation.matrix) == expected
+
+    values = [value for row in transformation.matrix for value in row]
+    assert Frame.from_list(values) == expected
+    values12 = values[:12]
+    assert Frame.from_list(values12) == expected
+    assert len(values12) == 16
+
+    assert Frame.from_quaternion(Quaternion(1.0, 0.0, 0.0, 0.0), point) == expected
+    assert Frame.from_axis_angle_vector([0.0, 0.0, 0.0], point) == expected
+    assert Frame.from_euler_angles([0.0, 0.0, 0.0], point=point) == expected
+    from_plane = Frame.from_plane(Plane(point, [0.0, 0.0, 1.0]))
+    assert from_plane.point == point
+    assert from_plane.normal == [0.0, 0.0, 1.0]
+
+    with pytest.raises(ValueError):
+        Frame.from_list([0.0] * 11)
+
+
+def test_frame_conversions_and_transformations():
+    frame = Frame([1.0, 2.0, 3.0])
+    transformation = frame.to_transformation()
+
+    assert Frame.from_transformation(transformation) == frame
+    assert frame.to_local_coordinates([1.0, 2.0, 3.0]) == Point(0.0, 0.0, 0.0)
+    assert frame.to_local_coordinates((2.0, 4.0, 6.0)) == Point(1.0, 2.0, 3.0)
+    assert frame.to_world_coordinates([0.0, 0.0, 0.0]) == Point(1.0, 2.0, 3.0)
+    assert frame.to_world_coordinates((1.0, 2.0, 3.0)) == Point(2.0, 4.0, 6.0)
+
+    point = Point(2.0, 4.0, 6.0)
+    local = frame.to_local_coordinates(point)
+    assert isinstance(local, Point)
+    assert frame.to_world_coordinates(local) == point
+
+    transformed = Frame.worldXY()
+    transformed.transform(transformation.matrix)
+    assert transformed == frame
+
+
+def test_frame_interpolate_frames_and_euler_angles():
+    frame1 = Frame.worldXY()
+    frame2 = Frame([1.0, 1.0, 1.0], [0.0, 1.0, 0.0], [-1.0, 0.0, 0.0])
+
+    frames = frame1.interpolate_frames(frame2, 3)
+    assert len(frames) == 3
+    assert frames[0] == frame1
+    assert frames[-1] == frame2
+    assert TOL.is_allclose(Frame.from_euler_angles(frame2.euler_angles()).xaxis, frame2.xaxis)
 
 
 def test_interpolate_frame_start_end():
