@@ -11,6 +11,9 @@ from math import tan
 from typing import Optional
 from typing import Sequence
 
+from compas._typing import CoordinatesType
+from compas._typing import CoordinateType
+from compas._typing import FloatSequenceType
 from compas.tolerance import TOL
 
 from .matrices import matrix_determinant
@@ -62,7 +65,7 @@ _NEXT_SPEC = [1, 2, 0, 1]
 
 
 def decompose_matrix(
-    M: Sequence[Sequence[float]],
+    M: CoordinatesType,
 ) -> tuple[list[float], list[float], list[float], list[float], list[float]]:
     """Calculates the components of rotation, translation, scale, shear, and
     perspective of a given transformation matrix `M`.[^decompose-matrix-slabaugh]
@@ -628,7 +631,7 @@ def matrix_from_axis_and_angle(axis: Sequence[float], angle: float, point: Optio
     return M
 
 
-def matrix_from_axis_angle_vector(axis_angle_vector: Sequence[float], point: Sequence[float] = [0, 0, 0]) -> list[list[float]]:
+def matrix_from_axis_angle_vector(axis_angle_vector: CoordinateType, point: CoordinateType = (0, 0, 0)) -> list[list[float]]:
     """Calculates a rotation matrix from an axis-angle vector.
 
     Parameters
@@ -741,7 +744,7 @@ def axis_angle_vector_from_matrix(M: Sequence[Sequence[float]]) -> list[float]:
     return scale_vector(axis, angle)
 
 
-def matrix_from_quaternion(quaternion: Sequence[float]) -> list[list[float]]:
+def matrix_from_quaternion(quaternion: FloatSequenceType) -> list[list[float]]:
     """Calculates a rotation matrix from quaternion coefficients.
 
     Parameters
@@ -844,7 +847,7 @@ def quaternion_from_matrix(M: Sequence[Sequence[float]]) -> list[float]:
     return [qw, qx, qy, qz]
 
 
-def matrix_from_basis_vectors(xaxis: Sequence[float], yaxis: Sequence[float]) -> list[list[float]]:
+def matrix_from_basis_vectors(xaxis: CoordinateType, yaxis: CoordinateType) -> list[list[float]]:
     """Creates a rotation matrix from basis vectors (= orthonormal vectors).
 
     Parameters

@@ -1,5 +1,6 @@
 import math
 from sys import float_info
+from typing import Iterator
 
 from compas.geometry import Geometry
 from compas.geometry import Rotation
@@ -122,10 +123,10 @@ class Quaternion(Geometry):
 
     def __init__(self, w, x, y, z, name=None):
         super(Quaternion, self).__init__(name=name)
-        self._w = None
-        self._x = None
-        self._y = None
-        self._z = None
+        self._w = 0.0
+        self._x = 0.0
+        self._y = 0.0
+        self._z = 0.0
         self.w = w
         self.x = x
         self.y = y
@@ -148,7 +149,7 @@ class Quaternion(Geometry):
             return False
         return TOL.is_allclose(self, other, rtol=0, atol=tol)
 
-    def __getitem__(self, key):
+    def __getitem__(self, key: int) -> float:
         if key == 0:
             return self.w
         if key == 1:
@@ -174,10 +175,10 @@ class Quaternion(Geometry):
             return
         raise KeyError(key)
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[float]:
         return iter(self.wxyz)
 
-    def __len__(self):
+    def __len__(self) -> int:
         return 4
 
     # ==========================================================================
@@ -185,39 +186,39 @@ class Quaternion(Geometry):
     # ==========================================================================
 
     @property
-    def w(self):
+    def w(self) -> float:
         return self._w
 
     @w.setter
-    def w(self, w):
+    def w(self, w: float) -> None:
         self._w = float(w)
 
     @property
-    def x(self):
+    def x(self) -> float:
         return self._x
 
     @x.setter
-    def x(self, x):
+    def x(self, x: float) -> None:
         self._x = float(x)
 
     @property
-    def y(self):
+    def y(self) -> float:
         return self._y
 
     @y.setter
-    def y(self, y):
+    def y(self, y: float) -> None:
         self._y = float(y)
 
     @property
-    def z(self):
+    def z(self) -> float:
         return self._z
 
     @z.setter
-    def z(self, z):
+    def z(self, z: float) -> None:
         self._z = float(z)
 
     @property
-    def wxyz(self):
+    def wxyz(self) -> list[float]:
         return [self.w, self.x, self.y, self.z]
 
     @property

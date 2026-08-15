@@ -9,6 +9,7 @@ if TYPE_CHECKING:
     from compas.geometry import Plane
     from compas.geometry import Polygon
     from compas.geometry import Polyline
+    from compas.geometry import Quaternion
     from compas.geometry import Transformation
 
 
@@ -16,5 +17,6 @@ LineType = Union["Line", Sequence[CoordinateType]]
 PlaneType = Union["Plane", Sequence[CoordinateType]]
 PolygonType = Union["Polygon", Sequence[CoordinateType]]
 PolylineType = Union["Polyline", Sequence[CoordinateType]]
+QuaternionType = Union["Quaternion", Sequence[float]]
 TriangleType = Union["Polygon", Sequence[CoordinateType]]
 TransformationType = Union["Transformation", Sequence[Sequence[float]]]

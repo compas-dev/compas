@@ -3,7 +3,6 @@ from typing import Iterator
 from typing import Optional
 from typing import Sequence
 from typing import Union
-from typing import cast
 from typing import overload
 
 from typing_extensions import Self
@@ -132,8 +131,7 @@ class Point(Geometry):
 
     @classmethod
     def __from_data__(cls, data: Sequence[float]) -> Self:  # type: ignore[override]
-        coordinates = cast(tuple[float, float, float], data)
-        return cls(*coordinates)
+        return cls(data[0], data[1], data[2])
 
     def __init__(self, x: float, y: float, z: float = 0.0, name: Optional[str] = None) -> None:
         super(Point, self).__init__(name=name)

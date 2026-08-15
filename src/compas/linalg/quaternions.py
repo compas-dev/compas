@@ -2,6 +2,7 @@ import math
 from typing import Optional
 from typing import Sequence
 
+from compas._typing import FloatSequenceType
 from compas.tolerance import TOL
 
 from .transformations import axis_and_angle_from_matrix
@@ -12,7 +13,7 @@ from .transformations import matrix_from_quaternion
 from .transformations import quaternion_from_matrix
 
 
-def quaternion_norm(q: Sequence[float]) -> float:
+def quaternion_norm(q: FloatSequenceType) -> float:
     """Calculates the length (euclidean norm) of a quaternion.
 
     Parameters
@@ -71,7 +72,7 @@ def quaternion_unitize(q: Sequence[float]) -> list[float]:
     return [x / n for x in q]
 
 
-def quaternion_is_unit(q: Sequence[float], tol: Optional[float] = None) -> bool:
+def quaternion_is_unit(q: FloatSequenceType, tol: Optional[float] = None) -> bool:
     """Checks if a quaternion is unit-length.
 
     Parameters

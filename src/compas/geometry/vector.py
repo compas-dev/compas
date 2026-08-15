@@ -3,7 +3,6 @@ from typing import Optional
 from typing import Sequence
 from typing import Type
 from typing import Union
-from typing import cast
 from typing import overload
 
 from typing_extensions import Self
@@ -91,8 +90,7 @@ class Vector(Geometry):
 
     @classmethod
     def __from_data__(cls, data: Sequence[float]) -> Self:  # type: ignore[override]
-        coordinates = cast(tuple[float, float, float], data)
-        return cls(*coordinates)
+        return cls(data[0], data[1], data[2])
 
     def __init__(self, x: float, y: float, z: float = 0.0, name: Optional[str] = None) -> None:
         super(Vector, self).__init__(name=name)
@@ -476,8 +474,8 @@ class Vector(Geometry):
 
         """
         v = subtract_vectors(end, start)
-        coordinates = cast(tuple[float, float, float], v)
-        return cls(*coordinates)
+        z = v[2] if len(v) > 2 else 0.0
+        return cls(v[0], v[1], z)
 
     # ==========================================================================
     # Static
@@ -593,8 +591,8 @@ class Vector(Geometry):
 
         """
         data = [sum(axis) for axis in zip(*vectors)]
-        coordinates = cast(tuple[float, float, float], data)
-        return Vector(*coordinates)
+        z = data[2] if len(data) > 2 else 0.0
+        return Vector(data[0], data[1], z)
 
     @staticmethod
     def dot_vectors(left: Sequence[CoordinateType], right: Sequence[CoordinateType]) -> list[float]:
@@ -646,8 +644,8 @@ class Vector(Geometry):
         # cross_vectors(u,v) from src\compas\geometry\_core\_algebra.py
         vectors = []
         for u, v in zip(left, right):
-            coordinates = cast(tuple[float, float, float], cross_vectors(u, v))
-            vectors.append(Vector(*coordinates))
+            coordinates = cross_vectors(u, v)
+            vectors.append(Vector(coordinates[0], coordinates[1], coordinates[2]))
         return vectors
 
     @staticmethod
@@ -933,8 +931,8 @@ class Vector(Geometry):
         Vector(x=0.000, y=0.000, z=1.000)
 
         """
-        coordinates = cast(tuple[float, float, float], cross_vectors(self, other))
-        return Vector(*coordinates)
+        coordinates = cross_vectors(self, other)
+        return Vector(coordinates[0], coordinates[1], coordinates[2])
 
     def angle(self, other: CoordinateType, degrees: bool = False) -> float:
         """Compute the smallest angle between this vector and another vector.
