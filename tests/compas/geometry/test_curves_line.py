@@ -328,6 +328,10 @@ def test_line_midpoint_and_closest_point():
 
     assert line.midpoint == [1, 0, 0]
     assert line.closest_point(point) == [1, 0, 0]
+    assert line.closest_point([1, 2, 0]) == [1, 0, 0]
+
+    with pytest.raises(IndexError):
+        line.closest_point([1, 2])
 
     closest, parameter = line.closest_point(point, return_parameter=True)
     assert closest == [1, 0, 0]

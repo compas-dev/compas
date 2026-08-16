@@ -148,7 +148,7 @@ class Line(Curve):
         return Frame.worldXY()
 
     @frame.setter
-    def frame(self, frame: Frame) -> None:
+    def frame(self, frame: object) -> None:
         raise AttributeError("Setting the coordinate frame of a line is not supported.")
 
     @property
@@ -217,7 +217,7 @@ class Line(Curve):
         self._direction = None
 
     @property
-    def length(self) -> float:  # type: ignore[override]
+    def length(self) -> float:
         """The distance from the start point to the end point.
 
         Examples
@@ -398,12 +398,12 @@ class Line(Curve):
     # Transformations
     # ==========================================================================
 
-    def transform(self, T: TransformationType) -> None:
+    def transform(self, transformation: TransformationType) -> None:
         """Transform this line.
 
         Parameters
         ----------
-        T
+        transformation
             The transformation.
 
         Examples
@@ -417,8 +417,8 @@ class Line(Curve):
         Point(x=0.000, y=1.000, z=0.000)
 
         """
-        self.point.transform(T)
-        self.vector.transform(T)
+        self.point.transform(transformation)
+        self.vector.transform(transformation)
 
     # ==========================================================================
     # Methods
@@ -502,12 +502,12 @@ class Line(Curve):
         return point
 
     @overload
-    def closest_point(self, point: Point, return_parameter: Literal[False] = False) -> Point: ...
+    def closest_point(self, point: CoordinateType, return_parameter: Literal[False] = False) -> Point: ...
 
     @overload
-    def closest_point(self, point: Point, return_parameter: Literal[True]) -> tuple[Point, float]: ...
+    def closest_point(self, point: CoordinateType, return_parameter: Literal[True]) -> tuple[Point, float]: ...
 
-    def closest_point(self, point: Point, return_parameter: bool = False) -> Union[Point, tuple[Point, float]]:
+    def closest_point(self, point: CoordinateType, return_parameter: bool = False) -> Union[Point, tuple[Point, float]]:
         """Compute the closest point on the line to a given point.
 
         Parameters
@@ -539,6 +539,7 @@ class Line(Curve):
         True
 
         """
+        point = Point(point[0], point[1], point[2])
         vector = point - self.start
         t = vector.dot(self.vector) / self.length**2
         closest = self.start + self.vector * t
