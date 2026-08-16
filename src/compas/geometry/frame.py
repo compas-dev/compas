@@ -124,6 +124,7 @@ class Frame(Geometry):
 
     @property
     def __data__(self) -> dict[str, list[float]]:
+        """The data representation of the frame."""
         return {
             "point": self.point.__data__,
             "xaxis": self.xaxis.__data__,
@@ -202,43 +203,94 @@ class Frame(Geometry):
 
     @property
     def point(self) -> Point:
+        """The origin of the frame.
+
+        Notes
+        -----
+        Assigning a `Point` or three-component coordinate sequence creates an
+        independent `Point` with the same coordinates.
+
+        Examples
+        --------
+        >>> source = Point(1, 2, 3)
+        >>> frame = Frame.worldXY()
+        >>> frame.point = source
+        >>> frame.point == source and frame.point is not source
+        True
+        >>> source.x = 10
+        >>> frame.point == [1, 2, 3]
+        True
+
+        """
         if not self._point:
             raise ValueError("The frame has no origin.")
         return self._point
 
     @point.setter
     def point(self, point: CoordinateType) -> None:
-        z = point[2] if len(point) > 2 else 0.0
-        self._point = Point(point[0], point[1], z)
+        self._point = Point(point[0], point[1], point[2])
 
     @property
     def xaxis(self) -> Vector:
+        """The unit X axis of the frame.
+
+        Notes
+        -----
+        Assigning a `Vector` or three-component coordinate sequence creates an
+        independent, unitized `Vector`. The Y axis is retained and the cached Z
+        axis is invalidated.
+
+        Examples
+        --------
+        >>> source = Vector(2, 0, 0)
+        >>> frame = Frame.worldXY()
+        >>> previous_yaxis = frame.yaxis
+        >>> frame.xaxis = source
+        >>> frame.xaxis == [1, 0, 0] and frame.xaxis is not source
+        True
+        >>> frame.yaxis is previous_yaxis
+        True
+
+        """
         if not self._xaxis:
             raise ValueError("The frame has no x-axis.")
         return self._xaxis
 
     @xaxis.setter
     def xaxis(self, vector: CoordinateType) -> None:
-        # Indexed access preserves the 2D default for z and prevents a possible
-        # extra component from being interpreted as the Vector name.
-        z = vector[2] if len(vector) > 2 else 0.0
-        xaxis = Vector(vector[0], vector[1], z)
+        xaxis = Vector(vector[0], vector[1], vector[2])
         xaxis.unitize()
         self._xaxis = xaxis
         self._zaxis = None
 
     @property
     def yaxis(self) -> Vector:
+        """The unit Y axis of the frame.
+
+        Notes
+        -----
+        Assigning a `Vector` or three-component coordinate sequence creates an
+        independent vector. The input is unitized and then made orthogonal to
+        the X axis; the cached Z axis is invalidated.
+
+        Examples
+        --------
+        >>> source = Vector(1, 1, 0)
+        >>> frame = Frame.worldXY()
+        >>> frame.yaxis = source
+        >>> frame.yaxis == [0, 1, 0] and frame.yaxis is not source
+        True
+        >>> frame.xaxis.dot(frame.yaxis)
+        0.0
+
+        """
         if not self._yaxis:
             raise ValueError("The frame has no y-axis.")
         return self._yaxis
 
     @yaxis.setter
     def yaxis(self, vector: CoordinateType) -> None:
-        # Indexed access preserves the 2D default for z and prevents a possible
-        # extra component from being interpreted as the Vector name.
-        z = vector[2] if len(vector) > 2 else 0.0
-        yaxis = Vector(vector[0], vector[1], z)
+        yaxis = Vector(vector[0], vector[1], vector[2])
         yaxis.unitize()
         zaxis = self.xaxis.cross(yaxis)
         zaxis.unitize()
@@ -247,10 +299,35 @@ class Frame(Geometry):
 
     @property
     def normal(self) -> Vector:
+        """The normal of the frame, equivalent to its Z axis.
+
+        Examples
+        --------
+        >>> frame = Frame.worldXY()
+        >>> frame.normal is frame.zaxis
+        True
+
+        """
         return self.zaxis
 
     @property
     def zaxis(self) -> Vector:
+        """The unit Z axis defined by the cross product of X and Y.
+
+        Notes
+        -----
+        The Z axis is computed on first access and cached until either input
+        axis changes.
+
+        Examples
+        --------
+        >>> frame = Frame.worldXY()
+        >>> frame.zaxis == [0, 0, 1]
+        True
+        >>> frame.zaxis is frame.zaxis
+        True
+
+        """
         if not self._zaxis:
             self._zaxis = self.xaxis.cross(self.yaxis)
         return self._zaxis
@@ -260,12 +337,28 @@ class Frame(Geometry):
 
     @property
     def quaternion(self) -> Quaternion:
+        """The rotation of the frame represented as a quaternion.
+
+        Examples
+        --------
+        >>> Frame.worldXY().quaternion == [1, 0, 0, 0]
+        True
+
+        """
         R = matrix_from_basis_vectors(self.xaxis, self.yaxis)
         values = quaternion_from_matrix(R)
         return Quaternion(values[0], values[1], values[2], values[3])
 
     @property
     def axis_angle_vector(self) -> Vector:
+        """The rotation of the frame represented as an axis-angle vector.
+
+        Examples
+        --------
+        >>> Frame.worldXY().axis_angle_vector == [0, 0, 0]
+        True
+
+        """
         R = matrix_from_basis_vectors(self.xaxis, self.yaxis)
         values = axis_angle_vector_from_matrix(R)
         return Vector(values[0], values[1], values[2])
@@ -812,8 +905,7 @@ class Frame(Geometry):
         """
         T = Transformation.from_change_of_basis(Frame.worldXY(), self)
         if isinstance(obj_in_wcf, (list, tuple)):
-            z = obj_in_wcf[2] if len(obj_in_wcf) > 2 else 0.0
-            return Point(obj_in_wcf[0], obj_in_wcf[1], z).transformed(T)
+            return Point(obj_in_wcf[0], obj_in_wcf[1], obj_in_wcf[2]).transformed(T)
         return obj_in_wcf.transformed(T)
 
     @overload
@@ -851,8 +943,7 @@ class Frame(Geometry):
         """
         T = Transformation.from_change_of_basis(self, Frame.worldXY())
         if isinstance(obj_in_lcf, (list, tuple)):
-            z = obj_in_lcf[2] if len(obj_in_lcf) > 2 else 0.0
-            return Point(obj_in_lcf[0], obj_in_lcf[1], z).transformed(T)
+            return Point(obj_in_lcf[0], obj_in_lcf[1], obj_in_lcf[2]).transformed(T)
         return obj_in_lcf.transformed(T)
 
     def transform(self, transformation: TransformationType) -> None:

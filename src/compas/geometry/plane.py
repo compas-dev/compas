@@ -84,6 +84,7 @@ class Plane(Geometry):
 
     @property
     def __data__(self) -> dict[str, list[float]]:
+        """The data representation of the plane."""
         return {
             "point": self.point.__data__,
             "normal": self.normal.__data__,
@@ -145,35 +146,87 @@ class Plane(Geometry):
 
     @property
     def point(self) -> Point:
+        """The base point of the plane.
+
+        Notes
+        -----
+        Assigning a `Point` or three-component coordinate sequence creates an
+        independent `Point` with the same coordinates.
+
+        Examples
+        --------
+        >>> source = Point(1, 2, 3)
+        >>> plane = Plane.worldXY()
+        >>> plane.point = source
+        >>> plane.point == source and plane.point is not source
+        True
+        >>> source.x = 10
+        >>> plane.point == [1, 2, 3]
+        True
+
+        """
         if not self._point:
             raise ValueError("The plane has no point.")
         return self._point
 
     @point.setter
     def point(self, point: CoordinateType) -> None:
-        z = point[2] if len(point) > 2 else 0.0
-        self._point = Point(point[0], point[1], z)
+        self._point = Point(point[0], point[1], point[2])
 
     @property
     def normal(self) -> Vector:
+        """The unit normal vector of the plane.
+
+        Notes
+        -----
+        Assigning a `Vector` or three-component coordinate sequence creates an
+        independent `Vector` and unitizes it.
+
+        Examples
+        --------
+        >>> source = Vector(0, 0, 2)
+        >>> plane = Plane.worldXY()
+        >>> plane.normal = source
+        >>> plane.normal == [0, 0, 1] and plane.normal is not source
+        True
+        >>> source.z = 4
+        >>> plane.normal == [0, 0, 1]
+        True
+
+        """
         if not self._normal:
             raise ValueError("The plane has no normal.")
         return self._normal
 
     @normal.setter
     def normal(self, vector: CoordinateType) -> None:
-        z = vector[2] if len(vector) > 2 else 0.0
-        self._normal = Vector(vector[0], vector[1], z)
+        self._normal = Vector(vector[0], vector[1], vector[2])
         self._normal.unitize()
 
     @property
     def d(self) -> float:
+        """The constant $d$ of the equation $ax + by + cz + d = 0$.
+
+        Examples
+        --------
+        >>> Plane([0, 0, 2], [0, 0, 1]).d
+        -2.0
+
+        """
         a, b, c = self.normal
         x, y, z = self.point
         return -a * x - b * y - c * z
 
     @property
     def abcd(self) -> tuple[float, float, float, float]:
+        """The coefficients of the equation $ax + by + cz + d = 0$.
+
+        Examples
+        --------
+        >>> Plane([0, 0, 2], [0, 0, 1]).abcd
+        (0.0, 0.0, 1.0, -2.0)
+
+        """
         a, b, c = self.normal
         d = self.d
         return a, b, c, d
@@ -210,9 +263,9 @@ class Plane(Geometry):
         Vector(x=0.000, y=0.000, z=1.000)
 
         """
-        a = Point(a[0], a[1], a[2] if len(a) > 2 else 0.0)
-        b = Point(b[0], b[1], b[2] if len(b) > 2 else 0.0)
-        c = Point(c[0], c[1], c[2] if len(c) > 2 else 0.0)
+        a = Point(a[0], a[1], a[2])
+        b = Point(b[0], b[1], b[2])
+        c = Point(c[0], c[1], c[2])
         normal_data = cross_vectors(b - a, c - a)
         normal = Vector(normal_data[0], normal_data[1], normal_data[2])
         return cls(a, normal)
@@ -543,7 +596,7 @@ class Plane(Geometry):
         Point(x=1.000, y=1.000, z=0.000)
 
         """
-        point = Point(point[0], point[1], point[2] if len(point) > 2 else 0.0)
+        point = Point(point[0], point[1], point[2])
         vector = self.point - point
         distance = self.normal.dot(vector)
         return point + self.normal.scaled(distance)
@@ -608,7 +661,7 @@ class Plane(Geometry):
         Point(x=1.000, y=1.000, z=-1.000)
 
         """
-        point = Point(point[0], point[1], point[2] if len(point) > 2 else 0.0)
+        point = Point(point[0], point[1], point[2])
         vector = self.point - point
         distance = self.normal.dot(vector)
         return point + self.normal.scaled(2 * distance)

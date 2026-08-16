@@ -35,6 +35,14 @@ def test_plane(point, vector):
     assert TOL.is_allclose(other.normal, plane.normal)
 
 
+def test_plane_rejects_2d_coordinates():
+    with pytest.raises(IndexError):
+        Plane([0, 0], [0, 0, 1])
+
+    with pytest.raises(IndexError):
+        Plane([0, 0, 0], [0, 1])
+
+
 def test_plane_data():
     point = Point(random(), random(), random())
     vector = Vector(random(), random(), random())

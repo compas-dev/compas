@@ -1,4 +1,3 @@
-
 import math
 
 import pytest
@@ -38,6 +37,17 @@ def test_frame(point, xaxis, yaxis):
     assert TOL.is_allclose(frame.point, other.point)
     assert TOL.is_allclose(frame.xaxis, other.xaxis)
     assert TOL.is_allclose(frame.yaxis, other.yaxis)
+
+
+def test_frame_rejects_2d_coordinates():
+    with pytest.raises(IndexError):
+        Frame([0, 0], [1, 0, 0], [0, 1, 0])
+
+    with pytest.raises(IndexError):
+        Frame([0, 0, 0], [1, 0], [0, 1, 0])
+
+    with pytest.raises(IndexError):
+        Frame([0, 0, 0], [1, 0, 0], [0, 1])
 
 
 def test_frame_data():

@@ -1,7 +1,6 @@
 from copy import deepcopy
 import pytest
 import json
-import compas
 
 from compas.linalg import add_vectors
 from compas.linalg import scale_vector
@@ -9,6 +8,7 @@ from compas.linalg import normalize_vector
 from compas.linalg import subtract_vectors
 from compas.geometry import distance_point_point
 from compas.geometry import Point
+from compas.geometry import Translation
 from compas.geometry import Vector
 from compas.geometry import Frame
 from compas.geometry import Line
@@ -43,6 +43,14 @@ def test_line_create(p1, p2):
 def test_line_create_with_frame():
     with pytest.raises(TypeError):
         Line([0, 0, 0], [1, 0, 0], frame=Frame.worldXY())
+
+
+def test_line_rejects_2d_coordinates():
+    with pytest.raises(IndexError):
+        Line([0, 0], [1, 0, 0])
+
+    with pytest.raises(IndexError):
+        Line([0, 0, 0], [1, 0])
 
 
 # =============================================================================
@@ -253,6 +261,7 @@ def test_line_point_from_end(p1, p2):
     for distance in distances:
         line = Line(p1, p2)
         point = line.point_from_end(distance)
+        assert isinstance(point, Point)
         distance_to_start = distance_point_point(point, p1)
         distance_to_end = distance_point_point(point, p2)
         # Check that the distance is correct
@@ -293,3 +302,69 @@ def test_line_copy_deepcopy():
 
     assert line is not line_deepcopy
     assert line == line_deepcopy
+
+
+def test_line_sequence_mutation_and_comparison():
+    line = Line([0, 0, 0], [1, 0, 0])
+
+    line[0] = [1, 2, 3]
+    line[1] = [4, 5, 6]
+
+    assert list(line) == [line.start, line.end]
+    assert line == [[1, 2, 3], [4, 5, 6]]
+    assert line != [[1, 2, 3]]
+    assert line != object()
+
+    with pytest.raises(KeyError):
+        _ = line[2]
+
+    with pytest.raises(KeyError):
+        line[2] = [0, 0, 0]
+
+
+def test_line_midpoint_and_closest_point():
+    line = Line([0, 0, 0], [2, 0, 0])
+    point = Point(1, 2, 0)
+
+    assert line.midpoint == [1, 0, 0]
+    assert line.closest_point(point) == [1, 0, 0]
+
+    closest, parameter = line.closest_point(point, return_parameter=True)
+    assert closest == [1, 0, 0]
+    assert parameter == 0.5
+
+
+def test_line_transform():
+    line = Line([0, 0, 0], [1, 0, 0])
+    line.transform(Translation.from_vector([1, 2, 3]))
+
+    assert line.start == [1, 2, 3]
+    assert line.end == [2, 2, 3]
+
+
+def test_line_flipped_preserves_subclass():
+    class CustomLine(Line):
+        pass
+
+    line = CustomLine([0, 0, 0], [1, 2, 3])
+    flipped = line.flipped()
+
+    assert isinstance(flipped, CustomLine)
+    assert flipped.start == line.end
+    assert flipped.end == line.start
+
+
+@pytest.mark.parametrize(
+    "operation",
+    [
+        lambda line: line.direction,
+        lambda line: line.point_from_start(1),
+        lambda line: line.point_from_end(1),
+        lambda line: line.closest_point(Point(1, 0, 0)),
+    ],
+)
+def test_zero_length_line_raises_zero_division_error(operation):
+    line = Line([0, 0, 0], [0, 0, 0])
+
+    with pytest.raises(ZeroDivisionError):
+        operation(line)
