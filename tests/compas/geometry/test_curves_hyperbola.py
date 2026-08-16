@@ -1,6 +1,5 @@
 import pytest
 import json
-import compas
 
 from compas.tolerance import TOL
 from compas.geometry import Frame
@@ -16,15 +15,13 @@ def test_hyperbola_create():
     assert TOL.is_close(hyperbola.eccentricity, 1.118033988749895)
     assert TOL.is_close(hyperbola.focal, 2.23606797749979)
 
-    assert hyperbola.is_closed
-    assert hyperbola.is_periodic
+    assert not hyperbola.is_closed
+    assert not hyperbola.is_periodic
 
     assert hyperbola.frame == Frame.worldXY()
 
     assert TOL.is_allclose(hyperbola.point_at(0.0), hyperbola.point_at(0.0, world=False))
-    assert TOL.is_allclose(hyperbola.point_at(0.25), hyperbola.point_at(0.25, world=False))
-    assert TOL.is_allclose(hyperbola.point_at(0.5), hyperbola.point_at(0.5, world=False))
-    assert TOL.is_allclose(hyperbola.point_at(0.75), hyperbola.point_at(0.75, world=False))
+    assert TOL.is_allclose(hyperbola.point_at(-1.0), hyperbola.point_at(-1.0, world=False))
     assert TOL.is_allclose(hyperbola.point_at(1.0), hyperbola.point_at(1.0, world=False))
 
 
@@ -37,8 +34,8 @@ def test_hyperbola_create_with_frame():
     assert TOL.is_close(hyperbola.eccentricity, 1.118033988749895)
     assert TOL.is_close(hyperbola.focal, 2.23606797749979)
 
-    assert hyperbola.is_closed
-    assert hyperbola.is_periodic
+    assert not hyperbola.is_closed
+    assert not hyperbola.is_periodic
 
     assert hyperbola.frame == Frame.worldZX()
 
@@ -113,6 +110,41 @@ def test_hyperbola_minor():
 
     with pytest.raises(ValueError):
         hyperbola.minor = -1.0
+
+
+def test_hyperbola_branches_and_derivatives():
+    positive = Hyperbola(major=2.0, minor=1.0, branch=1)
+    negative = Hyperbola(major=2.0, minor=1.0, branch=-1)
+
+    assert TOL.is_allclose(positive.point_at(0.0), [2.0, 0.0, 0.0])
+    assert TOL.is_allclose(negative.point_at(0.0), [-2.0, 0.0, 0.0])
+    assert TOL.is_allclose(positive.tangent_at(0.0), [0.0, 1.0, 0.0])
+    assert TOL.is_allclose(positive.normal_at(0.0), [-1.0, 0.0, 0.0])
+    assert TOL.is_close(positive.tangent_at(1.0).dot(positive.normal_at(1.0)), 0.0)
+
+
+def test_hyperbola_asymptotes():
+    hyperbola = Hyperbola(major=2.0, minor=1.0)
+
+    assert TOL.is_allclose(hyperbola.asymptote1.closest_point([2.0, 1.0, 0.0]), [2.0, 1.0, 0.0])
+    assert TOL.is_allclose(hyperbola.asymptote2.closest_point([2.0, -1.0, 0.0]), [2.0, -1.0, 0.0])
+
+
+def test_hyperbola_comparison():
+    hyperbola = Hyperbola(major=2.0, minor=1.0)
+
+    assert hyperbola == Hyperbola(major=2.0, minor=1.0)
+    assert hyperbola != Hyperbola(major=2.0, minor=1.0, branch=-1)
+    assert hyperbola != object()
+
+
+def test_hyperbola_invalid_dimensions_and_branch():
+    with pytest.raises(ValueError):
+        Hyperbola(major=0.0, minor=1.0)
+    with pytest.raises(ValueError):
+        Hyperbola(major=1.0, minor=0.0)
+    with pytest.raises(ValueError):
+        Hyperbola(major=1.0, minor=1.0, branch=0)
 
 
 # =============================================================================

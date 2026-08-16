@@ -45,7 +45,7 @@ class RhinoNurbsCurve(RhinoCurve, NurbsCurve):
         The knot vector, without duplicates.
     multiplicities : list[int], read-only
         The multiplicities of the knots in the knot vector.
-    knotsequence : list[float], read-only
+    knotvector : list[float], read-only
         The knot vector, with repeating values according to the multiplicities.
     continuity : int, read-only
         The degree of continuity of the curve.
@@ -120,11 +120,6 @@ class RhinoNurbsCurve(RhinoCurve, NurbsCurve):
     def knots(self):
         if self.native_curve:
             return [key for key, _ in groupby(self.native_curve.Knots)]
-
-    @property
-    def knotsequence(self):
-        if self.native_curve:
-            return list(self.native_curve.Knots)
 
     @property
     def multiplicities(self):

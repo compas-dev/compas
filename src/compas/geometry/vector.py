@@ -7,6 +7,7 @@ from typing import overload
 
 from typing_extensions import Self
 
+from compas._typing import Coordinate
 from compas.geometry import Geometry
 from compas.geometry import angle_vectors
 from compas.geometry import angle_vectors_signed
@@ -166,32 +167,32 @@ class Vector(Geometry):
     def __getitem__(self, key: Union[int, slice]) -> Union[float, list[float]]:
         if isinstance(key, slice):
             return [self[i] for i in range(*key.indices(len(self)))]
-        i = key % 3
-        if i == 0:
+        if key == 0 or key == -3:
             return self.x
-        if i == 1:
+        if key == 1 or key == -2:
             return self.y
-        if i == 2:
+        if key == 2 or key == -1:
             return self.z
-        raise KeyError
+        raise IndexError("Vector index out of range.")
 
     def __setitem__(self, key: int, value: float) -> None:
-        i = key % 3
-        if i == 0:
+        if key == 0 or key == -3:
             self.x = value
             return
-        if i == 1:
+        if key == 1 or key == -2:
             self.y = value
             return
-        if i == 2:
+        if key == 2 or key == -1:
             self.z = value
             return
-        raise KeyError
+        raise IndexError("Vector assignment index out of range.")
 
     def __iter__(self) -> Iterator[float]:
         return iter([self.x, self.y, self.z])
 
     def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Coordinate) or len(other) != 3:
+            return False
         return TOL.is_allclose(self, other)
 
     def __add__(self, other: CoordinateType) -> "Vector":

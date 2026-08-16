@@ -1,6 +1,5 @@
 import pytest
 import json
-import compas
 
 from compas.tolerance import TOL
 from compas.geometry import Frame
@@ -75,6 +74,55 @@ def test_parabola_properties():
     parabola._focal = None
     with pytest.raises(ValueError):
         parabola.focal
+
+
+def test_parabola_geometry():
+    parabola = Parabola(focal=1.0)
+
+    assert parabola.domain == (-float("inf"), float("inf"))
+    assert parabola.latus == 4.0
+    assert parabola.eccentricity == 1.0
+    assert TOL.is_allclose(parabola.focus, [0.0, 1.0, 0.0])
+    assert TOL.is_allclose(parabola.vertex, [0.0, 0.0, 0.0])
+    assert TOL.is_allclose(parabola.directix.closest_point([2.0, -1.0, 0.0]), [2.0, -1.0, 0.0])
+    assert not parabola.is_closed
+    assert not parabola.is_periodic
+
+
+def test_parabola_derivatives():
+    parabola = Parabola(focal=1.0)
+
+    assert TOL.is_allclose(parabola.tangent_at(0.0), [1.0, 0.0, 0.0])
+    assert TOL.is_allclose(parabola.normal_at(0.0), [0.0, 1.0, 0.0])
+    assert parabola.tangent_at(-1.0).x > 0.0
+    assert TOL.is_close(parabola.tangent_at(2.0).dot(parabola.normal_at(2.0)), 0.0)
+
+
+def test_parabola_invalid_focal_and_coefficient():
+    with pytest.raises(ValueError):
+        Parabola(focal=0.0)
+    with pytest.raises(ValueError):
+        Parabola(focal=-1.0)
+
+    parabola = Parabola(focal=1.0)
+    with pytest.raises(ValueError):
+        parabola.a = 0.0
+
+
+def test_parabola_comparison():
+    parabola = Parabola(focal=1.0)
+
+    assert parabola == Parabola(focal=1.0)
+    assert parabola != Parabola(focal=2.0)
+    assert parabola != object()
+
+
+def test_parabola_from_data_preserves_subclass():
+    class CustomParabola(Parabola):
+        pass
+
+    parabola = CustomParabola.__from_data__(Parabola(focal=1.0).__data__)
+    assert isinstance(parabola, CustomParabola)
 
 
 # =============================================================================

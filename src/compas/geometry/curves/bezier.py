@@ -1,21 +1,26 @@
+from math import comb
 from math import factorial
+from typing import Any
+from typing import Optional
+from typing import Sequence
 
+from compas._typing import CoordinateType
 from compas.geometry import Frame
 from compas.geometry import Point
 from compas.geometry import Vector
 
+from .._typing import TransformationType
 from .curve import Curve
 
 
-def binomial_coefficient(n, k):
-    """Returns the binomial coefficient of the :math:`x^k` term in the
-    polynomial expansion of the binomial power :math:`(1 + x)^n`.
+def binomial_coefficient(n: int, k: int) -> int:
+    """Return the binomial coefficient of the $x^k$ term in $(1 + x)^n$.
 
     Parameters
     ----------
-    n : int
+    n
         The number of terms.
-    k : int
+    k
         The index of the coefficient.
 
     Returns
@@ -30,21 +35,21 @@ def binomial_coefficient(n, k):
     Pascal's triangle.
 
     """
-    return int(factorial(n) / float(factorial(k) * factorial(n - k)))
+    return comb(n, k)
 
 
-def bernstein_polynomial(n, k, t):
-    """The k:sup:`th` of ``n + 1`` Bernstein basis polynomials of degree ``n``.
+def bernstein_polynomial(n: int, k: int, t: float) -> float:
+    """Compute the $k$-th Bernstein basis polynomial of degree $n$.
 
     A weighted linear combination of these basis polynomials is called a Bernstein polynomial.
 
     Parameters
     ----------
-    n : int
+    n
         The degree of the polynomial.
-    k : int
+    k
         The number of the basis polynomial.
-    t : float
+    t
         The variable.
 
     Returns
@@ -54,8 +59,8 @@ def bernstein_polynomial(n, k, t):
 
     See Also
     --------
-    :func:`compas.geometry.bernstein_derivative`
-    :func:`compas.geometry.binomial_coefficient`
+    [`bernstein_derivative`][compas.geometry.bernstein_derivative] and
+    [`binomial_coefficient`][compas.geometry.binomial_coefficient]
 
     Notes
     -----
@@ -64,9 +69,7 @@ def bernstein_polynomial(n, k, t):
 
     References
     ----------
-    More info at [1]_.
-
-    .. [1] https://en.wikipedia.org/wiki/Bernstein_polynomial
+    - [Bernstein polynomial](https://en.wikipedia.org/wiki/Bernstein_polynomial)
 
     Examples
     --------
@@ -81,18 +84,18 @@ def bernstein_polynomial(n, k, t):
     return binomial_coefficient(n, k) * t**k * (1 - t) ** (n - k)
 
 
-def bernstein_derivative(n, k, t, p=1):
-    """The p:sup:`th` derivative of the k:sup:`th` of ``n + 1`` Bernstein basis polynomials of degree ``n``.
+def bernstein_derivative(n: int, k: int, t: float, p: int = 1) -> float:
+    """Compute a derivative of a Bernstein basis polynomial.
 
     Parameters
     ----------
-    n : int
+    n
         The degree of the polynomial.
-    k : int
+    k
         The number of the basis polynomial.
-    t : float
+    t
         The variable.
-    p : int, optional
+    p
         The order of the derivative.
 
     Returns
@@ -102,10 +105,15 @@ def bernstein_derivative(n, k, t, p=1):
 
     See Also
     --------
-    :func:`compas.geometry.bernstein_polynomial`
+    [`bernstein_polynomial`][compas.geometry.bernstein_polynomial]
 
     """
-    c = 0
+    if p < 0:
+        raise ValueError("The derivative order cannot be negative.")
+    if p > n:
+        return 0.0
+
+    c = 0.0
     for i in range(max(0, k + p - n), min(k, p) + 1):
         c += (-1) ** (i + p) * binomial_coefficient(p, i) * bernstein_polynomial(n - p, k - i, t)
     c = factorial(n) / factorial(n - p) * c
@@ -115,29 +123,19 @@ def bernstein_derivative(n, k, t, p=1):
 class Bezier(Curve):
     """A Bezier curve is defined by control points and a degree.
 
-    A Bezier curve of degree ``n`` is a linear combination of ``n + 1`` Bernstein
-    basis polynomials of degree ``n``.
+    A Bezier curve of degree $n$ is a linear combination of $n + 1$ Bernstein
+    basis polynomials of degree $n$.
 
     Parameters
     ----------
-    points : sequence[point]
+    points
         A sequence of control points, represented by their location in 3D space.
-    name : str, optional
+    name
         The name of the curve.
-
-    Attributes
-    ----------
-    points : list[:class:`compas.geometry.Point`]
-        The control points.
-    degree : int, read-only
-        The degree of the curve.
-    frame : :class:`compas.geometry.Frame`, read-only
-        The frame of the curve.
-        This is always the world coordinate system.
 
     See Also
     --------
-    :class:`compas.geometry.NubrsCurve`
+    [`NurbsCurve`][compas.geometry.NurbsCurve]
 
     Examples
     --------
@@ -158,45 +156,113 @@ class Bezier(Curve):
 
     """
 
-
     @property
-    def __data__(self):
+    def __data__(self) -> dict[str, Any]:
         return {"points": [point.__data__ for point in self.points]}
 
-    def __init__(self, points, name=None):
-        super(Bezier, self).__init__(name=name)
-        self._points = []
+    def __init__(self, points: Sequence[CoordinateType], name: Optional[str] = None) -> None:
+        super().__init__(name=name)
+        self._points: list[Point] = []
         self.points = points
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "{0}(points={1!r})".format(type(self).__name__, self.points)
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Bezier):
+            return False
+        return self.points == other.points
 
     # ==========================================================================
     # Properties
     # ==========================================================================
 
     @property
-    def frame(self):
-        if not self._frame:
+    def frame(self) -> Frame:
+        """The world XY frame.
+
+        Notes
+        -----
+        Bezier control points are stored in world coordinates; therefore the
+        frame is read-only.
+
+        """
+        if self._frame is None:
             self._frame = Frame.worldXY()
         return self._frame
 
     @frame.setter
-    def frame(self, frame):
-        raise Exception("Setting the coordinate frame of a Bezier curve is not supported.")
+    def frame(self, frame: Optional[Frame]) -> None:
+        raise AttributeError("The frame of a Bezier curve is read-only.")
 
     @property
-    def points(self):
+    def points(self) -> list[Point]:
+        """The control points of the curve.
+
+        Notes
+        -----
+        Assigning coordinate sequences creates independent `Point` objects.
+        At least two control points are required.
+
+        """
         return self._points
 
     @points.setter
-    def points(self, points):
-        if points:
-            self._points = [Point(*point) for point in points]
+    def points(self, points: Sequence[CoordinateType]) -> None:
+        if len(points) < 2:
+            raise ValueError("A Bezier curve requires at least two control points.")
+        self._points = [Point(point[0], point[1], point[2]) for point in points]
 
     @property
-    def degree(self):
+    def degree(self) -> int:
+        """The polynomial degree of the curve."""
         return len(self.points) - 1
+
+    @property
+    def length(self) -> float:
+        """The approximate arc length of the curve.
+
+        Notes
+        -----
+        The length is computed by adaptive de Casteljau subdivision until the
+        difference between each control-polygon length and its chord length is
+        negligible relative to the size of that subdivision.
+
+        Examples
+        --------
+        >>> Bezier([[0.0, 0.0, 0.0], [3.0, 4.0, 0.0]]).length
+        5.0
+
+        """
+
+        def arc_length(points: list[Point], depth: int = 0) -> float:
+            polygon_length = sum(a.distance_to_point(b) for a, b in zip(points, points[1:]))
+            chord_length = points[0].distance_to_point(points[-1])
+            tolerance = 1e-9 * max(1.0, polygon_length)
+            if polygon_length - chord_length <= tolerance or depth == 32:
+                return 0.5 * (polygon_length + chord_length)
+
+            level = points
+            left = [level[0]]
+            right = [level[-1]]
+            while len(level) > 1:
+                level = [a + (b - a) * 0.5 for a, b in zip(level, level[1:])]
+                left.append(level[0])
+                right.append(level[-1])
+            right.reverse()
+            return arc_length(left, depth + 1) + arc_length(right, depth + 1)
+
+        return arc_length(self.points)
+
+    @property
+    def is_closed(self) -> bool:
+        """Whether the start and end points coincide."""
+        return self.points[0] == self.points[-1]
+
+    @property
+    def is_periodic(self) -> bool:
+        """Whether the curve is periodic, which is always `False`."""
+        return False
 
     # ==========================================================================
     # Constructors
@@ -206,43 +272,43 @@ class Bezier(Curve):
     # Transformations
     # ==========================================================================
 
-    def transform(self, T):
+    def transform(self, transformation: TransformationType) -> None:
         """Transform this curve.
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation`
+        transformation
             The transformation.
-
-        Returns
-        -------
-        None
 
         """
         for point in self.points:
-            point.transform(T)
+            point.transform(transformation)
 
     # ==========================================================================
     # Methods
     # ==========================================================================
 
-    def point_at(self, t):
+    def point_at(self, t: float, world: bool = True) -> Point:
         """Compute the point on the curve at the given parameter.
 
         Parameters
         ----------
-        t : float
+        t
             The value of the curve parameter.
             Must be between 0 and 1.
+        world
+            Included for consistency with the curve interface. Bezier control
+            points are stored in world coordinates, so both values are equivalent.
 
         Returns
         -------
-        :class:`compas.geometry.Point`
-            the corresponding point on the curve.
+        Point
+            The corresponding point on the curve.
 
         See Also
         --------
-        :meth:`compas.geometry.Bezier.tangent_at`, :meth:`compas.geometry.Bezier.normal_at`
+        [`Bezier.tangent_at`][compas.geometry.Bezier.tangent_at] and
+        [`Bezier.normal_at`][compas.geometry.Bezier.normal_at]
 
         Examples
         --------
@@ -253,6 +319,8 @@ class Bezier(Curve):
         Point(x=1.000, y=0.000, z=0.000)
 
         """
+        if t < 0.0 or t > 1.0:
+            raise ValueError("The parameter must be in the domain [0, 1].")
         n = self.degree
         point = Point(0, 0, 0)
         for i, p in enumerate(self.points):
@@ -260,22 +328,26 @@ class Bezier(Curve):
             point += p * b
         return point
 
-    def tangent_at(self, t):
+    def tangent_at(self, t: float, world: bool = True) -> Vector:
         """Compute the tangent vector to the curve at the point at the given parameter.
 
         Parameters
         ----------
-        t : float
+        t
             The value of the curve parameter. Must be between 0 and 1.
+        world
+            Included for consistency with the curve interface. Bezier control
+            points are stored in world coordinates, so both values are equivalent.
 
         Returns
         -------
-        :class:`compas.geometry.Vector`
+        Vector
             The corresponding tangent vector.
 
         See Also
         --------
-        :meth:`compas.geometry.Bezier.point_at`, :meth:`compas.geometry.Bezier.normal_at`
+        [`Bezier.point_at`][compas.geometry.Bezier.point_at] and
+        [`Bezier.normal_at`][compas.geometry.Bezier.normal_at]
 
         Examples
         --------
@@ -284,6 +356,8 @@ class Bezier(Curve):
         Vector(x=1.000, y=0.000, z=0.000)
 
         """
+        if t < 0.0 or t > 1.0:
+            raise ValueError("The parameter must be in the domain [0, 1].")
         n = self.degree
         vector = Vector(0, 0, 0)
         for i, point in enumerate(self.points):
@@ -291,22 +365,26 @@ class Bezier(Curve):
         vector.unitize()
         return vector
 
-    def normal_at(self, t):
+    def normal_at(self, t: float, world: bool = True) -> Optional[Vector]:
         """Compute the normal vector to the curve at the point at the given parameter.
 
         Parameters
         ----------
-        t : float
+        t
             The value of the curve parameter. Must be between 0 and 1.
+        world
+            Included for consistency with the curve interface. Bezier control
+            points are stored in world coordinates, so both values are equivalent.
 
         Returns
         -------
-        :class:`compas.geometry.Vector`
-            The corresponding normal vector.
+        Optional[Vector]
+            The corresponding normal vector, or `None` if the curvature is zero.
 
         See Also
         --------
-        :meth:`compas.geometry.Bezier.point_at`, :meth:`compas.geometry.Bezier.tangent_at`
+        [`Bezier.point_at`][compas.geometry.Bezier.point_at] and
+        [`Bezier.tangent_at`][compas.geometry.Bezier.tangent_at]
 
         Examples
         --------

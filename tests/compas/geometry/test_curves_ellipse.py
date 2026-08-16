@@ -1,6 +1,5 @@
 import pytest
 import json
-import compas
 
 from compas.tolerance import TOL
 from compas.geometry import Frame
@@ -14,6 +13,8 @@ def test_ellipse_create():
     assert TOL.is_close(ellipse.major, 1.0)
     assert TOL.is_close(ellipse.minor, 0.5)
     assert TOL.is_close(ellipse.area, 1.5707963267948966)
+    assert TOL.is_close(ellipse.circumference, 4.844224110273838)
+    assert TOL.is_close(ellipse.length, ellipse.circumference)
     assert TOL.is_close(ellipse.semifocal, 0.8660254037844386)
     assert TOL.is_close(ellipse.eccentricity, 0.8660254037844386)
     assert TOL.is_close(ellipse.focal, 1.7320508075688772)
@@ -163,6 +164,9 @@ def test_ellipse_major():
     with pytest.raises(ValueError):
         ellipse.major = -1.0
 
+    with pytest.raises(ValueError):
+        ellipse.major = 0.0
+
 
 def test_ellipse_minor():
     ellipse = Ellipse(major=1.0, minor=0.5)
@@ -175,6 +179,48 @@ def test_ellipse_minor():
 
     with pytest.raises(ValueError):
         ellipse.minor = -1.0
+
+    with pytest.raises(ValueError):
+        ellipse.minor = 0.0
+
+    with pytest.raises(ValueError):
+        ellipse.minor = 2.0
+
+
+def test_ellipse_major_cannot_be_smaller_than_minor():
+    ellipse = Ellipse(major=1.0, minor=0.5)
+
+    with pytest.raises(ValueError):
+        ellipse.major = 0.25
+
+
+@pytest.mark.parametrize("major, minor", [(0.0, 0.5), (1.0, 0.0)])
+def test_ellipse_rejects_degenerate_axes(major, minor):
+    with pytest.raises(ValueError, match="positive"):
+        Ellipse(major=major, minor=minor)
+
+
+def test_circle_shaped_ellipse_circumference_is_exact():
+    ellipse = Ellipse(major=2.0, minor=2.0)
+
+    assert TOL.is_close(ellipse.circumference, 4.0 * 3.141592653589793)
+
+
+def test_ellipse_comparison():
+    ellipse = Ellipse(major=1.0, minor=0.5)
+
+    assert ellipse == Ellipse(major=1.0, minor=0.5)
+    assert ellipse != Ellipse(major=2.0, minor=0.5)
+    assert ellipse != Ellipse(major=1.0, minor=0.25)
+    assert ellipse != object()
+
+
+def test_ellipse_constructors_preserve_subclass():
+    class CustomEllipse(Ellipse):
+        pass
+
+    assert isinstance(CustomEllipse.from_point_major_minor([0.0, 0.0, 0.0], 2.0, 1.0), CustomEllipse)
+    assert isinstance(CustomEllipse.from_plane_major_minor(Plane.worldXY(), 2.0, 1.0), CustomEllipse)
 
 
 # =============================================================================

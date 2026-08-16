@@ -11,7 +11,6 @@ from typing_extensions import Self
 from compas._typing import Coordinates
 from compas._typing import CoordinatesType
 from compas._typing import CoordinateType
-from compas._typing import RawCoordinateType
 from compas.geometry import Geometry
 from compas.geometry import Transformation
 from compas.itertools import linspace
@@ -237,19 +236,18 @@ class Frame(Geometry):
         Notes
         -----
         Assigning a `Vector` or three-component coordinate sequence creates an
-        independent, unitized `Vector`. The Y axis is retained and the cached Z
-        axis is invalidated.
+        independent, unitized `Vector`. The Y axis is made orthogonal to the new
+        X axis and the cached Z axis is invalidated.
 
         Examples
         --------
-        >>> source = Vector(2, 0, 0)
+        >>> source = Vector(1, 1, 0)
         >>> frame = Frame.worldXY()
-        >>> previous_yaxis = frame.yaxis
         >>> frame.xaxis = source
-        >>> frame.xaxis == [1, 0, 0] and frame.xaxis is not source
+        >>> frame.xaxis is not source
         True
-        >>> frame.yaxis is previous_yaxis
-        True
+        >>> frame.xaxis.dot(frame.yaxis)
+        0.0
 
         """
         if not self._xaxis:
@@ -259,8 +257,18 @@ class Frame(Geometry):
     @xaxis.setter
     def xaxis(self, vector: CoordinateType) -> None:
         xaxis = Vector(vector[0], vector[1], vector[2])
+        if not xaxis.length:
+            raise ValueError("The X axis cannot be a zero vector.")
         xaxis.unitize()
+        yaxis = self._yaxis
+        if self._yaxis is not None:
+            zaxis = xaxis.cross(self._yaxis)
+            if not zaxis.length:
+                raise ValueError("The X and Y axes cannot be parallel.")
+            zaxis.unitize()
+            yaxis = zaxis.cross(xaxis)
         self._xaxis = xaxis
+        self._yaxis = yaxis
         self._zaxis = None
 
     @property
@@ -291,8 +299,12 @@ class Frame(Geometry):
     @yaxis.setter
     def yaxis(self, vector: CoordinateType) -> None:
         yaxis = Vector(vector[0], vector[1], vector[2])
+        if not yaxis.length:
+            raise ValueError("The Y axis cannot be a zero vector.")
         yaxis.unitize()
         zaxis = self.xaxis.cross(yaxis)
+        if not zaxis.length:
+            raise ValueError("The X and Y axes cannot be parallel.")
         zaxis.unitize()
         self._yaxis = zaxis.cross(self.xaxis)
         self._zaxis = None
@@ -871,12 +883,12 @@ class Frame(Geometry):
         return euler_angles_from_matrix(R, static, axes)
 
     @overload
-    def to_local_coordinates(self, obj_in_wcf: RawCoordinateType) -> Point: ...
+    def to_local_coordinates(self, obj_in_wcf: CoordinateType) -> Point: ...
 
     @overload
     def to_local_coordinates(self, obj_in_wcf: GeometryType) -> GeometryType: ...
 
-    def to_local_coordinates(self, obj_in_wcf: Union[RawCoordinateType, GeometryType]) -> Union[Point, GeometryType]:
+    def to_local_coordinates(self, obj_in_wcf: Union[CoordinateType, GeometryType]) -> Union[Point, GeometryType]:
         """Returns the object's coordinates in the local coordinate system of the frame.
 
         Parameters
@@ -886,8 +898,10 @@ class Frame(Geometry):
 
         Returns
         -------
-        Union[Point, Geometry]
-            The object in the local coordinate system of the frame.
+        Point
+            A point in local coordinates if `obj_in_wcf` is raw coordinates.
+        GeometryType
+            A transformed geometry of the same type if `obj_in_wcf` is a geometry object.
 
         Notes
         -----
@@ -904,17 +918,17 @@ class Frame(Geometry):
 
         """
         T = Transformation.from_change_of_basis(Frame.worldXY(), self)
-        if isinstance(obj_in_wcf, (list, tuple)):
-            return Point(obj_in_wcf[0], obj_in_wcf[1], obj_in_wcf[2]).transformed(T)
-        return obj_in_wcf.transformed(T)
+        if isinstance(obj_in_wcf, Geometry):
+            return obj_in_wcf.transformed(T)
+        return Point(obj_in_wcf[0], obj_in_wcf[1], obj_in_wcf[2]).transformed(T)
 
     @overload
-    def to_world_coordinates(self, obj_in_lcf: RawCoordinateType) -> Point: ...
+    def to_world_coordinates(self, obj_in_lcf: CoordinateType) -> Point: ...
 
     @overload
     def to_world_coordinates(self, obj_in_lcf: GeometryType) -> GeometryType: ...
 
-    def to_world_coordinates(self, obj_in_lcf: Union[RawCoordinateType, GeometryType]) -> Union[Point, GeometryType]:
+    def to_world_coordinates(self, obj_in_lcf: Union[CoordinateType, GeometryType]) -> Union[Point, GeometryType]:
         """Returns the object's coordinates in the global coordinate frame.
 
         Parameters
@@ -924,8 +938,10 @@ class Frame(Geometry):
 
         Returns
         -------
-        Union[Point, Geometry]
-            The object in the world coordinate frame.
+        Point
+            A point in world coordinates if `obj_in_lcf` is raw coordinates.
+        GeometryType
+            A transformed geometry of the same type if `obj_in_lcf` is a geometry object.
 
         Notes
         -----
@@ -942,9 +958,9 @@ class Frame(Geometry):
 
         """
         T = Transformation.from_change_of_basis(self, Frame.worldXY())
-        if isinstance(obj_in_lcf, (list, tuple)):
-            return Point(obj_in_lcf[0], obj_in_lcf[1], obj_in_lcf[2]).transformed(T)
-        return obj_in_lcf.transformed(T)
+        if isinstance(obj_in_lcf, Geometry):
+            return obj_in_lcf.transformed(T)
+        return Point(obj_in_lcf[0], obj_in_lcf[1], obj_in_lcf[2]).transformed(T)
 
     def transform(self, transformation: TransformationType) -> None:
         """Transform the frame.

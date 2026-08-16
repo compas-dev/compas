@@ -92,14 +92,28 @@ def test_frame_sequence_behaviour():
     assert frame != [frame.point, frame.xaxis]
 
     frame[0] = [1.0, 2.0, 3.0]
-    frame[1] = [0.0, 1.0, 0.0]
     frame[2] = [0.0, 0.0, 1.0]
+    frame[1] = [0.0, 1.0, 0.0]
     assert frame == [[1.0, 2.0, 3.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
 
     with pytest.raises(KeyError):
         _ = frame[3]
     with pytest.raises(KeyError):
         frame[3] = [1.0, 0.0, 0.0]
+
+
+def test_frame_xaxis_setter_preserves_orthonormality():
+    frame = Frame.worldXY()
+
+    frame.xaxis = [1.0, 1.0, 0.0]
+
+    assert TOL.is_close(frame.xaxis.length, 1.0)
+    assert TOL.is_close(frame.yaxis.length, 1.0)
+    assert TOL.is_close(frame.xaxis.dot(frame.yaxis), 0.0)
+    assert TOL.is_close(frame.zaxis.length, 1.0)
+
+    with pytest.raises(ValueError):
+        frame.xaxis = frame.yaxis
 
 
 def test_frame_constructors():

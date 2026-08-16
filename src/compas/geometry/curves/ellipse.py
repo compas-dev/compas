@@ -2,13 +2,19 @@ from math import cos
 from math import pi
 from math import sin
 from math import sqrt
+from typing import Any
+from typing import Optional
 
+from typing_extensions import Self
+
+from compas._typing import CoordinateType
 from compas.geometry import Frame
+from compas.geometry import Plane
 from compas.geometry import Point
 from compas.geometry import Vector
 
+from ..line import Line
 from .conic import Conic
-from .line import Line
 
 PI2 = 2 * pi
 
@@ -16,70 +22,28 @@ PI2 = 2 * pi
 class Ellipse(Conic):
     """An ellipse is a curve defined by a coordinate system and a major and minor axis.
 
-    The centre of the ellipse is at the origin of the coordinate system.
+    The center of the ellipse is at the origin of the coordinate system.
     The major axis is parallel to the local x-axis.
     The minor axis is parallel to the local y-axis.
-    The parameter domain of an ellipse is ``[0, 2*pi]``.
+    The normalized parameter domain is `[0, 1]`.
     Moving along the ellipse in the parameter direction corresponds to moving counter-clockwise around the origin of the local coordinate system.
 
     Parameters
     ----------
-    major : float
+    major
         The major of the ellipse.
-    minor : float
+    minor
         The minor of the ellipse.
-    frame : :class:`compas.geometry.Frame`, optional
+    frame
         The local coordinate system of the ellipse.
-        The default value is ``None``, in which case the ellipse is constructed in the XY plane of the world coordinate system.
-    name : str, optional
+        If `None`, the world XY frame is used.
+    name
         The name of the ellipse.
-
-    Attributes
-    ----------
-    frame : :class:`compas.geometry.Frame`
-        The coordinate frame of the ellipse.
-    transformation : :class:`Transformation`, read-only
-        The transformation from the local coordinate system of the ellipse (:attr:`frame`) to the world coordinate system.
-    major : float
-        The major of the ellipse.
-    minor : float
-        The minor of the ellipse.
-    plane : :class:`compas.geometry.Plane`, read-only
-        The plane of the ellipse.
-    area : float, read-only
-        The area of the ellipse.
-    circumference : float, read-only
-        The length of the circumference of the ellipse.
-    semifocal : float, read-only
-        The semi-focal distance of the ellipse.
-        This is the distance from the center of the ellipse to the focus points.
-    focal : float, read-only
-        The distance between the two focus points.
-    eccentricity : float, read-only
-        The eccentricity of the ellipse.
-        This is the ratio between the semifocal length to the length of the semi-major axis.
-    focus1 : :class:`compas.geometry.Point`, read-only
-        The first focus point of the ellipse.
-    focus2 : :class:`compas.geometry.Point`, read-only
-        The second focus point of the ellipse.
-    directix1 : :class:`compas.geometry.Line`, read-only
-        The first directix of the ellipse.
-        The directix is perpendicular to the major axis
-        and passes through a point at a distance ``major **2 / semifocal`` along the positive xaxis from the center of the ellipse.
-    directix2 : :class:`compas.geometry.Line`, read-only
-        The second directix of the ellipse.
-        The directix is perpendicular to the major axis
-        and passes through a point at a distance ``major **2 / semifocal`` along the negative xaxis from the center of the ellipse.
-    is_closed : bool, read-only
-        True.
-    is_periodic : bool, read-only
-        True.
-    is_circle : bool, read-only
-        True if the ellipse is a circle.
 
     See Also
     --------
-    :class:`compas.geometry.Circle`, :class:`compas.geometry.Hyperbola`, :class:`compas.geometry.Parabola`
+    [`Circle`][compas.geometry.Circle], [`Hyperbola`][compas.geometry.Hyperbola],
+    and [`Parabola`][compas.geometry.Parabola]
 
     Examples
     --------
@@ -97,20 +61,10 @@ class Ellipse(Conic):
     >>> ellipse = Ellipse.from_plane_major_minor(plane, 3, 2)
     >>> ellipse = Ellipse(major=3, minor=2, frame=Frame.from_plane(plane))
 
-    Visualise the line, ellipse, and frame of the ellipse with the COMPAS viewer.
-
-    >>> from compas_viewer import Viewer  # doctest: +SKIP
-    >>> viewer = Viewer()  # doctest: +SKIP
-    >>> viewer.scene.add(line)  # doctest: +SKIP
-    >>> viewer.scene.add(ellipse)  # doctest: +SKIP
-    >>> viewer.scene.add(ellipse.frame)  # doctest: +SKIP
-    >>> viewer.show()  # doctest: +SKIP
-
     """
 
-
     @property
-    def __data__(self):
+    def __data__(self) -> dict[str, Any]:
         return {
             "major": self.major,
             "minor": self.minor,
@@ -118,21 +72,27 @@ class Ellipse(Conic):
         }
 
     @classmethod
-    def __from_data__(cls, data):
+    def __from_data__(cls, data: dict[str, Any]) -> Self:
         return cls(
             major=data["major"],
             minor=data["minor"],
             frame=Frame.__from_data__(data["frame"]),
         )
 
-    def __init__(self, major=1.0, minor=1.0, frame=None, name=None):
-        super(Ellipse, self).__init__(frame=frame, name=name)
-        self._major = None
-        self._minor = None
+    def __init__(
+        self,
+        major: float = 1.0,
+        minor: float = 1.0,
+        frame: Optional[Frame] = None,
+        name: Optional[str] = None,
+    ) -> None:
+        super().__init__(frame=frame, name=name)
+        self._major: Optional[float] = None
+        self._minor: Optional[float] = None
         self.major = major
         self.minor = minor
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "{0}(major={1!r}, minor={2}, frame={3!r})".format(
             type(self).__name__,
             self.major,
@@ -140,109 +100,151 @@ class Ellipse(Conic):
             self.frame,
         )
 
-    def __eq__(self, other):
-        try:
-            other_frame = other.frame
-            other_major = other.major
-            other_minor = other.minor
-        except Exception:
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Ellipse):
             return False
-        return self.major == other_major and self.minor == other_minor, self.frame == other_frame
+        return self.major == other.major and self.minor == other.minor and self.frame == other.frame
 
     # ==========================================================================
     # Properties
     # ==========================================================================
 
     @property
-    def center(self):
+    def center(self) -> Point:
+        """The center of the ellipse.
+
+        Notes
+        -----
+        Assigning a point or three coordinates updates the frame origin and
+        creates an independent point.
+
+        """
         return self.frame.point
 
     @center.setter
-    def center(self, point):
+    def center(self, point: CoordinateType) -> None:
         self.frame.point = point
 
     @property
-    def major(self):
+    def major(self) -> float:
+        """The positive semi-major axis length."""
         if self._major is None:
             raise ValueError("Length of major axis is not set.")
         return self._major
 
     @major.setter
-    def major(self, major):
-        if major < 0:
-            raise ValueError("Major axis length cannot be negative.")
+    def major(self, major: float) -> None:
+        if major <= 0:
+            raise ValueError("Major axis length must be positive.")
+        if self._minor is not None and major < self._minor:
+            raise ValueError("Major axis length cannot be smaller than the minor axis length.")
         self._major = float(major)
 
     @property
-    def minor(self):
+    def minor(self) -> float:
+        """The positive semi-minor axis length."""
         if self._minor is None:
             raise ValueError("Length of minor axis is not set.")
         return self._minor
 
     @minor.setter
-    def minor(self, minor):
-        if minor < 0:
-            raise ValueError("Minor axis length cannot be negative.")
+    def minor(self, minor: float) -> None:
+        if minor <= 0:
+            raise ValueError("Minor axis length must be positive.")
+        if self._major is not None and minor > self._major:
+            raise ValueError("Minor axis length cannot be larger than the major axis length.")
         self._minor = float(minor)
 
     @property
-    def semifocal(self):
+    def semifocal(self) -> float:
+        """The distance from the center to either focus."""
         return sqrt(self.major**2 - self.minor**2)
 
     @property
-    def focal(self):
+    def focal(self) -> float:
+        """The distance between the two foci."""
         return 2 * self.semifocal
 
     @property
-    def eccentricity(self):
+    def eccentricity(self) -> float:
+        """The eccentricity of the ellipse."""
         return self.semifocal / self.major
 
     @property
-    def focus1(self):
+    def focus1(self) -> Point:
+        """The focus in the positive major-axis direction."""
         return self.frame.point + self.frame.xaxis * +self.semifocal
 
     @property
-    def focus2(self):
+    def focus2(self) -> Point:
+        """The focus in the negative major-axis direction."""
         return self.frame.point + self.frame.xaxis * -self.semifocal
 
     @property
-    def vertex1(self):
+    def vertex1(self) -> Point:
+        """The vertex in the positive major-axis direction."""
         return self.frame.point + self.frame.xaxis * self.major
 
     @property
-    def vertex2(self):
+    def vertex2(self) -> Point:
+        """The vertex in the negative major-axis direction."""
         return self.frame.point + self.frame.xaxis * -self.major
 
     @property
-    def directix1(self):
+    def directix1(self) -> Line:
+        """The directrix in the positive major-axis direction."""
         d1 = self.major**2 / self.semifocal
         p1 = self.frame.point + self.frame.xaxis * +d1
         return Line.from_point_and_vector(p1, self.frame.yaxis)
 
     @property
-    def directix2(self):
+    def directix2(self) -> Line:
+        """The directrix in the negative major-axis direction."""
         d2 = self.major**2 / self.semifocal
         p2 = self.frame.point + self.frame.xaxis * -d2
         return Line.from_point_and_vector(p2, self.frame.yaxis)
 
     @property
-    def area(self):
+    def area(self) -> float:
+        """The area enclosed by the ellipse."""
         return pi * self.major * self.minor
 
     @property
-    def circumference(self):
-        raise NotImplementedError
+    def circumference(self) -> float:
+        """The approximate circumference of the ellipse.
+
+        Notes
+        -----
+        The circumference is computed with Ramanujan's second approximation,
+        using `h = ((a - b) / (a + b)) ** 2`.
+
+        Examples
+        --------
+        >>> round(Ellipse(1.0, 0.5).circumference, 6)
+        4.844224
+
+        """
+        h = ((self.major - self.minor) / (self.major + self.minor)) ** 2
+        return pi * (self.major + self.minor) * (1.0 + 3.0 * h / (10.0 + sqrt(4.0 - 3.0 * h)))
 
     @property
-    def is_circle(self):
+    def length(self) -> float:
+        """The length of the ellipse, equal to its circumference."""
+        return self.circumference
+
+    @property
+    def is_circle(self) -> bool:
+        """Whether the major and minor axes are equal."""
         return self.major == self.minor
 
     @property
-    def is_closed(self):
+    def is_closed(self) -> bool:
+        """Whether the ellipse is closed."""
         return True
 
     @property
-    def is_periodic(self):
+    def is_periodic(self) -> bool:
+        """Whether the ellipse is periodic."""
         return True
 
     # ==========================================================================
@@ -250,44 +252,56 @@ class Ellipse(Conic):
     # ==========================================================================
 
     @classmethod
-    def from_point_major_minor(cls, point, major, minor):
+    def from_point_major_minor(cls, point: CoordinateType, major: float, minor: float) -> Self:
         """Construct a ellipse from a point and major and minor axis lengths.
 
         Parameters
         ----------
-        point : :class:`compas.geometry.Point`
+        point
             The center point of the ellipse.
-        major : float
+        major
             The major axis length.
-        minor : float
+        minor
             The minor axis length.
 
         Returns
         -------
-        :class:`Ellipse`
+        Self
             The constructed ellipse.
+
+        Examples
+        --------
+        >>> ellipse = Ellipse.from_point_major_minor([1, 2, 3], 3, 2)
+        >>> ellipse.center
+        Point(x=1.000, y=2.000, z=3.000)
 
         """
         frame = Frame(point, [1, 0, 0], [0, 1, 0])
         return cls(major=major, minor=minor, frame=frame)
 
     @classmethod
-    def from_plane_major_minor(cls, plane, major, minor):
+    def from_plane_major_minor(cls, plane: Plane, major: float, minor: float) -> Self:
         """Construct a ellipse from a point and major and minor axis lengths.
 
         Parameters
         ----------
-        plane : :class:`compas.geometry.Plane`
+        plane
             The plane of the ellipse.
-        major : float
+        major
             The major axis length.
-        minor : float
+        minor
             The minor axis length.
 
         Returns
         -------
-        :class:`Ellipse`
+        Self
             The constructed ellipse.
+
+        Examples
+        --------
+        >>> plane = Plane.worldXY()
+        >>> Ellipse.from_plane_major_minor(plane, 3, 2).plane == plane
+        True
 
         """
         frame = Frame.from_plane(plane)
@@ -297,28 +311,34 @@ class Ellipse(Conic):
     # Methods
     # ==========================================================================
 
-    def point_at(self, t, world=True):
+    def point_at(self, t: float, world: bool = True) -> Point:
         """Compute the point at a specific parameter.
 
         Parameters
         ----------
-        t : float
+        t
             The parameter value.
-        world : bool, optional
-            If ``True``, the point is returned in world coordinates.
+        world
+            If `True`, the point is returned in world coordinates.
 
         Returns
         -------
-        :class:`compas.geometry.Point`
+        Point
             The point at the parameter.
 
         See Also
         --------
-        :meth:`normal_at`, :meth:`tangent_at`
+        [`Ellipse.normal_at`][compas.geometry.Ellipse.normal_at] and
+        [`Ellipse.tangent_at`][compas.geometry.Ellipse.tangent_at]
 
         Notes
         -----
         The location of the point is expressed with respect to the world coordinate system.
+
+        Examples
+        --------
+        >>> Ellipse(3, 2).point_at(0.25)
+        Point(x=0.000, y=2.000, z=0.000)
 
         """
         t = t * PI2
@@ -329,28 +349,34 @@ class Ellipse(Conic):
             point.transform(self.transformation)
         return point
 
-    def tangent_at(self, t, world=True):
+    def tangent_at(self, t: float, world: bool = True) -> Vector:
         """Compute the tangent at a specific parameter.
 
         Parameters
         ----------
-        t : float
+        t
             The parameter value.
-        world : bool, optional
-            If ``True``, the tangent is returned in world coordinates.
+        world
+            If `True`, the tangent is returned in world coordinates.
 
         Returns
         -------
-        :class:`compas.geometry.Vector`
+        Vector
             The tangent vector at the parameter.
 
         See Also
         --------
-        :meth:`point_at`, :meth:`normal_at`
+        [`Ellipse.point_at`][compas.geometry.Ellipse.point_at] and
+        [`Ellipse.normal_at`][compas.geometry.Ellipse.normal_at]
 
         Notes
         -----
         The orientation of the vector is expressed with respect to the world coordinate system.
+
+        Examples
+        --------
+        >>> Ellipse(3, 2).tangent_at(0.0)
+        Vector(x=0.000, y=1.000, z=0.000)
 
         """
         normal = self.normal_at(t, world=False)
@@ -361,28 +387,34 @@ class Ellipse(Conic):
             tangent.transform(self.transformation)
         return tangent
 
-    def normal_at(self, t, world=True):
+    def normal_at(self, t: float, world: bool = True) -> Vector:
         """Compute the normal at a specific parameter.
 
         Parameters
         ----------
-        t : float
+        t
             The parameter value.
-        world : bool, optional
-            If ``True``, the normal is returned in world coordinates.
+        world
+            If `True`, the normal is returned in world coordinates.
 
         Returns
         -------
-        :class:`compas.geometry.Vector`
+        Vector
             The normal vector at the parameter.
 
         See Also
         --------
-        :meth:`point_at`, :meth:`tangent_at`
+        [`Ellipse.point_at`][compas.geometry.Ellipse.point_at] and
+        [`Ellipse.tangent_at`][compas.geometry.Ellipse.tangent_at]
 
         Notes
         -----
         The orientation of the vector is expressed with respect to the world coordinate system.
+
+        Examples
+        --------
+        >>> Ellipse(3, 2).normal_at(0.0)
+        Vector(x=-1.000, y=0.000, z=0.000)
 
         """
         point = self.point_at(t, world=False)

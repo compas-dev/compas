@@ -1,10 +1,13 @@
 import pytest
 import math
 import json
-import compas
 
 from compas.geometry import Frame
+from compas.geometry import Geometry
+from compas.geometry import Point
 from compas.geometry import Polyline
+from compas.geometry import Curve
+from compas.tolerance import TOL
 
 
 @pytest.mark.parametrize(
@@ -17,9 +20,13 @@ from compas.geometry import Polyline
     ],
 )
 def test_polyline_create(points):
-    curve = Polyline(points)
+    Polyline(points)
 
-    assert curve.frame == Frame.worldXY()
+
+def test_polyline_is_primitive_geometry():
+    assert issubclass(Polyline, Geometry)
+    assert not issubclass(Polyline, Curve)
+    assert Polyline.__module__ == "compas.geometry.polyline"
 
 
 def test_polyline_create_with_frame():
@@ -91,6 +98,33 @@ def test_polyline_properties(points):
 
         assert curve.start == curve.lines[0].start
         assert curve.end == curve.lines[-1].end
+
+
+def test_polyline_lines_reflect_direct_point_mutations():
+    polyline = Polyline([[0, 0, 0], [1, 0, 0]])
+    original_lines = polyline.lines
+
+    polyline.points.append(Point(2, 0, 0))
+
+    assert len(polyline.lines) == 2
+    assert polyline.lines[-1].end == [2, 0, 0]
+    assert polyline.lines is not original_lines
+
+
+def test_polyline_mutations_and_queries_reject_2d_coordinates():
+    polyline = Polyline([[0, 0, 0], [1, 0, 0]])
+
+    with pytest.raises(IndexError):
+        polyline.append([2, 0])
+
+    with pytest.raises(IndexError):
+        polyline.insert(1, [0.5, 0])
+
+    with pytest.raises(IndexError):
+        polyline.parameter_at([0.5, 0])
+
+    with pytest.raises(IndexError):
+        polyline.tangent_at_point([0.5, 0])
 
 
 # =============================================================================
@@ -321,7 +355,8 @@ def test_polyline_split(coords, segments_number, expected):
     if segments_number > 0:
         assert expected == Polyline(coords).split(segments_number)
     else:
-        pytest.raises(ValueError)
+        with pytest.raises(ValueError):
+            Polyline(coords).split(segments_number)
 
 
 @pytest.mark.parametrize(
@@ -384,7 +419,19 @@ def test_polyline_split_by_length_strict1(coords, length, expected):
     if length > 0 and length < polyline.length:
         assert expected == polyline.split_by_length(length, strict=False)
     else:
-        pytest.raises(ValueError)
+        with pytest.raises(ValueError):
+            polyline.split_by_length(length, strict=False)
+
+
+def test_polyline_splitting_preserves_subclass():
+    class CustomPolyline(Polyline):
+        pass
+
+    polyline = CustomPolyline([[0, 0, 0], [1, 0, 0], [1, 1, 0]])
+
+    assert all(isinstance(part, CustomPolyline) for part in polyline.split(2))
+    assert all(isinstance(part, CustomPolyline) for part in polyline.split_by_length(1))
+    assert all(isinstance(part, CustomPolyline) for part in polyline.split_at_corners(math.pi / 2))
 
 
 @pytest.mark.parametrize(
@@ -445,6 +492,60 @@ def test_polyline_tangent_at_point(coords, input, expected):
     assert expected == Polyline(coords).tangent_at_point(input)
 
 
+@pytest.mark.parametrize("t", [0.0, 0.25, 1.0])
+def test_polyline_tangent_at_is_unitized(t):
+    polyline = Polyline([[0.0, 0.0, 0.0], [2.0, 0.0, 0.0], [2.0, 3.0, 0.0]])
+
+    tangent = polyline.tangent_at(t)
+
+    assert tangent is not None
+    assert TOL.is_close(tangent.length, 1.0)
+
+
+@pytest.mark.parametrize("points", [[], [[0.0, 0.0, 0.0]], [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0]]])
+def test_zero_length_polyline_has_no_parameterization(points):
+    polyline = Polyline(points)
+
+    with pytest.raises(ValueError, match="zero-length"):
+        polyline.point_at(0.5)
+    with pytest.raises(ValueError, match="zero-length"):
+        polyline.parameter_at([0.0, 0.0, 0.0])
+    with pytest.raises(ValueError, match="zero-length"):
+        polyline.tangent_at(0.5)
+    with pytest.raises(ValueError, match="zero-length"):
+        polyline.tangent_at_point([0.0, 0.0, 0.0])
+
+
+def test_polyline_endpoint_tangents_skip_zero_length_segments():
+    polyline = Polyline([[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [2.0, 0.0, 0.0], [2.0, 0.0, 0.0]])
+
+    assert polyline.tangent_at(0.0) == [1.0, 0.0, 0.0]
+    assert polyline.tangent_at(1.0) == [1.0, 0.0, 0.0]
+
+
+@pytest.mark.parametrize("num_segments", [0, -1])
+def test_polyline_divide_requires_positive_segment_count(num_segments):
+    polyline = Polyline([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0]])
+
+    with pytest.raises(ValueError, match="greater than or equal to 1"):
+        polyline.divide(num_segments)
+
+
+@pytest.mark.parametrize("length", [0.0, -1.0])
+def test_polyline_divide_by_length_requires_positive_length(length):
+    polyline = Polyline([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0]])
+
+    with pytest.raises(ValueError, match="greater than zero"):
+        polyline.divide_by_length(length)
+
+
+def test_polyline_divide_by_length_rejects_length_greater_than_polyline():
+    polyline = Polyline([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0]])
+
+    with pytest.raises(ValueError, match="smaller than input length"):
+        polyline.divide_by_length(2.0)
+
+
 @pytest.mark.parametrize("input,expected", [((0, 0, 0), 0.0), ((1, 0, 0), 0.5), ((1, 1, 0), 1.0), ((2, 0, 0), None)])
 def test_polyline_parameter_at(input, expected):
     polyline = Polyline(((0, 0, 0), (1, 0, 0), (1, 1, 0)))
@@ -481,3 +582,18 @@ def test_polyline_extend(coords, input, expected, length):
 def test_polyline_shortened(coords, input, expected, length):
     polyline = Polyline(coords).shortened(input)
     assert expected == polyline and length == polyline.length
+
+
+def test_polyline_copying_mutations_preserve_subclass_and_original():
+    class CustomPolyline(Polyline):
+        pass
+
+    polyline = CustomPolyline([[0, 0, 0], [1, 0, 0], [2, 0, 0]])
+    extended = polyline.extended(1)
+    shortened = polyline.shortened(1)
+
+    assert isinstance(extended, CustomPolyline)
+    assert isinstance(shortened, CustomPolyline)
+    assert extended == [[0, 0, 0], [1, 0, 0], [3, 0, 0]]
+    assert shortened == [[0, 0, 0], [1, 0, 0]]
+    assert polyline == [[0, 0, 0], [1, 0, 0], [2, 0, 0]]

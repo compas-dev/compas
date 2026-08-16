@@ -198,13 +198,3 @@ def test_plane_offset_preserves_subclass():
     assert isinstance(offset, CustomPlane)
     assert offset.point == [0, 0, 2]
     assert offset.normal == plane.normal
-
-
-def test_plane_unimplemented_intersections():
-    plane = Plane.worldXY()
-
-    with pytest.raises(NotImplementedError):
-        plane.intersections_with_curve(None)
-
-    with pytest.raises(NotImplementedError):
-        plane.intersections_with_surface(None)

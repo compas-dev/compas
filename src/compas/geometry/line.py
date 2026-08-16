@@ -8,17 +8,16 @@ from typing_extensions import Self
 
 from compas._typing import Coordinates
 from compas._typing import CoordinateType
-from compas.geometry import Frame
-from compas.geometry import Point
-from compas.geometry import Vector
 from compas.linalg.vectors import add_vectors
 
-from .._typing import TransformationType
-from .curve import Curve
+from ._typing import TransformationType
+from .geometry import Geometry
+from .point import Point
+from .vector import Vector
 
 
-class Line(Curve):
-    """A line is a curve defined by two points.
+class Line(Geometry):
+    """A line is a geometric primitive defined by two points.
 
     The first point is the start point of the line.
     The second point is the end point of the line.
@@ -73,11 +72,6 @@ class Line(Curve):
 
     """
 
-    # overwriting the __new__ method is necessary
-    # to avoid triggering the plugin mechanism of the base curve class
-    def __new__(cls, *args: object, **kwargs: object) -> Self:
-        return object.__new__(cls)
-
     @property
     def __data__(self) -> dict[str, list[float]]:
         """The data representation of the line."""
@@ -129,27 +123,6 @@ class Line(Curve):
     # ==========================================================================
     # properties
     # ==========================================================================
-
-    @property
-    def frame(self) -> Frame:
-        """The world XY frame.
-
-        Notes
-        -----
-        The frame of a line is fixed. Assigning a frame raises `AttributeError`.
-
-        Examples
-        --------
-        >>> line = Line([0, 0, 0], [1, 0, 0])
-        >>> line.frame == Frame.worldXY()
-        True
-
-        """
-        return Frame.worldXY()
-
-    @frame.setter
-    def frame(self, frame: object) -> None:
-        raise AttributeError("Setting the coordinate frame of a line is not supported.")
 
     @property
     def point(self) -> Point:
@@ -439,10 +412,6 @@ class Line(Curve):
         Point
             The point at the specified position.
 
-        See Also
-        --------
-        [`Curve.tangent_at`][compas.geometry.Curve.tangent_at]
-
         Examples
         --------
         >>> line = Line([0, 0, 0], [1, 1, 1])
@@ -520,9 +489,10 @@ class Line(Curve):
 
         Returns
         -------
-        Point | tuple[Point, float]
-            The closest point on the line, optionally paired with its line
-            parameter when `return_parameter` is `True`.
+        Point
+            The closest point if `return_parameter` is `False`.
+        tuple[Point, float]
+            The closest point and its line parameter if `return_parameter` is `True`.
 
         Raises
         ------

@@ -13,6 +13,8 @@ Modernize the codebase by:
 
 These instructions apply to the entire repository. Preserve unrelated working-tree changes and keep modernization patches focused.
 
+Breaking changes are allowed in this modernization when they materially improve the architecture, API consistency, typing, maintainability, or removal of obsolete compatibility code. Do not preserve legacy parameters, import paths, inheritance, aliases, or behavior solely for backward compatibility. Breaking changes must remain intentional and scoped: update internal consumers, tests, type contracts, documentation, serialization assumptions, and migration notes together, and verify that the replacement design is coherent.
+
 ## Compatibility and Typing
 
 - Support Python 3.9 as declared in `pyproject.toml`.
@@ -27,6 +29,7 @@ These instructions apply to the entire repository. Preserve unrelated working-tr
 - Put broadly reusable structural and raw-data typing helpers in `compas._typing`. Keep unions that mention geometry classes, such as `LineType` and `PlaneType`, in `compas.geometry._typing`; define an alias locally only when it is genuinely private to one module.
 - At public geometry API boundaries, use the appropriate object-aware union such as `LineType` when callers may pass either a geometry object or raw data. Coordinate-like objects that already satisfy the shared structural `CoordinateType` do not need separate `PointType` or `VectorType` unions. Do not solve boundary typing by progressively broadening every low-level helper.
 - When a public method has getter/setter modes or return types controlled by arguments, use overloads to describe the distinct call shapes rather than falling back to `Any`.
+- For overloaded functions, document one entry in the `Returns` section for each overload return type. Describe the argument condition that selects each return type; do not collapse the entries into a union.
 - Preserve subclass behavior. Constructors and algorithms that accept or infer `cls` should continue returning the expected subclass.
 - Prefer standard library types over typing imports: `list[tuple[...]]` instead of `List[Tuple[...]]`.
 - Prefer correcting the source annotation, protocol, or overload over using `cast`. Use `cast` only when the type system cannot express a valid runtime invariant cleanly.
@@ -99,13 +102,14 @@ These instructions apply to the entire repository. Preserve unrelated working-tr
 - Document non-obvious setter side effects. In particular, note when setting one frame axis normalizes it or recomputes another axis to preserve orthonormality.
 - Do not expose implementation-only payload, encoder, or helper types without a clear public use case.
 - Remove `DATASCHEMA` declarations from modernized objects and remove tests that exist only to validate those declarations. Do not introduce replacement schema metadata unless a current public use case requires it.
-- Preserve existing convenience APIs during architectural refactors unless the task explicitly includes a deprecation or breaking-change plan.
+- Preserve convenience APIs only when they remain coherent with the modernized design. Breaking changes do not require a deprecation layer in this modernization, but their scope and replacement behavior must be explicit and fully updated across the repository.
 - When compatibility requires accepting both documents and native COMPAS objects, make the behavior explicit with overloads or documented wrappers rather than untyped `Any`.
 - Remove empty `Examples` sections.
 - Except for single-line docstrings, leave a blank line at the end of the docstring.
 
 ## Known Modernization Follow-ups
 
+- `Line` and `Polyline` are lightweight root-level `Geometry` primitives and must not inherit from `Curve`. Their former `compas.geometry.curves.line` and `compas.geometry.curves.polyline` module paths have been intentionally removed. Future explicit Curve-derived wrappers such as `LineCurve` and `PolylineCurve` may provide domains, parametrization, and the complete curve API, but are not currently a priority. Decide bounded versus unbounded line-curve semantics explicitly before adding them. Do not reshape `Curve` contracts to accommodate the primitive classes.
 - Before changing the corresponding functions in `compas.linalg.vectors` or `compas.linalg.matrices`, add regression tests and resolve the intended behavior of the following existing edge cases:
   - `vector_variance` currently computes the square root of the variance, and `vector_standard_deviation` takes another square root.
   - `orthonormalize_vectors` tests residual components with `axis > 1e-10` rather than `abs(axis) > 1e-10`, which can discard residuals containing only negative components.

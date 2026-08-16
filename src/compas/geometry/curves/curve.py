@@ -1,8 +1,7 @@
-from os import PathLike
+from math import isfinite
 from typing import TYPE_CHECKING
 from typing import Literal
 from typing import Optional
-from typing import Sequence
 from typing import TypeVar
 from typing import Union
 from typing import overload
@@ -10,6 +9,7 @@ from typing import overload
 from typing_extensions import Self
 
 from compas._typing import CoordinateType
+from compas._typing import FilePath
 from compas.geometry import Frame
 from compas.geometry import Geometry
 from compas.geometry import Plane
@@ -27,8 +27,6 @@ if TYPE_CHECKING:
     from compas.geometry import Vector
 
 CurveType = TypeVar("CurveType", bound="Curve")
-FrameInput = Union[Frame, Sequence[CoordinateType]]
-FilePath = Union[str, PathLike[str]]
 
 
 @pluggable(category="factories")
@@ -50,9 +48,8 @@ class Curve(Geometry):
     See Also
     --------
     [`Arc`][compas.geometry.Arc], [`Circle`][compas.geometry.Circle],
-    [`Ellipse`][compas.geometry.Ellipse], [`Line`][compas.geometry.Line],
-    [`NurbsCurve`][compas.geometry.NurbsCurve], and
-    [`Polyline`][compas.geometry.Polyline] are concrete curve types.
+    [`Ellipse`][compas.geometry.Ellipse] and
+    [`NurbsCurve`][compas.geometry.NurbsCurve] are concrete curve types.
 
     Notes
     -----
@@ -71,11 +68,10 @@ class Curve(Geometry):
             raise TypeError("Making an instance of `Curve` using `Curve()` is not allowed. Please use one of the factory methods instead (`Curve.from_...`)")
         return object.__new__(cls)
 
-    def __init__(self, frame: Optional[FrameInput] = None, name: Optional[str] = None) -> None:
+    def __init__(self, frame: Optional[Frame] = None, name: Optional[str] = None) -> None:
         super().__init__(name=name)
         self._frame: Optional[Frame] = None
-        self._transformation: Optional[Transformation] = None
-        if frame:
+        if frame is not None:
             self.frame = frame
 
     def __repr__(self) -> str:
@@ -96,8 +92,7 @@ class Curve(Geometry):
         Notes
         -----
         If no frame is assigned, the world XY frame is created on first access.
-        Assigning a frame or three-item frame representation creates an
-        independent `Frame` and invalidates the cached transformation.
+        Assigning a frame creates an independent `Frame`.
         Assigning `None` restores the default world XY frame.
 
         Examples
@@ -117,33 +112,28 @@ class Curve(Geometry):
         return self._frame
 
     @frame.setter
-    def frame(self, frame: Optional[FrameInput]) -> None:
-        if not frame:
+    def frame(self, frame: Optional[Frame]) -> None:
+        if frame is None:
             self._frame = None
         else:
-            self._frame = Frame(frame[0], frame[1], frame[2])
-        self._transformation = None
+            if not isinstance(frame, Frame):
+                raise TypeError("The frame must be a Frame object or None.")
+            self._frame = Frame(frame.point, frame.xaxis, frame.yaxis)
 
     @property
     def transformation(self) -> Transformation:
         """The transformation from world XY to the curve frame.
 
-        Notes
-        -----
-        The transformation is computed on first access and cached until the
-        frame changes.
-
         Examples
         --------
         >>> from compas.geometry import Circle
         >>> curve = Circle(radius=1, frame=Frame.worldYZ())
-        >>> curve.transformation is curve.transformation
+        >>> curve.frame.point = [1, 2, 3]
+        >>> curve.transformation.translation_vector == [1, 2, 3]
         True
 
         """
-        if not self._transformation:
-            self._transformation = Transformation.from_frame_to_frame(Frame.worldXY(), self.frame)
-        return self._transformation
+        return Transformation.from_frame_to_frame(Frame.worldXY(), self.frame)
 
     @property
     def plane(self) -> Plane:
@@ -294,15 +284,24 @@ class Curve(Geometry):
         domain
             Subset of the domain to use for the discretisation.
             Default is `None`, in which case the entire curve domain is used.
+            The domain endpoints must be finite.
 
         Returns
         -------
         list[Point]
             The sampled points.
 
+        Raises
+        ------
+        ValueError
+            If fewer than two points are requested or either domain endpoint is
+            not finite.
+
         """
-        domain = domain or self.domain
+        domain = self.domain if domain is None else domain
         start, end = domain
+        if not isfinite(start) or not isfinite(end):
+            raise ValueError("Curve discretization requires a finite domain.")
         points = [self.point_at(t) for t in linspace(start, end, n)]
         return points
 
@@ -317,11 +316,18 @@ class Curve(Geometry):
         domain
             Subset of the domain to use for the discretisation.
             Default is `None`, in which case the entire curve domain is used.
+            The domain endpoints must be finite.
 
         Returns
         -------
         Polyline
             The discretized curve.
+
+        Raises
+        ------
+        ValueError
+            If fewer than one line segment is requested or either domain
+            endpoint is not finite.
 
         """
         from compas.geometry import Polyline
@@ -377,19 +383,21 @@ class Curve(Geometry):
 
         """
         self.frame.transform(transformation)
-        self._transformation = None
 
     # ==============================================================================
     # Methods
     # ==============================================================================
 
-    def point_at(self, t: float) -> "Point":
+    def point_at(self, t: float, world: bool = True) -> "Point":
         """Compute a point of the curve at a parameter.
 
         Parameters
         ----------
         t
             The value of the curve parameter. Must be between 0 and 1.
+        world
+            If `True`, return the point in world coordinates. Otherwise,
+            return it in coordinates local to the curve frame.
 
         Returns
         -------
@@ -411,18 +419,21 @@ class Curve(Geometry):
         """
         raise NotImplementedError
 
-    def normal_at(self, t: float) -> "Vector":
+    def normal_at(self, t: float, world: bool = True) -> Optional["Vector"]:
         """Compute the normal of the curve at a parameter.
 
         Parameters
         ----------
         t
             The value of the curve parameter.
+        world
+            If `True`, return the vector in world coordinates. Otherwise,
+            return it in coordinates local to the curve frame.
 
         Returns
         -------
-        Vector
-            The corresponding normal vector.
+        Optional[Vector]
+            The corresponding normal vector, or `None` if it is undefined.
 
         Raises
         ------
@@ -439,13 +450,16 @@ class Curve(Geometry):
         """
         raise NotImplementedError
 
-    def tangent_at(self, t: float) -> "Vector":
+    def tangent_at(self, t: float, world: bool = True) -> "Vector":
         """Compute the tangent vector of the curve at a parameter.
 
         Parameters
         ----------
         t
             The value of the curve parameter.
+        world
+            If `True`, return the vector in world coordinates. Otherwise,
+            return it in coordinates local to the curve frame.
 
         Returns
         -------
@@ -493,7 +507,10 @@ class Curve(Geometry):
         [`Curve.curvature_at`][compas.geometry.Curve.curvature_at].
 
         """
-        return Frame(self.point_at(t), self.tangent_at(t), self.normal_at(t))
+        normal = self.normal_at(t)
+        if normal is None:
+            raise ValueError("The curve has no defined normal at the parameter.")
+        return Frame(self.point_at(t), self.tangent_at(t), normal)
 
     def curvature_at(self, t: float) -> "Vector":
         """Compute the curvature vector of the curve at a parameter.
@@ -577,8 +594,10 @@ class Curve(Geometry):
 
         Returns
         -------
-        Point | tuple[Point, float]
-            The closest point, optionally paired with its curve parameter.
+        Point
+            The closest point if `return_parameter` is `False`.
+        tuple[Point, float]
+            The closest point and its curve parameter if `return_parameter` is `True`.
 
         """
         raise NotImplementedError
@@ -603,8 +622,10 @@ class Curve(Geometry):
 
         Returns
         -------
-        list[float] | tuple[list[float], list[Point]]
-            The division parameters, optionally paired with the corresponding points.
+        list[float]
+            The division parameters if `return_points` is `False`.
+        tuple[list[float], list[Point]]
+            The division parameters and corresponding points if `return_points` is `True`.
 
         See Also
         --------
@@ -633,8 +654,10 @@ class Curve(Geometry):
 
         Returns
         -------
-        list[float] | tuple[list[float], list[Point]]
-            The division parameters, optionally paired with the corresponding points.
+        list[float]
+            The division parameters if `return_points` is `False`.
+        tuple[list[float], list[Point]]
+            The division parameters and corresponding points if `return_points` is `True`.
 
         See Also
         --------

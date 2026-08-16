@@ -20,10 +20,8 @@ from .point import Point
 from .vector import Vector
 
 if TYPE_CHECKING:
-    from compas.geometry import Curve
     from compas.geometry import Frame
     from compas.geometry import Line
-    from compas.geometry import Surface
 
 
 class Plane(Geometry):
@@ -734,41 +732,6 @@ class Plane(Geometry):
             return None
 
         return Line(point, point + direction)
-
-    def intersections_with_curve(self, curve: "Curve", tol: Optional[float] = None) -> list[Point]:
-        """Compute the intersection of a plane and a curve.
-
-        Parameters
-        ----------
-        curve
-            The curve.
-        tol
-            Tolerance for the dot product of the line vector and the plane normal.
-            Default is `TOL.absolute`.
-
-        Returns
-        -------
-        list[Point]
-            The intersection points.
-
-        """
-        raise NotImplementedError
-
-    def intersections_with_surface(self, surface: "Surface") -> list[Point]:
-        """Compute the intersection of a plane and a surface.
-
-        Parameters
-        ----------
-        surface
-            The surface.
-
-        Returns
-        -------
-        list[Point]
-            The intersection points.
-
-        """
-        raise NotImplementedError
 
     def offset(self, distance: float) -> Self:
         """Returns a new offset plane by a given distance.

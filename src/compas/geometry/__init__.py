@@ -278,14 +278,11 @@ from .point import Point
 from .quaternion import Quaternion
 from .frame import Frame
 from .plane import Plane
-
-# not sure what to do with line and polyline
-# the required changes are drastic
+from .line import Line
+from .polyline import Polyline
 from .pointcloud import Pointcloud
 
 from .curves.curve import Curve
-from .curves.line import Line
-from .curves.polyline import Polyline
 from .curves.circle import Circle
 from .curves.ellipse import Ellipse
 from .curves.parabola import Parabola

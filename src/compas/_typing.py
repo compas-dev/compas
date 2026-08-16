@@ -1,8 +1,11 @@
+from os import PathLike
 from typing import Iterator
 from typing import Protocol
 from typing import Sequence
 from typing import Union
 from typing import runtime_checkable
+
+FilePath = Union[str, PathLike[str]]
 
 
 class FloatSequence(Protocol):
@@ -17,6 +20,7 @@ FloatSequenceType = Union[FloatSequence, Sequence[float]]
 RawCoordinateType = Union[list[float], tuple[float, float, float]]
 
 
+@runtime_checkable
 class Coordinate(FloatSequence, Protocol):
     pass
 

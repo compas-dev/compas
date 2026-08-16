@@ -93,6 +93,10 @@ def test_vector_equality():
     assert not (p1 != p2)
     assert p1 != p3
     assert not (p1 == p3)
+    assert p1 != [1, 1]
+    assert p1 != [1, 1, 1, 1]
+    assert p1 != object()
+    assert p1 is not None
 
 
 def test_vector_comparison_relative():
@@ -135,13 +139,22 @@ def test_vector_sequence_behaviour():
     assert len(vector) == 3
     assert list(vector) == [1.0, 2.0, 3.0]
     assert vector[:] == [1.0, 2.0, 3.0]
+    assert vector[-3] == 1.0
     assert vector[-1] == 3.0
-    assert vector[3] == 1.0
 
     vector[0] = 4.0
-    vector[4] = 5.0
+    vector[-2] = 5.0
     vector[-1] = 6.0
     assert vector == [4.0, 5.0, 6.0]
+
+    with pytest.raises(IndexError):
+        _ = vector[3]
+    with pytest.raises(IndexError):
+        _ = vector[-4]
+    with pytest.raises(IndexError):
+        vector[3] = 7.0
+    with pytest.raises(IndexError):
+        vector[-4] = 7.0
 
 
 def test_vector_scale():

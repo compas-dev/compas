@@ -11,7 +11,9 @@ from compas.geometry import Point
 from compas.geometry import Translation
 from compas.geometry import Vector
 from compas.geometry import Frame
+from compas.geometry import Geometry
 from compas.geometry import Line
+from compas.geometry import Curve
 from compas.tolerance import TOL
 
 
@@ -37,7 +39,12 @@ def test_line_create(p1, p2):
 
     assert line.start == p1
     assert line.end == p2
-    assert line.frame == Frame.worldXY()
+
+
+def test_line_is_primitive_geometry():
+    assert issubclass(Line, Geometry)
+    assert not issubclass(Line, Curve)
+    assert Line.__module__ == "compas.geometry.line"
 
 
 def test_line_create_with_frame():
@@ -137,11 +144,6 @@ def test_line_properties(p1, p2):
     assert line.vector == subtract_vectors(p2, p1)
     assert line.direction == normalize_vector(subtract_vectors(p2, p1))
     assert line.length == distance_point_point(p1, p2)
-
-    assert line.frame == Frame.worldXY()
-
-    with pytest.raises(AttributeError):
-        line.frame = Frame.worldZX()
 
     line._point = None
     with pytest.raises(ValueError):

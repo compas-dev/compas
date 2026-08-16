@@ -6,8 +6,7 @@ from compas.geometry import Arc
 from compas.geometry import Circle
 from compas.geometry import Ellipse
 from compas.geometry import Hyperbola
-from compas.geometry import Line
-from compas.geometry import Point
+from compas.geometry import Parabola
 
 
 @pytest.mark.parametrize(
@@ -50,15 +49,61 @@ def test_curve_geometry(curve):
 
 
 def test_curve_discretization():
-    curve = Line([0, 0, 0], [2, 0, 0])
+    curve = Arc(radius=1, start_angle=0, end_angle=math.pi)
 
     points = curve.to_points(n=3, domain=(0.25, 0.75))
     polyline = curve.to_polyline(n=2)
 
-    assert points == [Point(0.5, 0, 0), Point(1, 0, 0), Point(1.5, 0, 0)]
+    assert TOL.is_allclose(points[0], [math.sqrt(0.5), math.sqrt(0.5), 0])
+    assert TOL.is_allclose(points[1], [0, 1, 0])
+    assert TOL.is_allclose(points[2], [-math.sqrt(0.5), math.sqrt(0.5), 0])
     assert len(polyline.points) == 3
-    assert polyline.start == curve.start
-    assert polyline.end == curve.end
+    assert polyline.start == curve.point_at(0)
+    assert polyline.end == curve.point_at(1)
+
+
+@pytest.mark.parametrize(
+    "curve",
+    [
+        Hyperbola(major=1.0, minor=0.5),
+        Parabola(focal=1.0),
+    ],
+)
+def test_unbounded_curve_discretization_requires_finite_domain(curve):
+    with pytest.raises(ValueError, match="finite domain"):
+        curve.to_points()
+
+    with pytest.raises(ValueError, match="finite domain"):
+        curve.to_polyline()
+
+    points = curve.to_points(n=3, domain=(-1.0, 1.0))
+    polyline = curve.to_polyline(n=2, domain=(-1.0, 1.0))
+
+    assert len(points) == 3
+    assert len(polyline.points) == 3
+    assert all(math.isfinite(coordinate) for point in points for coordinate in point)
+
+
+def test_curve_frame_requires_frame_object():
+    representation = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0]]
+
+    with pytest.raises(TypeError):
+        Circle(radius=1.0, frame=representation)  # type: ignore[arg-type]
+
+    circle = Circle(radius=1.0)
+    with pytest.raises(TypeError):
+        circle.frame = representation  # type: ignore[assignment]
+
+
+def test_curve_transformation_reflects_frame_mutation():
+    circle = Circle(radius=1.0)
+    _ = circle.transformation
+
+    circle.center = [10.0, 0.0, 0.0]
+    assert TOL.is_allclose(circle.point_at(0.0), [11.0, 0.0, 0.0])
+
+    circle.frame.point = [20.0, 0.0, 0.0]
+    assert TOL.is_allclose(circle.point_at(0.0), [21.0, 0.0, 0.0])
 
 
 def test_curve_to_polygon():

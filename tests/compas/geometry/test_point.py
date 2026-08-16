@@ -69,6 +69,10 @@ def test_point_equality():
     assert not (p1 != p2)
     assert p1 != p3
     assert not (p1 == p3)
+    assert p1 != [1, 1]
+    assert p1 != [1, 1, 1, 1]
+    assert p1 != object()
+    assert p1 is not None
 
 
 def test_geometry_copying_transform_helpers_preserve_subclass_and_original():
@@ -130,13 +134,22 @@ def test_point_sequence_behaviour():
     assert len(point) == 3
     assert list(point) == [1.0, 2.0, 3.0]
     assert point[:] == [1.0, 2.0, 3.0]
+    assert point[-3] == 1.0
     assert point[-1] == 3.0
-    assert point[3] == 1.0
 
     point[0] = 4.0
-    point[4] = 5.0
+    point[-2] = 5.0
     point[-1] = 6.0
     assert point == [4.0, 5.0, 6.0]
+
+    with pytest.raises(IndexError):
+        _ = point[3]
+    with pytest.raises(IndexError):
+        _ = point[-4]
+    with pytest.raises(IndexError):
+        point[3] = 7.0
+    with pytest.raises(IndexError):
+        point[-4] = 7.0
 
 
 def test_point_data():
