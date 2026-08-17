@@ -188,7 +188,7 @@ def distance_point_line(point: CoordinateType, line: CoordinatesType) -> float:
     return length / length_ab
 
 
-def distance_point_line_xy(point: Sequence[float], line: Sequence[Sequence[float]]) -> float:
+def distance_point_line_xy(point: CoordinateType, line: CoordinatesType) -> float:
     """Compute the distance between a point and a line, assuming they lie in the XY-plane.
 
     Parameters

@@ -2,6 +2,7 @@ from typing import TYPE_CHECKING
 from typing import Sequence
 from typing import Union
 
+from compas._typing import CoordinatesType
 from compas._typing import CoordinateType
 
 if TYPE_CHECKING:
@@ -15,6 +16,11 @@ if TYPE_CHECKING:
 
 LineType = Union["Line", Sequence[CoordinateType]]
 PlaneType = Union["Plane", Sequence[CoordinateType]]
+SphereType = tuple[CoordinateType, float]
+CircleType = tuple[PlaneType, float]
+MeshType = tuple[CoordinatesType, Sequence[Sequence[int]]]
+RayType = tuple[CoordinateType, CoordinateType]
+RayMeshHit = tuple[int, float, float, float]
 PolygonType = Union["Polygon", Sequence[CoordinateType]]
 PolylineType = Union["Polyline", Sequence[CoordinateType]]
 QuaternionType = Union["Quaternion", Sequence[float]]

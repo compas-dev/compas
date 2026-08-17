@@ -196,7 +196,7 @@ def is_polygon_convex_xy(polygon: Sequence[Sequence[float]], colinear: bool = Fa
 # =============================================================================
 
 
-def is_point_on_line_xy(point: Sequence[float], line: Sequence[Sequence[float]], tol: Optional[float] = None) -> bool:
+def is_point_on_line_xy(point: CoordinateType, line: CoordinatesType, tol: Optional[float] = None) -> bool:
     """Determine if a point lies on a line on the XY-plane.
 
     Parameters
@@ -224,7 +224,7 @@ def is_point_on_line_xy(point: Sequence[float], line: Sequence[Sequence[float]],
     return TOL.is_zero(distance_point_line_xy(point, line), tol)
 
 
-def is_point_on_segment_xy(point: Sequence[float], segment: Sequence[Sequence[float]], tol: Optional[float] = None) -> bool:
+def is_point_on_segment_xy(point: CoordinateType, segment: CoordinatesType, tol: Optional[float] = None) -> bool:
     """Determine if a point lies on a given line segment on the XY-plane.
 
     Parameters

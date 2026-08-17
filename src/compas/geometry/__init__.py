@@ -281,6 +281,7 @@ from .plane import Plane
 from .line import Line
 from .polyline import Polyline
 from .pointcloud import Pointcloud
+from .intersection import Intersection, IntersectionResult, intersection
 
 from .curves.curve import Curve
 from .curves.circle import Circle

@@ -1,116 +1,204 @@
-from compas.geometry import distance_point_point
+from dataclasses import dataclass
+from typing import Callable
+from typing import Iterator
+from typing import Optional
+from typing import TypeVar
+
+from compas.tolerance import TOL
+
+from .geometry import Geometry
+from .intersections import intersection_line_line
+from .intersections import intersection_line_plane
+from .intersections import intersection_plane_plane
+from .line import Line
+from .plane import Plane
+from .point import Point
 
 
-class Intersection(object):
-    """A class for computing intersections between geometric objects.
+@dataclass(frozen=True)
+class IntersectionResult:
+    """The geometry produced by an intersection operation.
 
-    Attributes
+    Parameters
     ----------
-    number_of_intersections : int
-        The number of intersections.
-    points : list[:class:`compas.geometry.Point`]
-        The intersection points.
+    geometry
+        The intersection geometry.
 
     Examples
     --------
-    >>> from compas.geometry import Line  # doctest: +SKIP
-    >>> from compas.geometry import Intersection  # doctest: +SKIP
-    >>> a = Line([0, 0, 0], [2, 0, 0])  # doctest: +SKIP
-    >>> b = Line([1, 0, 0], [1, 1, 0])  # doctest: +SKIP
-    >>> intersection = Intersection()  # doctest: +SKIP
-    >>> intersection.line_line(a, b)  # doctest: +SKIP
-    >>> intersection.number_of_intersections  # doctest: +SKIP
-    1
-    >>> intersection.points[0]  # doctest: +SKIP
-    Point(1.0, 0.0, z=0.0)
+    >>> result = intersection(Line([0, 0, 0], [1, 0, 0]), Plane.worldYZ())
+    >>> result.points
+    (Point(x=0.000, y=0.000, z=0.000),)
+    >>> bool(result)
+    True
 
     """
 
-    def __init__(self):
-        self.number_of_intersections = 0
-        self.points = []
+    geometry: tuple[Geometry, ...] = ()
 
-    def __len__(self):
-        return self.number_of_intersections
+    def __bool__(self) -> bool:
+        return bool(self.geometry)
 
-    def __iter__(self):
-        return iter(self.points)
+    def __len__(self) -> int:
+        return len(self.geometry)
 
-    def __getitem__(self, key):
-        return self.points[key]
+    def __iter__(self) -> Iterator[Geometry]:
+        return iter(self.geometry)
 
-    def line_line(self, a, b, tol=1e-6):
-        """Compute the intersection of two lines.
+    @property
+    def number_of_intersections(self) -> int:
+        """The number of intersection geometries."""
+        return len(self)
+
+    @property
+    def points(self) -> tuple[Point, ...]:
+        """The point intersections."""
+        return tuple(item for item in self.geometry if isinstance(item, Point))
+
+    @property
+    def lines(self) -> tuple[Line, ...]:
+        """The line intersections."""
+        return tuple(item for item in self.geometry if isinstance(item, Line))
+
+
+HandlerType = TypeVar("HandlerType", bound=Callable[..., IntersectionResult])
+
+
+class Intersection:
+    """Symmetric type-based dispatch for geometry intersections.
+
+    The predefined `intersection` instance is the public entry point for
+    computing intersections. Call it with two supported geometry objects. It
+    returns an `IntersectionResult`, which can be inspected through its
+    `geometry`, `points`, and `lines` properties, or iterated directly.
+
+    Use `register` to add a handler for a pair of geometry types. A registered
+    handler receives the two geometry objects in registration order, followed
+    by the tolerance.
+
+    Examples
+    --------
+    Compute the intersection of a line and a plane with the predefined
+    dispatcher.
+
+    >>> from compas.geometry import intersection
+    >>> line = Line([0, 0, -1], [0, 0, 1])
+    >>> result = intersection(line, Plane.worldXY())
+    >>> result.points
+    (Point(x=0.000, y=0.000, z=0.000),)
+    >>> result.number_of_intersections
+    1
+
+    The order of the input objects does not matter.
+
+    >>> intersection(Plane.worldXY(), line) == result
+    True
+
+    Create a separate dispatcher and register a custom handler when extending
+    the supported type combinations.
+
+    >>> dispatcher = Intersection()
+    >>> @dispatcher.register(Line, Plane)
+    ... def line_plane(line, plane, tol=None):
+    ...     return IntersectionResult((line.start,))
+    >>> dispatcher(Plane.worldXY(), Line([0, 0, 0], [1, 0, 0])).points
+    (Point(x=0.000, y=0.000, z=0.000),)
+
+    """
+
+    def __init__(self) -> None:
+        self._registry: dict[tuple[type[object], type[object]], Callable[..., IntersectionResult]] = {}
+
+    def register(self, type_a: type[Geometry], type_b: type[Geometry]) -> Callable[[HandlerType], HandlerType]:
+        """Register an intersection handler for a pair of geometry types.
 
         Parameters
         ----------
-        a : :class:`compas.geometry.Line`
-            A line.
-        b : :class:`compas.geometry.Line`
-            A line.
-        tol : float, optional
-            The tolerance for numerical fuzz.
+        type_a
+            The first geometry type expected by the handler.
+        type_b
+            The second geometry type expected by the handler.
 
         Returns
         -------
-        None
+        Callable[[HandlerType], HandlerType]
+            A decorator that registers and returns the handler.
+
+        Raises
+        ------
+        ValueError
+            If either ordering of the type pair is already registered.
 
         """
-        from compas.geometry import intersection_line_line
 
-        x1, x2 = intersection_line_line(a, b)
+        def decorator(handler: HandlerType) -> HandlerType:
+            key = type_a, type_b
+            reverse_key = type_b, type_a
+            if key in self._registry or reverse_key in self._registry:
+                raise ValueError("An intersection handler is already registered for {0} and {1}.".format(type_a.__name__, type_b.__name__))
+            self._registry[key] = handler
+            return handler
 
-        if x1 is None or x2 is None:
-            self.number_of_intersections = 0
-            self.points = []
-            return
+        return decorator
 
-        if distance_point_point(x1, x2) < tol:
-            self.number_of_intersections = 1
-            self.points = [x1]
-            return
+    def __call__(self, a: Geometry, b: Geometry, tol: Optional[float] = None) -> IntersectionResult:
+        """Compute the intersection of two geometry objects.
 
-        self.number_of_intersections = 2
-        self.points = [x1, x2]
+        Parameters
+        ----------
+        a
+            The first geometry object.
+        b
+            The second geometry object.
+        tol
+            The tolerance used by the intersection handler.
 
-    def line_segment(self, a, b):
-        pass
+        Returns
+        -------
+        IntersectionResult
+            The intersection geometry.
 
-    def line_polyline(self, a, b):
-        pass
+        Raises
+        ------
+        TypeError
+            If no handler is registered for the geometry-type pair.
 
-    def line_plane(self, a, b):
-        pass
+        """
+        mro_a = type(a).__mro__
+        mro_b = type(b).__mro__
+        for candidate_a in mro_a:
+            for candidate_b in mro_b:
+                handler = self._registry.get((candidate_a, candidate_b))
+                if handler is not None:
+                    return handler(a, b, tol)
+                handler = self._registry.get((candidate_b, candidate_a))
+                if handler is not None:
+                    return handler(b, a, tol)
+        raise TypeError("Intersection is not implemented for {0} and {1}.".format(type(a).__name__, type(b).__name__))
 
-    def line_circle(self, a, b):
-        pass
 
-    def line_ellipse(self, a, b):
-        pass
+intersection = Intersection()
 
-    def line_curve(self, a, b):
-        pass
 
-    def line_surface(self, a, b):
-        pass
+@intersection.register(Line, Line)
+def _intersection_line_line(a: Line, b: Line, tol: Optional[float] = None) -> IntersectionResult:
+    point1, point2 = intersection_line_line(a, b, tol=tol)
+    if point1 is None or point2 is None or not TOL.is_allclose(point1, point2, atol=tol):
+        return IntersectionResult()
+    return IntersectionResult((Point(point1[0], point1[1], point1[2]),))
 
-    def line_box(self, a, b):
-        pass
 
-    def line_sphere(self, a, b):
-        pass
+@intersection.register(Line, Plane)
+def _intersection_line_plane(line: Line, plane: Plane, tol: Optional[float] = None) -> IntersectionResult:
+    point = intersection_line_plane(line, plane, tol=tol)
+    if point is None:
+        return IntersectionResult()
+    return IntersectionResult((Point(point[0], point[1], point[2]),))
 
-    def line_cylinder(self, a, b):
-        pass
 
-    def line_cone(self, a, b):
-        pass
-
-    def line_torus(self, a, b):
-        pass
-
-    def line_triangle(self, a, b):
-        pass
-
-    def line_mesh(self, a, b):
-        pass
+@intersection.register(Plane, Plane)
+def _intersection_plane_plane(a: Plane, b: Plane, tol: Optional[float] = None) -> IntersectionResult:
+    line = intersection_plane_plane(a, b, tol=tol)
+    if line is None:
+        return IntersectionResult()
+    return IntersectionResult((Line(line[0], line[1]),))

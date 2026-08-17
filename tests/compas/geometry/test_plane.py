@@ -4,7 +4,6 @@ from random import random
 import pytest
 
 from compas.geometry import Frame
-from compas.geometry import Line
 from compas.geometry import Plane
 from compas.geometry import Point
 from compas.geometry import Translation
@@ -171,21 +170,6 @@ def test_plane_relationships():
     assert plane.is_parallel(Plane([0, 0, 1], [0, 0, -1]))
     assert plane.is_perpendicular(Plane.worldYZ())
     assert not plane.is_perpendicular(Plane.worldXY())
-
-
-def test_plane_intersections():
-    plane = Plane.worldXY()
-    crossing = Line([0, 0, 1], [0, 0, -1])
-    parallel = Line([0, 0, 1], [1, 0, 1])
-
-    assert plane.intersection_with_line(crossing) == [0, 0, 0]
-    assert plane.intersection_with_line(parallel) is None
-
-    line = plane.intersection_with_plane(Plane.worldYZ())
-    assert line is not None
-    assert plane.contains_point(line.start)
-    assert Plane.worldYZ().contains_point(line.start)
-    assert plane.intersection_with_plane(Plane([0, 0, 1], [0, 0, 1])) is None
 
 
 def test_plane_offset_preserves_subclass():

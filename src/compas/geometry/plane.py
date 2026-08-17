@@ -21,7 +21,6 @@ from .vector import Vector
 
 if TYPE_CHECKING:
     from compas.geometry import Frame
-    from compas.geometry import Line
 
 
 class Plane(Geometry):
@@ -630,10 +629,13 @@ class Plane(Geometry):
             return self.closest_point(point)
 
         from compas.geometry import Line
+        from compas.geometry import intersection_line_plane
 
         line = Line.from_point_and_vector(point, direction)
-        intersection = self.intersection_with_line(line)
-        return intersection
+        intersection = intersection_line_plane(line, self)
+        if intersection is None:
+            return None
+        return Point(intersection[0], intersection[1], intersection[2])
 
     # move to Point.mirrored_by_plane?
     # point.mirrored_by_plane(plane)
@@ -663,75 +665,6 @@ class Plane(Geometry):
         vector = self.point - point
         distance = self.normal.dot(vector)
         return point + self.normal.scaled(2 * distance)
-
-    def intersection_with_line(self, line: "Line", tol: Optional[float] = None) -> Optional[Point]:
-        """Compute the intersection of a plane and a line.
-
-        Parameters
-        ----------
-        line
-            The line.
-        tol
-            Tolerance for the dot product of the line vector and the plane normal.
-            Default is `TOL.absolute`.
-
-        Returns
-        -------
-        Optional[Point]
-            The intersection point, or `None` if the line is parallel to the plane.
-
-        Examples
-        --------
-        >>> from compas.geometry import Line
-        >>> plane = Plane.worldXY()
-        >>> line = Line.from_point_and_vector(Point(0, 0, 1), Vector(1, 1, 1))
-        >>> point = plane.intersection_with_line(line)
-        >>> print(point)
-        Point(x=-1.000, y=-1.000, z=0.000)
-
-        """
-        # The line is parallel to the plane
-        if TOL.is_zero(self.normal.dot(line.vector), tol):
-            return None
-
-        t = (self.point - line.start).dot(self.normal) / line.vector.dot(self.normal)
-        return line.point_at(t)
-
-    def intersection_with_plane(self, plane: "Plane") -> Optional["Line"]:
-        """Compute the intersection of two planes.
-
-        Parameters
-        ----------
-        plane
-            The other plane.
-
-        Returns
-        -------
-        Optional[Line]
-            The intersection line, or None if the planes are parallel or coincident.
-
-        Examples
-        --------
-        >>> plane1 = Plane.worldXY()
-        >>> plane2 = Plane([1.0, 1.0, 1.0], [0.0, 0.0, 1.0])
-        >>> line = plane1.intersection_with_plane(plane2)
-
-        """
-        from compas.geometry import Line
-
-        if self.is_parallel(plane):
-            return None
-
-        # direction of the line
-        direction = self.normal.cross(plane.normal)
-
-        # point on the line
-        line = Line(self.point, self.point + self.normal.cross(direction))
-        point = plane.intersection_with_line(line)
-        if point is None:
-            return None
-
-        return Line(point, point + direction)
 
     def offset(self, distance: float) -> Self:
         """Returns a new offset plane by a given distance.
