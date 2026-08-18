@@ -92,6 +92,21 @@ def test_surface_preserves_geometry_bounding_box_property_contract():
     assert isinstance(PlanarSurface.obb, property)
 
 
+@pytest.mark.parametrize(
+    "surface, periodic_u, periodic_v",
+    [
+        (PlanarSurface(), False, False),
+        (SphericalSurface(1.0), True, False),
+        (CylindricalSurface(1.0), True, False),
+        (ConicalSurface(1.0, 1.0), True, False),
+        (ToroidalSurface(2.0, 0.5), True, True),
+    ],
+)
+def test_analytic_surface_periodicity(surface, periodic_u, periodic_v):
+    assert surface.is_periodic_u is periodic_u
+    assert surface.is_periodic_v is periodic_v
+
+
 def test_surface_discretization_counts():
     surface = PlanarSurface(xsize=2.0, ysize=3.0)
 

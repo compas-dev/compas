@@ -150,6 +150,16 @@ class ToroidalSurface(Surface):
         """The volume enclosed by the torus."""
         return 2.0 * pi**2 * self.radius_axis * self.radius_pipe**2
 
+    @property
+    def is_periodic_u(self) -> bool:
+        """Whether the surface is periodic in U, which is always `True`."""
+        return True
+
+    @property
+    def is_periodic_v(self) -> bool:
+        """Whether the surface is periodic in V, which is always `True`."""
+        return True
+
     # =============================================================================
     # Constructors
     # =============================================================================

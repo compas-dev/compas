@@ -136,6 +136,11 @@ class CylindricalSurface(Surface):
         height = abs(vmax - vmin)
         return pi * self.radius**2 * height
 
+    @property
+    def is_periodic_u(self) -> bool:
+        """Whether the surface is periodic in U, which is always `True`."""
+        return True
+
     # =============================================================================
     # Constructors
     # =============================================================================

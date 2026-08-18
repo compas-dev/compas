@@ -151,6 +151,11 @@ class ConicalSurface(Surface):
         """The volume of the corresponding cone with a circular base."""
         return pi * self.radius**2 * self.height / 3.0
 
+    @property
+    def is_periodic_u(self) -> bool:
+        """Whether the surface is periodic in U, which is always `True`."""
+        return True
+
     # =============================================================================
     # Constructors
     # =============================================================================

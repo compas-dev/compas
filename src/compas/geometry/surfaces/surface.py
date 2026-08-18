@@ -146,19 +146,14 @@ class Surface(Geometry):
         return 0.0, 1.0
 
     @property
-    def is_closed(self) -> bool:
-        """Whether the surface is closed."""
-        raise NotImplementedError
-
-    @property
     def is_periodic_u(self) -> bool:
         """Whether the surface is periodic in the u-direction."""
-        raise NotImplementedError
+        return False
 
     @property
     def is_periodic_v(self) -> bool:
         """Whether the surface is periodic in the v-direction."""
-        raise NotImplementedError
+        return False
 
     # ==============================================================================
     # Constructors

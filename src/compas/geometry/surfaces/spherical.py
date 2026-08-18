@@ -124,6 +124,11 @@ class SphericalSurface(Surface):
         """The volume enclosed by the sphere."""
         return 4.0 / 3.0 * pi * self.radius**3
 
+    @property
+    def is_periodic_u(self) -> bool:
+        """Whether the surface is periodic in U, which is always `True`."""
+        return True
+
     # =============================================================================
     # Constructors
     # =============================================================================
