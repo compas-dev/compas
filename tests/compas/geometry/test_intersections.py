@@ -17,6 +17,7 @@ from compas.geometry import intersection_sphere_line
 from compas.geometry import intersection_sphere_sphere
 from compas.geometry import intersection_plane_circle
 from compas.geometry import intersection_circle_circle_xy
+from compas.geometry import intersection_ellipse_line_xy
 
 
 def test_intersection_line_line_rejects_parallel_and_degenerate_lines():
@@ -156,3 +157,37 @@ def test_intersection_circle_circle_xy():
     ipt1, ipt2 = intersection_circle_circle_xy(circle1, circle2)
     assert TOL.is_allclose(ipt1, (9.999, -0.142, 0.000), atol=1e-3)
     assert TOL.is_allclose(ipt2, (-6.999, 7.142, 0.000), atol=1e-3)
+
+
+def test_intersection_circle_circle_xy_classifies_secant_tangent_and_disjoint_circles():
+    circle1 = (([0, 0, 0], [0, 0, 1]), 1.0)
+
+    secant = intersection_circle_circle_xy(circle1, (([1, 0, 0], [0, 0, 1]), 1.0))
+    tangent = intersection_circle_circle_xy(circle1, (([2, 0, 0], [0, 0, 1]), 1.0))
+
+    assert secant is not None and not TOL.is_allclose(secant[0], secant[1])
+    assert tangent == ((1.0, 0.0, 0), (1.0, 0.0, 0))
+    assert intersection_circle_circle_xy(circle1, (([3, 0, 0], [0, 0, 1]), 1.0)) is None
+    assert intersection_circle_circle_xy(circle1, (([0, 0, 0], [0, 0, 1]), 1.0)) is None
+
+
+def test_intersection_circle_circle_xy_rejects_negative_radius():
+    with pytest.raises(ValueError, match="cannot be negative"):
+        intersection_circle_circle_xy((([0, 0, 0], [0, 0, 1]), -1.0), (([1, 0, 0], [0, 0, 1]), 1.0))
+
+
+def test_intersection_ellipse_line_xy_classifies_secant_tangent_and_disjoint_lines():
+    assert intersection_ellipse_line_xy((2.0, 1.0), ([-3, 0], [3, 0])) == ((2.0, 0.0, 0.0), (-2.0, 0.0, 0.0))
+    assert intersection_ellipse_line_xy((2.0, 1.0), ([-3, 1], [3, 1])) == (0.0, 1.0, 0.0)
+    assert intersection_ellipse_line_xy((2.0, 1.0), ([-3, 2], [3, 2])) is None
+
+
+@pytest.mark.parametrize("ellipse", [(0.0, 1.0), (2.0, 0.0), (-2.0, 1.0)])
+def test_intersection_ellipse_line_xy_rejects_nonpositive_axes(ellipse):
+    with pytest.raises(ValueError, match="positive"):
+        intersection_ellipse_line_xy(ellipse, ([-3, 0], [3, 0]))
+
+
+def test_intersection_ellipse_line_xy_rejects_degenerate_line():
+    with pytest.raises(ValueError, match="distinct"):
+        intersection_ellipse_line_xy((2.0, 1.0), ([0, 0], [0, 0]))

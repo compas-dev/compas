@@ -1041,41 +1041,57 @@ def intersection_segment_segment_xy(
     return intx_pt
 
 
-def intersection_circle_circle_xy(circle1, circle2):
-    """Calculates the intersection points of two circles in 2d lying in the XY plane.
+def intersection_circle_circle_xy(
+    circle1: CircleType,
+    circle2: CircleType,
+    tol: Optional[float] = None,
+) -> Optional[tuple[tuple[float, float, float], tuple[float, float, float]]]:
+    """Compute the intersection points of two circles in the XY plane.
 
     Parameters
     ----------
-    circle1 : [plane, float]
+    circle1
         Circle defined by a plane, with at least XY coordinates, and a radius.
-    circle2 : [plane, float]
+    circle2
         Circle defined by a plane, with at least XY coordinates, and a radius.
+    tol
+        Tolerance for classifying tangent and concentric circles.
+        Default is `TOL.absolute`.
 
     Returns
     -------
-    tuple[[float, float, float], [float, float, float]] | None
+    Optional[tuple[tuple[float, float, float], tuple[float, float, float]]]
         The intersection points if there are any.
         If the circles are tangent to each other, the two intersection points are identical.
         None otherwise.
 
+    Raises
+    ------
+    ValueError
+        If either radius is negative.
+
     """
     plane1, r1 = circle1
     plane2, r2 = circle2
-    p1, n1 = plane1
-    p2, n2 = plane2
+    p1, _ = plane1
+    p2, _ = plane2
+
+    if r1 < 0.0 or r2 < 0.0:
+        raise ValueError("Circle radii cannot be negative.")
+
     R = length_vector_xy(subtract_vectors_xy(p2, p1))
 
-    if R > r1 + r2:
+    if TOL.is_zero(R, tol):
         return None
 
-    if R < fabs(r1 - r2):
+    if R > r1 + r2 and not TOL.is_close(R, r1 + r2, atol=tol):
         return None
 
-    if (R == 0) and (r1 == r2):
+    if R < fabs(r1 - r2) and not TOL.is_close(R, fabs(r1 - r2), atol=tol):
         return None
 
-    x1, y1 = p1[:2]
-    x2, y2 = p2[:2]
+    x1, y1 = p1[0], p1[1]
+    x2, y2 = p2[0], p2[1]
 
     cx = 0.5 * (x1 + x2)
     cy = 0.5 * (y2 + y1)
@@ -1084,7 +1100,8 @@ def intersection_circle_circle_xy(circle1, circle2):
     R4 = R2 * R2
 
     a = (r1 * r1 - r2 * r2) / (2 * R2)
-    b = 0.5 * sqrt(2 * (r1 * r1 + r2 * r2) / R2 - (r1 * r1 - r2 * r2) ** 2 / R4 - 1)
+    discriminant = 2 * (r1 * r1 + r2 * r2) / R2 - (r1 * r1 - r2 * r2) ** 2 / R4 - 1
+    b = 0.5 * sqrt(max(0.0, discriminant))
 
     i1 = cx + a * (x2 - x1) + b * (y2 - y1), cy + a * (y2 - y1) + b * (x1 - x2), 0
     i2 = cx + a * (x2 - x1) - b * (y2 - y1), cy + a * (y2 - y1) - b * (x1 - x2), 0
@@ -1138,29 +1155,45 @@ def intersection_segment_polyline_xy(
     return None
 
 
-def intersection_ellipse_line_xy(ellipse, line):
-    """Computes the intersection of an ellipse and a line in the XY plane.
+def intersection_ellipse_line_xy(
+    ellipse: tuple[float, float],
+    line: LineType,
+    tol: Optional[float] = None,
+) -> Optional[
+    Union[
+        tuple[float, float, float],
+        tuple[tuple[float, float, float], tuple[float, float, float]],
+    ]
+]:
+    """Compute the intersection of an origin-centered ellipse and a line in the XY plane.
 
     Parameters
     ----------
-    ellipse : tuple[float, float]
-        The major and minor of the ellipse.
-    line : [point, point] | :class:`compas.geometry.Line`
+    ellipse
+        The positive major and minor semi-axis lengths.
+    line
         A line defined by two points, with at least XY coordinates.
+    tol
+        Tolerance for classifying a tangent intersection.
+        Default is `TOL.absolute`.
 
     Returns
     -------
-    tuple[[float, float, float], [float, float, float]] | [float, float, float] | None
+    Optional[Union[tuple[float, float, float], tuple[tuple[float, float, float], tuple[float, float, float]]]]
         Two points, if the line goes through the ellipse.
         One point, if the line is tangent to the ellipse.
         None, otherwise.
 
+    Raises
+    ------
+    ValueError
+        If either semi-axis is not positive or the line points coincide.
+
     References
     ----------
-    Based on [1]_.
+    Based on the method described by C# Helper.[^intersection-ellipse-line-csharp]
 
-    .. [1] C# Helper. *Calculate where a line segment and an ellipse intersect in C#*.
-           Available at: http://csharphelper.com/blog/2017/08/calculate-where-a-line-segment-and-an-ellipse-intersect-in-c/
+    [^intersection-ellipse-line-csharp]: [Calculate where a line segment and an ellipse intersect in C#](http://csharphelper.com/blog/2017/08/calculate-where-a-line-segment-and-an-ellipse-intersect-in-c/)
 
     Examples
     --------
@@ -1175,22 +1208,26 @@ def intersection_ellipse_line_xy(ellipse, line):
 
     a, b = ellipse
 
+    if a <= 0.0 or b <= 0.0:
+        raise ValueError("Ellipse semi-axis lengths must be positive.")
+
     A = (x2 - x1) ** 2 / a**2 + (y2 - y1) ** 2 / b**2
+    if TOL.is_zero(A, tol):
+        raise ValueError("A line requires two distinct points.")
     B = 2 * x1 * (x2 - x1) / a**2 + 2 * y1 * (y2 - y1) / b**2
     C = x1**2 / a**2 + y1**2 / b**2 - 1
 
     discriminant = B**2 - 4 * A * C
-    if discriminant == 0:
+    if TOL.is_zero(discriminant, tol):
         t = -B / (2 * A)
         return (x1 + (x2 - x1) * t, y1 + (y2 - y1) * t, 0.0)
-    elif discriminant > 0:
+    if discriminant > 0:
         t1 = (-B + sqrt(discriminant)) / (2 * A)
         t2 = (-B - sqrt(discriminant)) / (2 * A)
         p1 = (x1 + (x2 - x1) * t1, y1 + (y2 - y1) * t1, 0.0)
         p2 = (x1 + (x2 - x1) * t2, y1 + (y2 - y1) * t2, 0.0)
         return p1, p2
-    else:
-        return None
+    return None
 
 
 # def intersection_line_circle_xy(line, circle):
