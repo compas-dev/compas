@@ -1,3 +1,14 @@
+from typing import TYPE_CHECKING
+from typing import Any
+from typing import Literal
+from typing import Optional
+from typing import Sequence
+from typing import TypeVar
+
+from typing_extensions import Self
+
+from compas._typing import CoordinateType
+from compas._typing import FilePath
 from compas.geometry import Point
 from compas.itertools import linspace
 from compas.itertools import meshgrid
@@ -6,166 +17,177 @@ from compas.plugins import pluggable
 
 from .surface import Surface
 
+if TYPE_CHECKING:
+    from compas.geometry import Curve
+    from compas.geometry import Cylinder
+    from compas.geometry import Frame
+    from compas.geometry import NurbsCurve
+    from compas.geometry import Plane
+    from compas.geometry import Sphere
+    from compas.geometry import Torus
+    from compas.geometry import Vector
+
+ControlPointGrid = Sequence[Sequence[CoordinateType]]
+WeightGrid = Sequence[Sequence[float]]
+NurbsSurfaceType = TypeVar("NurbsSurfaceType", bound="NurbsSurface")
+
 
 @pluggable(category="factories")
-def nurbssurface_from_cylinder(cls, *args, **kwargs):
+def nurbssurface_from_cylinder(cls: type[NurbsSurfaceType], cylinder: "Cylinder") -> NurbsSurfaceType:
     raise PluginNotInstalledError
 
 
 @pluggable(category="factories")
-def nurbssurface_from_extrusion(cls, *args, **kwargs):
+def nurbssurface_from_extrusion(cls: type[NurbsSurfaceType], curve: "Curve", vector: "Vector") -> NurbsSurfaceType:
     raise PluginNotInstalledError
 
 
 @pluggable(category="factories")
-def nurbssurface_from_fill(cls, *args, **kwargs):
+def nurbssurface_from_fill(
+    cls: type[NurbsSurfaceType],
+    curve1: "NurbsCurve",
+    curve2: "NurbsCurve",
+    curve3: Optional["NurbsCurve"] = None,
+    curve4: Optional["NurbsCurve"] = None,
+    style: Literal["stretch", "coons", "curved"] = "stretch",
+) -> NurbsSurfaceType:
     raise PluginNotInstalledError
 
 
 @pluggable(category="factories")
-def nurbssurface_from_frame(cls, *args, **kwargs):
+def nurbssurface_from_frame(cls: type[NurbsSurfaceType], frame: "Frame") -> NurbsSurfaceType:
     raise PluginNotInstalledError
 
 
 @pluggable(category="factories")
-def nurbssurface_from_interpolation(cls, *args, **kwargs):
+def nurbssurface_from_interpolation(
+    cls: type[NurbsSurfaceType],
+    points: ControlPointGrid,
+    precision: float = 1e-3,
+) -> NurbsSurfaceType:
     raise PluginNotInstalledError
 
 
 @pluggable(category="factories")
-def nurbssurface_from_native(cls, *args, **kwargs):
+def nurbssurface_from_native(cls: type[NurbsSurfaceType], surface: object) -> NurbsSurfaceType:
     raise PluginNotInstalledError
 
 
 @pluggable(category="factories")
-def nurbssurface_from_parameters(cls, *args, **kwargs):
+def nurbssurface_from_parameters(
+    cls: type[NurbsSurfaceType],
+    points: ControlPointGrid,
+    weights: WeightGrid,
+    knots_u: Sequence[float],
+    knots_v: Sequence[float],
+    mults_u: Sequence[int],
+    mults_v: Sequence[int],
+    degree_u: int,
+    degree_v: int,
+    is_periodic_u: bool = False,
+    is_periodic_v: bool = False,
+) -> NurbsSurfaceType:
     raise PluginNotInstalledError
 
 
 @pluggable(category="factories")
-def nurbssurface_from_plane(cls, *args, **kwargs):
+def nurbssurface_from_plane(cls: type[NurbsSurfaceType], plane: "Plane") -> NurbsSurfaceType:
     raise PluginNotInstalledError
 
 
 @pluggable(category="factories")
-def nurbssurface_from_points(cls, *args, **kwargs):
+def nurbssurface_from_points(
+    cls: type[NurbsSurfaceType],
+    points: ControlPointGrid,
+    degree_u: int = 3,
+    degree_v: int = 3,
+) -> NurbsSurfaceType:
     raise PluginNotInstalledError
 
 
 @pluggable(category="factories")
-def nurbssurface_from_revolution(cls, *args, **kwargs):
+def nurbssurface_from_sphere(cls: type[NurbsSurfaceType], sphere: "Sphere") -> NurbsSurfaceType:
     raise PluginNotInstalledError
 
 
 @pluggable(category="factories")
-def nurbssurface_from_sphere(cls, *args, **kwargs):
+def nurbssurface_from_step(cls: type[NurbsSurfaceType], filepath: FilePath) -> NurbsSurfaceType:
     raise PluginNotInstalledError
 
 
 @pluggable(category="factories")
-def nurbssurface_from_step(cls, *args, **kwargs):
-    raise PluginNotInstalledError
-
-
-@pluggable(category="factories")
-def nurbssurface_from_torus(cls, *args, **kwargs):
+def nurbssurface_from_torus(cls: type[NurbsSurfaceType], torus: "Torus") -> NurbsSurfaceType:
     raise PluginNotInstalledError
 
 
 class NurbsSurface(Surface):
-    """A NURBS surface is defined by control points, weights, knots, and a degree, in two directions U and V.
+    """A NURBS surface defined by control points, weights, knots, and degrees.
 
     Parameters
     ----------
-    name : str, optional
+    name
         The name of the surface.
 
-    Attributes
-    ----------
-    points : list[list[:class:`compas.geometry.Point`]], read-only
-        The control points as rows along the U direction.
-    weights : list[list[float]], read-only
-        The weights of the control points.
-    knots_u : list[float], read-only
-        The knots in the U direction, without multiplicity.
-    knots_v : list[float], read-only
-        The knots in the V direction, without multiplicity.
-    mults_u : list[int], read-only
-        Multiplicity of the knots in the U direction.
-    mults_v : list[int], read-only
-        Multiplicity of the knots in the V direction.
-    degree_u : list[int], read-only
-        The degree of the surface in the U direction.
-    degree_v : list[int], read-only
-        The degree of the surface in the V direction.
+    Notes
+    -----
+    `NurbsSurface` defines a backend contract. Concrete implementations are
+    supplied through the plugin mechanism, for example by Rhino or OCC.
+
+    Knot data exposed by this contract uses the full mathematical convention.
+    The complete knot vectors include all endpoint knots, including the two
+    knots that openNURBS considers superfluous and omits from native Rhino knot
+    lists. Rhino implementations are responsible for removing those knots when
+    constructing native geometry and restoring them when exposing COMPAS knot
+    data.
+
+    Control points and weights use row-major parameter order. The outer
+    sequence contains V rows and every row contains values along U; therefore a
+    nested value is addressed as `points[v][u]` or `weights[v][u]`.
 
     """
 
-
     @property
-    def __dtype__(self):
+    def __dtype__(self) -> str:
         return "compas.geometry/NurbsSurface"
 
     @property
-    def __data__(self):
+    def __data__(self) -> dict[str, Any]:
+        """The data representation of the NURBS surface."""
         return {
-            "points": [[point.__data__ for point in row] for row in self.points],  # type: ignore
-            "weights": self.weights,
-            "knots_u": self.knots_u,
-            "knots_v": self.knots_v,
-            "mults_u": self.mults_u,
-            "mults_v": self.mults_v,
+            "points": [[point.__data__ for point in row] for row in self.points],
+            "weights": [list(row) for row in self.weights],
+            "knots_u": list(self.knots_u),
+            "knots_v": list(self.knots_v),
+            "mults_u": list(self.mults_u),
+            "mults_v": list(self.mults_v),
             "degree_u": self.degree_u,
             "degree_v": self.degree_v,
             "is_periodic_u": self.is_periodic_u,
             "is_periodic_v": self.is_periodic_v,
-        }
+    }
 
     @classmethod
-    def __from_data__(cls, data):
-        """Construct a Nurbs surface from its data representation.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`compas.geometry.NurbsSurface`
-            The constructed surface.
-
-        """
-        points = data["points"]  # conversion is not needed because point data can be provided in their raw form as well
-        weights = data["weights"]
-        knots_u = data["knots_u"]
-        knots_v = data["knots_v"]
-        mults_u = data["mults_u"]
-        mults_v = data["mults_v"]
-        degree_u = data["degree_u"]
-        degree_v = data["degree_v"]
-        is_periodic_u = data["is_periodic_u"]
-        is_periodic_v = data["is_periodic_v"]
+    def __from_data__(cls, data: dict[str, Any]) -> Self:
         return cls.from_parameters(
-            points,
-            weights,
-            knots_u,
-            knots_v,
-            mults_u,
-            mults_v,
-            degree_u,
-            degree_v,
-            is_periodic_u,
-            is_periodic_v,
+            data["points"],
+            data["weights"],
+            data["knots_u"],
+            data["knots_v"],
+            data["mults_u"],
+            data["mults_v"],
+            data["degree_u"],
+            data["degree_v"],
+            data["is_periodic_u"],
+            data["is_periodic_v"],
         )
 
-    def __new__(cls, *args, **kwargs):
+    def __new__(cls, *args: object, **kwargs: object) -> Self:
         if cls is NurbsSurface:
             raise TypeError("Making an instance of `NurbsSurface` using `NurbsSurface()` is not allowed. Please use one of the factory methods instead (`NurbsSurface.from_...`)")
         return object.__new__(cls)
 
-    def __repr__(self):
-        return "{0}(points={1!r}, weigths={2}, knots_u={3}, knots_v={4}, mults_u={5}, mults_v={6}, degree_u={7}, degree_v={8}, is_periodic_u={9}, is_periodic_v={10})".format(
+    def __repr__(self) -> str:
+        return "{0}(points={1!r}, weights={2}, knots_u={3}, knots_v={4}, mults_u={5}, mults_v={6}, degree_u={7}, degree_v={8}, is_periodic_u={9}, is_periodic_v={10})".format(
             type(self).__name__,
             self.points,
             self.weights,
@@ -184,51 +206,88 @@ class NurbsSurface(Surface):
     # ==============================================================================
 
     @property
-    def points(self):
+    def points(self) -> Sequence[Sequence[Point]]:
+        """The control points in V rows, with each row running along U."""
         raise NotImplementedError
 
     @property
-    def weights(self):
+    def weights(self) -> Sequence[Sequence[float]]:
+        """The control-point weights in the same V-by-U layout as `points`."""
         raise NotImplementedError
 
     @property
-    def knots_u(self):
+    def knots_u(self) -> Sequence[float]:
+        """The unique knots in the U direction."""
         raise NotImplementedError
 
     @property
-    def mults_u(self):
+    def mults_u(self) -> Sequence[int]:
+        """The canonical multiplicity of each unique U knot.
+
+        The endpoint multiplicities include knots omitted by native openNURBS
+        representations.
+
+        """
         raise NotImplementedError
 
     @property
-    def knotvector_u(self):
+    def knotvector_u(self) -> list[float]:
+        """The complete canonical U knot vector, including endpoint knots."""
+        return [knot for knot, multiplicity in zip(self.knots_u, self.mults_u) for _ in range(multiplicity)]
+
+    @property
+    def knots_v(self) -> Sequence[float]:
+        """The unique knots in the V direction."""
         raise NotImplementedError
 
     @property
-    def knots_v(self):
+    def mults_v(self) -> Sequence[int]:
+        """The canonical multiplicity of each unique V knot.
+
+        The endpoint multiplicities include knots omitted by native openNURBS
+        representations.
+
+        """
         raise NotImplementedError
 
     @property
-    def mults_v(self):
+    def knotvector_v(self) -> list[float]:
+        """The complete canonical V knot vector, including endpoint knots."""
+        return [knot for knot, multiplicity in zip(self.knots_v, self.mults_v) for _ in range(multiplicity)]
+
+    @property
+    def degree_u(self) -> int:
+        """The polynomial degree in the U direction."""
         raise NotImplementedError
 
     @property
-    def knotvector_v(self):
+    def degree_v(self) -> int:
+        """The polynomial degree in the V direction."""
         raise NotImplementedError
 
     @property
-    def degree_u(self):
+    def order_u(self) -> int:
+        """The polynomial order in U, equal to `degree_u + 1`."""
+        return self.degree_u + 1
+
+    @property
+    def order_v(self) -> int:
+        """The polynomial order in V, equal to `degree_v + 1`."""
+        return self.degree_v + 1
+
+    @property
+    def is_rational(self) -> bool:
+        """Whether any control-point weight differs from one."""
+        return any(weight != 1.0 for row in self.weights for weight in row)
+
+    @property
+    def domain_u(self) -> tuple[float, float]:
+        """The parameter domain in the U direction."""
         raise NotImplementedError
 
     @property
-    def degree_v(self):
-        raise NotImplementedError
-
-    @property
-    def domain_u(self):
-        raise NotImplementedError
-
-    @property
-    def domain_v(self):
+    def domain_v(self) -> tuple[float, float]:
+        """The parameter domain in the V direction."""
         raise NotImplementedError
 
     # ==============================================================================
@@ -236,57 +295,67 @@ class NurbsSurface(Surface):
     # ==============================================================================
 
     @classmethod
-    def from_cylinder(cls, cylinder, *args, **kwargs):
+    def from_cylinder(cls, cylinder: "Cylinder") -> Self:
         """Construct a surface from a cylinder.
 
         Parameters
         ----------
-        cylinder : :class:`compas.geometry.Cylinder`
+        cylinder
             The cylinder.
 
         Returns
         -------
-        :class:`compas.geometry.NurbsSurface`
+        Self
+            The constructed NURBS surface.
 
         """
-        return nurbssurface_from_cylinder(cls, cylinder, *args, **kwargs)
+        return nurbssurface_from_cylinder(cls, cylinder)
 
     @classmethod
-    def from_extrusion(cls, curve, vector, *args, **kwargs):
+    def from_extrusion(cls, curve: "Curve", vector: "Vector") -> Self:
         """Construct a NURBS surface from an extrusion of a basis curve.
 
         Note that the extrusion surface is constructed by generating an infill
-        between the basis curve and a translated copy with :meth:`from_fill`.
+        between the basis curve and a translated copy with `from_fill`.
 
         Parameters
         ----------
-        curve : :class:`compas.geometry.Curve`
+        curve
             The basis curve for the extrusion.
-        vector : :class:`compas.geometry.Vector`
+        vector
             The extrusion vector, which serves as a translation vector for the basis curve.
 
         Returns
         -------
-        :class:`compas.geometry.NurbsSurface`
+        Self
+            The constructed NURBS surface.
 
         """
-        return nurbssurface_from_extrusion(cls, curve, vector, *args, **kwargs)
+        return nurbssurface_from_extrusion(cls, curve, vector)
 
     @classmethod
-    def from_fill(cls, curve1, curve2, curve3=None, curve4=None, style="stretch"):
+    def from_fill(
+        cls,
+        curve1: "NurbsCurve",
+        curve2: "NurbsCurve",
+        curve3: Optional["NurbsCurve"] = None,
+        curve4: Optional["NurbsCurve"] = None,
+        style: Literal["stretch", "coons", "curved"] = "stretch",
+    ) -> Self:
         """Construct a NURBS surface from the infill between two, three or four contiguous NURBS curves.
 
         Parameters
         ----------
-        curve1 : :class:`compas.geometry.NurbsCurve`
-        curve2 : :class:`compas.geometry.NurbsCurve`
-        curve3 : :class:`compas.geometry.NurbsCurve`, optional.
-        curve4 : :class:`compas.geometry.NurbsCurve`, optional.
-        style : Literal['stretch', 'coons', 'curved'], optional.
-
-            * ``'stretch'`` produces the flattest patch.
-            * ``'curved'`` produces a rounded patch.
-            * ``'coons'`` is between stretch and coons.
+        curve1
+            The first boundary curve.
+        curve2
+            The second boundary curve.
+        curve3
+            The optional third boundary curve.
+        curve4
+            The optional fourth boundary curve.
+        style
+            The fill style: `stretch`, `coons`, or `curved`.
 
         Raises
         ------
@@ -295,61 +364,69 @@ class NurbsSurface(Surface):
 
         Returns
         -------
-        :class:`compas.geometry.NurbsSurface`
+        Self
+            The constructed NURBS surface.
 
         """
         return nurbssurface_from_fill(cls, curve1, curve2, curve3, curve4, style)
 
     @classmethod
-    def from_frame(cls, frame, *args, **kwargs):
+    def from_frame(cls, frame: "Frame") -> Self:
         """Construct a surface from a frame.
 
         Parameters
         ----------
-        frame : :class:`compas.geometry.Frame`
-            The plane.
+        frame
+            The surface frame.
 
         Returns
         -------
-        :class:`compas.geometry.NurbsSurface`
+        Self
+            The constructed NURBS surface.
 
         """
-        return nurbssurface_from_frame(cls, frame, *args, **kwargs)
+        return nurbssurface_from_frame(cls, frame)
 
     @classmethod
-    def from_interpolation(cls, points, *args, **kwargs):
-        """Construct a surface from a frame.
+    def from_interpolation(cls, points: ControlPointGrid, precision: float = 1e-3) -> Self:
+        """Construct a NURBS surface by interpolating a grid of points.
 
         Parameters
         ----------
-        points : list[:class:`compas.geometry.Point`]
-            The interpolation points.
+        points
+            The interpolation point grid.
+        precision
+            The desired interpolation precision.
 
         Returns
         -------
-        :class:`compas.geometry.NurbsSurface`
+        Self
+            The interpolated NURBS surface.
 
         """
-        return nurbssurface_from_interpolation(cls, points, *args, **kwargs)
+        return nurbssurface_from_interpolation(cls, points, precision=precision)
 
     @classmethod
-    def from_meshgrid(cls, nu=10, nv=10):
+    def from_meshgrid(cls, nu: int = 10, nv: int = 10) -> Self:
         """Construct a NURBS surface from a mesh grid.
 
         Parameters
         ----------
-        nu : int, optional
-            Number of control points in the U direction.
-        nv : int, optional
-            Number of control points in the V direction.
+        nu
+            The number of grid intervals in the U direction.
+        nv
+            The number of grid intervals in the V direction.
 
         Returns
         -------
-        :class:`compas.geometry.NurbsSurface`
+        Self
+            The constructed NURBS surface.
 
         """
-        UU, VV = meshgrid(linspace(0, nu, nu + 1), linspace(0, nv, nv + 1))
-        points = []
+        if nu < 1 or nv < 1:
+            raise ValueError("A NURBS mesh grid requires at least one interval in each direction.")
+        UU, VV = meshgrid(linspace(0.0, float(nu), nu + 1), linspace(0.0, float(nv), nv + 1))
+        points: list[list[Point]] = []
         for U, V in zip(UU, VV):
             row = []
             for u, v in zip(U, V):
@@ -358,7 +435,7 @@ class NurbsSurface(Surface):
         return cls.from_points(points=points)
 
     @classmethod
-    def from_native(cls, surface):
+    def from_native(cls, surface: object) -> Self:
         """Construct a NURBS surface from a native surface geometry.
 
         Parameters
@@ -368,7 +445,8 @@ class NurbsSurface(Surface):
 
         Returns
         -------
-        :class:`compas.geometry.NurbsSurface`
+        Self
+            The constructed NURBS surface.
 
         """
         return nurbssurface_from_native(cls, surface)
@@ -376,41 +454,46 @@ class NurbsSurface(Surface):
     @classmethod
     def from_parameters(
         cls,
-        points,
-        weights,
-        knots_u,
-        knots_v,
-        mults_u,
-        mults_v,
-        degree_u,
-        degree_v,
-        is_periodic_u=False,
-        is_periodic_v=False,
-    ):
+        points: ControlPointGrid,
+        weights: WeightGrid,
+        knots_u: Sequence[float],
+        knots_v: Sequence[float],
+        mults_u: Sequence[int],
+        mults_v: Sequence[int],
+        degree_u: int,
+        degree_v: int,
+        is_periodic_u: bool = False,
+        is_periodic_v: bool = False,
+    ) -> Self:
         """Construct a NURBS surface from explicit parameters.
 
         Parameters
         ----------
-        points : list[list[[float, float, float] | :class:`compas.geometry.Point`]]
+        points
             The control points.
-        weights : list[list[float]]
+        weights
             The weights of the control points.
-        knots_u : list[float]
+        knots_u
             The knots in the U direction, without multiplicity.
-        knots_v : list[float]
+        knots_v
             The knots in the V direction, without multiplicity.
-        mults_u : list[int]
+        mults_u
             Multiplicity of the knots in the U direction.
-        mults_v : list[int]
+        mults_v
             Multiplicity of the knots in the V direction.
-        degree_u : int
+        degree_u
             Degree in the U direction.
-        degree_v : int
+        degree_v
             Degree in the V direction.
+        is_periodic_u
+            Whether the surface is periodic in the U direction.
+        is_periodic_v
+            Whether the surface is periodic in the V direction.
 
         Returns
         -------
-        :class:`compas.geometry.NurbsSurface`
+        Self
+            The constructed NURBS surface.
 
         """
         return nurbssurface_from_parameters(
@@ -428,87 +511,93 @@ class NurbsSurface(Surface):
         )
 
     @classmethod
-    def from_plane(cls, plane, *args, **kwargs):
+    def from_plane(cls, plane: "Plane") -> Self:
         """Construct a surface from a plane.
 
         Parameters
         ----------
-        plane : :class:`compas.geometry.Plane`
+        plane
             The plane.
 
         Returns
         -------
-        :class:`compas.geometry.NurbsSurface`
+        Self
+            The constructed NURBS surface.
 
         """
-        return nurbssurface_from_plane(cls, plane, *args, **kwargs)
+        return nurbssurface_from_plane(cls, plane)
 
     @classmethod
-    def from_points(cls, points, degree_u=3, degree_v=3):
+    def from_points(cls, points: ControlPointGrid, degree_u: int = 3, degree_v: int = 3) -> Self:
         """Construct a NURBS surface from control points.
 
         Parameters
         ----------
-        points : list[list[[float, float, float] | :class:`compas.geometry.Point`]]
+        points
             The control points.
-        degree_u : int
+        degree_u
             Degree in the U direction.
-        degree_v : int
+        degree_v
             Degree in the V direction.
 
         Returns
         -------
-        :class:`compas.geometry.NurbsSurface`
+        Self
+            The constructed NURBS surface.
 
         """
         return nurbssurface_from_points(cls, points, degree_u=degree_u, degree_v=degree_v)
 
     @classmethod
-    def from_sphere(cls, sphere, *args, **kwargs):
+    def from_sphere(cls, sphere: "Sphere") -> Self:
         """Construct a surface from a sphere.
 
         Parameters
         ----------
-        sphere : :class:`compas.geometry.Sphere`
+        sphere
             The sphere.
 
         Returns
         -------
-        :class:`compas.geometry.NurbsSurface`
+        Self
+            The constructed NURBS surface.
 
         """
-        return nurbssurface_from_sphere(cls, sphere, *args, **kwargs)
+        return nurbssurface_from_sphere(cls, sphere)
 
     @classmethod
-    def from_step(cls, filepath):
+    def from_step(cls, filepath: FilePath) -> Self:
         """Load a NURBS surface from a STP file.
 
         Parameters
         ----------
-        filepath : str
+        filepath
+            The path to the STEP file.
 
         Returns
         -------
-        :class:`compas.geometry.NurbsSurface`
+        Self
+            The loaded NURBS surface.
 
         """
         return nurbssurface_from_step(cls, filepath)
 
     @classmethod
-    def from_torus(cls, torus, *args, **kwargs):
+    def from_torus(cls, torus: "Torus") -> Self:
         """Construct a surface from a torus.
 
         Parameters
         ----------
-        torus : :class:`compas.geometry.Torus`
+        torus
             The torus.
 
         Returns
         -------
-        :class:`compas.geometry.NurbsSurface`
+        Self
+            The constructed NURBS surface.
 
         """
-        return nurbssurface_from_torus(cls, torus, *args, **kwargs)
+        return nurbssurface_from_torus(cls, torus)
 
     # ==============================================================================
     # Conversions
@@ -518,15 +607,24 @@ class NurbsSurface(Surface):
     # Methods
     # ==============================================================================
 
-    def copy(self):
+    def copy(self, cls: Optional[type[Self]] = None, copy_guid: bool = False) -> Self:  # type: ignore[override]
         """Make an independent copy of the surface.
+
+        Parameters
+        ----------
+        cls
+            The NURBS surface type to construct. Default is `type(self)`.
+        copy_guid
+            If `True`, preserve the globally unique identifier.
 
         Returns
         -------
-        :class:`compas.geometry.NurbsSurface`
+        Self
+            The independent copy.
 
         """
-        return NurbsSurface.from_parameters(
+        surface_type = cls or type(self)
+        surface = surface_type.from_parameters(
             self.points,
             self.weights,
             self.knots_u,
@@ -538,3 +636,6 @@ class NurbsSurface(Surface):
             self.is_periodic_u,
             self.is_periodic_v,
         )
+        if copy_guid:
+            surface._guid = self.guid
+        return surface

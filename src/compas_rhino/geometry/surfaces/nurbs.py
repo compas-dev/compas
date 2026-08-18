@@ -21,10 +21,11 @@ class ControlPoints(object):
 
     @property
     def points(self):
+        # COMPAS stores V rows containing U values; Rhino indexes U first.
         points = []
-        for i in range(self.native_surface.Points.CountU):
+        for j in range(self.native_surface.Points.CountV):
             row = []
-            for j in range(self.native_surface.Points.CountV):
+            for i in range(self.native_surface.Points.CountU):
                 row.append(point_to_compas(self.native_surface.Points.GetControlPoint(i, j).Location))
             points.append(row)
         return points
@@ -43,7 +44,7 @@ class ControlPoints(object):
         self.native_surface.Points.SetControlPoint(u, v, Rhino.Geometry.ControlPoint(point_to_rhino(point)))
 
     def __len__(self):
-        return self.native_surface.Points.CountU
+        return self.native_surface.Points.CountV
 
     def __iter__(self):
         return iter(self.points)
@@ -63,8 +64,9 @@ def native_surface_from_parameters(
 ):
     order_u = degree_u + 1
     order_v = degree_v + 1
-    pointcount_u = len(points)
-    pointcount_v = len(points[0])
+    # COMPAS stores V rows containing U values; Rhino indexes U first.
+    pointcount_u = len(points[0])
+    pointcount_v = len(points)
     is_rational = any(weight != 1.0 for weight in flatten(weights))
     dimensions = 3
 
@@ -102,9 +104,9 @@ def native_surface_from_parameters(
     for index, knot in enumerate(knotvector_v):
         native_surface.KnotsV[index] = knot
     # add control points
-    for i in range(pointcount_u):
-        for j in range(pointcount_v):
-            native_surface.Points.SetPoint(i, j, point_to_rhino(points[i][j]), weights[i][j])
+    for j in range(pointcount_v):
+        for i in range(pointcount_u):
+            native_surface.Points.SetPoint(i, j, point_to_rhino(points[j][i]), weights[j][i])
     return native_surface
 
 
@@ -138,22 +140,13 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
 
     @property
     def __data__(self):
-        # add superfluous knots
-        # for compatibility with all/most other NURBS implementations
-        # https://developer.rhino3d.com/guides/opennurbs/superfluous-knots/
-        mults_u = self.mults_u[:]  # type: ignore
-        mults_v = self.mults_v[:]  # type: ignore
-        mults_u[0] += 1
-        mults_u[-1] += 1
-        mults_v[0] += 1
-        mults_v[-1] += 1
         return {
             "points": [[point.__data__ for point in row] for row in self.points],  # type: ignore
             "weights": self.weights,
             "knots_u": self.knots_u,
             "knots_v": self.knots_v,
-            "mults_u": mults_u,
-            "mults_v": mults_v,
+            "mults_u": self.mults_u,
+            "mults_v": self.mults_v,
             "degree_u": self.degree_u,
             "degree_v": self.degree_v,
             "is_periodic_u": self.is_periodic_u,
@@ -174,10 +167,11 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
     @property
     def weights(self):
         if self.native_surface:
+            # Keep the weight grid aligned with the canonical point-grid layout.
             weights = []
-            for i in range(self.native_surface.Points.CountU):
+            for j in range(self.native_surface.Points.CountV):
                 row = []
-                for j in range(self.native_surface.Points.CountV):
+                for i in range(self.native_surface.Points.CountU):
                     row.append(self.native_surface.Points.GetWeight(i, j))
                 weights.append(row)
             return weights
@@ -190,12 +184,16 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
     @property
     def mults_u(self):
         if self.native_surface:
-            return [len(list(group)) for _, group in groupby(self.native_surface.KnotsU)]
+            multiplicities = [len(list(group)) for _, group in groupby(self.native_surface.KnotsU)]
+            # Restore the endpoint knots omitted by openNURBS.
+            multiplicities[0] += 1
+            multiplicities[-1] += 1
+            return multiplicities
 
     @property
     def knotvector_u(self):
         if self.native_surface:
-            return list(self.native_surface.KnotsU)
+            return [knot for knot, multiplicity in zip(self.knots_u, self.mults_u) for _ in range(multiplicity)]
 
     @property
     def knots_v(self):
@@ -205,12 +203,16 @@ class RhinoNurbsSurface(RhinoSurface, NurbsSurface):
     @property
     def mults_v(self):
         if self.native_surface:
-            return [len(list(group)) for _, group in groupby(self.native_surface.KnotsV)]
+            multiplicities = [len(list(group)) for _, group in groupby(self.native_surface.KnotsV)]
+            # Restore the endpoint knots omitted by openNURBS.
+            multiplicities[0] += 1
+            multiplicities[-1] += 1
+            return multiplicities
 
     @property
     def knotvector_v(self):
         if self.native_surface:
-            return list(self.native_surface.KnotsV)
+            return [knot for knot, multiplicity in zip(self.knots_v, self.mults_v) for _ in range(multiplicity)]
 
     @property
     def degree_u(self):
