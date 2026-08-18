@@ -1,3 +1,8 @@
+from typing import Any
+from typing import Optional
+
+from typing_extensions import Self
+
 from compas.geometry import Frame
 from compas.geometry import Plane
 from compas.geometry import Point
@@ -11,43 +16,61 @@ class PlanarSurface(Surface):
 
     Parameters
     ----------
-    frame : :class:`compas.geometry.Frame`, optional
+    frame
         The local coordinate system of the surface.
-        Default is ``None``, in which case the world coordinate system is used.
-    xsize : float, optional
+        If `None`, the world XY frame is used.
+    xsize
         The size of the surface in the local X-direction.
-    ysize : float, optional
+    ysize
         The size of the surface in the local Y-direction.
-    name : str, optional
+    name
         The name of the surface.
+
+    Examples
+    --------
+    >>> surface = PlanarSurface(xsize=2.0, ysize=3.0)
+    >>> surface.point_at(0.5, 0.5)
+    Point(x=1.000, y=1.500, z=0.000)
+
+    A planar surface can also be constructed from a plane.
+
+    >>> plane = Plane.worldXY()
+    >>> PlanarSurface.from_plane_and_size(plane, 2.0, 3.0).to_plane() == plane
+    True
 
     """
 
-
     @property
-    def __data__(self):
+    def __data__(self) -> dict[str, Any]:
+        """The data representation of the planar surface."""
         return {
             "xsize": self.xsize,
             "ysize": self.ysize,
             "frame": self.frame.__data__,
-        }
+    }
 
     @classmethod
-    def __from_data__(cls, data):
+    def __from_data__(cls, data: dict[str, Any]) -> Self:
         return cls(
             xsize=data["xsize"],
             ysize=data["ysize"],
             frame=Frame.__from_data__(data["frame"]),
         )
 
-    def __init__(self, xsize=1.0, ysize=1.0, frame=None, name=None):
-        super(PlanarSurface, self).__init__(frame=frame, name=name)
-        self._xsize = None
-        self._ysize = None
+    def __init__(
+        self,
+        xsize: float = 1.0,
+        ysize: float = 1.0,
+        frame: Optional[Frame] = None,
+        name: Optional[str] = None,
+    ) -> None:
+        super().__init__(frame=frame, name=name)
+        self._xsize: Optional[float] = None
+        self._ysize: Optional[float] = None
         self.xsize = xsize
         self.ysize = ysize
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "{0}(xsize={1}, ysize={2}, frame={3!r})".format(
             type(self).__name__,
             self.xsize,
@@ -55,39 +78,37 @@ class PlanarSurface(Surface):
             self.frame,
         )
 
-    def __eq__(self, other):
-        try:
-            other_frame = other.frame
-            other_xsize = other.xsize
-            other_ysize = other.ysize
-        except Exception:
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, PlanarSurface):
             return False
-        return self.xsize == other_xsize and self.ysize == other_ysize and self.frame == other_frame
+        return self.xsize == other.xsize and self.ysize == other.ysize and self.frame == other.frame
 
     # =============================================================================
     # Properties
     # =============================================================================
 
     @property
-    def xsize(self):
+    def xsize(self) -> float:
+        """The size of the surface in its local X-direction."""
         if self._xsize is None:
             raise ValueError("The size of the surface in the local X-direction is not set.")
         return self._xsize
 
     @xsize.setter
-    def xsize(self, xsize):
+    def xsize(self, xsize: float) -> None:
         if xsize < 0:
             raise ValueError("The size of the surface in the local X-direction should be at least zero.")
         self._xsize = float(xsize)
 
     @property
-    def ysize(self):
+    def ysize(self) -> float:
+        """The size of the surface in its local Y-direction."""
         if self._ysize is None:
             raise ValueError("The size of the surface in the local Y-direction is not set.")
         return self._ysize
 
     @ysize.setter
-    def ysize(self, ysize):
+    def ysize(self, ysize: float) -> None:
         if ysize < 0:
             raise ValueError("The size of the surface in the local Y-direction should be at least zero.")
         self._ysize = float(ysize)
@@ -97,21 +118,21 @@ class PlanarSurface(Surface):
     # =============================================================================
 
     @classmethod
-    def from_plane_and_size(cls, plane, xsize, ysize):
+    def from_plane_and_size(cls, plane: Plane, xsize: float, ysize: float) -> Self:
         """Construct a planar surface from a plane and x and y sizes.
 
         Parameters
         ----------
-        plane : :class:`compas.geometry.Plane`
-            The plane of the sphere.
-        xsize : float
-            The size of the sphere in the local X-direction.
-        ysize : float
-            The size of the sphere in the local Y-direction.
+        plane
+            The plane of the surface.
+        xsize
+            The size of the surface in the local X-direction.
+        ysize
+            The size of the surface in the local Y-direction.
 
         Returns
         -------
-        :class:`compas.geometry.PlanarSurface`
+        PlanarSurface
             A planar surface.
 
         """
@@ -121,12 +142,12 @@ class PlanarSurface(Surface):
     # Conversions
     # =============================================================================
 
-    def to_plane(self):
+    def to_plane(self) -> Plane:
         """Convert the planar surface to a plane.
 
         Returns
         -------
-        :class:`compas.geometry.Plane`
+        Plane
             The plane of the planar surface.
 
         """
@@ -136,22 +157,22 @@ class PlanarSurface(Surface):
     # Methods
     # =============================================================================
 
-    def point_at(self, u, v, world=True):
-        """Construct a point on the planar surface.
+    def point_at(self, u: float, v: float, world: bool = True) -> Point:
+        """Compute a point on the planar surface.
 
         Parameters
         ----------
-        u : float
-            The first parameter.
-        v : float
-            The second parameter.
-        world : bool, optional
-            If ``True``, return the point in world coordinates.
+        u
+            The U parameter.
+        v
+            The V parameter.
+        world
+            If `True`, return the point in world coordinates.
 
         Returns
         -------
-        :class:`compas.geometry.Point`
-            A point on the sphere.
+        Point
+            The point at the given parameters.
 
         """
         point = Point(u * self.xsize, v * self.ysize, 0)
@@ -159,21 +180,26 @@ class PlanarSurface(Surface):
             point.transform(self.transformation)
         return point
 
-    def normal_at(self, u=None, v=None, world=True):
-        """Construct the normal at a point on the planar surface.
+    def normal_at(
+        self,
+        u: Optional[float] = None,
+        v: Optional[float] = None,
+        world: bool = True,
+    ) -> Vector:
+        """Compute the normal at a point on the planar surface.
 
         Parameters
         ----------
-        u : float, optional
-            The first parameter.
-            The parameter is optional, because the normal is the same everywhere.
-        v : float, optional
-            The second parameter.
-            The parameter is optional, because the normal is the same everywhere.
+        u
+            The U parameter. This is optional because the normal is constant.
+        v
+            The V parameter. This is optional because the normal is constant.
+        world
+            If `True`, return the normal in world coordinates.
 
         Returns
         -------
-        :class:`compas.geometry.Vector`
+        Vector
             The normal vector.
 
         """
@@ -181,22 +207,21 @@ class PlanarSurface(Surface):
             return self.frame.zaxis
         return Vector(0, 0, 1)
 
-    def frame_at(self, u=None, v=None):
-        """Construct a frame at a point on the planar surface.
+    def frame_at(self, u: float, v: float) -> Frame:
+        """Compute a frame at a point on the planar surface.
 
         Parameters
         ----------
-        u : float, optional
-            The first parameter.
-            The parameter is optional, because the frame is the same everywhere.
-        v : float, optional
-            The second parameter.
-            The parameter is optional, because the frame is the same everywhere.
+        u
+            The U parameter.
+        v
+            The V parameter.
 
         Returns
         -------
-        :class:`compas.geometry.Frame`
-            The frame.
+        Frame
+            A new frame located at the given parameters and oriented like the
+            surface frame.
 
         """
-        return self.frame
+        return Frame(self.point_at(u, v), self.frame.xaxis, self.frame.yaxis)

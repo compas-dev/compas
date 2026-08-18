@@ -1,11 +1,11 @@
 import pytest
 import json
-import compas
 from random import random
 
 from compas.geometry import Point  # noqa: F401
 from compas.geometry import Vector  # noqa: F401
 from compas.geometry import Frame
+from compas.geometry import Plane
 from compas.geometry import PlanarSurface
 from compas.tolerance import TOL
 from compas.itertools import linspace
@@ -114,6 +114,16 @@ def test_plane_data():
 # Constructors
 # =============================================================================
 
+
+def test_plane_from_plane_and_size_preserves_subclass():
+    class CustomPlanarSurface(PlanarSurface):
+        pass
+
+    surface = CustomPlanarSurface.from_plane_and_size(Plane.worldYZ(), 2.0, 3.0)
+
+    assert isinstance(surface, CustomPlanarSurface)
+    assert surface.to_plane() == Plane.worldYZ()
+
 # =============================================================================
 # Properties and Geometry
 # =============================================================================
@@ -129,6 +139,17 @@ def test_plane_data():
 # =============================================================================
 # Other Methods
 # =============================================================================
+
+
+def test_plane_frame_at_is_located_at_evaluated_point_and_is_independent():
+    surface = PlanarSurface(xsize=2.0, ysize=3.0, frame=Frame.worldYZ())
+
+    frame = surface.frame_at(0.5, 0.5)
+
+    assert frame.point == surface.point_at(0.5, 0.5)
+    assert frame.xaxis == surface.frame.xaxis
+    assert frame.yaxis == surface.frame.yaxis
+    assert frame is not surface.frame
 
 # =============================================================================
 # Conversions
