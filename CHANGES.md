@@ -217,6 +217,131 @@
   string and byte serialization, nonmutating formatting, writing, and namespace
   roundtrips.
 
+## Geometry
+
+### General
+
+- Modernized the geometry package for Python 3.9 with explicit annotations,
+  subclass-preserving `Self` return types, overloads for argument-dependent
+  results, modern `super()` calls, and MkDocs-compatible NumPy-style docstrings.
+- Removed the remaining IronPython, Python 2, and old-CPython compatibility
+  paths, postponed-annotation imports, legacy type comments, and geometry
+  `DATASCHEMA` declarations.
+- Added shared structural coordinate and transformation protocols. Public
+  geometry APIs accept the representations supported at runtime, while the
+  low-level `_core` functions remain typed against raw numerical structures and
+  do not depend on geometry classes.
+- Standardized geometry properties and setters, documenting when coordinate,
+  point, vector, plane, and frame inputs are copied and ensuring mutable input
+  objects are not retained unexpectedly.
+- Increased unit and doctest coverage throughout the geometry primitives,
+  parametric curves, intersections, and analytic surfaces, including subclass
+  construction, transformed coordinate systems, overloads, and boundary cases.
+
+### Linear algebra separation
+
+- Removed general vector, matrix, quaternion, decomposition, solver, and
+  transformation algebra from `compas.geometry._core`. Geometry now imports
+  these operations from the dedicated `compas.linalg` package described below.
+- Kept `_core` focused on geometry-specific numerical algorithms such as
+  angles, centroids, distances, normals, predicates, sizes, tangents, and NURBS
+  helpers.
+
+### Primitives
+
+- Modernized `Point`, `Vector`, `Frame`, and `Plane` with complete typing,
+  documented arithmetic and sequence behavior, constructor examples, explicit
+  three-coordinate contracts, and independent-copy setter semantics.
+- Documented all primitive properties and the behavior of forward, reflected,
+  and in-place arithmetic operators. Point and vector constructors continue to
+  accept integer coordinate values through float conversion but no longer
+  advertise strings as valid coordinates.
+- Reworked shared coordinate protocols to describe indexable, iterable
+  three-component data without unnecessary runtime list allocation or casts.
+- Made `Line` and `Polyline` lightweight geometry primitives instead of
+  subclasses of `Curve`, and moved them out of `compas.geometry.curves` to
+  `compas.geometry.line` and `compas.geometry.polyline`. The old curve-package
+  import paths were removed.
+- Modernized line and polyline construction, properties, evaluation, length,
+  transformations, and documentation. Inputs to properties such as
+  `line.point` create independent geometry values.
+
+### Curves
+
+- Simplified `Curve` into the common parametric-curve contract used by analytic
+  curves and plugin-backed NURBS implementations, with typed domains,
+  evaluation, frames, tangents, normals, curvature, closest-point queries,
+  discretization, and native conversion boundaries.
+- Modernized `Arc`, `Bezier`, `Circle`, `Ellipse`, `Hyperbola`, `Parabola`, and
+  `NurbsCurve`, including constructor examples, property documentation,
+  argument-controlled overloads, stricter invariant validation, and expanded
+  behavioral tests.
+- Removed primitive `Line` and `Polyline` from the curve inheritance hierarchy.
+  Dedicated `LineCurve` and `PolylineCurve` wrappers may be introduced later
+  where a full parametric curve object is required.
+- Restricted frame-valued curve inputs to actual `Frame` objects and moved
+  reusable path and typing aliases out of the `Curve` class.
+
+### Intersections
+
+- Added `IntersectionResult`, an immutable result container with geometry,
+  point, and line accessors, and introduced the predefined `intersection`
+  dispatcher for computing intersections by geometry-type pairs.
+- Added a symmetric `Intersection` registration mechanism with reversed-argument
+  dispatch and method-resolution-order fallback. Registered initial line-line,
+  line-plane, and plane-plane implementations.
+- Modernized the free intersection functions with explicit input and return
+  types, overloads, consistent three-dimensional input validation, and retained
+  XY-specific contracts for explicitly two-dimensional helpers.
+- Removed intersection methods from `Plane` and `Surface` so intersection logic
+  has one dedicated home, and retained mesh/mesh and ray/mesh extension points
+  for backend implementations.
+- Fixed segment typing in XY point predicates and slice-related typing in
+  intersection calculations without broadening the numerical `_core` APIs to
+  geometry object types.
+
+### Surfaces
+
+- Modernized `Surface` state, frame copying, transformations, domains,
+  discretization, native conversion, evaluation, isocurves, boundaries, and
+  closest-point overloads. Direct frame mutation now updates transformations
+  without a stale cache.
+- Removed conflicting `Surface.aabb()` and `Surface.obb()` methods in favor of
+  the standard `Geometry` bounding-box properties and `compute_aabb()` and
+  `compute_obb()` implementation hooks.
+- Removed unimplemented generic OBJ, STEP, intersection, and inconsistent
+  curvature placeholders from the base surface API. Backend-supported STEP and
+  BREP conversion hooks remain where their contracts are meaningful.
+- Modernized `PlanarSurface`, `SphericalSurface`, `CylindricalSurface`,
+  `ConicalSurface`, and `ToroidalSurface` with typed properties, serialization,
+  subclass-preserving constructors, analytic point and normal evaluation,
+  frames, isocurves, area and volume formulas, and transformed-coordinate tests.
+- Fixed planar frame origins, spherical meridian isocurves, cylindrical
+  generator domains and frames, and completed the previously partial cone and
+  torus analytic implementations. Regular cylinders and cones require positive
+  dimensions, and `ToroidalSurface` represents regular ring tori.
+- Removed the empty, unreferenced `extrusion` and `revolution` surface modules.
+
+## Linear algebra
+
+- Introduced `compas.linalg` as the dedicated home for general-purpose linear
+  algebra that was previously mixed into `compas.geometry._core`,
+  `compas.linalg.py`, and `compas.matrices.py`.
+- Added focused `vectors`, `matrices`, `operators`, `quaternions`,
+  `transformations`, `decompositions`, and `solvers` modules with a consolidated
+  public API in `compas.linalg`.
+- Moved matrix construction and manipulation, vector arithmetic, quaternion
+  operations, transformation helpers, matrix decompositions, and linear-system
+  solvers to the new package and updated geometry, datastructure, file, and
+  Blender consumers to use it.
+- Removed the old top-level `compas.linalg` module, `compas.matrices` module,
+  geometry `_algebra` module, and geometry `_core.quaternions` module. Imports
+  should now target the corresponding `compas.linalg` package API.
+- Kept numerical behavior stable during the package move and migrated the
+  existing matrix tests to the new module layout. Known numerical edge cases
+  requiring behavioral decisions remain documented for dedicated follow-up
+  work.
+
 ## Datastructures
 
 ### Shared infrastructure
