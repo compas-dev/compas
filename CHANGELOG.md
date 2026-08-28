@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `compas_rhino.uninstall` will try to remove compas packages from all possible install locations.
 * Changed `angle_vectors_projected` to raise `ValueError` when an input vector is parallel to projection normal.
 * Changed `angle_vectors` to raise `ValueError` when one of the input vectors is a zero-length vector instead of returning 0.
+* Changed `transformation_to_rhino` and `transformation_matrix_to_rhino` to assign the matrix components directly to the fields of `Rhino.Geometry.Transform` instead of looping over its indexer. About 11x faster per conversion, noticable when used inside an animation loop.
 
 ### Removed
 

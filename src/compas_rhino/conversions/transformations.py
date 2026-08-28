@@ -18,11 +18,7 @@ def transformation_to_rhino(transformation):
     :rhino:`Rhino.Geometry.Transform`
 
     """
-    transform = Rhino.Geometry.Transform(1.0)
-    for i in range(0, 4):
-        for j in range(0, 4):
-            transform[i, j] = transformation[i, j]
-    return transform
+    return transformation_matrix_to_rhino(transformation.matrix)
 
 
 def transformation_matrix_to_rhino(matrix):
@@ -38,8 +34,10 @@ def transformation_matrix_to_rhino(matrix):
     :rhino:`Rhino.Geometry.Transform`
 
     """
-    transform = Rhino.Geometry.Transform(1.0)
-    for i in range(0, 4):
-        for j in range(0, 4):
-            transform[i, j] = matrix[i][j]
+    row_0, row_1, row_2, row_3 = matrix
+    transform = Rhino.Geometry.Transform.Identity
+    transform.M00, transform.M01, transform.M02, transform.M03 = row_0
+    transform.M10, transform.M11, transform.M12, transform.M13 = row_1
+    transform.M20, transform.M21, transform.M22, transform.M23 = row_2
+    transform.M30, transform.M31, transform.M32, transform.M33 = row_3
     return transform
