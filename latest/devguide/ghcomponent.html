@@ -507,10 +507,10 @@ This takes care of a lot of the boilerplate code, and makes compiling and instal
 <p>By default, the components’ code is expected in <code class="docutils literal notranslate"><span class="pre">src/{your_package_name}/components</span></code> folder of your project.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ns</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span>
     <span class="p">{</span>
-        <span class="s2">&quot;ghuser&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;source_dir&quot;</span><span class="p">:</span> <span class="s2">&quot;src/compas_bananas/components&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;target_dir&quot;</span><span class="p">:</span> <span class="s2">&quot;src/compas_bananas/components/ghuser&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;prefix&quot;</span><span class="p">:</span> <span class="s2">&quot;(COMPAS_BANANAS)&quot;</span><span class="p">,</span>
+        <span class="s2">"ghuser"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">"source_dir"</span><span class="p">:</span> <span class="s2">"src/compas_bananas/components"</span><span class="p">,</span>
+            <span class="s2">"target_dir"</span><span class="p">:</span> <span class="s2">"src/compas_bananas/components/ghuser"</span><span class="p">,</span>
+            <span class="s2">"prefix"</span><span class="p">:</span> <span class="s2">"(COMPAS_BANANAS)"</span><span class="p">,</span>
         <span class="p">},</span>
     <span class="p">}</span>
 <span class="p">)</span>
@@ -540,37 +540,37 @@ This takes care of a lot of the boilerplate code, and makes compiling and instal
 <h2>Metadata</h2>
 <p>A typical <code class="docutils literal notranslate"><span class="pre">metadata.json</span></code> file has the following structure:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Example Component&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;nickname&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Example&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;category&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;COMPAS Bananas&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;subcategory&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Example&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;This is an example component.&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;exposure&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;ghpython&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;isAdvancedMode&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;iconDisplay&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;inputParameters&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Example Component"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"nickname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Example"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"COMPAS Bananas"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"subcategory"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Example"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"This is an example component."</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"exposure"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"ghpython"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"isAdvancedMode"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"iconDisplay"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"inputParameters"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">            </span><span class="p">{</span>
-<span class="w">                </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Arg1&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;First example argument.&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;typeHintID&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;none&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;scriptParamAccess&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">                </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Arg1"</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"First example argument."</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">"typeHintID"</span><span class="p">:</span><span class="w"> </span><span class="s2">"none"</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">"scriptParamAccess"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
 <span class="w">            </span><span class="p">},</span>
 <span class="w">            </span><span class="p">{</span>
-<span class="w">                </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Arg2&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Second example argument.&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;typeHintID&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bool&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;scriptParamAccess&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">                </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Arg2"</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Second example argument."</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">"typeHintID"</span><span class="p">:</span><span class="w"> </span><span class="s2">"bool"</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">"scriptParamAccess"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
 <span class="w">            </span><span class="p">}</span>
 <span class="w">        </span><span class="p">],</span>
-<span class="w">        </span><span class="nt">&quot;outputParameters&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="nt">"outputParameters"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">            </span><span class="p">{</span>
-<span class="w">                </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Output1&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;First output.&quot;</span>
+<span class="w">                </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Output1"</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"First output."</span>
 <span class="w">            </span><span class="p">},</span>
 <span class="w">            </span><span class="p">{</span>
-<span class="w">                </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Output2&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Second output.&quot;</span>
+<span class="w">                </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Output2"</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Second output."</span>
 <span class="w">            </span><span class="p">}</span>
 <span class="w">        </span><span class="p">]</span>
 <span class="w">    </span><span class="p">}</span>

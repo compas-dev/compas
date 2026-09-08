@@ -526,14 +526,14 @@ are serializable data types.</p>
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">__data__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span>
-            <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span>
+            <span class="s2">"a"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span>
+            <span class="s2">"b"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span>
         <span class="p">}</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">custom</span> <span class="o">=</span> <span class="n">SomeThing</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">compas</span><span class="o">.</span><span class="n">json_dump</span><span class="p">(</span><span class="n">custom</span><span class="p">,</span> <span class="s2">&quot;custom.json&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">json_load</span><span class="p">(</span><span class="s2">&quot;custom.json&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">compas</span><span class="o">.</span><span class="n">json_dump</span><span class="p">(</span><span class="n">custom</span><span class="p">,</span> <span class="s2">"custom.json"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">json_load</span><span class="p">(</span><span class="s2">"custom.json"</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">SomeThing</span><span class="p">)</span>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">a</span>
@@ -557,13 +557,13 @@ you must also customize the <code class="docutils literal notranslate"><span cla
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">__data__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;items&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">,</span>
+            <span class="s2">"items"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">,</span>
         <span class="p">}</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">__from_data__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="n">custom</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;items&#39;</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">'items'</span><span class="p">]:</span>
             <span class="n">custom</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">custom</span>
 
@@ -574,8 +574,8 @@ you must also customize the <code class="docutils literal notranslate"><span cla
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">custom</span> <span class="o">=</span> <span class="n">SomeThing</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">custom</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">custom</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">compas</span><span class="o">.</span><span class="n">json_dump</span><span class="p">(</span><span class="n">custom</span><span class="p">,</span> <span class="s2">&quot;custom.json&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">json_load</span><span class="p">(</span><span class="s2">&quot;custom.json&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">compas</span><span class="o">.</span><span class="n">json_dump</span><span class="p">(</span><span class="n">custom</span><span class="p">,</span> <span class="s2">"custom.json"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">json_load</span><span class="p">(</span><span class="s2">"custom.json"</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">SomeThing</span><span class="p">)</span>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">items</span>
@@ -602,9 +602,9 @@ The serialization process will recursively serialize all these attributes.</p>
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">__data__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;point&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="p">,</span>
-            <span class="s2">&quot;frame&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="p">,</span>
-            <span class="s2">&quot;mesh&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="p">,</span>
+            <span class="s2">"point"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="p">,</span>
+            <span class="s2">"frame"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="p">,</span>
+            <span class="s2">"mesh"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="p">,</span>
         <span class="p">}</span>
 </pre></div>
 </div>
@@ -615,8 +615,8 @@ The serialization process will recursively serialize all these attributes.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">frame</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_meshgrid</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">custom</span> <span class="o">=</span> <span class="n">SomeThing</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">mesh</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">compas</span><span class="o">.</span><span class="n">json_dump</span><span class="p">(</span><span class="n">custom</span><span class="p">,</span> <span class="s2">&quot;custom.json&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">json_load</span><span class="p">(</span><span class="s2">&quot;custom.json&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">compas</span><span class="o">.</span><span class="n">json_dump</span><span class="p">(</span><span class="n">custom</span><span class="p">,</span> <span class="s2">"custom.json"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">json_load</span><span class="p">(</span><span class="s2">"custom.json"</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">point</span><span class="p">,</span> <span class="n">Point</span><span class="p">)</span>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">frame</span><span class="p">,</span> <span class="n">Frame</span><span class="p">)</span>
@@ -647,17 +647,17 @@ The performance impact may be significant when many of these instances are seria
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">__data__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;point&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="o">.</span><span class="n">__data__</span><span class="p">,</span>
-            <span class="s2">&quot;frame&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">__data__</span><span class="p">,</span>
-            <span class="s2">&quot;mesh&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">__data__</span><span class="p">,</span>
+            <span class="s2">"point"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="o">.</span><span class="n">__data__</span><span class="p">,</span>
+            <span class="s2">"frame"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">__data__</span><span class="p">,</span>
+            <span class="s2">"mesh"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">__data__</span><span class="p">,</span>
         <span class="p">}</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">__from_data__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">Point</span><span class="o">.</span><span class="n">__from_data__</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;point&#39;</span><span class="p">]),</span>
-            <span class="n">Frame</span><span class="o">.</span><span class="n">__from_data__</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;frame&#39;</span><span class="p">]),</span>
-            <span class="n">Mesh</span><span class="o">.</span><span class="n">__from_data__</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mesh&#39;</span><span class="p">]),</span>
+            <span class="n">Point</span><span class="o">.</span><span class="n">__from_data__</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">'point'</span><span class="p">]),</span>
+            <span class="n">Frame</span><span class="o">.</span><span class="n">__from_data__</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">'frame'</span><span class="p">]),</span>
+            <span class="n">Mesh</span><span class="o">.</span><span class="n">__from_data__</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">'mesh'</span><span class="p">]),</span>
         <span class="p">)</span>
 </pre></div>
 </div>

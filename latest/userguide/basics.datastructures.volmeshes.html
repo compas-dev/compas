@@ -551,7 +551,7 @@ more easily from various types of common inputs.</p>
 <li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">VolMesh.from_polyhedrons()</span></code></p></li>
 </ul>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">compas.datastructures</span><span class="w"> </span><span class="kn">import</span> <span class="n">VolMesh</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">volmesh</span> <span class="o">=</span> <span class="n">VolMesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="s2">&quot;meshes.obj&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">volmesh</span> <span class="o">=</span> <span class="n">VolMesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="s2">"meshes.obj"</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -562,13 +562,13 @@ more easily from various types of common inputs.</p>
 <li><p><a class="reference internal" href="../api/generated/compas.datastructures.VolMesh.from_obj.html" title="compas.datastructures.VolMesh.from_obj"><code class="xref py py-meth docutils literal notranslate"><span class="pre">VolMesh.from_obj()</span></code></a></p></li>
 </ul>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">compas.datastructures</span><span class="w"> </span><span class="kn">import</span> <span class="n">VolMesh</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">volmesh</span> <span class="o">=</span> <span class="n">VolMesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="s2">&quot;volmeshring.obj&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">volmesh</span> <span class="o">=</span> <span class="n">VolMesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="s2">"volmeshring.obj"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Equivalently, the geometry of a <cite>VolMesh</cite> can also be written to an OBJ file.
 However, note that all additional data attributes (see <span class="xref std std-ref">Vertex, Edges, Face, Cell Attributes</span>) are lost during this process.
 Only the geometry survives this conversion process.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">volmesh</span><span class="o">.</span><span class="n">to_obj</span><span class="p">(</span><span class="s2">&quot;volmeshring.obj&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">volmesh</span><span class="o">.</span><span class="n">to_obj</span><span class="p">(</span><span class="s2">"volmeshring.obj"</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -580,7 +580,7 @@ For more information about visualisation with <a class="reference internal" href
 The snippet below uses <cite>volmesh.obj</cite>, which is available here: <code class="xref download docutils literal notranslate"><span class="pre">volmeshring.obj</span></code>.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">compas.datastructures</span><span class="w"> </span><span class="kn">import</span> <span class="n">VolMesh</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">compas.scene</span><span class="w"> </span><span class="kn">import</span> <span class="n">Scene</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="s2">&quot;volmeshring.obj&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="s2">"volmeshring.obj"</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">scene</span> <span class="o">=</span> <span class="n">Scene</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">scene</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">scene</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -707,41 +707,41 @@ The mechanism is exactly the same for edges, faces, and cells.</p>
 </pre></div>
 </div>
 <p>Get the value of one attribute of one vertex.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">volmesh</span><span class="o">.</span><span class="n">vertex_attribute</span><span class="p">(</span><span class="n">vertex</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">volmesh</span><span class="o">.</span><span class="n">vertex_attribute</span><span class="p">(</span><span class="n">vertex</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"a"</span><span class="p">)</span>
 <span class="go">None</span>
 </pre></div>
 </div>
 <p>Get the value of multiple attributes of one vertex.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">volmesh</span><span class="o">.</span><span class="n">vertex_attributes</span><span class="p">(</span><span class="n">vertex</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">])</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">volmesh</span><span class="o">.</span><span class="n">vertex_attributes</span><span class="p">(</span><span class="n">vertex</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">"a"</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">])</span>
 <span class="go">(None, 0.0)</span>
 </pre></div>
 </div>
 <p>Get the value of one attribute of all vertices.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">volmesh</span><span class="o">.</span><span class="n">vertices_attribute</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">volmesh</span><span class="o">.</span><span class="n">vertices_attribute</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"a"</span><span class="p">)</span>
 <span class="go">[None, None, None, ... None]</span>
 </pre></div>
 </div>
 <p>Get the value of multiple attributes of all vertices.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">volmesh</span><span class="o">.</span><span class="n">vertices_attributes</span><span class="p">(</span><span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">])</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">volmesh</span><span class="o">.</span><span class="n">vertices_attributes</span><span class="p">(</span><span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">"b"</span><span class="p">,</span> <span class="s2">"c"</span><span class="p">])</span>
 <span class="go">[(0.0, False), (0.0, False), (0.0, False), ..., (0.0, False)]</span>
 </pre></div>
 </div>
 <p>Similarly, for a selection of vertices.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">volmesh</span><span class="o">.</span><span class="n">vertices_attribute</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">vertices</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">volmesh</span><span class="o">.</span><span class="n">vertices_attribute</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"b"</span><span class="p">,</span> <span class="n">vertices</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
 <span class="go">[0.0, 0.0, 0.0, 0.0]</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">volmesh</span><span class="o">.</span><span class="n">vertices_attributes</span><span class="p">(</span><span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="n">vertices</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">volmesh</span><span class="o">.</span><span class="n">vertices_attributes</span><span class="p">(</span><span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">"a"</span><span class="p">,</span> <span class="s2">"c"</span><span class="p">],</span> <span class="n">vertices</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
 <span class="go">[(None, False), (None, False), (None, False), (None, False)]</span>
 </pre></div>
 </div>
 <p>Updating attributes is currently only possible one vertex at a time.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">volmesh</span><span class="o">.</span><span class="n">vertex_attribute</span><span class="p">(</span><span class="n">vertex</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">volmesh</span><span class="o">.</span><span class="n">vertex_attribute</span><span class="p">(</span><span class="n">vertex</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"a"</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">vertex_degree</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-<span class="gp">... </span>        <span class="n">volmesh</span><span class="o">.</span><span class="n">vertex_attribute</span><span class="p">(</span><span class="n">vertex</span><span class="o">=</span><span class="n">vertex</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
+<span class="gp">... </span>        <span class="n">volmesh</span><span class="o">.</span><span class="n">vertex_attribute</span><span class="p">(</span><span class="n">vertex</span><span class="o">=</span><span class="n">vertex</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"a"</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
 <span class="gp">...</span>
 </pre></div>
 </div>
@@ -813,18 +813,18 @@ Each edge is split into two halfedges, one for each of the connected faces.</p>
 </section>
 <section id="data-serialisation">
 <h2>Data Serialisation</h2>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">volmesh</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="s2">&quot;volmesh.json&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">volmesh</span> <span class="o">=</span> <span class="n">VolMesh</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="s2">&quot;volmesh.json&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">volmesh</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="s2">"volmesh.json"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">volmesh</span> <span class="o">=</span> <span class="n">VolMesh</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="s2">"volmesh.json"</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">to_jsonstring</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">volmesh</span> <span class="o">=</span> <span class="n">VolMesh</span><span class="o">.</span><span class="n">from_jsonstring</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">session</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;volmesh&quot;</span><span class="p">:</span> <span class="n">volmesh</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">compas</span><span class="o">.</span><span class="n">json_dump</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="s2">&quot;session.json&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">session</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">json_load</span><span class="p">(</span><span class="s2">&quot;session.json&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">volmesh</span> <span class="o">=</span> <span class="n">session</span><span class="p">[</span><span class="s2">&quot;volmesh&quot;</span><span class="p">]</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">session</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"volmesh"</span><span class="p">:</span> <span class="n">volmesh</span><span class="p">,</span> <span class="s2">"a"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">compas</span><span class="o">.</span><span class="n">json_dump</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="s2">"session.json"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">session</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">json_load</span><span class="p">(</span><span class="s2">"session.json"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">volmesh</span> <span class="o">=</span> <span class="n">session</span><span class="p">[</span><span class="s2">"volmesh"</span><span class="p">]</span>
 </pre></div>
 </div>
 </section>
@@ -897,7 +897,7 @@ Each edge is split into two halfedges, one for each of the connected faces.</p>
 <span class="n">viewer</span> <span class="o">=</span> <span class="n">Viewer</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
 
 <span class="n">wires</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">volmesh</span><span class="o">.</span><span class="n">edge_coordinates</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span> <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">volmesh</span><span class="o">.</span><span class="n">edges</span><span class="p">()])</span>
-<span class="n">viewer</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">BufferGeometry</span><span class="p">(</span><span class="n">lines</span><span class="o">=</span><span class="n">wires</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Wires&quot;</span><span class="p">)</span>
+<span class="n">viewer</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">BufferGeometry</span><span class="p">(</span><span class="n">lines</span><span class="o">=</span><span class="n">wires</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">"Wires"</span><span class="p">)</span>
 
 <span class="n">cell</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">volmesh</span><span class="o">.</span><span class="n">cell_sample</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">cell_color</span> <span class="o">=</span> <span class="p">{</span><span class="n">cell</span><span class="p">:</span> <span class="n">Color</span><span class="o">.</span><span class="n">red</span><span class="p">()}</span>

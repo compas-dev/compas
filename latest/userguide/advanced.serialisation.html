@@ -558,11 +558,11 @@ and, most importantly, an attribute containing the underlying data of the object
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">compas.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Point</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">point</span><span class="o">.</span><span class="n">guid</span>
-<span class="go">UUID(&#39;48613a5b-4c9b-4d7c-8c88-59c28297fd75&#39;)</span>
+<span class="go">UUID('48613a5b-4c9b-4d7c-8c88-59c28297fd75')</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">point</span><span class="o">.</span><span class="n">name</span>
-<span class="go">&#39;Point&#39;</span>
+<span class="go">'Point'</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">point</span><span class="o">.</span><span class="n">dtype</span>
-<span class="go">&#39;compas.geometry/Point&#39;</span>
+<span class="go">'compas.geometry/Point'</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">point</span><span class="o">.</span><span class="n">data</span>
 <span class="go">[0.0, 0.0, 0.0]</span>
 </pre></div>
@@ -574,15 +574,15 @@ and, most importantly, an attribute containing the underlying data of the object
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">compas.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Point</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">point</span><span class="o">.</span><span class="n">to_jsonstring</span><span class="p">()</span>
-<span class="go">&#39;[0.0, 0.0, 0.0]&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">point</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="s1">&#39;point.json&#39;</span><span class="p">)</span>
+<span class="go">'[0.0, 0.0, 0.0]'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">point</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="s1">'point.json'</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">compas.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Frame</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">frame</span> <span class="o">=</span> <span class="n">Frame</span><span class="o">.</span><span class="n">worldXY</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">frame</span><span class="o">.</span><span class="n">to_jsonstring</span><span class="p">()</span>
-<span class="go">&#39;{&quot;point&quot;: [0.0, 0.0, 0.0], &quot;xaxis&quot;: [1.0, 0.0, 0.0], &quot;yaxis&quot;: [0.0, 1.0, 0.0]}&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">frame</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="s1">&#39;frame.json&#39;</span><span class="p">)</span>
+<span class="go">'{"point": [0.0, 0.0, 0.0], "xaxis": [1.0, 0.0, 0.0], "yaxis": [0.0, 1.0, 0.0]}'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">frame</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="s1">'frame.json'</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Conversely, COMPAS data objects can be reconstructed from a compatible JSON string or file.</p>
@@ -595,9 +595,9 @@ and, most importantly, an attribute containing the underlying data of the object
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">compas.datastructures</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mesh</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="s1">&#39;faces.obj&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="s1">&#39;mesh.json&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">other</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="s1">&#39;mesh.json&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="s1">'faces.obj'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="s1">'mesh.json'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">other</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="s1">'mesh.json'</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The serialization mechanism applies recursively to nested structures of objects as well.</p>
@@ -610,13 +610,13 @@ and, most importantly, an attribute containing the underlying data of the object
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">point</span><span class="o">=</span><span class="n">point</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">transformation</span><span class="o">=</span><span class="n">xform</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">box</span><span class="o">=</span><span class="n">mesh</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">network</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="s1">&#39;network.json&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">network</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="s1">'network.json'</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">other</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="s1">&#39;network.json&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">other</span><span class="o">.</span><span class="n">node_attribute</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="s1">&#39;point&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">network</span><span class="o">.</span><span class="n">node_attribute</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="s1">&#39;point&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">other</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="s1">'network.json'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">other</span><span class="o">.</span><span class="n">node_attribute</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="s1">'point'</span><span class="p">)</span> <span class="o">==</span> <span class="n">network</span><span class="o">.</span><span class="n">node_attribute</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="s1">'point'</span><span class="p">)</span>
 <span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">other</span><span class="o">.</span><span class="n">node_attribute</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="s1">&#39;transformation&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">network</span><span class="o">.</span><span class="n">node_attribute</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="s1">&#39;transformation&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">other</span><span class="o">.</span><span class="n">node_attribute</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="s1">'transformation'</span><span class="p">)</span> <span class="o">==</span> <span class="n">network</span><span class="o">.</span><span class="n">node_attribute</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="s1">'transformation'</span><span class="p">)</span>
 <span class="go">True</span>
 </pre></div>
 </div>
@@ -638,17 +638,17 @@ and, most importantly, an attribute containing the underlying data of the object
     <span class="n">boxcopy</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">boxcopy</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">point</span> <span class="o">=</span> <span class="n">point</span>
 
-<span class="n">session</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;mesh&#39;</span><span class="p">:</span> <span class="n">mesh</span><span class="p">,</span> <span class="s1">&#39;boxes&#39;</span><span class="p">:</span> <span class="n">boxes</span><span class="p">}</span>
-<span class="n">compas</span><span class="o">.</span><span class="n">json_dump</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="s1">&#39;session.json&#39;</span><span class="p">)</span>
+<span class="n">session</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'mesh'</span><span class="p">:</span> <span class="n">mesh</span><span class="p">,</span> <span class="s1">'boxes'</span><span class="p">:</span> <span class="n">boxes</span><span class="p">}</span>
+<span class="n">compas</span><span class="o">.</span><span class="n">json_dump</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="s1">'session.json'</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># script B</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">compas</span>
 
-<span class="n">session</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">json_load</span><span class="p">(</span><span class="s1">&#39;session.json&#39;</span><span class="p">)</span>
-<span class="n">mesh</span> <span class="o">=</span> <span class="n">session</span><span class="p">[</span><span class="s1">&#39;mesh&#39;</span><span class="p">]</span>
-<span class="n">boxes</span> <span class="o">=</span> <span class="n">session</span><span class="p">[</span><span class="s1">&#39;boxes&#39;</span><span class="p">]</span>
+<span class="n">session</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">json_load</span><span class="p">(</span><span class="s1">'session.json'</span><span class="p">)</span>
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">session</span><span class="p">[</span><span class="s1">'mesh'</span><span class="p">]</span>
+<span class="n">boxes</span> <span class="o">=</span> <span class="n">session</span><span class="p">[</span><span class="s1">'boxes'</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>Note that if you are working in Python 3.6 or higher, you could add some type information to script B
@@ -661,9 +661,9 @@ which will help with IntelliSense and code completion.</p>
 <span class="kn">from</span><span class="w"> </span><span class="nn">compas.datastructures</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mesh</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">compas.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Box</span>
 
-<span class="n">session</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">json_load</span><span class="p">(</span><span class="s1">&#39;session.json&#39;</span><span class="p">)</span>
-<span class="n">mesh</span><span class="p">:</span> <span class="n">Mesh</span> <span class="o">=</span> <span class="n">session</span><span class="p">[</span><span class="s1">&#39;mesh&#39;</span><span class="p">]</span>
-<span class="n">boxes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Box</span><span class="p">]</span> <span class="o">=</span> <span class="n">session</span><span class="p">[</span><span class="s1">&#39;boxes&#39;</span><span class="p">]</span>
+<span class="n">session</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">json_load</span><span class="p">(</span><span class="s1">'session.json'</span><span class="p">)</span>
+<span class="n">mesh</span><span class="p">:</span> <span class="n">Mesh</span> <span class="o">=</span> <span class="n">session</span><span class="p">[</span><span class="s1">'mesh'</span><span class="p">]</span>
+<span class="n">boxes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Box</span><span class="p">]</span> <span class="o">=</span> <span class="n">session</span><span class="p">[</span><span class="s1">'boxes'</span><span class="p">]</span>
 </pre></div>
 </div>
 </section>
@@ -677,30 +677,30 @@ For example, a user can create a custom mesh class and serialize it to JSON:</p>
 <span class="k">class</span><span class="w"> </span><span class="nc">CustomMesh</span><span class="p">(</span><span class="n">Mesh</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">CustomMesh</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">custom_mesh_attr</span> <span class="o">=</span> <span class="s2">&quot;custom_mesh&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">custom_mesh_attr</span> <span class="o">=</span> <span class="s2">"custom_mesh"</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">__data__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">CustomMesh</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__data__</span>
-        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;custom_mesh_attr&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">custom_mesh_attr</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">"custom_mesh_attr"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">custom_mesh_attr</span>
         <span class="k">return</span> <span class="n">data</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">__from_data__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="n">obj</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">CustomMesh</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="n">__from_data__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-        <span class="n">obj</span><span class="o">.</span><span class="n">custom_mesh_attr</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;custom_mesh_attr&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">custom_mesh_attr</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"custom_mesh_attr"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">obj</span>
 
 <span class="c1"># Create and serialize a custom mesh</span>
-<span class="n">custom_mesh</span> <span class="o">=</span> <span class="n">CustomMesh</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
-<span class="n">json_dump</span><span class="p">(</span><span class="n">custom_mesh</span><span class="p">,</span> <span class="s1">&#39;custom_mesh.json&#39;</span><span class="p">)</span>
+<span class="n">custom_mesh</span> <span class="o">=</span> <span class="n">CustomMesh</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"test"</span><span class="p">)</span>
+<span class="n">json_dump</span><span class="p">(</span><span class="n">custom_mesh</span><span class="p">,</span> <span class="s1">'custom_mesh.json'</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>If another user loads “custom_mesh.json” in an environment where the CustomMesh class is not available, COMPAS will reconstruct the object as an instance of its closest available superclass, which in this case is the regular Mesh class:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">compas.datastructures</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mesh</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">compas</span><span class="w"> </span><span class="kn">import</span> <span class="n">json_load</span>
 
-<span class="n">mesh</span> <span class="o">=</span> <span class="n">json_load</span><span class="p">(</span><span class="s1">&#39;custom_mesh.json&#39;</span><span class="p">)</span>
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">json_load</span><span class="p">(</span><span class="s1">'custom_mesh.json'</span><span class="p">)</span>
 <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">Mesh</span><span class="p">)</span> <span class="c1"># This will be True</span>
 </pre></div>
 </div>
@@ -715,28 +715,28 @@ and the latter a Python schema using <code class="xref py py-mod docutils litera
 of the available data with the object type.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">compas.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">validate_data</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">compas.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Frame</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;point&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="s1">&#39;xaxis&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="s1">&#39;zaxis&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'point'</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="s1">'xaxis'</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="s1">'zaxis'</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">validate_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">Frame</span><span class="p">)</span>
 <span class="go">Validation against the JSON schema of this object failed.</span>
 <span class="gt">Traceback (most recent call last):</span>
 <span class="w">   </span><span class="c">...</span>
 
-<span class="gr">jsonschema.exceptions.ValidationError</span>: <span class="n">&#39;yaxis&#39; is a required property</span>
+<span class="gr">jsonschema.exceptions.ValidationError</span>: <span class="n">'yaxis' is a required property</span>
 
-<span class="x">Failed validating &#39;required&#39; in schema:</span>
-<span class="x">    {&#39;$compas&#39;: &#39;1.7.1&#39;,</span>
-<span class="x">     &#39;$id&#39;: &#39;frame.json&#39;,</span>
-<span class="x">     &#39;$schema&#39;: &#39;http://json-schema.org/draft-07/schema#&#39;,</span>
-<span class="x">     &#39;properties&#39;: {&#39;point&#39;: {&#39;$ref&#39;: &#39;compas.json#/definitions/point&#39;},</span>
-<span class="x">                    &#39;xaxis&#39;: {&#39;$ref&#39;: &#39;compas.json#/definitions/vector&#39;},</span>
-<span class="x">                    &#39;yaxis&#39;: {&#39;$ref&#39;: &#39;compas.json#/definitions/vector&#39;}},</span>
-<span class="x">     &#39;required&#39;: [&#39;point&#39;, &#39;xaxis&#39;, &#39;yaxis&#39;],</span>
-<span class="x">     &#39;type&#39;: &#39;object&#39;}</span>
+<span class="x">Failed validating 'required' in schema:</span>
+<span class="x">    {'$compas': '1.7.1',</span>
+<span class="x">     '$id': 'frame.json',</span>
+<span class="x">     '$schema': 'http://json-schema.org/draft-07/schema#',</span>
+<span class="x">     'properties': {'point': {'$ref': 'compas.json#/definitions/point'},</span>
+<span class="x">                    'xaxis': {'$ref': 'compas.json#/definitions/vector'},</span>
+<span class="x">                    'yaxis': {'$ref': 'compas.json#/definitions/vector'}},</span>
+<span class="x">     'required': ['point', 'xaxis', 'yaxis'],</span>
+<span class="x">     'type': 'object'}</span>
 
 <span class="x">On instance:</span>
-<span class="x">    {&#39;point&#39;: [0.0, 0.0, 0.0],</span>
-<span class="x">     &#39;xaxis&#39;: [1.0, 0.0, 0.0],</span>
-<span class="x">     &#39;zaxis&#39;: [0.0, 0.0, 1.0]}</span>
+<span class="x">    {'point': [0.0, 0.0, 0.0],</span>
+<span class="x">     'xaxis': [1.0, 0.0, 0.0],</span>
+<span class="x">     'zaxis': [0.0, 0.0, 1.0]}</span>
 </pre></div>
 </div>
 </section>

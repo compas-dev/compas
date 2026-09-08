@@ -593,7 +593,7 @@ This is achieved by importing the function or class in the <code class="docutils
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># compas.my_package.__init__.py</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.new_module</span><span class="w"> </span><span class="kn">import</span> <span class="n">NewClass</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;NewClass&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'NewClass'</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>The result should be:</p>
@@ -616,7 +616,7 @@ This is achieved by importing the function or class in the <code class="docutils
 These docstrings are later used by <a class="reference external" href="https://www.sphinx-doc.org/en/master/">Sphinx</a> to generate the API documentation.</p>
 <p>Therefore, it is important that functions and methods have at least the following docstrings:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">my_function</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;This is a one-line description of the function.</span>
+<span class="w">    </span><span class="sd">"""This is a one-line description of the function.</span>
 
 <span class="sd">    This is a longer description of the function.</span>
 <span class="sd">    It can span multiple lines.</span>
@@ -633,7 +633,7 @@ These docstrings are later used by <a class="reference external" href="https://w
 <span class="sd">    :class:`~compas.geometry.Plane`</span>
 <span class="sd">        The resulting plane of the operation.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="o">...</span>
 </pre></div>
 </div>

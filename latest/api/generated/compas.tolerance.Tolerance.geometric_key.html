@@ -1120,7 +1120,7 @@ document.write(`
 <h1>Tolerance.geometric_key</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas.tolerance.Tolerance.geometric_key">
-<span class="sig-prename descclassname"><span class="pre">Tolerance.</span></span><span class="sig-name descname"><span class="pre">geometric_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xyz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sanitize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/5fc43fe/src/compas/tolerance.py#L888"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Tolerance.</span></span><span class="sig-name descname"><span class="pre">geometric_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xyz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sanitize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/compas-dev/compas/blob/d114251/src/compas/tolerance.py#L888"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Compute the geometric key of a point.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1150,27 +1150,27 @@ Default is <code class="docutils literal notranslate"><span class="pre">None</sp
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span> <span class="o">=</span> <span class="n">Tolerance</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">geometric_key</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">])</span>
-<span class="go">&#39;1.000,2.000,3.000&#39;</span>
+<span class="go">'1.000,2.000,3.000'</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span> <span class="o">=</span> <span class="n">Tolerance</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">geometric_key</span><span class="p">([</span><span class="mf">1.05725</span><span class="p">,</span> <span class="mf">2.0195</span><span class="p">,</span> <span class="mf">3.001</span><span class="p">],</span> <span class="n">precision</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-<span class="go">&#39;1.057,2.019,3.001&#39;</span>
+<span class="go">'1.057,2.019,3.001'</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span> <span class="o">=</span> <span class="n">Tolerance</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">geometric_key</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">],</span> <span class="n">precision</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-<span class="go">&#39;1,2,3&#39;</span>
+<span class="go">'1,2,3'</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span> <span class="o">=</span> <span class="n">Tolerance</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">geometric_key</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">],</span> <span class="n">precision</span><span class="o">=-</span><span class="mi">3</span><span class="p">)</span>
-<span class="go">&#39;0,0,0&#39;</span>
+<span class="go">'0,0,0'</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span> <span class="o">=</span> <span class="n">Tolerance</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">geometric_key</span><span class="p">([</span><span class="mi">1103</span><span class="p">,</span> <span class="mi">205</span><span class="p">,</span> <span class="mi">30145</span><span class="p">],</span> <span class="n">precision</span><span class="o">=-</span><span class="mi">3</span><span class="p">)</span>
-<span class="go">&#39;1100,200,30100&#39;</span>
+<span class="go">'1100,200,30100'</span>
 </pre></div>
 </div>
 </dd></dl>

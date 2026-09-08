@@ -552,13 +552,13 @@ store arbitrary attributes.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">compas.datastructures</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tree</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">compas.datastructures</span><span class="w"> </span><span class="kn">import</span> <span class="n">TreeNode</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span> <span class="o">=</span> <span class="n">Tree</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">root_node</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="p">(</span><span class="s1">&#39;root&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">root_node</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="p">(</span><span class="s1">'root'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">root_node</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">branch_node</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="p">(</span><span class="s1">&#39;branch&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">branch_node</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="p">(</span><span class="s1">'branch'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">branch_node</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">root_node</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">leaf_node1</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="p">(</span><span class="s1">&#39;leaf1&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">leaf_node1</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="p">(</span><span class="s1">'leaf1'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">leaf_node1</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">branch_node</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">leaf_node2</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="p">(</span><span class="s1">&#39;leaf2&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">leaf_node2</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="p">(</span><span class="s1">'leaf2'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">leaf_node2</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">branch_node</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span><span class="o">.</span><span class="n">print_hierarchy</span><span class="p">()</span>
 <span class="go">└── &lt;TreeNode root&gt;</span>
@@ -573,13 +573,13 @@ store arbitrary attributes.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">compas.datastructures</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tree</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">compas.datastructures</span><span class="w"> </span><span class="kn">import</span> <span class="n">TreeNode</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span> <span class="o">=</span> <span class="n">Tree</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">root_node</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="p">(</span><span class="s1">&#39;root&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">root_node</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="p">(</span><span class="s1">'root'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">root_node</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">branch_node</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="p">(</span><span class="s1">&#39;branch&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">branch_node</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="p">(</span><span class="s1">'branch'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">root_node</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">branch_node</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">leaf_node1</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="p">(</span><span class="s1">&#39;leaf1&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">leaf_node1</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="p">(</span><span class="s1">'leaf1'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">branch_node</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">leaf_node1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">leaf_node2</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="p">(</span><span class="s1">&#39;leaf2&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">leaf_node2</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="p">(</span><span class="s1">'leaf2'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">branch_node</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">leaf_node2</span><span class="p">)</span>
 <span class="go">└── &lt;TreeNode root&gt;</span>
 <span class="go">    └── &lt;TreeNode branch&gt;</span>
@@ -591,7 +591,7 @@ store arbitrary attributes.</p>
 <section id="loading-from-file">
 <h3>Loading From File</h3>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">compas.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">json_load</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span> <span class="o">=</span> <span class="n">json_load</span><span class="p">(</span><span class="s1">&#39;tree.json&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span> <span class="o">=</span> <span class="n">json_load</span><span class="p">(</span><span class="s1">'tree.json'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span><span class="o">.</span><span class="n">print_hierarchy</span><span class="p">()</span>
 <span class="go">└── &lt;TreeNode root&gt;</span>
 <span class="go">    └── &lt;TreeNode branch&gt;</span>
@@ -623,19 +623,19 @@ the parent node is visited after its children.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">compas.datastructures</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tree</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">compas.datastructures</span><span class="w"> </span><span class="kn">import</span> <span class="n">TreeNode</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span> <span class="o">=</span> <span class="n">Tree</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">root_node</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="p">(</span><span class="s1">&#39;root&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">root_node</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="p">(</span><span class="s1">'root'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">root_node</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">branch_node1</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="p">(</span><span class="s1">&#39;branch1&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">branch_node1</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="p">(</span><span class="s1">'branch1'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">root_node</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">branch_node1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">leaf_node1</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="p">(</span><span class="s1">&#39;leaf1&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">leaf_node1</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="p">(</span><span class="s1">'leaf1'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">branch_node1</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">leaf_node1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">leaf_node2</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="p">(</span><span class="s1">&#39;leaf2&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">leaf_node2</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="p">(</span><span class="s1">'leaf2'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">branch_node1</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">leaf_node2</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">branch_node2</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="p">(</span><span class="s1">&#39;branch2&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">branch_node2</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="p">(</span><span class="s1">'branch2'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">root_node</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">branch_node2</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">leaf_node3</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="p">(</span><span class="s1">&#39;leaf3&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">leaf_node3</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="p">(</span><span class="s1">'leaf3'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">branch_node2</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">leaf_node3</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">leaf_node4</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="p">(</span><span class="s1">&#39;leaf4&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">leaf_node4</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="p">(</span><span class="s1">'leaf4'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">branch_node2</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">leaf_node4</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span><span class="o">.</span><span class="n">print_hierarchy</span><span class="p">()</span>
 <span class="go">└── &lt;TreeNode root&gt;</span>
@@ -647,7 +647,7 @@ the parent node is visited after its children.</p>
 <span class="go">        └── &lt;TreeNode leaf4&gt;</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">traverse</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;depthfirst&#39;</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;preorder&#39;</span><span class="p">):</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">traverse</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s1">'depthfirst'</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">'preorder'</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
 <span class="go">&lt;TreeNode root&gt;</span>
 <span class="go">&lt;TreeNode branch1&gt;</span>
@@ -658,7 +658,7 @@ the parent node is visited after its children.</p>
 <span class="go">&lt;TreeNode leaf4&gt;</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">traverse</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;depthfirst&#39;</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;postorder&#39;</span><span class="p">):</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">traverse</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s1">'depthfirst'</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">'postorder'</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
 <span class="go">&lt;TreeNode leaf1&gt;</span>
 <span class="go">&lt;TreeNode leaf2&gt;</span>
@@ -673,7 +673,7 @@ the parent node is visited after its children.</p>
 <section id="breadth-first">
 <h3>Breadth-First</h3>
 <p>The algorithm starts at the root node and explores the neighbour nodes first, before moving to the next level neighbours.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">traverse</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;breadthfirst&#39;</span><span class="p">):</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">traverse</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s1">'breadthfirst'</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
 <span class="go">&lt;TreeNode root&gt;</span>
 <span class="go">&lt;TreeNode branch1&gt;</span>
@@ -688,12 +688,12 @@ the parent node is visited after its children.</p>
 </section>
 <section id="node-attributes">
 <h2>Node Attributes</h2>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">nodes</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">get_nodes_by_name</span><span class="p">(</span><span class="s1">&#39;branch1&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">nodes</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">get_nodes_by_name</span><span class="p">(</span><span class="s1">'branch1'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">nodes</span>
 <span class="go">[&lt;TreeNode branch1&gt;]</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">node</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">get_node_by_name</span><span class="p">(</span><span class="s1">&#39;branch1&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">node</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">get_node_by_name</span><span class="p">(</span><span class="s1">'branch1'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">node</span>
 <span class="go">&lt;TreeNode branch1&gt;</span>
 </pre></div>

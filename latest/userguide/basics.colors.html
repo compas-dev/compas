@@ -681,7 +681,7 @@ However, using the following template we can compare various examples.</p>
 </div>
 <section id="from-palette">
 <h3>From Palette</h3>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cmap</span> <span class="o">=</span> <span class="n">ColorMap</span><span class="o">.</span><span class="n">from_mpl</span><span class="p">(</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cmap</span> <span class="o">=</span> <span class="n">ColorMap</span><span class="o">.</span><span class="n">from_mpl</span><span class="p">(</span><span class="s1">'viridis'</span><span class="p">)</span>
 </pre></div>
 </div>
 <figure class="figure align-default" id="id4">
@@ -706,8 +706,8 @@ However, using the following template we can compare various examples.</p>
 <section id="from-one-color">
 <h3>From One Color</h3>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cmap</span> <span class="o">=</span> <span class="n">ColorMap</span><span class="o">.</span><span class="n">from_color</span><span class="p">(</span><span class="n">Color</span><span class="o">.</span><span class="n">red</span><span class="p">())</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cmap</span> <span class="o">=</span> <span class="n">ColorMap</span><span class="o">.</span><span class="n">from_color</span><span class="p">(</span><span class="n">Color</span><span class="o">.</span><span class="n">red</span><span class="p">(),</span> <span class="n">rangetype</span><span class="o">=</span><span class="s1">&#39;light&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cmap</span> <span class="o">=</span> <span class="n">ColorMap</span><span class="o">.</span><span class="n">from_color</span><span class="p">(</span><span class="n">Color</span><span class="o">.</span><span class="n">red</span><span class="p">(),</span> <span class="n">rangetype</span><span class="o">=</span><span class="s1">&#39;dark&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cmap</span> <span class="o">=</span> <span class="n">ColorMap</span><span class="o">.</span><span class="n">from_color</span><span class="p">(</span><span class="n">Color</span><span class="o">.</span><span class="n">red</span><span class="p">(),</span> <span class="n">rangetype</span><span class="o">=</span><span class="s1">'light'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cmap</span> <span class="o">=</span> <span class="n">ColorMap</span><span class="o">.</span><span class="n">from_color</span><span class="p">(</span><span class="n">Color</span><span class="o">.</span><span class="n">red</span><span class="p">(),</span> <span class="n">rangetype</span><span class="o">=</span><span class="s1">'dark'</span><span class="p">)</span>
 </pre></div>
 </div>
 <figure class="figure align-default" id="id6">
@@ -719,8 +719,8 @@ However, using the following template we can compare various examples.</p>
 </section>
 <section id="from-two-colors">
 <h3>From Two Colors</h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cmap</span> <span class="o">=</span> <span class="n">ColorMap</span><span class="o">.</span><span class="n">from_two_colors</span><span class="p">(</span><span class="n">Color</span><span class="o">.</span><span class="n">from_hex</span><span class="p">(</span><span class="s1">&#39;#0092D2&#39;</span><span class="p">),</span> <span class="n">Color</span><span class="o">.</span><span class="n">pink</span><span class="p">())</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cmap</span> <span class="o">=</span> <span class="n">ColorMap</span><span class="o">.</span><span class="n">from_two_colors</span><span class="p">(</span><span class="n">Color</span><span class="o">.</span><span class="n">from_hex</span><span class="p">(</span><span class="s1">&#39;#0092D2&#39;</span><span class="p">),</span> <span class="n">Color</span><span class="o">.</span><span class="n">pink</span><span class="p">(),</span> <span class="n">diverging</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cmap</span> <span class="o">=</span> <span class="n">ColorMap</span><span class="o">.</span><span class="n">from_two_colors</span><span class="p">(</span><span class="n">Color</span><span class="o">.</span><span class="n">from_hex</span><span class="p">(</span><span class="s1">'#0092D2'</span><span class="p">),</span> <span class="n">Color</span><span class="o">.</span><span class="n">pink</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cmap</span> <span class="o">=</span> <span class="n">ColorMap</span><span class="o">.</span><span class="n">from_two_colors</span><span class="p">(</span><span class="n">Color</span><span class="o">.</span><span class="n">from_hex</span><span class="p">(</span><span class="s1">'#0092D2'</span><span class="p">),</span> <span class="n">Color</span><span class="o">.</span><span class="n">pink</span><span class="p">(),</span> <span class="n">diverging</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <figure class="figure align-default" id="id7">

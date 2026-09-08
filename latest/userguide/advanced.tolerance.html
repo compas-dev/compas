@@ -600,27 +600,27 @@ while the absolute tolerance becaomes dominant when numbers are close to zero.</
 <h2>Number Formatting</h2>
 <p>By default, numbers are formatted (in strings) using the precision value.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">format_number</span><span class="p">(</span><span class="mf">1.23456</span><span class="p">)</span>
-<span class="go">&#39;1.235&#39;</span>
+<span class="go">'1.235'</span>
 </pre></div>
 </div>
 <p>To use a precision value based on the tolerance, use <a class="reference internal" href="../api/generated/compas.tolerance.Tolerance.precision_from_tolerance.html" title="compas.tolerance.Tolerance.precision_from_tolerance"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.tolerance.Tolerance.precision_from_tolerance()</span></code></a>.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">format_number</span><span class="p">(</span><span class="mf">1.23456</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="n">tol</span><span class="o">.</span><span class="n">precision_from_tolerance</span><span class="p">())</span>
-<span class="go">&#39;1.234560000&#39;</span>
+<span class="go">'1.234560000'</span>
 </pre></div>
 </div>
 <p>Positive precision values are interpreted as the number of digits after the decimal point.
 Negative precision values are interpreted as the number of digits before the decimal point.
 So higher values increase precision, and lower number decrease it.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">format_number</span><span class="p">(</span><span class="mf">1.23456</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="go">&#39;1.23&#39;</span>
+<span class="go">'1.23'</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">format_number</span><span class="p">(</span><span class="mf">1.23456</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
-<span class="go">&#39;1.234560&#39;</span>
+<span class="go">'1.234560'</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">format_number</span><span class="p">(</span><span class="mi">123456</span><span class="p">,</span> <span class="n">precision</span><span class="o">=-</span><span class="mi">2</span><span class="p">)</span>
-<span class="go">&#39;123460&#39;</span>
+<span class="go">'123460'</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tol</span><span class="o">.</span><span class="n">format_number</span><span class="p">(</span><span class="mi">123456</span><span class="p">,</span> <span class="n">precision</span><span class="o">=-</span><span class="mi">6</span><span class="p">)</span>
-<span class="go">&#39;100000&#39;</span>
+<span class="go">'100000'</span>
 </pre></div>
 </div>
 </section>

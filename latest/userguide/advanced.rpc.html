@@ -545,7 +545,7 @@ For example, consider a CPython script using the Force Density method.</p>
 Therefore, instead of importing and calling the function directly,
 we call it through a proxy object.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">compas.rpc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Proxy</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">geometry</span> <span class="o">=</span> <span class="n">Proxy</span><span class="p">(</span><span class="s1">&#39;compas.geometry&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">geometry</span> <span class="o">=</span> <span class="n">Proxy</span><span class="p">(</span><span class="s1">'compas.geometry'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">source</span> <span class="o">=</span> <span class="o">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">target</span> <span class="o">=</span> <span class="o">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">points</span><span class="p">,</span> <span class="n">transformation</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">icp_numpy</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
@@ -558,17 +558,17 @@ for the requested function.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">proxy</span> <span class="o">=</span> <span class="n">Proxy</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">proxy</span><span class="o">.</span><span class="n">package</span> <span class="o">=</span> <span class="s1">&#39;compas.numerical&#39;</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">proxy</span><span class="o">.</span><span class="n">package</span> <span class="o">=</span> <span class="s1">'compas.numerical'</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">proxy</span><span class="o">.</span><span class="n">pca_numpy</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">proxy</span><span class="o">.</span><span class="n">package</span> <span class="o">=</span> <span class="s1">&#39;compas.geometry&#39;</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">proxy</span><span class="o">.</span><span class="n">package</span> <span class="o">=</span> <span class="s1">'compas.geometry'</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">proxy</span><span class="o">.</span><span class="n">bestfit_plane_numpy</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The use of <code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.rpc</span></code> is not restricted to COMPAS packages only.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">compas.rpc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Proxy</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">linalg</span> <span class="o">=</span> <span class="n">Proxy</span><span class="p">(</span><span class="s1">&#39;scipy.linalg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">linalg</span> <span class="o">=</span> <span class="n">Proxy</span><span class="p">(</span><span class="s1">'scipy.linalg'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -588,7 +588,7 @@ For example, when running RPC from an Anaconda Prompt, or from a <code class="do
 <p>In some cases, this might not be what you want, or might not result in the expected behaviour.
 To use a specific Python iterpreter instead, you can specify the path to an executable through the <code class="docutils literal notranslate"><span class="pre">python</span></code> parameter.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">compas.rpc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Proxy</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">proxy</span> <span class="o">=</span> <span class="n">Proxy</span><span class="p">(</span><span class="n">python</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:</span><span class="se">\\</span><span class="s2">Users</span><span class="se">\\</span><span class="s2">&lt;username&gt;</span><span class="se">\\</span><span class="s2">anaconda3</span><span class="se">\\</span><span class="s2">envs</span><span class="se">\\</span><span class="s2">research</span><span class="se">\\</span><span class="s2">python.exe&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">proxy</span> <span class="o">=</span> <span class="n">Proxy</span><span class="p">(</span><span class="n">python</span><span class="o">=</span><span class="sa">r</span><span class="s2">"C:</span><span class="se">\\</span><span class="s2">Users</span><span class="se">\\</span><span class="s2">&lt;username&gt;</span><span class="se">\\</span><span class="s2">anaconda3</span><span class="se">\\</span><span class="s2">envs</span><span class="se">\\</span><span class="s2">research</span><span class="se">\\</span><span class="s2">python.exe"</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -617,7 +617,7 @@ you can tell the command server where to find it using the <code class="docutils
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">compas.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pointcloud</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">compas.rpc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Proxy</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cloud</span> <span class="o">=</span> <span class="n">Pointcloud</span><span class="o">.</span><span class="n">from_bounds</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">proxy</span> <span class="o">=</span> <span class="n">Proxy</span><span class="p">(</span><span class="n">package</span><span class="o">=</span><span class="s1">&#39;clustering&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;C:</span><span class="se">\\</span><span class="s1">Users</span><span class="se">\\</span><span class="s1">&lt;username&gt;</span><span class="se">\\</span><span class="s1">Desktop&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">proxy</span> <span class="o">=</span> <span class="n">Proxy</span><span class="p">(</span><span class="n">package</span><span class="o">=</span><span class="s1">'clustering'</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="sa">r</span><span class="s1">'C:</span><span class="se">\\</span><span class="s1">Users</span><span class="se">\\</span><span class="s1">&lt;username&gt;</span><span class="se">\\</span><span class="s1">Desktop'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clusters</span> <span class="o">=</span> <span class="n">proxy</span><span class="o">.</span><span class="n">cluster</span><span class="p">(</span><span class="n">cloud</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -641,16 +641,16 @@ data types and COMPAS objects. <code class="docutils literal notranslate"><span 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">target</span> <span class="o">=</span> <span class="o">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">points</span><span class="p">,</span> <span class="n">transformation</span> <span class="o">=</span> <span class="n">icp_numpy</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
-<span class="go">&lt;class &#39;numpy.ndarray&#39;&gt;</span>
+<span class="go">&lt;class 'numpy.ndarray'&gt;</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">compas.rpc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Proxy</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">proxy</span> <span class="o">=</span> <span class="n">Proxy</span><span class="p">(</span><span class="s1">&#39;compas.geometry&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">proxy</span> <span class="o">=</span> <span class="n">Proxy</span><span class="p">(</span><span class="s1">'compas.geometry'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">source</span> <span class="o">=</span> <span class="o">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">target</span> <span class="o">=</span> <span class="o">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">points</span><span class="p">,</span> <span class="n">transformation</span> <span class="o">=</span> <span class="n">proxy</span><span class="o">.</span><span class="n">icp_numpy</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
-<span class="go">&lt;class &#39;list&#39;&gt;</span>
+<span class="go">&lt;class 'list'&gt;</span>
 </pre></div>
 </div>
 <p>Sparse matrices, for example from <code class="docutils literal notranslate"><span class="pre">scipy.sparse</span></code>, are not (yet) supported.</p>
@@ -670,7 +670,7 @@ This happens frequently while a package is still under active development.</p>
 </div>
 <p>To restart the server after every call, you can use a context manager.
 When used in this way, RPC behaves much like its predecessor <code class="docutils literal notranslate"><span class="pre">XFunc</span></code>.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Proxy</span><span class="p">(</span><span class="s1">&#39;compas.numerical&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">numerical</span><span class="p">:</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Proxy</span><span class="p">(</span><span class="s1">'compas.numerical'</span><span class="p">)</span> <span class="k">as</span> <span class="n">numerical</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">numerical</span><span class="o">.</span><span class="n">pca_numpy</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 <span class="gp">...</span>
 </pre></div>

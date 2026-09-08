@@ -535,7 +535,7 @@ such as detecting changes in a complicated Building Information Model, tracking 
 <h2>Hash Tree From Dict</h2>
 <p>A COMPAS hash tree can be created from any raw python dictionary using the <cite>HashTree.from_dict</cite> method.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">compas.datastructures</span><span class="w"> </span><span class="kn">import</span> <span class="n">HashTree</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;d&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;e&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'a'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'d'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">'e'</span><span class="p">:</span> <span class="mi">4</span><span class="p">}}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span> <span class="o">=</span> <span class="n">HashTree</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -551,9 +551,9 @@ such as detecting changes in a complicated Building Information Model, tracking 
 </pre></div>
 </div>
 <p>Once the original data is modified, a new hash tree can be created from the modified data and the changes can be detected by comparing the two hash trees.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">][</span><span class="s1">&#39;d&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">del</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;f&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="p">[</span><span class="s1">'c'</span><span class="p">][</span><span class="s1">'d'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">del</span> <span class="n">data</span><span class="p">[</span><span class="s2">"b"</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="p">[</span><span class="s2">"f"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">new_tree</span> <span class="o">=</span> <span class="n">HashTree</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">new_tree</span><span class="p">)</span>
 <span class="go">&lt;Tree with 6 nodes&gt;</span>
@@ -566,7 +566,7 @@ such as detecting changes in a complicated Building Information Model, tracking 
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">new_tree</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
-<span class="go">{&#39;added&#39;: [{&#39;path&#39;: &#39;.f&#39;, &#39;value&#39;: True}], &#39;removed&#39;: [{&#39;path&#39;: &#39;.b&#39;, &#39;value&#39;: 2}], &#39;modified&#39;: [{&#39;path&#39;: &#39;.c.d&#39;, &#39;old&#39;: 3, &#39;new&#39;: 5}]}</span>
+<span class="go">{'added': [{'path': '.f', 'value': True}], 'removed': [{'path': '.b', 'value': 2}], 'modified': [{'path': '.c.d', 'old': 3, 'new': 5}]}</span>
 </pre></div>
 </div>
 </section>
@@ -596,11 +596,11 @@ This is done by hashing the serilised data of the object.</p>
 <span class="go">...</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_attribute</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_attribute</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">"x"</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">delete_face</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">new_tree</span> <span class="o">=</span> <span class="n">HashTree</span><span class="o">.</span><span class="n">from_object</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">new_tree</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
-<span class="go">{&#39;added&#39;: [], &#39;removed&#39;: [{&#39;path&#39;: &#39;.face.3&#39;, &#39;value&#39;: [4, 2, 3, 5]}, {&#39;path&#39;: &#39;.facedata.3&#39;, &#39;value&#39;: None}], &#39;modified&#39;: [{&#39;path&#39;: &#39;.vertex.0.x&#39;, &#39;old&#39;: -1.1547005383792517, &#39;new&#39;: 1.0}]}</span>
+<span class="go">{'added': [], 'removed': [{'path': '.face.3', 'value': [4, 2, 3, 5]}, {'path': '.facedata.3', 'value': None}], 'modified': [{'path': '.vertex.0.x', 'old': -1.1547005383792517, 'new': 1.0}]}</span>
 </pre></div>
 </div>
 </section>
