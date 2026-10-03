@@ -170,7 +170,7 @@ class VolMesh(Datastructure):
             "cell": {str(cell): faces for cell, faces in _cell.items()},
             "edge_data": self._edge_data,
             "face_data": self._face_data,
-            "cell_data": {str(cell): attr for cell, attr in self._cell_data},
+            "cell_data": {str(cell): attr for cell, attr in self._cell_data.items()},
             "max_vertex": self._max_vertex,
             "max_face": self._max_face,
             "max_cell": self._max_cell,
