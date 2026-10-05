@@ -791,15 +791,22 @@ def intersection_line_line_xy(l1, l2, tol=None):
     x3, y3 = c[0], c[1]
     x4, y4 = d[0], d[1]
 
-    d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4)
+    ab_x = x2 - x1
+    ab_y = y2 - y1
+    cd_x = x4 - x3
+    cd_y = y4 - y3
+    d = ab_x * cd_y - ab_y * cd_x
 
     if TOL.is_zero(d, tol):
         return None
 
-    a = x1 * y2 - y1 * x2
-    b = x3 * y4 - y3 * x4
-    x = (a * (x3 - x4) - (x1 - x2) * b) / d
-    y = (a * (y3 - y4) - (y1 - y2) * b) / d
+    # Use differences relative to the first point to avoid subtracting large
+    # products of absolute coordinates when the lines are far from the origin.
+    ac_x = x3 - x1
+    ac_y = y3 - y1
+    t = (ac_x * cd_y - ac_y * cd_x) / d
+    x = x1 + t * ab_x
+    y = y1 + t * ab_y
 
     return [x, y, 0.0]
 

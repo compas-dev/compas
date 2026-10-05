@@ -1,7 +1,18 @@
 from compas.tolerance import TOL
+from compas.geometry import distance_point_point
+from compas.geometry import intersection_line_line_xy
 from compas.geometry import intersection_sphere_line
 from compas.geometry import intersection_plane_circle
 from compas.geometry import intersection_circle_circle_xy
+
+
+def test_intersection_line_line_xy_large_coordinates():
+    line_a = ((2687071.524742563, 1221749.0753872169, 0.0), (2687069.1419153824, 1221750.3200979184, 0.0))
+    line_b = ((2687069.1328718644, 1221750.3261498366, 0.0), (2687069.006655604, 1221750.4317925072, 0.0))
+
+    intersection = intersection_line_line_xy(line_a, line_b, tol=1e-7)
+
+    assert distance_point_point(intersection, (2687069.137092316, 1221750.32261733, 0.0)) < 1e-7
 
 
 def test_intersection_sphere_line():
