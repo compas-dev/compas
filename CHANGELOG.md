@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added optional origin points to `Frame.worldXY()`, `Frame.worldYZ()`, and `Frame.worldZX()`.
 * Added `TOL.update()` method for explicit global state modification. 
 * Added `TOL.temporary()` context manager for scoped changes.
 * Added missing implementation of `Brep.to_polygons()` in `compas_rhino.geometry.RhinoBrep`.
