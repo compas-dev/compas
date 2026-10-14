@@ -35,6 +35,11 @@ class DevTools(object):
         for module in to_remove:
             sys.modules.pop(module)
 
+        # if the plugin system survived the unload, its registry still points to the unloaded modules
+        plugins = sys.modules.get("compas.plugins")
+        if plugins and to_remove:
+            plugins.plugin_manager.reset()
+
         return to_remove
 
     @classmethod

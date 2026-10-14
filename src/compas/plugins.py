@@ -130,6 +130,44 @@ class PluginManager(object):
         self._registry = {}
         self._discovery_done = False
         self._discovery_lock = threading.Lock()
+        self._reset_callbacks = []
+
+    def reset(self):
+        """Discard all discovered plugins, so that they are discovered again on next use.
+
+        Plugin implementations hold on to the modules they were loaded from.
+        Once these modules are removed from ``sys.modules`` (e.g. using :func:`compas_rhino.unload_modules`),
+        the registry is stale and has to be rebuilt from the re-imported modules.
+
+        Returns
+        -------
+        None
+
+        """
+        with self._discovery_lock:
+            self.importer = Importer()
+            self._registry = {}
+            self._discovery_done = False
+
+        for callback in self._reset_callbacks:
+            callback()
+
+    def add_reset_callback(self, callback):
+        """Add a callback which is invoked whenever the plugin manager is reset.
+
+        Use this to invalidate caches which are populated by plugins.
+
+        Parameters
+        ----------
+        callback : callable
+            Function without arguments.
+
+        Returns
+        -------
+        None
+
+        """
+        self._reset_callbacks.append(callback)
 
     @property
     def registry(self):

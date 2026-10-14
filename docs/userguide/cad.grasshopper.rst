@@ -61,9 +61,10 @@ recognizes the changes. To avoid restarting Rhino, you can use the method
 .. note::
 
     Prefer using `unload_modules` as early as possible in your grasshopper
-    workflow. Re-loading modules later might result, for example,
-    in COMPAS not being able to find a `SceneObject` as well as other issues
-    related to a mid-workflow re-definition of Python types.
+    workflow. `unload_modules` resets the registered plugins and `SceneObject` types,
+    but objects created before the unload remain instances of the old definitions of their types.
+    Passing them to a `SceneObject`, for example, results in a `SceneObjectNotRegisteredError`.
+    Re-compute the components creating these objects after unloading modules.
 
 
 Python Scripting Outside Rhino/Grasshopper with Auto-Reloading

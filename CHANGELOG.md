@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `TOL.update()` method for explicit global state modification. 
 * Added `TOL.temporary()` context manager for scoped changes.
 * Added missing implementation of `Brep.to_polygons()` in `compas_rhino.geometry.RhinoBrep`.
+* Added `PluginManager.reset()` and `PluginManager.add_reset_callback()`.
 
 ### Changed
 
@@ -24,6 +25,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `compas_rhino.uninstall` will try to remove compas packages from all possible install locations.
 * Changed `angle_vectors_projected` to raise `ValueError` when an input vector is parallel to projection normal.
 * Changed `angle_vectors` to raise `ValueError` when one of the input vectors is a zero-length vector instead of returning 0.
+* Changed `compas_rhino.DevTools.unload_modules` to reset plugins and registered scene objects.
+* Changed `SceneObjectNotRegisteredError` to mention stale types after a reload.
+* Changed `get_sceneobject_cls` to warn when a registration plugin fails.
 * Changed `transformation_to_rhino` and `transformation_matrix_to_rhino` to assign the matrix components directly to the fields of `Rhino.Geometry.Transform` instead of looping over its indexer. About 11x faster per conversion, noticable when used inside an animation loop.
 
 ### Removed

@@ -1,13 +1,19 @@
 import inspect
+import sys
+import warnings
 from collections import defaultdict
 
 import compas
 from compas.plugins import PluginValidator
 from compas.plugins import pluggable
+from compas.plugins import plugin_manager
 
 from .exceptions import SceneObjectNotRegisteredError
 
 ITEM_SCENEOBJECT = defaultdict(dict)
+
+# registrations are made by plugins, so they are stale once the plugins are rediscovered
+plugin_manager.add_reset_callback(ITEM_SCENEOBJECT.clear)
 
 
 @pluggable(category="drawing-utils")
@@ -137,14 +143,36 @@ def _get_sceneobject_cls(data, **kwargs):
                 break
 
     if cls is None:
-        raise SceneObjectNotRegisteredError("No scene object is registered for this data type: {} in this context: {}".format(dtype, context_name))
+        message = "No scene object is registered for this data type: {} in this context: {}".format(dtype, context_name)
+        reason = _diagnose_reloaded_type(dtype, ITEM_SCENEOBJECT[context_name])
+        if reason:
+            message += "\n" + reason
+        raise SceneObjectNotRegisteredError(message)
 
     return cls
 
 
+def _diagnose_reloaded_type(dtype, context):
+    # A registered type with the same name as the item's type (or one of its bases) is a different definition of the same class,
+    # i.e. one of them was created before its module was unloaded (e.g. using compas_rhino.unload_modules) and re-imported.
+    for type_ in inspect.getmro(dtype):
+        for registered in context:
+            if registered.__module__ != type_.__module__ or registered.__name__ != type_.__name__:
+                continue
+
+            module = sys.modules.get(type_.__module__)
+            if getattr(module, type_.__name__, None) is type_:
+                return "A stale definition of {} is registered. This happens when a module is reloaded, but the module registering its scene object is not.".format(type_)
+            return "The item is an instance of a stale definition of {}. Re-create the item after reloading modules.".format(type_)
+    return None
+
+
 def get_sceneobject_cls(item, **kwargs):
     if not ITEM_SCENEOBJECT:
-        register_scene_objects()
+        for result in register_scene_objects():
+            # collect_all returns the exceptions of failed plugins instead of raising them
+            if isinstance(result, Exception):
+                warnings.warn("Failed to register scene objects: {!r}".format(result))
 
     if item is None:
         raise ValueError("Cannot create a scene object for None. Please ensure you pass a instance of a supported class.")
