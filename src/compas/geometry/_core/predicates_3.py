@@ -124,20 +124,23 @@ def is_coplanar(points, tol=None):
     if len(points) < 4:
         return True
 
-    temp = points[:]
-
-    while len(temp) >= 3:
-        a = temp.pop(0)
-        b = temp.pop(0)
-        c = temp.pop(0)
-        if not is_colinear(a, b, c, tol):
-            break
-        if not temp:
+    a = points[0]
+    b_index = 1
+    c_index = 2
+    if is_colinear(a, points[b_index], points[c_index], tol):
+        # Find a non-degenerate baseline without discarding points from the final check.
+        b_index = max(range(1, len(points)), key=lambda i: distance_point_point(a, points[i]))
+        for c_index in range(1, len(points)):
+            if not is_colinear(a, points[b_index], points[c_index], tol):
+                break
+        else:
             return True
 
+    b = points[b_index]
+    c = points[c_index]
     n = cross_vectors(subtract_vectors(b, a), subtract_vectors(c, a))
 
-    return all(is_perpendicular_vector_vector(n, subtract_vectors(d, a), tol) for d in temp)
+    return all(is_perpendicular_vector_vector(n, subtract_vectors(d, a), tol) for i, d in enumerate(points) if i not in (0, b_index, c_index))
 
 
 # =============================================================================
