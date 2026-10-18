@@ -46,6 +46,33 @@ def test_is_coplanar_uses_well_conditioned_third_point(tol, reverse):
     assert points == original
 
 
+def test_is_coplanar_normalizes_plane_distance():
+    points = [[0, 0, 0], [0.05, 0, 0], [0.1, 0, 0], [0, 1e-4, 0], [0, -1e-4, 0], [0.1, 0, 0], [0, 0, 9e-5]]
+
+    assert not is_coplanar(points)
+    assert not Polygon(points).is_planar
+
+
+@pytest.mark.parametrize("scale", [2.0**-20, 1.0, 2.0**20])
+@pytest.mark.parametrize("tol", [None, 1e-8])
+@pytest.mark.parametrize("height, expected", [(0.5, True), (2.0, False)])
+def test_is_coplanar_tolerance_is_a_distance(scale, tol, height, expected):
+    h = height * (1e-9 if tol is None else tol)
+    points = [
+        [-scale, -scale, 0],
+        [0, 0, 0],
+        [scale, scale, 0],
+        [-scale, scale, 0],
+        [scale, -scale, 0],
+        [0, 0, h],
+        [0, 0, -h],
+    ]
+    original = [point[:] for point in points]
+
+    assert is_coplanar(points, tol=tol) == expected
+    assert points == original
+
+
 @pytest.mark.parametrize(
     "points",
     [
