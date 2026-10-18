@@ -101,7 +101,8 @@ def is_coplanar(points, tol=None):
     points : sequence[point]
         A sequence of point locations.
     tol : float, optional
-        A tolerance for planarity validation.
+        Absolute distance tolerance for planarity validation.
+        Defaults to the global absolute tolerance.
 
     Returns
     -------
@@ -109,36 +110,34 @@ def is_coplanar(points, tol=None):
         True if the points are coplanar.
         False otherwise.
 
-    See Also
-    --------
-    is_colinear
-    is_colinear_line_line
-
     Notes
     -----
-    Compute the normal vector (cross product) of the vectors formed by the first three points.
-    Taking the first point as base point, include one more vector at a time and check if that vector is perpendicular to the normal vector.
-    If all vectors are perpendicular, the points are coplanar.
+    Choose the farthest point from the first point as a baseline endpoint,
+    then the point farthest from that line to define a plane.
+    Points within the tolerance of the baseline are considered collinear.
+    Otherwise, compare the perpendicular distance of every remaining point
+    to the plane with the tolerance.
 
     """
     if len(points) < 4:
         return True
 
     a = points[0]
-    b_index = 1
-    c_index = 2
-    if is_colinear(a, points[b_index], points[c_index], tol):
-        # Choose a well-conditioned basis without discarding points from the final check.
-        b_index = max(range(1, len(points)), key=lambda i: distance_point_point(a, points[i]))
-        c_index = max(range(1, len(points)), key=lambda i: area_triangle([a, points[b_index], points[i]]))
-        if is_colinear(a, points[b_index], points[c_index], tol):
-            return True
-
+    b_index = max(range(1, len(points)), key=lambda i: distance_point_point(a, points[i]))
     b = points[b_index]
-    c = points[c_index]
-    n = cross_vectors(subtract_vectors(b, a), subtract_vectors(c, a))
+    if TOL.is_zero(distance_point_point(a, b), tol):
+        return True
 
-    return all(is_perpendicular_vector_vector(n, subtract_vectors(d, a), tol) for i, d in enumerate(points) if i not in (0, b_index, c_index))
+    c_index = max(range(1, len(points)), key=lambda i: distance_point_line(points[i], (a, b)))
+    c = points[c_index]
+    if TOL.is_zero(distance_point_line(c, (a, b)), tol):
+        return True
+
+    n = cross_vectors(subtract_vectors(b, a), subtract_vectors(c, a))
+    length = length_vector(n)
+
+    # Dividing by the normal length makes the tolerance independent of triangle area.
+    return all(TOL.is_zero(dot_vectors(n, subtract_vectors(d, a)) / length, tol) for i, d in enumerate(points) if i not in (0, b_index, c_index))
 
 
 # =============================================================================
