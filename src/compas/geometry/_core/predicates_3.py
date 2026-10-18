@@ -128,12 +128,10 @@ def is_coplanar(points, tol=None):
     b_index = 1
     c_index = 2
     if is_colinear(a, points[b_index], points[c_index], tol):
-        # Find a non-degenerate baseline without discarding points from the final check.
+        # Choose a well-conditioned basis without discarding points from the final check.
         b_index = max(range(1, len(points)), key=lambda i: distance_point_point(a, points[i]))
-        for c_index in range(1, len(points)):
-            if not is_colinear(a, points[b_index], points[c_index], tol):
-                break
-        else:
+        c_index = max(range(1, len(points)), key=lambda i: area_triangle([a, points[b_index], points[i]]))
+        if is_colinear(a, points[b_index], points[c_index], tol):
             return True
 
     b = points[b_index]
