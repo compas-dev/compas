@@ -31,6 +31,21 @@ def test_is_coplanar_retains_points_from_collinear_triples(points, shift):
     assert points == original
 
 
+@pytest.mark.parametrize("tol", [None, 1e-8])
+@pytest.mark.parametrize("reverse", [False, True])
+def test_is_coplanar_uses_well_conditioned_third_point(tol, reverse):
+    epsilon = 0.22 * (1e-9 if tol is None else tol)
+    remaining = [[0, 1, 0.4], [0, 0.5, -0.4]]
+    if reverse:
+        remaining.reverse()
+    points = [[0, 0, 0], [1, 0, 0], [2, 0, 0], [10, 0, 0], [0, epsilon, 0]] + remaining
+    original = [point[:] for point in points]
+
+    assert not is_coplanar(points, tol=tol)
+    assert not Polygon(points).is_planar
+    assert points == original
+
+
 @pytest.mark.parametrize(
     "points",
     [
