@@ -73,6 +73,34 @@ def test_is_coplanar_tolerance_is_a_distance(scale, tol, height, expected):
     assert points == original
 
 
+@pytest.mark.parametrize("tol", [None, 1e-8])
+@pytest.mark.parametrize("axis", [0, 1, 2])
+@pytest.mark.parametrize("reverse", [False, True])
+def test_is_coplanar_fits_noisy_points(tol, axis, reverse):
+    h = 0.6 * (1e-9 if tol is None else tol)
+    points = [[0, 0, 0], [1, 0, 0], [0, 1, 0], [10, 10, h], [10, -10, -h], [-10, 10, -h], [-10, -10, h]]
+    if reverse:
+        points = points[:1] + points[:0:-1]
+    points = [[point[(i + axis) % 3] for i in range(3)] for point in points]
+    original = [point[:] for point in points]
+
+    assert is_coplanar(points, tol)
+    if tol is None:
+        assert Polygon(points).is_planar
+    assert points == original
+
+
+@pytest.mark.parametrize("tol", [None, 1e-8])
+@pytest.mark.parametrize("axis", [0, 1, 2])
+@pytest.mark.parametrize("height, expected", [(1.8, True), (2.2, False)])
+def test_is_coplanar_allows_residuals_for_every_point(tol, axis, height, expected):
+    h = height * (1e-9 if tol is None else tol)
+    points = [[x, y, z] for z in [0, h] for x, y in [(0, 0), (2, 0), (2, 2), (0, 2)]]
+    points = [[point[(i + axis) % 3] for i in range(3)] for point in points]
+
+    assert is_coplanar(points, tol) == expected
+
+
 @pytest.mark.parametrize(
     "points",
     [
