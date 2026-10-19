@@ -2063,6 +2063,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+* Fixed polyhedron volume and centroid measurements modifying input vertices when triangulating polygonal faces.
+
 * Fixed `Configuration.from_data` to be backward-compatible with JSON data generated before `compas 1.3.0`.
 
 ### Removed

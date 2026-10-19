@@ -180,6 +180,7 @@ def volume_polyhedron(polyhedron):
 
     """
     xyz, faces = polyhedron
+    xyz = list(xyz)  # Face centers are temporary triangulation vertices.
 
     V = 0
     for vertices in faces:
