@@ -13,6 +13,7 @@ from compas.geometry import dot_vectors
 from compas.geometry import length_vector
 from compas.geometry import normal_polygon
 from compas.geometry import subtract_vectors
+from compas.geometry.bestfit import bestfit_plane
 from compas.itertools import window
 from compas.tolerance import TOL
 
@@ -112,11 +113,12 @@ def is_coplanar(points, tol=None):
 
     Notes
     -----
-    Choose the farthest point from the first point as a baseline endpoint,
-    then the point farthest from that line to define a plane.
-    Points within the tolerance of the baseline are considered collinear.
-    Otherwise, compare the perpendicular distance of every remaining point
-    to the plane with the tolerance.
+    Construct a stable frame from the farthest baseline endpoint and the point
+    farthest from that line. Points within the tolerance of the baseline are
+    considered collinear. Otherwise, center the plane between the extreme
+    projections of all points. If this plane exceeds the tolerance, fit a plane
+    to all points in the local frame and repeat the centered distance check.
+    The tolerance applies to every point, including the frame's basis points.
 
     """
     if len(points) < 4:
@@ -136,8 +138,26 @@ def is_coplanar(points, tol=None):
     n = cross_vectors(subtract_vectors(b, a), subtract_vectors(c, a))
     length = length_vector(n)
 
-    # Dividing by the normal length makes the tolerance independent of triangle area.
-    return all(TOL.is_zero(dot_vectors(n, subtract_vectors(d, a)) / length, tol) for i, d in enumerate(points) if i not in (0, b_index, c_index))
+    distances = [dot_vectors(n, subtract_vectors(point, a)) / length for point in points]
+    if TOL.is_zero(0.5 * (max(distances) - min(distances)), tol):
+        return True
+
+    # Fit in a stable local frame to avoid cancellation in covariance minors of sliver clouds.
+    n = [value / length for value in n]
+    baseline = subtract_vectors(b, a)
+    baseline_length = length_vector(baseline)
+    u = [value / baseline_length for value in baseline]
+    v = cross_vectors(n, u)
+    local = []
+    for point, distance in zip(points, distances):
+        vector = subtract_vectors(point, a)
+        local.append([dot_vectors(vector, u), dot_vectors(vector, v), distance])
+    _, normal = bestfit_plane(local)
+    world_normal = [normal[0] * u[i] + normal[1] * v[i] + normal[2] * n[i] for i in range(3)]
+    projections = [dot_vectors(point, normal) for point in local]
+
+    # A centered offset permits residuals on the basis points as well as the other samples.
+    return TOL.is_zero(0.5 * (max(projections) - min(projections)) / length_vector(world_normal), tol)
 
 
 # =============================================================================
