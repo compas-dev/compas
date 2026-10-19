@@ -13,6 +13,7 @@ from compas.geometry import dot_vectors
 from compas.geometry import length_vector
 from compas.geometry import normal_polygon
 from compas.geometry import subtract_vectors
+from compas.geometry.bestfit import bestfit_plane
 from compas.itertools import window
 from compas.tolerance import TOL
 
@@ -101,7 +102,8 @@ def is_coplanar(points, tol=None):
     points : sequence[point]
         A sequence of point locations.
     tol : float, optional
-        A tolerance for planarity validation.
+        Absolute distance tolerance for planarity validation.
+        Defaults to the global absolute tolerance.
 
     Returns
     -------
@@ -109,35 +111,53 @@ def is_coplanar(points, tol=None):
         True if the points are coplanar.
         False otherwise.
 
-    See Also
-    --------
-    is_colinear
-    is_colinear_line_line
-
     Notes
     -----
-    Compute the normal vector (cross product) of the vectors formed by the first three points.
-    Taking the first point as base point, include one more vector at a time and check if that vector is perpendicular to the normal vector.
-    If all vectors are perpendicular, the points are coplanar.
+    Construct a stable frame from the farthest baseline endpoint and the point
+    farthest from that line. Points within the tolerance of the baseline are
+    considered collinear. Otherwise, center the plane between the extreme
+    projections of all points. If this plane exceeds the tolerance, fit a plane
+    to all points in the local frame and repeat the centered distance check.
+    The tolerance applies to every point, including the frame's basis points.
 
     """
     if len(points) < 4:
         return True
 
-    temp = points[:]
+    a = points[0]
+    b_index = max(range(1, len(points)), key=lambda i: distance_point_point(a, points[i]))
+    b = points[b_index]
+    if TOL.is_zero(distance_point_point(a, b), tol):
+        return True
 
-    while len(temp) >= 3:
-        a = temp.pop(0)
-        b = temp.pop(0)
-        c = temp.pop(0)
-        if not is_colinear(a, b, c, tol):
-            break
-        if not temp:
-            return True
+    c_index = max(range(1, len(points)), key=lambda i: distance_point_line(points[i], (a, b)))
+    c = points[c_index]
+    if TOL.is_zero(distance_point_line(c, (a, b)), tol):
+        return True
 
     n = cross_vectors(subtract_vectors(b, a), subtract_vectors(c, a))
+    length = length_vector(n)
 
-    return all(is_perpendicular_vector_vector(n, subtract_vectors(d, a), tol) for d in temp)
+    distances = [dot_vectors(n, subtract_vectors(point, a)) / length for point in points]
+    if TOL.is_zero(0.5 * (max(distances) - min(distances)), tol):
+        return True
+
+    # Fit in a stable local frame to avoid cancellation in covariance minors of sliver clouds.
+    n = [value / length for value in n]
+    baseline = subtract_vectors(b, a)
+    baseline_length = length_vector(baseline)
+    u = [value / baseline_length for value in baseline]
+    v = cross_vectors(n, u)
+    local = []
+    for point, distance in zip(points, distances):
+        vector = subtract_vectors(point, a)
+        local.append([dot_vectors(vector, u), dot_vectors(vector, v), distance])
+    _, normal = bestfit_plane(local)
+    world_normal = [normal[0] * u[i] + normal[1] * v[i] + normal[2] * n[i] for i in range(3)]
+    projections = [dot_vectors(point, normal) for point in local]
+
+    # A centered offset permits residuals on the basis points as well as the other samples.
+    return TOL.is_zero(0.5 * (max(projections) - min(projections)) / length_vector(world_normal), tol)
 
 
 # =============================================================================
