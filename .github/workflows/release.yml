@@ -1,35 +1,97 @@
+name: release
+
 on:
   push:
-    tags:
-      - "v*"
+    branches: [main]
 
-name: Create Release
+permissions:
+  contents: read
 
 jobs:
+  release-change:
+    name: Detect release merge
+    runs-on: ubuntu-latest
+    outputs:
+      is-release: ${{ steps.release.outputs.is-release }}
+      version: ${{ steps.release.outputs.version }}
+      tag: ${{ steps.release.outputs.tag }}
+    steps:
+      - uses: compas-dev/compas-actions/release-check@v1
+        id: release
+
   build:
+    needs: release-change
+    if: needs.release-change.outputs.is-release == 'true'
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        python: ["3.9", "3.10", "3.11", "3.12"]
+        python: ["3.12", "3.13", "3.14"]
 
     steps:
-      - uses: compas-dev/compas-actions.build@v4
+      - uses: compas-dev/compas-actions/ci@v1
         with:
-          invoke_lint: true
-          invoke_test: true
-          python: ${{ matrix.python }}
-          check_import: true
+          python-version: ${{ matrix.python }}
+          management-tool: uv
+          extras: dev
+          invoke-tasks: lint test
+          check-import: true
+
+  prepare:
+    needs: [release-change, build]
+    if: needs.release-change.outputs.is-release == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: compas-dev/compas-actions/prepare-release@v1
+        with:
+          python-version: "3.12"
+          management-tool: uv
 
   publish:
-    needs: build
-    runs-on: windows-latest
+    needs: [release-change, prepare]
+    if: needs.release-change.outputs.is-release == 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/compas
+    permissions:
+      contents: read
+      id-token: write
     steps:
-      - uses: compas-dev/compas-actions.publish@v3
+      - name: Download package distributions
+        uses: actions/download-artifact@v8.0.1
         with:
-          pypi_token: ${{ secrets.PYPI }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          build_ghpython_components: true
-          gh_source: src/compas_ghpython/components
-          gh_target: src/compas_ghpython/components/ghuser
-          release_name_prefix: COMPAS
+          name: python-package-distributions
+          path: dist
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@v1.14.2
+
+  create-release:
+    needs: [release-change, publish]
+    if: needs.release-change.outputs.is-release == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: compas-dev/compas-actions/github-release@v1
+        with:
+          github-token: ${{ github.token }}
+          tag-name: ${{ needs.release-change.outputs.tag }}
+          target: ${{ github.sha }}
+
+  docs:
+    needs: [release-change, create-release]
+    if: needs.release-change.outputs.is-release == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: compas-dev/compas-actions/docs@v1
+        with:
+          deploy: true
+          version: ${{ needs.release-change.outputs.version }}
+          python-version: "3.12"
+          extras: docs
+          config-file: mkdocs.yml
+          strict: false

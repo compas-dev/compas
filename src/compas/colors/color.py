@@ -1,30 +1,23 @@
 import colorsys
+import math
 import re
-from typing import Annotated
-from typing import Iterator
-from typing import Optional
-from typing import Sequence
-from typing import Union
-from typing import cast
-
-from typing_extensions import Self
+from collections.abc import Iterator
+from collections.abc import Sequence
+from typing import Self
+from typing import TypeGuard
 
 from compas.colors.html_colors import HTML_TO_RGB255
 from compas.data import Data
 from compas.tolerance import TOL
-
-BASE16: str = "0123456789abcdef"
-
-HEX_DEC: dict[str, int] = {v: int(v, base=16) for v in [x + y for x in BASE16 for y in BASE16]}
 
 
 class ColorError(Exception):
     """Raise if color input is not a color."""
 
 
-ColorLikeSequence = Union[Annotated[Sequence[int], 3], Annotated[Sequence[float], 3]]
-ColorLike = Union[str, ColorLikeSequence]
-ColorInput = Union["Color", ColorLike]
+ColorLikeSequence = Sequence[int] | Sequence[float]
+ColorLike = str | ColorLikeSequence
+type ColorInput = Color | ColorLike | None
 
 
 class Color(Data):
@@ -33,83 +26,33 @@ class Color(Data):
     Parameters
     ----------
     red
-        The red component in the range ``[0.0, 1.0]``.
+        The red component in the range `[0.0, 1.0]`.
     green
-        The green component in the range of ``[0.0, 1.0]``.
+        The green component in the range `[0.0, 1.0]`.
     blue
-        The blue component in the range of ``[0.0, 1.0]``.
+        The blue component in the range `[0.0, 1.0]`.
     alpha
         Transparency setting.
-        If ``alpha = 0.0``, the color is fully transparent.
-        If ``alpha = 1.0``, the color is fully opaque.
+        If `alpha = 0.0`, the color is fully transparent.
+        If `alpha = 1.0`, the color is fully opaque.
     name
         The name of the color.
 
-    Attributes
-    ----------
-    r
-        Red component of the color in RGB1 color space.
-    g
-        Green component of the color in RGB1 color space.
-    b
-        Blue component of the color in RGB1 color space.
-    a
-        Transparency in RGB1 color space.
-    rgb
-        RGB1 color tuple, with components in the range ``[0.0, 1.0]``.
-    rgba
-        RGBA1 color tuple (including alpha), with components in the range ``[0.0, 1.0]``.
-    rgb255
-        RGB255 color tuple, with components in the range ``[0, 255]``.
-    rgba255
-        RGBA255 color tuple (including alpha), with components in the range ``[0, 255]``.
-    hex
-        Hexadecimal color string.
-    hls
-        Hue, Lightness, Saturation.
-    hsv
-        Hue, Saturation, Value / Brightness.
-    lightness
-        How much white the color appears to contain.
-        This is the "Lightness" in HLS.
-        Making a color "lighter" is like adding more white.
-    brightness
-        How well-lit the color appears to be.
-        This is the "Value" in HSV.
-        Making a color "brighter" is like shining a stronger light on it, or illuminating it better.
-    yuv
-        Luma and chroma components, with chroma defined by the blue and red projections.
-    luma
-        The brightness of a yuv signal.
-    chroma
-        The color of a yuv signal.
-        "How different from a grey of the same lightness the color appears to be."
-    luminance
-        The amount of light that passes through, is emitted from, or is reflected from a particular area.
-        Here, it expresses the preceived brightness of the color.
-        Note that this is not the same as the "Lightness" of HLS or the "Value/Brightness" of HSV.
-    saturation
-        The perceived freedom of whiteness.
-    is_light
-        If True, the color is considered light.
-    contrast
-        The contrasting color to the current color.
-
     Examples
     --------
-    By default, this class will create a color with the RGB components in the range ``[0.0, 1.0]``.
+    By default, this class creates a color with RGB components in the range `[0.0, 1.0]`.
 
     >>> Color(1, 0, 0)
     Color(red=1, green=0, blue=0, alpha=1.0)
 
-    Attempting to create a color with components outside of the range ``[0.0, 1.0]`` will raise a ``ValueError``.
+    Components outside `[0.0, 1.0]` raise `ValueError`.
 
     >>> Color(255, 0, 0)
     Traceback (most recent call last):
     ...
     ValueError: Components of an RGBA color should be in the range 0-1.
 
-    To create a color with components in the range ``[0, 255]``, use the `from_rgb255` constructor.
+    To create a color with components in `[0, 255]`, use `from_rgb255`.
 
     >>> Color.from_rgb255(255, 0, 0)
     Color(red=1.0, green=0.0, blue=0.0, alpha=1.0)
@@ -143,15 +86,23 @@ class Color(Data):
 
     See Also
     --------
-    compas.colors.ColorMap
+    [`ColorMap`][compas.colors.ColorMap]
 
     """
+
+    # --------------------------------------------------------------------------
+    # Data
+    # --------------------------------------------------------------------------
 
     @property
     def __data__(self) -> dict[str, float]:
         return {"red": self.r, "green": self.g, "blue": self.b, "alpha": self.a}
 
-    def __init__(self, red: float, green: float, blue: float, alpha: float = 1.0, name: Optional[str] = None) -> None:
+    # --------------------------------------------------------------------------
+    # Dunder methods
+    # --------------------------------------------------------------------------
+
+    def __init__(self, red: float, green: float, blue: float, alpha: float = 1.0, name: str | None = None) -> None:
         super().__init__(name=name)
         self._r: float = 1.0
         self._g: float = 1.0
@@ -190,8 +141,15 @@ class Color(Data):
         return iter(self.rgb)
 
     def __eq__(self, other: object) -> bool:
-        other = cast(Union["Color", ColorLikeSequence], other)
-        return all(a == b for a, b in zip(self, other))
+        if isinstance(other, Color):
+            return self.rgba == other.rgba
+        if not isinstance(other, Sequence) or isinstance(other, str):
+            return False
+        if len(other) == 3:
+            return self.a == 1.0 and self.rgb == tuple(other)
+        if len(other) == 4:
+            return self.rgba == tuple(other)
+        return False
 
     # --------------------------------------------------------------------------
     # Properties
@@ -199,46 +157,51 @@ class Color(Data):
 
     @property
     def r(self) -> float:
+        """The red component in RGB1 space."""
         return self._r
 
     @r.setter
     def r(self, red: float) -> None:
-        if red > 1.0 or red < 0.0:
+        if isinstance(red, bool) or not math.isfinite(red) or red > 1.0 or red < 0.0:
             raise ValueError("Components of an RGBA color should be in the range 0-1.")
         self._r = red
 
     @property
     def g(self) -> float:
+        """The green component in RGB1 space."""
         return self._g
 
     @g.setter
     def g(self, green: float) -> None:
-        if green > 1.0 or green < 0.0:
+        if isinstance(green, bool) or not math.isfinite(green) or green > 1.0 or green < 0.0:
             raise ValueError("Components of an RGBA color should be in the range 0-1.")
         self._g = green
 
     @property
     def b(self) -> float:
+        """The blue component in RGB1 space."""
         return self._b
 
     @b.setter
     def b(self, blue: float) -> None:
-        if blue > 1.0 or blue < 0.0:
+        if isinstance(blue, bool) or not math.isfinite(blue) or blue > 1.0 or blue < 0.0:
             raise ValueError("Components of an RGBA color should be in the range 0-1.")
         self._b = blue
 
     @property
     def a(self) -> float:
+        """The alpha component in RGBA1 space."""
         return self._a
 
     @a.setter
     def a(self, alpha: float) -> None:
-        if alpha > 1.0 or alpha < 0.0:
+        if isinstance(alpha, bool) or not math.isfinite(alpha) or alpha > 1.0 or alpha < 0.0:
             raise ValueError("Components of an RGBA color should be in the range 0-1.")
         self._a = alpha
 
     @property
     def rgb(self) -> tuple[float, float, float]:
+        """The RGB1 components."""
         r = self.r
         g = self.g
         b = self.b
@@ -246,59 +209,71 @@ class Color(Data):
 
     @property
     def rgb255(self) -> tuple[int, int, int]:
-        r = int(self.r * 255)
-        g = int(self.g * 255)
-        b = int(self.b * 255)
+        """The RGB components scaled to integer values from 0 to 255."""
+        r = round(self.r * 255)
+        g = round(self.g * 255)
+        b = round(self.b * 255)
         return r, g, b
 
     @property
     def rgba(self) -> tuple[float, float, float, float]:
+        """The RGBA1 components."""
         r, g, b = self.rgb
         a = self.a
         return r, g, b, a
 
     @property
     def rgba255(self) -> tuple[int, int, int, int]:
+        """The RGBA components scaled to integer values from 0 to 255."""
         r, g, b = self.rgb255
-        a = int(self.a * 255)
+        a = round(self.a * 255)
         return r, g, b, a
 
     @property
     def hex(self) -> str:
+        """The RGB components as a six-digit hexadecimal string."""
         return "#{0:02x}{1:02x}{2:02x}".format(*self.rgb255)
 
     @property
     def hls(self) -> tuple[float, float, float]:
+        """The hue, lightness, and saturation components."""
         return colorsys.rgb_to_hls(*self.rgb)
 
     @property
     def hsv(self) -> tuple[float, float, float]:
+        """The hue, saturation, and value components."""
         return colorsys.rgb_to_hsv(*self.rgb)
 
     @property
     def lightness(self) -> float:
+        """The HLS lightness component."""
         return self.hls[1]
 
     @property
     def brightness(self) -> float:
+        """The HSV value or brightness component."""
         return self.hsv[2]
 
     @property
     def is_light(self) -> bool:
+        """Whether the relative luminance exceeds the contrast threshold."""
         return self.luminance > 0.179
 
     @property
     def yuv(self) -> tuple[float, float, float]:
+        """The luma and two chroma components."""
         y = self.luma
         u, v = self.chroma
         return y, u, v
 
     @property
     def luma(self) -> float:
+        """The weighted brightness of the YUV signal."""
         return 0.299 * self.r + 0.587 * self.g + 0.114 * self.b
 
     @property
     def chroma(self) -> tuple[float, float]:
+        """The blue and red projections of the YUV signal."""
         y = self.luma
         u = 0.492 * (self.b - y)
         v = 0.877 * (self.r - y)
@@ -306,16 +281,39 @@ class Color(Data):
 
     @property
     def luminance(self) -> float:
-        return 0.2126 * self.r + 0.7152 * self.g + 0.0722 * self.b
+        """The relative luminance of the color in linear sRGB space.
+
+        Notes
+        -----
+        The sRGB components are linearized before applying the relative
+        luminance coefficients defined by WCAG.
+
+        References
+        ----------
+        - [WCAG relative luminance](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)
+
+        """
+        r = self.r / 12.92 if self.r <= 0.04045 else ((self.r + 0.055) / 1.055) ** 2.4
+        g = self.g / 12.92 if self.g <= 0.04045 else ((self.g + 0.055) / 1.055) ** 2.4
+        b = self.b / 12.92 if self.b <= 0.04045 else ((self.b + 0.055) / 1.055) ** 2.4
+        return 0.2126 * r + 0.7152 * g + 0.0722 * b
 
     @property
     def saturation(self) -> float:
+        """The HSV saturation.
+
+        Achromatic black has zero saturation.
+
+        """
         maxval = max(self.r, self.g, self.b)
         minval = min(self.r, self.g, self.b)
+        if maxval == 0.0:
+            return 0.0
         return (maxval - minval) / maxval
 
     @property
     def contrast(self) -> Self:
+        """A darker or lighter color that contrasts with this color."""
         return self.darkened(25) if self.is_light else self.lightened(50)
 
     # --------------------------------------------------------------------------
@@ -329,15 +327,15 @@ class Color(Data):
         Parameters
         ----------
         r
-            Red component in the range ``[0, 255]``.
+            Red component in the range `[0, 255]`.
         g
-            Green component in the range ``[0, 255]``.
+            Green component in the range `[0, 255]`.
         b
-            Blue component in the range ``[0, 255]``.
+            Blue component in the range `[0, 255]`.
 
         Returns
         -------
-        Color
+        Self
 
         """
         return cls(r / 255, g / 255, b / 255)
@@ -357,11 +355,11 @@ class Color(Data):
 
         Returns
         -------
-        Color
+        Self
 
         References
         ----------
-        https://en.wikipedia.org/wiki/HSL_and_HSV
+        - [HSL and HSV](https://en.wikipedia.org/wiki/HSL_and_HSV)
 
         """
         r, g, b = colorsys.hls_to_rgb(hue, luminance, saturation)
@@ -382,11 +380,11 @@ class Color(Data):
 
         Returns
         -------
-        Color
+        Self
 
         References
         ----------
-        https://en.wikipedia.org/wiki/HSL_and_HSV
+        - [HSL and HSV](https://en.wikipedia.org/wiki/HSL_and_HSV)
 
         """
         r, g, b = colorsys.hsv_to_rgb(h, s, v)
@@ -407,11 +405,11 @@ class Color(Data):
 
         Returns
         -------
-        Color
+        Self
 
         References
         ----------
-        https://en.wikipedia.org/wiki/YIQ
+        - [YIQ](https://en.wikipedia.org/wiki/YIQ)
 
         """
         r, g, b = colorsys.yiq_to_rgb(y, i, q)
@@ -432,11 +430,11 @@ class Color(Data):
 
         Returns
         -------
-        Color
+        Self
 
         References
         ----------
-        https://en.wikipedia.org/wiki/YUV
+        - [YUV](https://en.wikipedia.org/wiki/YUV)
 
         """
         r = y + 1.140 * v
@@ -455,7 +453,7 @@ class Color(Data):
 
         Returns
         -------
-        Color
+        Self
 
         """
         if number == 0.0:
@@ -493,13 +491,17 @@ class Color(Data):
 
         Returns
         -------
-        Color
+        Self
 
         """
-        value = value.lstrip("#").lower()
-        r = HEX_DEC[value[0:2]]
-        g = HEX_DEC[value[2:4]]
-        b = HEX_DEC[value[4:6]]
+        if not cls._is_hex(value):
+            raise ValueError("A hexadecimal color should contain three or six hexadecimal digits.")
+        value = value.removeprefix("#").lower()
+        if len(value) == 3:
+            value = "".join(character * 2 for character in value)
+        r = int(value[0:2], 16)
+        g = int(value[2:4], 16)
+        b = int(value[4:6], 16)
         return cls(r / 255.0, g / 255.0, b / 255.0)
 
     @classmethod
@@ -513,11 +515,11 @@ class Color(Data):
 
         Returns
         -------
-        Color
+        Self
 
         References
         ----------
-        https://www.w3.org/TR/css-color-3/#svg-color
+        - [CSS Color Module Level 3](https://www.w3.org/TR/css-color-3/#svg-color)
 
         """
         rgb255 = HTML_TO_RGB255.get(name.lower())
@@ -526,7 +528,7 @@ class Color(Data):
         return cls.from_rgb255(*rgb255)
 
     @classmethod
-    def from_unknown(cls, unknown: ColorInput) -> Optional["Color"]:
+    def from_unknown(cls, unknown: ColorInput) -> Self | None:
         """Construct a color from an unknown input.
 
         Parameters
@@ -536,37 +538,38 @@ class Color(Data):
 
         Returns
         -------
-        Color | None
+        Self | None
 
         Raises
         ------
         ColorError
 
         """
-        if not unknown:
-            return
+        if unknown is None:
+            return None
 
         if isinstance(unknown, cls):
             return unknown
 
-        if Color._is_rgb255(unknown):
-            rgb255 = cast(tuple[int, int, int], list(cast(Sequence[int], unknown)))
-            return cls.from_rgb255(*rgb255)
+        if isinstance(unknown, Color):
+            return cls(unknown.r, unknown.g, unknown.b, unknown.a)
 
-        if Color._is_hex(unknown):
-            return cls.from_hex(cast(str, unknown))
+        if cls._is_rgb255(unknown):
+            return cls.from_rgb255(unknown[0], unknown[1], unknown[2])
 
-        if Color._is_rgb1(unknown):
-            rgb1 = cast(tuple[float, float, float], list(cast(Sequence[float], unknown)))
-            return cls(*rgb1)
+        if cls._is_hex(unknown):
+            return cls.from_hex(unknown)
+
+        if cls._is_rgb1(unknown):
+            return cls(unknown[0], unknown[1], unknown[2])
 
         if isinstance(unknown, str):
             return cls.from_name(unknown)
 
-        raise ColorError
+        raise ColorError(f"Cannot convert {unknown!r} to a color.")
 
-    @staticmethod
-    def coerce(color: ColorInput) -> Optional["Color"]:
+    @classmethod
+    def coerce(cls, color: ColorInput) -> Self | None:
         """Coerce a color input into a color.
 
         Parameters
@@ -576,74 +579,14 @@ class Color(Data):
 
         Returns
         -------
-        Color | None
+        Self | None
 
         Raises
         ------
         ColorError
 
         """
-        if not color:
-            return
-        if isinstance(color, Color):
-            return color
-        if Color._is_hex(color):
-            return Color.from_hex(cast(str, color))
-        if Color._is_rgb1(color):
-            rgb1 = cast(tuple[float, float, float], color)
-            return Color(*rgb1)
-        if Color._is_rgb255(color):
-            rgb255 = cast(tuple[int, int, int], color)
-            return Color.from_rgb255(*rgb255)
-        raise ColorError
-
-    @staticmethod
-    def _is_rgb1(color: object) -> bool:
-        """Verify that the color is in the RGB 1 color space.
-
-        Returns
-        -------
-        bool
-
-        """
-        if not color:
-            return False
-        color = cast(ColorLikeSequence, color)
-        return all(isinstance(c, float) and (c >= 0 and c <= 1) for c in color)
-
-    @staticmethod
-    def _is_rgb255(color: object) -> bool:
-        """Verify that the color is in the RGB 255 color space.
-
-        Returns
-        -------
-        bool
-
-        """
-        if not color:
-            return False
-        color = cast(ColorLikeSequence, color)
-        return all(isinstance(c, int) and (c >= 0 and c <= 255) for c in color)
-
-    @staticmethod
-    def _is_hex(color: object) -> bool:
-        """Verify that the color is in hexadecimal format.
-
-        Returns
-        -------
-        bool
-
-        """
-        if isinstance(color, str):
-            match = re.search(r"^#(?:[0-9a-fA-F]{3}){1,2}$", color)
-            if match:
-                return True
-            return False
-        return False
-
-    # --------------------------------------------------------------------------
-    # Presets
-    # --------------------------------------------------------------------------
+        return cls.from_unknown(color)
 
     @classmethod
     def white(cls) -> Self:
@@ -651,7 +594,7 @@ class Color(Data):
 
         Returns
         -------
-        Color
+        Self
 
         """
         return cls(1.0, 1.0, 1.0)
@@ -662,7 +605,7 @@ class Color(Data):
 
         Returns
         -------
-        Color
+        Self
 
         """
         return cls(0.0, 0.0, 0.0)
@@ -673,7 +616,7 @@ class Color(Data):
 
         Returns
         -------
-        Color
+        Self
 
         """
         return cls(0.5, 0.5, 0.5)
@@ -684,7 +627,7 @@ class Color(Data):
 
         Returns
         -------
-        Color
+        Self
 
         """
         return cls(1.0, 0.0, 0.0)
@@ -695,7 +638,7 @@ class Color(Data):
 
         Returns
         -------
-        Color
+        Self
 
         """
         return cls(1.0, 0.5, 0.0)
@@ -706,7 +649,7 @@ class Color(Data):
 
         Returns
         -------
-        Color
+        Self
 
         """
         return cls(1.0, 1.0, 0.0)
@@ -717,7 +660,7 @@ class Color(Data):
 
         Returns
         -------
-        Color
+        Self
 
         """
         return cls(0.5, 1.0, 0.0)
@@ -728,7 +671,7 @@ class Color(Data):
 
         Returns
         -------
-        Color
+        Self
 
         """
         return cls(0.0, 1.0, 0.0)
@@ -739,7 +682,7 @@ class Color(Data):
 
         Returns
         -------
-        Color
+        Self
 
         """
         return cls(0.0, 1.0, 0.5)
@@ -750,7 +693,7 @@ class Color(Data):
 
         Returns
         -------
-        Color
+        Self
 
         """
         return cls(0.0, 1.0, 1.0)
@@ -761,7 +704,7 @@ class Color(Data):
 
         Returns
         -------
-        Color
+        Self
 
         """
         return cls(0.0, 0.5, 1.0)
@@ -772,7 +715,7 @@ class Color(Data):
 
         Returns
         -------
-        Color
+        Self
 
         """
         return cls(0.0, 0.0, 1.0)
@@ -783,7 +726,7 @@ class Color(Data):
 
         Returns
         -------
-        Color
+        Self
 
         """
         return cls(0.5, 0.0, 1.0)
@@ -794,7 +737,7 @@ class Color(Data):
 
         Returns
         -------
-        Color
+        Self
 
         """
         return cls(1.0, 0.0, 1.0)
@@ -805,14 +748,10 @@ class Color(Data):
 
         Returns
         -------
-        Color
+        Self
 
         """
         return cls(1.0, 0.0, 0.5)
-
-    # --------------------------------------------------------------------------
-    # Other presets
-    # --------------------------------------------------------------------------
 
     @classmethod
     def maroon(cls) -> Self:
@@ -820,7 +759,7 @@ class Color(Data):
 
         Returns
         -------
-        Color
+        Self
 
         """
         return cls(0.5, 0.0, 0.0)
@@ -831,7 +770,7 @@ class Color(Data):
 
         Returns
         -------
-        Color
+        Self
 
         """
         return cls(0.5, 0.25, 0.0)
@@ -842,7 +781,7 @@ class Color(Data):
 
         Returns
         -------
-        Color
+        Self
 
         """
         return cls(0.5, 0.5, 0.0)
@@ -853,7 +792,7 @@ class Color(Data):
 
         Returns
         -------
-        Color
+        Self
 
         """
         return cls(0.0, 0.5, 0.5)
@@ -864,7 +803,7 @@ class Color(Data):
 
         Returns
         -------
-        Color
+        Self
 
         """
         return cls(0.0, 0.0, 0.5)
@@ -875,7 +814,7 @@ class Color(Data):
 
         Returns
         -------
-        Color
+        Self
 
         """
         return cls(0.5, 0.0, 0.5)
@@ -886,7 +825,7 @@ class Color(Data):
 
         Returns
         -------
-        Color
+        Self
 
         """
         return cls(0.75, 0.75, 0.75)
@@ -910,10 +849,6 @@ class Color(Data):
         ----------
         factor
             Percentage of lightness increase.
-
-        Returns
-        -------
-        None
 
         Raises
         ------
@@ -942,7 +877,7 @@ class Color(Data):
 
         Returns
         -------
-        Color
+        Self
 
         Raises
         ------
@@ -961,10 +896,6 @@ class Color(Data):
         ----------
         factor
             Percentage of lightness reduction.
-
-        Returns
-        -------
-        None
 
         Raises
         ------
@@ -993,7 +924,7 @@ class Color(Data):
 
         Returns
         -------
-        Color
+        Self
 
         Raises
         ------
@@ -1006,13 +937,7 @@ class Color(Data):
         return color
 
     def invert(self) -> None:
-        """Invert the current color wrt to the RGB color circle.
-
-        Returns
-        -------
-        None
-
-        """
+        """Invert the current color wrt to the RGB color circle."""
         self.r = 1.0 - self.r
         self.g = 1.0 - self.g
         self.b = 1.0 - self.b
@@ -1022,7 +947,7 @@ class Color(Data):
 
         Returns
         -------
-        Color
+        Self
 
         """
         color = self.copy()
@@ -1036,10 +961,6 @@ class Color(Data):
         ----------
         factor
             Percentage of saturation increase.
-
-        Returns
-        -------
-        None
 
         Raises
         ------
@@ -1068,7 +989,7 @@ class Color(Data):
 
         Returns
         -------
-        Color
+        Self
 
         Raises
         ------
@@ -1087,10 +1008,6 @@ class Color(Data):
         ----------
         factor
             Percentage of saturation reduction.
-
-        Returns
-        -------
-        None
 
         Raises
         ------
@@ -1119,7 +1036,7 @@ class Color(Data):
 
         Returns
         -------
-        Color
+        Self
 
         Raises
         ------
@@ -1130,3 +1047,44 @@ class Color(Data):
         color = self.copy()
         color.desaturate(factor=factor)
         return color
+
+    # --------------------------------------------------------------------------
+    # Private helpers
+    # --------------------------------------------------------------------------
+
+    @staticmethod
+    def _is_rgb1(color: object) -> TypeGuard[Sequence[float]]:
+        """Verify that the color is in the RGB 1 color space.
+
+        Returns
+        -------
+        bool
+
+        """
+        if not isinstance(color, Sequence) or isinstance(color, str) or len(color) != 3:
+            return False
+        return all(isinstance(c, (int, float)) and not isinstance(c, bool) and c >= 0 and c <= 1 for c in color)
+
+    @staticmethod
+    def _is_rgb255(color: object) -> TypeGuard[Sequence[int]]:
+        """Verify that the color is in the RGB 255 color space.
+
+        Returns
+        -------
+        bool
+
+        """
+        if not isinstance(color, Sequence) or isinstance(color, str) or len(color) != 3:
+            return False
+        return all(isinstance(c, int) and not isinstance(c, bool) and 0 <= c <= 255 for c in color)
+
+    @staticmethod
+    def _is_hex(color: object) -> TypeGuard[str]:
+        """Verify that the color is in hexadecimal format.
+
+        Returns
+        -------
+        bool
+
+        """
+        return isinstance(color, str) and re.fullmatch(r"#?(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})", color) is not None

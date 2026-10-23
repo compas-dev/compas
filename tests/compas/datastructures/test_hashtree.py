@@ -28,7 +28,9 @@ def test_hashtree_from_mesh():
     diff = tree2.diff(tree1)
 
     assert diff["added"] == []
-    assert diff["removed"] == [{"path": ".face.3", "value": [1, 3, 2]}, {"path": ".facedata.3", "value": None}]
+    removed = {item["path"]: item["value"] for item in diff["removed"]}
+    assert sorted(removed[".face.3"]) == [1, 2, 3]
+    assert removed[".facedata.3"] is None
     assert diff["modified"] == [{"path": ".vertex.0.x", "old": -0.8164965809277261, "new": 1.0}]
 
 

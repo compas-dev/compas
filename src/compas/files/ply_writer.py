@@ -7,8 +7,6 @@ from target writing, following the XML API.
 
 """
 
-from typing import Optional
-from typing import Union
 from typing import cast
 
 from compas import _iotools
@@ -20,7 +18,7 @@ from .ply_types import PLYScalar
 from .ply_types import pack_scalar
 
 
-def _precision_digits(precision: Optional[Union[int, str]]) -> Optional[int]:
+def _precision_digits(precision: int | str | None) -> int | None:
     if precision is None:
         return None
     if isinstance(precision, int):
@@ -28,13 +26,13 @@ def _precision_digits(precision: Optional[Union[int, str]]) -> Optional[int]:
     return int(precision.rstrip("f"))
 
 
-def _output_format(document_format: PLYFormat, requested_format: Optional[PLYFormat]) -> PLYFormat:
+def _output_format(document_format: PLYFormat, requested_format: PLYFormat | None) -> PLYFormat:
     if requested_format is None:
         return document_format
     return requested_format
 
 
-def _format_number(value: PLYScalar, precision: Optional[int]) -> str:
+def _format_number(value: PLYScalar, precision: int | None) -> str:
     if isinstance(value, int) or precision is None:
         return repr(value)
     number = f"{value:.{precision}f}".rstrip("0").rstrip(".")
@@ -56,7 +54,7 @@ def _header(document: PLYDocument, format: PLYFormat) -> bytes:
     return ("\n".join(lines) + "\n").encode("ascii")
 
 
-def _ascii_body(document: PLYDocument, precision: Optional[int]) -> bytes:
+def _ascii_body(document: PLYDocument, precision: int | None) -> bytes:
     lines = []
     for element in document.elements:
         for record in element.data:
@@ -89,7 +87,7 @@ def _binary_body(document: PLYDocument, format: PLYFormat) -> bytes:
     return bytes(data)
 
 
-def _body(document: PLYDocument, format: PLYFormat, precision: Optional[int]) -> bytes:
+def _body(document: PLYDocument, format: PLYFormat, precision: int | None) -> bytes:
     if format == "ascii":
         return _ascii_body(document, precision)
     return _binary_body(document, format)
@@ -101,12 +99,12 @@ class PLYWriter:
     def __init__(
         self,
         target: _iotools.IOTarget,
-        format: Optional[PLYFormat] = None,
-        precision: Optional[Union[int, str]] = None,
+        format: PLYFormat | None = None,
+        precision: int | str | None = None,
     ) -> None:
         self.target: _iotools.IOTarget = target
-        self.format: Optional[PLYFormat] = format
-        self.precision: Optional[int] = _precision_digits(precision)
+        self.format: PLYFormat | None = format
+        self.precision = _precision_digits(precision)
 
     def write(self, document: PLYDocument) -> None:
         """Write a PLY document.

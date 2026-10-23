@@ -3,8 +3,6 @@
 import struct
 from typing import Literal
 from typing import NamedTuple
-from typing import Optional
-from typing import Union
 
 PLYFormat = Literal["ascii", "binary_little_endian", "binary_big_endian"]
 PLYDataType = Literal[
@@ -28,8 +26,8 @@ PLYDataType = Literal[
     "float64",
 ]
 PLYByteOrder = Literal["<", ">"]
-PLYScalar = Union[int, float]
-PLYValue = Union[PLYScalar, list[PLYScalar]]
+PLYScalar = int | float
+PLYValue = PLYScalar | list[PLYScalar]
 PLYRecord = dict[str, PLYValue]
 
 
@@ -38,8 +36,8 @@ class PLYScalarType(NamedTuple):
 
     format: str
     integer: bool
-    minimum: Optional[int] = None
-    maximum: Optional[int] = None
+    minimum: int | None = None
+    maximum: int | None = None
 
 
 PLY_SCALAR_TYPES: dict[PLYDataType, PLYScalarType] = {

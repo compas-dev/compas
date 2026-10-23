@@ -5,7 +5,6 @@ import binascii
 import re
 import struct
 from typing import Any
-from typing import Optional
 
 from .constants import COMPONENT_TYPE_BYTE
 from .constants import COMPONENT_TYPE_ENUM
@@ -44,7 +43,7 @@ def decode_data_uri(uri: str) -> bytes:
         raise GLTFParseError("Invalid glTF data URI.") from error
 
 
-def data_uri_mime_type(uri: Optional[str]) -> Optional[str]:
+def data_uri_mime_type(uri: str | None) -> str | None:
     """Extract the media type from a data URI."""
     if not uri or not is_data_uri(uri):
         return None
@@ -55,16 +54,24 @@ def data_uri_mime_type(uri: Optional[str]) -> Optional[str]:
 class GLTFAccessorDecoder:
     """Resolve buffers and decode accessors from parsed glTF JSON."""
 
+    # =============================================================================
+    # Dunder methods
+    # =============================================================================
+
     def __init__(
         self,
         document: GLTFJson,
-        binary_chunk: Optional[bytes],
-        resource_loader: Optional[GLTFResourceLoader],
+        binary_chunk: bytes | None,
+        resource_loader: GLTFResourceLoader | None,
     ) -> None:
         self.document = document
         self.binary_chunk = binary_chunk
         self.resource_loader = resource_loader
         self._buffers: dict[int, bytes] = {}
+
+    # =============================================================================
+    # Methods
+    # =============================================================================
 
     def decode_all(self) -> list[AccessorData]:
         """Decode every accessor.
@@ -85,18 +92,14 @@ class GLTFAccessorDecoder:
         if "sparse" not in accessor and "bufferView" not in accessor:
             return None
         if "bufferView" in accessor:
-            values = self._read_buffer_view(
-                accessor["bufferView"], count, component_type, accessor.get("byteOffset", 0), type_
-            )
+            values = self._read_buffer_view(accessor["bufferView"], count, component_type, accessor.get("byteOffset", 0), type_)
         else:
             values = [(0,) * components for _ in range(count)]
 
         sparse = accessor.get("sparse")
         if sparse:
             indices = sparse["indices"]
-            sparse_indices = self._read_buffer_view(
-                indices["bufferView"], sparse["count"], indices["componentType"], indices.get("byteOffset", 0), "SCALAR"
-            )
+            sparse_indices = self._read_buffer_view(indices["bufferView"], sparse["count"], indices["componentType"], indices.get("byteOffset", 0), "SCALAR")
             sparse_values_spec = sparse["values"]
             sparse_values = self._read_buffer_view(
                 sparse_values_spec["bufferView"],
@@ -144,9 +147,11 @@ class GLTFAccessorDecoder:
             raise GLTFParseError(f"No resource loader is available for {uri!r}.")
         return self.resource_loader.read(uri)
 
-    def _read_buffer_view(
-        self, index: int, count: int, component_type: int, accessor_offset: int, type_: str
-    ) -> list[Any]:
+    # =============================================================================
+    # Private helpers
+    # =============================================================================
+
+    def _read_buffer_view(self, index: int, count: int, component_type: int, accessor_offset: int, type_: str) -> list[Any]:
         view = self.document["bufferViews"][index]
         format_char = COMPONENT_TYPE_ENUM[component_type]
         components = NUM_COMPONENTS_BY_TYPE_ENUM[type_]

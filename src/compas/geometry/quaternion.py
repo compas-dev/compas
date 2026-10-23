@@ -1,6 +1,11 @@
 import math
+from collections.abc import Iterator
+from collections.abc import Sequence
 from sys import float_info
-from typing import Iterator
+from typing import TYPE_CHECKING
+from typing import Protocol
+from typing import Self
+from typing import runtime_checkable
 
 from compas.geometry import Geometry
 from compas.geometry import Rotation
@@ -13,116 +18,81 @@ from compas.linalg.quaternions import quaternion_unitize
 from compas.linalg.transformations import quaternion_from_matrix
 from compas.tolerance import TOL
 
+if TYPE_CHECKING:
+    from compas.geometry import Frame
+
+
+@runtime_checkable
+class _QuaternionComponents(Protocol):
+    def __len__(self) -> int: ...
+
+    def __iter__(self) -> Iterator[float]: ...
+
 
 class Quaternion(Geometry):
-    r"""A quaternion is defined by 4 components, X, Y, Z, and W.
+    r"""A quaternion represented by one scalar and three vector components.
 
     Parameters
     ----------
-    w : float
-        The scalar (real) part of a quaternion.
-    x : float
-        X component of the vector (complex, imaginary) part of a quaternion.
-    y : float
-        Y component of the vector (complex, imaginary) part of a quaternion.
-    z : float
-        Z component of the vector (complex, imaginary) part of a quaternion.
-    name : str, optional
-        The name of the transformation.
-
-    Attributes
-    ----------
-    w : float
-        The W component of the quaternion.
-    x : float
-        The X component of the quaternion.
-    y : float
-        The Y component of the quaternion.
-    z : float
-        The Z component of the quaternion.
-    wxyz : list[float], read-only
-        Quaternion as a list of float in the 'wxyz' convention.
-    xyzw : list[float], read-only
-        Quaternion as a list of float in the 'xyzw' convention.
-    norm : float, read-only
-        The length (euclidean norm) of the quaternion.
-    is_unit : bool, read-only
-        True if the quaternion is unit-length.
-        False otherwise.
+    w
+        The scalar component.
+    x
+        The X component of the vector part.
+    y
+        The Y component of the vector part.
+    z
+        The Z component of the vector part.
+    name
+        The optional name.
 
     Notes
     -----
-    The default convention to represent a quaternion :math:`q` in this module
-    is by four real values :math:`w`, :math:`x`, :math:`y`, :math:`z`.
-    The first value :math:`w` is the scalar (real) part,
-    and :math:`x`, :math:`y`, :math:`z` form the vector (complex, imaginary) part [1]_, so that:
+    COMPAS uses the `[w, x, y, z]` convention:
 
-    .. math::
+    $$
+    q = w + xi + yj + zk
+    $$
 
-        q = w + xi + yj + zk
+    A unit quaternion can represent a rotation of $\theta$ around the unit
+    axis $(u_x, u_y, u_z)$:
 
-    where :math:`i, j, k` are basis components with following multiplication rules [2]_:
+    $$
+    q = \cos(\theta / 2) + \sin(\theta / 2)(u_x i + u_y j + u_z k)
+    $$
 
-    .. math::
-
-        \begin{align}
-        ii &= jj = kk = ijk = -1 \\
-        ij &= k, \quad ji = -k \\
-        jk &= i, \quad kj = -i \\
-        ki &= j, \quad ik = -j
-        \end{align}
-
-    Quaternions are associative but not commutative.
-
-    **Quaternion as rotation.**
-
-    A rotation through an angle :math:`\theta` around an axis
-    defined by a euclidean unit vector :math:`u = u_{x}i + u_{y}j + u_{z}k`
-    can be represented as a quaternion:
-
-    .. math::
-
-        q = cos(\frac{\theta}{2}) + sin(\frac{\theta}{2}) [u_{x}i + u_{y}j + u_{z}k]
-
-    i.e.:
-
-    .. math::
-
-        \begin{align}
-        w &= cos(\frac{\theta}{2}) \\
-        x &= sin(\frac{\theta}{2}) u_{x} \\
-        y &= sin(\frac{\theta}{2}) u_{y} \\
-        z &= sin(\frac{\theta}{2}) u_{z}
-        \end{align}
-
-    For a quaternion to represent a rotation or orientation, it must be unit-length.
-    A quaternion representing a rotation :math:`p` resulting from applying a rotation
-    :math:`r` to a rotation :math:`q`, i.e.: :math:`p = rq`,
-    is also unit-length.
+    Quaternion multiplication is associative but not commutative. Multiplying
+    `R * Q` composes the rotations represented by `R` and `Q` when both are
+    unit quaternions.
 
     References
     ----------
-    .. [1] http://mathworld.wolfram.com/Quaternion.html
-    .. [2] http://mathworld.wolfram.com/HamiltonsRules.html
-    .. [3] https://github.com/matthew-brett/transforms3d/blob/master/transforms3d/quaternions.py
+    * [Quaternion](https://mathworld.wolfram.com/Quaternion.html)
+    * [Hamilton's rules](https://mathworld.wolfram.com/HamiltonsRules.html)
+    * [transforms3d quaternion implementation](https://github.com/matthew-brett/transforms3d/blob/master/transforms3d/quaternions.py)
 
     Examples
     --------
-    >>> Q = Quaternion(1.0, 1.0, 1.0, 1.0).unitized()
-    >>> R = Quaternion(0.0,-0.1, 0.2,-0.3).unitized()
-    >>> P = R*Q
-    >>> P.is_unit
+    >>> q = Quaternion(1.0, 1.0, 1.0, 1.0).unitized()
+    >>> r = Quaternion(0.0, -0.1, 0.2, -0.3).unitized()
+    >>> (r * q).is_unit
     True
 
     """
 
+    # ==========================================================================
+    # Data
+    # ==========================================================================
 
     @property
-    def __data__(self):
+    def __data__(self) -> dict[str, float]:
         return {"w": self.w, "x": self.x, "y": self.y, "z": self.z}
 
-    def __init__(self, w, x, y, z, name=None):
-        super(Quaternion, self).__init__(name=name)
+    # ==========================================================================
+    # Dunder methods
+    # ==========================================================================
+
+    def __init__(self, w: float, x: float, y: float, z: float, name: str | None = None) -> None:
+        super().__init__(name=name)
         self._w = 0.0
         self._x = 0.0
         self._y = 0.0
@@ -132,10 +102,10 @@ class Quaternion(Geometry):
         self.y = y
         self.z = z
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "{0}({1}, {2}, {3}, {4})".format(type(self).__name__, self.w, self.x, self.y, self.z)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "{0}({1}, {2}, {3}, {4})".format(
             type(self).__name__,
             TOL.format_number(self.w),
@@ -144,10 +114,10 @@ class Quaternion(Geometry):
             TOL.format_number(self.z),
         )
 
-    def __eq__(self, other, tol=None):
-        if not hasattr(other, "__iter__") or not hasattr(other, "__len__") or len(self) != len(other):
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, _QuaternionComponents) or len(self) != len(other):
             return False
-        return TOL.is_allclose(self, other, rtol=0, atol=tol)
+        return TOL.is_allclose(self, other, rtol=0)
 
     def __getitem__(self, key: int) -> float:
         if key == 0:
@@ -160,7 +130,7 @@ class Quaternion(Geometry):
             return self.z
         raise KeyError(key)
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key: int, value: float) -> None:
         if key == 0:
             self.w = value
             return
@@ -181,81 +151,24 @@ class Quaternion(Geometry):
     def __len__(self) -> int:
         return 4
 
-    # ==========================================================================
-    # Properties
-    # ==========================================================================
-
-    @property
-    def w(self) -> float:
-        return self._w
-
-    @w.setter
-    def w(self, w: float) -> None:
-        self._w = float(w)
-
-    @property
-    def x(self) -> float:
-        return self._x
-
-    @x.setter
-    def x(self, x: float) -> None:
-        self._x = float(x)
-
-    @property
-    def y(self) -> float:
-        return self._y
-
-    @y.setter
-    def y(self, y: float) -> None:
-        self._y = float(y)
-
-    @property
-    def z(self) -> float:
-        return self._z
-
-    @z.setter
-    def z(self, z: float) -> None:
-        self._z = float(z)
-
-    @property
-    def wxyz(self) -> list[float]:
-        return [self.w, self.x, self.y, self.z]
-
-    @property
-    def xyzw(self):
-        return [self.x, self.y, self.z, self.w]
-
-    @property
-    def norm(self):
-        return quaternion_norm(self)
-
-    @property
-    def is_unit(self):
-        return quaternion_is_unit(self)
-
-    # ==========================================================================
-    # Operators
-    # ==========================================================================
-
-    def __mul__(self, other):
+    def __mul__(self, other: "Quaternion | Sequence[float]") -> Self:
         """Multiply operator for two quaternions.
 
         Parameters
         ----------
-        other : [float, float, float, float] | :class:`compas.geometry.Quaternion`
-            A Quaternion.
+        other
+            The other quaternion.
 
         Returns
         -------
-        :class:`compas.geometry.Quaternion`
-            The product :math:`P = R * Q` of this quaternion (R) multiplied by other quaternion (Q).
+        Self
+            The Hamilton product of this quaternion and `other`.
 
         Notes
         -----
-        Multiplication of two quaternions :math:`R * Q` can be interpreted as applying rotation R to an orientation Q,
-        provided that both R and Q are unit-length.
-        The result is also unit-length.
-        Multiplication of quaternions is not commutative!
+        Multiplication of two unit quaternions `R * Q` can be interpreted as
+        applying rotation `R` to orientation `Q`. Multiplication is not
+        commutative.
 
         Examples
         --------
@@ -267,23 +180,84 @@ class Quaternion(Geometry):
 
         """
         p = quaternion_multiply(list(self), list(other))
-        return Quaternion(*p)
+        return type(self)(p[0], p[1], p[2], p[3])
+
+    # ==========================================================================
+    # Properties
+    # ==========================================================================
+
+    @property
+    def w(self) -> float:
+        """The scalar component."""
+        return self._w
+
+    @w.setter
+    def w(self, w: float) -> None:
+        self._w = float(w)
+
+    @property
+    def x(self) -> float:
+        """The X component of the vector part."""
+        return self._x
+
+    @x.setter
+    def x(self, x: float) -> None:
+        self._x = float(x)
+
+    @property
+    def y(self) -> float:
+        """The Y component of the vector part."""
+        return self._y
+
+    @y.setter
+    def y(self, y: float) -> None:
+        self._y = float(y)
+
+    @property
+    def z(self) -> float:
+        """The Z component of the vector part."""
+        return self._z
+
+    @z.setter
+    def z(self, z: float) -> None:
+        self._z = float(z)
+
+    @property
+    def wxyz(self) -> list[float]:
+        """The components in `[w, x, y, z]` order."""
+        return [self.w, self.x, self.y, self.z]
+
+    @property
+    def xyzw(self) -> list[float]:
+        """The components in `[x, y, z, w]` order."""
+        return [self.x, self.y, self.z, self.w]
+
+    @property
+    def norm(self) -> float:
+        """The Euclidean norm."""
+        return quaternion_norm(self)
+
+    @property
+    def is_unit(self) -> bool:
+        """Whether the quaternion has unit length within the tolerance."""
+        return quaternion_is_unit(self)
 
     # ==========================================================================
     # Constructors
     # ==========================================================================
 
     @classmethod
-    def from_frame(cls, frame):
+    def from_frame(cls, frame: "Frame") -> Self:
         """Creates a quaternion object from a frame.
 
         Parameters
         ----------
-        frame : :class:`compas.geometry.Frame`
+        frame
+            The frame.
 
         Returns
         -------
-        :class:`compas.geometry.Quaternion`
+        Self
             The new quaternion.
 
         Examples
@@ -301,16 +275,17 @@ class Quaternion(Geometry):
         return cls(w, x, y, z)
 
     @classmethod
-    def from_matrix(cls, M):
+    def from_matrix(cls, M: Sequence[Sequence[float]]) -> Self:
         """Create a Quaternion from a transformation matrix.
 
         Parameters
         ----------
-        M : list[list[float]]
+        M
+            The transformation matrix.
 
         Returns
         -------
-        :class:`compas.geometry.Quaternion`
+        Self
             The new quaternion.
 
         Examples
@@ -322,19 +297,21 @@ class Quaternion(Geometry):
         Quaternion(0.949, 0.066, 0.302, 0.066)
 
         """
-        return cls(*quaternion_from_matrix(M))
+        w, x, y, z = quaternion_from_matrix(M)
+        return cls(w, x, y, z)
 
     @classmethod
-    def from_rotation(cls, R):
-        """Create a Quaternion from a Rotatation.
+    def from_rotation(cls, R: Rotation) -> Self:
+        """Create a quaternion from a rotation.
 
         Parameters
         ----------
-        R : :class:`compas.geometry.Rotation`
+        R
+            The rotation.
 
         Returns
         -------
-        :class:`compas.geometry.Quaternion`
+        Self
             The new quaternion.
 
         Examples
@@ -351,12 +328,8 @@ class Quaternion(Geometry):
     # Methods
     # ==========================================================================
 
-    def unitize(self):
+    def unitize(self) -> None:
         """Scales the quaternion to make it unit-length.
-
-        Returns
-        -------
-        None
 
         Examples
         --------
@@ -371,12 +344,13 @@ class Quaternion(Geometry):
         qu = quaternion_unitize(list(self))
         self.w, self.x, self.y, self.z = qu
 
-    def unitized(self):
+    def unitized(self) -> Self:
         """Returns a quaternion with a unit-length.
 
         Returns
         -------
-        :class:`compas.geometry.Quaternion`
+        Self
+            The unitized quaternion.
 
         Examples
         --------
@@ -389,14 +363,10 @@ class Quaternion(Geometry):
 
         """
         qu = quaternion_unitize(list(self))
-        return Quaternion(*qu)
+        return type(self)(qu[0], qu[1], qu[2], qu[3])
 
-    def canonize(self):
+    def canonize(self) -> None:
         """Makes the quaternion canonic.
-
-        Returns
-        -------
-        None
 
         Examples
         --------
@@ -410,14 +380,14 @@ class Quaternion(Geometry):
 
         """
         qc = quaternion_canonize(list(self))
-        self.w, self.x, self.y, self.z = qc  # type: ignore
+        self.w, self.x, self.y, self.z = qc
 
-    def canonized(self):
+    def canonized(self) -> Self:
         """Returns a quaternion in canonic form.
 
         Returns
         -------
-        :class:`compas.geometry.Quaternion`
+        Self
             A quaternion in canonic form.
 
         Examples
@@ -432,14 +402,10 @@ class Quaternion(Geometry):
 
         """
         qc = quaternion_canonize(list(self))
-        return Quaternion(*qc)  # type: ignore
+        return type(self)(qc[0], qc[1], qc[2], qc[3])
 
-    def conjugate(self):
+    def conjugate(self) -> None:
         """Conjugate the quaternion.
-
-        Returns
-        -------
-        None
 
         Examples
         --------
@@ -452,12 +418,12 @@ class Quaternion(Geometry):
         qc = quaternion_conjugate(list(self))
         self.w, self.x, self.y, self.z = qc
 
-    def conjugated(self):
+    def conjugated(self) -> Self:
         """Returns a conjugate quaternion.
 
         Returns
         -------
-        :class:`compas.geometry.Quaternion`
+        Self
             The conjugated quaternion.
 
         Examples
@@ -471,25 +437,38 @@ class Quaternion(Geometry):
 
         """
         qc = quaternion_conjugate(list(self))
-        return Quaternion(*qc)
+        return type(self)(qc[0], qc[1], qc[2], qc[3])
 
-    def dot(self, other):
-        """Computes the cosine of the angle between the two quaternions"""
+    def dot(self, other: "Quaternion") -> float:
+        """Compute the dot product with another quaternion.
+
+        Parameters
+        ----------
+        other
+            The other quaternion.
+
+        Returns
+        -------
+        float
+            The dot product.
+
+        """
         return self.w * other.w + self.x * other.x + self.y * other.y + self.z * other.z
 
-    def slerp(self, other, t):
+    def slerp(self, other: "Quaternion", t: float) -> Self:
         """Slerp: spherical interpolation of two quaternions.
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Quaternion`
+        other
             The other quaternion to interpolate between.
-        t : float
-            A parameter in the range [0-1].
+        t
+            The interpolation parameter.
 
         Returns
         -------
-        :class:`compas.geometry.Quaternion`
+        Self
+            The interpolated quaternion.
 
         Examples
         --------
@@ -537,4 +516,4 @@ class Quaternion(Geometry):
         qy_interp = sc1 * quat[2] + sc2 * q2[2]
         qz_interp = sc1 * quat[3] + sc2 * q2[3]
 
-        return Quaternion(qw_interp, qx_interp, qy_interp, qz_interp)
+        return type(self)(qw_interp, qx_interp, qy_interp, qz_interp)

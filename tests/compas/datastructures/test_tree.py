@@ -156,6 +156,44 @@ def test_tree_add_node(simple_tree):
     assert len(list(simple_tree.nodes)) == 8
 
 
+def test_treenode_add_returns_added_node():
+    parent = TreeNode(name="parent")
+    child = TreeNode(name="child")
+
+    assert parent.add(child) is child
+
+
+def test_treenode_children_are_immutable(simple_tree):
+    root = simple_tree.root
+
+    assert isinstance(root.children, tuple)
+    with pytest.raises(AttributeError):
+        root.children.append(TreeNode())
+
+
+def test_treenode_rejects_cycles(simple_tree):
+    root = simple_tree.root
+    leaf = simple_tree.get_node_by_name("leaf1_1")
+
+    with pytest.raises(ValueError):
+        leaf.add(root)
+
+
+def test_treenode_rejects_implicit_reparenting(simple_tree):
+    branch2 = simple_tree.get_node_by_name("branch2")
+    leaf = simple_tree.get_node_by_name("leaf1_1")
+
+    with pytest.raises(ValueError):
+        branch2.add(leaf)
+
+
+def test_tree_rejects_root_owned_by_another_tree(simple_tree):
+    other = Tree()
+
+    with pytest.raises(ValueError):
+        other.add(simple_tree.root)
+
+
 def test_tree_remove_node(simple_tree):
     branch2 = simple_tree.get_node_by_name("branch2")
     leaf2_1 = simple_tree.get_node_by_name("leaf2_1")
@@ -193,6 +231,24 @@ def test_empty_tree_from_data():
 
     assert tree.root is None
     assert list(tree.nodes) == []
+
+
+def test_tree_deserialisation_preserves_configured_node_subclass():
+    class CustomNode(TreeNode["CustomNode"]):
+        pass
+
+    class CustomTree(Tree[CustomNode]):
+        node_type = CustomNode
+
+    tree = CustomTree()
+    root = CustomNode(name="root")
+    tree.add(root)
+    tree.add(CustomNode(name="child"), parent=root)
+
+    reconstructed = CustomTree.__from_data__(tree.__data__)
+
+    assert isinstance(reconstructed.root, CustomNode)
+    assert all(isinstance(node, CustomNode) for node in reconstructed.nodes)
 
 
 def test_get_nodes_by_name(simple_tree):

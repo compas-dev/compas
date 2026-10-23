@@ -1,8 +1,16 @@
+from typing import TYPE_CHECKING
+from typing import Any
+from typing import Literal
+
 from compas.data import Data
 
+if TYPE_CHECKING:
+    from compas.geometry import BrepVertex
+    from compas.geometry import NurbsCurve
 
-class BrepTrimIsoStatus(object):
-    """An enumeration of isoparametric curve direction on the surface."""
+
+class BrepTrimIsoStatus:
+    """Isoparametric direction of a trim on its surface."""
 
     NONE = 0
     X = 1
@@ -14,50 +22,43 @@ class BrepTrimIsoStatus(object):
 
 
 class BrepTrim(Data):
-    """An interface for a Brep Trim
+    """Interface for a parametric trimming curve of a Brep face."""
 
-    Attributes
-    ----------
-    curve : :class:`compas.geometry.NurbsCurve`, read_only
-        Returns the geometry for this trim as a 2d curve.
-    iso_status : literal(NONE|X|Y|WEST|SOUTH|EAST|NORTH)
-        The isoparametric curve direction on the surface.
-    is_reversed : bool
-        True if this trim is reversed from its associated edge curve and False otherwise.
-    native_trim : Any
-        The underlying trim object. Type is backend-dependent.
-    start_vertex : Any, read-only
-        The start vertex of this trim.
-    end_vertex : Any, read-only
-        The end vertex of this trim.
-    vertices : list[Any], read-only
-
-    """
+    # ==========================================================================
+    # Properties
+    # ==========================================================================
 
     @property
-    def curve(self):
+    def curve(self) -> "NurbsCurve":
+        """The two-dimensional NURBS curve in the surface parameter space."""
         raise NotImplementedError
 
     @property
-    def iso_status(self):
+    def iso_status(self) -> Literal[0, 1, 2, 3, 4, 5, 6]:
+        """The isoparametric direction as a `BrepTrimIsoStatus` value."""
         raise NotImplementedError
 
     @property
-    def is_reversed(self):
+    def is_reversed(self) -> bool:
+        """Whether the trim runs opposite to its associated edge curve."""
         raise NotImplementedError
 
     @property
-    def native_trim(self):
+    def native_trim(self) -> Any:
+        """The backend-specific trim object."""
         raise NotImplementedError
 
     @property
-    def start_vertex(self):
+    def start_vertex(self) -> "BrepVertex":
+        """The start vertex of the trim."""
         raise NotImplementedError
 
     @property
-    def end_vertex(self):
+    def end_vertex(self) -> "BrepVertex":
+        """The end vertex of the trim."""
         raise NotImplementedError
 
     @property
-    def vertices(self):
+    def vertices(self) -> list["BrepVertex"]:
+        """The start and end vertices of the trim."""
         raise NotImplementedError

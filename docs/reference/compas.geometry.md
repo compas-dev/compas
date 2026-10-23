@@ -1,0 +1,3 @@
+# `compas.geometry`
+
+::: compas.geometry

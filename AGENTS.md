@@ -1,122 +1,150 @@
 # COMPAS Agent Guide
 
-## Goal
+## Scope and Principles
 
-Modernize the codebase by:
+These instructions apply to the entire repository.
 
-- removing or upgrading parts related to compatibility with IronPython or older versions of CPython
-- adding type hints
-- migrating docstrings from Sphinx conventions to mkdocs
-- increasing test coverage
+- Keep COMPAS focused on the host-independent core framework. Host integration
+  packages such as `compas_rhino`, `compas_ghpython`, and `compas_blender` do
+  not belong in this repository.
+- Preserve unrelated working-tree changes and keep patches focused.
+- Prefer the simplest Python implementation that expresses the required
+  contract. Avoid speculative abstractions and compatibility layers.
+- Breaking changes are acceptable when they materially improve architecture,
+  API consistency, typing, or maintainability. Update internal consumers,
+  tests, documentation, serialization contracts, and change notes together.
+- Record deferred design work in `TODO.md`; do not mix it into an unrelated
+  patch.
 
-## Scope
+## Python and Typing
 
-These instructions apply to the entire repository. Preserve unrelated working-tree changes and keep modernization patches focused.
+- Support Python 3.12 and newer, as declared in `pyproject.toml`.
+- Use modern Python syntax, zero-argument `super()`, PEP 604 unions, built-in
+  generics, and `Self` for subclass-preserving returns.
+- Annotate the values accepted by the runtime API. Do not add conversions or
+  validation merely to satisfy a type checker.
+- Prefer precise structural types and protocols over `Any`, concrete runtime
+  type checks, or casts. Use `cast` only when a valid runtime invariant cannot
+  be expressed cleanly.
+- Use overloads when arguments determine a public return type.
+- Use `TYPE_CHECKING` for dependencies imported only for annotations,
+  especially optional or heavy dependencies.
+- Numeric coordinate components are annotated as `float`; integers are valid
+  under Python's numeric typing rules. Do not advertise numeric strings.
+- Direct `Point` and `Vector` construction may default a missing `z` component
+  to zero. Other coordinate inputs require three components.
+- Pass iterable geometry objects such as `Point` and `Vector` directly to APIs
+  accepting coordinates; avoid unnecessary collection conversions.
+- Put reusable raw-data protocols and aliases in `compas._typing`. Put aliases
+  involving geometry classes in `compas.geometry._typing`.
+- Keep `compas.geometry._core` independent of geometry classes and typed in
+  terms of raw numerical data and primitives.
+- At public geometry boundaries, use the appropriate object-aware structural
+  alias. Do not broaden low-level helpers to accommodate one high-level caller.
 
-Breaking changes are allowed in this modernization when they materially improve the architecture, API consistency, typing, maintainability, or removal of obsolete compatibility code. Do not preserve legacy parameters, import paths, inheritance, aliases, or behavior solely for backward compatibility. Breaking changes must remain intentional and scoped: update internal consumers, tests, type contracts, documentation, serialization assumptions, and migration notes together, and verify that the replacement design is coherent.
+## Python Semantics and Runtime Contracts
 
-## Compatibility and Typing
+- Prefer standard Python protocols, iteration, unpacking, comprehensions,
+  context managers, properties, and special methods over custom equivalents.
+- Prefer duck typing. Check concrete runtime types only when identity determines
+  semantics, resolves a real ambiguity, or protects a documented invariant.
+- Use EAFP when the operation already provides the correct failure behavior.
+  Add preconditions when attempting the operation could mutate state, obscure
+  the public error contract, or make recovery impractical.
+- Let indexing, unpacking, arithmetic, dictionary access, and function calls
+  raise their natural exceptions instead of duplicating those checks.
+- Preserve valid-input behavior, return types, ordering, orientation, side
+  effects, and documented errors unless a change is intentional and scoped.
+- Prefer fixing an annotation or API boundary over changing values inside an
+  algorithm.
+- Use names that reflect cardinality and keep short readable expressions on one
+  line when they fit the formatter's limit.
 
-- Support Python 3.9 as declared in `pyproject.toml`.
-- Replace Python 2 compatibility forms such as `super(Class, self)` with zero-argument `super()` when touching a class. Preserve explicit arguments to `super(...)` only where they are semantically required, such as selecting a different point in the MRO.
-- Use `typing.Union[...]` for type unions in annotations and type comments. Do not use PEP 604 `X | Y` unions for now. The `|` notation may remain in docstrings and prose.
-- Prefer annotations that describe what runtime code already accepts. Do not add conversions solely to satisfy a narrow annotation.
-- Numeric coordinate and component parameters should be annotated as `float`, not as `Union[float, str]`. Integer arguments are valid for parameters annotated as `float` under Python's numeric typing rules; accepting integers does not require adding strings to the type or adding a runtime conversion.
-- Direct `Point` and `Vector` construction may accept two components and default `z` to zero. Coordinate inputs consumed by other geometry objects and their methods must provide all three components; do not add `len(...)` checks that silently promote 2D input to 3D.
-- Model fixed-size coordinate data as having three components outside the direct `Point` and `Vector` construction APIs whenever the type system can express that constraint. Do not broaden a fixed-size coordinate alias to an arbitrary-length collection merely to accommodate a lower-level function.
-- Geometry objects such as `Point` and `Vector` are iterable and support indexing/unpacking. Pass them directly when an API consumes coordinate iterables; avoid unnecessary `list(...)` allocation.
-- Functions in `compas.geometry._core` should be typed against raw numerical data structures and primitives. They should remain unaware of geometry object types and should not import geometry classes.
-- Put broadly reusable structural and raw-data typing helpers in `compas._typing`. Keep unions that mention geometry classes, such as `LineType` and `PlaneType`, in `compas.geometry._typing`; define an alias locally only when it is genuinely private to one module.
-- At public geometry API boundaries, use the appropriate object-aware union such as `LineType` when callers may pass either a geometry object or raw data. Coordinate-like objects that already satisfy the shared structural `CoordinateType` do not need separate `PointType` or `VectorType` unions. Do not solve boundary typing by progressively broadening every low-level helper.
-- When a public method has getter/setter modes or return types controlled by arguments, use overloads to describe the distinct call shapes rather than falling back to `Any`.
-- For overloaded functions, document one entry in the `Returns` section for each overload return type. Describe the argument condition that selects each return type; do not collapse the entries into a union.
-- Preserve subclass behavior. Constructors and algorithms that accept or infer `cls` should continue returning the expected subclass.
-- Prefer standard library types over typing imports: `list[tuple[...]]` instead of `List[Tuple[...]]`.
-- Prefer correcting the source annotation, protocol, or overload over using `cast`. Use `cast` only when the type system cannot express a valid runtime invariant cleanly.
-- Avoid broad `Any` unless unavoidable.
-- Avoid importing heavy optional dependencies only for typing; use `TYPE_CHECKING` when needed.
-- Use `Self` for the return type of (class)methods that return an instance of the current type or a subtype.
-- Replace string-quoted return annotations with `Self` whenever the result is the current instance type and subclass preservation is intended. Keep a quoted concrete class only when the method deliberately returns that exact class rather than the receiver's type.
+## Class Organization
 
-## Runtime-Behavior Preservation
+Organize substantial class bodies in this order:
 
-- Modernization should not silently change valid-input behavior, return types, ordering, orientation, side effects, or error behavior.
-- Before changing an implementation, compare old and new control flow and identify any equivalence that depends on data-structure invariants.
-- Prefer fixing types at API boundaries over changing runtime values inside algorithms.
-- When modernization or typing requires a small, non-obvious change to a function body, add a concise comment explaining why the change is necessary and which input contract or invariant it preserves.
-- Keep diffs narrow. Do not fold speculative architecture changes into typing, documentation, or compatibility patches.
-- Remove obsolete compatibility parameters when their removal is explicitly part of the task instead of preserving hidden aliases or branching logic. Update the implementation, documentation, and tests together.
-- Use names that reflect cardinality: a collection of returned points should have a plural name such as `points`, not `point`.
-- Keep a short expression on one line when it remains within the formatter's line-length limit and splitting it does not improve readability.
+1. data and serialization hooks
+2. dunder methods
+3. properties
+4. alternative constructors
+5. conversions
+6. regular public methods
+7. transformations
+8. private helpers
 
-## Tests and Validation
+Keep property accessors and overload groups together. Specialized subsections
+such as cache management, topology, or geometric components are appropriate
+when they improve navigation. Keep small classes compact and do not add empty
+or decorative sections.
 
-- Use the `compas3` Conda environment for tests and checks.
-- Run the smallest relevant test selection first, then broaden validation when practical.
-- Use the repository commands documented in `CONTRIBUTING.md`: `invoke test`, `invoke lint`, and `invoke format`. Direct `pytest` and `ruff` invocations are appropriate for focused checks.
-- Always run `git diff --check` for changed patches.
-- For annotation work, supplement tests with AST/static checks where useful so type comments and less obvious annotation sites are not missed.
-- Add direct tests for modernized public classes, including construction, sequence behavior, operators, reflected and in-place operators, property setters, transformations, and subclass-preserving constructors where applicable.
-- Prefer behavioral tests over tests that merely assert the presence or shape of implementation metadata.
+## Geometry Architecture
+
+- Distinguish defining geometry from discretization and tessellation.
+  `vertices`, `edges`, `faces`, `points`, `lines`, and `polygons` describe the
+  geometry's representation at a requested resolution. `Tessellation` contains
+  visualization-oriented vertices and triangles.
+- Direct `to_mesh()` and `to_polygonal_surface()` conversions preserve the
+  source topology. Use `geometry.tessellated().to_mesh()` or
+  `geometry.tessellated().to_polygonal_surface()` for triangulated conversions.
+- Cache intrinsic geometry, topology, placement, and tessellation independently
+  where possible. Placement changes must not force recomputation of unaffected
+  local geometry or topology.
+- Mutable objects must not use Python `__hash__` as a geometry revision key.
+  Use deterministic equality-comparable fingerprints when introducing cache
+  invalidation protocols.
+- Shapes are bounded solids; they do not inherit from `Surface`. Surface-patch
+  composition must preserve seams, poles, parameter directions, boundary
+  ownership, analytic normals, UVs, and shared vertices.
+- `Line` and `Polyline` are lightweight `Geometry` primitives, not `Curve`
+  subclasses. Dedicated parametric wrappers may be introduced separately
+  without weakening the `Curve` contract.
+- The canonical `NurbsSurface` layout is `control_points[v][u]` and
+  `weights[v][u]`, with full mathematical knot vectors. Backend adapters are
+  responsible for transposing or translating their native representation.
+- Brep functionality is exposed through operations on the shared
+  `compas.geometry.Brep` class. Plugins implement operations; they do not
+  replace the public class with backend-specific subclasses.
+- Prefer NumPy-backed representations where they materially improve processing
+  or interoperability, but avoid conversions when a consumer can use existing
+  buffers directly.
 
 ## Documentation and Public API
 
-- Keep docstrings consistent with the repository's current conventions and Ruff configuration.
-- Docstrings are being migrated from Sphinx/reStructuredText markup to MkDocs/mkdocstrings-compatible Markdown. Apply the new convention whenever touching a docstring, even where the surrounding documentation still contains legacy Sphinx files.
-- Keep the existing NumPy-style section structure (`Parameters`, `Returns`, `Raises`, `Notes`, `Examples`, `References`, and `See Also`), but write the content of those sections as Markdown.
-- Once a function or method parameter is annotated in the signature, omit its type from the docstring's `Parameters` entry. Document the parameter name and description only; do not duplicate signature types in the parameter list.
-- Keep explicit types in the `Returns` section even when the return annotation is present in the signature. Mkdocstrings/Griffe otherwise does not parse the return documentation correctly.
-- Write return types using the same canonical Python-style syntax as annotations, for example `list[float]`, `list[list[float]]`, `tuple[float, float]`, and `Sequence[float]`. Do not use prose or shorthand forms such as `list of list`, `[float, float, float]`, or `list[[float, float, float]]`.
-- When a function returns a tuple, document it as one tuple return entry matching the return annotation, not as separate return entries for each tuple element. Describe the elements and their order in the entry's description.
-- Omit the `Returns` section entirely when the function returns `None`. Remove empty `Returns` sections and entries that merely document `None`.
-- Do not introduce Sphinx roles or directives such as `:class:`, `:meth:`, `:func:`, `:attr:`, `:mod:`, `.. note::`, or `.. code-block::` in docstrings. Replace existing occurrences in touched docstrings with plain or backticked identifiers, Markdown links, admonitions, and fenced code blocks as appropriate.
-- Use single backticks for inline code, literals, parameter names, and identifiers. Use Markdown link syntax (`[label](URL)`) rather than reStructuredText inline links.
-- Refer to Python and COMPAS API objects by an unambiguous qualified name when useful; let mkdocstrings resolve supported cross-references rather than embedding Sphinx-specific roles.
-- Format `See Also` as a NumPy-style section so Griffe recognizes its `see-also` admonition kind, and use mkdocstrings cross-references for API objects:
+- Every direct `compas.*` package initializer defines an explicit `__all__`.
+  Imports and `__all__` together define the official public API.
+- Write MkDocs/mkdocstrings-compatible NumPy-style docstrings using Markdown.
+- Omit parameter types already present in signatures. Keep explicit canonical
+  Python types in `Returns` sections.
+- Document a tuple as one tuple return matching its annotation. For overloads,
+  document each return and the argument condition selecting it.
+- Omit `Returns` for functions returning `None`, and remove empty sections.
+- Use backticks for code and identifiers, Markdown links and footnotes, and
+  `$...$` or `$$...$$` for mathematics. Do not use Sphinx roles, directives,
+  citations, or math syntax.
+- Format `See Also` as a NumPy-style section using mkdocstrings references.
+- Keep executable examples valid as doctests.
+- Document public dunder behavior, alternative constructors, and every public
+  property. Explain copying, normalization, cache invalidation, and coupled
+  setter side effects when relevant.
+- Do not add manual `Attributes` sections when mkdocstrings can generate them.
+- Do not expose implementation-only payload or helper types without a public
+  use case.
+- Except for single-line docstrings, leave a blank line before closing quotes.
 
-  ```text
-  See Also
-  --------
-  [`Mesh.from_obj`][compas.datastructures.Mesh.from_obj] for the inverse operation.
-  ```
+## Tests and Validation
 
-- Use Markdown footnotes for cited references because the MkDocs `footnotes` extension is enabled. Use descriptive, globally unique footnote labels rather than numeric labels because multiple docstrings can be rendered on one page:
-
-  ```text
-  Notes
-  -----
-  This follows the method described by Nurnberg.[^volume-polyhedron-nurnberg]
-
-  References
-  ----------
-  [^volume-polyhedron-nurnberg]: [Calculating the Area and Centroid of a Polygon in 2D](https://example.com/paper.pdf)
-  ```
-
-- For uncited further reading, use a Markdown list in `References`. Do not use reStructuredText citations such as `[1]_` or `.. [1]`.
-- Use `$...$` for inline mathematics and `$$...$$` for display mathematics. Math rendering is provided by `pymdownx.arithmatex` and MathJax; do not use `:math:` roles or `.. math::` directives.
-- Keep examples valid as doctests where they are intended to execute. A Markdown migration must not change the example's runtime meaning.
-- Document public dunder behavior in the class docstring when it forms part of the user-facing API. Cover ordinary, reflected, and in-place arithmetic variants as applicable, and include a short executable example for each behavior.
-- Add short examples for public classmethods that serve as alternative constructors. Do not add `from_data` or implementation-level deserialization hooks to this constructor overview.
-- Do not manually add `Attributes` lists to class docstrings when mkdocstrings can generate them from the class members.
-- Document every public property on the property's getter. Include setter input, copying, normalization, cache invalidation, and coupled side effects in `Notes` where applicable; properties without setters still require a concise description. Add short executable examples for computed, cached, or otherwise non-obvious behavior.
-- Document non-obvious setter side effects. In particular, note when setting one frame axis normalizes it or recomputes another axis to preserve orthonormality.
-- Do not expose implementation-only payload, encoder, or helper types without a clear public use case.
-- Remove `DATASCHEMA` declarations from modernized objects and remove tests that exist only to validate those declarations. Do not introduce replacement schema metadata unless a current public use case requires it.
-- Preserve convenience APIs only when they remain coherent with the modernized design. Breaking changes do not require a deprecation layer in this modernization, but their scope and replacement behavior must be explicit and fully updated across the repository.
-- When compatibility requires accepting both documents and native COMPAS objects, make the behavior explicit with overloads or documented wrappers rather than untyped `Any`.
-- Remove empty `Examples` sections.
-- Except for single-line docstrings, leave a blank line at the end of the docstring.
-
-## Known Modernization Follow-ups
-
-- `Line` and `Polyline` are lightweight root-level `Geometry` primitives and must not inherit from `Curve`. Their former `compas.geometry.curves.line` and `compas.geometry.curves.polyline` module paths have been intentionally removed. Future explicit Curve-derived wrappers such as `LineCurve` and `PolylineCurve` may provide domains, parametrization, and the complete curve API, but are not currently a priority. Decide bounded versus unbounded line-curve semantics explicitly before adding them. Do not reshape `Curve` contracts to accommodate the primitive classes.
-- Coordinate NURBS backend alignment through `compas_framework` after this COMPAS upgrade. The canonical `NurbsSurface` contract uses V rows containing U values (`points[v][u]` and `weights[v][u]`) and full mathematical knot vectors. Rhino must transpose grids at its boundary and remove or restore the two openNURBS superfluous endpoint knots; OCC uses canonical knots directly and converts its U-first arrays to the canonical grid layout. Add asymmetric-grid cross-package contract tests for both backends. The current `compas_occ` audit also found that `OCCNurbsSurface.__eq__` compares its own U and V data instead of comparing with `other`, `__from_data__` loses subclasses, `copy()` does not match the shared signature, `from_plane()` wraps `Geom_Plane` without converting it to a B-spline, and the STEP factory plugin appears to recurse through the shared factory.
-- Before changing the corresponding functions in `compas.linalg.vectors` or `compas.linalg.matrices`, add regression tests and resolve the intended behavior of the following existing edge cases:
-  - `vector_variance` currently computes the square root of the variance, and `vector_standard_deviation` takes another square root.
-  - `orthonormalize_vectors` tests residual components with `axis > 1e-10` rather than `abs(axis) > 1e-10`, which can discard residuals containing only negative components.
-  - `matrix_determinant` and `matrix_inverse` do not correctly support 0x0 or 1x1 matrices.
-  - Singular-matrix checks use exact determinant comparisons rather than the repository tolerance policy.
-  - `decompose_matrix` is implemented specifically for 4x4 matrices despite broader wording in its docstring.
-  - `sum_vectors` treats every axis other than `0` as row-wise summation.
-  - Normalization, projection, and rotation helpers need explicit boundary tests for zero-length vectors, zero normals or axes, and projection directions parallel to the target plane.
-- Revisit the long-standing `close` and `allclose` deprecations before removing them; preserve the public API unless the work includes an explicit deprecation or breaking-change plan.
+- Use the `compas3` Conda environment.
+- Run the smallest relevant tests first, then broaden validation in proportion
+  to risk.
+- Use the commands documented in `CONTRIBUTING.md`: `invoke test`,
+  `invoke lint`, and `invoke format`. Focused `pytest`, Ruff, and Pyright
+  commands are appropriate during development.
+- Always run `git diff --check` for changed patches.
+- For typing work, supplement runtime tests with focused static or AST checks
+  where annotations may otherwise be missed.
+- Test public behavior rather than implementation metadata. Cover construction,
+  sequence and operator behavior, property setters, transformations, failure
+  boundaries, and subclass-preserving constructors as applicable.
+- Build the relevant MkDocs pages when changes can affect rendered API
+  documentation, signatures, or section parsing.

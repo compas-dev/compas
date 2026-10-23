@@ -1,6 +1,5 @@
 import pytest
 import json
-import compas
 from random import random
 from compas.geometry import Circle
 from compas.geometry import Line
@@ -28,8 +27,7 @@ def test_point(x, y, z):
     assert p.x == x and p.y == y and p.z == z
     assert p[0] == x and p[1] == y and p[2] == z
 
-    if not compas.IPY:
-        assert eval(repr(p)) == p
+    assert eval(repr(p)) == p
 
 
 @pytest.mark.parametrize(
@@ -47,8 +45,7 @@ def test_point2(x, y):
     assert p.x == x and p.y == y and p.z == z
     assert p[0] == x and p[1] == y and p[2] == z
 
-    if not compas.IPY:
-        assert eval(repr(p)) == p
+    assert eval(repr(p)) == p
 
 
 def test_point_operators():
@@ -221,6 +218,5 @@ def test_point_in_circle():
 
 def test_point_in_polyhedron():
     tetrahedron = Polyhedron.from_platonicsolid(4)
-    tetrahedron.faces = [list(reversed(face)) for face in tetrahedron.faces]
     assert Point(0.0, 0.0, 0.0).in_polyhedron(tetrahedron)
     assert not Point(10.0, 10.0, 10.0).in_polyhedron(tetrahedron)

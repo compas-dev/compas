@@ -1,8 +1,7 @@
+from collections.abc import Sequence
 from typing import Any
 from typing import Literal
 from typing import NoReturn
-from typing import Sequence
-from typing import Union
 from typing import cast
 from typing import overload
 
@@ -19,7 +18,7 @@ from scipy.sparse import diags
 from scipy.sparse import spmatrix
 from scipy.sparse import vstack as svstack
 
-MatrixResult = Union[list[list[float]], NDArray[Any], spmatrix]
+MatrixResult = list[list[float]] | NDArray[Any] | spmatrix
 SparseFormat = Literal["csr", "csc", "coo"]
 
 
@@ -423,7 +422,7 @@ def equilibrium_matrix(C: ArrayLike, xyz: ArrayLike, free: Sequence[int], rtype:
 def mass_matrix(
     Ct: spmatrix,
     ks: NDArray[Any],
-    q: Union[NDArray[Any], float] = 0,
+    q: NDArray[Any] | float = 0,
     c: float = 1,
     tiled: bool = True,
 ) -> NDArray[Any]:

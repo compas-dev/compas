@@ -1,10 +1,7 @@
-from typing import Iterator
-from typing import Optional
-from typing import Sequence
-from typing import Union
+from collections.abc import Iterator
+from collections.abc import Sequence
+from typing import Self
 from typing import overload
-
-from typing_extensions import Self
 
 from compas._typing import Coordinates
 from compas._typing import CoordinatesType
@@ -59,12 +56,20 @@ class Polyline(Geometry):
 
     """
 
+    # ==========================================================================
+    # Data
+    # ==========================================================================
+
     @property
     def __data__(self) -> dict[str, list[list[float]]]:
         """The data representation of the polyline."""
         return {"points": [point.__data__ for point in self.points]}
 
-    def __init__(self, points: CoordinatesType, name: Optional[str] = None) -> None:
+    # ==========================================================================
+    # Dunder methods
+    # ==========================================================================
+
+    def __init__(self, points: CoordinatesType, name: str | None = None) -> None:
         super().__init__(name=name)
         self._points: list[Point] = []
         self.points = points
@@ -81,7 +86,7 @@ class Polyline(Geometry):
     @overload
     def __getitem__(self, key: slice) -> list[Point]: ...
 
-    def __getitem__(self, key: Union[int, slice]) -> Union[Point, list[Point]]:
+    def __getitem__(self, key: int | slice) -> Point | list[Point]:
         return self.points[key]
 
     def __setitem__(self, key: int, value: CoordinateType) -> None:
@@ -99,7 +104,7 @@ class Polyline(Geometry):
         return TOL.is_allclose(self, other)
 
     # ==========================================================================
-    # properties
+    # Properties
     # ==========================================================================
 
     @property
@@ -192,10 +197,6 @@ class Polyline(Geometry):
         return self.points[0] == self.points[-1]
 
     # ==========================================================================
-    # Constructors
-    # ==========================================================================
-
-    # ==========================================================================
     # Transformations
     # ==========================================================================
 
@@ -249,14 +250,7 @@ class Polyline(Geometry):
         """
         self.points.insert(i, Point(point[0], point[1], point[2]))
 
-    def _parameterization_data(self) -> tuple[list[Line], float]:
-        lines = self.lines
-        length = sum(line.length for line in lines)
-        if length == 0.0:
-            raise ValueError("A zero-length polyline has no parameterization.")
-        return lines, length
-
-    def point_at(self, t: float, snap: bool = False) -> Optional[Point]:
+    def point_at(self, t: float, snap: bool = False) -> Point | None:
         """Point on the polyline at a specific normalized parameter.
 
         Parameters
@@ -268,7 +262,7 @@ class Polyline(Geometry):
 
         Returns
         -------
-        Optional[Point]
+        Point | None
             The point on the polyline, or `None` if `t` is outside `[0, 1]`.
 
         Raises
@@ -309,7 +303,7 @@ class Polyline(Geometry):
             x += dx
         return points[-1]
 
-    def parameter_at(self, point: CoordinateType, tol: Optional[float] = None) -> float:
+    def parameter_at(self, point: CoordinateType, tol: float | None = None) -> float:
         """Parameter of the polyline at a specific point.
 
         Parameters
@@ -351,7 +345,7 @@ class Polyline(Geometry):
             break
         return dx / polyline_length
 
-    def tangent_at(self, t: float) -> Optional[Vector]:
+    def tangent_at(self, t: float) -> Vector | None:
         """Tangent vector at a specific normalized parameter.
 
         Parameters
@@ -361,7 +355,7 @@ class Polyline(Geometry):
 
         Returns
         -------
-        Optional[Vector]
+        Vector | None
             The tangent vector, or `None` if `t` is outside `[0, 1]`.
 
         Raises
@@ -526,7 +520,7 @@ class Polyline(Geometry):
         segment_length = self.length / num_segments
         return self.divide_by_length(segment_length, False)
 
-    def divide_by_length(self, length: float, strict: bool = True, tol: Optional[float] = None) -> list[Point]:
+    def divide_by_length(self, length: float, strict: bool = True, tol: float | None = None) -> list[Point]:
         """Divide a polyline in segments of a given length.
 
         Parameters
@@ -690,7 +684,7 @@ class Polyline(Geometry):
         segment_length = total_length / num_segments
         return self.split_by_length(segment_length, False)
 
-    def extend(self, length: Union[float, Sequence[float]]) -> None:
+    def extend(self, length: float | Sequence[float]) -> None:
         """Extend the polyline tangentially at one or both ends.
 
         Parameters
@@ -707,7 +701,7 @@ class Polyline(Geometry):
             end = length
         self.points[-1] = self.points[-1] + self.lines[-1].vector.unitized().scaled(end)
 
-    def extended(self, length: Union[float, Sequence[float]]) -> Self:
+    def extended(self, length: float | Sequence[float]) -> Self:
         """Return an extended copy of the polyline.
 
         Parameters
@@ -726,7 +720,7 @@ class Polyline(Geometry):
         polyline.extend(length)
         return polyline
 
-    def shorten(self, length: Union[float, Sequence[float]]) -> None:
+    def shorten(self, length: float | Sequence[float]) -> None:
         """Shorten the polyline at one or both ends.
 
         Parameters
@@ -769,7 +763,7 @@ class Polyline(Geometry):
                 self.points[-1] = line.start + line.vector.unitized().scaled(total_length - end)
                 break
 
-    def shortened(self, length: Union[float, Sequence[float]]) -> Self:
+    def shortened(self, length: float | Sequence[float]) -> Self:
         """Return a shortened copy of the polyline.
 
         Parameters
@@ -787,3 +781,14 @@ class Polyline(Geometry):
         polyline = self.copy()
         polyline.shorten(length)
         return polyline
+
+    # ==========================================================================
+    # Private helpers
+    # ==========================================================================
+
+    def _parameterization_data(self) -> tuple[list[Line], float]:
+        lines = self.lines
+        length = sum(line.length for line in lines)
+        if length == 0.0:
+            raise ValueError("A zero-length polyline has no parameterization.")
+        return lines, length

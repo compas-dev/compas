@@ -3,9 +3,7 @@ from math import pi
 from math import sin
 from math import sqrt
 from typing import Any
-from typing import Optional
-
-from typing_extensions import Self
+from typing import Self
 
 from compas._typing import CoordinateType
 from compas.geometry import Circle
@@ -72,12 +70,12 @@ class ConicalSurface(Surface):
         self,
         radius: float,
         height: float,
-        frame: Optional[Frame] = None,
-        name: Optional[str] = None,
+        frame: Frame | None = None,
+        name: str | None = None,
     ) -> None:
         super().__init__(frame=frame, name=name)
-        self._radius: Optional[float] = None
-        self._height: Optional[float] = None
+        self._radius: float | None = None
+        self._height: float | None = None
         self.radius = radius
         self.height = height
 
@@ -126,6 +124,7 @@ class ConicalSurface(Surface):
         if radius <= 0:
             raise ValueError("The radius of a cone should be larger than zero.")
         self._radius = float(radius)
+        self._invalidate_discretization()
 
     @property
     def height(self) -> float:
@@ -139,16 +138,15 @@ class ConicalSurface(Surface):
         if height <= 0:
             raise ValueError("The height of a cone should be larger than zero.")
         self._height = float(height)
+        self._invalidate_discretization()
 
-    @property
     def area(self) -> float:
-        """The lateral area of the cone, excluding its circular base."""
+        """Compute the lateral area of the cone, excluding its circular base."""
         slant_height = sqrt(self.radius**2 + self.height**2)
         return pi * self.radius * slant_height
 
-    @property
     def volume(self) -> float:
-        """The volume of the corresponding cone with a circular base."""
+        """Compute the volume of the corresponding cone with a circular base."""
         return pi * self.radius**2 * self.height / 3.0
 
     @property
@@ -180,14 +178,6 @@ class ConicalSurface(Surface):
 
         """
         return cls(radius=radius, height=height, frame=Frame.from_plane(plane))
-
-    # =============================================================================
-    # Conversions
-    # =============================================================================
-
-    # =============================================================================
-    # Transformations
-    # =============================================================================
 
     # =============================================================================
     # Methods

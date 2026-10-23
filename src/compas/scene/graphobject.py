@@ -1,8 +1,11 @@
-from typing import Union  # noqa: F401
+from collections.abc import Hashable
+from collections.abc import Mapping
+from typing import Any
+from typing import cast
 
-import compas.colors  # noqa: F401
-import compas.datastructures  # noqa: F401
-import compas.geometry  # noqa: F401
+from compas.colors import Color
+from compas.colors.color import ColorInput
+from compas.datastructures import Graph
 from compas.geometry import transform_points
 
 from .descriptors.colordict import ColorDictAttribute
@@ -12,54 +15,33 @@ from .sceneobject import SceneObject
 class GraphObject(SceneObject):
     """Scene object for drawing graph data structures.
 
-    Parameters
-    ----------
-    graph : :class:`compas.datastructures.Graph`
-        A COMPAS graph.
-
-    Attributes
-    ----------
-    graph : :class:`compas.datastructures.Graph`
-        The COMPAS graph associated with the scene object.
-    node_xyz : dict[hashable, list[float]]
-        Mapping between nodes and their view coordinates.
-        The default view coordinates are the actual coordinates of the nodes of the graph.
-    show_nodes : Union[bool, sequence[hashable]]
-        Flag for showing or hiding the nodes. Default is ``True``.
-    show_edges : Union[bool, sequence[tuple[hashable, hashable]]]
-        Flag for showing or hiding the edges. Default is ``True``.
-    nodecolor : :class:`compas.colors.ColorDict`
-        Mapping between nodes and RGB color values.
-    edgecolor : :class:`compas.colors.ColorDict`
-        Mapping between edges and colors.
-    nodesize : float
-        The size of the nodes. Default is ``1.0``.
-    edgewidth : float
-        The width of the edges. Default is ``1.0``.
-
     See Also
     --------
-    :class:`compas.scene.MeshObject`
-    :class:`compas.scene.VolMeshObject`
+    [`MeshObject`][compas.scene.MeshObject]
+    [`VolMeshObject`][compas.scene.VolMeshObject]
 
     """
 
     nodecolor = ColorDictAttribute()
     edgecolor = ColorDictAttribute()
 
+    # ==========================================================================
+    # Dunder methods
+    # ==========================================================================
+
     def __init__(
         self,
-        show_nodes=True,  # type: Union[bool, list]
-        show_edges=True,  # type: Union[bool, list]
-        nodecolor=None,  # type: Union[dict, compas.colors.Color, None]
-        edgecolor=None,  # type: Union[dict, compas.colors.Color, None]
-        nodesize=1.0,  # type: float
-        edgewidth=1.0,  # type: float
-        **kwargs  # type: dict
-    ):  # fmt: skip
-        # type: (...) -> None
-        super(GraphObject, self).__init__(**kwargs)  # type: ignore
-        self._node_xyz = None
+        show_nodes: bool | list[Hashable] = True,
+        show_edges: bool | list[tuple[Hashable, Hashable]] = True,
+        nodecolor: Mapping[Any, ColorInput] | Color | None = None,
+        edgecolor: Mapping[Any, ColorInput] | Color | None = None,
+        nodesize: float = 1.0,
+        edgewidth: float = 1.0,
+        **kwargs: Any,
+    ) -> None:
+        super().__init__(**kwargs)
+        self._node_xyz: dict[Hashable, list[float]] | None = None
+        self._node_xyz_revision: tuple[int, ...] | None = None
         self.show_nodes = show_nodes
         self.show_edges = show_edges
         self.nodecolor = nodecolor or self.color
@@ -67,10 +49,14 @@ class GraphObject(SceneObject):
         self.nodesize = nodesize
         self.edgewidth = edgewidth
 
+    # ==========================================================================
+    # Properties
+    # ==========================================================================
+
     @property
-    def settings(self):
-        # type: () -> dict
-        settings = super(GraphObject, self).settings
+    def settings(self) -> dict[str, object]:
+        """The settings required to reconstruct the graph scene object."""
+        settings = super().settings
         settings["show_nodes"] = self.show_nodes
         settings["show_edges"] = self.show_edges
         settings["nodecolor"] = self.nodecolor
@@ -80,44 +66,51 @@ class GraphObject(SceneObject):
         return settings
 
     @property
-    def graph(self):
-        # type: () -> compas.datastructures.Graph
-        return self.item  # type: ignore
+    def graph(self) -> Graph:
+        """The graph represented by this scene object.
+
+        Setting the graph clears the local transformation and cached node
+        coordinates.
+
+        """
+        return cast(Graph, self.item)
 
     @graph.setter
-    def graph(self, graph):
-        # type: (compas.datastructures.Graph) -> None
+    def graph(self, graph: Graph) -> None:
         self._item = graph
         self._transformation = None
         self._node_xyz = None
+        self._node_xyz_revision = None
 
     @property
-    def transformation(self):
-        # type: () -> Union[compas.geometry.Transformation, None]
-        return self._transformation
+    def node_xyz(self) -> dict[Hashable, list[float]]:
+        """The node coordinates in the scene object's world coordinate system.
 
-    @transformation.setter
-    def transformation(self, transformation):
-        # type: (compas.geometry.Transformation) -> None
-        self._node_xyz = None
-        self._transformation = transformation
+        Notes
+        -----
+        Coordinates computed from the graph are cached until the local or an
+        ancestor transformation changes. Explicitly assigned coordinates are
+        used as-is until the local transformation or graph changes.
 
-    @property
-    def node_xyz(self):
-        # type: () -> dict[Union[int, str], list[float]]
-        if self.graph:
-            if self._node_xyz is None:
-                points = self.graph.nodes_attributes("xyz")
-                points = transform_points(points, self.worldtransformation)
-                self._node_xyz = dict(zip(self.graph.nodes(), points))
-        return self._node_xyz  # type: ignore
+        """
+        revision = self._worldtransformation_revision()
+        if self._node_xyz is None or (self._node_xyz_revision is not None and self._node_xyz_revision != revision):
+            points = self.graph.nodes_attributes("xyz")
+            points = transform_points(points, self.worldtransformation)
+            self._node_xyz = dict(zip(self.graph.nodes(), points))
+            self._node_xyz_revision = revision
+        return self._node_xyz
 
     @node_xyz.setter
-    def node_xyz(self, node_xyz):
-        # type: (dict[Union[int, str], list[float]]) -> None
+    def node_xyz(self, node_xyz: dict[Hashable, list[float]]) -> None:
         self._node_xyz = node_xyz
+        self._node_xyz_revision = None
 
-    def draw_nodes(self):
+    # ==========================================================================
+    # Methods
+    # ==========================================================================
+
+    def draw_nodes(self) -> list[object]:
         """Draw the nodes of the graph.
 
         Nodes are drawn based on the values of
@@ -128,13 +121,13 @@ class GraphObject(SceneObject):
 
         Returns
         -------
-        list
+        list[object]
             The identifiers of the objects representing the nodes in the visualization context.
 
         """
         raise NotImplementedError
 
-    def draw_edges(self):
+    def draw_edges(self) -> list[object]:
         """Draw the edges of the graph.
 
         Edges are drawn based on the values of
@@ -145,39 +138,29 @@ class GraphObject(SceneObject):
 
         Returns
         -------
-        list
+        list[object]
             The identifiers of the objects representing the edges in the visualization context.
 
         """
         raise NotImplementedError
 
-    def clear_nodes(self):
-        """Clear the nodes of the graph.
-
-        Returns
-        -------
-        None
-
-        """
+    def clear_nodes(self) -> None:
+        """Clear the nodes of the graph."""
         raise NotImplementedError
 
-    def clear_edges(self):
-        """Clear the edges of the graph.
-
-        Returns
-        -------
-        None
-
-        """
+    def clear_edges(self) -> None:
+        """Clear the edges of the graph."""
         raise NotImplementedError
 
-    def clear(self):
-        """Clear the nodes and the edges of the graph.
-
-        Returns
-        -------
-        None
-
-        """
+    def clear(self) -> None:
+        """Clear the nodes and edges of the graph."""
         self.clear_nodes()
         self.clear_edges()
+
+    # ==========================================================================
+    # Private helpers
+    # ==========================================================================
+
+    def _invalidate_transformation_cache(self) -> None:
+        self._node_xyz = None
+        self._node_xyz_revision = None

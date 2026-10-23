@@ -5,6 +5,7 @@ import xml.etree.ElementTree as ET
 
 import pytest
 
+from compas import _iotools
 from compas.files import parse_xml
 from compas.files import read_xml
 from compas.files import write_xml
@@ -39,7 +40,9 @@ def test_read_xml_from_file(basic_file):
     assert root.tag == "Tests"
 
 
-def test_read_xml_from_url(basic_file_url):
+def test_read_xml_from_url(basic_file_url, basic_xml, monkeypatch):
+    monkeypatch.setattr(_iotools, "urlopen", lambda url: BytesIO(basic_xml.encode("utf-8")))
+
     root = read_xml(basic_file_url)
 
     assert root.tag == "Tests"

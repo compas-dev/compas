@@ -3,8 +3,6 @@
 from copy import deepcopy
 from dataclasses import dataclass
 from typing import Any
-from typing import Optional
-from typing import Union
 from typing import cast
 
 from compas import _iotools
@@ -28,7 +26,7 @@ class PLYData:
     faces: list[list[int]]
 
 
-def _scalar(record: dict[str, PLYValue], name: str) -> Union[int, float]:
+def _scalar(record: dict[str, PLYValue], name: str) -> int | float:
     value = record[name]
     if isinstance(value, list):
         raise TypeError(f"PLY property is not scalar: {name}")
@@ -74,10 +72,7 @@ def ply_data(document: PLYDocument) -> PLYData:
     vertices = []
     if vertex_element:
         try:
-            vertices = [
-                [float(_scalar(record, "x")), float(_scalar(record, "y")), float(_scalar(record, "z"))]
-                for record in vertex_element.data
-            ]
+            vertices = [[float(_scalar(record, "x")), float(_scalar(record, "y")), float(_scalar(record, "z"))] for record in vertex_element.data]
         except (KeyError, TypeError) as error:
             raise ValueError("PLY vertex elements require scalar x, y, and z properties.") from error
 
@@ -85,19 +80,15 @@ def ply_data(document: PLYDocument) -> PLYData:
     if face_element:
         prop = next((prop for prop in face_element.properties if prop.name in ("vertex_indices", "vertex_index")), None)
         if prop:
-            faces = [[int(value) for value in cast(list[Union[int, float]], record[prop.name])] for record in face_element.data]
+            faces = [[int(value) for value in cast(list[int | float], record[prop.name])] for record in face_element.data]
 
     edges = []
     if edge_element:
         for record in edge_element.data:
-            names = (
-                ("vertex1", "vertex2")
-                if "vertex1" in record and "vertex2" in record
-                else ("vertex_index1", "vertex_index2")
-            )
+            names = ("vertex1", "vertex2") if "vertex1" in record and "vertex2" in record else ("vertex_index1", "vertex_index2")
             if names[0] in record and names[1] in record:
-                start = cast(Union[int, float], record[names[0]])
-                end = cast(Union[int, float], record[names[1]])
+                start = cast(int | float, record[names[0]])
+                end = cast(int | float, record[names[1]])
                 edges.append((int(start), int(end)))
 
     vertex_count = len(vertices)
@@ -111,11 +102,11 @@ def ply_data(document: PLYDocument) -> PLYData:
 def write_ply(
     target: _iotools.IOTarget,
     data: Any,
-    precision: Optional[Union[int, str]] = None,
-    format: Optional[PLYFormat] = None,
-    author: Optional[str] = None,
-    email: Optional[str] = None,
-    date: Optional[str] = None,
+    precision: int | str | None = None,
+    format: PLYFormat | None = None,
+    author: str | None = None,
+    email: str | None = None,
+    date: str | None = None,
 ) -> None:
     """Write a PLY document or mesh.
 

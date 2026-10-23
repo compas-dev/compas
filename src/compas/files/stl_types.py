@@ -3,4 +3,3 @@
 from typing import Literal
 
 STLFormat = Literal["ascii", "binary"]
-

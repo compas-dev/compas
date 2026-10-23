@@ -4,18 +4,8 @@ Notes
 -----
 The following design considerations should be addressed in a future revision:
 
-* Enforce tree ownership consistently. A root node already assigned to another
-  tree currently has no parent and can therefore be added to a second tree.
-* Prevent cycles by rejecting attempts to add a node to itself or to one of its
-  descendants.
-* Prevent implicit reparenting. Adding a child to a second parent currently leaves
-  it in the first parent's children while changing its parent reference.
-* Avoid exposing the mutable internal children list, because direct mutations
-  bypass parent and tree bookkeeping.
 * Consider using one authoritative mutation API instead of overlapping operations
   on both ``Tree`` and ``TreeNode``.
-* Preserve specialized ``TreeNode`` subclasses during deserialization instead of
-  always reconstructing plain ``TreeNode`` instances.
 * Detect duplicate keys produced by custom key mappers in ``Tree.to_graph`` rather
   than silently merging nodes.
 * Clarify and test the intended behavior of detached subtrees. Descendants remain
@@ -24,15 +14,17 @@ The following design considerations should be addressed in a future revision:
 """
 
 from collections import deque
+from collections.abc import Callable
+from collections.abc import Hashable
+from collections.abc import Iterator
+from collections.abc import Sequence
 from typing import TYPE_CHECKING
 from typing import Any
-from typing import Callable
-from typing import Hashable
-from typing import Iterator
+from typing import Generic
 from typing import Literal
-from typing import Optional
-
-from typing_extensions import Self
+from typing import Self
+from typing import TypeVar
+from typing import cast
 
 from compas.data import Data
 from compas.datastructures import Datastructure
@@ -43,9 +35,10 @@ if TYPE_CHECKING:
 
 TraversalStrategy = Literal["depthfirst", "breadthfirst"]
 TraversalOrder = Literal["preorder", "postorder"]
+NodeT = TypeVar("NodeT", bound="TreeNode[Any]")
 
 
-class TreeNode(Data):
+class TreeNode(Data, Generic[NodeT]):
     """A node of a tree data structure.
 
     Parameters
@@ -74,6 +67,10 @@ class TreeNode(Data):
 
     """
 
+    # =============================================================================
+    # Data
+    # =============================================================================
+
     @property
     def __data__(self) -> dict[str, Any]:
         data: dict[str, Any] = {}
@@ -93,20 +90,28 @@ class TreeNode(Data):
 
         node = cls(name=name, **attributes)
         for child in children:
-            node.add(cls.__from_data__(child))
+            node.add(cast(NodeT, cls.__from_data__(child)))
         return node
 
-    def __init__(self, name: Optional[str] = None, **kwargs: Any) -> None:
+    # =============================================================================
+    # Dunder methods
+    # =============================================================================
+
+    def __init__(self, name: str | None = None, **kwargs: Any) -> None:
         super().__init__(name=name)
         self.attributes = kwargs
-        self._parent: Optional[TreeNode] = None
-        self._children: list[TreeNode] = []
-        self._tree: Optional[Tree] = None
+        self._parent: NodeT | None = None
+        self._children: list[NodeT] = []
+        self._tree: Tree[NodeT] | None = None
 
     def __repr__(self) -> str:
         if self._name:
             return "<TreeNode: {}>".format(self._name)
         return "<TreeNode>"
+
+    # =============================================================================
+    # Properties
+    # =============================================================================
 
     @property
     def is_root(self) -> bool:
@@ -121,32 +126,37 @@ class TreeNode(Data):
         return not self.is_root and not self.is_leaf
 
     @property
-    def parent(self) -> Optional["TreeNode"]:
+    def parent(self) -> NodeT | None:
         return self._parent
 
     @property
-    def children(self) -> list["TreeNode"]:
-        return self._children
+    def children(self) -> Sequence[NodeT]:
+        return tuple(self._children)
 
     @property
-    def tree(self) -> Optional["Tree"]:
+    def tree(self) -> "Tree[NodeT] | None":
         if self.is_root:
             return self._tree
         if self.parent:
             return self.parent.tree
         return None
 
-    def add(self, node: "TreeNode") -> None:
+    # =============================================================================
+    # Methods
+    # =============================================================================
+
+    def add(self, item: NodeT) -> NodeT:
         """Add a child node to this node.
 
         Parameters
         ----------
-        node
+        item
             The node to add.
 
         Returns
         -------
-        None
+        NodeT
+            The added node.
 
         Raises
         ------
@@ -154,13 +164,9 @@ class TreeNode(Data):
             If the node is not a TreeNode object.
 
         """
-        if not isinstance(node, TreeNode):
-            raise TypeError("The node is not a TreeNode object.")
-        if node not in self._children:
-            self._children.append(node)
-        node._parent = self
+        return self._add_child(item)
 
-    def remove(self, node: "TreeNode") -> None:
+    def remove(self, node: NodeT) -> None:
         """Remove a child node from this node.
 
         Parameters
@@ -177,14 +183,14 @@ class TreeNode(Data):
         node._parent = None
 
     @property
-    def ancestors(self) -> Iterator["TreeNode"]:
+    def ancestors(self) -> Iterator[NodeT]:
         this = self
         while this.parent:
             yield this.parent
             this = this.parent
 
     @property
-    def descendants(self) -> Iterator["TreeNode"]:
+    def descendants(self) -> Iterator[NodeT]:
         for child in self.children:
             yield child
             for descendant in child.descendants:
@@ -194,7 +200,7 @@ class TreeNode(Data):
         self,
         strategy: TraversalStrategy = "depthfirst",
         order: TraversalOrder = "preorder",
-    ) -> Iterator["TreeNode"]:
+    ) -> Iterator[NodeT]:
         """Traverse the tree from this node.
 
         Parameters
@@ -218,7 +224,7 @@ class TreeNode(Data):
         """
         if strategy == "depthfirst":
             if order == "preorder":
-                yield self
+                yield cast(NodeT, self)
                 for child in self.children:
                     for node in child.traverse(strategy, order):
                         yield node
@@ -226,20 +232,39 @@ class TreeNode(Data):
                 for child in self.children:
                     for node in child.traverse(strategy, order):
                         yield node
-                yield self
+                yield cast(NodeT, self)
             else:
                 raise ValueError("Unknown traversal order: {}".format(order))
         elif strategy == "breadthfirst":
-            queue: deque[TreeNode] = deque([self])
+            queue: deque[TreeNode[Any]] = deque([self])
             while queue:
                 node = queue.popleft()
-                yield node
+                yield cast(NodeT, node)
                 queue.extend(node.children)
         else:
             raise ValueError("Unknown traversal strategy: {}".format(strategy))
 
+    # =============================================================================
+    # Private helpers
+    # =============================================================================
 
-class Tree(Datastructure):
+    def _add_child(self, node: NodeT) -> NodeT:
+        if not isinstance(node, TreeNode):
+            raise TypeError("The node is not a TreeNode object.")
+        if node is self or self in node.descendants:
+            raise ValueError("Adding the node would create a cycle.")
+        if node.parent is not None and node.parent is not self:
+            raise ValueError("The node already has a parent, remove it from that parent first.")
+        if node.tree is not None and node.tree is not self.tree:
+            raise ValueError("The node is already part of another tree.")
+        if node in self._children:
+            return node
+        self._children.append(node)
+        node._parent = self
+        return node
+
+
+class Tree(Datastructure, Generic[NodeT]):
     """A hierarchical data structure that organizes elements into parent-child relationships.
     The tree starts from a unique root node, and every node (excluding the root) has exactly one parent.
 
@@ -267,10 +292,10 @@ class Tree(Datastructure):
     >>> branch = TreeNode("branch")
     >>> leaf1 = TreeNode("leaf1")
     >>> leaf2 = TreeNode("leaf2")
-    >>> tree.add(root)
-    >>> root.add(branch)
-    >>> branch.add(leaf1)
-    >>> branch.add(leaf2)
+    >>> _ = tree.add(root)
+    >>> _ = root.add(branch)
+    >>> _ = branch.add(leaf1)
+    >>> _ = branch.add(leaf2)
     >>> print(tree)
     <Tree with 4 nodes>
         └── <TreeNode: root>
@@ -279,6 +304,12 @@ class Tree(Datastructure):
                 └── <TreeNode: leaf2>
 
     """
+
+    node_type: type[TreeNode[Any]] = TreeNode
+
+    # =============================================================================
+    # Data
+    # =============================================================================
 
     @property
     def __data__(self) -> dict[str, Any]:
@@ -292,22 +323,46 @@ class Tree(Datastructure):
         tree = cls()
         tree.attributes.update(data["attributes"] or {})
         if data["root"] is not None:
-            root = TreeNode.__from_data__(data["root"])
+            root = cast(NodeT, cls.node_type.__from_data__(data["root"]))
             tree.add(root)
         return tree
 
-    def __init__(self, name: Optional[str] = None, **kwargs: Any) -> None:
+    # =============================================================================
+    # Dunder methods
+    # =============================================================================
+
+    def __init__(self, name: str | None = None, **kwargs: Any) -> None:
         super().__init__(kwargs, name=name)
-        self._root: Optional[TreeNode] = None
+        self._root: NodeT | None = None
 
     def __str__(self) -> str:
         return "<Tree with {} nodes>\n{}".format(len(list(self.nodes)), self.get_hierarchy_string(max_depth=3))
 
+    # =============================================================================
+    # Properties
+    # =============================================================================
+
     @property
-    def root(self) -> Optional[TreeNode]:
+    def root(self) -> NodeT | None:
         return self._root
 
-    def add(self, node: TreeNode, parent: Optional[TreeNode] = None) -> None:
+    @property
+    def nodes(self) -> Iterator[NodeT]:
+        if self.root:
+            for node in self.root.traverse():
+                yield node
+
+    @property
+    def leaves(self) -> Iterator[NodeT]:
+        for node in self.nodes:
+            if node.is_leaf:
+                yield node
+
+    # =============================================================================
+    # Methods
+    # =============================================================================
+
+    def add(self, node: NodeT, parent: NodeT | None = None) -> None:
         """Add a node to the tree.
 
         Parameters
@@ -336,6 +391,9 @@ class Tree(Datastructure):
         if not isinstance(node, TreeNode):
             raise TypeError("The node is not a TreeNode object.")
 
+        if node.tree is not None and node.tree is not self:
+            raise ValueError("The node is already part of another tree.")
+
         if node.parent:
             raise ValueError("The node already has a parent, remove it from that parent first.")
 
@@ -355,15 +413,9 @@ class Tree(Datastructure):
             if parent.tree is not self:
                 raise ValueError("The parent node is not part of this tree.")
 
-            parent.add(node)
+            parent._add_child(node)
 
-    @property
-    def nodes(self) -> Iterator[TreeNode]:
-        if self.root:
-            for node in self.root.traverse():
-                yield node
-
-    def remove(self, node: TreeNode) -> None:
+    def remove(self, node: NodeT) -> None:
         """Remove a node from the tree.
 
         Parameters
@@ -382,17 +434,11 @@ class Tree(Datastructure):
         elif node.parent:
             node.parent.remove(node)
 
-    @property
-    def leaves(self) -> Iterator[TreeNode]:
-        for node in self.nodes:
-            if node.is_leaf:
-                yield node
-
     def traverse(
         self,
         strategy: TraversalStrategy = "depthfirst",
         order: TraversalOrder = "preorder",
-    ) -> Iterator[TreeNode]:
+    ) -> Iterator[NodeT]:
         """Traverse the tree from the root node.
 
         Parameters
@@ -418,7 +464,7 @@ class Tree(Datastructure):
             for node in self.root.traverse(strategy=strategy, order=order):
                 yield node
 
-    def get_node_by_name(self, name: str) -> Optional[TreeNode]:
+    def get_node_by_name(self, name: str) -> NodeT | None:
         """Get a node by its name.
 
         Parameters
@@ -436,7 +482,7 @@ class Tree(Datastructure):
             if node.name == name:
                 return node
 
-    def get_nodes_by_name(self, name: str) -> list[TreeNode]:
+    def get_nodes_by_name(self, name: str) -> list[NodeT]:
         """Get all nodes by their name.
 
         Parameters
@@ -456,7 +502,7 @@ class Tree(Datastructure):
                 nodes.append(node)
         return nodes
 
-    def get_hierarchy_string(self, max_depth: Optional[int] = None) -> str:
+    def get_hierarchy_string(self, max_depth: int | None = None) -> str:
         """Return a string representation of the tree hierarchy.
 
         Parameters
@@ -475,7 +521,7 @@ class Tree(Datastructure):
         hierarchy = []
 
         def traverse(
-            node: TreeNode,
+            node: NodeT,
             hierarchy: list[str],
             prefix: str = "",
             last: bool = True,
@@ -495,7 +541,11 @@ class Tree(Datastructure):
 
         return "\n".join(hierarchy)
 
-    def to_graph(self, key_mapper: Optional[Callable[[TreeNode], Hashable]] = None) -> "Graph":
+    # =============================================================================
+    # Conversions
+    # =============================================================================
+
+    def to_graph(self, key_mapper: Callable[[NodeT], Hashable] | None = None) -> "Graph":
         """Convert the tree to a graph.
 
         Parameters

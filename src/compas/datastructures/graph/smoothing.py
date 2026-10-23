@@ -1,8 +1,7 @@
+from collections.abc import Callable
+from collections.abc import Iterable
 from typing import TYPE_CHECKING
 from typing import Any
-from typing import Callable
-from typing import Iterable
-from typing import Optional
 
 from compas.geometry import centroid_points
 
@@ -14,10 +13,10 @@ if TYPE_CHECKING:
 
 def graph_smooth_centroid(
     graph: "Graph",
-    fixed: Optional[Iterable[Node]] = None,
+    fixed: Iterable[Node] | None = None,
     kmax: int = 100,
     damping: float = 0.5,
-    callback: Optional[Callable[[int, Any], None]] = None,
+    callback: Callable[[int, Any], None] | None = None,
     callback_args: Any = None,
 ) -> None:
     """Smooth a graph by moving every free node to the centroid of its neighbors.

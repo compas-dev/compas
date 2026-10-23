@@ -1,7 +1,5 @@
 from typing import TYPE_CHECKING
 from typing import Generic
-from typing import Optional
-from typing import Type
 from typing import TypeVar
 
 from compas.geometry import Plane
@@ -18,7 +16,7 @@ if TYPE_CHECKING:
 MeshType = TypeVar("MeshType", bound="Mesh")
 
 
-def mesh_slice_plane(mesh: MeshType, plane: Plane) -> Optional[tuple[MeshType, MeshType]]:
+def mesh_slice_plane(mesh: MeshType, plane: Plane) -> tuple[MeshType, MeshType] | None:
     """Slice a mesh with a plane and construct the resulting submeshes.
 
     Parameters
@@ -66,14 +64,22 @@ def mesh_slice_plane(mesh: MeshType, plane: Plane) -> Optional[tuple[MeshType, M
 
 
 class IntersectionMeshPlane(Generic[MeshType]):
+    # =============================================================================
+    # Dunder methods
+    # =============================================================================
+
     def __init__(self, mesh: MeshType, plane: Plane):
         self.mesh = mesh
         self.plane = plane
         self._intersections: list[Vertex] = []
         self.intersect()
 
+    # =============================================================================
+    # Properties
+    # =============================================================================
+
     @property
-    def meshtype(self) -> Type[MeshType]:
+    def meshtype(self) -> type[MeshType]:
         return type(self.mesh)
 
     @property
@@ -101,7 +107,7 @@ class IntersectionMeshPlane(Generic[MeshType]):
         return self.mesh.is_closed()
 
     @property
-    def positive(self) -> Optional[MeshType]:
+    def positive(self) -> MeshType | None:
         if self.is_none:
             return
         vertices = []
@@ -119,19 +125,8 @@ class IntersectionMeshPlane(Generic[MeshType]):
             mesh.add_face(mesh.vertices_on_boundary())
         return mesh
 
-    def is_positive(self, key: Vertex) -> bool:
-        o = self.plane.point
-        n = self.plane.normal
-        if key not in self.intersections:
-            a = self.mesh.vertex_attributes(key, "xyz")
-            oa = subtract_vectors(a, o)
-            similarity = dot_vectors(n, oa)
-            if similarity > 0.0:
-                return True
-        return False
-
     @property
-    def negative(self) -> Optional[MeshType]:
+    def negative(self) -> MeshType | None:
         if self.is_none:
             return
         vertices = []
@@ -149,6 +144,21 @@ class IntersectionMeshPlane(Generic[MeshType]):
             mesh.add_face(mesh.vertices_on_boundary())
         return mesh
 
+    # =============================================================================
+    # Methods
+    # =============================================================================
+
+    def is_positive(self, key: Vertex) -> bool:
+        o = self.plane.point
+        n = self.plane.normal
+        if key not in self.intersections:
+            a = self.mesh.vertex_attributes(key, "xyz")
+            oa = subtract_vectors(a, o)
+            similarity = dot_vectors(n, oa)
+            if similarity > 0.0:
+                return True
+        return False
+
     def is_negative(self, key: Vertex) -> bool:
         o = self.plane.point
         n = self.plane.normal
@@ -165,9 +175,10 @@ class IntersectionMeshPlane(Generic[MeshType]):
         for u, v in list(self.mesh.edges()):
             a = self.mesh.vertex_attributes(u, "xyz")
             b = self.mesh.vertex_attributes(v, "xyz")
-            x = intersection_segment_plane((a, b), self.plane)
-            if not x:
+            result = intersection_segment_plane((a, b), self.plane)
+            if not result:
                 continue
+            x = result[0]
             if any([i != j for i, j in zip(x, a)]) and any([i != j for i, j in zip(x, b)]):
                 L_ax = length_vector(subtract_vectors(x, a))
                 L_ab = length_vector(subtract_vectors(b, a))

@@ -1,9 +1,30 @@
+from collections.abc import Sequence
+from typing import TYPE_CHECKING
+from typing import Any
+from typing import Literal
+from typing import Self
+
 from compas.data import Data
 from compas.geometry import Polygon
 
+if TYPE_CHECKING:
+    from compas.geometry import Brep
+    from compas.geometry import BrepEdge
+    from compas.geometry import BrepLoop
+    from compas.geometry import BrepVertex
+    from compas.geometry import Cone
+    from compas.geometry import Cylinder
+    from compas.geometry import Frame
+    from compas.geometry import NurbsSurface
+    from compas.geometry import Plane
+    from compas.geometry import Point
+    from compas.geometry import Sphere
+    from compas.geometry import Surface
+    from compas.geometry import Torus
 
-class SurfaceType(object):
-    """Enumaration of surface types."""
+
+class SurfaceType:
+    """Geometric type of a Brep face surface."""
 
     PLANE = 0
     CYLINDER = 1
@@ -13,341 +34,354 @@ class SurfaceType(object):
     BEZIER_SURFACE = 5
     BSPLINE_SURFACE = 6
     SURFACE_OF_REVOLUTION = 7
-    SURFACE_OF_EXTRUSTION = 8
+    SURFACE_OF_EXTRUSION = 8
     OFFSET_SURFACE = 9
     OTHER_SURFACE = 10
 
 
 class BrepFace(Data):
-    """An interface for a Brep Face.
+    """Interface for a topological face of a boundary representation."""
 
-    Attributes
-    ----------
-    area : float, read-only
-        Returns the area of this face's geometry.
-    centroid : :class:`compas.geometry.Point`, read-only
-        Returns the centroid of this face's geometry.
-    edges : list[:class:`compas.geometry.BrepEdge`], read-only
-        Returns a list of the edges comprising this face.
-    is_bspline : bool, read-only
-        Returns True if this face is a bspline, False otherwise.
-    is_cone : bool, read-only
-        Returns True if this face is a cone, False otherwise.
-    is_cylinder : bool, read-only
-        Returns True if this face is a cylinder, False otherwise.
-    is_plane : bool, read-only
-        Returns True if this face is a plane, False otherwise.
-    is_sphere : bool, read-only
-        Returns True if this face is a sphere, False otherwise.
-    is_torus : bool, read-only
-        Returns True if this face is a torus, False otherwise.
-    is_reversed : bool, read-only
-        True if the orientation of this face is reversed, False otherwise.
-    is_valid : bool, read-only
-        Return True if this face is valid, False otherwise.
-    loops : list[:class:`compas.geometry.BrepLoop`], read-only
-        Returns a list of the loops comprising this face.
-    native_face : Any
-        The underlying face object. Type is backend-dependent.
-    nurbssurface : :class:`compas.geometry.NurbsSurface`, read-only
-        Returns the geometry of this face as a NURBS surface.
-    surface : :class:`compas.geometry.Surface`, read-only
-        Returns the geometry of this face as a surface.
-    type : literal(SurfaceType), read-only
-        Returns the surface type of this face. One of: PLANE, CYLINDER, CONE, SPHERE, TORUS, BEZIER_SURFACE,
-        BSPLINE_SURFACE, SURFACE_OF_REVOLUTION, SURFACE_OF_EXTRUSTION, OFFSET_SURFACE, OTHER_SURFACE.
-    vertices : list[:class:`compas.geometry.BrepVertex`], read-only
-        Returns a list of the vertices comprising this face.
-
-    """
-
-    # ==============================================================================
+    # ==========================================================================
     # Properties
-    # ==============================================================================
+    # ==========================================================================
 
     @property
-    def is_plane(self):
+    def is_plane(self) -> bool:
+        """Whether the face geometry is planar."""
         raise NotImplementedError
 
     @property
-    def is_cylinder(self):
+    def is_cylinder(self) -> bool:
+        """Whether the face geometry is cylindrical."""
         raise NotImplementedError
 
     @property
-    def is_sphere(self):
+    def is_sphere(self) -> bool:
+        """Whether the face geometry is spherical."""
         raise NotImplementedError
 
     @property
-    def is_torus(self):
+    def is_torus(self) -> bool:
+        """Whether the face geometry is toroidal."""
         raise NotImplementedError
 
     @property
-    def is_cone(self):
+    def is_cone(self) -> bool:
+        """Whether the face geometry is conical."""
         raise NotImplementedError
 
     @property
-    def is_bspline(self):
+    def is_bspline(self) -> bool:
+        """Whether the face geometry is a B-spline surface."""
         raise NotImplementedError
 
     @property
-    def vertices(self):
+    def vertices(self) -> list["BrepVertex"]:
+        """The vertices of the face."""
         raise NotImplementedError
 
     @property
-    def edges(self):
+    def edges(self) -> list["BrepEdge"]:
+        """The edges of the face."""
         raise NotImplementedError
 
     @property
-    def loops(self):
+    def loops(self) -> list["BrepLoop"]:
+        """The boundary loops of the face, with the outer loop first."""
         raise NotImplementedError
 
     @property
-    def surface(self):
+    def surface(self) -> "Surface | Plane | Cylinder | Cone | Sphere | Torus":
+        """The most specific supported geometry of the underlying surface."""
         raise NotImplementedError
 
     @property
-    def native_face(self):
+    def native_face(self) -> Any:
+        """The backend-specific face object."""
         raise NotImplementedError
 
     @property
-    def nurbssurface(self):
+    def nurbssurface(self) -> "NurbsSurface":
+        """The underlying surface represented as a NURBS surface."""
         raise NotImplementedError
 
     @property
-    def area(self):
+    def area(self) -> float:
+        """The surface area of the trimmed face."""
         raise NotImplementedError
 
     @property
-    def centroid(self):
+    def centroid(self) -> "Point":
+        """The centroid of the trimmed face."""
         raise NotImplementedError
 
     @property
-    def is_reversed(self):
+    def is_reversed(self) -> bool:
+        """Whether the face orientation is reversed from its surface."""
         raise NotImplementedError
 
     @property
-    def is_valid(self):
+    def is_valid(self) -> bool:
+        """Whether the face is valid according to the backend."""
         raise NotImplementedError
 
     @property
-    def type(self):
+    def type(self) -> Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]:
+        """The surface type as a `SurfaceType` value."""
         raise NotImplementedError
 
-    # ==============================================================================
+    # ==========================================================================
     # Constructors
-    # ==============================================================================
+    # ==========================================================================
 
     @classmethod
-    def from_plane(cls, plane):
-        """Construct a face from a plane geometry.
+    def from_plane(cls, plane: "Plane") -> Self:
+        """Construct a face from a plane.
 
         Parameters
         ----------
-        plane : :class:`compas.geometry.Plane`
+        plane
+            The plane.
 
         Returns
         -------
-        :class:`compas.geometry.BrepFace`
+        Self
+            The constructed face.
 
         """
         raise NotImplementedError
 
     @classmethod
-    def from_cylinder(cls):
-        """Construct a face from a cylinder geometry.
+    def from_cylinder(cls, cylinder: "Cylinder") -> Self:
+        """Construct a face from a cylinder.
 
         Parameters
         ----------
-        cylinder : :class:`compas.geometry.Cylinder`
+        cylinder
+            The cylinder.
 
         Returns
         -------
-        :class:`compas.geometry.BrepFace`
+        Self
+            The constructed face.
 
         """
         raise NotImplementedError
 
     @classmethod
-    def from_cone(cls, cone):
-        """Construct a face from a cone geometry.
+    def from_cone(cls, cone: "Cone") -> Self:
+        """Construct a face from a cone.
 
         Parameters
         ----------
-        cone : :class:`compas.geometry.Cone`
+        cone
+            The cone.
 
         Returns
         -------
-        :class:`compas.geometry.BrepFace`
+        Self
+            The constructed face.
 
         """
         raise NotImplementedError
 
     @classmethod
-    def from_sphere(cls, sphere):
-        """Construct a face from a sphere geometry.
+    def from_sphere(cls, sphere: "Sphere") -> Self:
+        """Construct a face from a sphere.
 
         Parameters
         ----------
-        sphere : :class:`compas.geometry.Sphere`
+        sphere
+            The sphere.
 
         Returns
         -------
-        :class:`compas.geometry.BrepFace`
+        Self
+            The constructed face.
 
         """
         raise NotImplementedError
 
     @classmethod
-    def from_torus(cls, torus):
-        """Construct a face from a torus geometry.
+    def from_torus(cls, torus: "Torus") -> Self:
+        """Construct a face from a torus.
 
         Parameters
         ----------
-        torus : :class:`compas.geometry.Torus`
+        torus
+            The torus.
 
         Returns
         -------
-        :class:`compas.geometry.BrepFace`
+        Self
+            The constructed face.
 
         """
         raise NotImplementedError
 
     @classmethod
-    def from_surface(cls, surface):
-        """Construct a face from a surfaces geometry.
+    def from_surface(cls, surface: "Surface") -> Self:
+        """Construct a face from a parametric surface.
 
         Parameters
         ----------
-        surface : :class:`compas.geometry.Surface`
+        surface
+            The surface.
 
         Returns
         -------
-        :class:`compas.geometry.BrepFace`
+        Self
+            The constructed face.
 
         """
         raise NotImplementedError
 
-    # ==============================================================================
+    # ==========================================================================
     # Conversions
-    # ==============================================================================
+    # ==========================================================================
 
-    def to_polygon(self):
-        """Convert the face to a polygon without underlying geometry.
+    def to_polygon(self) -> Polygon:
+        """Convert the outer boundary to a polygon.
 
         Returns
         -------
-        :class:`~compas.geometry.Polygon`
+        Polygon
+            The polygon formed by the vertices of the first loop. Inner loops
+            are not included.
 
         """
-        points = []
-        for vertex in self.loops[0].vertices:
-            points.append(vertex.point)
-        return Polygon(points)
+        return Polygon([vertex.point for vertex in self.loops[0].vertices])
 
-    # ==============================================================================
+    def to_polygons(self) -> list[Polygon]:
+        """Convert all boundary loops to polygons.
+
+        Returns
+        -------
+        list[Polygon]
+            The outer boundary followed by the inner boundaries.
+
+        """
+        return [Polygon([vertex.point for vertex in loop.vertices]) for loop in self.loops]
+
+    def to_plane(self) -> "Plane":
+        """Return the face surface as a plane."""
+        raise NotImplementedError
+
+    def to_cylinder(self) -> "Cylinder":
+        """Return the face surface as a cylinder."""
+        raise NotImplementedError
+
+    def to_cone(self) -> "Cone":
+        """Return the face surface as a cone."""
+        raise NotImplementedError
+
+    def to_sphere(self) -> "Sphere":
+        """Return the face surface as a sphere."""
+        raise NotImplementedError
+
+    def to_torus(self) -> "Torus":
+        """Return the face surface as a torus."""
+        raise NotImplementedError
+
+    def to_nurbs(self) -> "NurbsSurface":
+        """Return the face surface as a NURBS surface."""
+        raise NotImplementedError
+
+    # ==========================================================================
     # Methods
-    # ==============================================================================
+    # ==========================================================================
 
-    def adjacent_faces(self):
-        """Returns a list of the faces adjacent to this face.
-
-        Returns
-        -------
-        list[:class:`compas.geometry.BrepFace`]
-
-        """
+    def adjacent_faces(self) -> list[Self]:
+        """Return the faces adjacent across the edges of this face."""
         raise NotImplementedError
 
-    def as_brep(self):
-        """Returns a Brep representation of this face.
-
-        Returns
-        -------
-        :class:`compas.geometry.Brep`
-
-        """
+    def as_brep(self) -> "Brep":
+        """Return a Brep containing this face."""
         raise NotImplementedError
 
-    def add_loop(self, loop, *args, **kwargs):
-        """Adds an inner loop to this face.
+    def add_loop(self, loop: "BrepLoop", *args: object, **kwargs: object) -> None:
+        """Add an inner boundary loop.
 
         Parameters
         ----------
-        loop : :class:`compas.geometry.BrepLoop`
-            The loop to add
-
-        Notes
-        -----
-        Any additional arguments may be backend specific.
+        loop
+            The loop to add.
+        *args
+            Additional backend-specific arguments.
+        **kwargs
+            Additional backend-specific keyword arguments.
 
         """
         raise NotImplementedError
 
-    def add_loops(self, loops, *args, **kwargs):
-        """Adds several inner loops to this face.
+    def add_loops(self, loops: Sequence["BrepLoop"], *args: object, **kwargs: object) -> None:
+        """Add multiple inner boundary loops.
 
         Parameters
         ----------
-        loops : list[:class:`compas.geometry.BrepLoop`]
+        loops
             The loops to add.
-
-        Notes
-        -----
-        Any additional arguments may be backend specific.
+        *args
+            Additional backend-specific arguments.
+        **kwargs
+            Additional backend-specific keyword arguments.
 
         """
         raise NotImplementedError
 
-    def frame_at(self, u, v):
-        """Returns the frame at the given uv parameters.
+    def frame_at(self, u: float, v: float) -> "Frame":
+        """Compute the surface frame at UV parameters.
 
         Parameters
         ----------
-        u : float
-            The u parameter.
-        v : float
-            The v parameter.
+        u
+            The U parameter.
+        v
+            The V parameter.
 
         Returns
         -------
-        :class:`compas.geometry.Frame`
-            The frame at the given uv parameters.
+        Frame
+            The surface frame.
 
         """
         raise NotImplementedError
 
     def try_get_nurbssurface(
         self,
-        precision,
-        continuity_u,
-        continuity_v,
-        maxdegree_u,
-        maxdegree_v,
-        maxsegments_u,
-        maxsegments_v,
-    ):
-        """Returns the NURBS surface representation of this face. Or None if this cannot be done.
+        precision: float = 1e-3,
+        continuity_u: int | None = None,
+        continuity_v: int | None = None,
+        maxdegree_u: int = 5,
+        maxdegree_v: int = 5,
+        maxsegments_u: int = 1,
+        maxsegments_v: int = 1,
+    ) -> "NurbsSurface | None":
+        """Try to approximate the face surface with a NURBS surface.
 
         Parameters
         ----------
-        precision : float
-            The precision of the conversion.
-        continuity_u : int
-            The continuity of the surface in the u direction.
-        continuity_v : int
-            The continuity of the surface in the v direction.
-        maxdegree_u : int
-            The maximum degree of the surface in the u direction.
-        maxdegree_v : int
-            The maximum degree of the surface in the v direction.
-        maxsegments_u : int
-            The maximum number of segments in the u direction.
-        maxsegments_v : int
-            The maximum number of segments in the v direction.
+        precision
+            The approximation precision.
+        continuity_u
+            The requested continuity in the U direction.
+        continuity_v
+            The requested continuity in the V direction.
+        maxdegree_u
+            The maximum degree in the U direction.
+        maxdegree_v
+            The maximum degree in the V direction.
+        maxsegments_u
+            The maximum number of segments in the U direction.
+        maxsegments_v
+            The maximum number of segments in the V direction.
 
         Returns
         -------
-        :class:`~compas.geometry.NurbsSurface` or None
+        NurbsSurface | None
+            The approximated surface, or `None` when conversion is not
+            possible.
 
         """
         raise NotImplementedError

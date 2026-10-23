@@ -1,11 +1,8 @@
+from collections.abc import Iterator
+from collections.abc import Sequence
 from typing import TYPE_CHECKING
-from typing import Iterator
-from typing import Optional
-from typing import Sequence
-from typing import Union
+from typing import Self
 from typing import overload
-
-from typing_extensions import Self
 
 from compas._typing import Coordinate
 from compas.geometry import centroid_points
@@ -135,6 +132,10 @@ class Point(Geometry):
 
     """
 
+    # ==========================================================================
+    # Data
+    # ==========================================================================
+
     @property
     def __data__(self) -> list[float]:  # type: ignore[override]
         return list(self)
@@ -143,7 +144,11 @@ class Point(Geometry):
     def __from_data__(cls, data: Sequence[float]) -> Self:  # type: ignore[override]
         return cls(data[0], data[1], data[2])
 
-    def __init__(self, x: float, y: float, z: float = 0.0, name: Optional[str] = None) -> None:
+    # ==========================================================================
+    # Dunder methods
+    # ==========================================================================
+
+    def __init__(self, x: float, y: float, z: float = 0.0, name: str | None = None) -> None:
         super().__init__(name=name)
         self._x = 0.0
         self._y = 0.0
@@ -177,7 +182,7 @@ class Point(Geometry):
     @overload
     def __getitem__(self, key: slice) -> list[float]: ...
 
-    def __getitem__(self, key: Union[int, slice]) -> Union[float, list[float]]:
+    def __getitem__(self, key: int | slice) -> float | list[float]:
         if isinstance(key, slice):
             return [self[i] for i in range(*key.indices(len(self)))]
         if key == 0 or key == -3:
@@ -513,7 +518,7 @@ class Point(Geometry):
     # 3D predicates
     # ==========================================================================
 
-    def on_line(self, line: LineType, tol: Optional[float] = None) -> bool:
+    def on_line(self, line: LineType, tol: float | None = None) -> bool:
         """Determine if the point lies on the given line.
 
         Parameters
@@ -541,7 +546,7 @@ class Point(Geometry):
         """
         return TOL.is_zero(self.distance_to_line(line), tol)
 
-    def on_segment(self, segment: LineType, tol: Optional[float] = None) -> bool:
+    def on_segment(self, segment: LineType, tol: float | None = None) -> bool:
         """Determine if the point lies on the given segment.
 
         Parameters
@@ -594,7 +599,7 @@ class Point(Geometry):
         """
         return is_point_on_polyline(self, polyline)
 
-    def on_plane(self, plane: PlaneType, tol: Optional[float] = None) -> bool:
+    def on_plane(self, plane: PlaneType, tol: float | None = None) -> bool:
         """Determine if the point lies on the given plane.
 
         Parameters
@@ -623,7 +628,7 @@ class Point(Geometry):
         """
         return TOL.is_zero(self.distance_to_plane(plane), tol)
 
-    def on_circle(self, circle: "Circle", tol: Optional[float] = None) -> bool:
+    def on_circle(self, circle: "Circle", tol: float | None = None) -> bool:
         """Determine if the point lies on the given circle.
 
         Parameters
@@ -645,7 +650,7 @@ class Point(Geometry):
             return False
         return TOL.is_close(self.distance_to_point(circle.center), circle.radius, rtol=0, atol=tol)
 
-    def on_curve(self, curve: "Curve", tol: Optional[float] = None) -> bool:
+    def on_curve(self, curve: "Curve", tol: float | None = None) -> bool:
         """Determine if the point lies on the given curve.
 
         Parameters
@@ -735,8 +740,7 @@ class Point(Geometry):
             False, otherwise.
 
         """
-        vertices, faces = polyhedron
-        polygons = [[vertices[index] for index in face] for face in faces]
+        polygons = [[polyhedron.vertices[index] for index in face] for face in polyhedron.faces]
         planes = [[centroid_points(polygon), normal_polygon(polygon)] for polygon in polygons]
         return all(is_point_behind_plane(self, plane) for plane in planes)
 

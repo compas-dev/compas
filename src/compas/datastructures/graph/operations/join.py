@@ -1,7 +1,6 @@
+from collections.abc import Iterable
+from collections.abc import Sequence
 from typing import TYPE_CHECKING
-from typing import Iterable
-from typing import Optional
-from typing import Sequence
 
 from compas.itertools import pairwise
 from compas.tolerance import TOL
@@ -45,7 +44,7 @@ def graph_join_edges(graph: "Graph", key: Node) -> None:
 
 def graph_polylines(
     graph: "Graph",
-    splits: Optional[Iterable[Sequence[float]]] = None,
+    splits: Iterable[Sequence[float]] | None = None,
 ) -> list[list[list[float]]]:
     """Join graph edges into polylines.
 

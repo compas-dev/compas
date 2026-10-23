@@ -1,15 +1,12 @@
+from collections.abc import Sequence
 from math import atan2
 from math import cos
 from math import pi
 from math import sin
 from typing import Any
 from typing import Literal
-from typing import Optional
-from typing import Sequence
-from typing import Union
+from typing import Self
 from typing import overload
-
-from typing_extensions import Self
 
 from compas._typing import CoordinateType
 from compas.geometry import Frame
@@ -71,9 +68,9 @@ class Circle(Conic):
     def __from_data__(cls, data: dict[str, Any]) -> Self:
         return cls(radius=data["radius"], frame=Frame.__from_data__(data["frame"]))
 
-    def __init__(self, radius: float, frame: Optional[Frame] = None, name: Optional[str] = None) -> None:
+    def __init__(self, radius: float, frame: Frame | None = None, name: str | None = None) -> None:
         super().__init__(frame=frame, name=name)
-        self._radius: Optional[float] = None
+        self._radius: float | None = None
         self.radius = radius
 
     def __repr__(self) -> str:
@@ -133,9 +130,8 @@ class Circle(Conic):
         """The diameter of the circle."""
         return 2 * self.radius
 
-    @property
     def area(self) -> float:
-        """The area enclosed by the circle."""
+        """Compute the area enclosed by the circle."""
         return pi * (self.radius**2)
 
     @property
@@ -332,9 +328,9 @@ class Circle(Conic):
 
         # not sure if this makes sense
         # but it will only throw an error if the bestfit is actually needed
-        from compas.geometry import bestfit_circle_numpy
+        from compas.geometry import bestfit_circle
 
-        point, normal, radius = bestfit_circle_numpy(points)
+        point, normal, radius = bestfit_circle(points)
         plane = Plane(point, normal)
         return cls.from_plane_and_radius(plane, radius)
 
@@ -470,7 +466,7 @@ class Circle(Conic):
     @overload
     def closest_point(self, point: CoordinateType, return_parameter: Literal[True]) -> tuple[Point, float]: ...
 
-    def closest_point(self, point: CoordinateType, return_parameter: bool = False) -> Union[Point, tuple[Point, float]]:
+    def closest_point(self, point: CoordinateType, return_parameter: bool = False) -> Point | tuple[Point, float]:
         """Compute the closest point on the circle to a given point.
 
         Parameters

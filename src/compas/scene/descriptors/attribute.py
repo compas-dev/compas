@@ -1,29 +1,26 @@
-class Attribute(object):
-    """Descriptor for text dictionaries."""
+class Attribute:
+    """Base descriptor storing a default value.
 
-    def __init__(self, default=None, **kwargs):
-        super(Attribute, self).__init__(**kwargs)
+    Parameters
+    ----------
+    default
+        The descriptor's default value.
+
+    """
+
+    def __init__(self, default: object = None) -> None:
+        super().__init__()
         self.default = default
 
-    def __set_name__(self, owner, name):
-        """Record the name of the attribute this descriptor is assigned to.
-        The attribute name is then used to identify the corresponding private attribute.
+    def __set_name__(self, owner: type[object], name: str) -> None:
+        """Record the public and private attribute names.
 
         Parameters
         ----------
-        owner : object
+        owner
             The class owning the attribute.
-        name : str
+        name
             The name of the attribute.
-
-        Returns
-        -------
-        None
-
-        Notes
-        -----
-        In Python 3.6+ this method is called automatically.
-        For earlier versions it needs to be used with a custom metaclass (``DescriptorProtocol``).
 
         """
         self.name = name

@@ -1,28 +1,13 @@
-from typing import TYPE_CHECKING
-from typing import Sequence
-from typing import Union
+from collections.abc import Sequence
 
-from compas._typing import CoordinatesType
+import compas.geometry
 from compas._typing import CoordinateType
 
-if TYPE_CHECKING:
-    from compas.geometry import Line
-    from compas.geometry import Plane
-    from compas.geometry import Polygon
-    from compas.geometry import Polyline
-    from compas.geometry import Quaternion
-    from compas.geometry import Transformation
-
-
-LineType = Union["Line", Sequence[CoordinateType]]
-PlaneType = Union["Plane", Sequence[CoordinateType]]
-SphereType = tuple[CoordinateType, float]
+type LineType = compas.geometry.Line | Sequence[CoordinateType]
+type PlaneType = compas.geometry.Plane | Sequence[CoordinateType]
 CircleType = tuple[PlaneType, float]
-MeshType = tuple[CoordinatesType, Sequence[Sequence[int]]]
-RayType = tuple[CoordinateType, CoordinateType]
-RayMeshHit = tuple[int, float, float, float]
-PolygonType = Union["Polygon", Sequence[CoordinateType]]
-PolylineType = Union["Polyline", Sequence[CoordinateType]]
-QuaternionType = Union["Quaternion", Sequence[float]]
-TriangleType = Union["Polygon", Sequence[CoordinateType]]
-TransformationType = Union["Transformation", Sequence[Sequence[float]]]
+type PolygonType = compas.geometry.Polygon | Sequence[CoordinateType]
+type PolylineType = compas.geometry.Polyline | Sequence[CoordinateType]
+type QuaternionType = compas.geometry.Quaternion | Sequence[float]
+type TriangleType = compas.geometry.Polygon | Sequence[CoordinateType]
+type TransformationType = compas.geometry.Transformation | Sequence[Sequence[float]]

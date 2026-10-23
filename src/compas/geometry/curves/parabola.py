@@ -1,8 +1,6 @@
 from math import inf
 from typing import Any
-from typing import Optional
-
-from typing_extensions import Self
+from typing import Self
 
 from compas.geometry import Frame
 from compas.geometry import Point
@@ -56,9 +54,9 @@ class Parabola(Conic):
     def __from_data__(cls, data: dict[str, Any]) -> Self:
         return cls(focal=data["focal"], frame=Frame.__from_data__(data["frame"]))
 
-    def __init__(self, focal: float, frame: Optional[Frame] = None, name: Optional[str] = None) -> None:
+    def __init__(self, focal: float, frame: Frame | None = None, name: str | None = None) -> None:
         super().__init__(frame=frame, name=name)
-        self._focal: Optional[float] = None
+        self._focal: float | None = None
         self.focal = focal
 
     def __repr__(self) -> str:

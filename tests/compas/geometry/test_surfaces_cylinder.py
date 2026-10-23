@@ -97,6 +97,7 @@ def test_create_cylinder_from_plane_and_radius_preserves_subclass():
     assert cylinder.radius == 2.0
     assert cylinder.frame == Frame.worldYZ()
 
+
 # =============================================================================
 # Properties and Geometry
 # =============================================================================
@@ -105,8 +106,9 @@ def test_create_cylinder_from_plane_and_radius_preserves_subclass():
 def test_cylinder_area_and_volume_over_v_domain():
     cylinder = CylindricalSurface(2.0)
 
-    assert TOL.is_close(cylinder.area, 4.0 * pi)
-    assert TOL.is_close(cylinder.volume, 4.0 * pi)
+    assert TOL.is_close(cylinder.area(), 4.0 * pi)
+    assert TOL.is_close(cylinder.volume(), 4.0 * pi)
+
 
 # =============================================================================
 # Accessors

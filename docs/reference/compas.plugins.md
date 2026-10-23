@@ -1,0 +1,3 @@
+# `compas.plugins`
+
+::: compas.plugins

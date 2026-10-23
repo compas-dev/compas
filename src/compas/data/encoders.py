@@ -1,19 +1,21 @@
 import json
+from functools import cache
+from importlib import import_module
 from typing import Any
-from typing import Optional
-from typing import Type
 
 import numpy as np
 
 from .data import Data
 from .exceptions import DecoderError
 
-IDictionary = None
-numpy_support = False
-dotnet_support = False
+
+@cache
+def _cls_from_dtype(dtype: str) -> type[Data]:
+    module_name, class_name = dtype.split("/", maxsplit=1)
+    return getattr(import_module(module_name), class_name)
 
 
-def cls_from_dtype(dtype: str, inheritance: Optional[list[str]] = None) -> Type[Data]:
+def cls_from_dtype(dtype: str, inheritance: list[str] | None = None) -> type[Data]:
     """Get the class object corresponding to a COMPAS data type specification.
 
     Parameters
@@ -39,22 +41,14 @@ def cls_from_dtype(dtype: str, inheritance: Optional[list[str]] = None) -> Type[
 
     """
 
-    if inheritance is None:
-        full_inheritance = [dtype]
-    else:
-        full_inheritance = [dtype] + inheritance
-
-    for dtype in full_inheritance:
-        mod_name, attr_name = dtype.split("/")
+    candidates = [dtype, *(inheritance or [])]
+    for candidate in candidates:
         try:
-            module = __import__(mod_name, fromlist=[attr_name])
-            return getattr(module, attr_name)
-        except ImportError:
-            continue
-        except AttributeError:
+            return _cls_from_dtype(candidate)
+        except (ImportError, AttributeError, ValueError):
             continue
 
-    raise ValueError("No class found in inheritance chain: {}".format(full_inheritance))
+    raise ValueError(f"No class found for COMPAS dtype candidates: {candidates!r}")
 
 
 class DataEncoder(json.JSONEncoder):
@@ -93,7 +87,9 @@ class DataEncoder(json.JSONEncoder):
 
     """
 
-    minimal = False
+    def __init__(self, *args: Any, minimal: bool = False, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self.minimal = minimal
 
     def default(self, o: Any) -> Any:
         """Return an object in serialized form.
@@ -112,31 +108,16 @@ class DataEncoder(json.JSONEncoder):
         from compas.datastructures.attributes import AttributeView
 
         if hasattr(o, "__jsondump__"):
-            return o.__jsondump__(minimal=DataEncoder.minimal)
+            return o.__jsondump__(minimal=self.minimal)
 
         if hasattr(o, "__next__"):
             return list(o)
 
         if isinstance(o, np.ndarray):
             return o.tolist()
-        if isinstance(
-            o,
-            (
-                np.int_,
-                np.intc,
-                np.intp,
-                np.int8,
-                np.int16,
-                np.int32,
-                np.int64,
-                np.uint8,
-                np.uint16,
-                np.uint32,
-                np.uint64,
-            ),  # type: ignore
-        ):
+        if isinstance(o, np.integer):
             return int(o)
-        if isinstance(o, (np.float_, np.float16, np.float32, np.float64)):  # type: ignore
+        if isinstance(o, np.floating):
             return float(o)
         if isinstance(o, np.bool_):
             return bool(o)
@@ -146,7 +127,7 @@ class DataEncoder(json.JSONEncoder):
         if isinstance(o, AttributeView):
             return dict(o)
 
-        return super(DataEncoder, self).default(o)
+        return super().default(o)
 
 
 class DataDecoder(json.JSONDecoder):
@@ -187,7 +168,7 @@ class DataDecoder(json.JSONDecoder):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(object_hook=self.object_hook, *args, **kwargs)
 
-    def object_hook(self, o: dict[str, Any]) -> Any:  # pyright: ignore[reportIncompatibleMethodOverride]
+    def object_hook(self, o: dict[Any, Any]) -> Any:
         """Reconstruct a deserialized object.
 
         Parameters
@@ -206,28 +187,12 @@ class DataDecoder(json.JSONDecoder):
 
         try:
             cls = cls_from_dtype(o["dtype"], o.get("inheritance", None))
-
-        except ValueError:
-            raise DecoderError(
-                "The data type of the object should be in the following format: '{}/{}'".format(
-                    o.__class__.__module__,
-                    o.__class__.__name__,
-                )
-            )
-
-        except ImportError:
-            raise DecoderError("The module of the data type can't be found: {}.".format(o["dtype"]))
-
-        except AttributeError:
-            raise DecoderError("The data type can't be found in the specified module: {}.".format(o["dtype"]))
+        except ValueError as error:
+            raise DecoderError(str(error)) from error
 
         data = o["data"]
         guid = o.get("guid")
         name = o.get("name")
-
-        # Kick-off __from_data__ from a rebuilt Python dictionary instead of the C# data type
-        if IDictionary and isinstance(o, IDictionary[str, object]):
-            data = {key: data[key] for key in data.Keys}
 
         obj = cls.__jsonload__(data, guid=guid, name=name)
 

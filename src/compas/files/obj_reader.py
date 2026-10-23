@@ -3,11 +3,10 @@
 from os import PathLike
 from typing import BinaryIO
 from typing import TextIO
-from typing import Union
 
 from compas import _iotools
 
-OBJSource = Union[str, PathLike[str], TextIO, BinaryIO]
+OBJSource = str | PathLike[str] | TextIO | BinaryIO
 
 
 class OBJReader:

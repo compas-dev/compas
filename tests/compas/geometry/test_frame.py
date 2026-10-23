@@ -63,6 +63,47 @@ def test_frame_data():
     assert frame.guid != other.guid
 
 
+def test_frame_data_reconstruction_preserves_serialized_axes():
+    data = {
+        "point": [1.0, 2.0, 3.0],
+        "xaxis": [1.0, 0.0, 0.0],
+        "yaxis": [0.0, 1.0, 0.0],
+    }
+
+    frame = Frame.__from_data__(data)
+
+    assert frame.__data__ == data
+
+
+def test_frame_data_reconstruction_preserves_subclasses():
+    class CustomFrame(Frame):
+        pass
+
+    frame = CustomFrame.__from_data__(Frame.worldXY().__data__)
+
+    assert isinstance(frame, CustomFrame)
+
+
+def test_frame_copy_preserves_state_and_subclasses():
+    class CustomFrame(Frame):
+        pass
+
+    frame = CustomFrame([1, 2, 3], [1, 1, 0], [0, 1, 0], name="custom")
+    copied = frame.copy(copy_guid=True)
+
+    assert isinstance(copied, CustomFrame)
+    assert copied == frame
+    assert copied.name == frame.name
+    assert copied.guid == frame.guid
+    assert copied.point is not frame.point
+    assert copied.xaxis is not frame.xaxis
+    assert copied.yaxis is not frame.yaxis
+
+    base = frame.copy(cls=Frame)
+    assert type(base) is Frame
+    assert base == frame
+
+
 def test_frame_predefined():
     frame = Frame.worldXY()
     assert frame.point == Point(0, 0, 0)

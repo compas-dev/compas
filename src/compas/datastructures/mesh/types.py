@@ -1,5 +1,5 @@
+from collections.abc import Sequence
 from typing import Any
-from typing import Sequence
 
 Vertex = int
 Face = int

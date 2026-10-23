@@ -1,22 +1,25 @@
-name: verify-pr-checklist
+name: verify pull request
+
 on:
   pull_request:
     types: [assigned, opened, synchronize, reopened, labeled, unlabeled]
-    branches:
-      - main
-      - master
-      - '*.LTS'
+    branches: [main]
+
+permissions:
+  contents: read
 
 jobs:
-  build:
-    name: Check Actions
+  release:
+    name: Validate release metadata
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - name: Changelog check
-        uses: Zomzog/changelog-checker@v1.2.0
+      - uses: compas-dev/compas-actions/release-check@v1
+
+  changelog:
+    name: Check changelog
+    runs-on: ubuntu-latest
+    steps:
+      - uses: compas-dev/compas-actions/pr-checks@v1
         with:
-          fileName: CHANGELOG.md
-          checkNotification: Simple
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          changelog-path: CHANGELOG.md
+          skip-label: no changelog

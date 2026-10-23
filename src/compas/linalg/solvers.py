@@ -1,6 +1,6 @@
 import sys
+from collections.abc import Sequence
 from typing import Any
-from typing import Sequence
 
 from numpy.linalg import cond
 from numpy.typing import NDArray
@@ -87,6 +87,7 @@ def spsolve_with_known(A: Any, b: NDArray[Any], x: NDArray[Any], known: Sequence
 
     Examples
     --------
+    >>> from numpy import allclose, array
     >>> A = array([[2, 1, 3], [2, 6, 8], [6, 8, 18]])
     >>> b = array([[1], [3], [5]])
     >>> x = array([[0.3], [0], [0]])

@@ -1,3 +1,4 @@
+from collections.abc import Sequence
 from copy import deepcopy
 from math import acos
 from math import asin
@@ -8,8 +9,6 @@ from math import pi
 from math import sin
 from math import sqrt
 from math import tan
-from typing import Optional
-from typing import Sequence
 
 from compas._typing import CoordinatesType
 from compas._typing import CoordinateType
@@ -21,7 +20,6 @@ from .matrices import matrix_inverse
 from .matrices import multiply_matrices
 from .matrices import multiply_matrix_vector
 from .matrices import transpose_matrix
-from .vectors import allclose
 from .vectors import cross_vectors
 from .vectors import dot_vectors
 from .vectors import length_vector
@@ -65,7 +63,7 @@ _NEXT_SPEC = [1, 2, 0, 1]
 
 
 def decompose_matrix(
-    M: CoordinatesType,
+    M: Sequence[Sequence[float]],
 ) -> tuple[list[float], list[float], list[float], list[float], list[float]]:
     """Calculates the components of rotation, translation, scale, shear, and
     perspective of a given transformation matrix `M`.[^decompose-matrix-slabaugh]
@@ -73,12 +71,12 @@ def decompose_matrix(
     Parameters
     ----------
     M
-        The square matrix of any dimension.
+        The 4x4 transformation matrix.
 
     Raises
     ------
     ValueError
-        If matrix is singular or degenerative.
+        If the matrix is not 4x4, singular, or degenerate.
 
     Returns
     -------
@@ -101,11 +99,11 @@ def decompose_matrix(
     >>> M = multiply_matrices(multiply_matrices(T, R), S)
     >>> # M = compose_matrix(scale1, None, angle1, trans1, None)
     >>> scale2, shear2, angle2, trans2, persp2 = decompose_matrix(M)
-    >>> allclose(scale1, scale2)
+    >>> TOL.is_allclose(scale1, scale2)
     True
-    >>> allclose(angle1, angle2)
+    >>> TOL.is_allclose(angle1, angle2)
     True
-    >>> allclose(trans1, trans2)
+    >>> TOL.is_allclose(trans1, trans2)
     True
 
     References
@@ -113,8 +111,11 @@ def decompose_matrix(
     [^decompose-matrix-slabaugh]: Slabaugh, G. [*Computing Euler Angles from a Rotation Matrix*](http://www.gregslabaugh.net/publications/euler.pdf), 1999.
 
     """
-    detM = matrix_determinant(M)  # raises ValueError if matrix is not squared
-    if detM == 0:
+    if len(M) != 4 or any(len(row) != 4 for row in M):
+        raise ValueError("Expected a 4x4 transformation matrix.")
+
+    detM = matrix_determinant(M)
+    if TOL.is_zero(detM):
         raise ValueError("The matrix is singular.")
 
     Mt = transpose_matrix(M)
@@ -211,11 +212,11 @@ def decompose_matrix(
 
 
 def compose_matrix(
-    scale: Optional[Sequence[float]] = None,
-    shear: Optional[Sequence[float]] = None,
-    angles: Optional[Sequence[float]] = None,
-    translation: Optional[Sequence[float]] = None,
-    perspective: Optional[Sequence[float]] = None,
+    scale: Sequence[float] | None = None,
+    shear: Sequence[float] | None = None,
+    angles: Sequence[float] | None = None,
+    translation: Sequence[float] | None = None,
+    perspective: Sequence[float] | None = None,
 ) -> list[list[float]]:
     """Calculates a matrix from the components of scale, shear, euler_angles, translation and perspective.
 
@@ -248,11 +249,11 @@ def compose_matrix(
     >>> scale1 = [0.123, 2, 0.5]
     >>> M = compose_matrix(scale1, None, angle1, trans1, None)
     >>> scale2, shear2, angle2, trans2, persp2 = decompose_matrix(M)
-    >>> allclose(scale1, scale2)
+    >>> TOL.is_allclose(scale1, scale2)
     True
-    >>> allclose(angle1, angle2)
+    >>> TOL.is_allclose(angle1, angle2)
     True
-    >>> allclose(trans1, trans2)
+    >>> TOL.is_allclose(trans1, trans2)
     True
 
     """
@@ -314,7 +315,7 @@ def identity_matrix(dim: int) -> list[list[float]]:
     return [[1.0 if i == j else 0.0 for i in range(dim)] for j in range(dim)]
 
 
-def matrix_from_frame(frame: Sequence[Sequence[float]]) -> list[list[float]]:
+def matrix_from_frame(frame: CoordinatesType) -> list[list[float]]:
     """Computes a change of basis transformation from world XY to the frame.
 
     Parameters
@@ -439,7 +440,7 @@ def matrix_from_euler_angles(euler_angles: Sequence[float], static: bool = True,
     >>> ea1 = 1.4, 0.5, 2.3
     >>> R = matrix_from_euler_angles(ea1)
     >>> ea2 = euler_angles_from_matrix(R)
-    >>> allclose(ea1, ea2)
+    >>> TOL.is_allclose(ea1, ea2)
     True
 
     """
@@ -517,7 +518,7 @@ def euler_angles_from_matrix(M: Sequence[Sequence[float]], static: bool = True, 
     >>> ea1 = 1.4, 0.5, 2.3
     >>> R = matrix_from_euler_angles(ea1)
     >>> ea2 = euler_angles_from_matrix(R)
-    >>> allclose(ea1, ea2)
+    >>> TOL.is_allclose(ea1, ea2)
     True
 
     """
@@ -562,7 +563,7 @@ def euler_angles_from_matrix(M: Sequence[Sequence[float]], static: bool = True, 
     return [ax, ay, az]
 
 
-def matrix_from_axis_and_angle(axis: Sequence[float], angle: float, point: Optional[Sequence[float]] = None) -> list[list[float]]:
+def matrix_from_axis_and_angle(axis: CoordinateType, angle: float, point: CoordinateType | None = None) -> list[list[float]]:
     """Calculates a rotation matrix from an rotation axis, an angle and an optional
     point of rotation.
 
@@ -580,6 +581,11 @@ def matrix_from_axis_and_angle(axis: Sequence[float], angle: float, point: Optio
     list[list[float]]
         A 4x4 transformation matrix representing a rotation.
 
+    Raises
+    ------
+    ValueError
+        If the rotation axis has zero length.
+
     Notes
     -----
     The rotation is based on the right hand rule, i.e. anti-clockwise if the
@@ -591,9 +597,9 @@ def matrix_from_axis_and_angle(axis: Sequence[float], angle: float, point: Optio
     >>> angle1 = 0.1
     >>> R = matrix_from_axis_and_angle(axis1, angle1)
     >>> axis2, angle2 = axis_and_angle_from_matrix(R)
-    >>> allclose(axis1, axis2)
+    >>> TOL.is_allclose(axis1, axis2)
     True
-    >>> allclose([angle1], [angle2])
+    >>> TOL.is_allclose([angle1], [angle2])
     True
 
     """
@@ -601,8 +607,9 @@ def matrix_from_axis_and_angle(axis: Sequence[float], angle: float, point: Optio
         point = [0.0, 0.0, 0.0]
 
     axis = list(axis)
-    if length_vector(axis):
-        axis = normalize_vector(axis)
+    if TOL.is_zero(length_vector(axis)):
+        raise ValueError("The rotation axis must have nonzero length.")
+    axis = normalize_vector(axis)
 
     sina = sin(angle)
     cosa = cos(angle)
@@ -647,17 +654,24 @@ def matrix_from_axis_angle_vector(axis_angle_vector: CoordinateType, point: Coor
     list[list[float]]
         The 4x4 transformation matrix representing a rotation.
 
+    Notes
+    -----
+    A zero axis-angle vector represents a zero rotation and produces the
+    identity matrix.
+
     Examples
     --------
     >>> aav1 = [-0.043, -0.254, 0.617]
     >>> R = matrix_from_axis_angle_vector(aav1)
     >>> aav2 = axis_angle_vector_from_matrix(R)
-    >>> allclose(aav1, aav2)
+    >>> TOL.is_allclose(aav1, aav2)
     True
 
     """
     axis = list(axis_angle_vector)
     angle = length_vector(axis_angle_vector)
+    if TOL.is_zero(angle):
+        return identity_matrix(4)
     return matrix_from_axis_and_angle(axis, angle, point)
 
 
@@ -767,7 +781,7 @@ def matrix_from_quaternion(quaternion: FloatSequenceType) -> list[list[float]]:
     >>> q1 = [0.945, -0.021, -0.125, 0.303]
     >>> R = matrix_from_quaternion(q1)
     >>> q2 = quaternion_from_matrix(R)
-    >>> allclose(q1, q2, tol=1e-03)
+    >>> TOL.is_allclose(q1, q2, atol=1e-03)
     True
 
     """
@@ -810,7 +824,7 @@ def quaternion_from_matrix(M: Sequence[Sequence[float]]) -> list[float]:
     >>> q1 = [0.945, -0.021, -0.125, 0.303]
     >>> R = matrix_from_quaternion(q1)
     >>> q2 = quaternion_from_matrix(R)
-    >>> allclose(q1, q2, tol=1e-03)
+    >>> TOL.is_allclose(q1, q2, atol=1e-03)
     True
 
     """
@@ -920,13 +934,13 @@ def basis_vectors_from_matrix(R: Sequence[Sequence[float]]) -> tuple[list[float]
     yaxis = [R[0][1], R[1][1], R[2][1]]
     zaxis = [R[0][2], R[1][2], R[2][2]]
 
-    if not allclose(zaxis, cross_vectors(xaxis, yaxis)):
+    if not TOL.is_allclose(zaxis, cross_vectors(xaxis, yaxis)):
         raise ValueError("Matrix is invalid rotation matrix.")
 
     return xaxis, yaxis
 
 
-def matrix_from_translation(translation: Sequence[float]) -> list[list[float]]:
+def matrix_from_translation(translation: CoordinateType) -> list[list[float]]:
     """Returns a 4x4 translation matrix in row-major order.
 
     Parameters
@@ -979,7 +993,7 @@ def translation_from_matrix(M: Sequence[Sequence[float]]) -> list[float]:
 
 
 def matrix_from_orthogonal_projection(
-    plane: tuple[Sequence[float], Sequence[float]],
+    plane: CoordinatesType,
 ) -> list[list[float]]:
     """Returns an orthogonal projection matrix to project onto a plane.
 
@@ -993,6 +1007,11 @@ def matrix_from_orthogonal_projection(
     list[list[float]]
         The 4x4 transformation matrix representing an orthogonal projection.
 
+    Raises
+    ------
+    ValueError
+        If the plane normal has zero length.
+
     Examples
     --------
     >>> point = [0, 0, 0]
@@ -1003,6 +1022,8 @@ def matrix_from_orthogonal_projection(
     """
     point, normal = plane
     T = identity_matrix(4)
+    if TOL.is_zero(length_vector(normal)):
+        raise ValueError("The plane normal must have nonzero length.")
     normal = normalize_vector(normal)
 
     for j in range(3):
@@ -1013,7 +1034,7 @@ def matrix_from_orthogonal_projection(
     return T
 
 
-def matrix_from_parallel_projection(plane: tuple[Sequence[float], Sequence[float]], direction: Sequence[float]) -> list[list[float]]:
+def matrix_from_parallel_projection(plane: CoordinatesType, direction: CoordinateType) -> list[list[float]]:
     """Returns an parallel projection matrix to project onto a plane.
 
     Parameters
@@ -1028,6 +1049,12 @@ def matrix_from_parallel_projection(plane: tuple[Sequence[float], Sequence[float
     list[list[float]]
         A 4-by-4 transformation matrix.
 
+    Raises
+    ------
+    ValueError
+        If the plane normal has zero length or the projection direction is
+        parallel to the plane.
+
     Examples
     --------
     >>> point = [0, 0, 0]
@@ -1039,9 +1066,13 @@ def matrix_from_parallel_projection(plane: tuple[Sequence[float], Sequence[float
     """
     point, normal = plane
     T = identity_matrix(4)
+    if TOL.is_zero(length_vector(normal)):
+        raise ValueError("The plane normal must have nonzero length.")
     normal = normalize_vector(normal)
 
     scale = dot_vectors(direction, normal)
+    if TOL.is_zero(scale):
+        raise ValueError("The projection direction cannot be parallel to the plane.")
     for j in range(3):
         for i in range(3):
             T[i][j] -= direction[i] * normal[j] / scale
@@ -1050,7 +1081,7 @@ def matrix_from_parallel_projection(plane: tuple[Sequence[float], Sequence[float
     return T
 
 
-def matrix_from_perspective_projection(plane: tuple[Sequence[float], Sequence[float]], center_of_projection: Sequence[float]) -> list[list[float]]:
+def matrix_from_perspective_projection(plane: CoordinatesType, center_of_projection: CoordinateType) -> list[list[float]]:
     """Returns a perspective projection matrix to project onto a plane along lines that emanate from a single point, called the center of projection.
 
     Parameters
@@ -1158,7 +1189,7 @@ def matrix_from_shear_entries(shear_entries: Sequence[float]) -> list[list[float
     return M
 
 
-def matrix_from_shear(angle: float, direction: Sequence[float], point: Sequence[float], normal: Sequence[float]) -> list[list[float]]:
+def matrix_from_shear(angle: float, direction: CoordinateType, point: CoordinateType, normal: CoordinateType) -> list[list[float]]:
     """Constructs a shear matrix by an angle along the direction vector on the
     shear plane (defined by point and normal).
 

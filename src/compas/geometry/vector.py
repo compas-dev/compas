@@ -1,11 +1,7 @@
-from typing import Iterator
-from typing import Optional
-from typing import Sequence
-from typing import Type
-from typing import Union
+from collections.abc import Iterator
+from collections.abc import Sequence
+from typing import Self
 from typing import overload
-
-from typing_extensions import Self
 
 from compas._typing import Coordinate
 from compas.geometry import Geometry
@@ -120,6 +116,10 @@ class Vector(Geometry):
 
     """
 
+    # ==========================================================================
+    # Data
+    # ==========================================================================
+
     @property
     def __data__(self) -> list[float]:  # type: ignore[override]
         return list(self)
@@ -128,13 +128,17 @@ class Vector(Geometry):
     def __from_data__(cls, data: Sequence[float]) -> Self:  # type: ignore[override]
         return cls(data[0], data[1], data[2])
 
-    def __init__(self, x: float, y: float, z: float = 0.0, name: Optional[str] = None) -> None:
+    # ==========================================================================
+    # Dunder methods
+    # ==========================================================================
+
+    def __init__(self, x: float, y: float, z: float = 0.0, name: str | None = None) -> None:
         super().__init__(name=name)
         self._x = 0.0
         self._y = 0.0
         self._z = 0.0
-        self._direction: Optional[Vector] = None
-        self._magnitude: Optional[float] = None
+        self._direction: Vector | None = None
+        self._magnitude: float | None = None
         self.x = x
         self.y = y
         self.z = z
@@ -164,7 +168,7 @@ class Vector(Geometry):
     @overload
     def __getitem__(self, key: slice) -> list[float]: ...
 
-    def __getitem__(self, key: Union[int, slice]) -> Union[float, list[float]]:
+    def __getitem__(self, key: int | slice) -> float | list[float]:
         if isinstance(key, slice):
             return [self[i] for i in range(*key.indices(len(self)))]
         if key == 0 or key == -3:
@@ -217,7 +221,7 @@ class Vector(Geometry):
         """
         return Vector(self.x - other[0], self.y - other[1], self.z - other[2])
 
-    def __mul__(self, other: Union[float, CoordinateType]) -> "Vector":
+    def __mul__(self, other: float | CoordinateType) -> "Vector":
         """Multiply by a scalar or multiply component-wise by another coordinate.
 
         Examples
@@ -235,7 +239,7 @@ class Vector(Geometry):
         except TypeError:
             raise TypeError("Cannot cast {} {} to Vector".format(other, type(other)))
 
-    def __truediv__(self, other: Union[float, CoordinateType]) -> "Vector":
+    def __truediv__(self, other: float | CoordinateType) -> "Vector":
         """Divide by a scalar or divide component-wise by another coordinate.
 
         Examples
@@ -329,7 +333,7 @@ class Vector(Geometry):
         self.z **= n
         return self
 
-    def __rmul__(self, other: Union[float, CoordinateType]) -> "Vector":
+    def __rmul__(self, other: float | CoordinateType) -> "Vector":
         """Multiply by a scalar or component-wise coordinate on the left.
 
         Examples
@@ -514,73 +518,8 @@ class Vector(Geometry):
         return cls(v[0], v[1], z)
 
     # ==========================================================================
-    # Static
+    # Methods
     # ==========================================================================
-
-    @staticmethod
-    def transform_collection(collection: Sequence["Vector"], transformation: TransformationType) -> None:
-        """Transform a collection of vector objects.
-
-        Parameters
-        ----------
-        collection
-            The collection of vectors.
-        transformation
-            The transformation.
-
-        Examples
-        --------
-        >>> from compas.geometry import Rotation
-        >>> R = Rotation.from_axis_and_angle(Vector.Zaxis(), math.radians(90))
-        >>> u = Vector(1.0, 0.0, 0.0)
-        >>> vectors = [u]
-        >>> Vector.transform_collection(vectors, R)
-        >>> v = vectors[0]
-        >>> print(v)
-        Vector(x=0.000, y=1.000, z=0.000)
-        >>> u is v
-        True
-
-        """
-        data = transform_vectors(collection, transformation)
-        for vector, xyz in zip(collection, data):
-            vector.x = xyz[0]
-            vector.y = xyz[1]
-            vector.z = xyz[2]
-
-    @staticmethod
-    def transformed_collection(collection: Sequence["Vector"], transformation: TransformationType) -> list["Vector"]:
-        """Create a collection of transformed vectors.
-
-        Parameters
-        ----------
-        collection
-            The collection of vectors.
-        transformation
-            The transformation.
-
-        Returns
-        -------
-        list[Vector]
-            The transformed vectors.
-
-        Examples
-        --------
-        >>> from compas.geometry import Rotation
-        >>> R = Rotation.from_axis_and_angle(Vector.Zaxis(), math.radians(90))
-        >>> u = Vector(1.0, 0.0, 0.0)
-        >>> vectors = [u]
-        >>> vectors = Vector.transformed_collection(vectors, R)
-        >>> v = vectors[0]
-        >>> print(v)
-        Vector(x=0.000, y=1.000, z=0.000)
-        >>> u is v
-        False
-
-        """
-        vectors = [vector.copy() for vector in collection]
-        Vector.transform_collection(vectors, transformation)
-        return vectors
 
     @staticmethod
     def length_vectors(vectors: Sequence[CoordinateType]) -> list[float]:
@@ -667,6 +606,7 @@ class Vector(Geometry):
             A list of vectors.
 
         Returns
+        -------
         list[Vector]
             A list of cross products.
 
@@ -734,11 +674,7 @@ class Vector(Geometry):
         """
         return [angle_vectors(u, v) for u, v in zip(left, right)]
 
-    # ==========================================================================
-    # Helpers
-    # ==========================================================================
-
-    def copy(self, cls: Optional[Type[Self]] = None, copy_guid: bool = False) -> Self:  # type: ignore[override]
+    def copy(self, cls: type[Self] | None = None, copy_guid: bool = False) -> Self:  # type: ignore[override]
         """Make a copy of this vector.
 
         Parameters
@@ -770,10 +706,6 @@ class Vector(Geometry):
         if copy_guid:
             vector._guid = self.guid
         return vector
-
-    # ==========================================================================
-    # Methods
-    # ==========================================================================
 
     def unitize(self) -> None:
         """Scale this vector to unit length.
@@ -859,69 +791,6 @@ class Vector(Geometry):
 
     flipped = inverted
 
-    def scale(self, x: float, y: Optional[float] = None, z: Optional[float] = None) -> None:
-        """Scale this vector by one or more factors.
-
-        Parameters
-        ----------
-        x
-            The scaling factor in the X direction.
-        y
-            The scaling factor in the Y direction.
-            Defaults to `x`.
-        z
-            The scaling factor in the Z direction.
-            Defaults to `x`.
-
-        Examples
-        --------
-        >>> u = Vector(1.0, 0.0, 0.0)
-        >>> u.scale(3.0)
-        >>> u.length
-        3.0
-
-        """
-        if y is None:
-            y = x
-        if z is None:
-            z = x
-        self.x *= x
-        self.y *= y
-        self.z *= z
-
-    def scaled(self, x: float, y: Optional[float] = None, z: Optional[float] = None) -> Self:
-        """Return a scaled copy of this vector.
-
-        Parameters
-        ----------
-        x
-            The scaling factor in the X direction.
-        y
-            The scaling factor in the Y direction.
-            Defaults to `x`.
-        z
-            The scaling factor in the Z direction.
-            Defaults to `x`.
-
-        Returns
-        -------
-        Self
-            A scaled copy of the vector.
-
-        Examples
-        --------
-        >>> u = Vector(1.0, 0.0, 0.0)
-        >>> v = u.scaled(3.0)
-        >>> u.length
-        1.0
-        >>> v.length
-        3.0
-
-        """
-        v = self.copy()
-        v.scale(x, y, z)
-        return v
-
     def dot(self, other: CoordinateType) -> float:
         """The dot product of this vector and another vector.
 
@@ -987,9 +856,10 @@ class Vector(Geometry):
 
         Examples
         --------
+        >>> from math import pi
         >>> u = Vector(1.0, 0.0, 0.0)
         >>> v = Vector(0.0, 1.0, 0.0)
-        >>> u.angle(v) == 0.5 * math.pi
+        >>> u.angle(v) == 0.5 * pi
         True
 
         """
@@ -1012,11 +882,12 @@ class Vector(Geometry):
 
         Examples
         --------
+        >>> from math import pi
         >>> u = Vector(1.0, 0.0, 0.0)
         >>> v = Vector(0.0, 1.0, 0.0)
-        >>> u.angle_signed(v, Vector(0.0, 0.0, 1.0)) == 0.5 * math.pi
+        >>> u.angle_signed(v, Vector(0.0, 0.0, 1.0)) == 0.5 * pi
         True
-        >>> u.angle_signed(v, Vector(0.0, 0.0, -1.0)) == -0.5 * math.pi
+        >>> u.angle_signed(v, Vector(0.0, 0.0, -1.0)) == -0.5 * pi
         True
 
         """
@@ -1037,9 +908,10 @@ class Vector(Geometry):
 
         Examples
         --------
+        >>> from math import pi
         >>> u = Vector(1.0, 0.0, 0.0)
         >>> v = Vector(0.0, 1.0, 0.0)
-        >>> u.angles(v)[0] == 0.5 * math.pi
+        >>> u.angles(v)[0] == 0.5 * pi
         True
 
         """
@@ -1065,6 +937,140 @@ class Vector(Geometry):
         component.scale(cosa / L)
         return component
 
+    # ==========================================================================
+    # Transformations
+    # ==========================================================================
+
+    def scale(self, x: float, y: float | None = None, z: float | None = None) -> None:
+        """Scale this vector by one or more factors.
+
+        Parameters
+        ----------
+        x
+            The scaling factor in the X direction.
+        y
+            The scaling factor in the Y direction.
+            Defaults to `x`.
+        z
+            The scaling factor in the Z direction.
+            Defaults to `x`.
+
+        Examples
+        --------
+        >>> u = Vector(1.0, 0.0, 0.0)
+        >>> u.scale(3.0)
+        >>> u.length
+        3.0
+
+        """
+        if y is None:
+            y = x
+        if z is None:
+            z = x
+        self.x *= x
+        self.y *= y
+        self.z *= z
+
+    def scaled(self, x: float, y: float | None = None, z: float | None = None) -> Self:
+        """Return a scaled copy of this vector.
+
+        Parameters
+        ----------
+        x
+            The scaling factor in the X direction.
+        y
+            The scaling factor in the Y direction.
+            Defaults to `x`.
+        z
+            The scaling factor in the Z direction.
+            Defaults to `x`.
+
+        Returns
+        -------
+        Self
+            A scaled copy of the vector.
+
+        Examples
+        --------
+        >>> u = Vector(1.0, 0.0, 0.0)
+        >>> v = u.scaled(3.0)
+        >>> u.length
+        1.0
+        >>> v.length
+        3.0
+
+        """
+        v = self.copy()
+        v.scale(x, y, z)
+        return v
+
+    @staticmethod
+    def transform_collection(collection: Sequence["Vector"], transformation: TransformationType) -> None:
+        """Transform a collection of vector objects.
+
+        Parameters
+        ----------
+        collection
+            The collection of vectors.
+        transformation
+            The transformation.
+
+        Examples
+        --------
+        >>> from math import radians
+        >>> from compas.geometry import Rotation
+        >>> R = Rotation.from_axis_and_angle(Vector.Zaxis(), radians(90))
+        >>> u = Vector(1.0, 0.0, 0.0)
+        >>> vectors = [u]
+        >>> Vector.transform_collection(vectors, R)
+        >>> v = vectors[0]
+        >>> print(v)
+        Vector(x=0.000, y=1.000, z=0.000)
+        >>> u is v
+        True
+
+        """
+        data = transform_vectors(collection, transformation)
+        for vector, xyz in zip(collection, data):
+            vector.x = xyz[0]
+            vector.y = xyz[1]
+            vector.z = xyz[2]
+
+    @staticmethod
+    def transformed_collection(collection: Sequence["Vector"], transformation: TransformationType) -> list["Vector"]:
+        """Create a collection of transformed vectors.
+
+        Parameters
+        ----------
+        collection
+            The collection of vectors.
+        transformation
+            The transformation.
+
+        Returns
+        -------
+        list[Vector]
+            The transformed vectors.
+
+        Examples
+        --------
+        >>> from math import radians
+        >>> from compas.geometry import Rotation
+        >>> R = Rotation.from_axis_and_angle(Vector.Zaxis(), radians(90))
+        >>> u = Vector(1.0, 0.0, 0.0)
+        >>> vectors = [u]
+        >>> vectors = Vector.transformed_collection(vectors, R)
+        >>> v = vectors[0]
+        >>> print(v)
+        Vector(x=0.000, y=1.000, z=0.000)
+        >>> u is v
+        False
+
+        """
+        vectors = [vector.copy() for vector in collection]
+        Vector.transform_collection(vectors, transformation)
+        return vectors
+
     def transform(self, transformation: TransformationType) -> None:
         """Transform this vector.
 
@@ -1075,9 +1081,10 @@ class Vector(Geometry):
 
         Examples
         --------
+        >>> from math import radians
         >>> from compas.geometry import Rotation
         >>> u = Vector(1.0, 0.0, 0.0)
-        >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], math.radians(90))
+        >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], radians(90))
         >>> u.transform(R)
         >>> print(u)
         Vector(x=0.000, y=1.000, z=0.000)
@@ -1103,9 +1110,10 @@ class Vector(Geometry):
 
         Examples
         --------
+        >>> from math import radians
         >>> from compas.geometry import Rotation
         >>> u = Vector(1.0, 0.0, 0.0)
-        >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], math.radians(90))
+        >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], radians(90))
         >>> v = u.transformed(R)
         >>> print(v)
         Vector(x=0.000, y=1.000, z=0.000)

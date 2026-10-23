@@ -1,6 +1,5 @@
 from typing import TYPE_CHECKING
 from typing import Literal
-from typing import Union
 
 from ..types import Edge
 from ..types import Face
@@ -9,9 +8,7 @@ if TYPE_CHECKING:
     from ..mesh import Mesh
 
 
-def trimesh_swap_edge(
-    mesh: "Mesh", edge: Edge, allow_boundary: bool = True
-) -> Union[tuple[Face, Face], Literal[False]]:
+def trimesh_swap_edge(mesh: "Mesh", edge: Edge, allow_boundary: bool = True) -> tuple[Face, Face] | Literal[False]:
     """Replace an edge of the mesh by an edge connecting the opposite
     vertices of the adjacent faces.
 

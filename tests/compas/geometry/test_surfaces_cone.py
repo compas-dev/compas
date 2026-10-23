@@ -107,6 +107,7 @@ def test_cone_from_plane_preserves_subclass():
     assert cone.height == 3.0
     assert cone.frame == Frame.worldYZ()
 
+
 # =============================================================================
 # Properties and Geometry
 # =============================================================================
@@ -115,8 +116,9 @@ def test_cone_from_plane_preserves_subclass():
 def test_cone_area_and_volume():
     cone = ConicalSurface(2.0, 3.0)
 
-    assert TOL.is_close(cone.area, 2.0 * pi * sqrt(13.0))
-    assert TOL.is_close(cone.volume, 4.0 * pi)
+    assert TOL.is_close(cone.area(), 2.0 * pi * sqrt(13.0))
+    assert TOL.is_close(cone.volume(), 4.0 * pi)
+
 
 # =============================================================================
 # Accessors

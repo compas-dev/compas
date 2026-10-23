@@ -115,8 +115,8 @@ def test_create_sphere_from_points():
 def test_spherical_surface_area_and_volume():
     sphere = SphericalSurface(2.0)
 
-    assert TOL.is_close(sphere.area, 16.0 * pi)
-    assert TOL.is_close(sphere.volume, 32.0 / 3.0 * pi)
+    assert TOL.is_close(sphere.area(), 16.0 * pi)
+    assert TOL.is_close(sphere.volume(), 32.0 / 3.0 * pi)
 
 
 def test_spherical_surface_center_assignment_creates_independent_point():
@@ -127,6 +127,7 @@ def test_spherical_surface_center_assignment_creates_independent_point():
     source.x = 10
 
     assert sphere.center == [1, 2, 3]
+
 
 # =============================================================================
 # Accessors

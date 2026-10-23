@@ -1,62 +1,65 @@
+from typing import Self
+from typing import overload
+
 from compas.colors import Color
+from compas.colors.color import ColorInput
 
 
-class ColorAttribute(object):
+class ColorAttribute:
     """A descriptor for color attributes.
 
     Parameters
     ----------
-    default : :class:`compas.colors.Color`, optional
+    default
         The default value of the attribute.
-        Default is ``None``.
 
     """
 
-    def __init__(self, default=None, **kwargs):
-        super(ColorAttribute, self).__init__(**kwargs)
+    def __init__(self, default: ColorInput = None) -> None:
+        super().__init__()
         self.default = Color.coerce(default)
 
-    def __set_name__(self, owner, name):
-        """Record the name of the attribute this descriptor is assigned to.
-        The attribute name is then used to identify the corresponding private attribute.
+    def __set_name__(self, owner: type[object], name: str) -> None:
+        """Record the public and private attribute names.
 
         Parameters
         ----------
-        owner : object
+        owner
             The class owning the attribute.
-        name : str
+        name
             The name of the attribute.
-
-        Returns
-        -------
-        None
-
-        Notes
-        -----
-        In Python 3.6+ this method is called automatically.
-        For earlier versions it needs to be used with a custom metaclass (``DescriptorProtocol``).
 
         """
         self.name = name
         self.private_name = "_" + name
 
-    def __get__(self, obj, otype=None):
-        """Get the color stored in the private attribute corresponding to the public attribute name of the descriptor.
+    @overload
+    def __get__(self, obj: None, otype: type[object]) -> Self: ...
+
+    @overload
+    def __get__(self, obj: object, otype: type[object] | None = None) -> Color | None: ...
+
+    def __get__(self, obj: object | None, otype: type[object] | None = None) -> Self | Color | None:
+        """Get the stored color or initialize it from the default.
 
         Parameters
         ----------
-        obj : object
-            The instance owning the instance of the descriptor.
-        otype : object, optional
-            The type owning the instance of the descriptor.
+        obj
+            The instance owning the descriptor.
+        otype
+            The type owning the descriptor.
 
         Returns
         -------
-        :class:`compas.colors.Color`
-            The color stored in the private attribute corresponding to the public attribute name of the descriptor.
-            If the private attribute does not exist, the default value of the descriptor is returned.
+        ColorAttribute
+            The descriptor itself when accessed on the owner class.
+        Color | None
+            The stored color, or the coerced default if no color was stored.
 
         """
+        if obj is None:
+            return self
+
         if not hasattr(obj, self.private_name):
             setattr(obj, self.private_name, None)
 
@@ -68,23 +71,18 @@ class ColorAttribute(object):
 
         return color
 
-    def __set__(self, obj, value):
+    def __set__(self, obj: object, value: ColorInput) -> None:
         """Set a new value for the descriptor.
 
         Parameters
         ----------
-        obj : object
+        obj
             The owner of the descriptor.
-        value : :class:`compas.colors.Color`
-            The new value for the descriptor.
-            This value is stored in the corresponding private attribute.
-
-        Returns
-        -------
-        None
+        value
+            The new color value. `None` leaves the current value unchanged.
 
         """
-        if not value:
+        if value is None:
             return
 
         setattr(obj, self.private_name, Color.coerce(value))

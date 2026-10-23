@@ -48,10 +48,7 @@ def test_closed_mesh_dual_geometry_and_oriented_connectivity(irregular_tetrahedr
     for vertex in mesh.vertices():
         assert dual.face_vertices(vertex) == mesh.vertex_faces(vertex, ordered=True)
 
-    expected_edges = {
-        frozenset((mesh.halfedge[u][v], mesh.halfedge[v][u]))
-        for u, v in mesh.edges()
-    }
+    expected_edges = {frozenset((mesh.halfedge[u][v], mesh.halfedge[v][u])) for u, v in mesh.edges()}
     assert {frozenset(edge) for edge in dual.edges()} == expected_edges
 
 
@@ -101,21 +98,13 @@ def test_open_mesh_dual_includes_theoretical_boundary_elements(irregular_fan):
     vertex_vertex = {}
     for edge in boundary_edges:
         midpoint = mesh.edge_midpoint(edge)
-        matches = [
-            vertex
-            for vertex in generated_vertices
-            if TOL.is_allclose(dual.vertex_coordinates(vertex), midpoint)
-        ]
+        matches = [vertex for vertex in generated_vertices if TOL.is_allclose(dual.vertex_coordinates(vertex), midpoint)]
         assert len(matches) == 1
         u, v = edge
         edge_vertex[u, v] = edge_vertex[v, u] = matches[0]
     for vertex in boundary:
         point = mesh.vertex_coordinates(vertex)
-        matches = [
-            candidate
-            for candidate in generated_vertices
-            if TOL.is_allclose(dual.vertex_coordinates(candidate), point)
-        ]
+        matches = [candidate for candidate in generated_vertices if TOL.is_allclose(dual.vertex_coordinates(candidate), point)]
         assert len(matches) == 1
         vertex_vertex[vertex] = matches[0]
 

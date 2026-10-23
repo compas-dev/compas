@@ -1,47 +1,49 @@
 from itertools import chain
-from math import fabs
-from math import sqrt
-from typing import Literal
-from typing import Optional
-from typing import Union
+from typing import TYPE_CHECKING
 
 from compas._typing import CoordinatesType
-from compas._typing import CoordinateType
+from compas._typing import MeshType
+from compas._typing import RayMeshHit
+from compas._typing import RayType
+from compas._typing import SphereType
 from compas.itertools import pairwise
-from compas.linalg.vectors import add_vectors
-from compas.linalg.vectors import cross_vectors
-from compas.linalg.vectors import dot_vectors
-from compas.linalg.vectors import length_vector
-from compas.linalg.vectors import length_vector_xy
-from compas.linalg.vectors import normalize_vector
-from compas.linalg.vectors import scale_vector
-from compas.linalg.vectors import subtract_vectors
-from compas.linalg.vectors import subtract_vectors_xy
 from compas.plugins import PluginNotInstalledError
 from compas.plugins import pluggable
 from compas.tolerance import TOL
 
-from ._core.distance import distance_point_point
+from ._core.intersections import closest_points_line_line as _closest_points_line_line_raw
+from ._core.intersections import intersection_circle_circle_xy as _intersection_circle_circle_xy
+from ._core.intersections import intersection_ellipse_line_xy as _intersection_ellipse_line_xy
+from ._core.intersections import intersection_line_line_xy as _intersection_line_line_xy
+from ._core.intersections import intersection_line_plane as _intersection_line_plane_raw
+from ._core.intersections import intersection_line_triangle as _intersection_line_triangle
+from ._core.intersections import intersection_plane_circle as _intersection_plane_circle
+from ._core.intersections import intersection_plane_plane as _intersection_plane_plane
+from ._core.intersections import intersection_segment_plane as _intersection_segment_plane
+from ._core.intersections import intersection_sphere_line as _intersection_sphere_line
+from ._core.intersections import intersection_sphere_sphere as _intersection_sphere_sphere
 from ._core.predicates_2 import is_point_on_segment_xy
-from ._core.predicates_3 import is_point_in_triangle
 from ._core.predicates_3 import is_point_on_segment
 from ._typing import CircleType
 from ._typing import LineType
-from ._typing import MeshType
 from ._typing import PlaneType
 from ._typing import PolylineType
-from ._typing import RayMeshHit
-from ._typing import RayType
-from ._typing import SphereType
 from ._typing import TriangleType
+from .intersection import IntersectionResult
+
+if TYPE_CHECKING:
+    from .curves.circle import Circle
+    from .line import Line
+    from .point import Point
+    from .shapes.sphere import Sphere
 
 
 def intersection_line_line(
     l1: LineType,
     l2: LineType,
-    tol: Optional[float] = None,
-) -> tuple[Optional[list[float]], Optional[list[float]]]:
-    """Compute the closest points between two lines.
+    tol: float | None = None,
+) -> "IntersectionResult[Point]":
+    """Compute the intersection of two lines.
 
     Parameters
     ----------
@@ -50,77 +52,37 @@ def intersection_line_line(
     l2
         Two points defining the second line.
     tol
-        Tolerance for evaluating the intersection points of each of the lines with the corresponding skew plane.
-        Default is `TOL.absolute`.
+        Tolerance for determining whether the closest points coincide.
 
     Returns
     -------
-    tuple[Optional[list[float]], Optional[list[float]]]
-        Two intersection points.
-        If the lines intersect, these two points are identical.
-        If the lines are skewed and thus only have an apparent intersection, the two points are different.
-        In all other cases there are no intersection points.
+    IntersectionResult[Point]
+        The unique intersection point, or an empty result if the lines are
+        skew, parallel, or coincident.
 
     Examples
     --------
-    The 2 intersection points of intersecting lines are identical.
-
     >>> l1 = [0, 0, 0], [1, 0, 0]
     >>> l2 = [0, 0, 0], [0, 1, 0]
-    >>> intersection_line_line(l1, l2)
-    ([0.0, 0.0, 0.0], [0.0, 0.0, 0.0])
-
-    Note that lines extend beyond their start and end points.
-
-    >>> l1 = [0, 0, 0], [1, 0, 0]
-    >>> l2 = [2, 0, 0], [0, 1, 0]
-    >>> intersection_line_line(l1, l2)
-    ([2.0, 0.0, 0.0], [2.0, 0.0, 0.0])
-
-    Skew lines have two different intersection points.
-
-    >>> l1 = [0, 0, 0], [1, 0, 0]
-    >>> l2 = [0, 0, 1], [0, 1, 1]
-    >>> intersection_line_line(l1, l2)
-    ([0.0, 0.0, 0.0], [0.0, 0.0, 1.0])
-
-    Parallel lines don't intersect.
-
-    >>> l1 = [0, 0, 0], [1, 0, 0]
-    >>> l2 = [0, 0, 0], [1, 0, 0]
-    >>> intersection_line_line(l1, l2)
-    (None, None)
+    >>> intersection_line_line(l1, l2)[0]
+    Point(x=0.000, y=0.000, z=0.000)
 
     """
     a, b = l1
     c, d = l2
+    point1, point2 = _closest_points_line_line_raw((a, b), (c, d), tol=tol)
+    if point1 is None or point2 is None or not TOL.is_allclose(point1, point2, rtol=0, atol=tol):
+        return IntersectionResult()
+    from .point import Point
 
-    ab = subtract_vectors(b, a)
-    cd = subtract_vectors(d, c)
-
-    n = cross_vectors(ab, cd)
-    if TOL.is_zero(length_vector(n), tol):
-        return None, None
-    n1 = normalize_vector(cross_vectors(ab, n))
-    n2 = normalize_vector(cross_vectors(cd, n))
-
-    plane_1 = (a, n1)
-    plane_2 = (c, n2)
-
-    i1 = intersection_line_plane(l1, plane_2, tol=tol)
-    i2 = intersection_line_plane(l2, plane_1, tol=tol)
-
-    if i1 is None or i2 is None:
-        return None, None
-
-    return i1, i2
+    return IntersectionResult((Point(point1[0], point1[1], point1[2]),))
 
 
 def intersection_segment_segment(
     ab: LineType,
     cd: LineType,
-    tol: Optional[float] = None,
-) -> tuple[Optional[list[float]], Optional[list[float]]]:
+    tol: float | None = None,
+) -> "IntersectionResult[Point]":
     """Compute the intersection of two lines segments.
 
     Parameters
@@ -136,62 +98,37 @@ def intersection_segment_segment(
 
     Returns
     -------
-    tuple[Optional[list[float]], Optional[list[float]]]
-        Two intersection points.
-        If the segments intersect and the intersection points lie on the respective segments, the two points are identical.
-        If the segments are skew and the apparent intersection points lie on the respective segments, the two points are different.
-        In all other cases there are no intersection points.
+    IntersectionResult[Point]
+        The unique intersection point, or an empty result otherwise.
 
     Examples
     --------
-    The 2 intersection points of intersecting segments are identical.
-
     >>> s1 = [0, 0, 0], [1, 0, 0]
     >>> s2 = [0, 0, 0], [0, 1, 0]
-    >>> intersection_segment_segment(s1, s2)
-    ([0.0, 0.0, 0.0], [0.0, 0.0, 0.0])
-
-    Unlike lines, segments don't extend beyond their start and end points.
-
-    >>> s1 = [0, 0, 0], [1, 0, 0]
-    >>> s2 = [2, 0, 0], [0, 1, 0]
-    >>> intersection_segment_segment(s1, s2)
-    (None, None)
-
-    Skew segments have two different intersection points.
-
-    >>> s1 = [0, 0, 0], [1, 0, 0]
-    >>> s2 = [0, 0, 1], [0, 1, 1]
-    >>> intersection_segment_segment(s1, s2)
-    ([0.0, 0.0, 0.0], [0.0, 0.0, 1.0])
-
-    Parallel segments don't intersect.
-
-    >>> s1 = [0, 0, 0], [1, 0, 0]
-    >>> s2 = [0, 0, 0], [1, 0, 0]
-    >>> intersection_segment_segment(s1, s2)
-    (None, None)
+    >>> intersection_segment_segment(s1, s2)[0]
+    Point(x=0.000, y=0.000, z=0.000)
 
     """
-    x1, x2 = intersection_line_line(ab, cd, tol=tol)
+    a, b = ab
+    c, d = cd
+    x1, x2 = _closest_points_line_line_raw((a, b), (c, d), tol=tol)
 
     if x1 is None or x2 is None:
-        return None, None
+        return IntersectionResult()
+    if not TOL.is_allclose(x1, x2, rtol=0, atol=tol):
+        return IntersectionResult()
+    if not is_point_on_segment(x1, ab, tol=tol) or not is_point_on_segment(x2, cd, tol=tol):
+        return IntersectionResult()
+    from .point import Point
 
-    if not is_point_on_segment(x1, ab, tol=tol):
-        return None, None
-
-    if not is_point_on_segment(x2, cd, tol=tol):
-        return None, None
-
-    return x1, x2
+    return IntersectionResult((Point(x1[0], x1[1], x1[2]),))
 
 
 def intersection_line_segment(
     line: LineType,
     segment: LineType,
-    tol: Optional[float] = None,
-) -> tuple[Optional[list[float]], Optional[list[float]]]:
+    tol: float | None = None,
+) -> "IntersectionResult[Point]":
     """Compute the intersection of a line and a segment.
 
     Parameters
@@ -207,25 +144,24 @@ def intersection_line_segment(
 
     Returns
     -------
-    tuple[Optional[list[float]], Optional[list[float]]]
-        Two intersection points.
-        If the line and segment intersect and the second intersection point lies on the segment, the two points are identical.
-        If the line and segment are skew and the second apparent intersection point lies on the segment, the two points are different.
-        In all other cases there are no intersection points.
+    IntersectionResult[Point]
+        The unique intersection point, or an empty result otherwise.
 
     """
-    x1, x2 = intersection_line_line(line, segment, tol=tol)
+    a, b = line
+    c, d = segment
+    x1, x2 = _closest_points_line_line_raw((a, b), (c, d), tol=tol)
 
     if x1 is None or x2 is None:
-        return None, None
+        return IntersectionResult()
+    if not TOL.is_allclose(x1, x2, rtol=0, atol=tol) or not is_point_on_segment(x2, segment, tol=tol):
+        return IntersectionResult()
+    from .point import Point
 
-    if not is_point_on_segment(x2, segment, tol=tol):
-        return None, None
-
-    return x1, x2
+    return IntersectionResult((Point(x1[0], x1[1], x1[2]),))
 
 
-def intersection_line_plane(line: LineType, plane: PlaneType, tol: Optional[float] = None) -> Optional[list[float]]:
+def intersection_line_plane(line: LineType, plane: PlaneType, tol: float | None = None) -> "IntersectionResult[Point]":
     """Compute the intersection point of a line and a plane.
 
     Parameters
@@ -240,9 +176,9 @@ def intersection_line_plane(line: LineType, plane: PlaneType, tol: Optional[floa
 
     Returns
     -------
-    Optional[list[float]]
-        The intersection point between the line and the plane,
-        or None if the line and the plane are parallel.
+    IntersectionResult[Point]
+        The intersection point, or an empty result if the line and plane are
+        parallel.
 
     See Also
     --------
@@ -251,29 +187,16 @@ def intersection_line_plane(line: LineType, plane: PlaneType, tol: Optional[floa
 
     """
     a, b = line
-    o, n = plane
+    origin, normal = plane
+    point = _intersection_line_plane_raw((a, b), (origin, normal), tol=tol)
+    if point is None:
+        return IntersectionResult()
+    from .point import Point
 
-    ab = subtract_vectors(b, a)
-    cosa = dot_vectors(n, ab)
-
-    if TOL.is_zero(cosa, tol):
-        # if the dot product (cosine of the angle between segment and plane)
-        # is close to zero the line and the normal are almost perpendicular
-        # hence there is no intersection
-        return None
-
-    # based on the ratio = -dot_vectors(n, ab) / dot_vectors(n, oa)
-    # there are three scenarios
-    # 1) 0.0 < ratio < 1.0: the intersection is between a and b
-    # 2) ratio < 0.0: the intersection is on the other side of a
-    # 3) ratio > 1.0: the intersection is on the other side of b
-    oa = subtract_vectors(a, o)
-    ratio = -dot_vectors(n, oa) / cosa
-    ab = scale_vector(ab, ratio)
-    return add_vectors(a, ab)
+    return IntersectionResult((Point(point[0], point[1], point[2]),))
 
 
-def intersection_segment_plane(segment: LineType, plane: PlaneType, tol: Optional[float] = None) -> Optional[list[float]]:
+def intersection_segment_plane(segment: LineType, plane: PlaneType, tol: float | None = None) -> "IntersectionResult[Point]":
     """Compute the intersection point of a line segment and a plane.
 
     Parameters
@@ -288,9 +211,9 @@ def intersection_segment_plane(segment: LineType, plane: PlaneType, tol: Optiona
 
     Returns
     -------
-    Optional[list[float]]
-        The intersection point between the line and the plane,
-        or None if the line and the plane are parallel.
+    IntersectionResult[Point]
+        The intersection point, or an empty result if the segment does not
+        intersect the plane.
 
     See Also
     --------
@@ -299,38 +222,21 @@ def intersection_segment_plane(segment: LineType, plane: PlaneType, tol: Optiona
 
     """
     a, b = segment
-    o, n = plane
+    origin, normal = plane
+    point = _intersection_segment_plane((a, b), (origin, normal), tol=tol)
+    if point is None:
+        return IntersectionResult()
+    from .point import Point
 
-    ab = subtract_vectors(b, a)
-    cosa = dot_vectors(n, ab)
-
-    if TOL.is_zero(cosa, tol):
-        # if the dot product (cosine of the angle between segment and plane)
-        # is close to zero the line and the normal are almost perpendicular
-        # hence there is no intersection
-        return None
-
-    # based on the ratio = -dot_vectors(n, ab) / dot_vectors(n, oa)
-    # there are three scenarios
-    # 1) 0.0 < ratio < 1.0: the intersection is between a and b
-    # 2) ratio < 0.0: the intersection is on the other side of a
-    # 3) ratio > 1.0: the intersection is on the other side of b
-    oa = subtract_vectors(a, o)
-    ratio = -dot_vectors(n, oa) / cosa
-
-    if 0.0 <= ratio <= 1.0:
-        ab = scale_vector(ab, ratio)
-        return add_vectors(a, ab)
-
-    return None
+    return IntersectionResult((Point(point[0], point[1], point[2]),))
 
 
 def intersection_polyline_plane(
     polyline: PolylineType,
     plane: PlaneType,
-    expected_number_of_intersections: Optional[int] = None,
-    tol: Optional[float] = None,
-) -> list[list[float]]:
+    expected_number_of_intersections: int | None = None,
+    tol: float | None = None,
+) -> "IntersectionResult[Point]":
     """Compute the intersections of a polyline and a plane.
 
     Parameters
@@ -348,7 +254,7 @@ def intersection_polyline_plane(
 
     Returns
     -------
-    list[list[float]]
+    IntersectionResult[Point]
         The intersection points between the polyline segments and the plane.
 
     See Also
@@ -359,17 +265,20 @@ def intersection_polyline_plane(
     """
     if expected_number_of_intersections is not None and expected_number_of_intersections < 0:
         raise ValueError("The expected number of intersections cannot be negative.")
+    origin, normal = plane
     intersections: list[list[float]] = []
     for segment in pairwise(polyline):
         if expected_number_of_intersections is not None and len(intersections) >= expected_number_of_intersections:
             break
-        point = intersection_segment_plane(segment, plane, tol)
+        point = _intersection_segment_plane(segment, (origin, normal), tol)
         if point is not None:
             intersections.append(point)
-    return intersections
+    from .point import Point
+
+    return IntersectionResult(tuple(Point(point[0], point[1], point[2]) for point in intersections))
 
 
-def intersection_line_triangle(line: LineType, triangle: TriangleType, tol: Optional[float] = None) -> Optional[list[float]]:
+def intersection_line_triangle(line: LineType, triangle: TriangleType, tol: float | None = None) -> "IntersectionResult[Point]":
     """Compute the intersection point of a line and a triangle.
 
     Parameters
@@ -384,29 +293,27 @@ def intersection_line_triangle(line: LineType, triangle: TriangleType, tol: Opti
 
     Returns
     -------
-    Optional[list[float]]
-        The intersection point between the line and the triangle,
-        or None if the line and the plane are parallel.
+    IntersectionResult[Point]
+        The intersection point, or an empty result if the line does not
+        intersect the triangle.
 
     """
-    a, b, c = triangle
-    ab = subtract_vectors(b, a)
-    ac = subtract_vectors(c, a)
-    n = cross_vectors(ab, ac)
-    plane = a, n
+    a, b = line
+    p1, p2, p3 = triangle
+    x = _intersection_line_triangle((a, b), (p1, p2, p3), tol=tol)
 
-    x = intersection_line_plane(line, plane, tol=tol)
+    if x is not None:
+        from .point import Point
 
-    if x is not None and is_point_in_triangle(x, triangle):
-        return x
-    return None
+        return IntersectionResult((Point(x[0], x[1], x[2]),))
+    return IntersectionResult()
 
 
 def intersection_plane_plane(
     plane1: PlaneType,
     plane2: PlaneType,
-    tol: Optional[float] = None,
-) -> Optional[tuple[list[float], list[float]]]:
+    tol: float | None = None,
+) -> "IntersectionResult[Line]":
     """Compute the intersection of two planes.
 
     Parameters
@@ -421,36 +328,27 @@ def intersection_plane_plane(
 
     Returns
     -------
-    Optional[tuple[list[float], list[float]]]
-        Two points defining the intersection line.
-        None if the planes are parallel.
+    IntersectionResult[Line]
+        The line of intersection, or an empty result if the planes are
+        parallel.
 
     """
-    o1, n1 = plane1
-    o2, n2 = plane2
+    origin1, normal1 = plane1
+    origin2, normal2 = plane2
+    line = _intersection_plane_plane((origin1, normal1), (origin2, normal2), tol=tol)
+    if line is None:
+        return IntersectionResult()
+    from .line import Line
 
-    # direction of intersection line
-    d = cross_vectors(n1, n2)
-    if TOL.is_zero(length_vector(d), tol):
-        return None
-    # vector in plane 1 perpendicular to the direction of the intersection line
-    v1 = cross_vectors(d, n1)
-    # point on plane 1
-    p1 = add_vectors(o1, v1)
-
-    x1 = intersection_line_plane((o1, p1), plane2, tol=tol)
-    if x1 is None:
-        return None
-    x2 = add_vectors(x1, d)
-    return x1, x2
+    return IntersectionResult((Line(line[0], line[1]),))
 
 
 def intersection_plane_plane_plane(
     plane1: PlaneType,
     plane2: PlaneType,
     plane3: PlaneType,
-    tol: Optional[float] = None,
-) -> Optional[list[float]]:
+    tol: float | None = None,
+) -> "IntersectionResult[Point]":
     """Compute the intersection of three planes.
 
     Parameters
@@ -467,9 +365,9 @@ def intersection_plane_plane_plane(
 
     Returns
     -------
-    Optional[list[float]]
-        The intersection point
-        or None if at least one pair of planes is parallel.
+    IntersectionResult[Point]
+        The intersection point, or an empty result if the planes have no unique
+        common intersection.
 
     Notes
     -----
@@ -482,126 +380,76 @@ def intersection_plane_plane_plane(
     [^intersection-three-planes]: [Intersection of Three Planes](http://geomalgorithms.com/Pic_3-planes.gif)
 
     """
-    line = intersection_plane_plane(plane1, plane2, tol=tol)
+    origin1, normal1 = plane1
+    origin2, normal2 = plane2
+    line = _intersection_plane_plane((origin1, normal1), (origin2, normal2), tol=tol)
     if line is not None:
-        return intersection_line_plane(line, plane3, tol=tol)
-    return None
+        origin, normal = plane3
+        point = _intersection_line_plane_raw(line, (origin, normal), tol=tol)
+        if point is not None:
+            from .point import Point
+
+            return IntersectionResult((Point(point[0], point[1], point[2]),))
+    return IntersectionResult()
 
 
 def intersection_sphere_sphere(
     sphere1: SphereType,
     sphere2: SphereType,
-    tol: Optional[float] = None,
-) -> Optional[
-    Union[
-        tuple[Literal["point"], list[float]],
-        tuple[Literal["circle"], tuple[list[float], float, list[float]]],
-        tuple[Literal["sphere"], tuple[list[float], float]],
-    ]
-]:
+    tol: float | None = None,
+) -> "IntersectionResult[Point | Circle | Sphere]":
     """Compute the intersection of two spheres.
 
     Parameters
     ----------
     sphere1
-        A sphere defined by a point and radius.
+        The first sphere, defined by a center point and radius.
     sphere2
-        A sphere defined by a point and radius.
+        The second sphere, defined by a center point and radius.
     tol
         Tolerance for classifying tangent and coincident spheres.
-        Default is `TOL.absolute`.
 
     Returns
     -------
-    Optional[Union[tuple[Literal["point"], list[float]], tuple[Literal["circle"], tuple[list[float], float, list[float]]], tuple[Literal["sphere"], tuple[list[float], float]]]]
-        The intersection type and geometry, or `None` if there is no
-        intersection. Point geometry is represented by coordinates, circle
-        geometry by center, radius, and normal, and coincident-sphere geometry
-        by center and radius.
-
-    Notes
-    -----
-    There are four cases of sphere-sphere intersection:[^intersection-sphere-sphere]
-
-    1. the spheres intersect in a circle,
-    2. they intersect in a point,
-    3. they overlap,
-    4. they do not intersect.
-
-    References
-    ----------
-    [^intersection-sphere-sphere]: [Sphere-Sphere Intersection](https://gamedev.stackexchange.com/questions/75756/sphere-sphere-intersection-and-circle-sphere-intersection)
+    IntersectionResult[Point | Circle | Sphere]
+        A point for tangent spheres, a circle for intersecting spheres, a
+        sphere for coincident spheres, or an empty result otherwise.
 
     Examples
     --------
-    >>> sphere1 = (3.0, 7.0, 4.0), 10.0
-    >>> sphere2 = (7.0, 4.0, 0.0), 5.0
-    >>> result = intersection_sphere_sphere(sphere1, sphere2)
-    >>> if result:
-    ...     case, res = result
-    ...     if case == "circle":
-    ...         center, radius, normal = res
-    ...     elif case == "point":
-    ...         point = res
-    ...     elif case == "sphere":
-    ...         center, radius = res
+    >>> result = intersection_sphere_sphere(((0, 0, 0), 1.0), ((2, 0, 0), 1.0))
+    >>> result[0]
+    Point(x=1.000, y=0.000, z=0.000)
 
     """
+    result = _intersection_sphere_sphere(sphere1, sphere2, tol=tol)
+    if result is None:
+        return IntersectionResult()
 
-    center1, radius1 = sphere1
-    center2, radius2 = sphere2
+    if result[0] == "point":
+        from .point import Point
 
-    if radius1 < 0.0 or radius2 < 0.0:
-        raise ValueError("Sphere radii cannot be negative.")
+        point = result[1]
+        return IntersectionResult((Point(point[0], point[1], point[2]),))
 
-    distance = distance_point_point(center1, center2)
+    if result[0] == "circle":
+        from .curves.circle import Circle
+        from .plane import Plane
 
-    # Case 4: No intersection
-    if distance > radius1 + radius2 and not TOL.is_close(distance, radius1 + radius2, atol=tol):
-        return None
+        center, radius, normal = result[1]
+        return IntersectionResult((Circle.from_plane_and_radius(Plane(center, normal), radius),))
 
-    # Case 4: No intersection, sphere is within the other sphere
-    if distance + min(radius1, radius2) < max(radius1, radius2) and not TOL.is_close(distance + min(radius1, radius2), max(radius1, radius2), atol=tol):
-        return None
+    from .shapes.sphere import Sphere
 
-    # Case 3: sphere's overlap
-    if TOL.is_zero(distance, tol) and TOL.is_close(radius1, radius2, atol=tol):
-        return "sphere", ([center1[0], center1[1], center1[2]], float(radius1))
-
-    # Case 2: point intersection
-    if TOL.is_close(radius1 + radius2, distance, atol=tol):
-        ipt = subtract_vectors(center2, center1)
-        ipt = scale_vector(ipt, radius1 / distance)
-        ipt = add_vectors(center1, ipt)
-        return "point", ipt
-
-    # Case 2: point intersection, smaller sphere is within the bigger
-    if TOL.is_close(distance + min(radius1, radius2), max(radius1, radius2), atol=tol):
-        if radius1 > radius2:
-            ipt = subtract_vectors(center2, center1)
-            ipt = scale_vector(ipt, radius1 / distance)
-            ipt = add_vectors(center1, ipt)
-        else:
-            ipt = subtract_vectors(center1, center2)
-            ipt = scale_vector(ipt, radius2 / distance)
-            ipt = add_vectors(center2, ipt)
-        return "point", ipt
-
-    # Case 1: circle intersection
-    h = 0.5 + (radius1**2 - radius2**2) / (2 * distance**2)
-    ci = subtract_vectors(center2, center1)
-    ci = scale_vector(ci, h)
-    ci = add_vectors(center1, ci)
-    ri = sqrt(max(0.0, radius1**2 - h**2 * distance**2))
-    normal = scale_vector(subtract_vectors(center2, center1), 1 / distance)
-    return "circle", (ci, ri, normal)
+    center, radius = result[1]
+    return IntersectionResult((Sphere.from_point_and_radius(center, radius),))
 
 
 def intersection_segment_polyline(
     segment: LineType,
     polyline: PolylineType,
-    tol: Optional[float] = None,
-) -> tuple[Optional[list[float]], Optional[list[float]]]:
+    tol: float | None = None,
+) -> "IntersectionResult[Point]":
     """Compute the first intersection of a segment and a polyline.
 
     Parameters
@@ -616,43 +464,29 @@ def intersection_segment_polyline(
 
     Returns
     -------
-    tuple[Optional[list[float]], Optional[list[float]]]
-        The closest points on the intersecting segments, or `(None, None)` if
-        there is no intersection.
+    IntersectionResult[Point]
+        The first intersection point, or an empty result otherwise.
 
     Examples
     --------
-    >>> from compas.geometry import is_point_on_polyline
-    >>> from compas.geometry import is_point_on_segment
-    >>> from compas.geometry import distance_point_point
-    >>> from compas.geometry import centroid_points
     >>> p = [(0.0, 0.0, 0.0), (1.0, 0.0, 0.5), (2.0, 0.5, 1.0)]
     >>> s = [(0.5, 0.0, 0.0), (0.5, 0.0, 2.0)]
-    >>> x1, x2 = intersection_segment_polyline(s, p)
-    >>> x = centroid_points([x1, x2])
-
-    >>> is_point_on_polyline(x, p)
-    True
-
-    >>> is_point_on_segment(x, s)
-    True
-
-    >>> distance_point_point((0.5, 0.0, 0.25), x) < 1e-6
-    True
+    >>> intersection_segment_polyline(s, p)[0]
+    Point(x=0.500, y=0.000, z=0.250)
 
     """
     for cd in pairwise(polyline):
-        pt = intersection_segment_segment(segment, cd, tol)
-        if pt[0] is not None and pt[1] is not None:
-            return pt
-    return None, None
+        result = intersection_segment_segment(segment, cd, tol)
+        if result:
+            return result
+    return IntersectionResult()
 
 
 def intersection_sphere_line(
     sphere: SphereType,
     line: LineType,
-    tol: Optional[float] = None,
-) -> Optional[Union[CoordinateType, tuple[CoordinateType, CoordinateType]]]:
+    tol: float | None = None,
+) -> "IntersectionResult[Point]":
     """Compute the intersection of a sphere and a line.
 
     Parameters
@@ -667,8 +501,9 @@ def intersection_sphere_line(
 
     Returns
     -------
-    Optional[Union[CoordinateType, tuple[CoordinateType, CoordinateType]]]
-        Two points (if the line goes through the sphere), one point (if the line is tangent to the sphere), or None (otherwise).
+    IntersectionResult[Point]
+        Two points if the line crosses the sphere, one point if the line is
+        tangent to the sphere, or an empty result otherwise.
 
     Notes
     -----
@@ -692,59 +527,27 @@ def intersection_sphere_line(
     True
 
     """
-    l1, l2 = line
-    sp, radius = sphere
+    start, end = line
+    points = _intersection_sphere_line(sphere, (start, end), tol=tol)
+    if points is None:
+        return IntersectionResult()
+    from .point import Point
 
-    if radius < 0.0:
-        raise ValueError("The sphere radius cannot be negative.")
-
-    a = (l2[0] - l1[0]) ** 2 + (l2[1] - l1[1]) ** 2 + (l2[2] - l1[2]) ** 2
-    if TOL.is_zero(a, tol):
-        raise ValueError("A line requires two distinct points.")
-    b = 2.0 * ((l2[0] - l1[0]) * (l1[0] - sp[0]) + (l2[1] - l1[1]) * (l1[1] - sp[1]) + (l2[2] - l1[2]) * (l1[2] - sp[2]))
-
-    c = sp[0] ** 2 + sp[1] ** 2 + sp[2] ** 2 + l1[0] ** 2 + l1[1] ** 2 + l1[2] ** 2 - 2.0 * (sp[0] * l1[0] + sp[1] * l1[1] + sp[2] * l1[2]) - radius**2
-
-    i = b * b - 4.0 * a * c
-
-    if TOL.is_zero(i, tol):  # case 2: one intersection
-        i = 0.0
-    elif i < 0.0:  # case 3: no intersection
-        return None
-
-    if i == 0.0:
-        mu = -b / (2.0 * a)
-        ipt = (
-            l1[0] + mu * (l2[0] - l1[0]),
-            l1[1] + mu * (l2[1] - l1[1]),
-            l1[2] + mu * (l2[2] - l1[2]),
+    if len(points) == 3:
+        return IntersectionResult((Point(points[0], points[1], points[2]),))
+    return IntersectionResult(
+        (
+            Point(points[0][0], points[0][1], points[0][2]),
+            Point(points[1][0], points[1][1], points[1][2]),
         )
-        return ipt
-
-    if i > 0.0:  # case 1: two intersections
-        # 1.
-        mu = (-b + sqrt(i)) / (2.0 * a)
-        ipt1 = (
-            l1[0] + mu * (l2[0] - l1[0]),
-            l1[1] + mu * (l2[1] - l1[1]),
-            l1[2] + mu * (l2[2] - l1[2]),
-        )
-        # 2.
-        mu = (-b - sqrt(i)) / (2.0 * a)
-        ipt2 = (
-            l1[0] + mu * (l2[0] - l1[0]),
-            l1[1] + mu * (l2[1] - l1[1]),
-            l1[2] + mu * (l2[2] - l1[2]),
-        )
-        return ipt1, ipt2
-    return None
+    )
 
 
 def intersection_plane_circle(
     plane: PlaneType,
     circle: CircleType,
-    tol: Optional[float] = None,
-) -> Optional[Union[CoordinateType, tuple[CoordinateType, CoordinateType]]]:
+    tol: float | None = None,
+) -> "IntersectionResult[Point]":
     """Compute the intersection of a plane and a circle.
 
     Parameters
@@ -759,8 +562,9 @@ def intersection_plane_circle(
 
     Returns
     -------
-    Optional[Union[CoordinateType, tuple[CoordinateType, CoordinateType]]]
-        Two points (secant intersection), one point (tangent intersection), or None (otherwise).
+    IntersectionResult[Point]
+        Two points for a secant intersection, one point for a tangent
+        intersection, or an empty result otherwise.
 
     Notes
     -----
@@ -782,13 +586,22 @@ def intersection_plane_circle(
     (10.0, 0.0, 0.0)
 
     """
-    circle_plane, circle_radius = circle
-    line = intersection_plane_plane(plane, circle_plane, tol=tol)
-    if line is None:
-        return None
-    circle_point = circle_plane[0]
-    sphere = circle_point, circle_radius
-    return intersection_sphere_line(sphere, line, tol=tol)
+    origin, normal = plane
+    circle_plane, radius = circle
+    circle_origin, circle_normal = circle_plane
+    points = _intersection_plane_circle((origin, normal), ((circle_origin, circle_normal), radius), tol=tol)
+    if points is None:
+        return IntersectionResult()
+    from .point import Point
+
+    if len(points) == 3:
+        return IntersectionResult((Point(points[0], points[1], points[2]),))
+    return IntersectionResult(
+        (
+            Point(points[0][0], points[0][1], points[0][2]),
+            Point(points[1][0], points[1][1], points[1][2]),
+        )
+    )
 
 
 @pluggable(category="intersections")
@@ -816,7 +629,7 @@ def intersection_mesh_mesh(A: MeshType, B: MeshType) -> list[CoordinatesType]:
     raise PluginNotInstalledError
 
 
-intersection_mesh_mesh.__pluggable__ = True
+setattr(intersection_mesh_mesh, "__pluggable__", True)
 
 
 @pluggable(category="intersections")
@@ -845,7 +658,7 @@ def intersection_ray_mesh(ray: RayType, mesh: MeshType) -> list[RayMeshHit]:
     raise PluginNotInstalledError
 
 
-intersection_ray_mesh.__pluggable__ = True
+setattr(intersection_ray_mesh, "__pluggable__", True)
 
 
 # ==============================================================================
@@ -853,7 +666,7 @@ intersection_ray_mesh.__pluggable__ = True
 # ==============================================================================
 
 
-def intersection_line_line_xy(l1: LineType, l2: LineType, tol: Optional[float] = None) -> Optional[list[float]]:
+def intersection_line_line_xy(l1: LineType, l2: LineType, tol: float | None = None) -> "IntersectionResult[Point]":
     """Compute the intersection of two lines, assuming they lie on the XY plane.
 
     Parameters
@@ -868,37 +681,27 @@ def intersection_line_line_xy(l1: LineType, l2: LineType, tol: Optional[float] =
 
     Returns
     -------
-    Optional[list[float]]
-        XYZ coordinates of intersection point if one exists, with Z = 0.
-        Otherwise, None.
+    IntersectionResult[Point]
+        The unique intersection point with Z = 0, or an empty result if the
+        lines are parallel or coincident.
 
     """
     a, b = l1
     c, d = l2
+    point = _intersection_line_line_xy((a, b), (c, d), tol=tol)
+    if point is None:
+        return IntersectionResult()
 
-    x1, y1 = a[0], a[1]
-    x2, y2 = b[0], b[1]
-    x3, y3 = c[0], c[1]
-    x4, y4 = d[0], d[1]
+    from .point import Point
 
-    d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4)
-
-    if TOL.is_zero(d, tol):
-        return None
-
-    a = x1 * y2 - y1 * x2
-    b = x3 * y4 - y3 * x4
-    x = (a * (x3 - x4) - (x1 - x2) * b) / d
-    y = (a * (y3 - y4) - (y1 - y2) * b) / d
-
-    return [x, y, 0.0]
+    return IntersectionResult((Point(point[0], point[1], point[2]),))
 
 
 def intersection_line_segment_xy(
     line: LineType,
     segment: LineType,
-    tol: Optional[float] = None,
-) -> Optional[list[float]]:
+    tol: float | None = None,
+) -> "IntersectionResult[Point]":
     """Compute the intersection between a line and a segment.
 
     Parameters
@@ -914,22 +717,21 @@ def intersection_line_segment_xy(
 
     Returns
     -------
-    Optional[list[float]]
-        XYZ coordinates of the intersection, if one exists, with Z = 0.
-        None otherwise.
+    IntersectionResult[Point]
+        The unique intersection point with Z = 0, or an empty result.
 
     """
-    x = intersection_line_line_xy(line, segment, tol=tol)
-    if x is not None and is_point_on_segment_xy(x, segment, tol=tol):
-        return x
-    return None
+    result = intersection_line_line_xy(line, segment, tol=tol)
+    if result and is_point_on_segment_xy(result[0], segment, tol=tol):
+        return result
+    return IntersectionResult()
 
 
 def intersection_line_box_xy(
     line: LineType,
     box: CoordinatesType,
-    tol: Optional[float] = None,
-) -> list[list[float]]:
+    tol: float | None = None,
+) -> "IntersectionResult[Point]":
     """Compute the intersection between a line and a box in the XY plane.
 
     Parameters
@@ -944,7 +746,7 @@ def intersection_line_box_xy(
 
     Returns
     -------
-    list[list[float]]
+    IntersectionResult[Point]
         The unique intersection points in box-edge order.
 
     Raises
@@ -956,19 +758,19 @@ def intersection_line_box_xy(
     if len(box) != 4:
         raise ValueError("An XY box requires exactly four corners.")
 
-    points: list[list[float]] = []
+    points: list[Point] = []
     for segment in pairwise(chain(box, (box[0],))):
-        x = intersection_line_segment_xy(line, segment, tol=tol)
-        if x is not None and not any(TOL.is_allclose(x, point, rtol=0.0, atol=tol) for point in points):
-            points.append(x)
-    return points
+        result = intersection_line_segment_xy(line, segment, tol=tol)
+        if result and not any(TOL.is_allclose(result[0], point, rtol=0.0, atol=tol) for point in points):
+            points.append(result[0])
+    return IntersectionResult(tuple(points))
 
 
 def intersection_polyline_box_xy(
     polyline: PolylineType,
     box: CoordinatesType,
-    tol: Optional[float] = None,
-) -> list[list[float]]:
+    tol: float | None = None,
+) -> "IntersectionResult[Point]":
     """Compute the intersection between a polyline and a box in the XY plane.
 
     Parameters
@@ -982,8 +784,8 @@ def intersection_polyline_box_xy(
 
     Returns
     -------
-    list[list[float]]
-        A list of intersection points.
+    IntersectionResult[Point]
+        The unique intersection points in box-edge order.
 
     Raises
     ------
@@ -994,20 +796,20 @@ def intersection_polyline_box_xy(
     if len(box) != 4:
         raise ValueError("An XY box requires exactly four corners.")
 
-    points: list[list[float]] = []
+    points: list[Point] = []
     for side in pairwise(chain(box, (box[0],))):
         for segment in pairwise(polyline):
-            x = intersection_segment_segment_xy(side, segment, tol=tol)
-            if x is not None and not any(TOL.is_allclose(x, point, rtol=0.0, atol=tol) for point in points):
-                points.append(x)
-    return points
+            result = intersection_segment_segment_xy(side, segment, tol=tol)
+            if result and not any(TOL.is_allclose(result[0], point, rtol=0.0, atol=tol) for point in points):
+                points.append(result[0])
+    return IntersectionResult(tuple(points))
 
 
 def intersection_segment_segment_xy(
     ab: LineType,
     cd: LineType,
-    tol: Optional[float] = None,
-) -> Optional[list[float]]:
+    tol: float | None = None,
+) -> "IntersectionResult[Point]":
     """Compute the intersection of two lines segments, assuming they lie in the XY plane.
 
     Parameters
@@ -1022,30 +824,29 @@ def intersection_segment_segment_xy(
 
     Returns
     -------
-    Optional[list[float]]
-        XYZ coordinates of intersection point if one exists.
-        None otherwise.
+    IntersectionResult[Point]
+        The unique intersection point with Z = 0, or an empty result.
 
     """
-    intx_pt = intersection_line_line_xy(ab, cd, tol=tol)
+    result = intersection_line_line_xy(ab, cd, tol=tol)
+    if not result:
+        return result
+    point = result[0]
 
-    if intx_pt is None:
-        return None
+    if not is_point_on_segment_xy(point, ab, tol=tol):
+        return IntersectionResult()
 
-    if not is_point_on_segment_xy(intx_pt, ab, tol=tol):
-        return None
+    if not is_point_on_segment_xy(point, cd, tol=tol):
+        return IntersectionResult()
 
-    if not is_point_on_segment_xy(intx_pt, cd, tol=tol):
-        return None
-
-    return intx_pt
+    return result
 
 
 def intersection_circle_circle_xy(
     circle1: CircleType,
     circle2: CircleType,
-    tol: Optional[float] = None,
-) -> Optional[tuple[tuple[float, float, float], tuple[float, float, float]]]:
+    tol: float | None = None,
+) -> "IntersectionResult[Point | Circle]":
     """Compute the intersection points of two circles in the XY plane.
 
     Parameters
@@ -1060,60 +861,43 @@ def intersection_circle_circle_xy(
 
     Returns
     -------
-    Optional[tuple[tuple[float, float, float], tuple[float, float, float]]]
-        The intersection points if there are any.
-        If the circles are tangent to each other, the two intersection points are identical.
-        None otherwise.
+    IntersectionResult[Point | Circle]
+        The one or two intersection points, the coincident circle, or an empty
+        result if the circles do not intersect.
 
     Raises
     ------
     ValueError
-        If either radius is negative.
+        If either radius is not positive.
 
     """
-    plane1, r1 = circle1
-    plane2, r2 = circle2
-    p1, _ = plane1
-    p2, _ = plane2
+    plane1, radius1 = circle1
+    plane2, radius2 = circle2
+    center1, normal1 = plane1
+    center2, normal2 = plane2
+    result = _intersection_circle_circle_xy(((center1, normal1), radius1), ((center2, normal2), radius2), tol=tol)
+    if result is None:
+        return IntersectionResult()
+    if result[0] == "circle":
+        from .curves.circle import Circle
+        from .plane import Plane
 
-    if r1 < 0.0 or r2 < 0.0:
-        raise ValueError("Circle radii cannot be negative.")
+        center, radius, normal = result[1]
+        return IntersectionResult((Circle.from_plane_and_radius(Plane(center, normal), radius),))
+    from .point import Point
 
-    R = length_vector_xy(subtract_vectors_xy(p2, p1))
-
-    if TOL.is_zero(R, tol):
-        return None
-
-    if R > r1 + r2 and not TOL.is_close(R, r1 + r2, atol=tol):
-        return None
-
-    if R < fabs(r1 - r2) and not TOL.is_close(R, fabs(r1 - r2), atol=tol):
-        return None
-
-    x1, y1 = p1[0], p1[1]
-    x2, y2 = p2[0], p2[1]
-
-    cx = 0.5 * (x1 + x2)
-    cy = 0.5 * (y2 + y1)
-
-    R2 = R * R
-    R4 = R2 * R2
-
-    a = (r1 * r1 - r2 * r2) / (2 * R2)
-    discriminant = 2 * (r1 * r1 + r2 * r2) / R2 - (r1 * r1 - r2 * r2) ** 2 / R4 - 1
-    b = 0.5 * sqrt(max(0.0, discriminant))
-
-    i1 = cx + a * (x2 - x1) + b * (y2 - y1), cy + a * (y2 - y1) + b * (x1 - x2), 0
-    i2 = cx + a * (x2 - x1) - b * (y2 - y1), cy + a * (y2 - y1) - b * (x1 - x2), 0
-
-    return i1, i2
+    if result[0] == "point":
+        point = result[1]
+        return IntersectionResult((Point(point[0], point[1], point[2]),))
+    point1, point2 = result[1]
+    return IntersectionResult((Point(point1[0], point1[1], point1[2]), Point(point2[0], point2[1], point2[2])))
 
 
 def intersection_segment_polyline_xy(
     segment: LineType,
     polyline: PolylineType,
-    tol: Optional[float] = None,
-) -> Optional[list[float]]:
+    tol: float | None = None,
+) -> "IntersectionResult[Point]":
     """Compute the first intersection of a segment and a polyline in the XY plane.
 
     Parameters
@@ -1128,9 +912,8 @@ def intersection_segment_polyline_xy(
 
     Returns
     -------
-    Optional[list[float]]
-        XYZ coordinates of the first intersection point if one exists.
-        None otherwise
+    IntersectionResult[Point]
+        The first intersection point with Z = 0, or an empty result.
 
     Examples
     --------
@@ -1139,32 +922,27 @@ def intersection_segment_polyline_xy(
     >>> from compas.geometry import distance_point_point
     >>> p = [(0.0, 0.0, 0.0), (1.0, 0.0, 0.0), (2.0, 0.0, 0.0)]
     >>> s = [(0.5, -0.5, 0.0), (0.5, 0.5, 0.0)]
-    >>> x = intersection_segment_polyline_xy(s, p)
-    >>> is_point_on_polyline_xy(x, p)
+    >>> point = intersection_segment_polyline_xy(s, p)[0]
+    >>> is_point_on_polyline_xy(point, p)
     True
-    >>> is_point_on_segment_xy(x, s)
+    >>> is_point_on_segment_xy(point, s)
     True
-    >>> distance_point_point((0.5, 0.0, 0.0), x) < 1e-6
+    >>> distance_point_point((0.5, 0.0, 0.0), point) < 1e-6
     True
 
     """
     for cd in pairwise(polyline):
-        pt = intersection_segment_segment_xy(segment, cd, tol)
-        if pt is not None:
-            return pt
-    return None
+        result = intersection_segment_segment_xy(segment, cd, tol)
+        if result:
+            return result
+    return IntersectionResult()
 
 
 def intersection_ellipse_line_xy(
     ellipse: tuple[float, float],
     line: LineType,
-    tol: Optional[float] = None,
-) -> Optional[
-    Union[
-        tuple[float, float, float],
-        tuple[tuple[float, float, float], tuple[float, float, float]],
-    ]
-]:
+    tol: float | None = None,
+) -> "IntersectionResult[Point]":
     """Compute the intersection of an origin-centered ellipse and a line in the XY plane.
 
     Parameters
@@ -1179,10 +957,8 @@ def intersection_ellipse_line_xy(
 
     Returns
     -------
-    Optional[Union[tuple[float, float, float], tuple[tuple[float, float, float], tuple[float, float, float]]]]
-        Two points, if the line goes through the ellipse.
-        One point, if the line is tangent to the ellipse.
-        None, otherwise.
+    IntersectionResult[Point]
+        The one or two intersection points, or an empty result.
 
     Raises
     ------
@@ -1203,31 +979,16 @@ def intersection_ellipse_line_xy(
     >>> i1, i2 = intersection_ellipse_line_xy(ellipse, [p1, p2])
 
     """
-    x1, y1 = line[0][0], line[0][1]
-    x2, y2 = line[1][0], line[1][1]
+    start, end = line
+    points = _intersection_ellipse_line_xy(ellipse, (start, end), tol=tol)
+    if points is None:
+        return IntersectionResult()
+    from .point import Point
 
-    a, b = ellipse
-
-    if a <= 0.0 or b <= 0.0:
-        raise ValueError("Ellipse semi-axis lengths must be positive.")
-
-    A = (x2 - x1) ** 2 / a**2 + (y2 - y1) ** 2 / b**2
-    if TOL.is_zero(A, tol):
-        raise ValueError("A line requires two distinct points.")
-    B = 2 * x1 * (x2 - x1) / a**2 + 2 * y1 * (y2 - y1) / b**2
-    C = x1**2 / a**2 + y1**2 / b**2 - 1
-
-    discriminant = B**2 - 4 * A * C
-    if TOL.is_zero(discriminant, tol):
-        t = -B / (2 * A)
-        return (x1 + (x2 - x1) * t, y1 + (y2 - y1) * t, 0.0)
-    if discriminant > 0:
-        t1 = (-B + sqrt(discriminant)) / (2 * A)
-        t2 = (-B - sqrt(discriminant)) / (2 * A)
-        p1 = (x1 + (x2 - x1) * t1, y1 + (y2 - y1) * t1, 0.0)
-        p2 = (x1 + (x2 - x1) * t2, y1 + (y2 - y1) * t2, 0.0)
-        return p1, p2
-    return None
+    if len(points) == 3:
+        return IntersectionResult((Point(points[0], points[1], points[2]),))
+    point1, point2 = points
+    return IntersectionResult((Point(point1[0], point1[1], point1[2]), Point(point2[0], point2[1], point2[2])))
 
 
 # def intersection_line_circle_xy(line, circle):

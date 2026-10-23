@@ -1,0 +1,3 @@
+# `compas.itertools`
+
+::: compas.itertools

@@ -1,6 +1,7 @@
 from compas.tolerance import TOL
 from compas.tolerance import Tolerance
 from compas.geometry import Point
+import pytest
 
 
 def test_tolerance_default_tolerance():
@@ -20,6 +21,63 @@ def test_tolerance_creates_independent_instances():
 
     # TOL is unchanged
     assert TOL.absolute == Tolerance.ABSOLUTE
+
+
+def test_tolerance_preserves_explicit_zero_values():
+    tol = Tolerance(
+        absolute=0.0,
+        relative=0.0,
+        angular=0.0,
+        approximation=0.0,
+        lineardeflection=0.0,
+        angulardeflection=0.0,
+    )
+
+    assert tol.absolute == 0.0
+    assert tol.relative == 0.0
+    assert tol.angular == 0.0
+    assert tol.approximation == 0.0
+    assert tol.lineardeflection == 0.0
+    assert tol.angulardeflection == 0.0
+    assert not tol.is_close(1.0, 1.0 + 1e-12)
+    assert not tol.is_zero(1e-12)
+
+
+def test_tolerance_explicit_zero_overrides_defaults():
+    tol = Tolerance()
+
+    assert not tol.is_close(1.0, 1.0 + 1e-12, rtol=0.0, atol=0.0)
+    assert not tol.is_zero(1e-12, tol=0.0)
+
+
+def test_tolerance_allclose_accepts_generators():
+    left = (value for value in [1.0, 2.0, 3.0])
+    right = (value for value in [1.0, 2.0, 3.0])
+
+    assert TOL.is_allclose(left, right)
+
+
+@pytest.mark.parametrize(
+    ("left", "right"),
+    [
+        ([1.0], [1.0, 2.0]),
+        ([1.0, 2.0], [1.0]),
+        ([[1.0]], [[1.0, 2.0]]),
+        ([[1.0]], [1.0]),
+        ([1.0], [[1.0]]),
+    ],
+)
+def test_tolerance_allclose_rejects_different_shapes(left, right):
+    assert not TOL.is_allclose(left, right)
+
+
+def test_tolerance_deserialization_preserves_subclasses():
+    class CustomTolerance(Tolerance):
+        pass
+
+    tol = CustomTolerance.__from_data__(Tolerance().__data__)
+
+    assert type(tol) is CustomTolerance
 
 
 def test_tolerance_update():
@@ -82,6 +140,20 @@ def test_tolerance_format_number_with_default_precision():
     assert TOL.format_number(0) == "0.000"
     assert TOL.format_number(0.5) == "0.500"
     assert TOL.format_number(float(0)) == "0.000"
+
+
+def test_tolerance_rejects_zero_precision():
+    with pytest.raises(ValueError):
+        TOL.format_number(1.0, precision=0)
+
+    with pytest.raises(ValueError):
+        TOL.geometric_key((1.0, 2.0, 3.0), precision=0)
+
+
+@pytest.mark.parametrize("tolerance", [-1.0, 0.0, 1.0, 10.0])
+def test_precision_from_tolerance_rejects_values_outside_domain(tolerance):
+    with pytest.raises(ValueError, match="greater than zero and smaller than one"):
+        TOL.precision_from_tolerance(tolerance)
 
 
 def test_tolerance_format_point():

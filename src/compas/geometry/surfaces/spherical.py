@@ -2,9 +2,7 @@ from math import cos
 from math import pi
 from math import sin
 from typing import Any
-from typing import Optional
-
-from typing_extensions import Self
+from typing import Self
 
 from compas._typing import CoordinatesType
 from compas._typing import CoordinateType
@@ -64,9 +62,9 @@ class SphericalSurface(Surface):
             frame=Frame.__from_data__(data["frame"]),
         )
 
-    def __init__(self, radius: float, frame: Optional[Frame] = None, name: Optional[str] = None) -> None:
+    def __init__(self, radius: float, frame: Frame | None = None, name: str | None = None) -> None:
         super().__init__(frame=frame, name=name)
-        self._radius: Optional[float] = None
+        self._radius: float | None = None
         self.radius = radius
 
     def __repr__(self) -> str:
@@ -113,15 +111,14 @@ class SphericalSurface(Surface):
         if radius < 0:
             raise ValueError("The radius of a sphere should be larger than or equal to zero.")
         self._radius = float(radius)
+        self._invalidate_discretization()
 
-    @property
     def area(self) -> float:
-        """The surface area of the sphere."""
+        """Compute the surface area of the sphere."""
         return 4 * pi * self.radius**2
 
-    @property
     def volume(self) -> float:
-        """The volume enclosed by the sphere."""
+        """Compute the volume enclosed by the sphere."""
         return 4.0 / 3.0 * pi * self.radius**3
 
     @property
@@ -195,14 +192,10 @@ class SphericalSurface(Surface):
         if len(points) == 3:
             return cls.from_three_points(points[0], points[1], points[2])
 
-        from compas.geometry import bestfit_sphere_numpy
+        from compas.geometry import bestfit_sphere
 
-        center, radius = bestfit_sphere_numpy(points)
+        center, radius = bestfit_sphere(points)
         return cls(radius, frame=Frame(center, [1, 0, 0], [0, 1, 0]))
-
-    # =============================================================================
-    # Conversions
-    # =============================================================================
 
     # =============================================================================
     # Methods

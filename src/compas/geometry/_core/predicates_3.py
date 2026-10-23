@@ -1,7 +1,6 @@
+from collections.abc import Sequence
 from itertools import chain
 from typing import Any
-from typing import Optional
-from typing import Sequence
 
 from compas._typing import CoordinatesType
 from compas._typing import CoordinateType
@@ -36,7 +35,7 @@ from compas.tolerance import TOL
 # =============================================================================
 
 
-def is_colinear(a: Sequence[float], b: Sequence[float], c: Sequence[float], tol: Optional[float] = None) -> bool:
+def is_colinear(a: CoordinateType, b: CoordinateType, c: CoordinateType, tol: float | None = None) -> bool:
     """Determine if three points are colinear.
 
     Parameters
@@ -66,7 +65,7 @@ def is_colinear(a: Sequence[float], b: Sequence[float], c: Sequence[float], tol:
     return TOL.is_zero(area_triangle([a, b, c]), tol)
 
 
-def is_colinear_line_line(line1: Sequence[Sequence[float]], line2: Sequence[Sequence[float]], tol: Optional[float] = None) -> bool:
+def is_colinear_line_line(line1: Sequence[Sequence[float]], line2: Sequence[Sequence[float]], tol: float | None = None) -> bool:
     """Determine if two lines are colinear.
 
     Parameters
@@ -96,7 +95,7 @@ def is_colinear_line_line(line1: Sequence[Sequence[float]], line2: Sequence[Sequ
     return is_colinear(a, b, c, tol) and is_colinear(a, b, d, tol)
 
 
-def is_coplanar(points: Sequence[Sequence[float]], tol: Optional[float] = None) -> bool:
+def is_coplanar(points: CoordinatesType, tol: float | None = None) -> bool:
     """Determine if the points are coplanar.
 
     Parameters
@@ -130,14 +129,15 @@ def is_coplanar(points: Sequence[Sequence[float]], tol: Optional[float] = None) 
     # A Sequence may be immutable, so make a mutable copy before consuming points.
     temp = list(points)
 
-    while len(temp) >= 3:
-        a = temp.pop(0)
-        b = temp.pop(0)
-        c = temp.pop(0)
+    a = temp.pop(0)
+    b = temp.pop(0)
+    c = temp.pop(0)
+    while True:
         if not is_colinear(a, b, c, tol):
             break
         if not temp:
             return True
+        a, b, c = b, c, temp.pop(0)
 
     n = cross_vectors(subtract_vectors(b, a), subtract_vectors(c, a))
 
@@ -161,7 +161,7 @@ def is_coplanar(points: Sequence[Sequence[float]], tol: Optional[float] = None) 
 # =============================================================================
 
 
-def is_parallel_vector_vector(u: Sequence[float], v: Sequence[float], tol: Optional[float] = None) -> bool:
+def is_parallel_vector_vector(u: Sequence[float], v: Sequence[float], tol: float | None = None) -> bool:
     """Determine if two vectors are parallel.
 
     Parameters
@@ -183,7 +183,7 @@ def is_parallel_vector_vector(u: Sequence[float], v: Sequence[float], tol: Optio
     See Also
     --------
     [`is_parallel_line_line`][compas.geometry.is_parallel_line_line]
-    [`is_parallel_plane_plane`][compas.geometry.is_parallel_plane_plane]
+    `is_parallel_plane_plane`
 
     Notes
     -----
@@ -203,7 +203,7 @@ def is_parallel_vector_vector(u: Sequence[float], v: Sequence[float], tol: Optio
     return TOL.is_zero(length_vector(cross_vectors(u, v)), tol)
 
 
-def is_parallel_line_line(line1: Sequence[Sequence[float]], line2: Sequence[Sequence[float]], tol: Optional[float] = None) -> bool:
+def is_parallel_line_line(line1: Sequence[Sequence[float]], line2: Sequence[Sequence[float]], tol: float | None = None) -> bool:
     """Determine if two lines are parallel.
 
     Parameters
@@ -225,8 +225,8 @@ def is_parallel_line_line(line1: Sequence[Sequence[float]], line2: Sequence[Sequ
     See Also
     --------
     [`is_parallel_vector_vector`][compas.geometry.is_parallel_vector_vector]
-    [`is_parallel_plane_plane`][compas.geometry.is_parallel_plane_plane]
-    [`is_perpendicular_line_line`][compas.geometry.is_perpendicular_line_line]
+    `is_parallel_plane_plane`
+    `is_perpendicular_line_line`
 
     """
     a, b = line1
@@ -236,7 +236,7 @@ def is_parallel_line_line(line1: Sequence[Sequence[float]], line2: Sequence[Sequ
     return is_parallel_vector_vector(ab, cd, tol)
 
 
-def is_parallel_plane_plane(plane1: Sequence[Sequence[float]], plane2: Sequence[Sequence[float]], tol: Optional[float] = None) -> bool:
+def is_parallel_plane_plane(plane1: Sequence[Sequence[float]], plane2: Sequence[Sequence[float]], tol: float | None = None) -> bool:
     """Determine if two planes are parallel.
 
     Parameters
@@ -264,7 +264,7 @@ def is_parallel_plane_plane(plane1: Sequence[Sequence[float]], plane2: Sequence[
     return is_parallel_vector_vector(plane1[1], plane2[1], tol)
 
 
-def is_perpendicular_vector_vector(u: Sequence[float], v: Sequence[float], tol: Optional[float] = None) -> bool:
+def is_perpendicular_vector_vector(u: Sequence[float], v: Sequence[float], tol: float | None = None) -> bool:
     """Determine if two vectors are perpendicular.
 
     Parameters
@@ -285,7 +285,7 @@ def is_perpendicular_vector_vector(u: Sequence[float], v: Sequence[float], tol: 
 
     See Also
     --------
-    [`is_perpendicular_line_line`][compas.geometry.is_perpendicular_line_line]
+    `is_perpendicular_line_line`
     [`is_perpendicular_plane_plane`][compas.geometry.is_perpendicular_plane_plane]
 
     Notes
@@ -300,7 +300,7 @@ def is_perpendicular_vector_vector(u: Sequence[float], v: Sequence[float], tol: 
     return TOL.is_zero(dot_vectors(u, v), tol)
 
 
-def is_perpendicular_line_line(line1: Sequence[Sequence[float]], line2: Sequence[Sequence[float]], tol: Optional[float] = None) -> bool:
+def is_perpendicular_line_line(line1: Sequence[Sequence[float]], line2: Sequence[Sequence[float]], tol: float | None = None) -> bool:
     """Determine if two lines are perpendicular.
 
     Parameters
@@ -332,7 +332,7 @@ def is_perpendicular_line_line(line1: Sequence[Sequence[float]], line2: Sequence
     return is_perpendicular_vector_vector(ab, cd, tol)
 
 
-def is_perpendicular_plane_plane(plane1: Sequence[Sequence[float]], plane2: Sequence[Sequence[float]], tol: Optional[float] = None) -> bool:
+def is_perpendicular_plane_plane(plane1: Sequence[Sequence[float]], plane2: Sequence[Sequence[float]], tol: float | None = None) -> bool:
     """Determine if two planes are perpendicular.
 
     Parameters
@@ -353,8 +353,8 @@ def is_perpendicular_plane_plane(plane1: Sequence[Sequence[float]], plane2: Sequ
     See Also
     --------
     [`is_perpendicular_vector_vector`][compas.geometry.is_perpendicular_vector_vector]
-    [`is_perpendicular_line_line`][compas.geometry.is_perpendicular_line_line]
-    [`is_parallel_plane_plane`][compas.geometry.is_parallel_plane_plane]
+    `is_perpendicular_line_line`
+    `is_parallel_plane_plane`
 
     """
     return is_perpendicular_vector_vector(plane1[1], plane2[1], tol)
@@ -377,7 +377,7 @@ def is_perpendicular_plane_plane(plane1: Sequence[Sequence[float]], plane2: Sequ
 # =============================================================================
 
 
-def is_polygon_convex(polygon: Sequence[Sequence[float]]) -> bool:
+def is_polygon_convex(polygon: CoordinatesType) -> bool:
     """Determine if a polygon is convex.
 
     Parameters
@@ -393,7 +393,7 @@ def is_polygon_convex(polygon: Sequence[Sequence[float]]) -> bool:
 
     See Also
     --------
-    [`is_polyhedron_convex`][compas.geometry.is_polyhedron_convex]
+    `is_polyhedron_convex`
 
     Notes
     -----
@@ -414,7 +414,7 @@ def is_polygon_convex(polygon: Sequence[Sequence[float]]) -> bool:
     ob = subtract_vectors(b, o)
     n0 = cross_vectors(oa, ob)
     # A Sequence does not necessarily support concatenation.
-    for a, o, b in window(chain(polygon, polygon[:2]), 3):
+    for a, o, b in window(chain(polygon, [polygon[0], polygon[1]]), 3):
         oa = subtract_vectors(a, o)
         ob = subtract_vectors(b, o)
         n = cross_vectors(oa, ob)
@@ -478,7 +478,7 @@ def is_polyhedron_convex(polyhedron: Sequence[Any]) -> bool:
 # =============================================================================
 
 
-def is_point_on_plane(point: CoordinateType, plane: CoordinatesType, tol: Optional[float] = None) -> bool:
+def is_point_on_plane(point: CoordinateType, plane: CoordinatesType, tol: float | None = None) -> bool:
     """Determine if a point lies on a plane.
 
     Parameters
@@ -518,7 +518,7 @@ def is_point_on_plane(point: CoordinateType, plane: CoordinatesType, tol: Option
 # =============================================================================
 
 
-def is_point_on_line(point: CoordinateType, line: CoordinatesType, tol: Optional[float] = None) -> bool:
+def is_point_on_line(point: CoordinateType, line: CoordinatesType, tol: float | None = None) -> bool:
     """Determine if a point lies on a line.
 
     Parameters
@@ -541,7 +541,7 @@ def is_point_on_line(point: CoordinateType, line: CoordinatesType, tol: Optional
     return TOL.is_zero(distance_point_line(point, line), tol)
 
 
-def is_point_on_segment(point: CoordinateType, segment: CoordinatesType, tol: Optional[float] = None) -> bool:
+def is_point_on_segment(point: CoordinateType, segment: CoordinatesType, tol: float | None = None) -> bool:
     """Determine if a point lies on a given line segment.
 
     Parameters
@@ -578,7 +578,7 @@ def is_point_on_segment(point: CoordinateType, segment: CoordinatesType, tol: Op
     return False
 
 
-def is_point_on_polyline(point: CoordinateType, polyline: CoordinatesType, tol: Optional[float] = None) -> bool:
+def is_point_on_polyline(point: CoordinateType, polyline: CoordinatesType, tol: float | None = None) -> bool:
     """Determine if a point is on a polyline.
 
     Parameters
@@ -609,7 +609,7 @@ def is_point_on_polyline(point: CoordinateType, polyline: CoordinatesType, tol: 
     return False
 
 
-def is_point_on_circle(point: Sequence[float], circle: Sequence[Any], tol: Optional[float] = None) -> bool:
+def is_point_on_circle(point: Sequence[float], circle: Sequence[Any], tol: float | None = None) -> bool:
     """Determine if a point lies on a circle.
 
     Parameters
@@ -668,7 +668,7 @@ def is_point_on_circle(point: Sequence[float], circle: Sequence[Any], tol: Optio
 # =============================================================================
 
 
-def is_point_in_circle(point: CoordinateType, circle: Sequence[Any], tol: Optional[float] = None) -> bool:
+def is_point_in_circle(point: CoordinateType, circle: Sequence[Any], tol: float | None = None) -> bool:
     """Determine if a point lies in a circle.
 
     Parameters
@@ -691,7 +691,7 @@ def is_point_in_circle(point: CoordinateType, circle: Sequence[Any], tol: Option
     return False
 
 
-def is_point_in_triangle(point: CoordinateType, triangle: CoordinatesType, tol: Optional[float] = None) -> bool:
+def is_point_in_triangle(point: CoordinateType, triangle: CoordinatesType, tol: float | None = None) -> bool:
     """Determine if a point is in the interior of a triangle.
 
     Parameters
@@ -731,7 +731,7 @@ def is_point_in_triangle(point: CoordinateType, triangle: CoordinatesType, tol: 
     return False
 
 
-def is_point_in_polygon(point: Sequence[float], polygon: Sequence[Sequence[float]], tol: Optional[float] = None) -> bool:
+def is_point_in_polygon(point: Sequence[float], polygon: Sequence[Sequence[float]], tol: float | None = None) -> bool:
     """Determine if a point is in the interior of a polygon.
 
     Parameters
@@ -768,7 +768,7 @@ def is_point_in_polygon(point: Sequence[float], polygon: Sequence[Sequence[float
 # =============================================================================
 
 
-def is_point_in_sphere(point: Sequence[float], sphere: Sequence[Any], tol: Optional[float] = None) -> bool:
+def is_point_in_sphere(point: Sequence[float], sphere: Sequence[Any], tol: float | None = None) -> bool:
     """Determine if a point lies in a sphere.
 
     Parameters
@@ -789,7 +789,7 @@ def is_point_in_sphere(point: Sequence[float], sphere: Sequence[Any], tol: Optio
     return TOL.is_positive(radius - distance_point_point(point, center), tol)
 
 
-def is_point_in_aab(point: Sequence[float], box: Sequence[Sequence[float]], tol: Optional[float] = None) -> bool:
+def is_point_in_aab(point: Sequence[float], box: Sequence[Sequence[float]], tol: float | None = None) -> bool:
     """Determine if a point lies in an axis-aligned box.
 
     Parameters
@@ -810,7 +810,7 @@ def is_point_in_aab(point: Sequence[float], box: Sequence[Sequence[float]], tol:
     return all(TOL.is_between(point[i], minval=a[i], maxval=b[i], atol=tol) for i in range(3))
 
 
-def is_point_in_polyhedron(point: Sequence[float], polyhedron: Sequence[Any], tol: Optional[float] = None) -> bool:
+def is_point_in_polyhedron(point: Sequence[float], polyhedron: Sequence[Any], tol: float | None = None) -> bool:
     """Determine if the point lies inside the given polyhedron.
 
     Parameters
@@ -834,7 +834,7 @@ def is_point_in_polyhedron(point: Sequence[float], polyhedron: Sequence[Any], to
     return all(is_point_behind_plane(point, plane, tol=tol) for plane in planes)
 
 
-def is_point_infrontof_plane(point: Sequence[float], plane: Sequence[Sequence[float]], tol: Optional[float] = None) -> bool:
+def is_point_infrontof_plane(point: Sequence[float], plane: Sequence[Sequence[float]], tol: float | None = None) -> bool:
     """Determine if a point lies in front of a plane.
 
     Parameters
@@ -856,7 +856,7 @@ def is_point_infrontof_plane(point: Sequence[float], plane: Sequence[Sequence[fl
     return TOL.is_positive(dot_vectors(subtract_vectors(point, plane[0]), plane[1]), tol)
 
 
-def is_point_behind_plane(point: CoordinateType, plane: CoordinatesType, tol: Optional[float] = None) -> bool:
+def is_point_behind_plane(point: CoordinateType, plane: CoordinatesType, tol: float | None = None) -> bool:
     """Determine if a point lies behind a plane.
 
     Parameters

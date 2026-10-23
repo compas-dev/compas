@@ -1,12 +1,11 @@
 """Convenience functions for reading and writing OBJ data."""
 
 from collections import OrderedDict
+from collections.abc import Iterable
 from copy import deepcopy
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 from typing import Any
-from typing import Iterable
-from typing import Optional
 
 import compas
 from compas.tolerance import TOL
@@ -81,7 +80,7 @@ def obj_data(document: OBJDocument) -> OBJData:
     return _project_obj_data(document, list(document.vertices), index_index)
 
 
-def weld_obj_data(document: OBJDocument, precision: Optional[int] = None) -> OBJData:
+def weld_obj_data(document: OBJDocument, precision: int | None = None) -> OBJData:
     """Project an OBJ document to explicitly welded geometric data.
 
     Parameters
@@ -97,9 +96,7 @@ def weld_obj_data(document: OBJDocument, precision: Optional[int] = None) -> OBJ
         Welded geometric data with plain vertex indices.
 
     """
-    index_key = OrderedDict(
-        (index, TOL.geometric_key(xyz, precision)) for index, xyz in enumerate(document.vertices)
-    )
+    index_key = OrderedDict((index, TOL.geometric_key(xyz, precision)) for index, xyz in enumerate(document.vertices))
     vertex = OrderedDict((key, document.vertices[index]) for index, key in index_key.items())
     vertex_index = {key: index for index, key in enumerate(vertex)}
     index_index = {index: vertex_index[key] for index, key in index_key.items()}
@@ -109,7 +106,7 @@ def weld_obj_data(document: OBJDocument, precision: Optional[int] = None) -> OBJ
 def read_obj_meshes(
     source: OBJSource,
     weld: bool = False,
-    precision: Optional[int] = None,
+    precision: int | None = None,
 ) -> list["Mesh"]:
     """Read all polygon meshes from an OBJ source.
 
@@ -177,10 +174,7 @@ def _project_obj_data(
     lines = [line for line in elements if len(line) == 2]
     polylines = [line for line in elements if len(line) > 2]
     faces = [[index_index[reference.vertex] for reference in face.vertices] for face in document.faces]
-    groups = {
-        name: [(reference.kind[0], reference.index) for reference in group.elements]
-        for name, group in document.groups.items()
-    }
+    groups = {name: [(reference.kind[0], reference.index) for reference in group.elements] for name, group in document.groups.items()}
     objects = {}
     for name, obj in document.objects.items():
         object_faces = [faces[reference.index] for reference in obj.elements if reference.kind == "face"]
@@ -193,11 +187,11 @@ def _project_obj_data(
 def write_obj(
     target: OBJTarget,
     data: Any,
-    precision: Optional[int] = None,
+    precision: int | None = None,
     unweld: bool = False,
-    author: Optional[str] = None,
-    email: Optional[str] = None,
-    date: Optional[str] = None,
+    author: str | None = None,
+    email: str | None = None,
+    date: str | None = None,
 ) -> None:
     """Write an OBJ document, mesh, or collection of meshes.
 

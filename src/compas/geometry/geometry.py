@@ -1,10 +1,10 @@
+from collections.abc import Sequence
 from typing import TYPE_CHECKING
-from typing import Optional
-from typing import Sequence
-
-from typing_extensions import Self
+from typing import Self
 
 from compas.data import Data
+
+from ._typing import CoordinateType
 
 if TYPE_CHECKING:
     from compas.geometry import Box
@@ -14,10 +14,12 @@ if TYPE_CHECKING:
 class Geometry(Data):
     """Base class for all geometric objects."""
 
-    def __init__(self, name: Optional[str] = None) -> None:
-        super(Geometry, self).__init__(name=name)
-        self._aabb: Optional["Box"] = None
-        self._obb: Optional["Box"] = None
+    # ==========================================================================
+    # Dunder methods
+    # ==========================================================================
+
+    def __init__(self, name: str | None = None) -> None:
+        super().__init__(name=name)
 
     def __eq__(self, other: object) -> bool:
         raise NotImplementedError
@@ -25,19 +27,11 @@ class Geometry(Data):
     def __ne__(self, other: object) -> bool:
         return not self.__eq__(other)
 
-    @property
+    # ==========================================================================
+    # Methods
+    # ==========================================================================
+
     def aabb(self) -> "Box":
-        if self._aabb is None:
-            self._aabb = self.compute_aabb()
-        return self._aabb
-
-    @property
-    def obb(self) -> "Box":
-        if self._obb is None:
-            self._obb = self.compute_obb()
-        return self._obb
-
-    def compute_aabb(self) -> "Box":
         """Compute the axis-aligned bounding box of the geometry.
 
         Returns
@@ -47,7 +41,7 @@ class Geometry(Data):
         """
         raise NotImplementedError
 
-    def compute_obb(self) -> "Box":
+    def obb(self) -> "Box":
         """Compute the oriented bounding box of the geometry.
 
         Returns
@@ -56,6 +50,10 @@ class Geometry(Data):
 
         """
         raise NotImplementedError
+
+    # ==========================================================================
+    # Transformations
+    # ==========================================================================
 
     def transform(self, transformation: "Transformation") -> None:
         """Transform the geometry.
@@ -100,7 +98,7 @@ class Geometry(Data):
         geometry.transform(transformation)
         return geometry
 
-    def scale(self, x: float, y: Optional[float] = None, z: Optional[float] = None) -> None:
+    def scale(self, x: float, y: float | None = None, z: float | None = None) -> None:
         """Scale the geometry.
 
         Parameters
@@ -132,7 +130,7 @@ class Geometry(Data):
 
         self.transform(Scale.from_factors([x, y, z]))
 
-    def scaled(self, x: float, y: Optional[float] = None, z: Optional[float] = None) -> Self:
+    def scaled(self, x: float, y: float | None = None, z: float | None = None) -> Self:
         """Returns a scaled copy of this geometry.
 
         Parameters
@@ -208,7 +206,7 @@ class Geometry(Data):
         geometry.translate(vector)
         return geometry
 
-    def rotate(self, angle: float, axis: Optional[Sequence[float]] = None, point: Optional[Sequence[float]] = None) -> None:
+    def rotate(self, angle: float, axis: Sequence[float] | None = None, point: CoordinateType | None = None) -> None:
         """Rotate the geometry.
 
         Parameters
@@ -237,7 +235,7 @@ class Geometry(Data):
 
         self.transform(Rotation.from_axis_and_angle(axis, angle, point))
 
-    def rotated(self, angle: float, axis: Optional[Sequence[float]] = None, point: Optional[Sequence[float]] = None) -> Self:
+    def rotated(self, angle: float, axis: Sequence[float] | None = None, point: CoordinateType | None = None) -> Self:
         """Returns a rotated copy of this geometry.
 
         Parameters

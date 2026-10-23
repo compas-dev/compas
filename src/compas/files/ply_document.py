@@ -2,7 +2,6 @@
 
 from dataclasses import dataclass
 from dataclasses import field
-from typing import Optional
 
 from .ply_types import PLY_SCALAR_TYPES
 from .ply_types import PLYDataType
@@ -17,7 +16,7 @@ class PLYProperty:
 
     name: str
     data_type: PLYDataType
-    list_count_type: Optional[PLYDataType] = None
+    list_count_type: PLYDataType | None = None
 
     @property
     def is_list(self) -> bool:
@@ -51,7 +50,7 @@ class PLYDocument:
     object_info: list[str] = field(default_factory=list)
     elements: list[PLYElement] = field(default_factory=list)
 
-    def element(self, name: str) -> Optional[PLYElement]:
+    def element(self, name: str) -> PLYElement | None:
         """Find an element by name.
 
         Parameters
@@ -88,10 +87,7 @@ class PLYDocument:
             for prop in element.properties:
                 if prop.data_type not in PLY_SCALAR_TYPES:
                     raise ValueError(f"Unsupported PLY scalar type: {prop.data_type}")
-                if prop.list_count_type and (
-                    prop.list_count_type not in PLY_SCALAR_TYPES
-                    or not PLY_SCALAR_TYPES[prop.list_count_type].integer
-                ):
+                if prop.list_count_type and (prop.list_count_type not in PLY_SCALAR_TYPES or not PLY_SCALAR_TYPES[prop.list_count_type].integer):
                     raise ValueError("PLY list counts require a supported integer type.")
             for record in element.data:
                 if set(record) != set(property_names):

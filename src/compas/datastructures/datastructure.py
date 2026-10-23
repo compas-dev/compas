@@ -1,9 +1,7 @@
+from collections.abc import Mapping
+from collections.abc import Sequence
 from typing import Any
-from typing import Mapping
-from typing import Optional
-from typing import Sequence
-
-from typing_extensions import Self
+from typing import Self
 
 from compas.data import Data
 from compas.geometry import Box
@@ -13,15 +11,21 @@ from compas.geometry import Transformation
 class Datastructure(Data):
     """Base class for all data structures."""
 
+    # =============================================================================
+    # Dunder methods
+    # =============================================================================
+
     def __init__(
         self,
-        attributes: Optional[Mapping[str, Any]] = None,
-        name: Optional[str] = None,
+        attributes: Mapping[str, Any] | None = None,
+        name: str | None = None,
     ) -> None:
         super().__init__(name=name)
         self.attributes = dict(attributes or {})
-        self._aabb: Optional[Box] = None
-        self._obb: Optional[Box] = None
+
+    # =============================================================================
+    # Data
+    # =============================================================================
 
     @property
     def __inheritance__(self) -> list[str]:
@@ -40,7 +44,8 @@ class Datastructure(Data):
                 continue
             if cls == Datastructure:
                 break
-            inheritance.append(cls.__clstype__())
+            module = ".".join(cls.__module__.split(".")[:2])
+            inheritance.append(f"{module}/{cls.__name__}")
         return inheritance
 
     def __jsondump__(self, minimal: bool = False) -> dict[str, Any]:
@@ -68,17 +73,39 @@ class Datastructure(Data):
         state["guid"] = str(self.guid)
         return state
 
-    @property
-    def aabb(self) -> Box:
-        if self._aabb is None:
-            self._aabb = self.compute_aabb()
-        return self._aabb
+    # =============================================================================
+    # Bounding boxes
+    # =============================================================================
 
-    @property
+    def aabb(self) -> Box:
+        """Compute the axis-aligned bounding box of the datastructure.
+
+        Returns
+        -------
+        Box
+
+        """
+        from compas.geometry import Box
+        from compas.geometry.bbox import bounding_box
+
+        return Box.from_bounding_box(bounding_box(self.to_points()))
+
     def obb(self) -> Box:
-        if self._obb is None:
-            self._obb = self.compute_obb()
-        return self._obb
+        """Compute the oriented bounding box of the datastructure.
+
+        Returns
+        -------
+        Box
+
+        """
+        from compas.geometry import Box
+        from compas.geometry import oriented_bounding_box
+
+        return Box.from_bounding_box(oriented_bounding_box(self.to_points()))
+
+    # =============================================================================
+    # Conversions
+    # =============================================================================
 
     def to_points(self) -> list[list[float]]:
         """Return the points of the datastructure.
@@ -96,31 +123,9 @@ class Datastructure(Data):
         """
         raise NotImplementedError
 
-    def compute_aabb(self) -> Box:
-        """Compute the axis-aligned bounding box of the datastructure.
-
-        Returns
-        -------
-        Box
-
-        """
-        from compas.geometry import Box
-        from compas.geometry.bbox import bounding_box
-
-        return Box.from_bounding_box(bounding_box(self.to_points()))
-
-    def compute_obb(self) -> Box:
-        """Compute the oriented bounding box of the datastructure.
-
-        Returns
-        -------
-        Box
-
-        """
-        from compas.geometry import Box
-        from compas.geometry.bbox_numpy import oriented_bounding_box_numpy
-
-        return Box.from_bounding_box(oriented_bounding_box_numpy(self.to_points()))
+    # =============================================================================
+    # Transformations
+    # =============================================================================
 
     def transform(self, transformation: Transformation) -> None:
         """Transforms the data structure.
@@ -198,7 +203,7 @@ class Datastructure(Data):
         datastructure.transform_numpy(transformation)
         return datastructure
 
-    def scale(self, x: float, y: Optional[float] = None, z: Optional[float] = None) -> None:
+    def scale(self, x: float, y: float | None = None, z: float | None = None) -> None:
         """Scale the datastructure.
 
         Parameters
@@ -234,7 +239,7 @@ class Datastructure(Data):
 
         self.transform(Scale.from_factors([x, y, z]))
 
-    def scaled(self, x: float, y: Optional[float] = None, z: Optional[float] = None) -> Self:
+    def scaled(self, x: float, y: float | None = None, z: float | None = None) -> Self:
         """Returns a scaled copy of this datastructure.
 
         Parameters
@@ -323,8 +328,8 @@ class Datastructure(Data):
     def rotate(
         self,
         angle: float,
-        axis: Optional[Sequence[float]] = None,
-        point: Optional[Sequence[float]] = None,
+        axis: Sequence[float] | None = None,
+        point: Sequence[float] | None = None,
     ) -> None:
         """Rotate the datastructure.
 
@@ -361,8 +366,8 @@ class Datastructure(Data):
     def rotated(
         self,
         angle: float,
-        axis: Optional[Sequence[float]] = None,
-        point: Optional[Sequence[float]] = None,
+        axis: Sequence[float] | None = None,
+        point: Sequence[float] | None = None,
     ) -> Self:
         """Returns a rotated copy of this datastructure.
 

@@ -313,9 +313,6 @@ def test_edges_attribute_can_be_set_to_none():
 
 
 def test_graph_to_networkx():
-    if compas.IPY:
-        return
-
     g = Graph()
     g.name = "DiGraph"
     # g.attributes["val"] = (0, 0, 0)
@@ -367,13 +364,11 @@ def test_to_points(filepath):
 
 
 def test_non_planar(k5_graph, non_planar_graph):
-    if not compas.IPY:
-        assert k5_graph.is_planar() is not True
-        assert non_planar_graph.is_planar() is not True
+    assert k5_graph.is_planar() is not True
+    assert non_planar_graph.is_planar() is not True
 
 
 def test_planar(k5_graph, planar_graph):
-    if not compas.IPY:
-        k5_graph.delete_edge(("a", "b"))  # Delete (a, b) edge to make K5 planar
-        assert k5_graph.is_planar() is True
-        assert planar_graph.is_planar() is True
+    k5_graph.delete_edge(("a", "b"))  # Delete (a, b) edge to make K5 planar
+    assert k5_graph.is_planar() is True
+    assert planar_graph.is_planar() is True

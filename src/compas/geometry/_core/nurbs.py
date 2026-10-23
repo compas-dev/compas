@@ -1,5 +1,5 @@
+from collections.abc import Sequence
 from itertools import groupby
-from typing import Sequence
 
 
 def construct_knotvector(degree: int, pointcount: int) -> list[float]:

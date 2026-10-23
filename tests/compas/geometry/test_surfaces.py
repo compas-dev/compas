@@ -87,9 +87,22 @@ def test_surface_transformation_reflects_direct_frame_mutation():
     assert surface.point == [10.0, 0.0, 0.0]
 
 
+def test_surface_placement_preserves_discretization_topology():
+    surface = PlanarSurface()
+    vertices = surface.vertices
+    edges = surface.edges
+    faces = surface.faces
+
+    surface.frame.point.x = 10.0
+
+    assert surface.vertices != vertices
+    assert surface.edges is edges
+    assert surface.faces is faces
+
+
 def test_surface_preserves_geometry_bounding_box_property_contract():
-    assert isinstance(PlanarSurface.aabb, property)
-    assert isinstance(PlanarSurface.obb, property)
+    assert callable(PlanarSurface.aabb)
+    assert callable(PlanarSurface.obb)
 
 
 @pytest.mark.parametrize(

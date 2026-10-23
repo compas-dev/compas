@@ -14,9 +14,7 @@ def test_ply_document_rejects_unsupported_property_types():
 
 
 def test_ply_document_rejects_noninteger_list_count_types():
-    document = PLYDocument(
-        elements=[PLYElement("face", [PLYProperty("vertex_indices", "int", "float")], [{"vertex_indices": [0]}])]
-    )
+    document = PLYDocument(elements=[PLYElement("face", [PLYProperty("vertex_indices", "int", "float")], [{"vertex_indices": [0]}])])
 
     with pytest.raises(ValueError, match="list counts"):
         document.validate()

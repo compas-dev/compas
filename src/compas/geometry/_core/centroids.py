@@ -1,7 +1,8 @@
+from collections.abc import Sequence
 from math import fabs
-from typing import Sequence
 
 from compas._typing import CoordinatesType
+from compas._typing import CoordinateType
 from compas.itertools import pairwise
 from compas.linalg.vectors import add_vectors
 from compas.linalg.vectors import cross_vectors
@@ -178,7 +179,7 @@ def centroid_points_xy(points: Sequence[Sequence[float]]) -> list[float]:
     return [sum(x) / p, sum(y) / p, 0.0]
 
 
-def centroid_polygon(polygon: Sequence[Sequence[float]]) -> Sequence[float]:
+def centroid_polygon(polygon: CoordinatesType) -> CoordinateType:
     r"""Compute the centroid of the surface of a polygon.
 
     Parameters
@@ -188,7 +189,7 @@ def centroid_polygon(polygon: Sequence[Sequence[float]]) -> Sequence[float]:
 
     Returns
     -------
-    Sequence[float]
+    CoordinateType
         The XYZ coordinates of the centroid.
 
     Raises

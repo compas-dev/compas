@@ -1,6 +1,5 @@
 import math
-from typing import Optional
-from typing import Sequence
+from collections.abc import Sequence
 
 from compas._typing import FloatSequenceType
 from compas.tolerance import TOL
@@ -72,7 +71,7 @@ def quaternion_unitize(q: Sequence[float]) -> list[float]:
     return [x / n for x in q]
 
 
-def quaternion_is_unit(q: FloatSequenceType, tol: Optional[float] = None) -> bool:
+def quaternion_is_unit(q: FloatSequenceType, tol: float | None = None) -> bool:
     """Checks if a quaternion is unit-length.
 
     Parameters
@@ -271,10 +270,11 @@ def quaternion_from_axis_angle(axis: Sequence[float], angle: float) -> list[floa
 
     Examples
     --------
+    >>> from compas.tolerance import TOL
     >>> axis = [1.0, 0.0, 0.0]
     >>> angle = math.pi / 2
     >>> q = quaternion_from_axis_angle(axis, angle)
-    >>> allclose(q, [math.sqrt(2) / 2, math.sqrt(2) / 2, 0, 0])
+    >>> TOL.is_allclose(q, [math.sqrt(2) / 2, math.sqrt(2) / 2, 0, 0])
     True
 
     """
@@ -298,11 +298,12 @@ def axis_angle_from_quaternion(q: Sequence[float]) -> tuple[list[float], float]:
 
     Examples
     --------
+    >>> from compas.tolerance import TOL
     >>> q = [1.0, 1.0, 0.0, 0.0]
     >>> axis, angle = axis_angle_from_quaternion(q)
-    >>> allclose(axis, [1.0, 0.0, 0.0])
+    >>> TOL.is_allclose(axis, [1.0, 0.0, 0.0])
     True
-    >>> allclose([angle], [math.pi / 2], 1e-6)
+    >>> TOL.is_allclose([angle], [math.pi / 2], atol=1e-6)
     True
 
     """

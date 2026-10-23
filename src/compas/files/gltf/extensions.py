@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from typing import Any
 from typing import ClassVar
-from typing import Optional
 
 from .data_classes import BaseGLTFDataClass
 from .data_classes import NormalTextureInfoData
@@ -20,9 +19,9 @@ class KHR_materials_transmission(BaseGLTFDataClass):
 
     key: ClassVar[str] = "KHR_materials_transmission"
 
-    transmission_factor: Optional[float] = None
-    transmission_texture: Optional[TextureInfoData] = None
-    extensions: Optional[dict[str, Any]] = None
+    transmission_factor: float | None = None
+    transmission_texture: TextureInfoData | None = None
+    extensions: dict[str, Any] | None = None
     extras: Any = None
 
 
@@ -38,11 +37,11 @@ class KHR_materials_specular(BaseGLTFDataClass):
 
     key: ClassVar[str] = "KHR_materials_specular"
 
-    specular_factor: Optional[float] = None
-    specular_texture: Optional[TextureInfoData] = None
-    specular_color_factor: Optional[list[float]] = None
-    specular_color_texture: Optional[TextureInfoData] = None
-    extensions: Optional[dict[str, Any]] = None
+    specular_factor: float | None = None
+    specular_texture: TextureInfoData | None = None
+    specular_color_factor: list[float] | None = None
+    specular_color_texture: TextureInfoData | None = None
+    extensions: dict[str, Any] | None = None
     extras: Any = None
 
 
@@ -58,8 +57,8 @@ class KHR_materials_ior(BaseGLTFDataClass):
 
     key: ClassVar[str] = "KHR_materials_ior"
 
-    ior: Optional[float] = None
-    extensions: Optional[dict[str, Any]] = None
+    ior: float | None = None
+    extensions: dict[str, Any] | None = None
     extras: Any = None
 
 
@@ -75,12 +74,12 @@ class KHR_materials_clearcoat(BaseGLTFDataClass):
 
     key: ClassVar[str] = "KHR_materials_clearcoat"
 
-    clearcoat_factor: Optional[float] = None
-    clearcoat_texture: Optional[TextureInfoData] = None
-    clearcoat_roughness_factor: Optional[float] = None
-    clearcoat_roughness_texture: Optional[TextureInfoData] = None
-    clearcoat_normal_texture: Optional[NormalTextureInfoData] = None
-    extensions: Optional[dict[str, Any]] = None
+    clearcoat_factor: float | None = None
+    clearcoat_texture: TextureInfoData | None = None
+    clearcoat_roughness_factor: float | None = None
+    clearcoat_roughness_texture: TextureInfoData | None = None
+    clearcoat_normal_texture: NormalTextureInfoData | None = None
+    extensions: dict[str, Any] | None = None
     extras: Any = None
 
 
@@ -96,11 +95,11 @@ class KHR_Texture_Transform(BaseGLTFDataClass):
 
     key: ClassVar[str] = "KHR_texture_transform"
 
-    offset: Optional[list[float]] = None
-    rotation: Optional[float] = None
-    scale: Optional[list[float]] = None
-    tex_coord: Optional[int] = None
-    extensions: Optional[dict[str, Any]] = None
+    offset: list[float] | None = None
+    rotation: float | None = None
+    scale: list[float] | None = None
+    tex_coord: int | None = None
+    extensions: dict[str, Any] | None = None
     extras: Any = None
 
 
@@ -110,12 +109,12 @@ class KHR_materials_pbrSpecularGlossiness(BaseGLTFDataClass):
 
     key: ClassVar[str] = "KHR_materials_pbrSpecularGlossiness"
 
-    diffuse_factor: Optional[list[float]] = None
-    diffuse_texture: Optional[TextureInfoData] = None
-    specular_factor: Optional[list[float]] = None
-    glossiness_factor: Optional[float] = None
-    specular_glossiness_texture: Optional[TextureInfoData] = None
-    extensions: Optional[dict[str, Any]] = None
+    diffuse_factor: list[float] | None = None
+    diffuse_texture: TextureInfoData | None = None
+    specular_factor: list[float] | None = None
+    glossiness_factor: float | None = None
+    specular_glossiness_texture: TextureInfoData | None = None
+    extensions: dict[str, Any] | None = None
     extras: Any = None
 
     def __post_init__(self) -> None:

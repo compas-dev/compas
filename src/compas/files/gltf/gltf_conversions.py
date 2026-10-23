@@ -1,13 +1,12 @@
 """Conversions between glTF documents and COMPAS scenes."""
 
 import warnings
+from collections.abc import Sequence
 from contextlib import contextmanager
 from typing import TYPE_CHECKING
 from typing import Any
-from typing import Optional
-from typing import Sequence
-from typing import Union
 from typing import cast
+from typing import overload
 
 from compas.datastructures import Mesh
 from compas.files.gltf.constants import MODE_LINE_LOOP
@@ -33,7 +32,6 @@ from compas.scene.context import ITEM_SCENEOBJECT
 from compas.scene.context import register
 
 if TYPE_CHECKING:
-    from compas.datastructures import TreeNode  # noqa: F401
     from compas.files.gltf.gltf_document import GLTFDocument
     from compas.files.gltf.gltf_node import GLTFNode
     from compas.scene import SceneObject  # noqa: F401
@@ -55,7 +53,7 @@ def _base_scene_context():
 
 def _indexed_positions(
     positions: Sequence[Sequence[float]],
-    indices: Optional[Sequence[int]],
+    indices: Sequence[int] | None,
 ) -> list[Sequence[float]]:
     indices = indices if indices is not None else range(len(positions))
     return [positions[index] for index in indices]
@@ -63,8 +61,8 @@ def _indexed_positions(
 
 def gltf_points_to_pointcloud(
     positions: Sequence[Sequence[float]],
-    indices: Optional[Sequence[int]] = None,
-    name: Optional[str] = None,
+    indices: Sequence[int] | None = None,
+    name: str | None = None,
 ) -> Pointcloud:
     """Convert a glTF points primitive to a COMPAS point cloud.
 
@@ -79,8 +77,8 @@ def gltf_points_to_pointcloud(
 
 def gltf_lines_to_lines(
     positions: Sequence[Sequence[float]],
-    indices: Optional[Sequence[int]] = None,
-    name: Optional[str] = None,
+    indices: Sequence[int] | None = None,
+    name: str | None = None,
 ) -> list[Line]:
     """Convert a glTF lines primitive to COMPAS lines.
 
@@ -96,8 +94,8 @@ def gltf_lines_to_lines(
 
 def gltf_line_strip_to_polyline(
     positions: Sequence[Sequence[float]],
-    indices: Optional[Sequence[int]] = None,
-    name: Optional[str] = None,
+    indices: Sequence[int] | None = None,
+    name: str | None = None,
 ) -> Polyline:
     """Convert a glTF line strip primitive to a COMPAS polyline.
 
@@ -112,8 +110,8 @@ def gltf_line_strip_to_polyline(
 
 def gltf_line_loop_to_polyline(
     positions: Sequence[Sequence[float]],
-    indices: Optional[Sequence[int]] = None,
-    name: Optional[str] = None,
+    indices: Sequence[int] | None = None,
+    name: str | None = None,
 ) -> Polyline:
     """Convert a glTF line loop primitive to a closed COMPAS polyline.
 
@@ -131,8 +129,8 @@ def gltf_line_loop_to_polyline(
 
 def gltf_triangles_to_mesh(
     positions: Sequence[Sequence[float]],
-    indices: Optional[Sequence[int]] = None,
-    name: Optional[str] = None,
+    indices: Sequence[int] | None = None,
+    name: str | None = None,
 ) -> Mesh:
     """Convert a glTF triangles primitive to a COMPAS mesh.
 
@@ -149,8 +147,8 @@ def gltf_triangles_to_mesh(
 
 def gltf_triangle_strip_to_mesh(
     positions: Sequence[Sequence[float]],
-    indices: Optional[Sequence[int]] = None,
-    name: Optional[str] = None,
+    indices: Sequence[int] | None = None,
+    name: str | None = None,
 ) -> Mesh:
     """Convert a glTF triangle strip primitive to a COMPAS mesh.
 
@@ -170,8 +168,8 @@ def gltf_triangle_strip_to_mesh(
 
 def gltf_triangle_fan_to_mesh(
     positions: Sequence[Sequence[float]],
-    indices: Optional[Sequence[int]] = None,
-    name: Optional[str] = None,
+    indices: Sequence[int] | None = None,
+    name: str | None = None,
 ) -> Mesh:
     """Convert a glTF triangle fan primitive to a COMPAS mesh.
 
@@ -189,7 +187,7 @@ def gltf_triangle_fan_to_mesh(
 def _named_mesh(
     positions: Sequence[Sequence[float]],
     faces: Sequence[Sequence[int]],
-    name: Optional[str],
+    name: str | None,
 ) -> Mesh:
     mesh = Mesh.from_vertices_and_faces(positions, faces)
     if name is not None:
@@ -199,8 +197,8 @@ def _named_mesh(
 
 def gltf_primitive_to_compas(
     primitive: PrimitiveData,
-    positions: Optional[Sequence[Sequence[float]]] = None,
-    name: Optional[str] = None,
+    positions: Sequence[Sequence[float]] | None = None,
+    name: str | None = None,
 ) -> list[Any]:
     """Convert a glTF primitive to the closest COMPAS geometry objects.
 
@@ -233,9 +231,24 @@ def gltf_primitive_to_compas(
     raise ValueError("Unsupported glTF primitive mode: {}.".format(mode))
 
 
+@overload
 def gltf_to_scene(
     document: "GLTFDocument",
-    scene_key: Optional[int] = None,
+    scene_key: int | None = None,
+) -> Scene: ...
+
+
+@overload
+def gltf_to_scene[S: Scene](
+    document: "GLTFDocument",
+    scene_key: int | None,
+    scene_type: type[S],
+) -> S: ...
+
+
+def gltf_to_scene(
+    document: "GLTFDocument",
+    scene_key: int | None = None,
     scene_type: type[Scene] = Scene,
 ) -> Scene:
     """Convert a glTF scene to a COMPAS scene.
@@ -261,7 +274,7 @@ def gltf_to_scene(
     scene = scene_type(name=source_scene.name or "Scene")
     objects_by_primitive: dict[tuple[int, tuple[float, ...], int], list[Any]] = {}
 
-    def add_node(node: "GLTFNode", parent: "Union[SceneObject, TreeNode]") -> None:
+    def add_node(node: "GLTFNode", parent: "SceneObject") -> None:
         group = scene.add_group(
             name=node.name or "Node {}".format(node.key),
             parent=parent,
@@ -381,7 +394,7 @@ def polyline_to_gltf_primitive(polyline: Polyline) -> PrimitiveData:
     return PrimitiveData({"POSITION": positions}, list(range(len(positions))), mode=mode)
 
 
-def compas_to_gltf_primitive(item: Any) -> Optional[PrimitiveData]:
+def compas_to_gltf_primitive(item: Any) -> PrimitiveData | None:
     """Convert supported COMPAS geometry to a glTF primitive.
 
     Returns
@@ -401,7 +414,7 @@ def compas_to_gltf_primitive(item: Any) -> Optional[PrimitiveData]:
     return None
 
 
-def _geometry_mesh(document: "GLTFDocument", item: Any) -> Optional[GLTFMesh]:
+def _geometry_mesh(document: "GLTFDocument", item: Any) -> GLTFMesh | None:
     primitive = compas_to_gltf_primitive(item)
     if primitive is None:
         return None
@@ -432,7 +445,7 @@ def scene_to_gltf(scene: Scene) -> "GLTFDocument":
     document.default_scene_key = target_scene.key
     mesh_by_item_id: dict[int, int] = {}
 
-    def add_object(sceneobject: "SceneObject", parent: "Optional[GLTFNode]" = None) -> None:
+    def add_object(sceneobject: "SceneObject", parent: "GLTFNode | None" = None) -> None:
         if parent is None:
             node = target_scene.add_child(node_name=sceneobject.name)
         else:
@@ -445,9 +458,7 @@ def scene_to_gltf(scene: Scene) -> "GLTFDocument":
             mesh_data = document.meshes[mesh_key] if mesh_key is not None else _geometry_mesh(document, sceneobject.item)
             if mesh_data is None:
                 warnings.warn(
-                    "Scene object {!r} contains unsupported item type {} and was omitted from glTF geometry.".format(
-                        sceneobject.name, type(sceneobject.item).__name__
-                    ),
+                    "Scene object {!r} contains unsupported item type {} and was omitted from glTF geometry.".format(sceneobject.name, type(sceneobject.item).__name__),
                     GLTFConversionWarning,
                     stacklevel=2,
                 )

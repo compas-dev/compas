@@ -1,149 +1,176 @@
-import collections
+from collections.abc import Collection
+from collections.abc import Sequence
+from typing import NamedTuple
+
+from compas._typing import CoordinateType
 
 from ._core.distance import distance_point_point_sqrd
 
-Node = collections.namedtuple("Node", "point axis label left right")
+
+class Node(NamedTuple):
+    """A node in a `KDTree`."""
+
+    point: CoordinateType
+    axis: int
+    label: int
+    left: "Node | None"
+    right: "Node | None"
 
 
-class KDTree(object):
-    """A tree for nearest neighbor search in a k-dimensional space.
+class Neighbor(NamedTuple):
+    """A nearest-neighbor search result."""
+
+    point: CoordinateType
+    label: int
+    distance: float
+
+
+class KDTree:
+    """A three-dimensional tree for nearest-neighbor searches.
 
     Parameters
     ----------
-    objects : sequence[[float, float, float] | :class:`compas.geometry.Point`], optional
-        A list of objects to populate the tree with.
-        If objects are provided, the tree is built automatically.
-        Otherwise, use :meth:`build`.
-
-    Attributes
-    ----------
-    root : Node
-        The root node of the built tree.
-        This is the median with respect to the different dimensions of the tree.
+    objects
+        Points used to populate the tree. Their positions in the sequence are
+        used as labels. If omitted, the tree is initially empty.
 
     Notes
     -----
-    For more info, see [1]_ and [2]_.
+    `build` also accepts explicitly labeled points when indices from another
+    sequence are required.
 
     References
     ----------
-    .. [1] Wikipedia. *k-d tree*.
-           Available at: https://en.wikipedia.org/wiki/K-d_tree.
-    .. [2] Dell'Amico, M. *KD-Tree for nearest neighbor search in a K-dimensional space (Python recipe)*.
-           Available at: http://code.activestate.com/recipes/577497-kd-tree-for-nearest-neighbor-search-in-a-k-dimensional-space/.
+    * [k-d tree](https://en.wikipedia.org/wiki/K-d_tree)
+    * [KD-tree for nearest-neighbor search](https://code.activestate.com/recipes/577497-kd-tree-for-nearest-neighbor-search-in-a-k-dimensional-space/)
 
     Examples
     --------
-    >>>
+    >>> tree = KDTree([[0, 0, 0], [2, 0, 0]])
+    >>> tree.nearest_neighbor([0.5, 0, 0])
+    Neighbor(point=[0, 0, 0], label=0, distance=0.5)
 
     """
 
-    def __init__(self, objects=None):
-        self.root = None
-        if objects:
-            self.root = self.build([(o, i) for i, o in enumerate(objects)])
+    # ==========================================================================
+    # Dunder methods
+    # ==========================================================================
 
-    def build(self, objects, axis=0):
-        """Populate a kd-tree with given objects.
+    def __init__(self, objects: Sequence[CoordinateType] | None = None) -> None:
+        self.root: Node | None = None
+        if objects:
+            self.root = self.build([(point, index) for index, point in enumerate(objects)])
+
+    # ==========================================================================
+    # Methods
+    # ==========================================================================
+
+    def build(self, objects: list[tuple[CoordinateType, int]], axis: int = 0) -> Node | None:
+        """Build a tree from labeled points.
 
         Parameters
         ----------
-        objects : sequence[tuple[[float, float, float] | :class:`compas.geometry.Point`, int or str]]
-            The tree objects as a sequence of point-label tuples.
-        axis : int, optional
-            The axis along which to build.
+        objects
+            Point-label pairs. The list is sorted in place while building the
+            tree.
+        axis
+            The initial splitting axis.
 
         Returns
         -------
-        Node or None
-            The root node, or None if the sequence of objects is empty.
+        Node | None
+            The root node, or `None` when `objects` is empty.
 
         """
         if not objects:
-            return
+            return None
 
-        objects.sort(key=lambda o: o[0][axis])
-        median_idx = len(objects) // 2
-        median_point, median_label = objects[median_idx]
+        objects.sort(key=lambda item: item[0][axis])
+        median = len(objects) // 2
+        point, label = objects[median]
         next_axis = (axis + 1) % 3
-
         return Node(
-            median_point,
+            point,
             axis,
-            median_label,
-            self.build(objects[:median_idx], next_axis),
-            self.build(objects[median_idx + 1 :], next_axis),
+            label,
+            self.build(objects[:median], next_axis),
+            self.build(objects[median + 1 :], next_axis),
         )
 
-    def nearest_neighbor(self, point, exclude=None):
-        """Find the nearest neighbor to a given point,
-        excluding neighbors that have already been found.
+    def nearest_neighbor(
+        self,
+        point: CoordinateType,
+        exclude: Collection[int] | None = None,
+    ) -> Neighbor | None:
+        """Find the nearest non-excluded point.
 
         Parameters
         ----------
-        point : [float, float, float] | :class:`compas.geometry.Point`
-            XYZ coordinates of the base point.
-        exclude : sequence[int or str], optional
-            A sequence of point identified by their label to exclude from the search.
+        point
+            The query point.
+        exclude
+            Labels to exclude from the search.
 
         Returns
         -------
-        [[float, float, float], int or str, float]
-            XYZ coordinates of the nearest neighbor.
-            Label of the nearest neighbor.
-            Distance to the base point.
+        Neighbor | None
+            The nearest neighbor, or `None` when no eligible point exists.
 
         """
+        excluded = set(exclude or ())
+        best: Neighbor | None = None
+        best_distance_sqrd = float("inf")
 
-        def search(node):
+        def search(node: Node | None) -> None:
+            nonlocal best
+            nonlocal best_distance_sqrd
+
             if node is None:
                 return
 
-            d2 = distance_point_point_sqrd(point, node.point)
-            if d2 < best[2]:
-                if node.label not in exclude:
-                    best[:] = node.point, node.label, d2
+            distance_sqrd = distance_point_point_sqrd(point, node.point)
+            if distance_sqrd < best_distance_sqrd and node.label not in excluded:
+                best = Neighbor(node.point, node.label, distance_sqrd)
+                best_distance_sqrd = distance_sqrd
 
-            d = point[node.axis] - node.point[node.axis]
-            if d <= 0:
-                close, far = node.left, node.right
-            else:
-                close, far = node.right, node.left
-
+            delta = point[node.axis] - node.point[node.axis]
+            close, far = (node.left, node.right) if delta <= 0 else (node.right, node.left)
             search(close)
-            if d**2 < best[2]:
+            if delta**2 < best_distance_sqrd:
                 search(far)
 
-        exclude = set(exclude or [])
-        best = [None, None, float("inf")]
         search(self.root)
-        best[2] **= 0.5
-        return best
+        if best is None:
+            return None
+        return Neighbor(best.point, best.label, best.distance**0.5)
 
-    def nearest_neighbors(self, point, number, distance_sort=False):
-        """Find the N nearest neighbors to a given point.
+    def nearest_neighbors(self, point: CoordinateType, number: int, distance_sort: bool = False) -> list[Neighbor]:
+        """Find up to a requested number of nearest neighbors.
 
         Parameters
         ----------
-        point : [float, float, float] | :class:`compas.geometry.Point`
-            XYZ coordinates of the base point.
-        number : int
-            The number of nearest neighbors.
-        distance_sort : bool, optional
-            Sort the nearest neighbors by distance to the base point.
+        point
+            The query point.
+        number
+            The maximum number of neighbors.
+        distance_sort
+            Sort the result by increasing distance.
 
         Returns
         -------
-        list[[[float, float, float], int or str, float]]
-            A list of N nearest neighbors.
+        list[Neighbor]
+            The available neighbors. The list can contain fewer than `number`
+            items when the tree is exhausted.
 
         """
-        nnbrs = []
-        exclude = set()
-        for i in range(number):
-            nnbr = self.nearest_neighbor(point, exclude)
-            nnbrs.append(nnbr)
-            exclude.add(nnbr[1])
+        neighbors = []
+        excluded: set[int] = set()
+        for _ in range(number):
+            neighbor = self.nearest_neighbor(point, excluded)
+            if neighbor is None:
+                break
+            neighbors.append(neighbor)
+            excluded.add(neighbor.label)
         if distance_sort:
-            return sorted(nnbrs, key=lambda nnbr: nnbr[2])
-        return nnbrs
+            neighbors.sort(key=lambda neighbor: neighbor.distance)
+        return neighbors

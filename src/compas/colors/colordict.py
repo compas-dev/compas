@@ -1,15 +1,27 @@
-from typing import Iterator
-from typing import Optional
-from typing import Union
-
-from typing_extensions import Self
+from collections.abc import Hashable
+from collections.abc import Iterable
+from collections.abc import Iterator
+from collections.abc import MutableMapping
+from typing import Self
+from typing import cast
 
 from compas.data import Data
 
 from .color import Color
+from .color import ColorError
+from .color import ColorInput
+
+type ColorKey = Hashable
 
 
-class ColorDict(Data):
+def _restore_json_key(key: object) -> ColorKey:
+    if isinstance(key, list):
+        return tuple(_restore_json_key(item) for item in key)
+    # Hashability is enforced by the dictionary operation itself.
+    return cast(ColorKey, key)
+
+
+class ColorDict(Data, MutableMapping[ColorKey, Color]):
     """Class representing a dictionary of colors.
 
     Parameters
@@ -19,107 +31,82 @@ class ColorDict(Data):
     name
         The name of the color dictionary.
 
-    Attributes
-    ----------
-    default
-        The default color to use if the requested key is not in the dictionary.
-
     """
 
-    KEYMAP = {
-        int: lambda x: str(x),
-        tuple: lambda x: ",".join(map(str, sorted(x))),
-        list: lambda x: ",".join(map(str, sorted(x))),
-    }
+    # --------------------------------------------------------------------------
+    # Data
+    # --------------------------------------------------------------------------
 
     @property
-    def __data__(self) -> dict:
+    def __data__(self) -> dict[str, object]:
         return {
             "default": self.default,
-            "dict": self._dict,
+            "items": list(self._dict.items()),
         }
 
     @classmethod
-    def __from_data__(cls, data: dict) -> Self:
-        colordict = cls(data["default"])
-        colordict.update(data["dict"])
+    def __from_data__(cls, data: dict[str, object]) -> Self:
+        colordict = cls(cast(ColorInput, data["default"]))
+        items = cast(Iterable[tuple[object, ColorInput]], data["items"])
+        for key, color in items:
+            colordict[_restore_json_key(key)] = color
         return colordict
 
-    def __init__(self, default: Color, name: Optional[str] = None):
+    # --------------------------------------------------------------------------
+    # Dunder methods
+    # --------------------------------------------------------------------------
+
+    def __init__(self, default: ColorInput = None, name: str | None = None) -> None:
         super().__init__(name=name)
-        self._default = None
+        self._default: Color | None = None
         self.default = default
-        self._dict = {}
+        self._dict: dict[ColorKey, Color] = {}
 
-    @property
-    def default(self) -> Color:
-        if not self._default:
-            self._default = Color(0, 0, 0)
-        return self._default
+    def __getitem__(self, key: ColorKey) -> Color:
+        return self._dict.get(key, self.default)
 
-    @default.setter
-    def default(self, default: Color) -> None:
-        if default and not isinstance(default, Color):
-            default = Color.coerce(default)
-        self._default = default
+    def __setitem__(self, key: ColorKey, value: ColorInput) -> None:
+        color = Color.coerce(value)
+        if color is None:
+            raise ColorError("A color dictionary value cannot be None.")
+        self._dict[key] = color
 
-    def keymapper(self, key: Union[int, tuple, list, str]) -> str:
-        if key.__class__ in self.KEYMAP:
-            return self.KEYMAP[key.__class__](key)
-        return key  # type: ignore
+    def __delitem__(self, key: ColorKey) -> None:
+        del self._dict[key]
 
-    def __getitem__(self, key: Union[int, tuple, list, str]) -> Color:
-        return self._dict.get(self.keymapper(key), self.default)
-
-    def __setitem__(self, key: Union[int, tuple, list, str], value: Color) -> None:
-        self._dict[self.keymapper(key)] = Color.coerce(value)
-
-    def __delitem__(self, key: Union[int, tuple, list, str]) -> None:
-        del self._dict[self.keymapper(key)]
-
-    def __iter__(self) -> Iterator[str]:
+    def __iter__(self) -> Iterator[ColorKey]:
         return iter(self._dict)
 
     def __len__(self) -> int:
         return len(self._dict)
 
-    def __contains__(self, key: Union[int, tuple, list, str]) -> bool:
-        return self.keymapper(key) in self._dict
+    def __contains__(self, key: object) -> bool:
+        return key in self._dict
 
-    def items(self):
-        return self._dict.items()
+    # --------------------------------------------------------------------------
+    # Properties
+    # --------------------------------------------------------------------------
 
-    def keys(self):
-        return self._dict.keys()
+    @property
+    def default(self) -> Color:
+        """The fallback color for keys that are not present.
 
-    def values(self):
-        return self._dict.values()
+        Assigning `None` resets the fallback to black. Other supported color
+        inputs are coerced to `Color`.
 
-    def get(self, key: Union[int, tuple, list, str], default=None) -> Color:
-        return self._dict.get(self.keymapper(key), default or self.default)
+        """
+        if not self._default:
+            self._default = Color(0, 0, 0)
+        return self._default
+
+    @default.setter
+    def default(self, default: ColorInput) -> None:
+        self._default = Color.coerce(default)
+
+    # --------------------------------------------------------------------------
+    # Methods
+    # --------------------------------------------------------------------------
 
     def clear(self) -> None:
-        """Clear the previously stored items.
-
-        Returns
-        -------
-        None
-
-        """
-        self._dict = {}
-
-    def update(self, other: Union[dict, "ColorDict"]) -> None:
-        """Update the dictionary with the items from another dictionary.
-
-        Parameters
-        ----------
-        other
-            The other dictionary.
-
-        Returns
-        -------
-        None
-
-        """
-        for key, value in other.items():
-            self[self.keymapper(key)] = value
+        """Clear the previously stored items."""
+        self._dict.clear()

@@ -1,139 +1,118 @@
 import inspect
 from collections import defaultdict
+from typing import TYPE_CHECKING
 
-import compas
-from compas.plugins import PluginValidator
+from compas.data import Data
 from compas.plugins import pluggable
+from compas.plugins import validate_plugin_implementation
 
 from .exceptions import SceneObjectNotRegisteredError
 
-ITEM_SCENEOBJECT = defaultdict(dict)
+if TYPE_CHECKING:
+    from .sceneobject import SceneObject
+
+ITEM_SCENEOBJECT: defaultdict[str | None, dict[type[Data], type["SceneObject"]]] = defaultdict(dict)
 
 
 @pluggable(category="drawing-utils")
-def clear(guids=None):
-    """Pluggable to clear the current context of the scene or a list of objects through guids.
+def clear(guids: list[object] | None = None) -> None:
+    """Clear all or selected objects from the current visualization context.
 
     Parameters
     ----------
-    guids : list, optional
-        A list of guids to clear.
-
-    Returns
-    -------
-    None
+    guids
+        The identifiers to clear. If `None`, clear the entire context.
 
     """
     raise NotImplementedError
 
 
-clear.__pluggable__ = True
+setattr(clear, "__pluggable__", True)
 
 
 @pluggable(category="drawing-utils")
-def before_draw():
-    """Pluggable to perform operations before drawing the scene. This function is automatically called in the beginning of `compas.scene.Scene.draw()`.
-
-    Returns
-    -------
-    None
-
-    """
+def before_draw() -> None:
+    """Perform context-specific operations before drawing a scene."""
     pass
 
 
-before_draw.__pluggable__ = True
+setattr(before_draw, "__pluggable__", True)
 
 
 @pluggable(category="drawing-utils")
-def after_draw(drawn_objects):
-    """Pluggable to perform operations after drawing the scene. This function is automatically called at the end of `compas.scene.Scene.draw()`.
+def after_draw(drawn_objects: list[object]) -> None:
+    """Perform context-specific operations after drawing a scene.
+
     Parameters
     ----------
-    drawn_objects : list
-        A list of objects that were drawn.
-
-    Returns
-    -------
-    None
+    drawn_objects
+        The objects that were drawn.
 
     """
     pass
 
 
-after_draw.__pluggable__ = True
+setattr(after_draw, "__pluggable__", True)
 
 
 @pluggable(category="factories", selector="collect_all")
-def register_scene_objects():
-    """Registers scene objects available in the current context."""
+def register_scene_objects() -> None:
+    """Register scene object types available in the current context."""
     raise NotImplementedError
 
 
-register_scene_objects.__pluggable__ = True
+setattr(register_scene_objects, "__pluggable__", True)
 
 
-def register(item_type, sceneobject_type, context=None):
+def register(item_type: type[Data], sceneobject_type: "type[SceneObject]", context: str | None = None) -> None:
     """Register a scene object type to a data type.
 
     Parameters
     ----------
-    item_type : :class:`~compas.data.Data`
+    item_type
         The type of data item.
-    sceneobject_type : :class:`~compas.scene.SceneObject`
-        The type of the corresponding/compatible scene object.
-    context : Literal['Viewer', 'Rhino', 'Grasshopper', 'Blender'], optional
-        The visualization context in which the pair should be registered.
-
-    Returns
-    -------
-    None
+    sceneobject_type
+        The compatible scene object type.
+    context
+        The visualization context in which to register the pair.
 
     """
     ITEM_SCENEOBJECT[context][item_type] = sceneobject_type
 
 
-def detect_current_context():
-    """Chooses an appropriate context depending on available contexts and open instances. with the following priority:
-    1. Viewer
-    2. Plotter
-    3. Rhino / GH - checked explicitly since SceneObjects for both get registered when code is run from either.
-    4. Other
+def detect_current_context() -> str | None:
+    """Select the only registered named visualization context, if available.
 
     Returns
     -------
-    str
-        Name of an available context, used as key in :attr:`SceneObject.ITEM_SCENEOBJECT`
+    str | None
+        The context name when exactly one named context is registered.
+        Otherwise, `None`.
 
     """
 
-    if compas.is_grasshopper():
-        return "Grasshopper"
-    if compas.is_rhino():
-        return "Rhino"
-    if compas.is_blender():
-        return "Blender"
-    # other_contexts = [v for v in ITEM_SCENEOBJECT.keys()]
-    # if other_contexts:
-    #     return other_contexts[0]
-
-    return None
+    contexts = [name for name, registry in ITEM_SCENEOBJECT.items() if name is not None and registry]
+    return contexts[0] if len(contexts) == 1 else None
 
 
-def _get_sceneobject_cls(data, **kwargs):
+def _get_sceneobject_cls(
+    data: Data,
+    context: str | None = None,
+    sceneobject_type: "type[SceneObject] | None" = None,
+) -> "type[SceneObject]":
     # in any case user gets to override the choice
-    context_name = kwargs.get("context") or detect_current_context()
+    context_name = context or detect_current_context()
 
     dtype = type(data)
     cls = None
 
-    if "sceneobject_type" in kwargs:
-        cls = kwargs["sceneobject_type"]
+    if sceneobject_type is not None:
+        cls = sceneobject_type
     else:
-        context = ITEM_SCENEOBJECT[context_name]
+        registry = ITEM_SCENEOBJECT[context_name]
 
         for type_ in inspect.getmro(dtype):
-            cls = context.get(type_, None)
+            cls = registry.get(type_, None)
             if cls is not None:
                 break
 
@@ -143,13 +122,44 @@ def _get_sceneobject_cls(data, **kwargs):
     return cls
 
 
-def get_sceneobject_cls(item, **kwargs):
+def get_sceneobject_cls(
+    item: Data | None,
+    context: str | None = None,
+    sceneobject_type: "type[SceneObject] | None" = None,
+    **kwargs: object,
+) -> "type[SceneObject]":
+    """Get the registered scene object type for an item.
+
+    Parameters
+    ----------
+    item
+        The item to represent.
+    context
+        The visualization context used for registration lookup.
+    sceneobject_type
+        An explicit scene object type overriding registration lookup.
+    **kwargs
+        Additional scene object options, ignored during type selection.
+
+    Returns
+    -------
+    type[SceneObject]
+        The selected scene object type.
+
+    Raises
+    ------
+    ValueError
+        If `item` is `None`.
+    SceneObjectNotRegisteredError
+        If no compatible scene object type is registered.
+
+    """
     if not ITEM_SCENEOBJECT:
         register_scene_objects()
 
     if item is None:
         raise ValueError("Cannot create a scene object for None. Please ensure you pass a instance of a supported class.")
 
-    cls = _get_sceneobject_cls(item, **kwargs)
-    PluginValidator.ensure_implementations(cls)
+    cls = _get_sceneobject_cls(item, context=context, sceneobject_type=sceneobject_type)
+    validate_plugin_implementation(cls)
     return cls

@@ -4,11 +4,8 @@ from collections.abc import Mapping
 from collections.abc import Sequence
 from typing import TYPE_CHECKING
 from typing import Any
-from typing import Optional
-from typing import Union
+from typing import Self
 from typing import cast
-
-from typing_extensions import Self
 
 from compas.files.gltf.constants import VERTEX_COUNT_BY_MODE
 from compas.files.gltf.data_classes import PrimitiveData
@@ -47,12 +44,16 @@ class GLTFMesh:
 
     """
 
+    # =============================================================================
+    # Dunder methods
+    # =============================================================================
+
     def __init__(
         self,
         primitive_data_list: list[PrimitiveData],
         context: "GLTFDocument",
-        mesh_name: Optional[str] = None,
-        weights: Optional[list[float]] = None,
+        mesh_name: str | None = None,
+        weights: list[float] | None = None,
         extras: Any = None,
         extensions: Any = None,
     ) -> None:
@@ -66,12 +67,9 @@ class GLTFMesh:
         self.context = context
         self._set_key()
 
-    def _set_key(self) -> None:
-        key = len(self.context.meshes)
-        while key in self.context.meshes:
-            key += 1
-        self.context.meshes[key] = self
-        self._key = key
+    # =============================================================================
+    # Properties
+    # =============================================================================
 
     @property
     def key(self) -> int:
@@ -97,98 +95,17 @@ class GLTFMesh:
             shift += len(primitive_data.attributes["POSITION"])
         return faces
 
-    def shift_indices(self, indices: Sequence[int], shift: int) -> list[int]:
-        """Shift every index by an offset.
-
-        Parameters
-        ----------
-        indices
-            Indices to shift.
-        shift
-            Offset added to every index.
-
-        Returns
-        -------
-        list[int]
-            Shifted indices.
-
-        """
-        return [index + shift for index in indices]
-
-    def group_indices(self, indices: Sequence[int], group_size: int) -> list[tuple[int, ...]]:
-        """Group a flat index sequence into fixed-size tuples.
-
-        Parameters
-        ----------
-        indices
-            Flat index sequence.
-        group_size
-            Number of indices per group.
-
-        Returns
-        -------
-        list[tuple[int, ...]]
-            Grouped indices.
-
-        """
-        it = [iter(indices)] * group_size
-        return list(zip(*it))
-
-    @classmethod
-    def validate_faces(cls, faces: Sequence[Sequence[Hashable]]) -> None:
-        """Validate that all index groups consistently represent points, lines, or triangles.
-
-        Parameters
-        ----------
-        faces
-            Point, line, or triangle index groups.
-
-        Raises
-        ------
-        Exception
-            If index groups have unsupported or inconsistent sizes.
-
-        """
-        if not faces:
-            return
-        if len(faces[0]) > 3:
-            raise Exception("Invalid mesh. Expected mesh composed of points, lines xor triangles.")
-        for face in faces:
-            if len(face) != len(faces[0]):
-                # This restriction could be removed by splitting into multiple primitives.
-                raise NotImplementedError("Invalid mesh. Expected mesh composed of points, lines xor triangles.")
-
-    @classmethod
-    def validate_vertices(
-        cls, vertices: Union[Sequence[Sequence[float]], Mapping[Hashable, Sequence[float]]]
-    ) -> None:
-        """Raise an exception if there are either too many vertices, or the vertices do not
-        represent points in 3-space.
-
-        Parameters
-        ----------
-        vertices
-            Vertex coordinates by position or key.
-
-        """
-        if len(vertices) > 4294967295:
-            # This restriction could be removed by splitting into multiple primitives.
-            raise Exception("Invalid mesh.  Too many vertices.")
-        if isinstance(vertices, Mapping):
-            positions = list(vertices.values())
-        else:
-            positions = vertices
-        for position in positions:
-            if len(position) != 3:
-                raise Exception("Invalid mesh.  Vertices are expected to be points in 3-space.")
+    # =============================================================================
+    # Constructors
+    # =============================================================================
 
     @classmethod
     def from_vertices_and_faces(
         cls,
         context: "GLTFDocument",
-        vertices: Union[Sequence[Sequence[float]], Mapping[Hashable, Sequence[float]]],
+        vertices: Sequence[Sequence[float]] | Mapping[Hashable, Sequence[float]],
         faces: Sequence[Sequence[Hashable]],
-        mesh_name: Optional[str] = None,
+        mesh_name: str | None = None,
         extras: Any = None,
     ) -> Self:
         """Construct a GLTFMesh object from lists of vertices and faces.
@@ -264,3 +181,101 @@ class GLTFMesh:
         if vertex_colors and vertex_colors[0] is not None:
             pd.attributes["COLOR_0"] = vertex_colors
         return mesh_data
+
+    # =============================================================================
+    # Methods
+    # =============================================================================
+
+    def shift_indices(self, indices: Sequence[int], shift: int) -> list[int]:
+        """Shift every index by an offset.
+
+        Parameters
+        ----------
+        indices
+            Indices to shift.
+        shift
+            Offset added to every index.
+
+        Returns
+        -------
+        list[int]
+            Shifted indices.
+
+        """
+        return [index + shift for index in indices]
+
+    def group_indices(self, indices: Sequence[int], group_size: int) -> list[tuple[int, ...]]:
+        """Group a flat index sequence into fixed-size tuples.
+
+        Parameters
+        ----------
+        indices
+            Flat index sequence.
+        group_size
+            Number of indices per group.
+
+        Returns
+        -------
+        list[tuple[int, ...]]
+            Grouped indices.
+
+        """
+        it = [iter(indices)] * group_size
+        return list(zip(*it))
+
+    @classmethod
+    def validate_faces(cls, faces: Sequence[Sequence[Hashable]]) -> None:
+        """Validate that all index groups consistently represent points, lines, or triangles.
+
+        Parameters
+        ----------
+        faces
+            Point, line, or triangle index groups.
+
+        Raises
+        ------
+        Exception
+            If index groups have unsupported or inconsistent sizes.
+
+        """
+        if not faces:
+            return
+        if len(faces[0]) > 3:
+            raise Exception("Invalid mesh. Expected mesh composed of points, lines xor triangles.")
+        for face in faces:
+            if len(face) != len(faces[0]):
+                # This restriction could be removed by splitting into multiple primitives.
+                raise NotImplementedError("Invalid mesh. Expected mesh composed of points, lines xor triangles.")
+
+    @classmethod
+    def validate_vertices(cls, vertices: Sequence[Sequence[float]] | Mapping[Hashable, Sequence[float]]) -> None:
+        """Raise an exception if there are either too many vertices, or the vertices do not
+        represent points in 3-space.
+
+        Parameters
+        ----------
+        vertices
+            Vertex coordinates by position or key.
+
+        """
+        if len(vertices) > 4294967295:
+            # This restriction could be removed by splitting into multiple primitives.
+            raise Exception("Invalid mesh.  Too many vertices.")
+        if isinstance(vertices, Mapping):
+            positions = list(vertices.values())
+        else:
+            positions = vertices
+        for position in positions:
+            if len(position) != 3:
+                raise Exception("Invalid mesh.  Vertices are expected to be points in 3-space.")
+
+    # =============================================================================
+    # Private helpers
+    # =============================================================================
+
+    def _set_key(self) -> None:
+        key = len(self.context.meshes)
+        while key in self.context.meshes:
+            key += 1
+        self.context.meshes[key] = self
+        self._key = key

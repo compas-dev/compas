@@ -2,15 +2,20 @@ from math import cos
 from math import pi
 from math import sin
 from math import sqrt
+from typing import TYPE_CHECKING
+from typing import Self
 
+from compas._typing import CoordinatesType
+from compas._typing import CoordinateType
 from compas.geometry import Circle
 from compas.geometry import Frame
 from compas.geometry import Line
 from compas.geometry import Plane
-from compas.geometry import transform_points
-from compas.itertools import pairwise
 
 from .shape import Shape
+
+if TYPE_CHECKING:
+    from compas.geometry import Brep
 
 
 class Cone(Shape):
@@ -22,47 +27,17 @@ class Cone(Shape):
 
     Parameters
     ----------
-    frame : :class:`compas.geometry.Frame`, optional
+    frame
         The local coordinate system of the cone.
-        Default is ``None``, in which case the world coordinate system is used.
-    radius : float, optional
+        Default is `None`, in which case the world coordinate system is used.
+    radius
         The radius of the base of the cone.
-    height : float, optional
+    height
         The height of the cone along the z-axis of the frame.
         The base of the cone is at the origin of the frame.
         The entire cone is above the XY plane of the frame.
-    name : str, optional
+    name
         The name of the shape.
-
-    Attributes
-    ----------
-    area : float, read-only
-        The surface area of the cone.
-    axis : :class:`compas.geometry.Line`, read-only
-        The central axis of the cone.
-    base : :class:`compas.geometry.Point`, read-only
-        The base point of the cone.
-        The base point is at the origin of the local coordinate system.
-    circle : :class:`compas.geometry.Circle`, read-only
-        The base circle of the cone.
-        The center of the circle is at the origin of the local coordinate system.
-    diameter : float, read-only
-        The diameter of the base circle of the cone.
-    frame : :class:`compas.geometry.Frame`
-        The local coordinate system of the cone.
-        The cone is oriented along the local z-axis.
-    height : float
-        The height of the cone.
-    plane : :class:`compas.geometry.Plane`, read-only
-        The plane of the cone.
-        The base point of the plane is at the origin of the local coordinate system.
-        The normal of the plane is in the direction of the z-axis of the local coordinate system.
-    radius : float
-        The radius of the base circle of the cone.
-    transformation : :class:`compas.geometry.Transformation`
-        The transformation of the cone to global coordinates.
-    volume : float, read-only
-        The volume of the cone.
 
     Examples
     --------
@@ -73,9 +48,8 @@ class Cone(Shape):
 
     """
 
-
     @property
-    def __data__(self):
+    def __data__(self) -> dict:
         return {
             "radius": self.radius,
             "height": self.height,
@@ -83,21 +57,21 @@ class Cone(Shape):
         }
 
     @classmethod
-    def __from_data__(cls, data):
+    def __from_data__(cls, data: dict) -> Self:
         return cls(
             radius=data["radius"],
             height=data["height"],
             frame=Frame.__from_data__(data["frame"]),
         )
 
-    def __init__(self, radius, height, frame=None, name=None):
-        super(Cone, self).__init__(frame=frame, name=name)
-        self._radius = None
-        self._height = None
+    def __init__(self, radius: float, height: float, frame: Frame | None = None, name: str | None = None) -> None:
+        super().__init__(frame=frame, name=name)
+        self._radius: float | None = None
+        self._height: float | None = None
         self.radius = radius
         self.height = height
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "{0}(radius={1}, height={2}, frame={3!r})".format(
             type(self).__name__,
             self.radius,
@@ -106,53 +80,60 @@ class Cone(Shape):
         )
 
     # ==========================================================================
-    # properties
+    # Properties
     # ==========================================================================
 
     @property
-    def radius(self):
+    def radius(self) -> float:
+        """The positive radius of the cone base."""
         if self._radius is None:
             raise ValueError("The cone radius has not been set.")
         return self._radius
 
     @radius.setter
-    def radius(self, radius):
-        if radius < 0:
-            raise ValueError("The cone radius should be larger than or equal to zero.")
+    def radius(self, radius: float) -> None:
+        if radius <= 0:
+            raise ValueError("The cone radius should be larger than zero.")
         self._radius = float(radius)
+        self._invalidate_discretization()
 
     @property
-    def height(self):
+    def height(self) -> float:
+        """The positive distance from the base to the apex."""
         if self._height is None:
             raise ValueError("The cone height has not been set.")
         return self._height
 
     @height.setter
-    def height(self, height):
-        if height < 0:
-            raise ValueError("The cone height should be larger than or equal to zero.")
+    def height(self, height: float) -> None:
+        if height <= 0:
+            raise ValueError("The cone height should be larger than zero.")
         self._height = float(height)
+        self._invalidate_discretization()
 
     @property
-    def axis(self):
+    def axis(self) -> Line:
+        """The axis from the center of the base to the apex."""
         return Line(self.frame.point, self.frame.point + self.frame.normal * self.height)
 
     @property
-    def circle(self):
-        return Circle(self.radius, self.frame)
+    def circle(self) -> Circle:
+        """The circle forming the base of the cone."""
+        return Circle(self.radius, frame=self.frame)
 
     @property
-    def diameter(self):
+    def diameter(self) -> float:
+        """The diameter of the cone base."""
         return 2 * self.radius
 
-    @property
-    def area(self):
+    def area(self) -> float:
+        """Compute the total surface area, including the base."""
         r = self.radius
         h = self.height
         return pi * r * (r + sqrt(h**2 + r**2))
 
-    @property
-    def volume(self):
+    def volume(self) -> float:
+        """Compute the volume enclosed by the cone."""
         r = self.radius
         h = self.height
         return pi * r**2 * (h / 3)
@@ -162,24 +143,24 @@ class Cone(Shape):
     # ==========================================================================
 
     @classmethod
-    def from_line_and_radius(cls, line, radius):  # type: (...) -> Cone
+    def from_line_and_radius(cls, line: Line, radius: float) -> Self:
         """Construct a cone from a line and a radius.
 
         Parameters
         ----------
-        line : :class:`compas.geometry.Line`
+        line
             The axis of the cone.
-        radius : float
+        radius
             The radius of the base circle of the cone.
 
         Returns
         -------
-        :class:`compas.geometry.Cone`
+        Self
             The cone.
 
         See Also
         --------
-        :meth:`Cone.from_circle_and_height`
+        [`Cone.from_circle_and_height`][compas.geometry.Cone.from_circle_and_height]
 
         Examples
         --------
@@ -188,28 +169,28 @@ class Cone(Shape):
         >>> cone = Cone.from_line_and_radius(line, 0.3)
 
         """
-        frame = Frame.from_plane(Plane(line.midpoint, line.direction))
+        frame = Frame.from_plane(Plane(line.start, line.direction))
         return cls(frame=frame, radius=radius, height=line.length)
 
     @classmethod
-    def from_circle_and_height(cls, circle, height):  # type: (...) -> Cone
+    def from_circle_and_height(cls, circle: Circle, height: float) -> Self:
         """Construct a cone from a circle and a height.
 
         Parameters
         ----------
-        circle : :class:`compas.geometry.Circle`
+        circle
             The base circle of the cone.
-        height : float
+        height
             The height of the cone.
 
         Returns
         -------
-        :class:`compas.geometry.Cone`
+        Self
             The cone.
 
         See Also
         --------
-        :meth:`Cone.from_line_and_radius`
+        [`Cone.from_line_and_radius`][compas.geometry.Cone.from_line_and_radius]
 
         Examples
         --------
@@ -224,7 +205,7 @@ class Cone(Shape):
     # Discretisation
     # =============================================================================
 
-    def compute_vertices(self):  # type: () -> list[list[float]]
+    def _compute_vertices(self, u: int, v: int) -> list[CoordinateType]:
         """Compute the vertices of the discrete representation of the cone.
 
         Returns
@@ -232,21 +213,18 @@ class Cone(Shape):
         list[list[float]]
 
         """
-        u = self.resolution_u
-
-        vertices = [[0, 0, 0]]
+        vertices: list[CoordinateType] = [[0, 0, 0]]
         a = 2 * pi / u
         radius = self.circle.radius
         for i in range(u):
             x = radius * cos(i * a)
             y = radius * sin(i * a)
-            vertices.append([x, y, 0])  # type: ignore
+            vertices.append([x, y, 0])
         vertices.append([0, 0, self.height])
 
-        vertices = transform_points(vertices, self.transformation)
         return vertices
 
-    def compute_faces(self):  # type: () -> list[list[int]]
+    def compute_faces(self, u: int | None = None, v: int | None = None) -> list[list[int]]:
         """Compute the faces of the discrete representation of the cone.
 
         Returns
@@ -254,12 +232,12 @@ class Cone(Shape):
         list[list[int]]
 
         """
-        vertices = self.vertices
-
+        u, _ = self._resolutions(u, v)
         faces = []
         first = 0
-        last = len(vertices) - 1
-        for i, j in pairwise(range(1, last)):
+        last = u + 1
+        for i in range(1, last - 1):
+            j = i + 1
             faces.append([i, j, last])
             faces.append([j, i, first])
         faces.append([last - 1, 1, last])
@@ -271,12 +249,12 @@ class Cone(Shape):
     # Conversions
     # ==========================================================================
 
-    def to_brep(self):
-        """Returns a BRep representation of the cone.
+    def to_brep(self) -> "Brep":
+        """Return a BRep representation of the cone.
 
         Returns
         -------
-        :class:`compas.brep.Brep`
+        Brep
 
         """
         from compas.geometry import Brep
@@ -287,22 +265,62 @@ class Cone(Shape):
     # Transformations
     # ==========================================================================
 
-    def scale(self, factor):
+    def scale(self, x: float, y: float | None = None, z: float | None = None) -> None:
         """Scale the cone by multiplying the radius and height by a factor.
 
         Parameters
         ----------
-        factor : float
-            The scaling factor.
-
-        Returns
-        -------
-        None
+        x
+            The uniform scaling factor.
+        y
+            An optional scaling factor that must equal `x`.
+        z
+            An optional scaling factor that must equal `x`.
 
         """
-        self.radius *= factor
-        self.height *= factor
+        if (y is not None and y != x) or (z is not None and z != x):
+            raise ValueError("A cone only supports uniform scaling.")
+        self.radius *= x
+        self.height *= x
 
     # ==========================================================================
     # Methods
     # ==========================================================================
+
+    def contains_point(self, point: CoordinateType, tol: float = 1e-6) -> bool:
+        """Verify whether a point is inside the cone.
+
+        Parameters
+        ----------
+        point
+            The point to test.
+        tol
+            The tolerance for the test.
+
+        Returns
+        -------
+        bool
+
+        """
+        x, y, z = self.frame.to_local_coordinates(point)
+        if z < -tol or z > self.height + tol:
+            return False
+        radius = self.radius * max(0.0, 1.0 - z / self.height) + tol
+        return x**2 + y**2 <= radius**2
+
+    def contains_points(self, points: CoordinatesType, tol: float = 1e-6) -> list[bool]:
+        """Verify whether points are inside the cone.
+
+        Parameters
+        ----------
+        points
+            The points to test.
+        tol
+            The tolerance for the test.
+
+        Returns
+        -------
+        list[bool]
+
+        """
+        return [self.contains_point(point, tol=tol) for point in points]

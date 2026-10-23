@@ -1,0 +1,3 @@
+# `compas.linalg`
+
+::: compas.linalg

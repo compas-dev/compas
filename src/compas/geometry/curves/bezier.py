@@ -1,8 +1,7 @@
+from collections.abc import Sequence
 from math import comb
 from math import factorial
 from typing import Any
-from typing import Optional
-from typing import Sequence
 
 from compas._typing import CoordinateType
 from compas.geometry import Frame
@@ -160,7 +159,7 @@ class Bezier(Curve):
     def __data__(self) -> dict[str, Any]:
         return {"points": [point.__data__ for point in self.points]}
 
-    def __init__(self, points: Sequence[CoordinateType], name: Optional[str] = None) -> None:
+    def __init__(self, points: Sequence[CoordinateType], name: str | None = None) -> None:
         super().__init__(name=name)
         self._points: list[Point] = []
         self.points = points
@@ -192,7 +191,7 @@ class Bezier(Curve):
         return self._frame
 
     @frame.setter
-    def frame(self, frame: Optional[Frame]) -> None:
+    def frame(self, frame: Frame | None) -> None:
         raise AttributeError("The frame of a Bezier curve is read-only.")
 
     @property
@@ -263,10 +262,6 @@ class Bezier(Curve):
     def is_periodic(self) -> bool:
         """Whether the curve is periodic, which is always `False`."""
         return False
-
-    # ==========================================================================
-    # Constructors
-    # ==========================================================================
 
     # ==========================================================================
     # Transformations
@@ -365,7 +360,7 @@ class Bezier(Curve):
         vector.unitize()
         return vector
 
-    def normal_at(self, t: float, world: bool = True) -> Optional[Vector]:
+    def normal_at(self, t: float, world: bool = True) -> Vector | None:
         """Compute the normal vector to the curve at the point at the given parameter.
 
         Parameters
@@ -378,7 +373,7 @@ class Bezier(Curve):
 
         Returns
         -------
-        Optional[Vector]
+        Vector | None
             The corresponding normal vector, or `None` if the curvature is zero.
 
         See Also

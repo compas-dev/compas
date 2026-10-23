@@ -27,8 +27,7 @@ def halfface():
 # ==============================================================================
 
 
-def test_halfface_data(halfface):
-    # type: (VolMesh) -> None
+def test_halfface_data(halfface: VolMesh) -> None:
     other = VolMesh.__from_data__(json.loads(json.dumps(halfface.__data__)))
 
     assert halfface.__data__ == other.__data__

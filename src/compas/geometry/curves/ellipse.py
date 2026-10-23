@@ -3,9 +3,7 @@ from math import pi
 from math import sin
 from math import sqrt
 from typing import Any
-from typing import Optional
-
-from typing_extensions import Self
+from typing import Self
 
 from compas._typing import CoordinateType
 from compas.geometry import Frame
@@ -83,12 +81,12 @@ class Ellipse(Conic):
         self,
         major: float = 1.0,
         minor: float = 1.0,
-        frame: Optional[Frame] = None,
-        name: Optional[str] = None,
+        frame: Frame | None = None,
+        name: str | None = None,
     ) -> None:
         super().__init__(frame=frame, name=name)
-        self._major: Optional[float] = None
-        self._minor: Optional[float] = None
+        self._major: float | None = None
+        self._minor: float | None = None
         self.major = major
         self.minor = minor
 
@@ -204,9 +202,8 @@ class Ellipse(Conic):
         p2 = self.frame.point + self.frame.xaxis * -d2
         return Line.from_point_and_vector(p2, self.frame.yaxis)
 
-    @property
     def area(self) -> float:
-        """The area enclosed by the ellipse."""
+        """Compute the area enclosed by the ellipse."""
         return pi * self.major * self.minor
 
     @property

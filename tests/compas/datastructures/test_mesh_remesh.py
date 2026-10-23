@@ -18,6 +18,25 @@ def test_remesh_rejects_nonpositive_target_length(triangle, target):
         trimesh_remesh(triangle, target)
 
 
+def test_remesh_rejects_mesh_without_edges():
+    with pytest.raises(ValueError, match="at least one edge"):
+        trimesh_remesh(Mesh(), target=1.0)
+
+
+def test_remesh_with_no_iterations_is_a_noop():
+    mesh = Mesh()
+
+    trimesh_remesh(mesh, target=1.0, kmax=0)
+
+    assert mesh.number_of_vertices() == 0
+
+
+def test_remesh_runs_first_convergence_check(triangle):
+    trimesh_remesh(triangle, target=2.0, kmax=11, smooth=False)
+
+    assert triangle.is_valid()
+
+
 def test_remesh_splits_long_boundary_edge(triangle):
     trimesh_remesh(
         triangle,

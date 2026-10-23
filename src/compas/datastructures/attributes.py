@@ -1,7 +1,7 @@
+from collections.abc import Iterator
+from collections.abc import Mapping
 from collections.abc import MutableMapping
 from typing import Any
-from typing import Iterator
-from typing import Mapping
 
 
 class AttributeView(MutableMapping[str, Any]):

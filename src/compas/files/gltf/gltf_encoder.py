@@ -31,6 +31,10 @@ from .gltf_types import GLTFFormat
 class GLTFEncoder:
     """Encode a semantic glTF document without writing targets."""
 
+    # =============================================================================
+    # Dunder methods
+    # =============================================================================
+
     def __init__(
         self,
         format: GLTFFormat = "gltf",
@@ -54,6 +58,10 @@ class GLTFEncoder:
         self._sampler_index_by_key = {}
         self._image_index_by_key = {}
         self._buffer = b""
+
+    # =============================================================================
+    # Methods
+    # =============================================================================
 
     def encode(self, content: GLTFDocument) -> GLTFPayload:
         """Encode a document into a target-independent payload.
@@ -101,6 +109,10 @@ class GLTFEncoder:
                 if image.uri and image.data is not None:
                     resources[os.path.basename(image.uri)] = image.data
         return GLTFPayload(format, self._gltf_dict, self._buffer, resources)
+
+    # =============================================================================
+    # Private helpers
+    # =============================================================================
 
     def _get_index_by_key(self, d):
         return {key: index for index, key in enumerate(d)}

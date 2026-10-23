@@ -1,17 +1,14 @@
+from collections.abc import Iterator
 from typing import TYPE_CHECKING
 from typing import Any
-from typing import Optional
-from typing import Type
-from typing import Union
+from typing import Self
 from typing import cast
-
-from typing_extensions import Self
 
 import compas.data  # noqa: F401
 import compas.datastructures  # noqa: F401
 import compas.geometry  # noqa: F401
+from compas.data import Data
 from compas.datastructures import Tree
-from compas.datastructures import TreeNode
 
 from .context import after_draw
 from .context import before_draw
@@ -24,22 +21,16 @@ if TYPE_CHECKING:
     from compas.files import GLTFDocument
 
 
-class Scene(Tree):
-    """A scene is a container for hierarchical scene objects which are to be visualised in a given context.
+class Scene(Data):
+    """A hierarchical collection of objects to visualize in a context.
 
     Parameters
     ----------
-    name : str, optional
+    name
         The name of the scene.
-    context : str, optional
-        The context in which the scene is visualised. Will be automatically detected if not specified.
-
-    Attributes
-    ----------
-    tree : :class:`compas.scene.SceneTree`
-        The underlying tree data structure of the scene.
-    objects : list[:class:`compas.scene.SceneObject`]
-        All scene objects in the scene.
+    context
+        The visualization context. If omitted, COMPAS selects the only
+        registered named context when one is available.
 
     Examples
     --------
@@ -52,12 +43,16 @@ class Scene(Tree):
 
     """
 
+    # ==========================================================================
+    # Data
+    # ==========================================================================
+
     @property
     def __data__(self) -> dict[str, Any]:
         items = {str(object.item.guid): object.item for object in self.objects if object.item is not None}
         return {
             "name": self.name,
-            "root": self.root.__data__,  # type: ignore
+            "root": self.root.__data__,
             "items": list(items.values()),
         }
 
@@ -80,13 +75,57 @@ class Scene(Tree):
 
         return scene
 
-    def __init__(self, name: str = "Scene", context: Optional[str] = None) -> None:
+    # ==========================================================================
+    # Dunder methods
+    # ==========================================================================
+
+    def __init__(self, name: str = "Scene", context: str | None = None) -> None:
         super().__init__(name=name)
-        super().add(TreeNode(name="ROOT"))
         self.context = context or detect_current_context()
+        self.tree: Tree[SceneObject] = Tree(name=name)
+        root = Group(name="ROOT", context=self.context)
+        root._scene = self
+        self.tree.add(root)
+
+    def __str__(self) -> str:
+        return str(self.tree)
+
+    # ==========================================================================
+    # Properties
+    # ==========================================================================
+
+    @property
+    def root(self) -> Group:
+        """The root group of the scene tree."""
+        root = self.tree.root
+        if root is None:
+            raise RuntimeError("The scene tree has no root group.")
+        return cast(Group, root)
+
+    @property
+    def nodes(self) -> Iterator[SceneObject]:
+        """An iterator over all nodes in the scene tree, including the root."""
+        return self.tree.nodes
+
+    @property
+    def objects(self) -> list[SceneObject]:
+        """All scene objects except the private root group."""
+        return [node for node in self.nodes if not node.is_root]
+
+    @property
+    def context_objects(self) -> list[object]:
+        """The identifiers of all objects drawn in the visualization context."""
+        guids: list[object] = []
+        for obj in self.objects:
+            guids += obj.guids
+        return guids
+
+    # ==========================================================================
+    # Constructors
+    # ==========================================================================
 
     @classmethod
-    def from_gltf(cls, document: "GLTFDocument", scene_key: Optional[int] = None) -> Self:
+    def from_gltf(cls, document: "GLTFDocument", scene_key: int | None = None) -> Self:
         """Construct a COMPAS scene from a glTF document.
 
         Parameters
@@ -104,7 +143,11 @@ class Scene(Tree):
         """
         from compas.files.gltf.gltf_conversions import gltf_to_scene
 
-        return cast(Self, gltf_to_scene(document, scene_key, scene_type=cls))
+        return gltf_to_scene(document, scene_key, scene_type=cls)
+
+    # ==========================================================================
+    # Conversions
+    # ==========================================================================
 
     def to_gltf(self) -> "GLTFDocument":
         """Convert this scene to a glTF document.
@@ -121,37 +164,30 @@ class Scene(Tree):
 
         return scene_to_gltf(self)
 
-    @property
-    def objects(self) -> list[SceneObject]:
-        return [node for node in self.nodes if not node.is_root]  # type: ignore
-
-    @property
-    def context_objects(self) -> list[Any]:
-        guids: list[Any] = []
-        for obj in self.objects:
-            guids += obj.guids
-        return guids
+    # ==========================================================================
+    # Methods
+    # ==========================================================================
 
     def add(
         self,
-        item: Any,
-        parent: Optional[Union[SceneObject, TreeNode]] = None,
+        item: Data,
+        parent: SceneObject | None = None,
         **kwargs: Any,
     ) -> SceneObject:
         """Add an item to the scene.
 
         Parameters
         ----------
-        item : :class:`compas.data.Data`
+        item
             The item to add.
-        parent : :class:`compas.data.Data`, optional
-            The parent item.
-        **kwargs : dict
+        parent
+            The parent scene object. The root group is used by default.
+        **kwargs
             Additional keyword arguments to create the scene object for the item.
 
         Returns
         -------
-        :class:`compas.scene.SceneObject`
+        SceneObject
             The scene object associated with the item.
 
         """
@@ -161,51 +197,78 @@ class Scene(Tree):
         if isinstance(item, SceneObject):
             sceneobject = item
         else:
+            if isinstance(parent, Group):
+                # Use the parent group's settings as defaults for the child.
+                group_kwargs = parent.kwargs.copy()
+                group_kwargs.update(kwargs)
+                kwargs = group_kwargs
             if "context" in kwargs:
                 if kwargs["context"] != self.context:
                     raise Exception("Object context should be the same as scene context: {} != {}".format(kwargs["context"], self.context))
                 del kwargs["context"]  # otherwist the SceneObject receives "context" twice, which results in an error
-            if isinstance(parent, Group):
-                # Use the kwargs of the parent group as default values for the child sceneobject
-                group_kwargs = parent.kwargs.copy()
-                group_kwargs.update(kwargs)
-                kwargs = group_kwargs
-            sceneobject = SceneObject(item=item, context=self.context, **kwargs)  # type: ignore
-        super().add(sceneobject, parent=parent)
+            sceneobject = SceneObject(item=item, context=self.context, **kwargs)
+        for node in sceneobject.traverse():
+            node._scene = self
+        self.tree.add(sceneobject, parent=parent)
         return sceneobject
 
     def add_group(
         self,
         name: str,
-        parent: Optional[Union[SceneObject, TreeNode]] = None,
+        parent: SceneObject | None = None,
         **kwargs: Any,
     ) -> Group:
+        """Add a group to the scene.
+
+        Parameters
+        ----------
+        name
+            The name of the group.
+        parent
+            The parent scene object. The root group is used by default.
+        **kwargs
+            Default keyword arguments passed to children of the group.
+
+        Returns
+        -------
+        Group
+            The added group.
+
+        """
         group = Group(name=name, **kwargs)
         self.add(group, parent=parent)
         return group
 
-    def clear_context(self, guids: Optional[list[Any]] = None) -> None:
-        """Clear the visualisation context.
+    def remove(self, sceneobject: SceneObject) -> None:
+        """Remove a scene object and its descendants from the scene.
 
         Parameters
         ----------
-        guids : list, optional
-            The identifiers of the objects in the visualisation context.
+        sceneobject
+            The scene object to remove.
 
-        Returns
-        -------
-        None
+        """
+        removed = list(sceneobject.traverse())
+        self.tree.remove(sceneobject)
+        for node in removed:
+            node._scene = None
+
+    def clear_context(self, guids: list[object] | None = None) -> None:
+        """Clear the visualization context.
+
+        Parameters
+        ----------
+        guids
+            The identifiers of the objects in the visualization context.
 
         Notes
         -----
-        If `guids=None`, this will clear all objects from the visualisation context.
-        For example, when used in Rhino, it will remove everything from the Rhino model.
-        This is equivalent to `compas_rhino.clear()`.
+        If `guids` is `None`, clear all objects from the visualization context.
 
         If `guids` is a list, only those objects in the list will be removed.
 
-        The method is used by `Scene.clear` to remove all objects previously drawn by the scene,
-        without removing other model objects.
+        `Scene.clear` uses this method to remove objects previously drawn by the
+        scene without removing unrelated context objects.
 
         """
         clear(guids)
@@ -215,18 +278,15 @@ class Scene(Tree):
 
         Parameters
         ----------
-        clear_scene : bool, optional
-            If True, all scene objects will be removed from the scene tree.
-        clear_context : bool, optional
-            If True, all objects drawn by the scene in the visualisation context will be removed.
+        clear_scene
+            If `True`, remove all scene objects from the scene tree.
+        clear_context
+            If `True`, remove all objects drawn by the scene from the
+            visualization context.
 
-        Returns
-        -------
-        None
-
-        Notes
-        -----
-        To redraw the scene, without modifying any of the other objects in the visualisation context:
+        Examples
+        --------
+        Redraw the scene without modifying unrelated context objects.
 
         >>> scene.clear(clear_scene=False, clear_context=True)  # doctest: +SKIP
         >>> scene.draw()  # doctest: +SKIP
@@ -244,12 +304,17 @@ class Scene(Tree):
         if clear_context:
             self.clear_context(guids)
 
-    def draw(self) -> list[Any]:
+    def draw(self) -> list[object]:
         """Draw the scene.
 
         This will just draw all scene objects in the scene tree,
-        without making any modifications to the visualisation context.
+        without making any modifications to the visualization context.
         For example, it will not remove any of the previously drawn objects.
+
+        Returns
+        -------
+        list[object]
+            The objects created in the visualization context.
 
         """
 
@@ -258,7 +323,7 @@ class Scene(Tree):
 
         before_draw()
 
-        drawn_objects: list[Any] = []
+        drawn_objects: list[object] = []
         for sceneobject in self.objects:
             if sceneobject.show:
                 drawn_objects += sceneobject.draw()
@@ -270,56 +335,59 @@ class Scene(Tree):
     def redraw(self) -> None:
         """Redraw the scene.
 
-        This removes all previously drawn objects from the visualisation context,
+        This removes all previously drawn objects from the visualization context,
         before drawing all scene objects in the scene tree.
 
         """
         self.clear(clear_scene=False, clear_context=True)
         self.draw()
 
-    def find_by_name(self, name: str) -> Optional[SceneObject]:
+    def find_by_name(self, name: str) -> SceneObject | None:
         """Find the first scene object with the given name.
 
         Parameters
         ----------
-        name : str
+        name
             Name of the object.
 
         Returns
         -------
-        :class:`SceneObject`
+        SceneObject | None
+            The first matching scene object, or `None`.
 
         """
-        return self.get_node_by_name(name=name)
+        return self.tree.get_node_by_name(name=name)
 
-    def find_by_itemtype(self, itemtype: Type[Any]) -> Optional[SceneObject]:
+    def find_by_itemtype(self, itemtype: type[Data]) -> SceneObject | None:
         """Find the first scene object with a data item of the given type.
 
         Parameters
         ----------
-        itemtype : :class:`compas.data.Data`
+        itemtype
             The type of the data item associated with the scene object.
 
         Returns
         -------
-        :class:`SceneObject` or None
+        SceneObject | None
+            The first matching scene object, or `None`.
 
         """
         for obj in self.objects:
             if isinstance(obj.item, itemtype):
                 return obj
 
-    def find_all_by_itemtype(self, itemtype: Type[Any]) -> list[SceneObject]:
+    def find_all_by_itemtype(self, itemtype: type[Data]) -> list[SceneObject]:
         """Find all scene objects with a data item of the given type.
 
         Parameters
         ----------
-        itemtype : :class:`compas.data.Data`
+        itemtype
             The type of the data item associated with the scene object.
 
         Returns
         -------
-        list[:class:`SceneObject`]
+        list[SceneObject]
+            All matching scene objects.
 
         """
         sceneobjects: list[SceneObject] = []

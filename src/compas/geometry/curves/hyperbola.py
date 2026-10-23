@@ -4,9 +4,7 @@ from math import sinh
 from math import sqrt
 from typing import Any
 from typing import Literal
-from typing import Optional
-
-from typing_extensions import Self
+from typing import Self
 
 from compas._typing import CoordinateType
 from compas.geometry import Frame
@@ -79,12 +77,12 @@ class Hyperbola(Conic):
         major: float,
         minor: float,
         branch: Literal[-1, 1] = 1,
-        frame: Optional[Frame] = None,
-        name: Optional[str] = None,
+        frame: Frame | None = None,
+        name: str | None = None,
     ) -> None:
         super().__init__(frame=frame, name=name)
-        self._major: Optional[float] = None
-        self._minor: Optional[float] = None
+        self._major: float | None = None
+        self._minor: float | None = None
         self._branch: Literal[-1, 1] = 1
         self.major = major
         self.minor = minor
@@ -213,10 +211,6 @@ class Hyperbola(Conic):
     def is_periodic(self) -> bool:
         """Whether the branch is periodic."""
         return False
-
-    # ==========================================================================
-    # Constructors
-    # ==========================================================================
 
     # ==========================================================================
     # Methods

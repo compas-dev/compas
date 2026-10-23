@@ -17,9 +17,7 @@ class GLTFWriter:
         self.target = target
 
     def write(self, payload: GLTFPayload) -> None:
-        """Write an encoded payload.
-
-        """
+        """Write an encoded payload."""
         if payload.format == "glb":
             _iotools.write_bytes(self.target, _glb_bytes(payload))
             return

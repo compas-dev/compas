@@ -1,5 +1,5 @@
 site_name: COMPAS
-site_url: https://github.com/compas-dev/compas/
+site_url: https://compas.dev/compas/
 
 repo_name: compas-dev/compas
 repo_url: https://github.com/compas-dev/compas/
@@ -33,8 +33,7 @@ theme:
   font:
     text: Roboto
     code: Roboto Mono
-  logo: assets/logos/compas_icon_white.png
-  favicon: public/favicon.ico
+  logo: assets/images/COMPAS.png
   features:
     - content.code.copy
     - content.footnote.tooltips
@@ -79,7 +78,7 @@ markdown_extensions:
       permalink: "¤"
 
 extra_javascript:
-  - javascripts/mathjax.js
+  - assets/javascripts/mathjax.js
   - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
 
 plugins:
@@ -99,13 +98,13 @@ plugins:
               trim_doctest_flags: true
             docstring_style: numpy
             docstring_section_style: table
-            filters: public
             group_by_category: true
             heading_level: 1
             inheritance_diagram_direction: TD
             inherited_members: false
             line_length: 88
             merge_init_into_class: true
+            members: true
             modernize_annotations: true
             parameter_headings: false
             preload_modules: [mkdocstrings, compas]
@@ -136,27 +135,62 @@ plugins:
 
 nav:
   - Getting Started:
-      - Introduction: index.md
-      - Installation: installation.md
-      - License: license.md
-      - Acknowledgements: acknowledgements.md
-      - Changelog: changelog.md
+      - Overview: index.md
+      - Installation: getting-started/installation.md
+      - First Steps: getting-started/first-steps.md
+      - What's Next: getting-started/whats-next.md
+      - Geometry:
+          - Overview: getting-started/basics.geometry.md
+          - Points and Vectors: getting-started/basics.geometry.points_and_vectors.md
+          - Planes and Frames: getting-started/basics.geometry.planes_and_frames.md
+          - Curves and Surfaces: getting-started/basics.geometry.curves_and_surfaces.md
+          - Polygons and Polyhedra: getting-started/basics.geometry.polygons_and_polyhedrons.md
+          - Solids: getting-started/basics.geometry.solids.md
+          - Transformations: getting-started/basics.geometry.transformations.md
+          - Distance and Membership: getting-started/basics.geometry.distance_and_membership.md
+          - Intersections: getting-started/basics.geometry.intersections.md
+      - Data Structures:
+          - Overview: getting-started/basics.datastructures.md
+          - Graphs: getting-started/basics.datastructures.graphs.md
+          - Meshes: getting-started/basics.datastructures.meshes.md
+          - Volumetric Meshes: getting-started/basics.datastructures.volmeshes.md
+          - Cell Networks: getting-started/basics.datastructures.cellnetwork.md
+          - Cells: getting-started/basics.datastructures.cells.md
+          - Trees: getting-started/basics.datastructures.trees.md
+      - Colors: getting-started/basics.colors.md
+      - Visualisation: getting-started/basics.visualisation.md
+      - Data Serialisation: getting-started/advanced.serialisation.md
+      - Plugins and Pluggables: getting-started/advanced.pluggables.md
+      - Hash Trees: getting-started/advanced.hashtree.md
+      - Tolerances: getting-started/advanced.tolerance.md
+      - Releases: getting-started/releases.md
+      - Citing COMPAS: getting-started/citing.md
+      - License: getting-started/license.md
   - Examples:
-      - Booleans: examples/example_booleans.md
-  - API Reference:
-      - compas_cgal.booleans: api/compas_cgal.booleans.md
-      - compas_cgal.geodesics: api/compas_cgal.geodesics.md
-      - compas_cgal.intersections: api/compas_cgal.intersections.md
-      - compas_cgal.isolines: api/compas_cgal.isolines.md
-      - compas_cgal.measure: api/compas_cgal.measure.md
-      - compas_cgal.meshing: api/compas_cgal.meshing.md
-      - compas_cgal.polylines: api/compas_cgal.polylines.md
-      - compas_cgal.projection: api/compas_cgal.projection.md
-      - compas_cgal.reconstruction: api/compas_cgal.reconstruction.md
-      - compas_cgal.skeletonization: api/compas_cgal.skeletonization.md
-      - compas_cgal.slicer: api/compas_cgal.slicer.md
-      - compas_cgal.straight_skeleton_2: api/compas_cgal.straight_skeleton_2.md
-      - compas_cgal.subdivision: api/compas_cgal.subdivision.md
-      - compas_cgal.triangulation: api/compas_cgal.triangulation.md
-      - compas_cgal.types: api/compas_cgal.types.md
-  - Dev Guide:
+      - Overview: examples/index.md
+      - Point in Box: examples/point-in-box.md
+      - Quad Mesh Planarisation: examples/quadmesh-planarisation.md
+      - Color Maps: examples/color-maps.md
+  - Reference:
+      - Overview: reference/index.md
+      - compas: reference/compas.md
+      - compas.colors: reference/compas.colors.md
+      - compas.data: reference/compas.data.md
+      - compas.datastructures: reference/compas.datastructures.md
+      - compas.files: reference/compas.files.md
+      - compas.geometry: reference/compas.geometry.md
+      - compas.itertools: reference/compas.itertools.md
+      - compas.linalg: reference/compas.linalg.md
+      - compas.plugins: reference/compas.plugins.md
+      - compas.scene: reference/compas.scene.md
+      - compas.tolerance: reference/compas.tolerance.md
+      - compas.topology: reference/compas.topology.md
+  - Background:
+      - Overview: background/index.md
+      - Development Setup: background/setup.md
+      - Development Workflow: background/workflow.md
+      - Contributing Code: background/code.md
+      - Documentation: background/documentation.md
+      - Plugins: background/plugins.md
+      - Extensions: background/extensions.md
+      - Data Types: background/dtypes.md

@@ -2,8 +2,6 @@
 
 from os import PathLike
 from pathlib import Path
-from typing import Optional
-from typing import cast
 
 from compas import _iotools
 
@@ -18,7 +16,7 @@ from .gltf_writer import GLTFWriter
 
 def read_gltf(
     source: _iotools.IOSource,
-    resource_loader: Optional[GLTFResourceLoader] = None,
+    resource_loader: GLTFResourceLoader | None = None,
 ) -> GLTFDocument:
     """Read a glTF document.
 
@@ -41,7 +39,7 @@ def read_gltf(
 def write_gltf(
     target: _iotools.IOTarget,
     document: GLTFDocument,
-    format: Optional[GLTFFormat] = None,
+    format: GLTFFormat | None = None,
     embed_data: bool = False,
 ) -> None:
     """Encode and write a glTF document.
@@ -64,7 +62,7 @@ def write_gltf(
         suffix = Path(target).suffix.lower()
         if suffix not in (".gltf", ".glb"):
             raise ValueError("The target must use a .gltf or .glb extension.")
-        format = cast(GLTFFormat, suffix[1:])
+        format = "gltf" if suffix == ".gltf" else "glb"
     filename = Path(target).stem if isinstance(target, (str, PathLike)) else "model"
     payload = GLTFEncoder(format, embed_data, filename).encode(document)
     GLTFWriter(target).write(payload)

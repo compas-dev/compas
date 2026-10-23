@@ -1,12 +1,9 @@
 from math import isfinite
 from typing import TYPE_CHECKING
 from typing import Literal
-from typing import Optional
+from typing import Self
 from typing import TypeVar
-from typing import Union
 from typing import overload
-
-from typing_extensions import Self
 
 from compas._typing import CoordinateType
 from compas._typing import FilePath
@@ -68,9 +65,9 @@ class Curve(Geometry):
             raise TypeError("Making an instance of `Curve` using `Curve()` is not allowed. Please use one of the factory methods instead (`Curve.from_...`)")
         return object.__new__(cls)
 
-    def __init__(self, frame: Optional[Frame] = None, name: Optional[str] = None) -> None:
+    def __init__(self, frame: Frame | None = None, name: str | None = None) -> None:
         super().__init__(name=name)
-        self._frame: Optional[Frame] = None
+        self._frame: Frame | None = None
         if frame is not None:
             self.frame = frame
 
@@ -112,13 +109,11 @@ class Curve(Geometry):
         return self._frame
 
     @frame.setter
-    def frame(self, frame: Optional[Frame]) -> None:
+    def frame(self, frame: Frame | None) -> None:
         if frame is None:
             self._frame = None
         else:
-            if not isinstance(frame, Frame):
-                raise TypeError("The frame must be a Frame object or None.")
-            self._frame = Frame(frame.point, frame.xaxis, frame.yaxis)
+            self._frame = frame.copy(cls=Frame)
 
     @property
     def transformation(self) -> Transformation:
@@ -273,7 +268,7 @@ class Curve(Geometry):
         """
         raise NotImplementedError
 
-    def to_points(self, n: int = 10, domain: Optional[tuple[float, float]] = None) -> list["Point"]:
+    def to_points(self, n: int = 10, domain: tuple[float, float] | None = None) -> list["Point"]:
         """Convert the curve to a list of points.
 
         Parameters
@@ -305,7 +300,7 @@ class Curve(Geometry):
         points = [self.point_at(t) for t in linspace(start, end, n)]
         return points
 
-    def to_polyline(self, n: int = 128, domain: Optional[tuple[float, float]] = None) -> "Polyline":
+    def to_polyline(self, n: int = 128, domain: tuple[float, float] | None = None) -> "Polyline":
         """Convert the curve to a polyline.
 
         Parameters
@@ -419,7 +414,7 @@ class Curve(Geometry):
         """
         raise NotImplementedError
 
-    def normal_at(self, t: float, world: bool = True) -> Optional["Vector"]:
+    def normal_at(self, t: float, world: bool = True) -> "Vector | None":
         """Compute the normal of the curve at a parameter.
 
         Parameters
@@ -432,7 +427,7 @@ class Curve(Geometry):
 
         Returns
         -------
-        Optional[Vector]
+        Vector | None
             The corresponding normal vector, or `None` if it is undefined.
 
         Raises
@@ -545,10 +540,6 @@ class Curve(Geometry):
         """
         raise NotImplementedError
 
-    # ==============================================================================
-    # Methods continued
-    # ==============================================================================
-
     def reverse(self) -> None:
         """Reverse the parametrisation of the curve.
 
@@ -582,7 +573,7 @@ class Curve(Geometry):
     @overload
     def closest_point(self, point: CoordinateType, return_parameter: Literal[True]) -> tuple["Point", float]: ...
 
-    def closest_point(self, point: CoordinateType, return_parameter: bool = False) -> Union["Point", tuple["Point", float]]:
+    def closest_point(self, point: CoordinateType, return_parameter: bool = False) -> "Point | tuple[Point, float]":
         """Compute the closest point on the curve to a given point.
 
         Parameters
@@ -608,7 +599,7 @@ class Curve(Geometry):
     @overload
     def divide_by_count(self, count: int, return_points: Literal[True]) -> tuple[list[float], list["Point"]]: ...
 
-    def divide_by_count(self, count: int, return_points: bool = False) -> Union[list[float], tuple[list[float], list["Point"]]]:
+    def divide_by_count(self, count: int, return_points: bool = False) -> list[float] | tuple[list[float], list["Point"]]:
         """Compute the curve parameters that divide the curve into a specific number of equal length segments.
 
         Parameters
@@ -640,7 +631,7 @@ class Curve(Geometry):
     @overload
     def divide_by_length(self, length: float, return_points: Literal[True]) -> tuple[list[float], list["Point"]]: ...
 
-    def divide_by_length(self, length: float, return_points: bool = False) -> Union[list[float], tuple[list[float], list["Point"]]]:
+    def divide_by_length(self, length: float, return_points: bool = False) -> list[float] | tuple[list[float], list["Point"]]:
         """Compute the curve parameters that divide the curve into segments of specified length.
 
         Parameters

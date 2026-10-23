@@ -2,16 +2,18 @@
 The tolerance module provides functionality to deal with tolerances consistently across all other COMPAS packages.
 
 The module provides:
-- :class:`Tolerance`: A class for tolerance settings that can be instantiated independently.
-- :obj:`TOL`: The global tolerance instance used throughout COMPAS (in-process).
+
+- `Tolerance`: A class for tolerance settings that can be instantiated independently.
+- `TOL`: The global tolerance instance used throughout COMPAS (in-process).
 
 To modify global tolerance settings, use the explicit methods on `TOL`:
-- ``TOL.update(...)`` - Update specific tolerance values
-- ``TOL.reset()`` - Reset to default values
-- ``TOL.temporary(...)`` - Context manager for temporary changes
 
-Example
--------
+- `TOL.update(...)` - Update specific tolerance values
+- `TOL.reset()` - Reset to default values
+- `TOL.temporary(...)` - Context manager for temporary changes
+
+Examples
+--------
 >>> from compas.tolerance import TOL, Tolerance
 >>> # Create an independent tolerance instance
 >>> my_tol = Tolerance(absolute=0.01)
@@ -28,12 +30,26 @@ Example
 
 """
 
+from collections.abc import Iterable
+from collections.abc import Iterator
+from collections.abc import Mapping
 from contextlib import contextmanager
 from decimal import Decimal
-from warnings import warn
+from itertools import zip_longest
+from typing import Any
+from typing import Self
+from typing import TypeGuard
+from typing import cast
 
-import compas
+from compas._typing import CoordinateType
 from compas.data import Data
+
+type ToleranceValue = str | float | int
+type NestedNumbers = Iterable[float | NestedNumbers]
+
+
+def _is_nested_numbers(value: object) -> TypeGuard[NestedNumbers]:
+    return hasattr(value, "__iter__")
 
 
 class Tolerance(Data):
@@ -41,46 +57,25 @@ class Tolerance(Data):
 
     Parameters
     ----------
-    unit : {"M", "MM"}, optional
+    unit
         The unit of the tolerance settings.
-    absolute : float, optional
-        The absolute tolerance. Default is :attr:`ABSOLUTE`.
-    relative : float, optional
-        The relative tolerance. Default is :attr:`RELATIVE`.
-    angular : float, optional
-        The angular tolerance. Default is :attr:`ANGULAR`.
-    approximation : float, optional
-        The tolerance used in approximation processes. Default is :attr:`APPROXIMATION`.
-    precision : int, optional
-        The precision used when converting numbers to strings. Default is :attr:`PRECISION`.
-    lineardeflection : float, optional
+    absolute
+        The absolute tolerance. Default is `ABSOLUTE`.
+    relative
+        The relative tolerance. Default is `RELATIVE`.
+    angular
+        The angular tolerance. Default is `ANGULAR`.
+    approximation
+        The tolerance used in approximation processes. Default is `APPROXIMATION`.
+    precision
+        The precision used when converting numbers to strings. Default is `PRECISION`.
+    lineardeflection
         The maximum distance between a curve/surface and its polygonal approximation.
-        Default is :attr:`LINEARDEFLECTION`.
-    angulardeflection : float, optional
-        The maximum curvature deviation. Default is :attr:`ANGULARDEFLECTION`.
-    name : str, optional
+        Default is `LINEARDEFLECTION`.
+    angulardeflection
+        The maximum curvature deviation. Default is `ANGULARDEFLECTION`.
+    name
         The name of the tolerance settings.
-
-    Attributes
-    ----------
-    unit : {"M", "MM"}
-        The unit of the tolerance settings.
-    absolute : float
-        The absolute tolerance.
-    relative : float
-        The relative tolerance.
-    angular : float
-        The angular tolerance.
-    approximation : float
-        The tolerance used in approximation processes.
-    precision : int
-        The precision used when converting numbers to strings.
-        Positive numbers correspond to the number of digits after the decimal point.
-        Negative numbers correspond to the number of digits before the decimal point.
-        Zero corresponds to integer precision.
-        Therefore, the higher the number the higher the precision.
-    lineardeflection : float
-        The maximum distance between a curve or surface and its polygonal approximation.
 
     Notes
     -----
@@ -90,12 +85,12 @@ class Tolerance(Data):
     This value is called the "true value".
     By convention, the second value is considered the "true value" by the comparison functions of this class.
 
-    Each call to ``Tolerance(...)`` creates an independent instance. To modify the global
-    tolerance settings used throughout COMPAS, use the explicit methods on :obj:`TOL`:
+    Each call to `Tolerance(...)` creates an independent instance. To modify the global
+    tolerance settings used throughout COMPAS, use the explicit methods on `TOL`:
 
-    - ``TOL.update(...)`` - Update specific tolerance values
-    - ``TOL.reset()`` - Reset all values to defaults
-    - ``TOL.temporary(...)`` - Context manager for temporary changes
+    - `TOL.update(...)` - Update specific tolerance values
+    - `TOL.reset()` - Reset all values to defaults
+    - `TOL.temporary(...)` - Context manager for temporary changes
 
     Examples
     --------
@@ -121,30 +116,30 @@ class Tolerance(Data):
     """
 
     SUPPORTED_UNITS = ["M", "MM"]
-    """{"M", "MM"}: Default tolerances are defined in relation to length units.
+    """Default tolerances are defined in relation to length units.
 
     Currently, only meters ("M") and millimeters ("MM") are supported.
 
     """
 
     ABSOLUTE = 1e-9
-    """float: Determines when a number is small enough to be considered zero.
+    """Determines when a number is small enough to be considered zero.
     """
 
     RELATIVE = 1e-6
-    """float: Determines the accuracy of comparing a "computed value" to a "true value", as a fraction of the "true value".
+    """Determines the accuracy of comparing a computed value to a true value.
     """
 
     ANGULAR = 1e-6
-    """float: An absolute value that determines when the difference between two angles is small enough to be considered zero.
+    """Determines when the difference between two angles is effectively zero.
     """
 
     APPROXIMATION = 1e-3
-    """float: The tolerance used in approximation processes.
+    """The tolerance used in approximation processes.
     """
 
     PRECISION = 3
-    """int: The precision used when converting numbers to strings.
+    """The precision used when converting numbers to strings.
 
     The precision used when converting numbers to strings.
     Positive numbers correspond to the number of digits after the decimal point.
@@ -154,21 +149,25 @@ class Tolerance(Data):
     """
 
     LINEARDEFLECTION = 1e-3
-    """float: The maximum "distance" deviation between a curve or surface and its polygonal approximation.
+    """The maximum distance deviation of a polygonal approximation.
 
     This is used by the viewer to determine the mesh and polyline resolution of curves and surfaces for visualisation.
 
     """
 
     ANGULARDEFLECTION = 1e-1
-    """float: The maximum "curvature" deviation between a curve or surface and its polygonal approximation.
+    """The maximum curvature deviation of a polygonal approximation.
 
     This is used by the viewer to determine the mesh and polyline resolution of curves and surfaces for visualisation.
 
     """
 
+    # =============================================================================
+    # Data
+    # =============================================================================
+
     @property
-    def __data__(self):
+    def __data__(self) -> dict[str, Any]:
         return {
             "unit": self.unit,
             "absolute": self.absolute,
@@ -181,7 +180,7 @@ class Tolerance(Data):
         }
 
     @classmethod
-    def __from_data__(cls, data):
+    def __from_data__(cls, data: dict[str, Any]) -> Self:
         tol = cls()
         tol.unit = data["unit"]
         tol.absolute = data["absolute"]
@@ -193,27 +192,31 @@ class Tolerance(Data):
         tol.angulardeflection = data["angulardeflection"]
         return tol
 
+    # =============================================================================
+    # Dunder methods
+    # =============================================================================
+
     def __init__(
         self,
-        unit="M",
-        absolute=None,
-        relative=None,
-        angular=None,
-        approximation=None,
-        precision=None,
-        lineardeflection=None,
-        angulardeflection=None,
-        name=None,
-    ):
-        super(Tolerance, self).__init__(name=name)
-        self._unit = None
-        self._absolute = None
-        self._relative = None
-        self._angular = None
-        self._approximation = None
-        self._precision = None
-        self._lineardeflection = None
-        self._angulardeflection = None
+        unit: str = "M",
+        absolute: float | None = None,
+        relative: float | None = None,
+        angular: float | None = None,
+        approximation: float | None = None,
+        precision: int | None = None,
+        lineardeflection: float | None = None,
+        angulardeflection: float | None = None,
+        name: str | None = None,
+    ) -> None:
+        super().__init__(name=name)
+        self._unit: str | None = None
+        self._absolute: float | None = None
+        self._relative: float | None = None
+        self._angular: float | None = None
+        self._approximation: float | None = None
+        self._precision: int | None = None
+        self._lineardeflection: float | None = None
+        self._angulardeflection: float | None = None
 
         if unit is not None:
             self.unit = unit
@@ -232,7 +235,7 @@ class Tolerance(Data):
         if angulardeflection is not None:
             self.angulardeflection = angulardeflection
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "Tolerance(unit='{}', absolute={}, relative={}, angular={}, approximation={}, precision={}, lineardeflection={}, angulardeflection={})".format(
             self.unit,
             self.absolute,
@@ -244,7 +247,107 @@ class Tolerance(Data):
             self.angulardeflection,
         )
 
-    def reset(self):
+    # =============================================================================
+    # Properties
+    # =============================================================================
+
+    @property
+    def unit(self) -> str:
+        """The length unit used to select default tolerance values."""
+        if not self._unit:
+            return "M"
+        return self._unit
+
+    @unit.setter
+    def unit(self, value: str) -> None:
+        if value not in ["M", "MM"]:
+            raise ValueError("Invalid unit: {}".format(value))
+        self._unit = value
+
+    @property
+    def absolute(self) -> float:
+        """The absolute tolerance used for scalar comparisons."""
+        if self._absolute is None:
+            return self.ABSOLUTE
+        return self._absolute
+
+    @absolute.setter
+    def absolute(self, value: float) -> None:
+        self._absolute = value
+
+    @property
+    def relative(self) -> float:
+        """The relative tolerance used for scalar comparisons."""
+        if self._relative is None:
+            return self.RELATIVE
+        return self._relative
+
+    @relative.setter
+    def relative(self, value: float) -> None:
+        self._relative = value
+
+    @property
+    def angular(self) -> float:
+        """The absolute tolerance used for angular comparisons."""
+        if self._angular is None:
+            return self.ANGULAR
+        return self._angular
+
+    @angular.setter
+    def angular(self, value: float) -> None:
+        self._angular = value
+
+    @property
+    def approximation(self) -> float:
+        """The tolerance used by approximation algorithms."""
+        if self._approximation is None:
+            return self.APPROXIMATION
+        return self._approximation
+
+    @approximation.setter
+    def approximation(self, value: float) -> None:
+        self._approximation = value
+
+    @property
+    def precision(self) -> int:
+        """The decimal precision used to format numbers and geometric keys."""
+        if self._precision is None:
+            return self.PRECISION
+        return self._precision
+
+    @precision.setter
+    def precision(self, value: int) -> None:
+        if value == 0:
+            raise ValueError("Precision cannot be zero.")
+        self._precision = value
+
+    @property
+    def lineardeflection(self) -> float:
+        """The maximum linear deviation used for discretization."""
+        if self._lineardeflection is None:
+            return self.LINEARDEFLECTION
+        return self._lineardeflection
+
+    @lineardeflection.setter
+    def lineardeflection(self, value: float) -> None:
+        self._lineardeflection = value
+
+    @property
+    def angulardeflection(self) -> float:
+        """The maximum angular deviation used for discretization."""
+        if self._angulardeflection is None:
+            return self.ANGULARDEFLECTION
+        return self._angulardeflection
+
+    @angulardeflection.setter
+    def angulardeflection(self, value: float) -> None:
+        self._angulardeflection = value
+
+    # =============================================================================
+    # Methods
+    # =============================================================================
+
+    def reset(self) -> None:
         """Reset all precision settings to their default values."""
         self._absolute = None
         self._relative = None
@@ -254,17 +357,13 @@ class Tolerance(Data):
         self._lineardeflection = None
         self._angulardeflection = None
 
-    def update_from_dict(self, tolerance):
+    def update_from_dict(self, tolerance: Mapping[str, ToleranceValue]) -> None:
         """Update the tolerance from the key-value pairs found in a dict.
 
         Parameters
         ----------
-        tolerance : dict
+        tolerance
             A dictionary containing named tolerance values.
-
-        Returns
-        -------
-        None
 
         """
         for name in tolerance:
@@ -273,15 +372,15 @@ class Tolerance(Data):
 
     def update(
         self,
-        unit=None,
-        absolute=None,
-        relative=None,
-        angular=None,
-        approximation=None,
-        precision=None,
-        lineardeflection=None,
-        angulardeflection=None,
-    ):
+        unit: str | None = None,
+        absolute: float | None = None,
+        relative: float | None = None,
+        angular: float | None = None,
+        approximation: float | None = None,
+        precision: int | None = None,
+        lineardeflection: float | None = None,
+        angulardeflection: float | None = None,
+    ) -> None:
         """Update tolerance settings.
 
         Only the provided parameters will be updated; others remain unchanged.
@@ -289,26 +388,22 @@ class Tolerance(Data):
 
         Parameters
         ----------
-        unit : {"M", "MM"}, optional
+        unit
             The unit of the tolerance settings.
-        absolute : float, optional
+        absolute
             The absolute tolerance.
-        relative : float, optional
+        relative
             The relative tolerance.
-        angular : float, optional
+        angular
             The angular tolerance.
-        approximation : float, optional
+        approximation
             The tolerance used in approximation processes.
-        precision : int, optional
+        precision
             The precision used when converting numbers to strings.
-        lineardeflection : float, optional
+        lineardeflection
             The maximum distance between a curve/surface and its polygonal approximation.
-        angulardeflection : float, optional
+        angulardeflection
             The maximum curvature deviation.
-
-        Returns
-        -------
-        None
 
         Examples
         --------
@@ -341,15 +436,15 @@ class Tolerance(Data):
     @contextmanager
     def temporary(
         self,
-        unit=None,
-        absolute=None,
-        relative=None,
-        angular=None,
-        approximation=None,
-        precision=None,
-        lineardeflection=None,
-        angulardeflection=None,
-    ):
+        unit: str | None = None,
+        absolute: float | None = None,
+        relative: float | None = None,
+        angular: float | None = None,
+        approximation: float | None = None,
+        precision: int | None = None,
+        lineardeflection: float | None = None,
+        angulardeflection: float | None = None,
+    ) -> Iterator[Self]:
         """Context manager for temporarily changing tolerance settings.
 
         The original settings are automatically restored when the context exits,
@@ -357,26 +452,26 @@ class Tolerance(Data):
 
         Parameters
         ----------
-        unit : {"M", "MM"}, optional
+        unit
             The unit of the tolerance settings.
-        absolute : float, optional
+        absolute
             The absolute tolerance.
-        relative : float, optional
+        relative
             The relative tolerance.
-        angular : float, optional
+        angular
             The angular tolerance.
-        approximation : float, optional
+        approximation
             The tolerance used in approximation processes.
-        precision : int, optional
+        precision
             The precision used when converting numbers to strings.
-        lineardeflection : float, optional
+        lineardeflection
             The maximum distance between a curve/surface and its polygonal approximation.
-        angulardeflection : float, optional
+        angulardeflection
             The maximum curvature deviation.
 
         Yields
         ------
-        :class:`Tolerance`
+        `Tolerance`
             The tolerance instance with temporary settings applied.
 
         Examples
@@ -426,110 +521,16 @@ class Tolerance(Data):
             self._lineardeflection = saved["lineardeflection"]
             self._angulardeflection = saved["angulardeflection"]
 
-    @property
-    def unit(self):
-        if not self._unit:
-            return "M"
-        return self._unit
-
-    @unit.setter
-    def unit(self, value):
-        if value not in ["M", "MM"]:
-            raise ValueError("Invalid unit: {}".format(value))
-        self._unit = value
-
-    @property
-    def units(self):
-        warn("The 'units' property is deprecated. Use 'unit' instead.", DeprecationWarning)
-        return self.unit
-
-    @units.setter
-    def units(self, value):
-        warn("The 'units' property is deprecated. Use 'unit' instead.", DeprecationWarning)
-        self.unit = value
-
-    @property
-    def absolute(self):
-        if not self._absolute:
-            return self.ABSOLUTE
-        return self._absolute
-
-    @absolute.setter
-    def absolute(self, value):
-        self._absolute = value
-
-    @property
-    def relative(self):
-        if not self._relative:
-            return self.RELATIVE
-        return self._relative
-
-    @relative.setter
-    def relative(self, value):
-        self._relative = value
-
-    @property
-    def angular(self):
-        if not self._angular:
-            return self.ANGULAR
-        return self._angular
-
-    @angular.setter
-    def angular(self, value):
-        self._angular = value
-
-    @property
-    def approximation(self):
-        if not self._approximation:
-            return self.APPROXIMATION
-        return self._approximation
-
-    @approximation.setter
-    def approximation(self, value):
-        self._approximation = value
-
-    @property
-    def precision(self):
-        if not self._precision:
-            return self.PRECISION
-        return self._precision
-
-    @precision.setter
-    def precision(self, value):
-        if value == 0:
-            raise ValueError("Precision cannot be zero.")
-        self._precision = value
-
-    @property
-    def lineardeflection(self):
-        if not self._lineardeflection:
-            return self.LINEARDEFLECTION
-        return self._lineardeflection
-
-    @lineardeflection.setter
-    def lineardeflection(self, value):
-        self._lineardeflection = value
-
-    @property
-    def angulardeflection(self):
-        if not self._angulardeflection:
-            return self.ANGULARDEFLECTION
-        return self._angulardeflection
-
-    @angulardeflection.setter
-    def angulardeflection(self, value):
-        self._angulardeflection = value
-
-    def tolerance(self, truevalue, rtol, atol):
+    def tolerance(self, truevalue: float, rtol: float, atol: float) -> float:
         """Compute the tolerance for a comparison.
 
         Parameters
         ----------
-        truevalue : float
+        truevalue
             The true value of the comparison.
-        rtol : float
+        rtol
             The relative tolerance.
-        atol : float
+        atol
             The absolute tolerance.
 
         Returns
@@ -550,30 +551,30 @@ class Tolerance(Data):
         """
         return rtol * abs(truevalue) + atol
 
-    def compare(self, a, b, rtol, atol):
+    def compare(self, a: float, b: float, rtol: float, atol: float) -> bool:
         """Compare two values.
 
         Parameters
         ----------
-        a : float
+        a
             The first value.
-        b : float
+        b
             The second value.
-        rtol : float
+        rtol
             The relative tolerance.
-        atol : float
+        atol
             The absolute tolerance.
 
         Returns
         -------
         bool
-            ``True`` if the values are close enough to be considered equal.
-            ``False`` otherwise.
+            `True` if the values are close enough to be considered equal.
+            `False` otherwise.
 
         Notes
         -----
-        In this comparison, ``b`` is considered the "true value".
-        This means that the relative part of the tolerance is computed as a fraction of ``b``.
+        In this comparison, `b` is considered the "true value".
+        This means that the relative part of the tolerance is computed as a fraction of `b`.
 
         Examples
         --------
@@ -586,22 +587,22 @@ class Tolerance(Data):
         """
         return abs(a - b) <= self.tolerance(b, rtol, atol)
 
-    def is_zero(self, a, tol=None):
+    def is_zero(self, a: float, tol: float | None = None) -> bool:
         """Check if a value is close enough to zero to be considered zero.
 
         Parameters
         ----------
-        a : float
+        a
             The value.
-        tol : float, optional
+        tol
             The absolute tolerance.
-            Default is ``None``, in which case ``self.absolute`` is used.
+            Default is `None`, in which case `self.absolute` is used.
 
         Returns
         -------
         bool
-            ``True`` if the value is small enough to be considered zero.
-            ``False`` otherwise.
+            `True` if the value is small enough to be considered zero.
+            `False` otherwise.
 
         Examples
         --------
@@ -612,25 +613,25 @@ class Tolerance(Data):
         False
 
         """
-        tol = tol or self.absolute
+        tol = self.absolute if tol is None else tol
         return abs(a) <= tol
 
-    def is_positive(self, a, tol=None):
+    def is_positive(self, a: float, tol: float | None = None) -> bool:
         """Check if a value can be considered a strictly positive number.
 
         Parameters
         ----------
-        a : float
+        a
             The value.
-        tol : float, optional
+        tol
             The absolute tolerance.
-            Default is ``None``, in which case ``self.absolute`` is used.
+            Default is `None`, in which case `self.absolute` is used.
 
         Returns
         -------
         bool
-            ``True`` if the value is small enough to be considered zero.
-            ``False`` otherwise.
+            `True` if the value is small enough to be considered zero.
+            `False` otherwise.
 
         Examples
         --------
@@ -641,25 +642,25 @@ class Tolerance(Data):
         False
 
         """
-        tol = tol or self.absolute
+        tol = self.absolute if tol is None else tol
         return a > tol
 
-    def is_negative(self, a, tol=None):
+    def is_negative(self, a: float, tol: float | None = None) -> bool:
         """Check if a value can be considered a strictly negative number.
 
         Parameters
         ----------
-        a : float
+        a
             The value.
-        tol : float, optional
+        tol
             The absolute tolerance.
-            Default is ``None``, in which case ``self.absolute`` is used.
+            Default is `None`, in which case `self.absolute` is used.
 
         Returns
         -------
         bool
-            ``True`` if the value is small enough to be considered zero.
-            ``False`` otherwise.
+            `True` if the value is small enough to be considered zero.
+            `False` otherwise.
 
         Examples
         --------
@@ -670,29 +671,29 @@ class Tolerance(Data):
         False
 
         """
-        tol = tol or self.absolute
+        tol = self.absolute if tol is None else tol
         return a < -tol
 
-    def is_between(self, value, minval, maxval, atol=None):
+    def is_between(self, value: float, minval: float, maxval: float, atol: float | None = None) -> bool:
         """Check if a value is between two other values.
 
         Parameters
         ----------
-        value : float
+        value
             The value.
-        minval : float
+        minval
             The minimum value.
-        maxval : float
+        maxval
             The maximum value.
-        atol : float, optional
+        atol
             The absolute tolerance.
-            Default is ``None``, in which case ``self.absolute`` is used.
+            Default is `None`, in which case `self.absolute` is used.
 
         Returns
         -------
         bool
-            ``True`` if the value is between the two other values.
-            ``False`` otherwise.
+            `True` if the value is between the two other values.
+            `False` otherwise.
 
         Examples
         --------
@@ -703,30 +704,30 @@ class Tolerance(Data):
         False
 
         """
-        atol = atol or self.absolute
+        atol = self.absolute if atol is None else atol
         return minval - atol <= value <= maxval + atol
 
-    def is_close(self, a, b, rtol=None, atol=None):
+    def is_close(self, a: float, b: float, rtol: float | None = None, atol: float | None = None) -> bool:
         """Check if two values are close enough to be considered equal.
 
         Parameters
         ----------
-        a : float
+        a
             The first value.
-        b : float
+        b
             The second value.
-        rtol : float, optional
+        rtol
             The relative tolerance.
-            Default is ``None``, in which case ``self.relative`` is used.
-        atol : float, optional
+            Default is `None`, in which case `self.relative` is used.
+        atol
             The absolute tolerance.
-            Default is ``None``, in which case ``self.absolute`` is used.
+            Default is `None`, in which case `self.absolute` is used.
 
         Returns
         -------
         bool
-            ``True`` if the values are close enough to be considered equal.
-            ``False`` otherwise.
+            `True` if the values are close enough to be considered equal.
+            `False` otherwise.
 
         Examples
         --------
@@ -756,31 +757,31 @@ class Tolerance(Data):
         True
 
         """
-        rtol = rtol or self.relative
-        atol = atol or self.absolute
+        rtol = self.relative if rtol is None else rtol
+        atol = self.absolute if atol is None else atol
         return self.compare(a, b, rtol, atol)
 
-    def is_allclose(self, A, B, rtol=None, atol=None):
-        """Check if two lists of values are element-wise close enough to be considered equal.
+    def is_allclose(self, A: NestedNumbers, B: NestedNumbers, rtol: float | None = None, atol: float | None = None) -> bool:
+        """Check if two possibly nested iterables are element-wise close.
 
         Parameters
         ----------
-        A : list of float
-            The first list of values.
-        B : list of float
-            The second list of values.
-        rtol : float, optional
+        A
+            The first iterable of values.
+        B
+            The second iterable of values.
+        rtol
             The relative tolerance.
-            Default is ``None``, in which case ``self.relative`` is used.
-        atol : float, optional
+            Default is `None`, in which case `self.relative` is used.
+        atol
             The absolute tolerance.
-            Default is ``None``, in which case ``self.absolute`` is used.
+            Default is `None`, in which case `self.absolute` is used.
 
         Returns
         -------
         bool
-            ``True`` if the values are close enough to be considered equal.
-            ``False`` otherwise.
+            `True` if the values are close enough to be considered equal.
+            `False` otherwise.
 
         Examples
         --------
@@ -793,28 +794,41 @@ class Tolerance(Data):
         False
         >>> tol.is_allclose([0.0, 0.0], [0.0 + 1e-9, 0.0 + 1e-9])
         True
+        >>> tol.is_allclose([1.0], [1.0, 2.0])
+        False
 
         """
-        rtol = rtol or self.relative
-        atol = atol or self.absolute
-        return all(self.is_allclose(a, b, rtol, atol) if hasattr(a, "__iter__") else self.compare(a, b, rtol, atol) for a, b in zip(A, B))
+        rtol = self.relative if rtol is None else rtol
+        atol = self.absolute if atol is None else atol
+        missing = object()
+        for a, b in zip_longest(A, B, fillvalue=missing):
+            if a is missing or b is missing:
+                return False
+            if _is_nested_numbers(a):
+                if not _is_nested_numbers(b) or not self.is_allclose(a, b, rtol, atol):
+                    return False
+            elif _is_nested_numbers(b):
+                return False
+            elif not self.compare(cast(float, a), cast(float, b), rtol, atol):
+                return False
+        return True
 
-    def is_angle_zero(self, a, tol=None):
+    def is_angle_zero(self, a: float, tol: float | None = None) -> bool:
         """Check if an angle is close enough to zero to be considered zero.
 
         Parameters
         ----------
-        a : float
+        a
             The angle in radians.
-        tol : float, optional
+        tol
             The absolute tolerance.
-            Default is ``None``, in which case ``self.angular`` is used.
+            Default is `None`, in which case `self.angular` is used.
 
         Returns
         -------
         bool
-            ``True`` if the angle is small enough to be considered zero.
-            ``False`` otherwise.
+            `True` if the angle is small enough to be considered zero.
+            `False` otherwise.
 
         Examples
         --------
@@ -825,27 +839,27 @@ class Tolerance(Data):
         False
 
         """
-        tol = tol or self.angular
+        tol = self.angular if tol is None else tol
         return abs(a) <= tol
 
-    def is_angles_close(self, a, b, tol=None):
+    def is_angles_close(self, a: float, b: float, tol: float | None = None) -> bool:
         """Check if two angles are close enough to be considered equal.
 
         Parameters
         ----------
-        a : float
+        a
             The first angle in radians.
-        b : float
+        b
             The second angle in radians.
-        tol : float, optional
+        tol
             The absolute tolerance.
-            Default is ``None``, in which case ``self.angular`` is used.
+            Default is `None`, in which case `self.angular` is used.
 
         Returns
         -------
         bool
-            ``True`` if the angles are close enough to be considered equal.
-            ``False`` otherwise.
+            `True` if the angles are close enough to be considered equal.
+            `False` otherwise.
 
         Examples
         --------
@@ -856,21 +870,21 @@ class Tolerance(Data):
         False
 
         """
-        tol = tol or self.angular
+        tol = self.angular if tol is None else tol
         return abs(a - b) <= tol
 
-    def geometric_key(self, xyz, precision=None, sanitize=True):
+    def geometric_key(self, xyz: CoordinateType, precision: int | None = None, sanitize: bool = True) -> str:
         """Compute the geometric key of a point.
 
         Parameters
         ----------
-        xyz : list of float
+        xyz
             The XYZ coordinates of the point.
-        precision : int, optional
+        precision
             The precision used when converting numbers to strings.
-            Default is ``None``, in which case ``self.precision`` is used.
-        sanitize : bool, optional
-            If ``True``, minus signs ("-") will be removed from values that are equal to zero up to the given precision.
+            Default is `None`, in which case `self.precision` is used.
+        sanitize
+            If `True`, minus signs ("-") will be removed from values that are equal to zero up to the given precision.
 
         Returns
         -------
@@ -906,7 +920,7 @@ class Tolerance(Data):
 
         """
         x, y, z = xyz
-        if not precision:
+        if precision is None:
             precision = self.precision
 
         if precision == 0:
@@ -935,18 +949,18 @@ class Tolerance(Data):
 
         return "{0:.{3}f},{1:.{3}f},{2:.{3}f}".format(x, y, z, precision)
 
-    def geometric_key_xy(self, xy, precision=None, sanitize=True):
+    def geometric_key_xy(self, xy: CoordinateType, precision: int | None = None, sanitize: bool = True) -> str:
         """Compute the geometric key of a point in the XY plane.
 
         Parameters
         ----------
-        xy : list of float
+        xy
             The XY coordinates of the point.
-        precision : int, optional
+        precision
             The precision used when converting numbers to strings.
-            Default is ``None``, in which case ``self.precision`` is used.
-        sanitize : bool, optional
-            If ``True``, minus signs ("-") will be removed from values that are equal to zero up to the given precision.
+            Default is `None`, in which case `self.precision` is used.
+        sanitize
+            If `True`, minus signs ("-") will be removed from values that are equal to zero up to the given precision.
 
         Returns
         -------
@@ -984,7 +998,7 @@ class Tolerance(Data):
         x = xy[0]
         y = xy[1]
 
-        if not precision:
+        if precision is None:
             precision = self.precision
 
         if precision == 0:
@@ -1010,16 +1024,16 @@ class Tolerance(Data):
 
         return "{0:.{2}f},{1:.{2}f}".format(x, y, precision)
 
-    def format_number(self, number, precision=None):
+    def format_number(self, number: float, precision: int | None = None) -> str:
         """Format a number as a string.
 
         Parameters
         ----------
-        number : float
+        number
             The number.
-        precision : int, optional
+        precision
             The precision used when converting numbers to strings.
-            Default is ``None``, in which case ``self.precision`` is used.
+            Default is `None`, in which case `self.precision` is used.
 
         Returns
         -------
@@ -1041,10 +1055,7 @@ class Tolerance(Data):
         '12300'
 
         """
-        if compas.IPY:
-            number = float(number)
-
-        if not precision:
+        if precision is None:
             precision = self.precision
 
         if precision == 0:
@@ -1060,19 +1071,24 @@ class Tolerance(Data):
 
         return "{0:.{1}f}".format(number, precision)
 
-    def precision_from_tolerance(self, tol=None):
-        """Compute the precision from a given tolerance.
+    def precision_from_tolerance(self, tol: float | None = None) -> int:
+        """Compute decimal precision from a positive sub-unit tolerance.
 
         Parameters
         ----------
-        tol : float, optional
+        tol
             The tolerance.
-            Default is ``None``, in which case ``self.absolute`` is used.
+            Default is `None`, in which case `self.absolute` is used.
 
         Returns
         -------
         int
             The precision.
+
+        Raises
+        ------
+        ValueError
+            If the tolerance is not greater than zero and smaller than one.
 
         Examples
         --------
@@ -1087,10 +1103,10 @@ class Tolerance(Data):
         1
 
         """
-        tol = tol or self.absolute
-        if tol < 1:
-            return abs(int(Decimal(str(tol)).as_tuple().exponent))
-        raise NotImplementedError
+        tol = self.absolute if tol is None else tol
+        if not 0 < tol < 1:
+            raise ValueError("The tolerance should be greater than zero and smaller than one.")
+        return abs(int(Decimal(str(tol)).as_tuple().exponent))
 
 
 TOL = Tolerance()

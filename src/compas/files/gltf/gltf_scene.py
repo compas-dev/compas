@@ -1,7 +1,6 @@
+from collections.abc import Iterable
 from typing import TYPE_CHECKING
 from typing import Any
-from typing import Iterable
-from typing import Optional
 
 from compas.files.gltf.gltf_children import GLTFChildren
 
@@ -32,11 +31,15 @@ class GLTFScene:
 
     """
 
+    # =============================================================================
+    # Dunder methods
+    # =============================================================================
+
     def __init__(
         self,
         context: "GLTFDocument",
-        children: Optional[Iterable[int]] = None,
-        name: Optional[str] = None,
+        children: Iterable[int] | None = None,
+        name: str | None = None,
         extras: Any = None,
         extensions: Any = None,
     ) -> None:
@@ -49,12 +52,9 @@ class GLTFScene:
         self.context = context
         self._set_key()
 
-    def _set_key(self) -> None:
-        key = len(self.context.scenes)
-        while key in self.context.scenes:
-            key += 1
-        self.context.scenes[key] = self
-        self._key = key
+    # =============================================================================
+    # Properties
+    # =============================================================================
 
     @property
     def key(self) -> int:
@@ -66,7 +66,7 @@ class GLTFScene:
         return self._children
 
     @children.setter
-    def children(self, value: Optional[Iterable[int]]) -> None:
+    def children(self, value: Iterable[int] | None) -> None:
         self._children = GLTFChildren(self.context, value or [])
 
     @property
@@ -77,7 +77,11 @@ class GLTFScene:
     def positions_and_edges(self):
         return self.context.get_scene_positions_and_edges(self)
 
-    def add_child(self, node_name: Optional[str] = None, node_extras: Any = None) -> "GLTFNode":
+    # =============================================================================
+    # Methods
+    # =============================================================================
+
+    def add_child(self, node_name: str | None = None, node_extras: Any = None) -> "GLTFNode":
         """Create a node and add it as a scene root.
 
         Parameters
@@ -94,3 +98,14 @@ class GLTFScene:
 
         """
         return self.context.add_node_to_scene(self, node_name, node_extras)
+
+    # =============================================================================
+    # Private helpers
+    # =============================================================================
+
+    def _set_key(self) -> None:
+        key = len(self.context.scenes)
+        while key in self.context.scenes:
+            key += 1
+        self.context.scenes[key] = self
+        self._key = key

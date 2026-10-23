@@ -1,55 +1,59 @@
 from collections.abc import Mapping
+from typing import Any
+from typing import Self
+from typing import overload
 
+from compas.colors.color import ColorInput
 from compas.colors.colordict import ColorDict
 
 
-class ColorDictAttribute(object):
+class ColorDictAttribute:
     """Descriptor for color dictionaries."""
 
-    def __init__(self, default=None, **kwargs):
-        super(ColorDictAttribute, self).__init__(**kwargs)
+    def __init__(self, default: ColorInput = None) -> None:
+        super().__init__()
         self.default = default
 
-    def __set_name__(self, owner, name):
-        """Record the name of the attribute this descriptor is assigned to.
-        The attribute name is then used to identify the corresponding private attribute.
+    def __set_name__(self, owner: type[object], name: str) -> None:
+        """Record the public and private attribute names.
 
         Parameters
         ----------
-        owner : object
+        owner
             The class owning the attribute.
-        name : str
+        name
             The name of the attribute.
-
-        Returns
-        -------
-        None
-
-        Notes
-        -----
-        In Python 3.6+ this method is called automatically.
-        For earlier versions it needs to be used with a custom metaclass (``DescriptorProtocol``).
 
         """
         self.name = name
         self.private_name = "_" + name
 
-    def __get__(self, obj, otype=None):
-        """Get the color dict stored in the private attribute corresponding to the public attribute name of the descriptor.
+    @overload
+    def __get__(self, obj: None, otype: type[object]) -> Self: ...
+
+    @overload
+    def __get__(self, obj: object, otype: type[object] | None = None) -> ColorDict: ...
+
+    def __get__(self, obj: object | None, otype: type[object] | None = None) -> Self | ColorDict:
+        """Get the stored color dictionary, creating it when necessary.
 
         Parameters
         ----------
-        obj : object
-            The instance owning the instance of the descriptor.
-        otype : object, optional
-            The type owning the instance of the descriptor.
+        obj
+            The instance owning the descriptor.
+        otype
+            The type owning the descriptor.
 
         Returns
         -------
-        defaultdict
-            A defaultdict with the value stored in the default attribute corresponding to the descriptor as a default value.
+        ColorDictAttribute
+            The descriptor itself when accessed on the owner class.
+        ColorDict
+            The color dictionary stored by the descriptor.
 
         """
+        if obj is None:
+            return self
 
         if not hasattr(obj, self.private_name):
             setattr(obj, self.private_name, None)
@@ -62,34 +66,34 @@ class ColorDictAttribute(object):
 
         return colordict
 
-    def __set__(self, obj, value):
+    def __set__(
+        self,
+        obj: object,
+        value: Mapping[Any, ColorInput] | ColorDict | ColorInput,
+    ) -> None:
         """Set a new value for the descriptor.
 
         Parameters
         ----------
-        obj : object
+        obj
             The owner of the descriptor.
-        value : dict[Any, :class:`compas.colors.Color`] | :class:`compas.colors.Color`
-            The new value for the descriptor.
-            This value is stored in the corresponding private attribute in the form of a defaultdict.
-
-        Returns
-        -------
-        None
+        value
+            A color mapping, color dictionary, or default color. `None` leaves
+            the current value unchanged. An empty mapping clears stored items.
 
         """
-        if not value:
+        if value is None:
             return
 
         colordict = getattr(obj, self.name)
 
-        if isinstance(value, Mapping):
-            colordict.clear()
-            colordict.update(value)
-
-        elif isinstance(value, ColorDict):
+        if isinstance(value, ColorDict):
             colordict.clear()
             colordict.default = value.default
+            colordict.update(value)
+
+        elif isinstance(value, Mapping):
+            colordict.clear()
             colordict.update(value)
 
         else:

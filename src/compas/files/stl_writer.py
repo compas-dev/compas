@@ -8,7 +8,6 @@ from target writing, following the XML API.
 """
 
 import struct
-from typing import Optional
 
 from compas import _iotools
 
@@ -17,24 +16,21 @@ from .stl_document import STLFacet
 from .stl_types import STLFormat
 
 
-def _number(value: float, precision: Optional[int]) -> str:
+def _number(value: float, precision: int | None) -> str:
     if precision is None:
         return str(float(value))
     number = f"{value:.{precision}f}".rstrip("0").rstrip(".")
     return "0" if number in ("", "-0") else number
 
 
-def _ascii_body(document: STLDocument, precision: Optional[int], encoding: str) -> bytes:
+def _ascii_body(document: STLDocument, precision: int | None, encoding: str) -> bytes:
     lines = []
     for solid in document.solids:
         lines.append(f"solid {solid.name}")
         for facet in solid.facets:
             lines.append("facet normal " + " ".join(_number(value, precision) for value in facet.normal))
             lines.append("    outer loop")
-            lines.extend(
-                "        vertex " + " ".join(_number(value, precision) for value in vertex)
-                for vertex in facet.vertices
-            )
+            lines.extend("        vertex " + " ".join(_number(value, precision) for value in vertex) for vertex in facet.vertices)
             lines.append("    endloop")
             lines.append("endfacet")
         lines.append(f"endsolid {solid.name}")
@@ -55,13 +51,13 @@ def _binary_body(document: STLDocument) -> bytes:
     return header + struct.pack("<I", len(facets)) + b"".join(_binary_facet(facet) for facet in facets)
 
 
-def _body(document: STLDocument, format: STLFormat, precision: Optional[int], encoding: str) -> bytes:
+def _body(document: STLDocument, format: STLFormat, precision: int | None, encoding: str) -> bytes:
     if format == "ascii":
         return _ascii_body(document, precision, encoding)
     return _binary_body(document)
 
 
-def _output_format(document_format: STLFormat, requested_format: Optional[STLFormat]) -> STLFormat:
+def _output_format(document_format: STLFormat, requested_format: STLFormat | None) -> STLFormat:
     if requested_format is None:
         return document_format
     return requested_format
@@ -73,12 +69,12 @@ class STLWriter:
     def __init__(
         self,
         target: _iotools.IOTarget,
-        format: Optional[STLFormat] = None,
-        precision: Optional[int] = None,
+        format: STLFormat | None = None,
+        precision: int | None = None,
         encoding: str = "utf-8",
     ) -> None:
         self.target: _iotools.IOTarget = target
-        self.format: Optional[STLFormat] = format
+        self.format: STLFormat | None = format
         self.precision = precision
         self.encoding = encoding
 

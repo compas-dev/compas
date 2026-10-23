@@ -1,5 +1,8 @@
-from typing import Iterable
-from typing import Sequence
+from collections.abc import Iterable
+from collections.abc import Sequence
+
+from compas._typing import FloatSequenceType
+from compas.tolerance import TOL
 
 from .vectors import dot_vectors
 
@@ -76,7 +79,7 @@ def multiply_matrices(A: Sequence[Sequence[float]], B: Sequence[Sequence[float]]
     return [[dot_vectors(row, col) for col in B] for row in A]
 
 
-def multiply_matrix_vector(A: Sequence[Sequence[float]], b: Sequence[float]) -> list[float]:
+def multiply_matrix_vector(A: Sequence[Sequence[float]], b: FloatSequenceType) -> list[float]:
     r"""Multiply a matrix with a vector.
 
     Parameters
@@ -137,6 +140,7 @@ def is_matrix_square(M: Sequence[Sequence[float]]) -> bool:
 
     Examples
     --------
+    >>> from compas.linalg import identity_matrix
     >>> M = identity_matrix(4)
     >>> is_matrix_square(M)
     True
@@ -176,14 +180,14 @@ def matrix_minor(M: Sequence[Sequence[float]], i: int, j: int) -> list[list[floa
 
 
 def matrix_determinant(M: Sequence[Sequence[float]], check: bool = True) -> float:
-    """Calculates the determinant of a square matrix M.
+    """Calculate the determinant of a square matrix.
 
     Parameters
     ----------
     M
         A square matrix of any dimension.
     check
-        If True, checks if the matrix is square.
+        If `True`, verify that the matrix is square.
 
     Raises
     ------
@@ -193,7 +197,7 @@ def matrix_determinant(M: Sequence[Sequence[float]], check: bool = True) -> floa
     Returns
     -------
     float
-        The determinant.
+        The determinant. The determinant of the 0x0 matrix is `1.0`.
 
     See Also
     --------
@@ -202,6 +206,7 @@ def matrix_determinant(M: Sequence[Sequence[float]], check: bool = True) -> floa
 
     Examples
     --------
+    >>> from compas.linalg import identity_matrix
     >>> M = identity_matrix(4)
     >>> matrix_determinant(M)
     1.0
@@ -213,6 +218,12 @@ def matrix_determinant(M: Sequence[Sequence[float]], check: bool = True) -> floa
         if not is_matrix_square(M):
             raise ValueError("Not a square matrix")
 
+    if dim == 0:
+        return 1.0
+
+    if dim == 1:
+        return M[0][0]
+
     if dim == 2:
         return M[0][0] * M[1][1] - M[0][1] * M[1][0]
 
@@ -223,7 +234,7 @@ def matrix_determinant(M: Sequence[Sequence[float]], check: bool = True) -> floa
 
 
 def matrix_inverse(M: Sequence[Sequence[float]]) -> list[list[float]]:
-    """Calculates the inverse of a square matrix M.
+    """Calculate the inverse of a square matrix.
 
     Parameters
     ----------
@@ -233,16 +244,13 @@ def matrix_inverse(M: Sequence[Sequence[float]]) -> list[list[float]]:
     Returns
     -------
     list[list[float]]
-        The inverted matrix.
+        The inverse matrix. The inverse of the 0x0 matrix is the 0x0 matrix.
 
     Raises
     ------
     ValueError
-        If the matrix is not squared
-    ValueError
-        If the matrix is singular.
-    ValueError
-        If the matrix is not invertible.
+        If the matrix is not square or is singular according to the current
+        tolerance policy.
 
     See Also
     --------
@@ -251,25 +259,33 @@ def matrix_inverse(M: Sequence[Sequence[float]]) -> list[list[float]]:
 
     Examples
     --------
+    >>> from compas.linalg import identity_matrix, matrix_from_frame
+    >>> from compas.tolerance import TOL
     >>> from compas.geometry import Frame
     >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
     >>> T = matrix_from_frame(f)
     >>> I = multiply_matrices(T, matrix_inverse(T))
     >>> I2 = identity_matrix(4)
-    >>> allclose(I[0], I2[0])
+    >>> TOL.is_allclose(I[0], I2[0])
     True
-    >>> allclose(I[1], I2[1])
+    >>> TOL.is_allclose(I[1], I2[1])
     True
-    >>> allclose(I[2], I2[2])
+    >>> TOL.is_allclose(I[2], I2[2])
     True
-    >>> allclose(I[3], I2[3])
+    >>> TOL.is_allclose(I[3], I2[3])
     True
 
     """
     D = matrix_determinant(M)
 
-    if D == 0:
+    if TOL.is_zero(D):
         raise ValueError("The matrix is singular.")
+
+    if len(M) == 0:
+        return []
+
+    if len(M) == 1:
+        return [[1.0 / D]]
 
     if len(M) == 2:
         return [[M[1][1] / D, -1 * M[0][1] / D], [-1 * M[1][0] / D, M[0][0] / D]]

@@ -1,16 +1,21 @@
-"""For the time being, these functions are only for internal use."""
+"""Internal helpers for paths, URLs, and open streams."""
 
 import io
-from contextlib import contextmanager
+from collections.abc import Iterator
+from contextlib import AbstractContextManager
+from contextlib import closing
+from contextlib import nullcontext
 from os import PathLike
 from typing import BinaryIO
+from typing import Literal
 from typing import TextIO
-from typing import Union
 from typing import cast
+from typing import overload
 from urllib.request import urlopen
 
-IOSource = Union[str, PathLike[str], TextIO, BinaryIO]
-IOTarget = Union[str, PathLike[str], TextIO, BinaryIO]
+type IOStream = TextIO | BinaryIO
+type IOSource = str | PathLike[str] | IOStream
+type IOTarget = str | PathLike[str] | IOStream
 
 
 def read_bytes(source: IOSource, encoding: str = "utf-8") -> bytes:
@@ -46,10 +51,6 @@ def write_bytes(target: IOTarget, data: bytes, encoding: str = "utf-8") -> None:
     encoding
         Encoding used to convert data for a text stream.
 
-    Returns
-    -------
-    None
-
     """
     with open_file(target, "wb") as stream:
         try:
@@ -58,70 +59,90 @@ def write_bytes(target: IOTarget, data: bytes, encoding: str = "utf-8") -> None:
             cast(TextIO, stream).write(data.decode(encoding))
 
 
-@contextmanager
-def open_file(file_or_filename, mode="r"):
-    """Context-manager to open a file, path or URL and return a corresponding file object.
+@overload
+def open_file(file_or_filename: TextIO, mode: str = "r") -> AbstractContextManager[TextIO]: ...
 
-    If the argument is a path-like object, it will open it,
-    if the argument is an HTTP(s) URL, it will open it, and
-    if the argument is already a file-like object, it will simply yield it.
 
-    This context manager ensures that when using a path-like object as input,
-    the file is closed once it it goes out of scope.
+@overload
+def open_file(file_or_filename: BinaryIO, mode: str = "r") -> AbstractContextManager[BinaryIO]: ...
+
+
+@overload
+def open_file(
+    file_or_filename: str | PathLike[str],
+    mode: Literal["w", "wt", "a", "at", "x", "xt"],
+) -> AbstractContextManager[TextIO]: ...
+
+
+@overload
+def open_file(
+    file_or_filename: str | PathLike[str],
+    mode: Literal["rb", "wb", "ab", "xb"],
+) -> AbstractContextManager[BinaryIO]: ...
+
+
+@overload
+def open_file(file_or_filename: str | PathLike[str], mode: str = "r") -> AbstractContextManager[IOStream]: ...
+
+
+def open_file(file_or_filename: IOSource | IOTarget, mode: str = "r") -> AbstractContextManager[IOStream]:
+    """Open a path or URL, or provide a context for an existing stream.
+
+    Paths are opened with the requested mode. HTTP URLs are read into a binary
+    in-memory stream. An existing stream is returned unchanged.
+
+    Parameters
+    ----------
+    file_or_filename
+        Path, HTTP URL, or existing stream.
+    mode
+        Standard file mode. URLs support read modes only.
+
+    Returns
+    -------
+    AbstractContextManager[TextIO] | AbstractContextManager[BinaryIO]
+        A context manager for the opened or supplied stream.
 
     Notes
     -----
-    This context-manager will only close files that it opened itself. If an opened file
-    is passed as the argument, it will not close it.
-
-    Parameters
-    ----------
-    file_or_filename : path-like, file-like object or URL string
-        A path-like, a file-like object or a URL pointing to a file.
-    mode : str, optional
-        Specifies the mode in which the file is opened. It defaults to ``'r'`` which means open for reading in text mode.
-
-    Yields
-    -------
-    file-like object
-        File object already opened.
+    The returned context manager closes paths, URL responses, and in-memory URL
+    streams opened by this function. It does not close a stream supplied by the
+    caller.
 
     """
-    file = file_or_filename
-    close_source = False
-
-    if not hasattr(file, "read"):
-        # If it's a URL, open and read its response into an in-memory stream
-        if hasattr(file, "startswith") and file.startswith("http"):
-            # support all read modes (r, r+, rb, etc)
-            if not mode.startswith("r"):
-                raise ValueError("URLs can only be opened in read mode.")
-            response = urlopen(file)
-            file = io.BytesIO(response.read())
-        else:
-            file = open(file, mode=mode)
-            close_source = True
-    try:
-        yield file
-    finally:
-        if close_source:
-            file.close()
+    if hasattr(file_or_filename, "read"):
+        return nullcontext(cast(IOStream, file_or_filename))
+    if isinstance(file_or_filename, str) and file_or_filename.startswith("http"):
+        if not mode.startswith("r"):
+            raise ValueError("URLs can only be opened in read mode.")
+        with urlopen(file_or_filename) as response:
+            return closing(io.BytesIO(response.read()))
+    path = cast(str | PathLike[str], file_or_filename)
+    return cast(AbstractContextManager[IOStream], open(path, mode=mode))
 
 
-def iter_file(file, size=65536):
-    """Iterate over a file returning chunks of data until EOF.
+@overload
+def iter_file(file: TextIO, size: int = 65536) -> Iterator[str]: ...
+
+
+@overload
+def iter_file(file: BinaryIO, size: int = 65536) -> Iterator[bytes]: ...
+
+
+def iter_file(file: IOStream, size: int = 65536) -> Iterator[str | bytes]:
+    """Iterate over a stream in chunks until EOF.
 
     Parameters
     ----------
-    file : file-like object
-        A file-like object.
-    size : int, optional
-        Size of each chuck of data to be read. Defaults to ``65536``.
+    file
+        An open text or binary stream.
+    size
+        Maximum number of characters or bytes per chunk.
 
     Yields
-    -------
-    bytes
-        Byte array chunks read from the file.
+    ------
+    str | bytes
+        Chunks in the stream's native text or binary representation.
 
     """
     while True:

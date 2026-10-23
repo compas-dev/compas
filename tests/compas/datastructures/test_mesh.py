@@ -97,7 +97,7 @@ def box():
 def _hexagon():
     polygon = Polygon.from_sides_and_radius_xy(6, 1)
     vertices = polygon.points
-    vertices.append(polygon.centroid)
+    vertices.append(polygon.centroid())
     faces = [[0, 1, 6], [1, 2, 6], [2, 3, 6], [3, 4, 6], [4, 5, 6], [5, 0, 6]]
     return Mesh.from_vertices_and_faces(vertices, faces)
 
@@ -110,7 +110,7 @@ def hexagon():
 def _hexagongrid():
     polygon = Polygon.from_sides_and_radius_xy(6, 1)
     vertices = polygon.points
-    vertices.append(polygon.centroid)
+    vertices.append(polygon.centroid())
     x, y, z = zip(*vertices)
     xmin = min(x)
     xmax = max(x)
@@ -140,7 +140,7 @@ def hexagongrid():
 def _biohazard():
     polygon = Polygon.from_sides_and_radius_xy(6, 1)
     vertices = polygon.points
-    vertices.append(polygon.centroid)
+    vertices.append(polygon.centroid())
     faces = [[0, 1, 6], [2, 3, 6], [4, 5, 6]]
     return Mesh.from_vertices_and_faces(vertices, faces)
 
@@ -234,18 +234,17 @@ def test_from_polyhedron():
 
 
 def test_from_points():
-    if not compas.IPY:
-        points = [
-            [1.0, 0.0, 3.0],
-            [1.0, 1.25, 0.0],
-            [1.5, 0.5, 0.0],
-            [1.0, 10.75, 0.2],
-            [1.0, 1.0, 4.0],
-        ]
-        mesh = Mesh.from_points(points)
-        assert mesh.number_of_faces() == 3
-        assert mesh.number_of_vertices() == 5
-        assert mesh.number_of_edges() == 7
+    points = [
+        [1.0, 0.0, 3.0],
+        [1.0, 1.25, 0.0],
+        [1.5, 0.5, 0.0],
+        [1.0, 10.75, 0.2],
+        [1.0, 1.0, 4.0],
+    ]
+    mesh = Mesh.from_points(points)
+    assert mesh.number_of_faces() == 3
+    assert mesh.number_of_vertices() == 5
+    assert mesh.number_of_edges() == 7
 
 
 def test_from_ploygons():
@@ -789,8 +788,7 @@ def test_halfedge_before_on_boundary(grid):
 # --------------------------------------------------------------------------
 
 
-def test_loops_and_strips_closed(sphere):
-    # type: (Mesh) -> None
+def test_loops_and_strips_closed(sphere: Mesh) -> None:
     poles = list(sphere.vertices_where({"vertex_degree": 16}))
 
     for nbr in sphere.vertex_neighbors(poles[0]):
@@ -1301,7 +1299,7 @@ def test_face_skewness():
 
 def test_face_curvature():
     mesh = Mesh.from_obj(compas.get("quadmesh.obj"))
-    assert TOL.is_close(mesh.face_curvature(0), 0.0035753184898039566)
+    assert TOL.is_close(mesh.face_curvature(0), 0.003584065699273335)
 
     mesh = Mesh.from_obj(compas.get("faces.obj"))
     assert mesh.face_curvature(0) == 0
@@ -1418,28 +1416,28 @@ def test_matrix_types_with_noncontiguous_vertex_keys():
 # bounding volumes
 # --------------------------------------------------------------------------
 
-if not compas.IPY:
 
-    def test_aabb_and_obb_are_properties(cube):
-        assert isinstance(Mesh.aabb, property)
-        assert isinstance(Mesh.obb, property)
-        assert isinstance(cube.aabb, Box)
+def test_aabb_and_obb_return_boxes(cube):
+    assert isinstance(cube.aabb(), Box)
+    assert isinstance(cube.obb(), Box)
 
-    def test_compute_aabb():
-        mesh = Mesh.from_obj(compas.get("tubemesh.obj"))
-        aabb = mesh.compute_aabb()
 
-        assert isinstance(aabb, Box)
-        assert len(aabb.points) == 8
-        assert aabb.contains_points(mesh.to_points())
+def test_aabb():
+    mesh = Mesh.from_obj(compas.get("tubemesh.obj"))
+    aabb = mesh.aabb()
 
-    def test_compute_obb():
-        mesh = Mesh.from_obj(compas.get("tubemesh.obj"))
-        obb = mesh.compute_obb()
+    assert isinstance(aabb, Box)
+    assert len(aabb.points) == 8
+    assert aabb.contains_points(mesh.to_points())
 
-        assert isinstance(obb, Box)
-        assert len(obb.points) == 8
-        assert obb.contains_points(mesh.to_points())
+
+def test_obb():
+    mesh = Mesh.from_obj(compas.get("tubemesh.obj"))
+    obb = mesh.obb()
+
+    assert isinstance(obb, Box)
+    assert len(obb.points) == 8
+    assert obb.contains_points(mesh.to_points())
 
 
 # --------------------------------------------------------------------------

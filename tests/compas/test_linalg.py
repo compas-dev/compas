@@ -1,6 +1,9 @@
 import numpy as np
+from scipy.sparse import csc_matrix
 
+from compas.linalg import chofactor
 from compas.linalg import dof
+from compas.linalg import lufactorized
 from compas.linalg import nonpivots
 from compas.linalg import normalizerow
 from compas.linalg import normrow
@@ -43,3 +46,11 @@ def test_rot90_preserves_vector_lengths():
 
     assert np.allclose(rotated, [[0, 1, 0], [-2, 0, 0]])
     assert np.allclose(normrow(rotated), normrow(vectors))
+
+
+def test_matrix_factorizations_use_the_supplied_matrix_directly():
+    factor, _ = chofactor([[4.0, 0.0], [0.0, 9.0]])
+    solve = lufactorized(csc_matrix([[2.0, 0.0], [0.0, 4.0]]))
+
+    assert np.allclose(np.diag(factor), [2.0, 3.0])
+    assert np.allclose(solve([2.0, 8.0]), [1.0, 2.0])

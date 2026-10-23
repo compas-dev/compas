@@ -3,11 +3,10 @@
 from os import PathLike
 from typing import BinaryIO
 from typing import TextIO
-from typing import Union
 
 from compas import _iotools
 
-OFFSource = Union[str, PathLike[str], TextIO, BinaryIO]
+OFFSource = str | PathLike[str] | TextIO | BinaryIO
 
 
 class OFFReader:

@@ -1,18 +1,9 @@
 # ruff: noqa: F401
 
 import os
+import sys
+from pathlib import Path
 
-import compas._os
-from compas._os import (
-    is_windows,
-    is_linux,
-    is_osx,
-    is_mono,
-    is_ironpython,
-    is_rhino,
-    is_blender,
-    is_grasshopper,
-)
 from compas.data import json_dump, json_dumps, json_dumpz, json_load, json_loads, json_loadz
 
 
@@ -23,22 +14,33 @@ __email__ = "tom.v.mele@gmail.com"
 __version__ = "2.15.0"
 
 
-HERE = compas._os.realpath(os.path.dirname(__file__))
+_PACKAGE_DIR = Path(__file__).resolve().parent
+
+
+def _user_data_directory() -> Path:
+    if sys.platform == "win32":
+        return Path(os.environ.get("APPDATA", Path.home() / "AppData" / "Roaming")) / "compas-dev" / "COMPAS"
+    if sys.platform == "darwin":
+        return Path.home() / "Library" / "Application Support" / "COMPAS"
+    return Path(os.environ.get("XDG_DATA_HOME", Path.home() / ".local" / "share")) / "COMPAS"
+
+
+HERE = str(_PACKAGE_DIR)
 """str: Path to the location of the compas package."""
 
-HOME = compas._os.absjoin(HERE, "../..")
+HOME = str(_PACKAGE_DIR.parent.parent)
 """str: Path to the root of the local installation."""
 
-DATA = compas._os.absjoin(HERE, "data", "samples")
+DATA = str(_PACKAGE_DIR / "data" / "samples")
 """str: Path to the data folder of the local installation."""
 
-TEMP = compas._os.absjoin(HERE, "../../temp")
+TEMP = str(_PACKAGE_DIR.parent.parent / "temp")
 """str: Path to the temp folder of the local installation."""
 
-APPDATA = compas._os.user_data_dir("COMPAS", "compas-dev", roaming=True)
+APPDATA = str(_user_data_directory())
 """str: Path to the COMPAS directory in APPDATA."""
 
-APPTEMP = compas._os.absjoin(APPDATA, "temp")
+APPTEMP = str(Path(APPDATA) / "temp")
 """str: Path to a temp folder in the COMPAS directory in APPDATA."""
 
 # PRECISION = "3f"
@@ -53,38 +55,10 @@ APPTEMP = compas._os.absjoin(APPDATA, "temp")
 # Float formatting (``'<x>f'``) and integer formatting (``'d'``) specifiers are supported.
 # """
 
-PY2 = compas._os.PY2
-"""bool: True if the current Python version is 2.x, False otherwise."""
-
-PY3 = compas._os.PY3
-"""bool: True if the current Python version is 3.x, False otherwise."""
-
-WINDOWS = is_windows()
-"""bool: True if the current operating system is Windows, False otherwise."""
-
-LINUX = is_linux()
-"""bool: True if the current operating system is Linux, False otherwise."""
-
-OSX = is_osx()
-"""bool: True if the current operating system is OSX, False otherwise."""
-
-MONO = is_mono()
-"""bool: True if the current operating system is Mono, False otherwise."""
-
-IPY = is_ironpython()
-"""bool: True if the current Python implementation is IronPython, False otherwise."""
-
-RHINO = is_rhino()
-"""bool: True if the current context is Rhino, False otherwise."""
-
-BLENDER = is_blender()
-"""bool: True if the current context is Blender, False otherwise."""
-
-
 # Check if COMPAS is installed from git
 # If that's the case, try to append the current head's hash to __version__
 try:
-    git_head_file = compas._os.absjoin(HOME, ".git", "HEAD")
+    git_head_file = str(Path(HOME) / ".git" / "HEAD")
 
     if os.path.exists(git_head_file):
         # git head file contains one line that looks like this:
@@ -93,7 +67,7 @@ try:
             _, ref_path = git_head.read().strip().split(" ")
             ref_path = ref_path.split("/")
 
-            git_head_refs_file = compas._os.absjoin(HOME, ".git", *ref_path)
+            git_head_refs_file = str(Path(HOME, ".git", *ref_path))
 
         if os.path.exists(git_head_refs_file):
             with open(git_head_refs_file, "r") as git_head_ref:
@@ -101,12 +75,6 @@ try:
                 __version__ += "-" + git_commit[:8]
 except Exception:
     pass
-
-
-__all_plugins__ = [
-    "compas.geometry.booleans_shapely",
-    "compas.scene",
-]
 
 
 # ==============================================================================
@@ -153,7 +121,7 @@ def get(filename):
     if filename.endswith("bunny.ply"):
         return get_bunny()
 
-    localpath = compas._os.absjoin(DATA, filename)
+    localpath = str(Path(DATA) / filename)
 
     if os.path.exists(localpath):
         return localpath
@@ -191,11 +159,7 @@ def get_bunny(localstorage=None):
 
     """
     import tarfile
-
-    try:
-        from urllib.request import urlretrieve
-    except ImportError:
-        from urllib import urlretrieve  # type: ignore
+    from urllib.request import urlretrieve
 
     if not localstorage:
         localstorage = APPDATA
@@ -209,8 +173,8 @@ def get_bunny(localstorage=None):
     if not os.access(localstorage, os.W_OK):
         raise Exception("Local storage location is not writable: {}".format(localstorage))
 
-    bunny = compas._os.absjoin(localstorage, "bunny/reconstruction/bun_zipper.ply")
-    destination = compas._os.absjoin(localstorage, "bunny.tar.gz")
+    bunny = str(Path(localstorage) / "bunny" / "reconstruction" / "bun_zipper.ply")
+    destination = str(Path(localstorage) / "bunny.tar.gz")
 
     if not os.path.exists(bunny):
         url = "http://graphics.stanford.edu/pub/3Dscanrep/bunny.tar.gz"

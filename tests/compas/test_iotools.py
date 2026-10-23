@@ -10,7 +10,6 @@ from compas import _iotools
 BASE_FOLDER = os.path.dirname(__file__)
 IMAGE_FILE_SIZE = 252391
 TEXT_FILE_SIZE = 747
-REMOTE_IMAGE_FILE_SIZE = 6518
 
 
 @pytest.fixture
@@ -64,14 +63,22 @@ def test_open_file_memory_stream():
         assert f.read() == text
 
 
-def test_open_file_url_image(url_image):
+def test_open_file_url_image(url_image, monkeypatch):
+    content = b"\x89PNG\r\n\x1a\nmock image"
+    monkeypatch.setattr(_iotools, "urlopen", lambda url: io.BytesIO(content))
+
     with _iotools.open_file(url_image) as file:
-        assert len(file.read()) == REMOTE_IMAGE_FILE_SIZE
+        assert file.read() == content
 
 
-def test_open_file_url_text(url_text):
+def test_open_file_url_text(url_text, monkeypatch):
+    content = b"# COMPAS framework\n"
+    monkeypatch.setattr(_iotools, "urlopen", lambda url: io.BytesIO(content))
+
     with _iotools.open_file(url_text) as file:
-        assert b"COMPAS framework" in file.read()
+        assert file.read() == content
+
+    assert file.closed
 
 
 def test_open_file_url_as_write_fails(url_text):

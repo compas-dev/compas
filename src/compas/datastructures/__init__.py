@@ -3,7 +3,6 @@ This package defines the core data structures of the COMPAS framework.
 The data structures provide a structured way of storing and accessing data on individual components of both topological and geometrical objects.
 
 """
-# ruff: noqa: F401
 
 from .datastructure import Datastructure
 
@@ -31,3 +30,30 @@ from .volmesh.volmesh import VolMesh
 from .cell_network.cell_network import CellNetwork
 from .tree.tree import Tree, TreeNode
 from .tree.hashtree import HashTree, HashNode
+
+__all__ = [
+    "Datastructure",
+    "mesh_conway_ambo",
+    "mesh_conway_bevel",
+    "mesh_conway_dual",
+    "mesh_conway_expand",
+    "mesh_conway_gyro",
+    "mesh_conway_join",
+    "mesh_conway_kis",
+    "mesh_conway_meta",
+    "mesh_conway_needle",
+    "mesh_conway_ortho",
+    "mesh_conway_snub",
+    "mesh_conway_truncate",
+    "mesh_conway_zip",
+    "mesh_smooth_centerofmass",
+    "trimesh_subdivide_loop",
+    "Graph",
+    "Mesh",
+    "VolMesh",
+    "CellNetwork",
+    "Tree",
+    "TreeNode",
+    "HashTree",
+    "HashNode",
+]

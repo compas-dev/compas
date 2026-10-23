@@ -1,73 +1,183 @@
-from compas.geometry import centroid_points
-from compas.linalg.vectors import normalize_vector
-from compas.linalg.vectors import subtract_vectors
+from typing import TYPE_CHECKING
+
+from compas._typing import CoordinatesType
+
+if TYPE_CHECKING:
+    from numpy.typing import NDArray
 
 
-def bestfit_plane(points):
-    """Fit a plane to a list of (more than three) points.
+def bestfit_line(points: CoordinatesType) -> "tuple[NDArray, NDArray]":
+    """Fit a line to points using principal component analysis.
 
     Parameters
     ----------
-    points : sequence[point]
-        A list of points represented by their XYZ coordinates.
+    points
+        XYZ coordinates of the points.
 
     Returns
     -------
-    [float, float, float]
-        Base point.
-    [float, float, float]
-        Normal vector (normalized).
+    tuple[numpy.ndarray, numpy.ndarray]
+        The line origin and direction vector.
 
-    See Also
-    --------
-    :func:`compas.geometry.bestfit_plane_numpy`
+    Raises
+    ------
+    ValueError
+        If there are fewer points than coordinate dimensions.
+
+    """
+    from compas.geometry import pca
+
+    origin, axes, _ = pca(points)
+    return origin, axes[0]
+
+
+def bestfit_plane(points: CoordinatesType) -> "tuple[NDArray, NDArray]":
+    """Fit a plane to points using principal component analysis.
+
+    Parameters
+    ----------
+    points
+        XYZ coordinates of the points.
+
+    Returns
+    -------
+    tuple[numpy.ndarray, numpy.ndarray]
+        A point on the plane and its normal vector.
+
+    Raises
+    ------
+    ValueError
+        If there are fewer points than coordinate dimensions.
+
+    """
+    from compas.geometry import pca
+
+    origin, axes, _ = pca(points)
+    return origin, axes[2]
+
+
+def bestfit_frame(points: CoordinatesType) -> "tuple[NDArray, NDArray, NDArray]":
+    """Fit a frame to points using principal component analysis.
+
+    Parameters
+    ----------
+    points
+        XYZ coordinates of the points.
+
+    Returns
+    -------
+    tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray]
+        The frame origin, X axis, and Y axis.
+
+    Raises
+    ------
+    ValueError
+        If there are fewer points than coordinate dimensions.
+
+    """
+    from compas.geometry import pca
+
+    origin, axes, _ = pca(points)
+    return origin, axes[0], axes[1]
+
+
+def bestfit_circle(points: CoordinatesType) -> "tuple[NDArray, NDArray, float]":
+    """Fit a circle to points using nonlinear least squares.
+
+    Parameters
+    ----------
+    points
+        XYZ coordinates of the points.
+
+    Returns
+    -------
+    tuple[numpy.ndarray, numpy.ndarray, float]
+        The circle center, normal vector, and radius.
+
+    Raises
+    ------
+    ValueError
+        If there are fewer points than coordinate dimensions.
 
     Notes
     -----
-    This method will minimize the squares of the residuals as perpendicular
-    to the main axis, not the residuals perpendicular to the plane. If the
-    residuals are small (i.e. your points all lie close to the resulting plane),
-    then this method will probably suffice. However, if your points are more
-    spread then this method may not be the best fit. For more information see
-    [ernerfeldt2015]_
+    The points are first transformed to their best-fit frame. The circle is
+    then fitted in that frame by minimizing the deviation of the individual
+    point radii from their average.[^bestfit-circle-scipy-cookbook]
 
     References
     ----------
-    .. [ernerfeldt2015] Ernerfeldt, E. *Fitting a plane to many points in 3D*.
-                        Available at: http://www.ilikebigbits.com/blog/2015/3/2/plane-from-points
+    [^bestfit-circle-scipy-cookbook]: [Least squares circle](https://scipy-cookbook.readthedocs.io/items/Least_Squares_Circle.html)
 
     """
-    centroid = centroid_points(points)
+    from numpy import asarray
+    from numpy import sqrt
+    from scipy.optimize import leastsq
 
-    xx, xy, xz = 0.0, 0.0, 0.0
-    yy, yz, zz = 0.0, 0.0, 0.0
+    from compas.geometry import local_to_world_coordinates_numpy
+    from compas.geometry import pca
+    from compas.geometry import world_to_local_coordinates_numpy
 
-    for point in points:
-        rx, ry, rz = subtract_vectors(point, centroid)
-        xx += rx * rx
-        xy += rx * ry
-        xz += rx * rz
-        yy += ry * ry
-        yz += ry * rz
-        zz += rz * rz
+    xyz = asarray(points)
+    origin, axes, _ = pca(xyz)
+    frame = [origin, axes[0], axes[1]]
+    local = world_to_local_coordinates_numpy(frame, xyz)
+    x = local[:, 0]
+    y = local[:, 1]
 
-    det_x = yy * zz - yz * yz
-    det_y = xx * zz - xz * xz
-    det_z = xx * yy - xy * xy
+    def distances(xc: float, yc: float) -> "NDArray":
+        return sqrt((x - xc) ** 2 + (y - yc) ** 2)
 
-    det_max = max(det_x, det_y, det_z)
+    def residuals(center: "NDArray") -> "NDArray":
+        radii = distances(*center)
+        return radii - radii.mean()
 
-    if det_max == det_x:
-        a = (xz * yz - xy * zz) / det_x
-        b = (xy * yz - xz * yy) / det_x
-        normal = (1.0, a, b)
-    elif det_max == det_y:
-        a = (yz * xz - xy * zz) / det_y
-        b = (xy * xz - yz * xx) / det_y
-        normal = (a, 1.0, b)
-    else:
-        a = (yz * xy - xz * yy) / det_z
-        b = (xz * xy - yz * xx) / det_z
-        normal = (a, b, 1.0)
+    center, _ = leastsq(residuals, (0.00001, 0.00001))
+    radius = float(distances(*center).mean())
+    xyz = local_to_world_coordinates_numpy(frame, [[center[0], center[1], 0.0]])[0]
+    return xyz, axes[2], radius
 
-    return centroid, normalize_vector(normal)
+
+def bestfit_sphere(points: CoordinatesType) -> tuple[list[float], float]:
+    """Fit a sphere to points using linear least squares.
+
+    Parameters
+    ----------
+    points
+        XYZ coordinates of the points.
+
+    Returns
+    -------
+    tuple[list[float], float]
+        The sphere center and radius.
+
+    Notes
+    -----
+    The implementation follows a linear least-squares sphere fit.[^bestfit-sphere-jekel]
+
+    References
+    ----------
+    [^bestfit-sphere-jekel]: [Least Squares Sphere Fit](https://jekel.me/2015/Least-Squares-Sphere-Fit/)
+
+    """
+    from numpy import asarray
+    from numpy import sqrt
+    from numpy import zeros
+    from numpy.linalg import lstsq
+
+    x = asarray([point[0] for point in points])
+    y = asarray([point[1] for point in points])
+    z = asarray([point[2] for point in points])
+    matrix = zeros((len(x), 4))
+    matrix[:, 0] = x * 2
+    matrix[:, 1] = y * 2
+    matrix[:, 2] = z * 2
+    matrix[:, 3] = 1
+
+    values = zeros((len(x), 1))
+    values[:, 0] = x * x + y * y + z * z
+    coefficients, _, _, _ = lstsq(matrix, values)
+    squared_radius = coefficients[0] ** 2 + coefficients[1] ** 2 + coefficients[2] ** 2 + coefficients[3]
+    radius = float(sqrt(squared_radius)[0])
+    center = [float(coefficients[0][0]), float(coefficients[1][0]), float(coefficients[2][0])]
+    return center, radius

@@ -1,6 +1,5 @@
 import pytest
 import json
-import compas
 from random import random
 
 from compas.geometry import Quaternion
@@ -12,6 +11,10 @@ from compas.linalg import quaternion_is_unit
 from compas.linalg import quaternion_multiply
 from compas.linalg import quaternion_norm
 from compas.linalg import quaternion_unitize
+
+
+class QuaternionSubclass(Quaternion):
+    pass
 
 
 @pytest.mark.parametrize(
@@ -129,6 +132,19 @@ def test_quaternion_comparison():
 
     assert quaternion1 == quaternion2
     assert quaternion1 != quaternion3
+    assert quaternion1 != object()
+
+
+def test_quaternion_operations_preserve_subclasses():
+    quaternion = QuaternionSubclass(1.0, 2.0, 3.0, 4.0)
+    other = Quaternion(1.0, 0.0, 0.0, 0.0)
+
+    assert isinstance(quaternion * other, QuaternionSubclass)
+    assert isinstance(quaternion.unitized(), QuaternionSubclass)
+    assert isinstance(quaternion.canonized(), QuaternionSubclass)
+    assert isinstance(quaternion.conjugated(), QuaternionSubclass)
+    assert isinstance(quaternion.slerp(other, 0.5), QuaternionSubclass)
+    assert isinstance(QuaternionSubclass.from_frame(Frame.worldXY()), QuaternionSubclass)
 
 
 # =============================================================================

@@ -1,6 +1,5 @@
 import pytest
 import json
-import compas
 from random import random
 from compas.geometry import Vector
 from compas.tolerance import TOL
@@ -21,8 +20,7 @@ def test_vector(x, y, z):
     assert v.x == x and v.y == y and v.z == z
     assert v[0] == x and v[1] == y and v[2] == z
 
-    if not compas.IPY:
-        assert eval(repr(v)) == v
+    assert eval(repr(v)) == v
 
 
 @pytest.mark.parametrize(
@@ -40,8 +38,7 @@ def test_vector2(x, y):
     assert v.x == x and v.y == y and v.z == z
     assert v[0] == x and v[1] == y and v[2] == z
 
-    if not compas.IPY:
-        assert eval(repr(v)) == v
+    assert eval(repr(v)) == v
 
 
 def test_vector_operators():
@@ -76,13 +73,11 @@ def test_vector_operators():
 
     with pytest.raises(TypeError) as exc_info:
         a / "wrong type"
-    if not compas.IPY:
-        assert str(exc_info.value) == "Cannot cast wrong type <class 'str'> to Vector"
+    assert str(exc_info.value) == "Cannot cast wrong type <class 'str'> to Vector"
 
     with pytest.raises(TypeError) as exc_info:
         a * "wrong type"
-    if not compas.IPY:
-        assert str(exc_info.value) == "Cannot cast wrong type <class 'str'> to Vector"
+    assert str(exc_info.value) == "Cannot cast wrong type <class 'str'> to Vector"
 
 
 def test_vector_equality():

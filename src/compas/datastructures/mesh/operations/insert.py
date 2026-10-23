@@ -1,5 +1,4 @@
 from typing import TYPE_CHECKING
-from typing import Optional
 
 from ..types import Edge
 from ..types import Face
@@ -72,7 +71,7 @@ def mesh_add_vertex_to_face_edge(mesh: "Mesh", key: Vertex, fkey: Face, v: Verte
         del mesh.edgedata[edge_data_key]
 
 
-def mesh_insert_vertex_on_edge(mesh: "Mesh", edge: Edge, vkey: Optional[Vertex] = None) -> Vertex:
+def mesh_insert_vertex_on_edge(mesh: "Mesh", edge: Edge, vkey: Vertex | None = None) -> Vertex:
     """Insert a vertex in the faces adjacent to an edge, between the two edge vertices.
 
     If no vertex key is specified or if the key does not exist yet, a vertex is added and located at the edge midpoint.

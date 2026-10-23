@@ -2,7 +2,6 @@
 
 import json
 import struct
-from typing import Optional
 
 from .gltf_types import GLTFFormat
 from .gltf_types import GLTFJson
@@ -12,7 +11,7 @@ class GLTFParseError(ValueError):
     """Error raised for invalid glTF data."""
 
 
-def parse_container(data: bytes) -> tuple[GLTFFormat, GLTFJson, Optional[bytes]]:
+def parse_container(data: bytes) -> tuple[GLTFFormat, GLTFJson, bytes | None]:
     """Decode the primary JSON glTF or GLB container.
 
     Returns
@@ -33,7 +32,7 @@ def parse_container(data: bytes) -> tuple[GLTFFormat, GLTFJson, Optional[bytes]]
     return "gltf", document, None
 
 
-def _parse_glb(data: bytes) -> tuple[GLTFFormat, GLTFJson, Optional[bytes]]:
+def _parse_glb(data: bytes) -> tuple[GLTFFormat, GLTFJson, bytes | None]:
     if len(data) < 20:
         raise GLTFParseError("GLB data is incomplete.")
     magic, version, declared_length = struct.unpack_from("<4sII", data)

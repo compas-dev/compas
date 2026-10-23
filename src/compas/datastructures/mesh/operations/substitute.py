@@ -1,6 +1,5 @@
+from collections.abc import Iterable
 from typing import TYPE_CHECKING
-from typing import Iterable
-from typing import Optional
 
 from ..types import Face
 from ..types import Vertex
@@ -13,7 +12,7 @@ def mesh_substitute_vertex_in_faces(
     mesh: "Mesh",
     old_vkey: Vertex,
     new_vkey: Vertex,
-    fkeys: Optional[Iterable[Face]] = None,
+    fkeys: Iterable[Face] | None = None,
 ) -> list[Face]:
     """Substitute in a mesh a vertex by another one.
     In all faces by default or in a given set of faces.

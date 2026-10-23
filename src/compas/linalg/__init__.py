@@ -1,18 +1,14 @@
 """Linear algebra utilities for vectors, matrices, and quaternions."""
 
 # The imports below intentionally define the public package-level API.
-# ruff: noqa: F401
-
 from .vectors import add_vectors
 from .vectors import add_vectors_xy
-from .vectors import allclose
 from .vectors import argmax
 from .vectors import argmin
 from .transformations import axis_and_angle_from_matrix
 from .quaternions import axis_angle_from_quaternion
 from .transformations import axis_angle_vector_from_matrix
 from .transformations import basis_vectors_from_matrix
-from .vectors import close
 from .transformations import compose_matrix
 from .vectors import cross_vectors
 from .vectors import cross_vectors_xy
@@ -85,8 +81,6 @@ from .vectors import vector_variance
 from .decompositions import chofactor
 from .decompositions import dof
 from .decompositions import lufactorized
-from .decompositions import memoize
-from .decompositions import Memoized
 from .decompositions import nonpivots
 from .decompositions import normalizerow
 from .decompositions import normrow
@@ -112,3 +106,111 @@ from .quaternions import quaternion_is_unit
 from .quaternions import quaternion_multiply
 from .quaternions import quaternion_norm
 from .quaternions import quaternion_unitize
+
+__all__ = [
+    "add_vectors",
+    "add_vectors_xy",
+    "argmax",
+    "argmin",
+    "axis_and_angle_from_matrix",
+    "axis_angle_from_quaternion",
+    "axis_angle_vector_from_matrix",
+    "basis_vectors_from_matrix",
+    "compose_matrix",
+    "cross_vectors",
+    "cross_vectors_xy",
+    "decompose_matrix",
+    "dehomogenize_vectors",
+    "divide_vectors",
+    "divide_vectors_xy",
+    "dot_vectors",
+    "dot_vectors_xy",
+    "euler_angles_from_matrix",
+    "euler_angles_from_quaternion",
+    "homogenize_vectors",
+    "identity_matrix",
+    "is_matrix_square",
+    "length_vector",
+    "length_vector_sqrd",
+    "length_vector_sqrd_xy",
+    "length_vector_xy",
+    "matrix_determinant",
+    "matrix_from_axis_and_angle",
+    "matrix_from_axis_angle_vector",
+    "matrix_from_basis_vectors",
+    "matrix_from_change_of_basis",
+    "matrix_from_euler_angles",
+    "matrix_from_frame",
+    "matrix_from_frame_to_frame",
+    "matrix_from_orthogonal_projection",
+    "matrix_from_parallel_projection",
+    "matrix_from_perspective_entries",
+    "matrix_from_perspective_projection",
+    "matrix_from_quaternion",
+    "matrix_from_scale_factors",
+    "matrix_from_shear",
+    "matrix_from_shear_entries",
+    "matrix_from_translation",
+    "matrix_inverse",
+    "matrix_minor",
+    "multiply_matrices",
+    "multiply_matrix_vector",
+    "multiply_vectors",
+    "multiply_vectors_xy",
+    "norm_vector",
+    "norm_vectors",
+    "normalize_vector",
+    "normalize_vector_xy",
+    "normalize_vectors",
+    "normalize_vectors_xy",
+    "orthonormalize_vectors",
+    "power_vector",
+    "power_vectors",
+    "quaternion_from_axis_angle",
+    "quaternion_from_euler_angles",
+    "quaternion_from_matrix",
+    "scale_vector",
+    "scale_vector_xy",
+    "scale_vectors",
+    "scale_vectors_xy",
+    "square_vector",
+    "square_vectors",
+    "subtract_vectors",
+    "subtract_vectors_xy",
+    "sum_vectors",
+    "translation_from_matrix",
+    "transpose_matrix",
+    "vector_average",
+    "vector_component",
+    "vector_component_xy",
+    "vector_standard_deviation",
+    "vector_variance",
+    "chofactor",
+    "dof",
+    "lufactorized",
+    "nonpivots",
+    "normalizerow",
+    "normrow",
+    "nullspace",
+    "pivots",
+    "rank",
+    "rot90",
+    "rref",
+    "solve_with_known",
+    "spsolve_with_known",
+    "uvw_lengths",
+    "adjacency_matrix",
+    "connectivity_matrix",
+    "degree_matrix",
+    "equilibrium_matrix",
+    "face_matrix",
+    "laplacian_matrix",
+    "mass_matrix",
+    "stiffness_matrix",
+    "quaternion_canonize",
+    "quaternion_conjugate",
+    "quaternion_is_unit",
+    "quaternion_multiply",
+    "quaternion_norm",
+    "quaternion_unitize",
+]

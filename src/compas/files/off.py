@@ -2,8 +2,6 @@
 
 from copy import deepcopy
 from typing import Any
-from typing import Optional
-from typing import Union
 
 from .off_document import OFFDocument
 from .off_parser import OFFParser
@@ -36,10 +34,10 @@ def read_off(source: OFFSource, encoding: str = "utf-8") -> OFFDocument:
 def write_off(
     target: OFFTarget,
     data: Any,
-    precision: Optional[Union[int, str]] = None,
-    author: Optional[str] = None,
-    email: Optional[str] = None,
-    date: Optional[str] = None,
+    precision: int | str | None = None,
+    author: str | None = None,
+    email: str | None = None,
+    date: str | None = None,
 ) -> None:
     """Write an OFF document or mesh.
 

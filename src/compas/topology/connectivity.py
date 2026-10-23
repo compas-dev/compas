@@ -1,17 +1,25 @@
+from collections.abc import Hashable
+from collections.abc import Iterable
+from collections.abc import Sequence
+from itertools import chain
+from typing import TypeVar
+
 from compas.itertools import pairwise
 
+Key = TypeVar("Key", bound=Hashable)
 
-def vertex_adjacency_from_edges(edges):
+
+def vertex_adjacency_from_edges(edges: Iterable[tuple[Key, Key]]) -> dict[Key, list[Key]]:
     """Construct an adjacency dictionary from a set of edges.
 
     Parameters
     ----------
-    edges : sequence[[hashable, hashable]]
+    edges
         A list of node identifier pairs.
 
     Returns
     -------
-    dict[hashable, list[hashable]]
+    dict[Key, list[Key]]
         A dictionary mapping each node in the list of node pairs
         to a list of adjacent/connected nodes.
 
@@ -29,55 +37,47 @@ def vertex_adjacency_from_edges(edges):
     return adj
 
 
-def vertex_adjacency_from_faces(faces):
+def vertex_adjacency_from_faces(faces: Iterable[Sequence[Key]]) -> dict[Key, list[Key]]:
     """Construct an adjacency dictionary from a set of faces.
 
     Parameters
     ----------
-    faces : sequence
+    faces
         A sequence of faces, defined as a list of node identifiers.
 
     Returns
     -------
-    dict
+    dict[Key, list[Key]]
         A dictionary mapping each node in the list of node pairs
         to a list of adjacent/connected nodes.
-
-    Examples
-    --------
-    >>>
 
     """
     adj = {}
     for face in faces:
-        for u, v in pairwise(face + face[0:1]):
+        for u, v in pairwise(chain(face, face[0:1])):
             adj.setdefault(u, []).append(v)
             adj.setdefault(v, []).append(u)
     return adj
 
 
-def edges_from_faces(faces):
+def edges_from_faces(faces: Iterable[Sequence[Key]]) -> list[tuple[Key, Key]]:
     """Construct a list of edges from a list of faces.
 
     Parameters
     ----------
-    faces : sequence
+    faces
         A sequence of faces, defined as a list of node identifiers.
 
     Returns
     -------
-    list
+    list[tuple[Key, Key]]
         A list of edges.
-
-    Examples
-    --------
-    >>>
 
     """
     edges = []
     seen = set()
     for face in faces:
-        for u, v in pairwise(face + face[0:1]):
+        for u, v in pairwise(chain(face, face[0:1])):
             if (u, v) in seen:
                 continue
             if (v, u) in seen:
@@ -87,22 +87,22 @@ def edges_from_faces(faces):
     return edges
 
 
-def faces_from_edges(edges):
+def faces_from_edges(edges: list[tuple[Key, Key]]) -> list[list[Key]]:
     """Construct a list of faces from a list of edges.
 
     Parameters
     ----------
-    edges : sequence
+    edges
         A sequence of edges, defined as a list of node identifiers.
 
     Returns
     -------
-    list
+    list[list[Key]]
         A list of faces.
 
-    Examples
-    --------
-    >>>
+    Notes
+    -----
+    The input list is consumed while the faces are assembled.
 
     """
     faces = []

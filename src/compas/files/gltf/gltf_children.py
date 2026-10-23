@@ -4,7 +4,6 @@ from collections.abc import Iterable
 from collections.abc import Iterator
 from collections.abc import MutableSequence
 from typing import TYPE_CHECKING
-from typing import Optional
 
 if TYPE_CHECKING:
     from .gltf_document import GLTFDocument
@@ -12,6 +11,10 @@ if TYPE_CHECKING:
 
 class GLTFChildren(MutableSequence[int]):
     """Mutable node-key sequence validated against a document."""
+
+    # =============================================================================
+    # Dunder methods
+    # =============================================================================
 
     def __init__(self, context: "GLTFDocument", values: Iterable[int] = ()) -> None:
         self._values = list(values)
@@ -48,9 +51,9 @@ class GLTFChildren(MutableSequence[int]):
         self._validate(value)
         self._values.insert(index, value)
 
-    def _validate(self, value: int) -> None:
-        if value not in self._context.nodes:
-            raise ValueError(f"Cannot find glTF node {value}.")
+    # =============================================================================
+    # Methods
+    # =============================================================================
 
     def pop(self, index: int = -1) -> int:
         """Remove and return a node key.
@@ -63,7 +66,7 @@ class GLTFChildren(MutableSequence[int]):
         """
         return self._values.pop(index)
 
-    def index(self, value: int, start: int = 0, stop: Optional[int] = None) -> int:
+    def index(self, value: int, start: int = 0, stop: int | None = None) -> int:
         """Return the position of a node key.
 
         Returns
@@ -95,3 +98,11 @@ class GLTFChildren(MutableSequence[int]):
 
         """
         return self._values.copy()
+
+    # =============================================================================
+    # Private helpers
+    # =============================================================================
+
+    def _validate(self, value: int) -> None:
+        if value not in self._context.nodes:
+            raise ValueError(f"Cannot find glTF node {value}.")

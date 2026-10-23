@@ -1,6 +1,4 @@
 from typing import TYPE_CHECKING
-from typing import Optional
-from typing import Type
 from typing import TypeVar
 from typing import overload
 
@@ -16,10 +14,10 @@ def mesh_dual(mesh: MeshType, cls: None = None, include_boundary: bool = False) 
 
 
 @overload
-def mesh_dual(mesh: "Mesh", cls: Type[DualMeshType], include_boundary: bool = False) -> DualMeshType: ...
+def mesh_dual(mesh: "Mesh", cls: type[DualMeshType], include_boundary: bool = False) -> DualMeshType: ...
 
 
-def mesh_dual(mesh: "Mesh", cls: Optional[Type["Mesh"]] = None, include_boundary: bool = False) -> "Mesh":
+def mesh_dual(mesh: "Mesh", cls: type["Mesh"] | None = None, include_boundary: bool = False) -> "Mesh":
     """Construct the dual of a mesh.
 
     Parameters

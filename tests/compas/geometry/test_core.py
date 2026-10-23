@@ -347,11 +347,11 @@ def test_volume_polyhedron(polyhedron, volume):
 def test_area_square(square, R):
     assert TOL.is_close(area_polygon(square.points), 1)
     assert TOL.is_close(area_polygon_xy(square.points), 1)
-    assert TOL.is_close(square.area, 1)
+    assert TOL.is_close(square.area(), 1)
     square.transform(R)
     assert TOL.is_close(area_polygon(square.points), 1)
     assert TOL.is_close(area_polygon_xy(square.points), 0)
-    assert TOL.is_close(square.area, 1)
+    assert TOL.is_close(square.area(), 1)
 
 
 def test_area_triangle(triangle, R):
@@ -359,13 +359,13 @@ def test_area_triangle(triangle, R):
     assert TOL.is_close(area_polygon_xy(triangle.points), 0.5)
     assert TOL.is_close(area_triangle(triangle.points), 0.5)
     assert TOL.is_close(area_triangle_xy(triangle.points), 0.5)
-    assert TOL.is_close(triangle.area, 0.5)
+    assert TOL.is_close(triangle.area(), 0.5)
     triangle.transform(R)
     assert TOL.is_close(area_polygon(triangle.points), 0.5)
     assert TOL.is_close(area_polygon_xy(triangle.points), 0.0)
     assert TOL.is_close(area_triangle(triangle.points), 0.5)
     assert TOL.is_close(area_triangle_xy(triangle.points), 0.0)
-    assert TOL.is_close(triangle.area, 0.5)
+    assert TOL.is_close(triangle.area(), 0.5)
 
 
 def test_area_polygon():

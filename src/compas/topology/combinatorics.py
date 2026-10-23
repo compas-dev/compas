@@ -1,24 +1,30 @@
 from collections import deque
+from collections.abc import Collection
+from collections.abc import Hashable
+from collections.abc import Mapping
+from typing import TypeVar
 
 from compas.topology.traversal import breadth_first_traverse
 
+Key = TypeVar("Key", bound=Hashable)
 
-def vertex_coloring(adjacency):
+
+def vertex_coloring(adjacency: Mapping[Key, Collection[Key]]) -> dict[Key, int]:
     """Color the vertices of a graph such that no two colors are adjacent.
 
     Parameters
     ----------
-    adjacency : dict[hashable, dict[hashable, None]] | dict[hashable, sequence[hashable]]
+    adjacency
         An adjacency dictionary representing the connectivity of the graph
         by mapping nodes identifiers to neighbour identifiers.
         Examples of valid adjacency dicts are
 
-        * ``{0: [1, 2, 3, 4], 1: [0], 2: [0], 3: [0], 4: [0]}``
-        * ``{0: {1: None, 2: None, 3: None, 4: None}, 1: {0: None}, 2: {0: None}, 3: {0: None}, 4: {0: None}}``
+        - `{0: [1, 2, 3, 4], 1: [0], 2: [0], 3: [0], 4: [0]}`
+        - `{0: {1: None, 2: None, 3: None, 4: None}, 1: {0: None}, ...}`
 
     Returns
     -------
-    dict[hashable, int]
+    dict[Key, int]
         A dict mapping each node of the graph to a color number.
 
     Notes
@@ -26,12 +32,13 @@ def vertex_coloring(adjacency):
     This algorithms works on any data structure that can be interpreted as a graph, e.g.
     graphs, meshes, volmeshes, etc..
 
-    For more info, see [1]_.
+    This is a greedy algorithm and does not necessarily use the minimum number
+    of colors.[^vertex-coloring-greedy]
 
     References
     ----------
-    .. [1] Chu-Carroll, M. *Graph Coloring Algorithms*.
-           Available at: http://scienceblogs.com/goodmath/2007/06/28/graph-coloring-algorithms-1/.
+    [^vertex-coloring-greedy]: Chu-Carroll, M. [*Graph Coloring
+        Algorithms*](https://scienceblogs.com/goodmath/2007/06/28/graph-coloring-algorithms-1/).
 
     Warnings
     --------
@@ -68,22 +75,22 @@ def vertex_coloring(adjacency):
     return key_to_color
 
 
-def connected_components(adjacency):
+def connected_components(adjacency: Mapping[Key, Collection[Key]]) -> list[list[Key]]:
     """Identify the connected components of a graph.
 
     Parameters
     ----------
-    adjacency : dict[hashable, dict[hashable, None]] | dict[hashable, sequence[hashable]]
+    adjacency
         An adjacency dictionary representing the connectivity of the graph
         by mapping nodes identifiers to neighbour identifiers.
         Examples of valid adjacency dicts are
 
-        * ``{0: [1, 2, 3, 4], 1: [0], 2: [0], 3: [0], 4: [0]}``
-        * ``{0: {1: None, 2: None, 3: None, 4: None}, 1: {0: None}, 2: {0: None}, 3: {0: None}, 4: {0: None}}``
+        - `{0: [1, 2, 3, 4], 1: [0], 2: [0], 3: [0], 4: [0]}`
+        - `{0: {1: None, 2: None, 3: None, 4: None}, 1: {0: None}, ...}`
 
     Returns
     -------
-    list[list[hashable]]
+    list[list[Key]]
         A list of connected components,
         with each component a list of connected nodes.
 

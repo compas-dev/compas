@@ -1,5 +1,5 @@
+from collections.abc import Hashable
 from typing import Any
-from typing import Hashable
 
 Node = Hashable
 Edge = tuple[Node, Node]

@@ -284,7 +284,7 @@ def test_cell_network_face_queries_and_geometry(example_cell_network):
 
     assert list(network.faces_where({"tags": "selected", "group": "wall"})) == [face]
     assert list(network.faces_where_predicate(lambda item, attr: item == face)) == [face]
-    assert network.face_polygon(face).area == network.face_area(face)
+    assert network.face_polygon(face).area() == network.face_area(face)
     assert network.face_plane(face).point == network.face_centroid(face)
     assert len(network.face_edges(face)) == len(network.face_vertices(face))
 
@@ -318,9 +318,7 @@ def test_cell_network_cell_topology(example_cell_network):
     assert not network.has_cell(100)
     assert len(network.cell_edges(cell)) * 2 == len(network.cell_halfedges(cell))
     for vertex in network.cell_vertices(cell):
-        assert set(network.cell_vertex_neighbors(cell, vertex)) == set(network.vertex_neighbors(vertex)) & set(
-            network.cell_vertices(cell)
-        )
+        assert set(network.cell_vertex_neighbors(cell, vertex)) == set(network.vertex_neighbors(vertex)) & set(network.cell_vertices(cell))
     for face in network.cell_faces(cell):
         assert len(network.cell_face_neighbors(cell, face)) == len(network.face_edges(face))
 

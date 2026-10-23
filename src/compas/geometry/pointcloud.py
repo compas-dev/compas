@@ -1,5 +1,11 @@
+from collections.abc import Iterator
 from random import uniform
+from typing import TYPE_CHECKING
+from typing import Self
 
+from compas._typing import CoordinatesType
+from compas._typing import CoordinateType
+from compas._typing import FilePath
 from compas.geometry import Geometry
 from compas.geometry import KDTree
 from compas.geometry import Point
@@ -9,62 +15,73 @@ from compas.geometry import closest_point_in_cloud
 from compas.geometry import transform_points
 from compas.tolerance import TOL
 
+if TYPE_CHECKING:
+    from compas.geometry import Box
+    from compas.geometry import Transformation
+
 
 class Pointcloud(Geometry):
-    """Class for working with pointclouds.
+    """A collection of points.
 
     Parameters
     ----------
-    points : sequence[point]
+    points
         A sequence of points to add to the cloud.
-    name : str, optional
+    name
         The name of the pointcloud.
-
-    Attributes
-    ----------
-    points : list[:class:`compas.geometry.Point`]
-        The points of the cloud.
 
     Examples
     --------
-    >>>
+    >>> cloud = Pointcloud([[0, 0, 0], [1, 0, 0]])
+    >>> len(cloud)
+    2
 
     """
 
+    # ==========================================================================
+    # Data
+    # ==========================================================================
 
     @property
-    def __data__(self):
+    def __data__(self) -> dict[str, list[list[float]]]:
         return {"points": [point.__data__ for point in self.points]}
 
-    def __init__(self, points, name=None):
-        super(Pointcloud, self).__init__(name=name)
+    # ==========================================================================
+    # Dunder methods
+    # ==========================================================================
+
+    def __init__(self, points: CoordinatesType, name: str | None = None) -> None:
+        super().__init__(name=name)
         self._points = None
         self._tree = None
         self.points = points
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "{0}(points={1!r})".format(type(self).__name__, self.points)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "{0}(len(points)={1})".format(type(self).__name__, len(self.points))
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.points)
 
-    def __getitem__(self, key):
+    def __getitem__(self, key: int) -> Point:
         if key > len(self) - 1:
             raise KeyError
         return self.points[key]
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key: int, value: CoordinateType) -> None:
         if key > len(self) - 1:
             raise KeyError
-        self.points[key] = value
+        self.points[key] = Point(value[0], value[1], value[2])
+        self._tree = None
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[Point]:
         return iter(self.points)
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Pointcloud):
+            return False
         if len(self) != len(other):
             return False
         A = sorted(self, key=lambda point: (point[0], point[1], point[2]))
@@ -76,55 +93,48 @@ class Pointcloud(Geometry):
     # ==========================================================================
 
     @property
-    def points(self):
+    def points(self) -> list[Point]:
+        """The points of the cloud."""
         if self._points is None:
             self._points = []
         return self._points
 
     @points.setter
-    def points(self, points):
-        self._points = [Point(*point) for point in points]
+    def points(self, points: CoordinatesType) -> None:
+        self._points = [Point(point[0], point[1], point[2]) for point in points]
         self._tree = None
 
     @property
-    def tree(self):
-        if not self._tree:
+    def tree(self) -> KDTree:
+        """The cached nearest-neighbor tree.
+
+        Notes
+        -----
+        Assigning points, replacing an indexed point, or transforming the cloud
+        invalidates the cache.
+
+        """
+        if self._tree is None:
             self._tree = KDTree(self.points)
         return self._tree
-
-    @property
-    def centroid(self):
-        return centroid_points(self.points)
-
-    @property
-    def aabb(self):
-        from compas.geometry import Box
-
-        return Box.from_bounding_box(bounding_box(self.points))
-
-    @property
-    def obb(self):
-        from compas.geometry import Box
-        from compas.geometry import oriented_bounding_box_numpy
-
-        return Box.from_bounding_box(oriented_bounding_box_numpy(self.points))
 
     # ==========================================================================
     # Constructors
     # ==========================================================================
 
     @classmethod
-    def from_ply(cls, filepath):
+    def from_ply(cls, filepath: FilePath) -> Self:
         """Construct a pointcloud from a PLY file.
 
         Parameters
         ----------
-        filepath : str | bytes | os.PathLike
+        filepath
             Path of the PLY file.
 
         Returns
         -------
-        :class:`compas.geometry.Pointcloud`
+        Self
+            The constructed point cloud.
 
         """
         from compas.files import ply_data
@@ -133,96 +143,67 @@ class Pointcloud(Geometry):
         return cls(ply_data(read_ply(filepath)).vertices)
 
     @classmethod
-    def from_pcd(cls, filepath):
-        """Construct a pointcloud from a PCD file.
-
-        Parameters
-        ----------
-        filepath : str | bytes | os.PathLike
-            Path of the PCD file.
-
-        Returns
-        -------
-        :class:`compas.geometry.Pointcloud`
-
-        """
-        pass
-
-    @classmethod
-    def from_bounds(cls, x, y, z, n):
+    def from_bounds(
+        cls,
+        x: float | tuple[float, float],
+        y: float | tuple[float, float],
+        z: float | tuple[float, float],
+        n: int,
+    ) -> Self:
         """Construct a point cloud within a given box.
 
         Parameters
         ----------
-        x : float | tuple[float, float]
+        x
             Size of the cloud in the X direction.
             If a single value, the size is (0, x).
             If a pair of values, the size is (x[0], x[1]).
-        y : float | tuple[float, float]
+        y
             Size of the cloud in the Y direction.
             If a single value, the size is (0, y).
             If a pair of values, the size is (y[0], y[1]).
-        z : float | tuple[float, float]
+        z
             Size of the cloud in the Z direction.
             If a single value, the size is (0, z).
             If a pair of values, the size is (z[0], z[1]).
-        n : int
+        n
             The number of points in the cloud.
 
         Returns
         -------
-        :class:`compas.geometry.Pointcloud`
+        Self
+            The constructed point cloud.
 
         Notes
         -----
-        The XYZ coordinates of the `n` points are radnomly chosen within the provided `x`, `y`, and `z` bounds.
-        Thererefor, there is no guarantee that the bounds are part of the resulting coordinates.
-
-        Examples
-        --------
-        >>>
+        The coordinates are chosen randomly within the provided bounds. The
+        requested bounds are therefore not necessarily represented by points
+        in the result.
 
         """
-        try:
-            len(x)
-        except TypeError:
-            xmin = 0
-            xmax = x
-        else:
-            xmin, xmax = x
-        try:
-            len(y)
-        except TypeError:
-            ymin = 0
-            ymax = y
-        else:
-            ymin, ymax = y
-        try:
-            len(z)
-        except TypeError:
-            zmin = 0
-            zmax = z
-        else:
-            zmin, zmax = z
-        x = [uniform(xmin, xmax) for i in range(n)]
-        y = [uniform(ymin, ymax) for i in range(n)]
-        z = [uniform(zmin, zmax) for i in range(n)]
-        return cls(list(map(list, zip(x, y, z))))
+        xmin, xmax = x if isinstance(x, tuple) else (0.0, x)
+        ymin, ymax = y if isinstance(y, tuple) else (0.0, y)
+        zmin, zmax = z if isinstance(z, tuple) else (0.0, z)
+        xvalues = [uniform(xmin, xmax) for _ in range(n)]
+        yvalues = [uniform(ymin, ymax) for _ in range(n)]
+        zvalues = [uniform(zmin, zmax) for _ in range(n)]
+        return cls(list(map(list, zip(xvalues, yvalues, zvalues))))
 
     @classmethod
-    def from_box(cls, box, n):
+    def from_box(cls, box: "Box", n: int) -> Self:
         """Construct a point cloud within a given box.
 
         Parameters
         ----------
-        box: :class:`compas.geometry.Box`
-            The axis aligned bounding box of the cloud.
-        n: int
+        box
+            The box containing the cloud.
+        n
             The number of points in the cloud.
 
         Returns
         -------
-        :class:`compas.geometry.Pointcloud`
+        Self
+            The constructed point cloud.
 
         Examples
         --------
@@ -232,165 +213,205 @@ class Pointcloud(Geometry):
         True
 
         """
-        xmin, xmax = box.xmin, box.xmax
-        ymin, ymax = box.ymin, box.ymax
-        zmin, zmax = box.zmin, box.zmax
-        x = [uniform(xmin, xmax) for i in range(n)]
-        y = [uniform(ymin, ymax) for i in range(n)]
-        z = [uniform(zmin, zmax) for i in range(n)]
-        return cls(list(map(list, zip(x, y, z))))
+        dx = 0.5 * box.xsize
+        dy = 0.5 * box.ysize
+        dz = 0.5 * box.zsize
+        points = [[uniform(-dx, dx), uniform(-dy, dy), uniform(-dz, dz)] for _ in range(n)]
+        return cls([box.frame.to_world_coordinates(point) for point in points])
 
     # ==========================================================================
     # Transformations
     # ==========================================================================
 
-    def transform(self, T):
+    def transform(self, transformation: "Transformation") -> None:
         """Apply a transformation to the pointcloud.
 
         Parameters
         ----------
-        T : :class:`compas.geometry.Transformation`
+        transformation
             The transformation.
 
-        Returns
-        -------
-        None
-            The cloud is modified in place.
-
         """
-        for index, point in enumerate(transform_points(self.points, T)):
+        for index, point in enumerate(transform_points(self.points, transformation)):
             self.points[index].x = point[0]
             self.points[index].y = point[1]
             self.points[index].z = point[2]
+        self._tree = None
 
     # ==========================================================================
     # Methods
     # ==========================================================================
 
-    def closest_point(self, point):
+    def centroid(self) -> list[float]:
+        """Compute the centroid of the point cloud.
+
+        Returns
+        -------
+        list[float]
+            The centroid coordinates.
+
+        """
+        return centroid_points(self.points)
+
+    def aabb(self) -> "Box":
+        """Compute the axis-aligned bounding box of the point cloud.
+
+        Returns
+        -------
+        Box
+
+        """
+        from compas.geometry import Box
+
+        return Box.from_bounding_box(bounding_box(self.points))
+
+    def obb(self) -> "Box":
+        """Compute the oriented bounding box of the point cloud.
+
+        Returns
+        -------
+        Box
+
+        """
+        from compas.geometry import Box
+        from compas.geometry import oriented_bounding_box
+
+        return Box.from_bounding_box(oriented_bounding_box(self.points))
+
+    def closest_point(self, point: CoordinateType) -> Point:
         """Compute the closest point on the pointcloud to a given point.
 
         Parameters
         ----------
-        point : :class:`compas.geometry.Point`
+        point
             The point.
 
         Returns
         -------
-        :class:`compas.geometry.Point`
+        Point
             The closest point on the pointcloud.
 
         """
-        distance, point, index = closest_point_in_cloud(point, self.points)
-        return point
+        _, closest, _ = closest_point_in_cloud(point, self.points)
+        return Point(closest[0], closest[1], closest[2])
 
-    def closest_points(self, point, k=1):
+    def closest_points(self, point: CoordinateType, k: int = 1) -> list[Point]:
         """Compute the closest point on the pointcloud to a given point.
 
         Parameters
         ----------
-        point : :class:`~compas.geometry.Point`
+        point
             The point.
-        k : int, optional
+        k
             The number of closest points to find.
 
         Returns
         -------
-        list of :class:`~compas.geometry.Point`
+        list[Point]
             The closest points on the pointcloud.
 
         """
         tree = self.tree
-        return [self.points[nbr[1]] for nbr in tree.nearest_neighbors(point, k, True)]
+        return [self.points[neighbor.label] for neighbor in tree.nearest_neighbors(point, k, True)]
 
-    def add(self, other, tol=None):
+    def add(self, other: "Pointcloud", tol: float | None = None) -> None:
         """Add another pointcloud to this pointcloud.
 
         Parameters
         ----------
-        other : :class:`~compas.geometry.Pointcloud`
+        other
             The other pointcloud.
-        tol : float, optional
+        tol
             The absolute tolerance for comparing the distance between points to zero.
-            Default is ``None``, in which case ``compas.tolerance.TOL.absolute`` is used.
-
-        Returns
-        -------
-        None
-            The pointcloud is modified in place.
+            Defaults to `TOL.absolute`.
 
         Notes
         -----
         Duplicate points are not added.
 
         """
-        tol = tol or TOL.absolute
+        tol = TOL.absolute if tol is None else tol
 
         tree = self.tree
-        self.points += [point for point in other if tree.nearest_neighbor(point)[2] > tol]
+        points = []
+        for point in other:
+            neighbor = tree.nearest_neighbor(point)
+            if neighbor is None or neighbor.distance > tol:
+                points.append(point)
+        self.points += points
 
-    def union(self, other, tol=None):
+    def union(self, other: "Pointcloud", tol: float | None = None) -> Self:
         """Compute the union with another pointcloud.
 
         Parameters
         ----------
-        other : :class:`~compas.geometry.Pointcloud`
+        other
             The other pointcloud.
-        tol : float, optional
+        tol
             The absolute tolerance for comparing the distance between points to zero.
-            Default is ``None``, in which case ``compas.tolerance.TOL.absolute`` is used.
+            Defaults to `TOL.absolute`.
 
         Returns
         -------
-        :class:`~compas.geometry.Pointcloud`
+        Self
             The union pointcloud.
 
         """
-        tol = tol or TOL.absolute
+        tol = TOL.absolute if tol is None else tol
 
         tree = self.tree
-        return Pointcloud(self.points + [point for point in other if tree.nearest_neighbor(point)[2] > tol])
+        points = []
+        for point in other:
+            neighbor = tree.nearest_neighbor(point)
+            if neighbor is None or neighbor.distance > tol:
+                points.append(point)
+        return type(self)(self.points + points)
 
-    def subtract(self, other, tol=None):  # type: (Pointcloud, ...) -> None
+    def subtract(self, other: "Pointcloud", tol: float | None = None) -> None:
         """Subtract another pointcloud from this pointcloud.
 
         Parameters
         ----------
-        other : :class:`~compas.geometry.Pointcloud`
+        other
             The other pointcloud.
-        tol : float, optional
+        tol
             The absolute tolerance for comparing the distance between points to zero.
-            Default is ``None``, in which case ``compas.tolerance.TOL.absolute`` is used.
-
-        Returns
-        -------
-        None
-            The pointcloud is modified in place.
+            Defaults to `TOL.absolute`.
 
         """
-        tol = tol or TOL.absolute
+        tol = TOL.absolute if tol is None else tol
 
-        tree = KDTree(other)
-        self.points = [point for point in self.points if tree.nearest_neighbor(point)[2] > tol]
+        tree = KDTree(other.points)
+        points = []
+        for point in self.points:
+            neighbor = tree.nearest_neighbor(point)
+            if neighbor is None or neighbor.distance > tol:
+                points.append(point)
+        self.points = points
 
-    def difference(self, other, tol=None):  # type: (Pointcloud, ...) -> Pointcloud
+    def difference(self, other: "Pointcloud", tol: float | None = None) -> Self:
         """Compute the difference with another pointcloud.
 
         Parameters
         ----------
-        other : :class:`~compas.geometry.Pointcloud`
+        other
             The other pointcloud.
-        tol : float, optional
+        tol
             The absolute tolerance for comparing the distance between points to zero.
-            Default is ``None``, in which case ``compas.tolerance.TOL.absolute`` is used.
+            Defaults to `TOL.absolute`.
 
         Returns
         -------
-        :class:`~compas.geometry.Pointcloud`
+        Self
             The difference pointcloud.
 
         """
-        tol = tol or TOL.absolute
+        tol = TOL.absolute if tol is None else tol
 
-        tree = KDTree(other)
-        return Pointcloud([point for point in self.points if tree.nearest_neighbor(point)[2] > tol])
+        tree = KDTree(other.points)
+        points = []
+        for point in self.points:
+            neighbor = tree.nearest_neighbor(point)
+            if neighbor is None or neighbor.distance > tol:
+                points.append(point)
+        return type(self)(points)

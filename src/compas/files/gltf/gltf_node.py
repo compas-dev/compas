@@ -1,10 +1,7 @@
+from collections.abc import Iterable
 from math import fabs
 from typing import TYPE_CHECKING
 from typing import Any
-from typing import Iterable
-from typing import Optional
-from typing import Union
-from typing import cast
 
 from compas.files.gltf.gltf_children import GLTFChildren
 from compas.linalg.matrices import multiply_matrices
@@ -70,10 +67,14 @@ class GLTFNode:
 
     """
 
+    # =============================================================================
+    # Dunder methods
+    # =============================================================================
+
     def __init__(
         self,
         context: "GLTFDocument",
-        name: Optional[str] = None,
+        name: str | None = None,
         extras: Any = None,
         extensions: Any = None,
     ) -> None:
@@ -84,10 +85,10 @@ class GLTFNode:
         self._rotation = None
         self._scale = None
         self._mesh_key = None
-        self.weights: Optional[list[float]] = None
+        self.weights: list[float] | None = None
 
-        self.position: Optional[list[float]] = None
-        self.transform: Optional[list[list[float]]] = None
+        self.position: list[float] | None = None
+        self.transform: list[list[float]] | None = None
         self._key = None
 
         self._camera = None
@@ -98,12 +99,9 @@ class GLTFNode:
         self.context = context
         self._set_key()
 
-    def _set_key(self) -> None:
-        key = len(self.context.nodes)
-        while key in self.context.nodes:
-            key += 1
-        self.context.nodes[key] = self
-        self._key = key
+    # =============================================================================
+    # Properties
+    # =============================================================================
 
     @property
     def key(self) -> int:
@@ -115,45 +113,45 @@ class GLTFNode:
         return self._children
 
     @children.setter
-    def children(self, value: Optional[Iterable[int]]) -> None:
+    def children(self, value: Iterable[int] | None) -> None:
         self._children = GLTFChildren(self.context, value or [])
 
     @property
-    def mesh_key(self) -> Optional[int]:
+    def mesh_key(self) -> int | None:
         return self._mesh_key
 
     @mesh_key.setter
-    def mesh_key(self, value: Optional[int]) -> None:
+    def mesh_key(self, value: int | None) -> None:
         if value is not None and value not in self.context.meshes:
             raise ValueError(f"Cannot find glTF mesh {value}.")
         self._mesh_key = value
 
     @property
-    def camera(self) -> Optional[int]:
+    def camera(self) -> int | None:
         return self._camera
 
     @camera.setter
-    def camera(self, value: Optional[int]) -> None:
+    def camera(self, value: int | None) -> None:
         if value is not None and value not in self.context.cameras:
             raise ValueError(f"Cannot find glTF camera {value}.")
         self._camera = value
 
     @property
-    def skin(self) -> Optional[int]:
+    def skin(self) -> int | None:
         return self._skin
 
     @skin.setter
-    def skin(self, value: Optional[int]) -> None:
+    def skin(self, value: int | None) -> None:
         if value is not None and value not in self.context.skins:
             raise ValueError(f"Cannot find glTF skin {value}.")
         self._skin = value
 
     @property
-    def translation(self) -> Optional[list[float]]:
+    def translation(self) -> list[float] | None:
         return self._translation
 
     @translation.setter
-    def translation(self, value: Optional[list[float]]) -> None:
+    def translation(self, value: list[float] | None) -> None:
         if value is None:
             self._translation = value
             return
@@ -164,11 +162,11 @@ class GLTFNode:
         self._translation = value
 
     @property
-    def rotation(self) -> Optional[list[float]]:
+    def rotation(self) -> list[float] | None:
         return self._rotation
 
     @rotation.setter
-    def rotation(self, value: Optional[list[float]]) -> None:
+    def rotation(self, value: list[float] | None) -> None:
         if value is None:
             self._rotation = value
             return
@@ -179,11 +177,11 @@ class GLTFNode:
         self._rotation = value
 
     @property
-    def scale(self) -> Optional[list[float]]:
+    def scale(self) -> list[float] | None:
         return self._scale
 
     @scale.setter
-    def scale(self, value: Optional[list[float]]) -> None:
+    def scale(self, value: list[float] | None) -> None:
         if value is None:
             self._scale = value
             return
@@ -194,13 +192,13 @@ class GLTFNode:
         self._scale = value
 
     @property
-    def matrix(self) -> Optional[list[list[float]]]:
+    def matrix(self) -> list[list[float]] | None:
         if not (self.translation or self.rotation or self.scale or self._matrix):
             return identity_matrix(4)
         return self._matrix
 
     @matrix.setter
-    def matrix(self, value: Optional[list[list[float]]]) -> None:
+    def matrix(self, value: list[list[float]] | None) -> None:
         if value is None:
             self._matrix = value
             return
@@ -217,7 +215,7 @@ class GLTFNode:
         self._matrix = value
 
     @property
-    def mesh_data(self) -> "Optional[GLTFMesh]":
+    def mesh_data(self) -> "GLTFMesh | None":
         if self.mesh_key is None:
             return None
         return self.context.meshes.get(self.mesh_key)
@@ -230,6 +228,10 @@ class GLTFNode:
     def faces(self):
         return self.context.get_node_faces(self)
 
+    # =============================================================================
+    # Methods
+    # =============================================================================
+
     def get_matrix_from_trs(self) -> list[list[float]]:
         """Compose the node's translation, rotation, and scale into a matrix.
 
@@ -239,7 +241,7 @@ class GLTFNode:
             Composed transformation matrix.
 
         """
-        matrix = cast(list[list[float]], identity_matrix(4))
+        matrix = identity_matrix(4)
         if self.translation:
             translation = matrix_from_translation(self.translation)
             matrix = multiply_matrices(matrix, translation)
@@ -249,9 +251,9 @@ class GLTFNode:
         if self.scale:
             scale = matrix_from_scale_factors(self.scale)
             matrix = multiply_matrices(matrix, scale)
-        return cast(list[list[float]], matrix)
+        return matrix
 
-    def add_child(self, child_name: Optional[str] = None, child_extras: Any = None) -> "GLTFNode":
+    def add_child(self, child_name: str | None = None, child_extras: Any = None) -> "GLTFNode":
         """Create and attach a child node.
 
         Parameters
@@ -269,7 +271,7 @@ class GLTFNode:
         """
         return self.context.add_child_to_node(self, child_name, child_extras)
 
-    def add_mesh(self, mesh: "Union[int, Mesh]") -> "GLTFMesh":
+    def add_mesh(self, mesh: "int | Mesh") -> "GLTFMesh":
         """Attach an existing or converted mesh to this node.
 
         Parameters
@@ -283,3 +285,14 @@ class GLTFNode:
 
         """
         return self.context.add_mesh_to_node(self, mesh)
+
+    # =============================================================================
+    # Private helpers
+    # =============================================================================
+
+    def _set_key(self) -> None:
+        key = len(self.context.nodes)
+        while key in self.context.nodes:
+            key += 1
+        self.context.nodes[key] = self
+        self._key = key

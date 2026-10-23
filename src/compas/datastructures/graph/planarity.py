@@ -1,13 +1,12 @@
+from collections.abc import Iterable
+from collections.abc import Mapping
+from collections.abc import Sequence
 from itertools import product
 from math import cos
 from math import pi
 from math import sin
 from typing import TYPE_CHECKING
 from typing import Any
-from typing import Iterable
-from typing import Mapping
-from typing import Optional
-from typing import Sequence
 
 from compas.geometry import angle_vectors_xy
 from compas.geometry import is_ccw_xy
@@ -212,7 +211,7 @@ def graph_is_planar_embedding(graph: "Graph") -> bool:
     return graph_is_planar(graph) and graph_is_xy(graph) and not graph_is_crossed(graph)
 
 
-def graph_embed_in_plane(graph: "Graph", fixed: Optional[Sequence[Node]] = None) -> bool:
+def graph_embed_in_plane(graph: "Graph", fixed: Sequence[Node] | None = None) -> bool:
     """Embed the graph in the plane.
 
     Parameters

@@ -2,9 +2,7 @@ from math import cos
 from math import pi
 from math import sin
 from typing import Any
-from typing import Optional
-
-from typing_extensions import Self
+from typing import Self
 
 from compas._typing import CoordinateType
 from compas.geometry import Circle
@@ -60,9 +58,9 @@ class CylindricalSurface(Surface):
             frame=Frame.__from_data__(data["frame"]),
         )
 
-    def __init__(self, radius: float, frame: Optional[Frame] = None, name: Optional[str] = None) -> None:
+    def __init__(self, radius: float, frame: Frame | None = None, name: str | None = None) -> None:
         super().__init__(frame=frame, name=name)
-        self._radius: Optional[float] = None
+        self._radius: float | None = None
         self.radius = radius
 
     def __repr__(self) -> str:
@@ -109,8 +107,8 @@ class CylindricalSurface(Surface):
         if radius <= 0:
             raise ValueError("The radius of a cylinder should be larger than zero.")
         self._radius = float(radius)
+        self._invalidate_discretization()
 
-    @property
     def area(self) -> float:
         """The lateral area over the surface V domain.
 
@@ -123,11 +121,10 @@ class CylindricalSurface(Surface):
         height = abs(vmax - vmin)
         return 2.0 * pi * self.radius * height
 
-    @property
     def volume(self) -> float:
         """The volume of the capped cylinder over the surface V domain.
 
-        Although the surface itself has no caps, this property reports the
+        Although the surface itself has no caps, this method reports the
         volume of the corresponding solid cylinder bounded at the ends of the
         V domain.
 
@@ -185,14 +182,6 @@ class CylindricalSurface(Surface):
         """
         circle = Circle.from_three_points(a, b, c)
         return cls(circle.radius, frame=circle.frame)
-
-    # =============================================================================
-    # Conversions
-    # =============================================================================
-
-    # =============================================================================
-    # Transformations
-    # =============================================================================
 
     # =============================================================================
     # Methods

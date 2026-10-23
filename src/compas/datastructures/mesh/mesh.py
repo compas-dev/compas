@@ -17,21 +17,18 @@ return the canonical tuple rather than a serialized string.
 
 """
 
+from collections.abc import Callable
+from collections.abc import Iterable
+from collections.abc import Iterator
 from collections.abc import Mapping
+from collections.abc import Sequence
 from itertools import product
 from math import pi
 from random import sample
 from typing import Any
-from typing import Callable
-from typing import Iterable
-from typing import Iterator
 from typing import Literal
-from typing import Optional
-from typing import Sequence
-from typing import Union
+from typing import Self
 from typing import overload
-
-from typing_extensions import Self
 
 from compas.datastructures.attributes import EdgeAttributeView
 from compas.datastructures.attributes import FaceAttributeView
@@ -166,6 +163,10 @@ class Mesh(Datastructure):
     smooth_centroid = mesh_smooth_centroid
     smooth_area = mesh_smooth_area
 
+    # --------------------------------------------------------------------------
+    # Data
+    # --------------------------------------------------------------------------
+
     @property
     def __data__(self) -> dict[str, Any]:
         return self.__before_json_dump__(
@@ -215,19 +216,23 @@ class Mesh(Datastructure):
 
         return mesh
 
+    # --------------------------------------------------------------------------
+    # Dunder methods
+    # --------------------------------------------------------------------------
+
     def __init__(
         self,
-        default_vertex_attributes: Optional[AttributeDict] = None,
-        default_edge_attributes: Optional[AttributeDict] = None,
-        default_face_attributes: Optional[AttributeDict] = None,
-        name: Optional[str] = None,
+        default_vertex_attributes: AttributeDict | None = None,
+        default_edge_attributes: AttributeDict | None = None,
+        default_face_attributes: AttributeDict | None = None,
+        name: str | None = None,
         **kwargs: Any,
     ) -> None:
         super().__init__(kwargs, name=name)
         self._max_vertex = -1
         self._max_face = -1
         self.vertex: dict[Vertex, AttributeDict] = {}
-        self.halfedge: dict[Vertex, dict[Vertex, Optional[Face]]] = {}
+        self.halfedge: dict[Vertex, dict[Vertex, Face | None]] = {}
         self.face: dict[Face, list[Vertex]] = {}
         self.facedata: dict[Face, AttributeDict] = {}
         self.edgedata: dict[str, AttributeDict] = {}
@@ -250,7 +255,7 @@ class Mesh(Datastructure):
     # --------------------------------------------------------------------------
 
     @property
-    def adjacency(self) -> dict[Vertex, dict[Vertex, Optional[Face]]]:
+    def adjacency(self) -> dict[Vertex, dict[Vertex, Face | None]]:
         return self.halfedge
 
     # --------------------------------------------------------------------------
@@ -258,7 +263,7 @@ class Mesh(Datastructure):
     # --------------------------------------------------------------------------
 
     @classmethod
-    def from_obj(cls, filepath: Any, precision: Optional[int] = None) -> Self:
+    def from_obj(cls, filepath: Any, precision: int | None = None) -> Self:
         """Construct a mesh object from the data described in an OBJ file.
 
         Parameters
@@ -299,7 +304,7 @@ class Mesh(Datastructure):
         return cls()
 
     @classmethod
-    def from_ply(cls, filepath: Any, precision: Optional[int] = None) -> Self:
+    def from_ply(cls, filepath: Any, precision: int | None = None) -> Self:
         """Construct a mesh object from the data described in a PLY file.
 
         Parameters
@@ -317,7 +322,7 @@ class Mesh(Datastructure):
         return cls.from_vertices_and_faces(data.vertices, data.faces)
 
     @classmethod
-    def from_stl(cls, filepath: Any, precision: Optional[int] = None) -> Self:
+    def from_stl(cls, filepath: Any, precision: int | None = None) -> Self:
         """Construct a mesh object from the data described in a STL file.
 
         Parameters
@@ -359,7 +364,7 @@ class Mesh(Datastructure):
         cls,
         lines: Iterable[Sequence[PointCoordinates]],
         delete_boundary_face: bool = False,
-        precision: Optional[int] = None,
+        precision: int | None = None,
     ) -> Self:
         """Construct a mesh object from a list of lines described by start and end point coordinates.
 
@@ -470,8 +475,8 @@ class Mesh(Datastructure):
     @classmethod
     def from_vertices_and_faces(
         cls,
-        vertices: Union[Sequence[Iterable[float]], Mapping[Vertex, Iterable[float]]],
-        faces: Union[Sequence[Sequence[Vertex]], Mapping[Face, Sequence[Vertex]]],
+        vertices: Sequence[Iterable[float]] | Mapping[Vertex, Iterable[float]],
+        faces: Sequence[Sequence[Vertex]] | Mapping[Face, Sequence[Vertex]],
     ) -> Self:
         """Construct a mesh object from a list of vertices and faces.
 
@@ -573,7 +578,7 @@ class Mesh(Datastructure):
     def from_polygons(
         cls,
         polygons: Iterable[Sequence[PointCoordinates]],
-        precision: Optional[int] = None,
+        precision: int | None = None,
     ) -> Self:
         """Construct a mesh from a series of polygons.
 
@@ -611,8 +616,8 @@ class Mesh(Datastructure):
         cls,
         dx: float,
         nx: int,
-        dy: Optional[float] = None,
-        ny: Optional[int] = None,
+        dy: float | None = None,
+        ny: int | None = None,
     ) -> Self:
         """Construct a mesh from faces and vertices on a regular grid.
 
@@ -748,7 +753,7 @@ class Mesh(Datastructure):
     def to_obj(
         self,
         filepath: Any,
-        precision: Optional[int] = None,
+        precision: int | None = None,
         unweld: bool = False,
         **kwargs: Any,
     ) -> None:
@@ -794,7 +799,7 @@ class Mesh(Datastructure):
     def to_stl(
         self,
         filepath: Any,
-        precision: Optional[int] = None,
+        precision: int | None = None,
         binary: bool = False,
         **kwargs: Any,
     ) -> None:
@@ -840,7 +845,7 @@ class Mesh(Datastructure):
         write_off(filepath, self, **kwargs)
 
     # --------------------------------------------------------------------------
-    # Helpers
+    # Private helpers
     # --------------------------------------------------------------------------
 
     def clear(self) -> None:
@@ -956,7 +961,7 @@ class Mesh(Datastructure):
         """
         return dict(enumerate(self.vertices()))
 
-    def vertex_gkey(self, precision: Optional[int] = None) -> dict[Vertex, str]:
+    def vertex_gkey(self, precision: int | None = None) -> dict[Vertex, str]:
         """Returns a dictionary that maps vertex dictionary keys to the corresponding
         *geometric key* up to a certain precision.
 
@@ -976,7 +981,7 @@ class Mesh(Datastructure):
         xyz = self.vertex_coordinates
         return {key: gkey(xyz(key), precision) for key in self.vertices()}
 
-    def gkey_vertex(self, precision: Optional[int] = None) -> dict[str, Vertex]:
+    def gkey_vertex(self, precision: int | None = None) -> dict[str, Vertex]:
         """Returns a dictionary that maps *geometric keys* of a certain precision
         to the keys of the corresponding vertices.
 
@@ -997,13 +1002,13 @@ class Mesh(Datastructure):
         return {gkey(xyz(key), precision): key for key in self.vertices()}
 
     # --------------------------------------------------------------------------
-    # Builders & Modifiers
+    # Builders
     # --------------------------------------------------------------------------
 
     def add_vertex(
         self,
-        key: Optional[Vertex] = None,
-        attr_dict: Optional[Mapping[str, Any]] = None,
+        key: Vertex | None = None,
+        attr_dict: Mapping[str, Any] | None = None,
         **kwattr: Any,
     ) -> Vertex:
         """Add a vertex to the mesh object.
@@ -1069,10 +1074,10 @@ class Mesh(Datastructure):
     def add_face(
         self,
         vertices: Sequence[Vertex],
-        fkey: Optional[Face] = None,
-        attr_dict: Optional[Mapping[str, Any]] = None,
+        fkey: Face | None = None,
+        attr_dict: Mapping[str, Any] | None = None,
         **kwattr: Any,
-    ) -> Optional[Face]:
+    ) -> Face | None:
         """Add a face to the mesh object.
 
         Parameters
@@ -1133,9 +1138,13 @@ class Mesh(Datastructure):
                 self.halfedge[v][u] = None
         return fkey
 
+    # --------------------------------------------------------------------------
+    # Modifiers
+    # --------------------------------------------------------------------------
+
     # rename this to "add"
     # and add an alias
-    def join(self, other: "Mesh", weld: bool = False, precision: Optional[int] = None) -> None:
+    def join(self, other: "Mesh", weld: bool = False, precision: int | None = None) -> None:
         """Add the vertices and faces of another mesh to the current mesh.
 
         Parameters
@@ -1334,10 +1343,10 @@ class Mesh(Datastructure):
     def insert_vertex(
         self,
         fkey: Face,
-        key: Optional[Vertex] = None,
-        xyz: Optional[PointCoordinates] = None,
+        key: Vertex | None = None,
+        xyz: PointCoordinates | None = None,
         return_fkeys: bool = False,
-    ) -> Union[Vertex, tuple[Vertex, list[Face]]]:
+    ) -> Vertex | tuple[Vertex, list[Face]]:
         """Insert a vertex in the specified face.
 
         Parameters
@@ -1382,7 +1391,7 @@ class Mesh(Datastructure):
     def vertices(self, data: Literal[True]) -> Iterator[tuple[Vertex, VertexAttributeView]]: ...
 
     @overload
-    def vertices(self, data: bool) -> Iterator[Union[Vertex, tuple[Vertex, VertexAttributeView]]]: ...
+    def vertices(self, data: bool) -> Iterator[Vertex | tuple[Vertex, VertexAttributeView]]: ...
 
     def vertices(self, data: bool = False) -> Iterator[Any]:
         """Iterate over the vertices of the mesh.
@@ -1418,7 +1427,7 @@ class Mesh(Datastructure):
     def faces(self, data: Literal[True]) -> Iterator[tuple[Face, FaceAttributeView]]: ...
 
     @overload
-    def faces(self, data: bool) -> Iterator[Union[Face, tuple[Face, FaceAttributeView]]]: ...
+    def faces(self, data: bool) -> Iterator[Face | tuple[Face, FaceAttributeView]]: ...
 
     def faces(self, data: bool = False) -> Iterator[Any]:
         """Iterate over the faces of the mesh.
@@ -1454,7 +1463,7 @@ class Mesh(Datastructure):
     def edges(self, data: Literal[True]) -> Iterator[tuple[Edge, EdgeAttributeView]]: ...
 
     @overload
-    def edges(self, data: bool) -> Iterator[Union[Edge, tuple[Edge, EdgeAttributeView]]]: ...
+    def edges(self, data: bool) -> Iterator[Edge | tuple[Edge, EdgeAttributeView]]: ...
 
     def edges(self, data: bool = False) -> Iterator[Any]:
         """Iterate over the edges of the mesh.
@@ -1506,7 +1515,7 @@ class Mesh(Datastructure):
     @overload
     def vertices_where(
         self,
-        conditions: Optional[AttributeDict] = None,
+        conditions: AttributeDict | None = None,
         data: Literal[False] = False,
         **kwargs: Any,
     ) -> Iterator[Vertex]: ...
@@ -1514,7 +1523,7 @@ class Mesh(Datastructure):
     @overload
     def vertices_where(
         self,
-        conditions: Optional[AttributeDict],
+        conditions: AttributeDict | None,
         data: Literal[True],
         **kwargs: Any,
     ) -> Iterator[tuple[Vertex, VertexAttributeView]]: ...
@@ -1530,14 +1539,14 @@ class Mesh(Datastructure):
     @overload
     def vertices_where(
         self,
-        conditions: Optional[AttributeDict],
+        conditions: AttributeDict | None,
         data: bool,
         **kwargs: Any,
-    ) -> Iterator[Union[Vertex, tuple[Vertex, VertexAttributeView]]]: ...
+    ) -> Iterator[Vertex | tuple[Vertex, VertexAttributeView]]: ...
 
     def vertices_where(
         self,
-        conditions: Optional[AttributeDict] = None,
+        conditions: AttributeDict | None = None,
         data: bool = False,
         **kwargs: Any,
     ) -> Iterator[Any]:
@@ -1642,7 +1651,7 @@ class Mesh(Datastructure):
         self,
         predicate: Callable[[Vertex, VertexAttributeView], bool],
         data: bool,
-    ) -> Iterator[Union[Vertex, tuple[Vertex, VertexAttributeView]]]: ...
+    ) -> Iterator[Vertex | tuple[Vertex, VertexAttributeView]]: ...
 
     def vertices_where_predicate(
         self,
@@ -1683,7 +1692,7 @@ class Mesh(Datastructure):
     @overload
     def edges_where(
         self,
-        conditions: Optional[AttributeDict] = None,
+        conditions: AttributeDict | None = None,
         data: Literal[False] = False,
         **kwargs: Any,
     ) -> Iterator[Edge]: ...
@@ -1691,7 +1700,7 @@ class Mesh(Datastructure):
     @overload
     def edges_where(
         self,
-        conditions: Optional[AttributeDict],
+        conditions: AttributeDict | None,
         data: Literal[True],
         **kwargs: Any,
     ) -> Iterator[tuple[Edge, EdgeAttributeView]]: ...
@@ -1707,14 +1716,14 @@ class Mesh(Datastructure):
     @overload
     def edges_where(
         self,
-        conditions: Optional[AttributeDict],
+        conditions: AttributeDict | None,
         data: bool,
         **kwargs: Any,
-    ) -> Iterator[Union[Edge, tuple[Edge, EdgeAttributeView]]]: ...
+    ) -> Iterator[Edge | tuple[Edge, EdgeAttributeView]]: ...
 
     def edges_where(
         self,
-        conditions: Optional[AttributeDict] = None,
+        conditions: AttributeDict | None = None,
         data: bool = False,
         **kwargs: Any,
     ) -> Iterator[Any]:
@@ -1802,7 +1811,7 @@ class Mesh(Datastructure):
         self,
         predicate: Callable[[Edge, EdgeAttributeView], bool],
         data: bool,
-    ) -> Iterator[Union[Edge, tuple[Edge, EdgeAttributeView]]]: ...
+    ) -> Iterator[Edge | tuple[Edge, EdgeAttributeView]]: ...
 
     def edges_where_predicate(
         self,
@@ -1844,7 +1853,7 @@ class Mesh(Datastructure):
     @overload
     def faces_where(
         self,
-        conditions: Optional[AttributeDict] = None,
+        conditions: AttributeDict | None = None,
         data: Literal[False] = False,
         **kwargs: Any,
     ) -> Iterator[Face]: ...
@@ -1852,7 +1861,7 @@ class Mesh(Datastructure):
     @overload
     def faces_where(
         self,
-        conditions: Optional[AttributeDict],
+        conditions: AttributeDict | None,
         data: Literal[True],
         **kwargs: Any,
     ) -> Iterator[tuple[Face, FaceAttributeView]]: ...
@@ -1868,14 +1877,14 @@ class Mesh(Datastructure):
     @overload
     def faces_where(
         self,
-        conditions: Optional[AttributeDict],
+        conditions: AttributeDict | None,
         data: bool,
         **kwargs: Any,
-    ) -> Iterator[Union[Face, tuple[Face, FaceAttributeView]]]: ...
+    ) -> Iterator[Face | tuple[Face, FaceAttributeView]]: ...
 
     def faces_where(
         self,
-        conditions: Optional[AttributeDict] = None,
+        conditions: AttributeDict | None = None,
         data: bool = False,
         **kwargs: Any,
     ) -> Iterator[Any]:
@@ -1963,7 +1972,7 @@ class Mesh(Datastructure):
         self,
         predicate: Callable[[Face, FaceAttributeView], bool],
         data: bool,
-    ) -> Iterator[Union[Face, tuple[Face, FaceAttributeView]]]: ...
+    ) -> Iterator[Face | tuple[Face, FaceAttributeView]]: ...
 
     def faces_where_predicate(
         self,
@@ -2007,7 +2016,7 @@ class Mesh(Datastructure):
 
     def update_default_vertex_attributes(
         self,
-        attr_dict: Optional[AttributeDict] = None,
+        attr_dict: AttributeDict | None = None,
         **kwattr: Any,
     ) -> None:
         """Update the default vertex attributes.
@@ -2124,8 +2133,8 @@ class Mesh(Datastructure):
     def vertex_attributes(
         self,
         key: Vertex,
-        names: Optional[Sequence[str]] = None,
-        values: Optional[Sequence[Any]] = None,
+        names: Sequence[str] | None = None,
+        values: Sequence[Any] | None = None,
     ) -> Any:
         """Get or set multiple attributes of a vertex.
 
@@ -2185,7 +2194,7 @@ class Mesh(Datastructure):
         self,
         name: str,
         *,
-        keys: Optional[Iterable[Vertex]] = None,
+        keys: Iterable[Vertex] | None = None,
     ) -> list[Any]: ...
 
     @overload
@@ -2193,15 +2202,15 @@ class Mesh(Datastructure):
         self,
         name: str,
         value: Any,
-        keys: Optional[Iterable[Vertex]] = None,
+        keys: Iterable[Vertex] | None = None,
     ) -> None: ...
 
     def vertices_attribute(
         self,
         name: str,
         value: Any = _MISSING,
-        keys: Optional[Iterable[Vertex]] = None,
-    ) -> Optional[list[Any]]:
+        keys: Iterable[Vertex] | None = None,
+    ) -> list[Any] | None:
         """Get or set an attribute of multiple vertices.
 
         Parameters
@@ -2243,9 +2252,9 @@ class Mesh(Datastructure):
 
     def vertices_attributes(
         self,
-        names: Optional[Sequence[str]] = None,
-        values: Optional[Sequence[Any]] = None,
-        keys: Optional[Iterable[Vertex]] = None,
+        names: Sequence[str] | None = None,
+        values: Sequence[Any] | None = None,
+        keys: Iterable[Vertex] | None = None,
     ) -> Any:
         """Get or set multiple attributes of multiple vertices.
 
@@ -2289,7 +2298,7 @@ class Mesh(Datastructure):
 
     def update_default_face_attributes(
         self,
-        attr_dict: Optional[AttributeDict] = None,
+        attr_dict: AttributeDict | None = None,
         **kwattr: Any,
     ) -> None:
         """Update the default face attributes.
@@ -2410,8 +2419,8 @@ class Mesh(Datastructure):
     def face_attributes(
         self,
         key: Face,
-        names: Optional[Sequence[str]] = None,
-        values: Optional[Sequence[Any]] = None,
+        names: Sequence[str] | None = None,
+        values: Sequence[Any] | None = None,
     ) -> Any:
         """Get or set multiple attributes of a face.
 
@@ -2468,7 +2477,7 @@ class Mesh(Datastructure):
         self,
         name: str,
         *,
-        keys: Optional[Iterable[Face]] = None,
+        keys: Iterable[Face] | None = None,
     ) -> list[Any]: ...
 
     @overload
@@ -2476,15 +2485,15 @@ class Mesh(Datastructure):
         self,
         name: str,
         value: Any,
-        keys: Optional[Iterable[Face]] = None,
+        keys: Iterable[Face] | None = None,
     ) -> None: ...
 
     def faces_attribute(
         self,
         name: str,
         value: Any = _MISSING,
-        keys: Optional[Iterable[Face]] = None,
-    ) -> Optional[list[Any]]:
+        keys: Iterable[Face] | None = None,
+    ) -> list[Any] | None:
         """Get or set an attribute of multiple faces.
 
         Parameters
@@ -2526,9 +2535,9 @@ class Mesh(Datastructure):
 
     def faces_attributes(
         self,
-        names: Optional[Sequence[str]] = None,
-        values: Optional[Sequence[Any]] = None,
-        keys: Optional[Iterable[Face]] = None,
+        names: Sequence[str] | None = None,
+        values: Sequence[Any] | None = None,
+        keys: Iterable[Face] | None = None,
     ) -> Any:
         """Get or set multiple attributes of multiple faces.
 
@@ -2574,7 +2583,7 @@ class Mesh(Datastructure):
 
     def update_default_edge_attributes(
         self,
-        attr_dict: Optional[AttributeDict] = None,
+        attr_dict: AttributeDict | None = None,
         **kwattr: Any,
     ) -> None:
         """Update the default edge attributes.
@@ -2699,8 +2708,8 @@ class Mesh(Datastructure):
     def edge_attributes(
         self,
         edge: Edge,
-        names: Optional[Sequence[str]] = None,
-        values: Optional[Sequence[Any]] = None,
+        names: Sequence[str] | None = None,
+        values: Sequence[Any] | None = None,
     ) -> Any:
         """Get or set multiple attributes of an edge.
 
@@ -2759,7 +2768,7 @@ class Mesh(Datastructure):
         self,
         name: str,
         *,
-        keys: Optional[Iterable[Edge]] = None,
+        keys: Iterable[Edge] | None = None,
     ) -> list[Any]: ...
 
     @overload
@@ -2767,15 +2776,15 @@ class Mesh(Datastructure):
         self,
         name: str,
         value: Any,
-        keys: Optional[Iterable[Edge]] = None,
+        keys: Iterable[Edge] | None = None,
     ) -> None: ...
 
     def edges_attribute(
         self,
         name: str,
         value: Any = _MISSING,
-        keys: Optional[Iterable[Edge]] = None,
-    ) -> Optional[list[Any]]:
+        keys: Iterable[Edge] | None = None,
+    ) -> list[Any] | None:
         """Get or set an attribute of multiple edges.
 
         Parameters
@@ -2816,9 +2825,9 @@ class Mesh(Datastructure):
 
     def edges_attributes(
         self,
-        names: Optional[Sequence[str]] = None,
-        values: Optional[Sequence[Any]] = None,
-        keys: Optional[Iterable[Edge]] = None,
+        names: Sequence[str] | None = None,
+        values: Sequence[Any] | None = None,
+        keys: Iterable[Edge] | None = None,
     ) -> Any:
         """Get or set multiple attributes of multiple edges.
 
@@ -2862,7 +2871,7 @@ class Mesh(Datastructure):
         return [self.edge_attributes(edge, names) for edge in edges]
 
     # --------------------------------------------------------------------------
-    # Info
+    # Information
     # --------------------------------------------------------------------------
 
     def summary(self) -> str:
@@ -3206,7 +3215,7 @@ class Mesh(Datastructure):
     # Cleanup
     # --------------------------------------------------------------------------
 
-    def weld(self, precision: Optional[int] = None) -> None:
+    def weld(self, precision: int | None = None) -> None:
         """Weld vertices that are closer than a given precision.
 
         Parameters
@@ -3223,7 +3232,7 @@ class Mesh(Datastructure):
         """
         self.remove_duplicate_vertices(precision=precision)
 
-    def remove_duplicate_vertices(self, precision: Optional[int] = None) -> None:
+    def remove_duplicate_vertices(self, precision: int | None = None) -> None:
         """Remove all duplicate vertices and clean up any affected faces.
 
         Parameters
@@ -3319,9 +3328,9 @@ class Mesh(Datastructure):
     # only reason this is here and not on the halfedge is because of the spatial tree
     def unify_cycles(
         self,
-        root: Optional[Face] = None,
-        nmax: Optional[int] = None,
-        max_distance: Optional[float] = None,
+        root: Face | None = None,
+        nmax: int | None = None,
+        max_distance: float | None = None,
     ) -> None:
         """Unify the cycles of the mesh.
 
@@ -3580,12 +3589,12 @@ class Mesh(Datastructure):
     def vertex_faces(self, key: Vertex, ordered: bool = False, include_none: Literal[False] = False) -> list[Face]: ...
 
     @overload
-    def vertex_faces(self, key: Vertex, ordered: bool, include_none: Literal[True]) -> list[Optional[Face]]: ...
+    def vertex_faces(self, key: Vertex, ordered: bool, include_none: Literal[True]) -> list[Face | None]: ...
 
     @overload
-    def vertex_faces(self, key: Vertex, *, include_none: Literal[True]) -> list[Optional[Face]]: ...
+    def vertex_faces(self, key: Vertex, *, include_none: Literal[True]) -> list[Face | None]: ...
 
-    def vertex_faces(self, key: Vertex, ordered: bool = False, include_none: bool = False) -> Union[list[Face], list[Optional[Face]]]:
+    def vertex_faces(self, key: Vertex, ordered: bool = False, include_none: bool = False) -> list[Face] | list[Face | None]:
         """The faces connected to a vertex.
 
         Parameters
@@ -3657,7 +3666,7 @@ class Mesh(Datastructure):
         u, v = key
         return u in self.halfedge and v in self.halfedge[u]
 
-    def edge_faces(self, edge: Edge) -> tuple[Optional[Face], Optional[Face]]:
+    def edge_faces(self, edge: Edge) -> tuple[Face | None, Face | None]:
         """Find the two faces adjacent to an edge.
 
         Parameters
@@ -3675,7 +3684,7 @@ class Mesh(Datastructure):
         u, v = edge
         return self.halfedge[u][v], self.halfedge[v][u]
 
-    def halfedge_face(self, edge: Edge) -> Optional[Face]:
+    def halfedge_face(self, edge: Edge) -> Face | None:
         """Find the face corresponding to a halfedge.
 
         Parameters
@@ -3811,9 +3820,9 @@ class Mesh(Datastructure):
     def edge_strip(self, edge: Edge, return_faces: Literal[False] = False) -> list[Edge]: ...
 
     @overload
-    def edge_strip(self, edge: Edge, return_faces: Literal[True]) -> tuple[list[Edge], list[Optional[Face]]]: ...
+    def edge_strip(self, edge: Edge, return_faces: Literal[True]) -> tuple[list[Edge], list[Face | None]]: ...
 
-    def edge_strip(self, edge: Edge, return_faces: bool = False) -> Union[list[Edge], tuple[list[Edge], list[Optional[Face]]]]:
+    def edge_strip(self, edge: Edge, return_faces: bool = False) -> list[Edge] | tuple[list[Edge], list[Face | None]]:
         """Find all edges on the same strip as a given edge.
 
         Parameters
@@ -4097,7 +4106,7 @@ class Mesh(Datastructure):
         i = self.face[fkey].index(key)
         return self.face[fkey][(i + n) % len(self.face[fkey])]
 
-    def face_adjacency_halfedge(self, f1: Face, f2: Face) -> Optional[Edge]:
+    def face_adjacency_halfedge(self, f1: Face, f2: Face) -> Edge | None:
         """Find one half-edge over which two faces are adjacent.
 
         Parameters
@@ -4247,7 +4256,7 @@ class Mesh(Datastructure):
         loop = self.halfedge_loop(edge)
         return [loop[0][0]] + [edge[1] for edge in loop]
 
-    def halfedge_strip_faces(self, edge: Edge) -> list[Optional[Face]]:
+    def halfedge_strip_faces(self, edge: Edge) -> list[Face | None]:
         """Find all faces on the same strip as a given halfedge.
 
         Parameters
@@ -4279,7 +4288,7 @@ class Mesh(Datastructure):
         """
         return sum(self.face_area(fkey) for fkey in self.faces())
 
-    def volume(self, copy: bool = True, unify_cycles: bool = True) -> Optional[float]:
+    def volume(self, copy: bool = True, unify_cycles: bool = True) -> float | None:
         """Calculate the volume of the mesh.
 
         Parameters
@@ -4376,7 +4385,6 @@ class Mesh(Datastructure):
             1.0 / self.area(),
         )
 
-    @property
     def aabb(self) -> Box:
         """Calculate the axis aligned bounding box of the mesh.
 
@@ -4388,7 +4396,6 @@ class Mesh(Datastructure):
         xyz = self.vertices_attributes("xyz")
         return Box.from_bounding_box(bounding_box(xyz))
 
-    @property
     def obb(self) -> Box:
         """Calculate the oriented bounding box of the mesh.
 
@@ -5023,9 +5030,9 @@ class Mesh(Datastructure):
             The circle of the face.
 
         """
-        from compas.geometry import bestfit_circle_numpy
+        from compas.geometry import bestfit_circle
 
-        point, normal, radius = bestfit_circle_numpy(self.face_coordinates(face))
+        point, normal, radius = bestfit_circle(self.face_coordinates(face))
         return Circle.from_plane_and_radius(Plane(point, normal), radius)
 
     def face_frame(self, face: Face) -> Frame:
@@ -5042,9 +5049,9 @@ class Mesh(Datastructure):
             The frame of the face.
 
         """
-        from compas.geometry import bestfit_frame_numpy
+        from compas.geometry import bestfit_frame
 
-        point, xaxis, yaxis = bestfit_frame_numpy(self.face_coordinates(face))
+        point, xaxis, yaxis = bestfit_frame(self.face_coordinates(face))
         return Frame(point, xaxis, yaxis)
 
     # --------------------------------------------------------------------------
@@ -5235,7 +5242,7 @@ class Mesh(Datastructure):
     # Transformations
     # --------------------------------------------------------------------------
 
-    def transform(self, T: Union[Transformation, Sequence[Sequence[float]]]) -> None:  # type: ignore[override]
+    def transform(self, T: Transformation | Sequence[Sequence[float]]) -> None:  # type: ignore[override]
         """Transform the mesh.
 
         Parameters
@@ -5243,17 +5250,13 @@ class Mesh(Datastructure):
         T
             The transformation used to transform the mesh.
 
-        Returns
-        -------
-        None
-            The mesh is modified in-place.
-
         Examples
         --------
+        >>> from math import pi
         >>> from compas.datastructures import Mesh
         >>> from compas.linalg import matrix_from_axis_and_angle
         >>> mesh = Mesh.from_polyhedron(6)
-        >>> T = matrix_from_axis_and_angle([0, 0, 1], math.pi / 4)
+        >>> T = matrix_from_axis_and_angle([0, 0, 1], pi / 4)
         >>> mesh.transform(T)
 
         """
@@ -5269,17 +5272,13 @@ class Mesh(Datastructure):
         T
             The transformation used to transform the mesh.
 
-        Returns
-        -------
-        None
-            The mesh is modified in-place.
-
         Examples
         --------
+        >>> from math import pi
         >>> from compas.datastructures import Mesh
         >>> from compas.linalg import matrix_from_axis_and_angle
         >>> mesh = Mesh.from_polyhedron(6)
-        >>> T = matrix_from_axis_and_angle([0, 0, 1], math.pi / 4)
+        >>> T = matrix_from_axis_and_angle([0, 0, 1], pi / 4)
         >>> mesh.transform_numpy(T)
 
         """
@@ -5466,7 +5465,7 @@ class Mesh(Datastructure):
         return laplacian_matrix(edges, rtype=rtype)
 
     # --------------------------------------------------------------------------
-    # Other methods
+    # Methods
     # --------------------------------------------------------------------------
 
     def offset(self, distance: float = 1.0) -> Self:

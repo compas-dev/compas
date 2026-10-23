@@ -1,5 +1,4 @@
 from typing import TYPE_CHECKING
-from typing import Optional
 
 from compas.itertools import pairwise
 
@@ -11,7 +10,7 @@ if TYPE_CHECKING:
     from ..mesh import Mesh
 
 
-def mesh_split_edge(mesh: "Mesh", edge: Edge, t: float = 0.5, allow_boundary: bool = False) -> Optional[Vertex]:
+def mesh_split_edge(mesh: "Mesh", edge: Edge, t: float = 0.5, allow_boundary: bool = False) -> Vertex | None:
     """Split and edge by inserting a vertex along its length.
 
     Parameters
@@ -90,7 +89,7 @@ def mesh_split_edge(mesh: "Mesh", edge: Edge, t: float = 0.5, allow_boundary: bo
     return w
 
 
-def trimesh_split_edge(mesh: "Mesh", edge: Edge, t: float = 0.5, allow_boundary: bool = False) -> Optional[Vertex]:
+def trimesh_split_edge(mesh: "Mesh", edge: Edge, t: float = 0.5, allow_boundary: bool = False) -> Vertex | None:
     """Split an edge of a triangle mesh.
 
     Parameters

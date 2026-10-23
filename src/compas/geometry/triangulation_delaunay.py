@@ -1,23 +1,41 @@
+from collections.abc import Sequence
+from typing import TYPE_CHECKING
+from typing import Any
+
+from compas._typing import CoordinatesType
 from compas.plugins import pluggable
+
+if TYPE_CHECKING:
+    import numpy as np
+    from numpy.typing import NDArray
 
 
 @pluggable(category="triangulation")
-def delaunay_triangulation(points):
-    """Construct a Delaunay triangulation of set of vertices.
+def delaunay_triangulation(points: CoordinatesType) -> "NDArray[np.signedinteger[Any]]":
+    """Construct the two-dimensional Delaunay triangulation of a set of points.
 
     Parameters
     ----------
-    points : list
+    points
         XY(Z) coordinates of the points to triangulate.
 
     Returns
     -------
-    list[list[int]]
-        The faces of the triangulation.
+    numpy.typing.NDArray[numpy.signedinteger[Any]]
+        The triangle vertex indices.
+
+    Notes
+    -----
+    Only the XY coordinates participate in the triangulation. The default
+    implementation uses `scipy.spatial.Delaunay` and can be overridden by a
+    registered plugin.
 
     Examples
     --------
-    >>>
+    >>> points = [[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]]
+    >>> triangles = delaunay_triangulation(points)
+    >>> triangles.shape
+    (2, 3)
 
     """
     from numpy import asarray
@@ -28,75 +46,83 @@ def delaunay_triangulation(points):
     return d.simplices
 
 
-delaunay_triangulation.__pluggable__ = True
+setattr(delaunay_triangulation, "__pluggable__", True)
 
 
 @pluggable(category="triangulation")
-def constrained_delaunay_triangulation(boundary, polylines=None, polygons=None):
-    """Construct a Delaunay triangulation of set of vertices, constrained to the specified segments.
+def constrained_delaunay_triangulation(
+    boundary: CoordinatesType,
+    polylines: Sequence[CoordinatesType] | None = None,
+    polygons: Sequence[CoordinatesType] | None = None,
+) -> tuple[list[list[float]], list[list[int]]]:
+    """Construct a Delaunay triangulation constrained by specified segments.
 
     Parameters
     ----------
-    boundary : list
+    boundary
         Ordered points on the boundary.
-    polylines : list, optional
+    polylines
         Lists of ordered points defining internal guide curves.
-    polygons : list, optional
+    polygons
         Lists of ordered points defining holes in the triangulation.
 
     Returns
     -------
-    (list, list)
+    tuple[list[list[float]], list[list[int]]]
         The vertices of the triangulation, and the faces of the triangulation.
 
     Notes
     -----
-    No additional points will be inserted in the triangulation.
-
-    Examples
-    --------
-    >>>
+    No additional points are inserted. This extension point has no core
+    implementation and requires a triangulation plugin.
 
     """
-    pass
+    raise NotImplementedError
 
 
-constrained_delaunay_triangulation.__pluggable__ = True
+setattr(constrained_delaunay_triangulation, "__pluggable__", True)
 
 
 @pluggable(category="triangulation")
-def conforming_delaunay_triangulation(boundary, polylines=None, polygons=None, angle=None, area=None):
-    """Construct a Conforming Delaunay triangulation of set of vertices, constrained to the specified segments.
+def conforming_delaunay_triangulation(
+    boundary: CoordinatesType,
+    polylines: Sequence[CoordinatesType] | None = None,
+    polygons: Sequence[CoordinatesType] | None = None,
+    angle: float | None = None,
+    area: float | None = None,
+) -> tuple[list[list[float]], list[list[int]]]:
+    """Construct a conforming Delaunay triangulation with segment constraints.
 
     Parameters
     ----------
-    boundary : list
+    boundary
         Ordered points on the boundary.
-    polylines : list, optional
+    polylines
         Lists of ordered points defining internal guide curves.
-    polygons : list, optional
+    polygons
         Lists of ordered points defining holes in the triangulation.
-    angle : float, optional
+    angle
         Minimum angle constraint for the triangles of the triangulation.
         If an angle constraint is given, "Steiner points" may be inserted internally
         and along the constraint segments to satisfy the constraint.
         The angle constraint should be specified in degrees.
-    area : float, optional
+    area
         Maximum area constraint for the triangles of the triangulation.
         If an area constraint is given, "Steiner points" may be inserted internally
         and along the constraint segments to satisfy the constraint.
 
     Returns
     -------
-    (list, list)
+    tuple[list[list[float]], list[list[int]]]
         The vertices of the triangulation, and the faces of the triangulation.
 
-    Examples
-    --------
-    >>>
+    Notes
+    -----
+    This extension point has no core implementation and requires a
+    triangulation plugin.
 
     """
     raise NotImplementedError
 
 
-conforming_delaunay_triangulation.__pluggable__ = True
+setattr(conforming_delaunay_triangulation, "__pluggable__", True)

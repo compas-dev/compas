@@ -4,7 +4,6 @@ from collections import OrderedDict
 from copy import deepcopy
 from dataclasses import dataclass
 from typing import Any
-from typing import Optional
 
 from compas import _iotools
 from compas.tolerance import TOL
@@ -73,7 +72,7 @@ def stl_data(document: STLDocument) -> STLData:
     return STLData(vertices, faces)
 
 
-def weld_stl_data(document: STLDocument, precision: Optional[int] = None) -> STLData:
+def weld_stl_data(document: STLDocument, precision: int | None = None) -> STLData:
     """Project an STL document with explicitly welded facet vertices.
 
     Parameters
@@ -109,9 +108,9 @@ def weld_stl_data(document: STLDocument, precision: Optional[int] = None) -> STL
 def write_stl(
     target: _iotools.IOTarget,
     data: Any,
-    binary: Optional[bool] = None,
-    solid_name: Optional[str] = None,
-    precision: Optional[int] = None,
+    binary: bool | None = None,
+    solid_name: str | None = None,
+    precision: int | None = None,
 ) -> None:
     """Write an STL document or triangular mesh.
 
@@ -140,7 +139,7 @@ def write_stl(
     STLWriter(target, format=format, precision=precision).write(document)
 
 
-def _document_from_mesh(mesh: Any, solid_name: Optional[str]) -> STLDocument:
+def _document_from_mesh(mesh: Any, solid_name: str | None) -> STLDocument:
     if not mesh.is_trimesh():
         raise ValueError("Mesh must be triangular to be encoded in STL.")
     facets = []

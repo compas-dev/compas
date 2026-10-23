@@ -1,87 +1,102 @@
+from collections.abc import Sequence
+from typing import TYPE_CHECKING
+from typing import Any
+from typing import Self
+
 from compas.data import Data
+
+if TYPE_CHECKING:
+    from compas.geometry import BrepEdge
+    from compas.geometry import BrepVertex
+    from compas.geometry import Polygon
+    from compas.geometry import Polyline
 
 
 class BrepLoop(Data):
-    """An interface for a Brep Loop.
+    """Interface for a closed sequence of Brep edges."""
 
-    Attributes
-    ----------
-    edges : list[:class:`compas.geometry.BrepEdge`], read-only
-        Returns the list of deges associated with this loop.
-    is_valid : bool, read-only
-        Returns True if this loop is valid, False otherwise.
-    vertices : list[:class:`compas.geometry.BrepVertex`], read-only
-        Returns the list of vertices associated with this loop.
-    native_loop : Any
-        The underlying loop object. Type is backend-dependent.
-
-    """
-
-    # ==============================================================================
+    # ==========================================================================
     # Properties
-    # ==============================================================================
+    # ==========================================================================
 
     @property
-    def is_valid(self):
-        return NotImplementedError
+    def is_valid(self) -> bool:
+        """Whether the loop is valid.
 
-    @property
-    def vertices(self):
+        Raises
+        ------
+        NotImplementedError
+            If the active Brep backend does not implement loop validation.
+
+        """
         raise NotImplementedError
 
     @property
-    def edges(self):
+    def vertices(self) -> list["BrepVertex"]:
+        """The ordered vertices of the loop."""
         raise NotImplementedError
 
     @property
-    def native_loop(self):
+    def edges(self) -> list["BrepEdge"]:
+        """The ordered edges of the loop."""
         raise NotImplementedError
 
-    # ==============================================================================
+    @property
+    def native_loop(self) -> Any:
+        """The backend-specific loop object."""
+        raise NotImplementedError
+
+    # ==========================================================================
     # Constructors
-    # ==============================================================================
+    # ==========================================================================
 
     @classmethod
-    def from_edges(cls, edges):
-        """Construct a loop from a list of edges.
+    def from_edges(cls, edges: Sequence["BrepEdge"]) -> Self:
+        """Construct a loop from ordered edges.
 
         Parameters
         ----------
-        edges : list[:class:`compas.geometry.BrepEdge`]
+        edges
+            The ordered edges of the loop.
 
         Returns
         -------
-        :class:`compas.geometry.BrepLoop`
+        Self
+            The constructed loop.
 
         """
         raise NotImplementedError
 
     @classmethod
-    def from_polyline(cls, polyline):
-        """Construct a loop from a polyline.
+    def from_polyline(cls, polyline: "Polyline") -> Self:
+        """Construct a loop from a closed polyline.
 
         Parameters
         ----------
-        polyline : :class:`compas.geometry.Polyline`
+        polyline
+            The closed polyline.
 
         Returns
         -------
-        :class:`compas.geometry.BrepLoop`
+        Self
+            The constructed loop.
 
         """
         raise NotImplementedError
 
     @classmethod
-    def from_polygon(cls, polygon):
+    def from_polygon(cls, polygon: "Polygon") -> Self:
         """Construct a loop from a polygon.
 
         Parameters
         ----------
-        polygon : :class:`compas.geometry.Polygon`
+        polygon
+            The polygon.
 
         Returns
         -------
-        :class:`compas.geometry.BrepLoop`
+        Self
+            The constructed loop.
 
         """
         raise NotImplementedError

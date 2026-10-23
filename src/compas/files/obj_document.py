@@ -8,8 +8,6 @@ or writer state.
 from dataclasses import dataclass
 from dataclasses import field
 from typing import Literal
-from typing import Optional
-from typing import Union
 
 
 @dataclass(frozen=True)
@@ -28,8 +26,8 @@ class OBJVertexReference:
     """
 
     vertex: int
-    texture: Optional[int] = None
-    normal: Optional[int] = None
+    texture: int | None = None
+    normal: int | None = None
 
 
 @dataclass
@@ -76,8 +74,8 @@ class OBJFace:
     """
 
     vertices: list[OBJVertexReference]
-    material: Optional[str] = None
-    smoothing: Optional[str] = None
+    material: str | None = None
+    smoothing: str | None = None
 
 
 OBJElementKind = Literal["point", "line", "face"]
@@ -169,6 +167,10 @@ class OBJDocument:
     material_libraries: list[str] = field(default_factory=list)
     comments: list[str] = field(default_factory=list)
 
+    # =============================================================================
+    # Methods
+    # =============================================================================
+
     def validate(self) -> None:
         """Validate the internal references and coordinate dimensions.
 
@@ -204,7 +206,11 @@ class OBJDocument:
         for reference in self.elements:
             self._validate_element_reference(reference)
 
-    def _elements(self) -> list[Union[OBJPoint, OBJLine, OBJFace]]:
+    # =============================================================================
+    # Private helpers
+    # =============================================================================
+
+    def _elements(self) -> list[OBJPoint | OBJLine | OBJFace]:
         return [*self.points, *self.lines, *self.faces]
 
     def _element_count(self, kind: OBJElementKind) -> int:

@@ -1,11 +1,8 @@
+from collections.abc import Iterator
+from collections.abc import Sequence
 from math import sqrt
 from typing import TYPE_CHECKING
-from typing import Iterator
-from typing import Optional
-from typing import Sequence
-from typing import Union
-
-from typing_extensions import Self
+from typing import Self
 
 from compas._typing import Coordinates
 from compas._typing import CoordinatesType
@@ -79,6 +76,10 @@ class Plane(Geometry):
 
     """
 
+    # ==========================================================================
+    # Data
+    # ==========================================================================
+
     @property
     def __data__(self) -> dict[str, list[float]]:
         """The data representation of the plane."""
@@ -87,10 +88,14 @@ class Plane(Geometry):
             "normal": self.normal.__data__,
         }
 
-    def __init__(self, point: CoordinateType, normal: CoordinateType, name: Optional[str] = None) -> None:
+    # ==========================================================================
+    # Dunder methods
+    # ==========================================================================
+
+    def __init__(self, point: CoordinateType, normal: CoordinateType, name: str | None = None) -> None:
         super().__init__(name=name)
-        self._point: Optional[Point] = None
-        self._normal: Optional[Vector] = None
+        self._point: Point | None = None
+        self._normal: Vector | None = None
         self.point = point
         self.normal = normal
 
@@ -111,7 +116,7 @@ class Plane(Geometry):
     def __len__(self) -> int:
         return 2
 
-    def __getitem__(self, key: int) -> Union[Point, Vector]:
+    def __getitem__(self, key: int) -> Point | Vector:
         if key == 0:
             return self.point
         if key == 1:
@@ -127,7 +132,7 @@ class Plane(Geometry):
             return
         raise KeyError
 
-    def __iter__(self) -> Iterator[Union[Point, Vector]]:
+    def __iter__(self) -> Iterator[Point | Vector]:
         return iter([self.point, self.normal])
 
     def __eq__(self, other: object) -> bool:
@@ -427,39 +432,13 @@ class Plane(Geometry):
         if len(points) == 3:
             return cls.from_three_points(*points)
         point, normal = bestfit_plane(points)
-        return cls(point, normal)
-
-    # ==========================================================================
-    # Transformations
-    # ==========================================================================
-
-    def transform(self, transformation: TransformationType) -> None:
-        """Transform this plane.
-
-        Parameters
-        ----------
-        transformation
-            The transformation.
-
-        Examples
-        --------
-        >>> from compas.geometry import Frame
-        >>> from compas.geometry import Transformation
-        >>> from compas.geometry import Plane
-        >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> T = Transformation.from_frame(f)
-        >>> plane = Plane.worldXY()
-        >>> plane.transform(T)
-
-        """
-        self.point.transform(transformation)
-        self.normal.transform(transformation)
+        return cls((point[0], point[1], point[2]), (normal[0], normal[1], normal[2]))
 
     # ==========================================================================
     # Methods
     # ==========================================================================
 
-    def is_parallel(self, other: "Plane", tol: Optional[float] = None) -> bool:
+    def is_parallel(self, other: "Plane", tol: float | None = None) -> bool:
         """Verify if this plane is parallel to another plane.
 
         Parameters
@@ -490,7 +469,7 @@ class Plane(Geometry):
         """
         return TOL.is_close(abs(self.normal.dot(other.normal)), 1, rtol=0, atol=tol)
 
-    def is_perpendicular(self, other: "Plane", tol: Optional[float] = None) -> bool:
+    def is_perpendicular(self, other: "Plane", tol: float | None = None) -> bool:
         """Verify if this plane is perpendicular to another plane.
 
         Parameters
@@ -517,7 +496,7 @@ class Plane(Geometry):
         """
         return TOL.is_zero(self.normal.dot(other.normal), tol)
 
-    def contains_point(self, point: CoordinateType, tol: Optional[float] = None) -> bool:
+    def contains_point(self, point: CoordinateType, tol: float | None = None) -> bool:
         """Verify if a given point lies in the plane.
 
         Parameters
@@ -598,10 +577,10 @@ class Plane(Geometry):
         distance = self.normal.dot(vector)
         return point + self.normal.scaled(distance)
 
-    # move to Point.proejcted_on_plane?
+    # move to Point.projected_on_plane?
     # point.projected_on_plane(plane)
     # point.project_on_plane(plane)
-    def projected_point(self, point: CoordinateType, direction: Optional[CoordinateType] = None) -> Optional[Point]:
+    def projected_point(self, point: CoordinateType, direction: CoordinateType | None = None) -> Point | None:
         """Returns the projection of a given point onto the plane.
 
         Parameters
@@ -614,7 +593,7 @@ class Plane(Geometry):
 
         Returns
         -------
-        Optional[Point]
+        Point | None
             The projected point, or None if a direction is given and it is parallel to the plane.
 
         Examples
@@ -633,9 +612,9 @@ class Plane(Geometry):
 
         line = Line.from_point_and_vector(point, direction)
         intersection = intersection_line_plane(line, self)
-        if intersection is None:
+        if not intersection:
             return None
-        return Point(intersection[0], intersection[1], intersection[2])
+        return intersection[0]
 
     # move to Point.mirrored_by_plane?
     # point.mirrored_by_plane(plane)
@@ -683,3 +662,29 @@ class Plane(Geometry):
 
         """
         return type(self)(self.point + self.normal.scaled(distance), self.normal)
+
+    # ==========================================================================
+    # Transformations
+    # ==========================================================================
+
+    def transform(self, transformation: TransformationType) -> None:
+        """Transform this plane.
+
+        Parameters
+        ----------
+        transformation
+            The transformation.
+
+        Examples
+        --------
+        >>> from compas.geometry import Frame
+        >>> from compas.geometry import Transformation
+        >>> from compas.geometry import Plane
+        >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+        >>> T = Transformation.from_frame(f)
+        >>> plane = Plane.worldXY()
+        >>> plane.transform(T)
+
+        """
+        self.point.transform(transformation)
+        self.normal.transform(transformation)

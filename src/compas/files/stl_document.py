@@ -51,4 +51,3 @@ class STLDocument:
                     raise ValueError("STL facets require three vertices with three coordinates each.")
                 if facet.attribute < 0 or facet.attribute > 65535:
                     raise ValueError("STL facet attributes must fit in an unsigned 16-bit integer.")
-

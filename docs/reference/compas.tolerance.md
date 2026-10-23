@@ -1,0 +1,3 @@
+# `compas.tolerance`
+
+::: compas.tolerance

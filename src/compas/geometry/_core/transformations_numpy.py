@@ -1,7 +1,8 @@
+from collections.abc import Sequence
 from typing import Any
-from typing import Sequence
 
 from numpy import asarray
+from numpy import cross
 from numpy import hstack
 from numpy import ones
 from numpy import tile
@@ -9,8 +10,6 @@ from numpy import vectorize
 from numpy.typing import ArrayLike
 from numpy.typing import NDArray
 from scipy.linalg import solve
-
-from compas.linalg.vectors import cross_vectors
 
 
 def transform_points_numpy(points: ArrayLike, T: ArrayLike) -> NDArray[Any]:
@@ -30,6 +29,7 @@ def transform_points_numpy(points: ArrayLike, T: ArrayLike) -> NDArray[Any]:
 
     Examples
     --------
+    >>> import math
     >>> from compas.linalg import matrix_from_axis_and_angle
     >>> points = [[1, 0, 0], [1, 2, 4], [4, 7, 1]]
     >>> T = matrix_from_axis_and_angle([0, 2, 0], math.radians(45), point=[4, 5, 6])
@@ -58,6 +58,7 @@ def transform_vectors_numpy(vectors: ArrayLike, T: ArrayLike) -> NDArray[Any]:
 
     Examples
     --------
+    >>> import math
     >>> from compas.linalg import matrix_from_axis_and_angle
     >>> vectors = [[1, 0, 0], [1, 2, 4], [4, 7, 1]]
     >>> T = matrix_from_axis_and_angle([0, 2, 0], math.radians(45), point=[4, 5, 6])
@@ -86,7 +87,9 @@ def transform_frames_numpy(frames: Sequence[Sequence[Sequence[float]]], T: Array
 
     Examples
     --------
-    >>> from compas.geometry import Frame, matrix_from_axis_and_angle
+    >>> import math
+    >>> from compas.geometry import Frame
+    >>> from compas.linalg import matrix_from_axis_and_angle
     >>> frames = [Frame([1, 0, 0], [1, 2, 4], [4, 7, 1]), Frame([0, 2, 0], [5, 2, 1], [0, 2, 1])]
     >>> T = matrix_from_axis_and_angle([0, 2, 0], math.radians(45), point=[4, 5, 6])
     >>> transformed_frames = transform_frames_numpy(frames, T)
@@ -97,7 +100,7 @@ def transform_frames_numpy(frames: Sequence[Sequence[Sequence[float]]], T: Array
     return dehomogenize_and_unflatten_frames_numpy(points_and_vectors.dot(T.T))
 
 
-def world_to_local_coordinates_numpy(frame: Sequence[Sequence[float]], xyz: ArrayLike) -> NDArray[Any]:
+def world_to_local_coordinates_numpy(frame: ArrayLike, xyz: ArrayLike) -> NDArray[Any]:
     """Convert global coordinates to local coordinates.
 
     Parameters
@@ -115,6 +118,7 @@ def world_to_local_coordinates_numpy(frame: Sequence[Sequence[float]], xyz: Arra
 
     Examples
     --------
+    >>> import numpy as np
     >>> from compas.geometry import Point, Frame
     >>> frame = Frame([0, 1, 0], [3, 4, 1], [1, 5, 9])
     >>> xyz = [Point(2, 3, 5)]
@@ -123,15 +127,16 @@ def world_to_local_coordinates_numpy(frame: Sequence[Sequence[float]], xyz: Arra
     True
 
     """
+    frame = asarray(frame)
     origin = frame[0]
-    uvw = [frame[1], frame[2], cross_vectors(frame[1], frame[2])]
+    uvw = [frame[1], frame[2], cross(frame[1], frame[2])]
     uvw = asarray(uvw).T
     xyz = asarray(xyz).T - asarray(origin).reshape((-1, 1))
     rst = solve(uvw, xyz)
     return rst.T
 
 
-def local_to_world_coordinates_numpy(frame: Sequence[Sequence[float]], rst: ArrayLike) -> NDArray[Any]:
+def local_to_world_coordinates_numpy(frame: ArrayLike, rst: ArrayLike) -> NDArray[Any]:
     """Convert local coordinates to global (world) coordinates.
 
     Parameters
@@ -152,6 +157,7 @@ def local_to_world_coordinates_numpy(frame: Sequence[Sequence[float]], rst: Arra
 
     Examples
     --------
+    >>> import numpy as np
     >>> from compas.geometry import Point, Frame
     >>> frame = Frame([0, 1, 0], [3, 4, 1], [1, 5, 9])
     >>> rst = [Point(3.726, 4.088, 1.550)]
@@ -160,8 +166,9 @@ def local_to_world_coordinates_numpy(frame: Sequence[Sequence[float]], rst: Arra
     True
 
     """
+    frame = asarray(frame)
     origin = frame[0]
-    uvw = [frame[1], frame[2], cross_vectors(frame[1], frame[2])]
+    uvw = [frame[1], frame[2], cross(frame[1], frame[2])]
 
     uvw = asarray(uvw).T
     rst = asarray(rst).T
@@ -192,6 +199,7 @@ def homogenize_numpy(data: ArrayLike, w: float = 1.0) -> NDArray[Any]:
 
     Examples
     --------
+    >>> import numpy as np
     >>> points = [[1, 1, 1], [0, 1, 0], [1, 0, 0]]
     >>> res = homogenize_numpy(points, w=1.0)
     >>> np.allclose(res, [[1.0, 1.0, 1.0, 1.0], [0.0, 1.0, 0.0, 1.0], [1.0, -0.0, 0.0, 1.0]])
@@ -218,6 +226,7 @@ def dehomogenize_numpy(data: ArrayLike) -> NDArray[Any]:
 
     Examples
     --------
+    >>> import numpy as np
     >>> points = [[1, 1, 1, 0], [0, 1, 0, 0], [1, 0, 0, 0]]
     >>> res = dehomogenize_numpy(points)
     >>> np.allclose(res, [[1.0, 1.0, 1.0], [0.0, 1.0, 0.0], [1.0, -0.0, 0.0]])
@@ -251,6 +260,7 @@ def homogenize_and_flatten_frames_numpy(
 
     Examples
     --------
+    >>> import numpy as np
     >>> from compas.geometry import Frame
     >>> frames = [Frame((1, 1, 1), (0, 1, 0), (1, 0, 0))]
     >>> res = homogenize_and_flatten_frames_numpy(frames)
@@ -279,6 +289,7 @@ def dehomogenize_and_unflatten_frames_numpy(points_and_vectors: ArrayLike) -> ND
 
     Examples
     --------
+    >>> import numpy as np
     >>> points_and_vectors = [(1.0, 1.0, 1.0, 1.0), (0.0, 1.0, 0.0, 0.0), (1.0, 0.0, 0.0, 0.0)]
     >>> res = dehomogenize_and_unflatten_frames_numpy(points_and_vectors)
     >>> np.allclose(res, [[1.0, 1.0, 1.0], [0.0, 1.0, 0.0], [1.0, 0.0, 0.0]])

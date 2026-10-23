@@ -1,4 +1,4 @@
-from typing import Sequence
+from collections.abc import Sequence
 
 from compas._typing import CoordinatesType
 from compas.linalg.vectors import cross_vectors
@@ -71,7 +71,7 @@ def normal_polygon(polygon: CoordinatesType, unitized: bool = True) -> list[floa
     return normalize_vector([nx, ny, nz])
 
 
-def normal_triangle(triangle: Sequence[Sequence[float]], unitized: bool = True) -> list[float]:
+def normal_triangle(triangle: CoordinatesType, unitized: bool = True) -> list[float]:
     """Compute the normal vector of a triangle.
 
     Parameters

@@ -12,7 +12,7 @@ def test_ellipse_create():
 
     assert TOL.is_close(ellipse.major, 1.0)
     assert TOL.is_close(ellipse.minor, 0.5)
-    assert TOL.is_close(ellipse.area, 1.5707963267948966)
+    assert TOL.is_close(ellipse.area(), 1.5707963267948966)
     assert TOL.is_close(ellipse.circumference, 4.844224110273838)
     assert TOL.is_close(ellipse.length, ellipse.circumference)
     assert TOL.is_close(ellipse.semifocal, 0.8660254037844386)
@@ -42,7 +42,7 @@ def test_ellipse_create_with_frame():
 
     assert TOL.is_close(ellipse.major, 1.0)
     assert TOL.is_close(ellipse.minor, 0.5)
-    assert TOL.is_close(ellipse.area, 1.5707963267948966)
+    assert TOL.is_close(ellipse.area(), 1.5707963267948966)
     assert TOL.is_close(ellipse.semifocal, 0.8660254037844386)
     assert TOL.is_close(ellipse.eccentricity, 0.8660254037844386)
     assert TOL.is_close(ellipse.focal, 1.7320508075688772)
@@ -112,7 +112,7 @@ def test_ellipse_create_from_point_major_minor():
 
     assert TOL.is_close(ellipse.major, 1.0)
     assert TOL.is_close(ellipse.minor, 0.5)
-    assert TOL.is_close(ellipse.area, 1.5707963267948966)
+    assert TOL.is_close(ellipse.area(), 1.5707963267948966)
     assert TOL.is_close(ellipse.semifocal, 0.8660254037844386)
     assert TOL.is_close(ellipse.eccentricity, 0.8660254037844386)
     assert TOL.is_close(ellipse.focal, 1.7320508075688772)
@@ -133,7 +133,7 @@ def test_ellipse_create_from_plane_major_minor():
 
     assert TOL.is_close(ellipse.major, 1.0)
     assert TOL.is_close(ellipse.minor, 0.5)
-    assert TOL.is_close(ellipse.area, 1.5707963267948966)
+    assert TOL.is_close(ellipse.area(), 1.5707963267948966)
     assert TOL.is_close(ellipse.semifocal, 0.8660254037844386)
     assert TOL.is_close(ellipse.eccentricity, 0.8660254037844386)
     assert TOL.is_close(ellipse.focal, 1.7320508075688772)

@@ -102,6 +102,7 @@ def test_torus_from_plane_preserves_subclass():
     assert isinstance(torus, CustomToroidalSurface)
     assert torus.frame == Frame.worldYZ()
 
+
 # =============================================================================
 # Properties and Geometry
 # =============================================================================
@@ -110,8 +111,9 @@ def test_torus_from_plane_preserves_subclass():
 def test_torus_area_and_volume():
     torus = ToroidalSurface(2.0, 0.5)
 
-    assert TOL.is_close(torus.area, 4.0 * pi**2)
-    assert TOL.is_close(torus.volume, pi**2)
+    assert TOL.is_close(torus.area(), 4.0 * pi**2)
+    assert TOL.is_close(torus.volume(), pi**2)
+
 
 # =============================================================================
 # Accessors

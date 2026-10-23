@@ -2,7 +2,6 @@
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional
 from typing import Protocol
 from urllib.parse import urljoin
 
@@ -29,7 +28,7 @@ class GLTFSource:
     """Complete primary source and optional external-resource loader."""
 
     data: bytes
-    resource_loader: Optional[GLTFResourceLoader] = None
+    resource_loader: GLTFResourceLoader | None = None
 
 
 @dataclass

@@ -1,9 +1,9 @@
 import pytest
 import json
-import compas
 from random import random
 from compas.geometry import Point
 from compas.geometry import Polygon
+from compas.geometry import Translation
 from compas.itertools import pairwise
 
 
@@ -26,8 +26,7 @@ def test_polygon(points):
     assert polygon.lines[-1][1] == polygon.points[0]
     assert polygon.lines[-1][0] == polygon.points[-1]
 
-    if not compas.IPY:
-        assert polygon == eval(repr(polygon))
+    assert polygon == eval(repr(polygon))
 
 
 def test_polygon_constructor_does_not_modify_input_params():
@@ -88,11 +87,11 @@ def test_polygon__setitem__():
 def test_polygon_normal_direction():
     points = [[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]]
     polygon = Polygon(points)
-    assert polygon.normal.dot([0, 0, 1]) > 0
+    assert polygon.normal().dot([0, 0, 1]) > 0
 
     points = [[0, 0, 0], [0, 1, 0], [1, 1, 0], [1, 0, 0]]
     polygon = Polygon(points)
-    assert polygon.normal.dot([0, 0, 1]) < 0
+    assert polygon.normal().dot([0, 0, 1]) < 0
 
 
 @pytest.mark.parametrize(
@@ -106,3 +105,20 @@ def test_polygon_normal_direction():
 def test_polygon_duplicate_removal(points):
     polygon = Polygon(points)
     assert len(polygon.points) == 4
+
+
+def test_polygon_requires_three_coordinate_components():
+    with pytest.raises(IndexError):
+        Polygon([[0, 0], [1, 0], [0, 1]])
+
+
+def test_polygon_transform_invalidates_geometric_caches():
+    polygon = Polygon([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]])
+    lines = polygon.lines
+    aabb = polygon.aabb()
+
+    polygon.transform(Translation.from_vector([2, 3, 4]))
+
+    assert polygon.lines is not lines
+    assert polygon.aabb() is not aabb
+    assert polygon.aabb().frame.point == [2.5, 3.5, 4.0]

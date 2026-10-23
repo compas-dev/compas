@@ -1,10 +1,9 @@
-import os
+from collections.abc import Sequence
+from pathlib import Path
 from typing import Literal
-from typing import Sequence
-from typing import Union
+from typing import Self
 
-from typing_extensions import Self
-
+from compas.data import Data
 from compas.itertools import linspace
 
 from .color import Color
@@ -20,12 +19,12 @@ mpl = {
     "viridis": _viridis_data,
 }
 
-ColorMapColor = Union[Sequence[float], Color]
+ColorMapColor = Sequence[float] | Color
 ColorMapName = Literal["magma", "inferno", "plasma", "viridis"]
 ColorRangeType = Literal["full", "light", "dark"]
 
 
-class ColorMap:
+class ColorMap(Data):
     """Class providing a map for 256 distinct colors of a specific color palette.
 
     Parameters
@@ -33,11 +32,6 @@ class ColorMap:
     colors
         A sequence of colors forming the map.
         The number of colors in the sequence should be 256.
-
-    Attributes
-    ----------
-    colors
-        The colors of the map.
 
     Raises
     ------
@@ -58,34 +52,33 @@ class ColorMap:
 
     See Also
     --------
-    compas.colors.Color
+    [`Color`][compas.colors.Color]
 
     """
 
-    def __init__(self, colors: Sequence[ColorMapColor]) -> None:
-        self._colors: list[Color] = []
-        self.colors = colors
-
     # --------------------------------------------------------------------------
-    # properties
+    # Data
     # --------------------------------------------------------------------------
 
     @property
-    def colors(self) -> list[Color]:
-        return self._colors
+    def __data__(self) -> dict[str, tuple[Color, ...]]:
+        return {"colors": self.colors}
 
-    @colors.setter
-    def colors(self, colors: Sequence[ColorMapColor]) -> None:
-        if len(colors) != 256:
-            raise ValueError("The color map should have 256 colors.")
-        self._colors = [Color(r, g, b) for r, g, b in colors]
+    @classmethod
+    def __from_data__(cls, data: dict[str, Sequence[ColorMapColor]]) -> Self:
+        return cls(data["colors"])
 
     # --------------------------------------------------------------------------
-    # customization
+    # Dunder methods
     # --------------------------------------------------------------------------
+
+    def __init__(self, colors: Sequence[ColorMapColor], name: str | None = None) -> None:
+        super().__init__(name=name)
+        self._colors: tuple[Color, ...] = ()
+        self.colors = colors
 
     def __call__(self, value: float, minval: float = 0.0, maxval: float = 1.0) -> Color:
-        """Returns the color in the map corresponding to the given value in the range ``[minval, maxval]``.
+        """Return the color corresponding to a value in a numeric range.
 
         Parameters
         ----------
@@ -103,9 +96,11 @@ class ColorMap:
         Raises
         ------
         KeyError
-            If the value is not in the range ``[minval, maxval]``.
+            If the value is not in the range `[minval, maxval]`.
 
         """
+        if minval == maxval:
+            raise ValueError("The color-map range should have a nonzero length.")
         key = (value - minval) / (maxval - minval)
         if key > 1.0 or key < 0.0:
             raise KeyError("The normalized value must be in the range 0 - 1.")
@@ -113,7 +108,34 @@ class ColorMap:
         return self.colors[index]
 
     # --------------------------------------------------------------------------
-    # constructors
+    # Properties
+    # --------------------------------------------------------------------------
+
+    @property
+    def colors(self) -> tuple[Color, ...]:
+        """The 256 colors in the map.
+
+        The colors are exposed as an immutable tuple. Assigning colors copies
+        every input color and requires exactly 256 three-component colors.
+
+        """
+        return self._colors
+
+    @colors.setter
+    def colors(self, colors: Sequence[ColorMapColor]) -> None:
+        if len(colors) != 256:
+            raise ValueError("The color map should have 256 colors.")
+        copied = []
+        for color in colors:
+            if isinstance(color, Color):
+                copied.append(Color(color.r, color.g, color.b, color.a))
+                continue
+            r, g, b = color
+            copied.append(Color(r, g, b))
+        self._colors = tuple(copied)
+
+    # --------------------------------------------------------------------------
+    # Constructors
     # --------------------------------------------------------------------------
 
     @classmethod
@@ -127,7 +149,7 @@ class ColorMap:
 
         Returns
         -------
-        ColorMap
+        Self
             A color map with 256 colors.
 
         Raises
@@ -137,15 +159,14 @@ class ColorMap:
 
         Notes
         -----
-        The colormaps use the colors of the palettes available here https://www.fabiocrameri.ch/colourmaps/
-        and the python package https://pypi.org/project/cmcrameri/.
+        The colormaps use the [Scientific colour maps](https://www.fabiocrameri.ch/colourmaps/)
+        and the [cmcrameri](https://pypi.org/project/cmcrameri/) package.
         See `compas/colors/cmcrameri/LICENSE` for more info.
 
         """
-        here = os.path.dirname(__file__)
-        path = os.path.join(here, "cmcrameri", "{}.txt".format(name))
+        path = Path(__file__).parent / "cmcrameri" / f"{name}.txt"
         colors: list[tuple[float, float, float]] = []
-        with open(path, "r") as f:
+        with path.open(encoding="utf-8") as f:
             for line in f:
                 if line:
                     parts = line.split()
@@ -154,8 +175,7 @@ class ColorMap:
                         g = float(parts[1])
                         b = float(parts[2])
                         colors.append((r, g, b))
-        cmap = cls(colors)
-        return cmap
+        return cls(colors)
 
     @classmethod
     def from_mpl(cls, name: ColorMapName) -> Self:
@@ -168,7 +188,7 @@ class ColorMap:
 
         Returns
         -------
-        ColorMap
+        Self
             A color map with 256 colors.
 
         Raises
@@ -178,8 +198,9 @@ class ColorMap:
 
         Notes
         -----
-        The palettes available through this function are from https://github.com/BIDS/colormap,
-        but with the dependency on `matplotlib` removed to ensure compatibility with RhinoGH.
+        The palettes available through this function are from
+        [BIDS/colormap](https://github.com/BIDS/colormap), with the dependency
+        on `matplotlib` removed.
         See `compas/colors/mpl_colormap.py` for more info and license information.
 
         """
@@ -195,13 +216,13 @@ class ColorMap:
         color
             The base color.
         rangetype
-            If ``'full'``, use the full luminance range (0.0 - 1.0).
-            If ``'light'``, use only the "light" part of the luminance range (0.5 - 1.0).
-            If ``'dark'``, use only the "dark" part of the luminance range (0.0 - 0.5).
+            If `"full"`, use the full luminance range from 0.0 to 1.0.
+            If `"light"`, use the light half from 0.5 to 1.0.
+            If `"dark"`, use the dark half from 0.0 to 0.5.
 
         Returns
         -------
-        ColorMap
+        Self
             A color map with 256 colors.
 
         """
@@ -240,7 +261,7 @@ class ColorMap:
 
         Returns
         -------
-        ColorMap
+        Self
             A color map with 256 colors.
 
         """
@@ -279,7 +300,7 @@ class ColorMap:
 
         Returns
         -------
-        ColorMap
+        Self
             A color map with 256 colors.
 
         """
@@ -302,7 +323,7 @@ class ColorMap:
 
         Returns
         -------
-        ColorMap
+        Self
 
         """
         colors: list[Color] = []

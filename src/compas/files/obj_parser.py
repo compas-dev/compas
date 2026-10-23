@@ -5,9 +5,8 @@ them into a structured document.
 
 """
 
+from collections.abc import Iterator
 from dataclasses import dataclass
-from typing import Iterator
-from typing import Optional
 
 from .obj_document import OBJDocument
 from .obj_document import OBJElementReference
@@ -72,15 +71,23 @@ class OBJParser:
 
     """
 
+    # =============================================================================
+    # Dunder methods
+    # =============================================================================
+
     def __init__(self, source: bytes, encoding: str = "utf-8") -> None:
         self.source = source
         self.encoding = encoding
         self.document = OBJDocument()
-        self._object: Optional[str] = None
+        self._object: str | None = None
         self._groups: list[str] = []
-        self._material: Optional[str] = None
-        self._smoothing: Optional[str] = None
-        self._degree: Optional[tuple[int, ...]] = None
+        self._material: str | None = None
+        self._smoothing: str | None = None
+        self._degree: tuple[int, ...] | None = None
+
+    # =============================================================================
+    # Methods
+    # =============================================================================
 
     def parse(self) -> OBJDocument:
         """Parse all statements.
@@ -101,6 +108,10 @@ class OBJParser:
 
         self.document.validate()
         return self.document
+
+    # =============================================================================
+    # Private helpers
+    # =============================================================================
 
     def _parse_statement(self, statement: OBJStatement) -> None:
         keyword = statement.keyword

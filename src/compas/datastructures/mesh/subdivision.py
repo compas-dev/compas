@@ -1,15 +1,12 @@
+from collections.abc import Collection
+from collections.abc import Mapping
 from copy import deepcopy
 from math import cos
 from math import pi
 from typing import TYPE_CHECKING
 from typing import Any
-from typing import Collection
 from typing import Literal
-from typing import Mapping
-from typing import Optional
 from typing import TypeVar
-from typing import Union
-from typing import cast
 
 from compas.geometry import centroid_points
 from compas.geometry import offset_polygon
@@ -72,7 +69,7 @@ def mesh_fast_copy(other: MeshType) -> MeshType:
     subd.halfedge = deepcopy(other.halfedge)
     subd._max_vertex = other._max_vertex
     subd._max_face = other._max_face
-    return cast(MeshType, subd)
+    return subd
 
 
 # distinguish between subd of meshes with and without boundary
@@ -276,7 +273,7 @@ def mesh_subdivide_corner(mesh: MeshType, k: int = 1) -> MeshType:
 def mesh_subdivide_catmullclark(
     mesh: MeshType,
     k: int = 1,
-    fixed: Optional[Collection[Vertex]] = None,
+    fixed: Collection[Vertex] | None = None,
 ) -> MeshType:
     """Subdivide a mesh using the Catmull-Clark algorithm.
 
@@ -336,7 +333,8 @@ def mesh_subdivide_catmullclark(
     To add an infinitely sharp crease to an edge, set the "crease" attribute of the edge
     to a number higher than the number of subdivision steps.
 
-    >>> from compas.geometry import Box, dot_vectors
+    >>> from compas.geometry import Box
+    >>> from compas.linalg import dot_vectors
     >>> from compas.datastructures import Mesh
 
     >>> cage = Mesh.from_shape(Box.from_width_height_depth(1, 1, 1))
@@ -467,7 +465,7 @@ def mesh_subdivide_catmullclark(
 def mesh_subdivide_doosabin(
     mesh: MeshType,
     k: int = 1,
-    fixed: Optional[Collection[Vertex]] = None,
+    fixed: Collection[Vertex] | None = None,
 ) -> MeshType:
     """Subdivide a mesh following the doo-sabin scheme.
 
@@ -585,7 +583,7 @@ def mesh_subdivide_doosabin(
 
 def mesh_subdivide_frames(
     mesh: MeshType,
-    offset: Union[float, Mapping[Face, float]],
+    offset: float | Mapping[Face, float],
     add_windows: bool = False,
 ) -> MeshType:
     """Subdivide a mesh by creating offset frames and windows on its faces.
@@ -659,7 +657,7 @@ def mesh_subdivide_frames(
 def trimesh_subdivide_loop(
     mesh: MeshType,
     k: int = 1,
-    fixed: Optional[Collection[Vertex]] = None,
+    fixed: Collection[Vertex] | None = None,
 ) -> MeshType:
     """Subdivide a triangle mesh using the Loop algorithm.
 

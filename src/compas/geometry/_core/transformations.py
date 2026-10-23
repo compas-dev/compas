@@ -1,9 +1,9 @@
 import math
-from typing import Iterable
-from typing import Optional
-from typing import Sequence
+from collections.abc import Iterable
+from collections.abc import Sequence
 
 from compas._typing import CoordinatesType
+from compas._typing import CoordinateType
 from compas.linalg.matrices import multiply_matrices
 from compas.linalg.matrices import multiply_matrix_vector
 from compas.linalg.matrices import transpose_matrix
@@ -27,6 +27,8 @@ from .angles import angle_vectors
 from .distance import closest_point_on_line
 from .distance import closest_point_on_line_xy
 from .distance import closest_point_on_plane
+from .intersections import intersection_line_plane
+from .intersections import intersection_line_triangle
 
 _WORLD_XY = ([0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0])
 
@@ -42,7 +44,7 @@ def local_axes(a: Sequence[float], b: Sequence[float], c: Sequence[float]) -> tu
     return normalize_vector(u), normalize_vector(v), normalize_vector(w)
 
 
-def orthonormalize_axes(xaxis: Sequence[float], yaxis: Sequence[float]) -> tuple[Sequence[float], Sequence[float]]:
+def orthonormalize_axes(xaxis: CoordinateType, yaxis: CoordinateType) -> tuple[CoordinateType, CoordinateType]:
     """Corrects xaxis and yaxis to be unit vectors and orthonormal.
 
     Parameters
@@ -74,13 +76,13 @@ def orthonormalize_axes(xaxis: Sequence[float], yaxis: Sequence[float]) -> tuple
     True
 
     """
-    xaxis = normalize_vector(xaxis)
-    yaxis = normalize_vector(yaxis)
-    zaxis = cross_vectors(xaxis, yaxis)
+    xaxis_normalized = normalize_vector(xaxis)
+    yaxis_normalized = normalize_vector(yaxis)
+    zaxis = cross_vectors(xaxis_normalized, yaxis_normalized)
     if not norm_vector(zaxis):
         raise ValueError("Xaxis and yaxis cannot span a plane.")
-    yaxis = cross_vectors(normalize_vector(zaxis), xaxis)
-    return xaxis, yaxis
+    yaxis_orthogonal = cross_vectors(normalize_vector(zaxis), xaxis_normalized)
+    return xaxis_normalized, yaxis_orthogonal
 
 
 def homogenize(xyz: Iterable[Iterable[float]], w: float = 1.0) -> list[list[float]]:
@@ -217,7 +219,7 @@ def transform_points(points: Iterable[Iterable[float]], T: Iterable[Iterable[flo
     return dehomogenize(multiply_matrices(homogenize(points, w=1.0), transpose_matrix(T)))
 
 
-def transform_vectors(vectors: CoordinatesType, T: CoordinatesType) -> list[list[float]]:
+def transform_vectors(vectors: CoordinatesType, T: Iterable[Iterable[float]]) -> list[list[float]]:
     """Transform multiple vectors with one transformation matrix.
 
     Parameters
@@ -259,9 +261,11 @@ def transform_frames(frames: Sequence[Sequence[Sequence[float]]], T: Sequence[Se
 
     Examples
     --------
-    >>> from compas.geometry import Frame, matrix_from_axis_and_angle
+    >>> from math import radians
+    >>> from compas.geometry import Frame
+    >>> from compas.linalg import matrix_from_axis_and_angle
     >>> frames = [Frame([1, 0, 0], [1, 2, 4], [4, 7, 1]), Frame([0, 2, 0], [5, 2, 1], [0, 2, 1])]
-    >>> T = matrix_from_axis_and_angle([0, 2, 0], math.radians(45), point=[4, 5, 6])
+    >>> T = matrix_from_axis_and_angle([0, 2, 0], radians(45), point=[4, 5, 6])
     >>> transformed_frames = transform_frames(frames, T)
 
     """
@@ -421,8 +425,8 @@ def scale_points_xy(points: Sequence[Sequence[float]], scale: float) -> list[lis
 def rotate_points(
     points: Sequence[Sequence[float]],
     angle: float,
-    axis: Optional[Sequence[float]] = None,
-    origin: Optional[Sequence[float]] = None,
+    axis: Sequence[float] | None = None,
+    origin: Sequence[float] | None = None,
 ) -> list[list[float]]:
     """Rotates points around an arbitrary axis in 3D.
 
@@ -463,7 +467,7 @@ def rotate_points(
     return points
 
 
-def rotate_points_xy(points: Sequence[Sequence[float]], angle: float, origin: Optional[Sequence[float]] = None) -> list[list[float]]:
+def rotate_points_xy(points: Sequence[Sequence[float]], angle: float, origin: Sequence[float] | None = None) -> list[list[float]]:
     """Rotates points in the XY plane around the Z axis at a specific origin.
 
     Parameters
@@ -575,7 +579,7 @@ def mirror_points_point(points: Sequence[Sequence[float]], mirror: Sequence[floa
     points
         List of points.
     mirror
-       The mirror point.
+        The mirror point.
 
     Returns
     -------
@@ -594,7 +598,7 @@ def mirror_points_point_xy(points: Sequence[Sequence[float]], mirror: Sequence[f
     points
         List of points with XY(Z) coordinates.
     mirror
-       The XY(Z) coordinates of the mirror point.
+        The XY(Z) coordinates of the mirror point.
 
     Returns
     -------
@@ -745,6 +749,11 @@ def project_point_plane(point: Sequence[float], plane: Sequence[Sequence[float]]
     list[float]
         XYZ coordinates of the projected point.
 
+    Raises
+    ------
+    ValueError
+        If the plane normal has zero length.
+
     Notes
     -----
     The projection is in the direction perpendicular to the plane.
@@ -765,6 +774,8 @@ def project_point_plane(point: Sequence[float], plane: Sequence[Sequence[float]]
 
     """
     base, normal = plane
+    if not norm_vector(normal):
+        raise ValueError("The plane normal must have nonzero length.")
     normal = normalize_vector(normal)
     vector = subtract_vectors(point, base)
     snormal = scale_vector(normal, dot_vectors(vector, normal))
@@ -831,15 +842,15 @@ def project_point_line_xy(point: Sequence[float], line: Sequence[Sequence[float]
 
     Parameters
     ----------
-    points
-        XY(Z) coordinates of the points.
+    point
+        XY(Z) coordinates of the point.
     line
         Two points defining the projection line.
 
     Returns
     -------
-    list[list[float]]
-        XYZ coordinates of the projected points, with Z=0.
+    list[float]
+        XYZ coordinates of the projected point, with Z=0.
 
     Notes
     -----
@@ -919,8 +930,8 @@ def project_points_line_xy(points: Sequence[Sequence[float]], line: Sequence[Seq
 def reflect_line_plane(
     line: Sequence[Sequence[float]],
     plane: Sequence[Sequence[float]],
-    tol: Optional[float] = None,
-) -> Optional[tuple[list[float], list[float]]]:
+    tol: float | None = None,
+) -> tuple[list[float], list[float]] | None:
     """Bounce a line of a reflection plane.
 
     Parameters
@@ -935,7 +946,7 @@ def reflect_line_plane(
 
     Returns
     -------
-    Optional[tuple[list[float], list[float]]]
+    tuple[list[float], list[float]] | None
         The reflected line defined by the intersection point of the line and plane
         and the mirrored start point of the line with respect to a line perpendicular
         to the plane through the intersection.
@@ -955,10 +966,8 @@ def reflect_line_plane(
     ([0.0, 0.0, 0.0], [1.0, 1.0, 0.0])
 
     """
-    from compas.geometry import intersection_line_plane
-
     x = intersection_line_plane(line, plane, tol=tol)
-    if not x:
+    if x is None:
         return
 
     a, b = line
@@ -976,8 +985,8 @@ def reflect_line_plane(
 def reflect_line_triangle(
     line: Sequence[Sequence[float]],
     triangle: Sequence[Sequence[float]],
-    tol: Optional[float] = None,
-) -> Optional[tuple[list[float], list[float]]]:
+    tol: float | None = None,
+) -> tuple[list[float], list[float]] | None:
     """Bounce a line of a reflection triangle.
 
     Parameters
@@ -992,7 +1001,7 @@ def reflect_line_triangle(
 
     Returns
     -------
-    Optional[tuple[list[float], list[float]]]
+    tuple[list[float], list[float]] | None
         The reflected line defined by the intersection point of the line and triangle
         and the mirrored start point of the line with respect to a line perpendicular
         to the triangle through the intersection.
@@ -1012,10 +1021,8 @@ def reflect_line_triangle(
     ([0.0, 0.0, 0.0], [1.0, 1.0, 0.0])
 
     """
-    from compas.geometry import intersection_line_triangle
-
     x = intersection_line_triangle(line, triangle, tol=tol)
-    if not x:
+    if x is None:
         return
 
     a, b = line
@@ -1085,8 +1092,8 @@ def orient_points(
     >>> points = orient_points(points, refplane, tarplane)
     >>> ab = points[0], points[1]
     >>> cd = points[2], points[3]
-    >>> point = intersection_segment_segment_xy(ab, cd)
-    >>> points = orient_points([point], tarplane, refplane)
+    >>> point = intersection_segment_segment_xy(ab, cd)[0]
+    >>> points = orient_points([(point.x, point.y, point.z)], tarplane, refplane)
 
     >>> print(Point(*points[0]))
     Point(x=0.577, y=0.577, z=0.577)

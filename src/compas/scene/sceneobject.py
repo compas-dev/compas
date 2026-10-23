@@ -1,12 +1,11 @@
 from functools import reduce
 from operator import mul
-from typing import Union  # noqa: F401
+from typing import TYPE_CHECKING
+from typing import Any
+from typing import NoReturn
+from typing import Self
+from typing import cast
 
-import compas.colors  # noqa: F401
-import compas.data  # noqa: F401
-import compas.datastructures  # noqa: F401
-import compas.geometry  # noqa: F401
-import compas.scene  # noqa: F401
 from compas.colors import Color
 from compas.data import Data
 from compas.datastructures import TreeNode
@@ -16,108 +15,53 @@ from compas.geometry import Transformation
 from .context import clear
 from .context import get_sceneobject_cls
 from .descriptors.color import ColorAttribute
-from .descriptors.protocol import DescriptorProtocol
+
+if TYPE_CHECKING:
+    from compas.scene import Scene
 
 
-class SceneObject(TreeNode):
+class SceneObject(TreeNode["SceneObject"]):
     """Base class for all scene objects.
 
     Parameters
     ----------
-    item : Any
-        The item which should be visualized using the created SceneObject.
-    name : str, optional
-        The name of the scene object. Note that is is not the same as the name of underlying data item, since different scene objects can refer to the same data item.
-    color : :class:`compas.colors.Color`, optional
+    item
+        The item to visualize.
+    name
+        The name of the scene object. This is independent of the name of the
+        underlying data item because multiple scene objects can refer to the
+        same item.
+    color
         The color of the object.
-    opacity : float, optional
+    opacity
         The opacity of the object.
-    show : bool, optional
-        Flag for showing or hiding the object. Default is ``True``.
-    transformation : :class:`compas.geometry.Transformation`, optional
-        The local transformation of the scene object in relation to its parent object.
-    context : str, optional
+    show
+        Whether to show the object.
+    transformation
+        The local transformation relative to the parent scene object.
+    context
         The context in which the scene object is created.
-    **kwargs : dict
+    **kwargs
         Additional keyword arguments to create the scene object for the item.
 
-    Attributes
-    ----------
-    item : :class:`compas.data.Data`
-        The item which should be visualized using the created SceneObject.
-    name : str
-        The name of the scene object. Note that is is not the same as the name of underlying data item, since different scene objects can refer to the same data item.
-    node : :class:`compas.scene.SceneObjectNode`
-        The node in the scene tree which represents the scene object.
-    guids : list[object]
-        The GUIDs of the items drawn in the visualization context.
-    transformation : :class:`compas.geometry.Transformation`
-        The local transformation of the scene object in relation to its parent object.
-    worldtransformation : :class:`compas.geometry.Transformation`
-        The global transformation of the scene object in world coordinates, computed by multiplying all transformations from the scene object to the root of the scene tree.
-        (NOTE: Changed from 2.11.0, there will no longer be the option of additional transformation in relation to the object's frame)
-    frame : :class:`compas.geometry.Frame`
-        The frame of the local coordinate system of the scene object, derived from the `worldtransformation`.
-    color : :class:`compas.colors.Color`
-        The color of the object.
-    contrastcolor : :class:`compas.colors.Color`, readon-only
-        The contrastcolor wrt to the color.
-        This is a 50% darket or lighter version of the color, depending on whether the color is light or dark.
-    opacity : float
-        The opacity of the object.
-    show : bool
-        Flag for showing or hiding the object. Default is ``True``.
-    settings : dict
-        The settings including necessary attributes for reconstructing the scene object besides the Data item.
-    context : str
-        The context in which the scene object is created.
-    scene : :class:`compas.scene.Scene`
-        The scene to which the scene object belongs.
+    Notes
+    -----
+    `SceneObject(...)` may dispatch to a registered subclass. The internal
+    `sceneobject_type` factory override is accepted by `__new__`, but is not an
+    initialization parameter of constructed scene objects.
 
     """
 
-    # add this to support the descriptor protocol vor Python versions below 3.6
-    __metaclass__ = DescriptorProtocol
-
     color = ColorAttribute()
 
-    def __new__(cls, item=None, **kwargs):
-        sceneobject_cls = get_sceneobject_cls(item, **kwargs)
-        return super(SceneObject, cls).__new__(sceneobject_cls)
-
-    def __init__(
-        self,
-        item=None,  # type: Union[compas.data.Data, None]
-        name=None,  # type: Union[str, None]
-        color=None,  # type: Union[compas.colors.Color, None]
-        opacity=1.0,  # type: float
-        show=True,  # type: bool
-        transformation=None,  # type: Union[compas.geometry.Transformation, None]
-        context=None,  # type: Union[str, None]
-        **kwargs  # type: dict
-    ):  # fmt: skip
-        # type: (...) -> None
-        if item and not isinstance(item, Data):
-            raise ValueError("The item assigned to this scene object should be a data object: {}".format(type(item)))
-
-        name = name or getattr(item, "name", None)
-        super(SceneObject, self).__init__(name=name, **kwargs)
-        # the scene object needs to store the context
-        # because it has no access to the tree and/or the scene before it is added
-        # which means that adding child objects will be added in context "None"
-        self.context = context
-        self._item = item
-        self._guids = []
-        self._node = None
-        self._transformation = transformation
-        self._contrastcolor = None
-        self.color = color or self.color
-        self.opacity = opacity
-        self.show = show
+    # ==========================================================================
+    # Data
+    # ==========================================================================
 
     @property
-    def __data__(self):
-        # type: () -> dict
+    def __data__(self) -> dict[str, object]:
+        if self.item is None:
+            raise ValueError("A scene object without an item cannot be serialized independently.")
         return {
             "item": str(self.item.guid),
             "settings": self.settings,
@@ -125,52 +69,117 @@ class SceneObject(TreeNode):
         }
 
     @classmethod
-    def __from_data__(cls, data):
-        # type: (dict) -> None
+    def __from_data__(cls, data: dict[str, object]) -> NoReturn:
         raise TypeError("Serialisation outside Scene not allowed.")
 
-    def __repr__(self):
-        # type: () -> str
+    # ==========================================================================
+    # Dunder methods
+    # ==========================================================================
+
+    def __new__(
+        cls,
+        item: Data | None = None,
+        context: str | None = None,
+        sceneobject_type: type["SceneObject"] | None = None,
+        **kwargs: Any,
+    ) -> Self:
+        sceneobject_cls = get_sceneobject_cls(item, context=context, sceneobject_type=sceneobject_type, **kwargs)
+        return cast(Self, object.__new__(sceneobject_cls))
+
+    def __init__(
+        self,
+        item: Data | None = None,
+        name: str | None = None,
+        color: Color | None = None,
+        opacity: float = 1.0,
+        show: bool = True,
+        transformation: Transformation | None = None,
+        context: str | None = None,
+        **kwargs: object,
+    ) -> None:
+        if item and not isinstance(item, Data):
+            raise ValueError("The item assigned to this scene object should be a data object: {}".format(type(item)))
+
+        # This factory-only option has already been handled by __new__.
+        kwargs.pop("sceneobject_type", None)
+        name = name or getattr(item, "name", None)
+        super().__init__(name=name, **kwargs)
+        # the scene object needs to store the context
+        # because it has no access to the tree and/or the scene before it is added
+        # which means that adding child objects will be added in context "None"
+        self.context = context
+        self._item = item
+        self._scene: Scene | None = None
+        self._guids: list[object] | None = []
+        self._node = None
+        self._transformation = transformation
+        self._transformation_revision = 0
+        self._contrastcolor = None
+        self.color = color or self.color
+        self.opacity = opacity
+        self.show = show
+
+    def __repr__(self) -> str:
         return "<{}: {}>".format(self.__class__.__name__, self.name)
 
-    @property
-    def scene(self):
-        # type: () -> Union[compas.scene.Scene, None]
-        return self.tree
+    # ==========================================================================
+    # Properties
+    # ==========================================================================
 
     @property
-    def item(self):
-        # type: () -> compas.data.Data
+    def scene(self) -> "Scene | None":
+        """The scene containing this object, if it has been added to one."""
+        return self._scene
+
+    @property
+    def item(self) -> Data | None:
+        """The data item represented by this scene object."""
         return self._item
 
     @property
-    def guids(self):
-        # type: () -> list[str]
+    def guids(self) -> list[object]:
+        """The identifiers of objects created in the visualization context."""
         return self._guids or []
 
     @property
-    def frame(self):
-        # type: () -> Union[compas.geometry.Frame, None]
+    def frame(self) -> Frame:
+        """The frame represented by the world transformation.
+
+        Setting the frame updates the local transformation relative to the
+        parent scene object.
+
+        """
         return Frame.from_transformation(self.worldtransformation)
 
     @frame.setter
-    def frame(self, frame):
-        # type: (compas.geometry.Frame) -> None
+    def frame(self, frame: Frame) -> None:
         self.worldtransformation = Transformation.from_frame(frame)
 
     @property
-    def transformation(self):
-        # type: () -> Union[compas.geometry.Transformation, None]
+    def transformation(self) -> Transformation | None:
+        """The local transformation relative to the parent scene object.
+
+        Setting the transformation invalidates transformation-dependent caches
+        on this object. Descendant caches detect the change lazily.
+
+        """
         return self._transformation
 
     @transformation.setter
-    def transformation(self, transformation):
-        # type: (compas.geometry.Transformation) -> None
+    def transformation(self, transformation: Transformation | None) -> None:
         self._transformation = transformation
+        self._transformation_revision += 1
+        self.invalidate()
 
     @property
-    def worldtransformation(self):
-        # type: () -> compas.geometry.Transformation
+    def worldtransformation(self) -> Transformation:
+        """The transformation from local coordinates to world coordinates.
+
+        The transformation is computed from this object's local transformation
+        and those of its ancestors. Setting it derives the corresponding local
+        transformation relative to the parent.
+
+        """
         transformations = [self.transformation] if self.transformation else []
         parent = self.parent
         while parent and not parent.is_root:
@@ -185,16 +194,20 @@ class SceneObject(TreeNode):
         return worldtransformation
 
     @worldtransformation.setter
-    def worldtransformation(self, worldtransformation):
-        # type: (compas.geometry.Transformation) -> None
+    def worldtransformation(self, worldtransformation: Transformation) -> None:
         if isinstance(self.parent, SceneObject):
             self.transformation = self.parent.worldtransformation.inverse() * worldtransformation
         else:
             self.transformation = worldtransformation
 
     @property
-    def contrastcolor(self):
-        # type: () -> Union[compas.colors.Color, None]
+    def contrastcolor(self) -> Color | None:
+        """A lighter or darker color contrasting with the object color.
+
+        The computed color is cached. Setting this property coerces the value to
+        a `Color`.
+
+        """
         if not self._contrastcolor:
             if self.color:
                 if self.color.is_light:
@@ -204,13 +217,12 @@ class SceneObject(TreeNode):
         return self._contrastcolor
 
     @contrastcolor.setter
-    def contrastcolor(self, color):
-        # type: (compas.colors.Color) -> None
+    def contrastcolor(self, color: Color) -> None:
         self._contrastcolor = Color.coerce(color)
 
     @property
-    def settings(self):
-        # type: () -> dict
+    def settings(self) -> dict[str, object]:
+        """The settings required to reconstruct the scene object."""
         settings = {
             "name": self.name,
             "color": self.color,
@@ -218,35 +230,44 @@ class SceneObject(TreeNode):
             "show": self.show,
         }
 
-        if self.frame:
-            settings["frame"] = self.frame
         if self.transformation:
             settings["transformation"] = self.transformation
 
         return settings
 
-    def add(self, item, **kwargs):
-        # type: (compas.data.Data, dict) -> SceneObject
+    # ==========================================================================
+    # Methods
+    # ==========================================================================
+
+    def invalidate(self) -> None:
+        """Clear cached data derived from the represented item or transformation.
+
+        Call this after mutating an underlying item through a path that the scene
+        object cannot observe directly. Descendants detect ancestor
+        transformation changes automatically and do not need to be invalidated.
+
+        """
+        self._invalidate_transformation_cache()
+
+    def add(self, item: Data, **kwargs: Any) -> "SceneObject":
         """Add a child item to the scene object.
 
         Parameters
         ----------
-        item : :class:`compas.data.Data`
+        item
             The item to add.
-        **kwargs : dict
+        **kwargs
             Additional keyword arguments to create the scene object for the item.
 
         Returns
         -------
-        :class:`compas.scene.SceneObject`
+        SceneObject
             The scene object associated with the added item.
 
-        Raises
-        ------
-        ValueError
-            If the scene object does not have an associated scene node.
-
         """
+        if self.scene is not None:
+            return self.scene.add(item, parent=self, **kwargs)
+
         if isinstance(item, SceneObject):
             sceneobject = item
         else:
@@ -254,16 +275,38 @@ class SceneObject(TreeNode):
                 if kwargs["context"] != self.context:
                     raise Exception("Child context should be the same as parent context: {} != {}".format(kwargs["context"], self.context))
                 del kwargs["context"]  # otherwist the SceneObject receives "context" twice, which results in an error
-            sceneobject = SceneObject(item=item, context=self.context, **kwargs)  # type: ignore
+            sceneobject = SceneObject(item=item, context=self.context, **kwargs)
 
-        super(SceneObject, self).add(sceneobject)
+        super().add(sceneobject)
         return sceneobject
 
-    def draw(self):
+    def draw(self) -> list[object]:
         """The main drawing method."""
         raise NotImplementedError
 
-    def clear(self):
+    def clear(self) -> None:
         """The main clearing method."""
         clear(guids=self.guids)
         self._guids = None
+
+    # ==========================================================================
+    # Private helpers
+    # ==========================================================================
+
+    def _invalidate_transformation_cache(self) -> None:
+        """Invalidate cached data derived from the local transformation.
+
+        Scene object types with transformation-dependent caches override this
+        hook. The base scene object has no such cache.
+
+        """
+        pass
+
+    def _worldtransformation_revision(self) -> tuple[int, ...]:
+        """Return the revisions that determine the current world transformation."""
+        revisions = [self._transformation_revision]
+        parent = self.parent
+        while parent and not parent.is_root:
+            revisions.append(parent._transformation_revision)
+            parent = parent.parent
+        return tuple(reversed(revisions))

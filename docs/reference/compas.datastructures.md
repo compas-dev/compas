@@ -1,0 +1,3 @@
+# `compas.datastructures`
+
+::: compas.datastructures

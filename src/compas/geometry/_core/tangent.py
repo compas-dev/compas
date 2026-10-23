@@ -1,5 +1,5 @@
+from collections.abc import Sequence
 from math import sqrt
-from typing import Sequence
 
 
 def tangent_points_to_circle_xy(

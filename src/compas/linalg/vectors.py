@@ -1,11 +1,10 @@
+from collections.abc import Iterable
+from collections.abc import Sequence
 from math import sqrt
-from typing import Iterable
-from typing import Optional
-from typing import Sequence
 from typing import overload
 
 from compas._typing import CoordinateType
-from compas.tolerance import TOL
+from compas._typing import FloatSequenceType
 
 _SPEC2TUPLE = {
     "sxyz": (0, 0, 0, 0),
@@ -56,7 +55,7 @@ def vector_average(vector: Sequence[float]) -> float:
 
 
 def vector_variance(vector: Sequence[float]) -> float:
-    """Variance of a vector.
+    """Compute the population variance of a vector.
 
     Parameters
     ----------
@@ -66,15 +65,15 @@ def vector_variance(vector: Sequence[float]) -> float:
     Returns
     -------
     float
-        The variance value.
+        The mean squared deviation from the vector average.
 
     """
     m = vector_average(vector)
-    return (sum([(i - m) ** 2 for i in vector]) / float(len(vector))) ** 0.5
+    return sum((value - m) ** 2 for value in vector) / float(len(vector))
 
 
 def vector_standard_deviation(vector: Sequence[float]) -> float:
-    """Standard deviation of a vector.
+    """Compute the population standard deviation of a vector.
 
     Parameters
     ----------
@@ -84,10 +83,10 @@ def vector_standard_deviation(vector: Sequence[float]) -> float:
     Returns
     -------
     float
-        The standard deviation value.
+        The square root of the population variance.
 
     """
-    return vector_variance(vector) ** 0.5
+    return sqrt(vector_variance(vector))
 
 
 def argmax(values: Sequence[float]) -> int:
@@ -170,8 +169,7 @@ def sum_vectors(vectors: Sequence[Sequence[float]], axis: int = 0) -> list[float
     Returns
     -------
     list[float]
-        The length of the list is `len(vectors[0])`, if `axis == 0`.
-        The length is `len(vectors)`, otherwise.
+        Column sums when `axis == 0`, or row sums when `axis == 1`.
 
     Examples
     --------
@@ -181,10 +179,17 @@ def sum_vectors(vectors: Sequence[Sequence[float]], axis: int = 0) -> list[float
     >>> sum_vectors(vectors, axis=1)
     [6.0, 6.0, 6.0]
 
+    Raises
+    ------
+    ValueError
+        If `axis` is neither `0` nor `1`.
+
     """
     if axis == 0:
         return [sum(vector) for vector in zip(*vectors)]
-    return [sum(vector) for vector in vectors]
+    if axis == 1:
+        return [sum(vector) for vector in vectors]
+    raise ValueError("The axis must be 0 or 1.")
 
 
 def norm_vector(vector: Sequence[float]) -> float:
@@ -260,7 +265,7 @@ def length_vector(vector: CoordinateType) -> float:
     return sqrt(length_vector_sqrd(vector))
 
 
-def length_vector_xy(vector: Sequence[float]) -> float:
+def length_vector_xy(vector: CoordinateType) -> float:
     """Compute the length of a vector, assuming it lies in the XY plane.
 
     Parameters
@@ -288,7 +293,7 @@ def length_vector_xy(vector: Sequence[float]) -> float:
     return sqrt(length_vector_sqrd_xy(vector))
 
 
-def length_vector_sqrd(vector: Sequence[float]) -> float:
+def length_vector_sqrd(vector: CoordinateType) -> float:
     """Compute the squared length of a vector.
 
     Parameters
@@ -310,7 +315,7 @@ def length_vector_sqrd(vector: Sequence[float]) -> float:
     return vector[0] ** 2 + vector[1] ** 2 + vector[2] ** 2
 
 
-def length_vector_sqrd_xy(vector: Sequence[float]) -> float:
+def length_vector_sqrd_xy(vector: CoordinateType) -> float:
     """Compute the squared length of a vector, assuming it lies in the XY plane.
 
     Parameters
@@ -346,7 +351,7 @@ def length_vector_sqrd_xy(vector: Sequence[float]) -> float:
 # ==============================================================================
 
 
-def scale_vector(vector: Sequence[float], factor: float) -> list[float]:
+def scale_vector(vector: CoordinateType, factor: float) -> list[float]:
     """Scale a vector by a given factor.
 
     Parameters
@@ -441,10 +446,10 @@ def normalize_vector(vector: list[float]) -> list[float]: ...
 
 
 @overload
-def normalize_vector(vector: Sequence[float]) -> Sequence[float]: ...
+def normalize_vector(vector: FloatSequenceType) -> FloatSequenceType: ...
 
 
-def normalize_vector(vector: Sequence[float]) -> Sequence[float]:
+def normalize_vector(vector: FloatSequenceType) -> FloatSequenceType:
     """Normalise a given vector.
 
     Parameters
@@ -469,10 +474,10 @@ def normalize_vector_xy(vector: list[float]) -> list[float]: ...
 
 
 @overload
-def normalize_vector_xy(vector: Sequence[float]) -> Sequence[float]: ...
+def normalize_vector_xy(vector: FloatSequenceType) -> FloatSequenceType: ...
 
 
-def normalize_vector_xy(vector: Sequence[float]) -> Sequence[float]:
+def normalize_vector_xy(vector: FloatSequenceType) -> FloatSequenceType:
     """Normalize a vector, assuming it lies in the XY-plane.
 
     Parameters
@@ -492,7 +497,7 @@ def normalize_vector_xy(vector: Sequence[float]) -> Sequence[float]:
     return [vector[0] / length, vector[1] / length, 0.0]
 
 
-def normalize_vectors(vectors: Sequence[Sequence[float]]) -> list[Sequence[float]]:
+def normalize_vectors(vectors: Sequence[FloatSequenceType]) -> list[FloatSequenceType]:
     """Normalise multiple vectors.
 
     Parameters
@@ -509,7 +514,7 @@ def normalize_vectors(vectors: Sequence[Sequence[float]]) -> list[Sequence[float
     return [normalize_vector(vector) for vector in vectors]
 
 
-def normalize_vectors_xy(vectors: Sequence[Sequence[float]]) -> list[Sequence[float]]:
+def normalize_vectors_xy(vectors: Sequence[FloatSequenceType]) -> list[FloatSequenceType]:
     """Normalise multiple vectors, assuming they lie in the XY plane.
 
     Parameters
@@ -662,7 +667,7 @@ def subtract_vectors(u: CoordinateType, v: CoordinateType) -> list[float]:
     return [a - b for (a, b) in zip(u, v)]
 
 
-def subtract_vectors_xy(u: Sequence[float], v: Sequence[float]) -> list[float]:
+def subtract_vectors_xy(u: CoordinateType, v: CoordinateType) -> list[float]:
     """Subtract one vector from another, assuming they lie in the XY plane.
 
     Parameters
@@ -919,13 +924,8 @@ def vector_component(u: Sequence[float], v: Sequence[float]) -> list[float]:
 
     Notes
     -----
-    This is similar to computing direction cosines, or to the projection of
-    a vector onto another vector.[^vector-component-direction-cosine] [^vector-component-projection]
-
-    References
-    ----------
-    [^vector-component-direction-cosine]: [Direction cosine](https://en.wikipedia.org/wiki/Direction_cosine)
-    [^vector-component-projection]: [Vector projection](https://en.wikipedia.org/wiki/Vector_projection)
+    This is similar to computing [direction cosines](https://en.wikipedia.org/wiki/Direction_cosine)
+    or a [vector projection](https://en.wikipedia.org/wiki/Vector_projection).
 
     Examples
     --------
@@ -957,13 +957,8 @@ def vector_component_xy(u: Sequence[float], v: Sequence[float]) -> list[float]:
 
     Notes
     -----
-    This is similar to computing direction cosines, or to the projection of
-    a vector onto another vector.[^vector-component-xy-direction-cosine] [^vector-component-xy-projection]
-
-    References
-    ----------
-    [^vector-component-xy-direction-cosine]: [Direction cosine](https://en.wikipedia.org/wiki/Direction_cosine)
-    [^vector-component-xy-projection]: [Vector projection](https://en.wikipedia.org/wiki/Vector_projection)
+    This is similar to computing [direction cosines](https://en.wikipedia.org/wiki/Direction_cosine)
+    or a [vector projection](https://en.wikipedia.org/wiki/Vector_projection).
 
     Examples
     --------
@@ -1063,93 +1058,6 @@ def orthonormalize_vectors(vectors: Sequence[Sequence[float]]) -> list[Sequence[
             e = subtract_vectors(v, sum_vectors([vector_component(v, b) for b in basis]))
         else:
             e = v
-        if any(axis > 1e-10 for axis in e):
+        if any(abs(axis) > 1e-10 for axis in e):
             basis.append(normalize_vector(e))
     return basis
-
-
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# Deprecated
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-# =============================================================================
-
-
-def close(value1: float, value2: float, tol: float = 1e-05) -> bool:
-    """Returns True if two values are equal within a tolerance.
-
-    Parameters
-    ----------
-    value1
-    value2
-    tol
-        The absolute tolerance for comparing values.
-        Default is `TOL.absolute`.
-
-    Returns
-    -------
-    bool
-        True if the values are closer than the tolerance.
-        False otherwise.
-
-    Warnings
-    --------
-    Deprecated since version 2.0. This function will be removed in version 2.1.
-    Use [`TOL.is_close`][compas.tolerance.Tolerance.is_close] instead.
-
-    The tolerance value used by this function is an absolute tolerance.
-    It is more accurate to use a combination of absolute and relative tolerance.
-    Therefore, use [`TOL.is_close`][compas.tolerance.Tolerance.is_close] instead.
-
-    """
-    return TOL.is_close(value1, value2, rtol=0.0, atol=tol)
-
-
-def allclose(l1: Sequence[float], l2: Sequence[float], tol: Optional[float] = None) -> bool:
-    """Returns True if two lists are element-wise equal within a tolerance.
-
-    Parameters
-    ----------
-    l1
-        The first list of values.
-    l2
-        The second list of values.
-    tol
-        The absolute tolerance for comparing values.
-        Default is `TOL.absolute`.
-
-    Returns
-    -------
-    bool
-        True if all corresponding values of the two lists are closer than the tolerance.
-        False otherwise.
-
-    Warnings
-    --------
-    Deprecated since version 2.0. This function will be removed in version 2.1.
-    Use [`TOL.is_allclose`][compas.tolerance.Tolerance.is_allclose] instead.
-
-    The tolerance value used by this function is an absolute tolerance.
-    It is more accurate to use a combination of absolute and relative tolerance.
-    Therefore, use [`TOL.is_allclose`][compas.tolerance.Tolerance.is_allclose] instead.
-
-    Notes
-    -----
-    The function is similar to NumPy's `allclose` function.[^allclose-numpy]
-
-    References
-    ----------
-    [^allclose-numpy]: [NumPy `allclose`](https://numpy.org/doc/stable/reference/generated/numpy.allclose.html)
-
-    """
-    return TOL.is_allclose(l1, l2, atol=tol)

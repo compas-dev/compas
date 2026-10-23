@@ -1,7 +1,5 @@
 from typing import Any
-from typing import Optional
-
-from typing_extensions import Self
+from typing import Self
 
 from compas.geometry import Frame
 from compas.geometry import Plane
@@ -47,7 +45,7 @@ class PlanarSurface(Surface):
             "xsize": self.xsize,
             "ysize": self.ysize,
             "frame": self.frame.__data__,
-    }
+        }
 
     @classmethod
     def __from_data__(cls, data: dict[str, Any]) -> Self:
@@ -61,12 +59,12 @@ class PlanarSurface(Surface):
         self,
         xsize: float = 1.0,
         ysize: float = 1.0,
-        frame: Optional[Frame] = None,
-        name: Optional[str] = None,
+        frame: Frame | None = None,
+        name: str | None = None,
     ) -> None:
         super().__init__(frame=frame, name=name)
-        self._xsize: Optional[float] = None
-        self._ysize: Optional[float] = None
+        self._xsize: float | None = None
+        self._ysize: float | None = None
         self.xsize = xsize
         self.ysize = ysize
 
@@ -99,6 +97,7 @@ class PlanarSurface(Surface):
         if xsize < 0:
             raise ValueError("The size of the surface in the local X-direction should be at least zero.")
         self._xsize = float(xsize)
+        self._invalidate_discretization()
 
     @property
     def ysize(self) -> float:
@@ -112,6 +111,7 @@ class PlanarSurface(Surface):
         if ysize < 0:
             raise ValueError("The size of the surface in the local Y-direction should be at least zero.")
         self._ysize = float(ysize)
+        self._invalidate_discretization()
 
     # =============================================================================
     # Constructors
@@ -182,8 +182,8 @@ class PlanarSurface(Surface):
 
     def normal_at(
         self,
-        u: Optional[float] = None,
-        v: Optional[float] = None,
+        u: float | None = None,
+        v: float | None = None,
         world: bool = True,
     ) -> Vector:
         """Compute the normal at a point on the planar surface.

@@ -1,10 +1,7 @@
 import sys
-from functools import wraps
+from collections.abc import Callable
 from typing import Any
-from typing import Callable
 from typing import Literal
-from typing import Optional
-from typing import Union
 from typing import cast
 from typing import overload
 
@@ -122,7 +119,7 @@ def dof(A: ArrayLike, tol: float = 0.001, condition: Literal[False] = False) -> 
 def dof(A: ArrayLike, tol: float, condition: Literal[True]) -> tuple[integer[Any], integer[Any], float]: ...
 
 
-def dof(A: ArrayLike, tol: float = 0.001, condition: bool = False) -> Union[tuple[integer[Any], integer[Any]], tuple[integer[Any], integer[Any], float]]:
+def dof(A: ArrayLike, tol: float = 0.001, condition: bool = False) -> tuple[integer[Any], integer[Any]] | tuple[integer[Any], integer[Any], float]:
     r"""Returns the degrees-of-freedom of the input matrix A.
 
     Parameters
@@ -162,7 +159,7 @@ def dof(A: ArrayLike, tol: float = 0.001, condition: bool = False) -> Union[tupl
     return k, m
 
 
-def pivots(U: ArrayLike, tol: Optional[float] = None) -> list[int]:
+def pivots(U: ArrayLike, tol: float | None = None) -> list[int]:
     r"""Identify the pivots of input matrix U.
 
     Parameters
@@ -200,7 +197,7 @@ def pivots(U: ArrayLike, tol: Optional[float] = None) -> list[int]:
     return pivots
 
 
-def nonpivots(U: ArrayLike, tol: Optional[float] = None) -> list[int]:
+def nonpivots(U: ArrayLike, tol: float | None = None) -> list[int]:
     r"""Identify the non-pivots of input matrix U.
 
     Parameters
@@ -231,7 +228,7 @@ def nonpivots(U: ArrayLike, tol: Optional[float] = None) -> list[int]:
     return list(set(range(U.shape[1])) - set(cols))
 
 
-def rref(A: ArrayLike, tol: Optional[float] = None) -> Optional[NDArray[Any]]:
+def rref(A: ArrayLike, tol: float | None = None) -> NDArray[Any] | None:
     r"""Reduced row-echelon form of matrix A.
 
     Parameters
@@ -293,36 +290,7 @@ def rref(A: ArrayLike, tol: Optional[float] = None) -> Optional[NDArray[Any]]:
 # ==============================================================================
 
 
-class Memoized:
-    """Cache function results by their final argument."""
-
-    def __init__(self, f: Callable[..., Any]) -> None:
-        self.f = f
-        self.memo = {}
-
-    def __call__(self, *args: Any) -> Any:
-        key = args[-1]
-        if key in self.memo:
-            return self.memo[key]
-        self.memo[key] = res = self.f(args[0])
-        return res
-
-
-def memoize(f: Callable[..., Any]) -> Callable[..., Any]:
-    memo = {}
-
-    @wraps(f)
-    def wrapper(*args: Any) -> Any:
-        key = args[-1]
-        if key in memo:
-            return memo[key]
-        memo[key] = res = f(args[0])
-        return res
-
-    return wrapper
-
-
-def _chofactor(A: ArrayLike) -> tuple[NDArray[Any], bool_]:
+def chofactor(A: ArrayLike) -> tuple[NDArray[Any], bool_]:
     r"""Returns the Cholesky factorisation/decomposition matrix.
 
     Parameters
@@ -346,17 +314,18 @@ def _chofactor(A: ArrayLike) -> tuple[NDArray[Any], bool_]:
 
     Examples
     --------
-    >>> _chofactor(array([[25, 15, -5], [15, 18, 0], [-5, 0, 11]]))
+    >>> chofactor(array([[25, 15, -5], [15, 18, 0], [-5, 0, 11]]))
     (array([[ 5.,  3., -1.],
            [15.,  3.,  1.],
            [-5.,  0.,  3.]]), array(False))
 
     """
+    A = asarray(A, dtype=float)
     # SciPy's return type does not describe the NumPy boolean scalar precisely.
     return cast(tuple[NDArray[Any], bool_], cho_factor(A))
 
 
-def _lufactorized(A: Any) -> Callable[[ArrayLike], NDArray[Any]]:
+def lufactorized(A: Any) -> Callable[[ArrayLike], NDArray[Any]]:
     r"""Return a function for solving a sparse linear system (LU decomposition).
 
     Parameters
@@ -380,16 +349,17 @@ def _lufactorized(A: Any) -> Callable[[ArrayLike], NDArray[Any]]:
 
     Examples
     --------
-    >>> fn = _lufactorized(array([[3, 2, -1], [2, -2, 4], [-1, 0.5, -1]]))
+    >>> fn = lufactorized(array([[3, 2, -1], [2, -2, 4], [-1, 0.5, -1]]))
     >>> fn(array([1, -2, 0]))
     array([ 1., -2., -2.])
 
     """
-    return factorized(A)
+    solve = factorized(A)
 
+    def solve_array(b: ArrayLike) -> NDArray[Any]:
+        return cast(NDArray[Any], solve(asarray(b, dtype=float)))
 
-chofactor = memoize(_chofactor)
-lufactorized = memoize(_lufactorized)
+    return solve_array
 
 
 # ------------------------------------------------------------------------------

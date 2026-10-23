@@ -1,8 +1,7 @@
+from collections.abc import Callable
+from collections.abc import Collection
 from typing import TYPE_CHECKING
 from typing import Any
-from typing import Callable
-from typing import Collection
-from typing import Optional
 
 from compas.geometry import centroid_points
 from compas.geometry import centroid_polygon
@@ -17,10 +16,10 @@ SmoothingCallback = Callable[[int, Any], None]
 
 def mesh_smooth_centroid(
     mesh: "Mesh",
-    fixed: Optional[Collection[Vertex]] = None,
+    fixed: Collection[Vertex] | None = None,
     kmax: int = 100,
     damping: float = 0.5,
-    callback: Optional[SmoothingCallback] = None,
+    callback: SmoothingCallback | None = None,
     callback_args: Any = None,
 ) -> None:
     """Smooth a mesh by moving every free vertex to the centroid of its neighbors.
@@ -77,10 +76,10 @@ def mesh_smooth_centroid(
 
 def mesh_smooth_centerofmass(
     mesh: "Mesh",
-    fixed: Optional[Collection[Vertex]] = None,
+    fixed: Collection[Vertex] | None = None,
     kmax: int = 100,
     damping: float = 0.5,
-    callback: Optional[SmoothingCallback] = None,
+    callback: SmoothingCallback | None = None,
     callback_args: Any = None,
 ) -> None:
     """Smooth a mesh by moving every free vertex to the center of mass of the polygon formed by the neighboring vertices.
@@ -137,10 +136,10 @@ def mesh_smooth_centerofmass(
 
 def mesh_smooth_area(
     mesh: "Mesh",
-    fixed: Optional[Collection[Vertex]] = None,
+    fixed: Collection[Vertex] | None = None,
     kmax: int = 100,
     damping: float = 0.5,
-    callback: Optional[SmoothingCallback] = None,
+    callback: SmoothingCallback | None = None,
     callback_args: Any = None,
 ) -> None:
     """Smooth a mesh by moving each vertex to the barycenter of the centroids of the surrounding faces, weighted by area.

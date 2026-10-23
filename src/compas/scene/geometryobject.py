@@ -1,61 +1,37 @@
-from typing import Union  # noqa: F401
+from typing import Any
+from typing import cast
 
-import compas.colors  # noqa: F401
-import compas.geometry  # noqa: F401
+from compas.colors import Color
+from compas.geometry import Geometry
 
 from .descriptors.color import ColorAttribute
 from .sceneobject import SceneObject
 
 
 class GeometryObject(SceneObject):
-    """Base class for scene objects for geometry objects.
-
-    Parameters
-    ----------
-    geometry : :class:`compas.geometry.Geometry`
-        The geometry of the geometry.
-
-    Attributes
-    ----------
-    geometry : :class:`compas.geometry.Geometry`
-        The geometry object associated with the scene object.
-    pointcolor : :class:`compas.colors.Color`
-        The color of the points.
-    linecolor : :class:`compas.colors.Color`
-        The color of the lines or curves.
-    surfacecolor : :class:`compas.colors.Color`
-        The color of the surfaces.
-    pointsize : float
-        The size of the points.
-    linewidth : float
-        The width of the lines or curves.
-    show_points : bool
-        Flag for showing or hiding the points. Default is ``False``.
-    show_lines : bool
-        Flag for showing or hiding the lines or curves. Default is ``True``.
-    show_surfaces : bool
-        Flag for showing or hiding the surfaces. Default is ``True``.
-
-    """
+    """Base class for scene objects for geometry objects."""
 
     pointcolor = ColorAttribute()
     linecolor = ColorAttribute()
     surfacecolor = ColorAttribute()
 
+    # ==========================================================================
+    # Dunder methods
+    # ==========================================================================
+
     def __init__(
         self,
-        pointcolor=None,  # type: Union[compas.colors.Color, None]
-        linecolor=None,  # type: Union[compas.colors.Color, None]
-        surfacecolor=None,  # type: Union[compas.colors.Color, None]
-        pointsize=1.0,  # type: float
-        linewidth=1.0,  # type: float
-        show_points=False,  # type: bool
-        show_lines=True,  # type: bool
-        show_surfaces=True,  # type: bool
-        **kwargs  # type: dict
-    ):  # fmt: skip
-        # type: (...) -> None
-        super(GeometryObject, self).__init__(**kwargs)  # type: ignore
+        pointcolor: Color | None = None,
+        linecolor: Color | None = None,
+        surfacecolor: Color | None = None,
+        pointsize: float = 1.0,
+        linewidth: float = 1.0,
+        show_points: bool = False,
+        show_lines: bool = True,
+        show_surfaces: bool = True,
+        **kwargs: Any,
+    ) -> None:
+        super().__init__(**kwargs)
         self.pointcolor = pointcolor or self.color
         self.linecolor = linecolor or self.color
         self.surfacecolor = surfacecolor or self.color
@@ -65,7 +41,11 @@ class GeometryObject(SceneObject):
         self.show_lines = show_lines
         self.show_surfaces = show_surfaces
 
+    # ==========================================================================
+    # Properties
+    # ==========================================================================
+
     @property
-    def geometry(self):
-        # type: () -> compas.geometry.Geometry
-        return self.item  # type: ignore
+    def geometry(self) -> Geometry:
+        """The geometry represented by this scene object."""
+        return cast(Geometry, self.item)

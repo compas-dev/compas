@@ -11,12 +11,10 @@ from target writing, following the XML API.
 
 """
 
+from collections.abc import Iterable
 from os import PathLike
 from typing import BinaryIO
-from typing import Iterable
-from typing import Optional
 from typing import TextIO
-from typing import Union
 
 from compas import _iotools
 
@@ -24,10 +22,10 @@ from .obj_document import OBJDocument
 from .obj_document import OBJElementReference
 from .obj_document import OBJVertexReference
 
-OBJTarget = Union[str, PathLike[str], TextIO, BinaryIO]
+OBJTarget = str | PathLike[str] | TextIO | BinaryIO
 
 
-def _number(value: float, precision: Optional[int]) -> str:
+def _number(value: float, precision: int | None) -> str:
     if precision is None:
         return str(float(value))
     number = f"{value:.{precision}f}".rstrip("0").rstrip(".")
@@ -55,7 +53,7 @@ def _element_references(document: OBJDocument) -> Iterable[OBJElementReference]:
     ]
 
 
-def _object_for(document: OBJDocument, reference: OBJElementReference) -> Optional[str]:
+def _object_for(document: OBJDocument, reference: OBJElementReference) -> str | None:
     return next((name for name, obj in document.objects.items() if reference in obj.elements), None)
 
 
@@ -63,7 +61,7 @@ def _groups_for(document: OBJDocument, reference: OBJElementReference) -> tuple[
     return tuple(name for name, group in document.groups.items() if reference in group.elements)
 
 
-def _lines(document: OBJDocument, precision: Optional[int]) -> list[str]:
+def _lines(document: OBJDocument, precision: int | None) -> list[str]:
     lines = [f"# {comment}" for comment in document.comments]
     if document.comments:
         lines.append("")
@@ -114,7 +112,7 @@ def _lines(document: OBJDocument, precision: Optional[int]) -> list[str]:
 class OBJWriter:
     """Write a structured OBJ document."""
 
-    def __init__(self, target: OBJTarget, precision: Optional[int] = None, encoding: str = "utf-8") -> None:
+    def __init__(self, target: OBJTarget, precision: int | None = None, encoding: str = "utf-8") -> None:
         self.target = target
         self.precision = precision
         self.encoding = encoding

@@ -1,10 +1,9 @@
-"""
-This package defines sceneobjects for visualising COMPAS items (geometry & datastructures).
-Every item type is paired with a corresponding scene object type that is capable of visualizing the data of the object.
-The scene objects are implemented as pluggables, and automatically switch between plugins depending on the contexct in which they are used.
+"""Visualize COMPAS geometry and data structures through scene objects.
+
+Each supported item type is paired with a scene object type. Visualization
+contexts register specialized scene object implementations through plugins.
 
 """
-# ruff: noqa: F401
 
 from .exceptions import SceneObjectNotRegisteredError
 from .sceneobject import SceneObject
@@ -31,8 +30,27 @@ from compas.datastructures import VolMesh
 
 
 @plugin(category="factories", pluggable_name="register_scene_objects")
-def register_scene_objects_base():
+def register_scene_objects_base() -> None:
+    """Register the context-independent core scene object types."""
     register(Geometry, GeometryObject, context=None)
     register(Mesh, MeshObject, context=None)
     register(Graph, GraphObject, context=None)
     register(VolMesh, VolMeshObject, context=None)
+
+
+__all__ = [
+    "SceneObjectNotRegisteredError",
+    "SceneObject",
+    "MeshObject",
+    "GraphObject",
+    "GeometryObject",
+    "VolMeshObject",
+    "Group",
+    "clear",
+    "before_draw",
+    "after_draw",
+    "register_scene_objects",
+    "get_sceneobject_cls",
+    "register",
+    "Scene",
+]

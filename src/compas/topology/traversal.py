@@ -1,32 +1,47 @@
 from collections import deque
+from collections.abc import Callable
+from collections.abc import Hashable
+from collections.abc import Iterable
+from collections.abc import Iterator
+from collections.abc import Mapping
+from itertools import count
 from queue import PriorityQueue
+from typing import TYPE_CHECKING
+from typing import TypeVar
+from typing import cast
 
 from compas.geometry import distance_point_point
+
+if TYPE_CHECKING:
+    from compas.datastructures import Graph
+    from compas.datastructures import Mesh
+
+Key = TypeVar("Key", bound=Hashable)
 
 # ==============================================================================
 # DFS
 # ==============================================================================
 
 
-def depth_first_ordering(adjacency, root):
+def depth_first_ordering(adjacency: Mapping[Key, Iterable[Key]], root: Key) -> list[Key]:
     """Compute a depth-first ordering of the nodes of a graph, starting from a root node.
 
     Parameters
     ----------
-    adjacency : dict[hashable, dict[hashable, None]] | dict[hashable, sequence[hashable]]
+    adjacency
         An adjacency dictionary representing the connectivity of the graph
         by mapping nodes identifiers to neighbour identifiers.
         Examples of valid adjacency dicts are
 
-        * ``{0: [1, 2, 3, 4], 1: [0], 2: [0], 3: [0], 4: [0]}``
-        * ``{0: {1: None, 2: None, 3: None, 4: None}, 1: {0: None}, 2: {0: None}, 3: {0: None}, 4: {0: None}}``
+        * `{0: [1, 2, 3, 4], 1: [0], 2: [0], 3: [0], 4: [0]}`
+        * `{0: {1: None, 2: None, 3: None, 4: None}, 1: {0: None}, 2: {0: None}, 3: {0: None}, 4: {0: None}}`
 
-    root : hashable
+    root
         The node from which to start the depth-first search.
 
     Returns
     -------
-    list[hashable]
+    list[Key]
         A depth-first ordering of all nodes of the graph.
 
     Notes
@@ -70,81 +85,30 @@ def depth_first_ordering(adjacency, root):
     return ordering
 
 
-# def depth_first_tree(adjacency, root):
-#     """Construct a spanning tree using a depth-first search.
-
-#     Parameters
-#     ----------
-#     adjacency : dict
-#         An adjacency dictionary.
-#     root : hashable
-#         The identifier of the root node.
-
-#     Returns
-#     -------
-#     list
-#         List of nodes in depth-first order.
-#     dict
-#         Dictionary of predecessors for each of the nodes.
-#     list
-#         The depth-first paths.
-
-#     Examples
-#     --------
-#     >>>
-#     """
-#     adjacency = {key: set(nbrs) for key, nbrs in iter(adjacency.items())}
-#     tovisit = [root]
-#     visited = set()
-#     ordering = []
-#     predecessors = {}
-#     paths = [[root]]
-
-#     while tovisit:
-#         # pop the last added element from the stack
-#         node = tovisit.pop()
-#         if node not in visited:
-#             paths[-1].append(node)
-#             # mark the node as visited
-#             visited.add(node)
-#             ordering.append(node)
-#             # add the unvisited nbrs to the stack
-#             nodes = adjacency[node] - visited
-#             if nodes:
-#                 for child in nodes:
-#                     predecessors[child] = node
-#             else:
-#                 paths.append([])
-#             tovisit.extend(nodes)
-#     if not len(paths[-1]):
-#         del paths[-1]
-#     return ordering, predecessors, paths
-
-
 # ==============================================================================
 # BFS
 # ==============================================================================
 
 
-def breadth_first_ordering(adjacency, root):
+def breadth_first_ordering(adjacency: Mapping[Key, Iterable[Key]], root: Key) -> list[Key]:
     """Compute a breadth-first ordering of the nodes of a graph, starting from a root node.
 
     Parameters
     ----------
-    adjacency : dict[hashable, dict[hashable, None]] | dict[hashable, sequence[hashable]]
+    adjacency
         An adjacency dictionary representing the connectivity of the graph
         by mapping nodes identifiers to neighbour identifiers.
         Examples of valid adjacency dicts are
 
-        * ``{0: [1, 2, 3, 4], 1: [0], 2: [0], 3: [0], 4: [0]}``
-        * ``{0: {1: None, 2: None, 3: None, 4: None}, 1: {0: None}, 2: {0: None}, 3: {0: None}, 4: {0: None}}``
+        * `{0: [1, 2, 3, 4], 1: [0], 2: [0], 3: [0], 4: [0]}`
+        * `{0: {1: None, 2: None, 3: None, 4: None}, 1: {0: None}, 2: {0: None}, 3: {0: None}, 4: {0: None}}`
 
-    root : hashable
+    root
         The node from which to start the breadth-first search.
 
     Returns
     -------
-    list[hashable]
+    list[Key]
         A breadth-first ordering of all nodes of the graph.
 
     Notes
@@ -175,27 +139,27 @@ def breadth_first_ordering(adjacency, root):
     return ordering
 
 
-def breadth_first_traverse(adjacency, root, callback=None):
+def breadth_first_traverse(adjacency: Mapping[Key, Iterable[Key]], root: Key, callback: Callable[[Key, Key], None] | None = None) -> set[Key]:
     """Traverse an adjacency dict in "breadth-first" order.
 
     Parameters
     ----------
-    adjacency : dict[hashable, dict[hashable, None]] | dict[hashable, sequence[hashable]]
+    adjacency
         An adjacency dictionary representing the connectivity of the graph
         by mapping nodes identifiers to neighbour identifiers.
         Examples of valid adjacency dicts are
 
-        * ``{0: [1, 2, 3, 4], 1: [0], 2: [0], 3: [0], 4: [0]}``
-        * ``{0: {1: None, 2: None, 3: None, 4: None}, 1: {0: None}, 2: {0: None}, 3: {0: None}, 4: {0: None}}``
+        * `{0: [1, 2, 3, 4], 1: [0], 2: [0], 3: [0], 4: [0]}`
+        * `{0: {1: None, 2: None, 3: None, 4: None}, 1: {0: None}, 2: {0: None}, 3: {0: None}, 4: {0: None}}`
 
-    root : hashable
+    root
         The identifier of the starting node.
-    callback : callable, optional
+    callback
         A callback function applied to every traversed node and its current neighbour.
 
     Returns
     -------
-    set[hashable]
+    set[Key]
         The visited nodes.
 
     """
@@ -212,27 +176,27 @@ def breadth_first_traverse(adjacency, root, callback=None):
     return visited
 
 
-def breadth_first_paths(adjacency, root, goal):
+def breadth_first_paths(adjacency: Mapping[Key, Iterable[Key]], root: Key, goal: Key) -> Iterator[list[Key]]:
     """Return all paths from root to goal.
 
     Parameters
     ----------
-    adjacency : dict[hashable, dict[hashable, None]] | dict[hashable, sequence[hashable]]
+    adjacency
         An adjacency dictionary representing the connectivity of the graph
         by mapping nodes identifiers to neighbour identifiers.
         Examples of valid adjacency dicts are
 
-        * ``{0: [1, 2, 3, 4], 1: [0], 2: [0], 3: [0], 4: [0]}``
-        * ``{0: {1: None, 2: None, 3: None, 4: None}, 1: {0: None}, 2: {0: None}, 3: {0: None}, 4: {0: None}}``
+        * `{0: [1, 2, 3, 4], 1: [0], 2: [0], 3: [0], 4: [0]}`
+        * `{0: {1: None, 2: None, 3: None, 4: None}, 1: {0: None}, 2: {0: None}, 3: {0: None}, 4: {0: None}}`
 
-    root : hashable
+    root
         The identifier of the starting node.
-    goal : hashable
+    goal
         The identifier of the ending node.
 
     Yields
     ------
-    list[hashable]
+    list[Key]
         A path from root to goal.
 
     Notes
@@ -240,6 +204,10 @@ def breadth_first_paths(adjacency, root, goal):
     Due to the nature of the search, the first path returned is the shortest.
 
     """
+    if root == goal:
+        yield [root]
+        return
+
     adjacency = {key: set(nbrs) for key, nbrs in iter(adjacency.items())}
     tovisit = deque([(root, [root])])
     while tovisit:
@@ -251,51 +219,43 @@ def breadth_first_paths(adjacency, root, goal):
                 tovisit.append((nbr, path + [nbr]))
 
 
-def breadth_first_tree(adjacency, root):
+def breadth_first_tree(adjacency: Mapping[Key, Iterable[Key]], root: Key) -> tuple[list[Key], dict[Key, Key], list[list[Key]]]:
     """Compute a BFS tree, starting from a root node.
 
     Parameters
     ----------
-    adjacency : dict[hashable, dict[hashable, None]] | dict[hashable, sequence[hashable]]
+    adjacency
         An adjacency dictionary representing the connectivity of the graph
         by mapping nodes identifiers to neighbour identifiers.
         Examples of valid adjacency dicts are
 
-        * ``{0: [1, 2, 3, 4], 1: [0], 2: [0], 3: [0], 4: [0]}``
-        * ``{0: {1: None, 2: None, 3: None, 4: None}, 1: {0: None}, 2: {0: None}, 3: {0: None}, 4: {0: None}}``
+        * `{0: [1, 2, 3, 4], 1: [0], 2: [0], 3: [0], 4: [0]}`
+        * `{0: {1: None, 2: None, 3: None, 4: None}, 1: {0: None}, 2: {0: None}, 3: {0: None}, 4: {0: None}}`
 
-    root : hashable
+    root
         Identifier of the root node.
 
     Returns
     -------
-    list[hashable]
-        BFS ordering of all nodes.
-    dict[hashable, hashable]
-        A dict mapping each node to its direct predecessor in the tree.
-    list[list[hashable]]
-        A traversal path for every node in the graph.
+    tuple[list[Key], dict[Key, Key], list[list[Key]]]
+        The BFS ordering, the predecessor mapping, and the traversal paths.
 
     """
     tovisit = deque([root])
     visited = set([root])
     ordering = [root]
     predecessors = {}
-    paths = []
+    paths_by_node = {root: [root]}
     while tovisit:
         node = tovisit.popleft()
         for nbr in adjacency[node]:
             if nbr not in visited:
                 predecessors[nbr] = node
+                paths_by_node[nbr] = paths_by_node[node] + [nbr]
                 tovisit.append(nbr)
                 visited.add(nbr)
                 ordering.append(nbr)
-            else:
-                path = [node]
-                while path[-1] in predecessors:
-                    path.append(predecessors[path[-1]])
-                paths.append(reversed(path))
-    return ordering, predecessors, paths
+    return ordering, predecessors, [paths_by_node[node] for node in ordering]
 
 
 # ==============================================================================
@@ -303,27 +263,27 @@ def breadth_first_tree(adjacency, root):
 # ==============================================================================
 
 
-def shortest_path(adjacency, root, goal):
+def shortest_path(adjacency: Mapping[Key, Iterable[Key]], root: Key, goal: Key) -> list[Key] | None:
     """Find the shortest path between two vertices of a graph.
 
     Parameters
     ----------
-    adjacency : dict[hashable, dict[hashable, None]] | dict[hashable, sequence[hashable]]
+    adjacency
         An adjacency dictionary representing the connectivity of the graph
         by mapping nodes identifiers to neighbour identifiers.
         Examples of valid adjacency dicts are
 
-        * ``{0: [1, 2, 3, 4], 1: [0], 2: [0], 3: [0], 4: [0]}``
-        * ``{0: {1: None, 2: None, 3: None, 4: None}, 1: {0: None}, 2: {0: None}, 3: {0: None}, 4: {0: None}}``
+        * `{0: [1, 2, 3, 4], 1: [0], 2: [0], 3: [0], 4: [0]}`
+        * `{0: {1: None, 2: None, 3: None, 4: None}, 1: {0: None}, 2: {0: None}, 3: {0: None}, 4: {0: None}}`
 
-    root : hashable
+    root
         The identifier of the starting node.
-    goal : hashable
+    goal
         The identifier of the ending node.
 
     Returns
     -------
-    list[hashable] | None
+    list[Key] | None
         The path from root to goal, or None, if no path exists between the vertices.
 
     """
@@ -338,7 +298,7 @@ def shortest_path(adjacency, root, goal):
 # ==============================================================================
 
 
-def reconstruct_path(came_from, current):
+def _reconstruct_path(came_from: Mapping[Key, Key], current: Key) -> list[Key] | None:
     if current not in came_from:
         return None
     total_path = [current]
@@ -349,43 +309,53 @@ def reconstruct_path(came_from, current):
     return total_path
 
 
-def astar_lightest_path(adjacency, weights, heuristic, root, goal):
+def astar_lightest_path(
+    adjacency: Mapping[Key, Iterable[Key]],
+    weights: Mapping[tuple[Key, Key], float],
+    heuristic: Mapping[Key, float],
+    root: Key,
+    goal: Key,
+) -> list[Key] | None:
     """Find the path of least weight between two vertices of a graph using the A* search algorithm.
 
     Parameters
     ----------
-    adjacency : dict[hashable, dict[hashable, None]] | dict[hashable, sequence[hashable]]
+    adjacency
         An adjacency dictionary representing the connectivity of the graph
         by mapping nodes identifiers to neighbour identifiers.
         Examples of valid adjacency dicts are
 
-        * ``{0: [1, 2, 3, 4], 1: [0], 2: [0], 3: [0], 4: [0]}``
-        * ``{0: {1: None, 2: None, 3: None, 4: None}, 1: {0: None}, 2: {0: None}, 3: {0: None}, 4: {0: None}}``
+        * `{0: [1, 2, 3, 4], 1: [0], 2: [0], 3: [0], 4: [0]}`
+        * `{0: {1: None, 2: None, 3: None, 4: None}, 1: {0: None}, 2: {0: None}, 3: {0: None}, 4: {0: None}}`
 
-    weights : dict[tuple[hashable, hashable], float]
+    weights
         A dictionary of edge weights.
-    heuristic : dict[hashable, float]
+    heuristic
         A dictionary of guesses of weights of paths from a node to the goal.
-    root : hashable
+    root
         The start vertex.
-    goal : hashable
+    goal
         The end vertex.
 
     Returns
     -------
-    list[hashable] | None
+    list[Key] | None
         The path from root to goal, or None, if no path exists between the vertices.
 
     References
     ----------
-    https://en.wikipedia.org/wiki/A*_search_algorithm
+    - [A* search algorithm](https://en.wikipedia.org/wiki/A*_search_algorithm)
 
     """
     visited_set = set()
 
+    if root == goal:
+        return [root]
+
     candidates_set = {root}
-    best_candidate_heap = PriorityQueue()
-    best_candidate_heap.put((heuristic[root], root))
+    best_candidate_heap: PriorityQueue[tuple[float, int, Key]] = PriorityQueue()
+    counter = count()
+    best_candidate_heap.put((heuristic[root], next(counter), root))
 
     came_from = dict()
 
@@ -395,7 +365,7 @@ def astar_lightest_path(adjacency, weights, heuristic, root, goal):
     g_score[root] = 0
 
     while not best_candidate_heap.empty():
-        _, current = best_candidate_heap.get()
+        _, _, current = best_candidate_heap.get()
         if current == goal:
             break
 
@@ -413,9 +383,9 @@ def astar_lightest_path(adjacency, weights, heuristic, root, goal):
             came_from[neighbor] = current
             g_score[neighbor] = tentative_g_score
             new_f_score = g_score[neighbor] + heuristic[neighbor]
-            best_candidate_heap.put((new_f_score, neighbor))
+            best_candidate_heap.put((new_f_score, next(counter), neighbor))
 
-    return reconstruct_path(came_from, goal)
+    return _reconstruct_path(came_from, goal)
 
 
 def _get_coordinates(key, structure):
@@ -434,26 +404,26 @@ def _get_points(structure):
     raise Exception("Points cannot be found for object of type {}".format(type(structure)))
 
 
-def astar_shortest_path(graph, root, goal):
+def astar_shortest_path(graph: "Graph | Mesh", root: Key, goal: Key) -> list[Key] | None:
     """Find the shortest path between two vertices of a graph or mesh using the A* search algorithm.
 
     Parameters
     ----------
-    graph : :class:`compas.datastructures.Graph` | :class:`compas.datastructures.Mesh`
+    graph
         A graph or mesh data structure.
-    root : hashable
+    root
         The identifier of the starting node.
-    goal : hashable
+    goal
         The identifier of the ending node.
 
     Returns
     -------
-    list[hashable] | None
+    list[Key] | None
         The path from root to goal, or None, if no path exists between the vertices.
 
     References
     ----------
-    https://en.wikipedia.org/wiki/A*_search_algorithm
+    - [A* search algorithm](https://en.wikipedia.org/wiki/A*_search_algorithm)
 
     """
     adjacency = graph.adjacency
@@ -472,30 +442,38 @@ def astar_shortest_path(graph, root, goal):
         u_coords = _get_coordinates(u, graph)
         heuristic[u] = distance_point_point(u_coords, goal_coords)
 
-    return astar_lightest_path(adjacency, weights, heuristic, root, goal)
+    # Graph and Mesh are not generic, so their annotations cannot express that
+    # their adjacency keys have the same type as root and goal.
+    return astar_lightest_path(
+        cast(Mapping[Key, Iterable[Key]], adjacency),
+        cast(Mapping[tuple[Key, Key], float], weights),
+        cast(Mapping[Key, float], heuristic),
+        root,
+        goal,
+    )
 
 
-def dijkstra_distances(adjacency, weight, target):
+def dijkstra_distances(adjacency: Mapping[Key, Iterable[Key]], weight: Mapping[tuple[Key, Key], float], target: Key) -> dict[Key, float]:
     """Compute Dijkstra distances from all nodes in a graph to one target node.
 
     Parameters
     ----------
-    adjacency : dict[hashable, dict[hashable, None]] | dict[hashable, sequence[hashable]]
+    adjacency
         An adjacency dictionary representing the connectivity of the graph
         by mapping nodes identifiers to neighbour identifiers.
         Examples of valid adjacency dicts are
 
-        * ``{0: [1, 2, 3, 4], 1: [0], 2: [0], 3: [0], 4: [0]}``
-        * ``{0: {1: None, 2: None, 3: None, 4: None}, 1: {0: None}, 2: {0: None}, 3: {0: None}, 4: {0: None}}``
+        * `{0: [1, 2, 3, 4], 1: [0], 2: [0], 3: [0], 4: [0]}`
+        * `{0: {1: None, 2: None, 3: None, 4: None}, 1: {0: None}, 2: {0: None}, 3: {0: None}, 4: {0: None}}`
 
-    weight : dict[tuple[hashable, hashable], float]
+    weight
         A dictionary of edge weights.
-    target : hashable
+    target
         The key of the vertex to which the distances are computed.
 
     Returns
     -------
-    dict[hashable, float]
+    dict[Key, float]
         A dictionary of distances to the target.
 
     """
@@ -515,39 +493,47 @@ def dijkstra_distances(adjacency, weight, target):
     return distance
 
 
-def dijkstra_path(adjacency, weight, source, target, dist=None):
+def dijkstra_path(
+    adjacency: Mapping[Key, Iterable[Key]],
+    weight: Mapping[tuple[Key, Key], float],
+    source: Key,
+    target: Key,
+    dist: Mapping[Key, float] | None = None,
+) -> list[Key]:
     """Find the shortest path between two nodes of a graph if the weights of the connecting edges are not all the same.
 
     Parameters
     ----------
-    adjacency : dict[hashable, dict[hashable, None]] | dict[hashable, sequence[hashable]]
+    adjacency
         An adjacency dictionary representing the connectivity of the graph
         by mapping nodes identifiers to neighbour identifiers.
         Examples of valid adjacency dicts are
 
-        * ``{0: [1, 2, 3, 4], 1: [0], 2: [0], 3: [0], 4: [0]}``
-        * ``{0: {1: None, 2: None, 3: None, 4: None}, 1: {0: None}, 2: {0: None}, 3: {0: None}, 4: {0: None}}``
+        * `{0: [1, 2, 3, 4], 1: [0], 2: [0], 3: [0], 4: [0]}`
+        * `{0: {1: None, 2: None, 3: None, 4: None}, 1: {0: None}, 2: {0: None}, 3: {0: None}, 4: {0: None}}`
 
-    weight : dict[tuple[hashable, hashable], float]
+    weight
         A dictionary of edge weights.
-    source : hashable
+    source
         The start vertex.
-    target : hashable
+    target
         The end vertex.
 
     Returns
     -------
-    list[hashable]
+    list[Key]
         The shortest path.
 
     Notes
     -----
     The edge weights should all be positive.
-    For a directed graph, set the weights of the reversed edges to ``+inf``.
+    For a directed graph, set the weights of the reversed edges to `+inf`.
     For an undirected graph, add the same weight for an edge in both directions.
 
     """
-    if not dist:
+    if source == target:
+        return [source]
+    if dist is None:
         dist = dijkstra_distances(adjacency, weight, target)
     path = [source]
     node = source

@@ -20,11 +20,11 @@ def test_box_constructor(default_box):
 
 
 def test_box_volume(default_box):
-    assert default_box.volume == 6.0
+    assert default_box.volume() == 6.0
 
 
 def test_box_area(default_box):
-    assert default_box.area == 22.0
+    assert default_box.area() == 22.0
 
 
 def test_box_dimensions(default_box):
@@ -41,9 +41,32 @@ def test_box_corner(default_box):
     assert default_box.corner(2) == Point(0.5, 1.0, -1.5)
     assert default_box.corner(3) == Point(0.5, -1.0, -1.5)
     assert default_box.corner(4) == Point(-0.5, -1.0, 1.5)
-    assert default_box.corner(5) == Point(-0.5, 1.0, 1.5)
+    assert default_box.corner(5) == Point(0.5, -1.0, 1.5)
     assert default_box.corner(6) == Point(0.5, 1.0, 1.5)
-    assert default_box.corner(7) == Point(0.5, -1.0, 1.5)
+    assert default_box.corner(7) == Point(-0.5, 1.0, 1.5)
+    assert [default_box.corner(index) for index in range(8)] == default_box.points
+
+
+def test_box_bounds_are_invalidated_when_dimensions_change(default_box):
+    assert default_box.aabb().xsize == 1.0
+    default_box.xsize = 4.0
+    assert default_box.aabb().xsize == 4.0
+
+
+def test_box_placement_preserves_local_discretization_and_topology(default_box, monkeypatch):
+    vertices = default_box.vertices
+    edges = default_box.edges
+    faces = default_box.faces
+
+    def fail_if_recomputed(u, v):
+        raise AssertionError("local vertices should remain cached after a placement change")
+
+    monkeypatch.setattr(default_box, "_compute_vertices", fail_if_recomputed)
+    default_box.frame.point.x = 10.0
+
+    assert default_box.vertices != vertices
+    assert default_box.edges is edges
+    assert default_box.faces is faces
 
 
 def test_box_contains_point(default_box):

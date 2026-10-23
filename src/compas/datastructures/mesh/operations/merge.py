@@ -1,6 +1,5 @@
+from collections.abc import Sequence
 from typing import TYPE_CHECKING
-from typing import Optional
-from typing import Sequence
 
 from ..types import Face
 
@@ -8,7 +7,7 @@ if TYPE_CHECKING:
     from ..mesh import Mesh
 
 
-def mesh_merge_faces(mesh: "Mesh", faces: Sequence[Face]) -> Optional[Face]:
+def mesh_merge_faces(mesh: "Mesh", faces: Sequence[Face]) -> Face | None:
     """Merge two faces of a mesh over their shared edge.
 
     Parameters

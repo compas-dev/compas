@@ -4,17 +4,16 @@ import xml.etree.ElementTree as ET
 from copy import deepcopy
 from os import PathLike
 from typing import BinaryIO
-from typing import Optional
 from typing import TextIO
-from typing import Union
+from typing import cast
 
 from compas import _iotools
 
-XMLSource = Union[str, PathLike[str], TextIO, BinaryIO]
-XMLTarget = Union[str, PathLike[str], TextIO, BinaryIO]
+XMLSource = str | PathLike[str] | TextIO | BinaryIO
+XMLTarget = str | PathLike[str] | TextIO | BinaryIO
 
 
-def read_xml(source: XMLSource, parser: Optional[ET.XMLParser] = None) -> ET.Element:
+def read_xml(source: XMLSource, parser: ET.XMLParser | None = None) -> ET.Element:
     """Read an XML document.
 
     Parameters
@@ -34,7 +33,7 @@ def read_xml(source: XMLSource, parser: Optional[ET.XMLParser] = None) -> ET.Ele
         return ET.parse(stream, parser=parser).getroot()
 
 
-def parse_xml(text: Union[str, bytes], parser: Optional[ET.XMLParser] = None) -> ET.Element:
+def parse_xml(text: str | bytes, parser: ET.XMLParser | None = None) -> ET.Element:
     """Parse an XML string.
 
     Parameters
@@ -57,8 +56,8 @@ def xml_to_string(
     root: ET.Element,
     encoding: str = "unicode",
     pretty: bool = False,
-    xml_declaration: Optional[bool] = None,
-) -> Union[str, bytes]:
+    xml_declaration: bool | None = None,
+) -> str | bytes:
     """Serialize an XML element tree.
 
     Parameters
@@ -89,7 +88,7 @@ def write_xml(
     root: ET.Element,
     encoding: str = "utf-8",
     pretty: bool = False,
-    xml_declaration: Optional[bool] = None,
+    xml_declaration: bool | None = None,
 ) -> None:
     """Write an XML element tree.
 
@@ -106,17 +105,16 @@ def write_xml(
     xml_declaration
         Controls inclusion of the XML declaration.
 
-    Returns
-    -------
-    None
-
     """
     data = xml_to_string(root, encoding=encoding, pretty=pretty, xml_declaration=xml_declaration)
     with _iotools.open_file(target, "wb") as stream:
         try:
-            stream.write(data)
+            if isinstance(data, bytes):
+                cast(BinaryIO, stream).write(data)
+            else:
+                cast(TextIO, stream).write(data)
         except TypeError:
             if isinstance(data, bytes):
-                stream.write(data.decode(encoding))
+                cast(TextIO, stream).write(data.decode(encoding))
             else:
-                stream.write(data.encode(encoding))
+                cast(BinaryIO, stream).write(data.encode(encoding))

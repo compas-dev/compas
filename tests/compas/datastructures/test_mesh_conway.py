@@ -83,8 +83,7 @@ def test_conway_dual_geometry_and_oriented_connectivity(irregular_tetrahedron):
 
     assert_vertex_coordinates(result, [mesh.face_centroid(face) for face in faces])
     assert [result.face_vertices(face) for face in result.faces()] == [
-        [face_vertex[face] for face in reversed(mesh.vertex_faces(vertex, ordered=True))]
-        for vertex in mesh.vertices()
+        [face_vertex[face] for face in reversed(mesh.vertex_faces(vertex, ordered=True))] for vertex in mesh.vertices()
     ]
 
 
@@ -101,8 +100,7 @@ def test_conway_join_geometry_and_oriented_connectivity(irregular_tetrahedron):
         [mesh.vertex_coordinates(vertex) for vertex in vertices] + [mesh.face_centroid(face) for face in faces],
     )
     assert [result.face_vertices(face) for face in result.faces()] == [
-        [vertex_index[u], face_vertex[mesh.halfedge[v][u]], vertex_index[v], face_vertex[mesh.halfedge[u][v]]]
-        for u, v in mesh.edges()
+        [vertex_index[u], face_vertex[mesh.halfedge[v][u]], vertex_index[v], face_vertex[mesh.halfedge[u][v]]] for u, v in mesh.edges()
     ]
 
 
@@ -119,9 +117,7 @@ def test_conway_kis_geometry_and_oriented_connectivity(irregular_tetrahedron):
         [mesh.vertex_coordinates(vertex) for vertex in vertices] + [mesh.face_centroid(face) for face in faces],
     )
     assert [result.face_vertices(face) for face in result.faces()] == [
-        [vertex_index[u], vertex_index[v], face_vertex[face]]
-        for face in faces
-        for u, v in mesh.face_halfedges(face)
+        [vertex_index[u], vertex_index[v], face_vertex[face]] for face in faces for u, v in mesh.face_halfedges(face)
     ]
 
 
@@ -133,15 +129,11 @@ def test_conway_gyro_geometry_and_oriented_connectivity(irregular_tetrahedron):
     halfedges = [(u, v) for u in vertices for v in mesh.halfedge[u]]
     vertex_index = {vertex: index for index, vertex in enumerate(vertices)}
     face_vertex = {face: len(vertices) + index for index, face in enumerate(faces)}
-    halfedge_vertex = {
-        halfedge: len(vertices) + len(faces) + index for index, halfedge in enumerate(halfedges)
-    }
+    halfedge_vertex = {halfedge: len(vertices) + len(faces) + index for index, halfedge in enumerate(halfedges)}
 
     assert_vertex_coordinates(
         result,
-        [mesh.vertex_coordinates(vertex) for vertex in vertices]
-        + [mesh.face_centroid(face) for face in faces]
-        + [mesh.edge_point(halfedge, t=0.33) for halfedge in halfedges],
+        [mesh.vertex_coordinates(vertex) for vertex in vertices] + [mesh.face_centroid(face) for face in faces] + [mesh.edge_point(halfedge, t=0.33) for halfedge in halfedges],
     )
     assert [result.face_vertices(face) for face in result.faces()] == [
         [

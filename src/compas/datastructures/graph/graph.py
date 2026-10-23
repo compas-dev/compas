@@ -1,19 +1,16 @@
 from ast import literal_eval
+from collections.abc import Callable
+from collections.abc import Iterable
+from collections.abc import Iterator
 from collections.abc import Mapping
+from collections.abc import Sequence
 from itertools import combinations
 from random import sample
 from random import shuffle
 from typing import Any
-from typing import Callable
-from typing import Iterable
-from typing import Iterator
 from typing import Literal
-from typing import Optional
-from typing import Sequence
-from typing import Union
+from typing import Self
 from typing import overload
-
-from typing_extensions import Self
 
 from compas.datastructures.attributes import EdgeAttributeView
 from compas.datastructures.attributes import NodeAttributeView
@@ -96,6 +93,10 @@ class Graph(Datastructure):
     embed_in_plane = graph_embed_in_plane
     find_cycles = graph_find_cycles
 
+    # --------------------------------------------------------------------------
+    # Data
+    # --------------------------------------------------------------------------
+
     @property
     def __data__(self) -> dict[str, Any]:
         return self.__before_json_dump__(
@@ -138,11 +139,15 @@ class Graph(Datastructure):
         graph._max_node = data.get("max_node", graph._max_node)
         return graph
 
+    # --------------------------------------------------------------------------
+    # Dunder methods
+    # --------------------------------------------------------------------------
+
     def __init__(
         self,
-        default_node_attributes: Optional[AttributeDict] = None,
-        default_edge_attributes: Optional[AttributeDict] = None,
-        name: Optional[str] = None,
+        default_node_attributes: AttributeDict | None = None,
+        default_edge_attributes: AttributeDict | None = None,
+        name: str | None = None,
         **kwargs: Any,
     ) -> None:
         super().__init__(kwargs, name=name)
@@ -223,7 +228,7 @@ class Graph(Datastructure):
         return g
 
     @classmethod
-    def from_obj(cls, filepath: Any, precision: Optional[int] = None) -> Self:
+    def from_obj(cls, filepath: Any, precision: int | None = None) -> Self:
         """Construct a graph from the data contained in an OBJ file.
 
         Parameters
@@ -250,7 +255,7 @@ class Graph(Datastructure):
         return cls.from_lines(lines, precision=precision)
 
     @classmethod
-    def from_lines(cls, lines: Iterable[Sequence[Any]], precision: Optional[int] = None) -> Self:
+    def from_lines(cls, lines: Iterable[Sequence[Any]], precision: int | None = None) -> Self:
         """Construct a graph from a set of lines represented by their start and end point coordinates.
 
         Parameters
@@ -296,7 +301,7 @@ class Graph(Datastructure):
     @classmethod
     def from_nodes_and_edges(
         cls,
-        nodes: Union[Sequence[Sequence[float]], dict[Node, Sequence[float]]],
+        nodes: Sequence[Sequence[float]] | dict[Node, Sequence[float]],
         edges: Iterable[Edge],
     ) -> Self:
         """Construct a graph from nodes and edges.
@@ -371,20 +376,15 @@ class Graph(Datastructure):
         return graph
 
     # --------------------------------------------------------------------------
-    # Converters
+    # Conversions
     # --------------------------------------------------------------------------
 
     def to_obj(self) -> None:
         """Write the graph to an OBJ file.
 
-        Parameters
-        ----------
-        filepath
-            A path or a file-like object pointing to a file.
-
-        Returns
-        -------
-        None
+        Notes
+        -----
+        Graph OBJ export is not implemented.
 
         See Also
         --------
@@ -473,7 +473,7 @@ class Graph(Datastructure):
         return G
 
     # --------------------------------------------------------------------------
-    # Helpers
+    # Private helpers
     # --------------------------------------------------------------------------
 
     def clear(self) -> None:
@@ -597,7 +597,7 @@ class Graph(Datastructure):
         """
         return dict(enumerate(self.edges()))
 
-    def node_gkey(self, precision: Optional[int] = None) -> dict[Node, str]:
+    def node_gkey(self, precision: int | None = None) -> dict[Node, str]:
         """Returns a dictionary that maps node identifiers to the corresponding
         *geometric key* up to a certain precision.
 
@@ -622,7 +622,7 @@ class Graph(Datastructure):
         xyz = self.node_coordinates
         return {key: gkey(xyz(key), precision) for key in self.nodes()}
 
-    def gkey_node(self, precision: Optional[int] = None) -> dict[str, Node]:
+    def gkey_node(self, precision: int | None = None) -> dict[str, Node]:
         """Returns a dictionary that maps *geometric keys* of a certain precision
         to the identifiers of the corresponding nodes.
 
@@ -653,8 +653,8 @@ class Graph(Datastructure):
 
     def add_node(
         self,
-        key: Optional[Node] = None,
-        attr_dict: Optional[AttributeDict] = None,
+        key: Node | None = None,
+        attr_dict: AttributeDict | None = None,
         **kwattr: Any,
     ) -> Node:
         """Add a node and specify its attributes (optional).
@@ -711,7 +711,7 @@ class Graph(Datastructure):
         self,
         u: Node,
         v: Node,
-        attr_dict: Optional[AttributeDict] = None,
+        attr_dict: AttributeDict | None = None,
         **kwattr: Any,
     ) -> Edge:
         """Add an edge and specify its attributes.
@@ -924,7 +924,7 @@ class Graph(Datastructure):
     def nodes(self, data: Literal[True]) -> Iterator[tuple[Node, NodeAttributeView]]: ...
 
     @overload
-    def nodes(self, data: bool) -> Iterator[Union[Node, tuple[Node, NodeAttributeView]]]: ...
+    def nodes(self, data: bool) -> Iterator[Node | tuple[Node, NodeAttributeView]]: ...
 
     def nodes(self, data: bool = False) -> Iterator[Any]:
         """Iterate over the nodes of the graph.
@@ -956,7 +956,7 @@ class Graph(Datastructure):
     @overload
     def nodes_where(
         self,
-        conditions: Optional[AttributeDict] = None,
+        conditions: AttributeDict | None = None,
         data: Literal[False] = False,
         **kwargs: Any,
     ) -> Iterator[Node]: ...
@@ -964,7 +964,7 @@ class Graph(Datastructure):
     @overload
     def nodes_where(
         self,
-        conditions: Optional[AttributeDict],
+        conditions: AttributeDict | None,
         data: Literal[True],
         **kwargs: Any,
     ) -> Iterator[tuple[Node, NodeAttributeView]]: ...
@@ -972,14 +972,14 @@ class Graph(Datastructure):
     @overload
     def nodes_where(
         self,
-        conditions: Optional[AttributeDict] = None,
+        conditions: AttributeDict | None = None,
         data: bool = False,
         **kwargs: Any,
-    ) -> Iterator[Union[Node, tuple[Node, NodeAttributeView]]]: ...
+    ) -> Iterator[Node | tuple[Node, NodeAttributeView]]: ...
 
     def nodes_where(
         self,
-        conditions: Optional[AttributeDict] = None,
+        conditions: AttributeDict | None = None,
         data: bool = False,
         **kwargs: Any,
     ) -> Iterator[Any]:
@@ -1078,7 +1078,7 @@ class Graph(Datastructure):
         self,
         predicate: Callable[[Node, NodeAttributeView], bool],
         data: bool,
-    ) -> Iterator[Union[Node, tuple[Node, NodeAttributeView]]]: ...
+    ) -> Iterator[Node | tuple[Node, NodeAttributeView]]: ...
 
     def nodes_where_predicate(
         self,
@@ -1126,7 +1126,7 @@ class Graph(Datastructure):
     def edges(self, data: Literal[True]) -> Iterator[tuple[Edge, EdgeAttributeView]]: ...
 
     @overload
-    def edges(self, data: bool) -> Iterator[Union[Edge, tuple[Edge, EdgeAttributeView]]]: ...
+    def edges(self, data: bool) -> Iterator[Edge | tuple[Edge, EdgeAttributeView]]: ...
 
     def edges(self, data: bool = False) -> Iterator[Any]:
         """Iterate over the edges of the graph.
@@ -1159,7 +1159,7 @@ class Graph(Datastructure):
     @overload
     def edges_where(
         self,
-        conditions: Optional[AttributeDict] = None,
+        conditions: AttributeDict | None = None,
         data: Literal[False] = False,
         **kwargs: Any,
     ) -> Iterator[Edge]: ...
@@ -1167,7 +1167,7 @@ class Graph(Datastructure):
     @overload
     def edges_where(
         self,
-        conditions: Optional[AttributeDict],
+        conditions: AttributeDict | None,
         data: Literal[True],
         **kwargs: Any,
     ) -> Iterator[tuple[Edge, EdgeAttributeView]]: ...
@@ -1175,14 +1175,14 @@ class Graph(Datastructure):
     @overload
     def edges_where(
         self,
-        conditions: Optional[AttributeDict] = None,
+        conditions: AttributeDict | None = None,
         data: bool = False,
         **kwargs: Any,
-    ) -> Iterator[Union[Edge, tuple[Edge, EdgeAttributeView]]]: ...
+    ) -> Iterator[Edge | tuple[Edge, EdgeAttributeView]]: ...
 
     def edges_where(
         self,
-        conditions: Optional[AttributeDict] = None,
+        conditions: AttributeDict | None = None,
         data: bool = False,
         **kwargs: Any,
     ) -> Iterator[Any]:
@@ -1270,7 +1270,7 @@ class Graph(Datastructure):
         self,
         predicate: Callable[[Edge, EdgeAttributeView], bool],
         data: bool,
-    ) -> Iterator[Union[Edge, tuple[Edge, EdgeAttributeView]]]: ...
+    ) -> Iterator[Edge | tuple[Edge, EdgeAttributeView]]: ...
 
     def edges_where_predicate(
         self,
@@ -1313,7 +1313,7 @@ class Graph(Datastructure):
                 else:
                     yield key
 
-    def shortest_path(self, u: Node, v: Node) -> Optional[list[Node]]:
+    def shortest_path(self, u: Node, v: Node) -> list[Node] | None:
         """Find the shortest path between two nodes using the A* algorithm.
 
         Parameters
@@ -1339,7 +1339,7 @@ class Graph(Datastructure):
     # Default attributes
     # --------------------------------------------------------------------------
 
-    def update_default_node_attributes(self, attr_dict: Optional[AttributeDict] = None, **kwattr: Any) -> None:
+    def update_default_node_attributes(self, attr_dict: AttributeDict | None = None, **kwattr: Any) -> None:
         """Update the default node attributes.
 
         Parameters
@@ -1363,7 +1363,7 @@ class Graph(Datastructure):
         attr_dict.update(kwattr)
         self.default_node_attributes.update(attr_dict)
 
-    def update_default_edge_attributes(self, attr_dict: Optional[AttributeDict] = None, **kwattr: Any) -> None:
+    def update_default_edge_attributes(self, attr_dict: AttributeDict | None = None, **kwattr: Any) -> None:
         """Update the default edge attributes.
 
         Parameters
@@ -1470,8 +1470,8 @@ class Graph(Datastructure):
     def node_attributes(
         self,
         key: Node,
-        names: Optional[Sequence[str]] = None,
-        values: Optional[list[Any]] = None,
+        names: Sequence[str] | None = None,
+        values: list[Any] | None = None,
     ) -> Any:
         """Get or set multiple attributes of a node.
 
@@ -1530,7 +1530,7 @@ class Graph(Datastructure):
         self,
         name: str,
         *,
-        keys: Optional[Iterable[Node]] = None,
+        keys: Iterable[Node] | None = None,
     ) -> list[Any]: ...
 
     @overload
@@ -1538,15 +1538,15 @@ class Graph(Datastructure):
         self,
         name: str,
         value: Any,
-        keys: Optional[Iterable[Node]] = None,
+        keys: Iterable[Node] | None = None,
     ) -> None: ...
 
     def nodes_attribute(
         self,
         name: str,
         value: Any = _MISSING,
-        keys: Optional[Iterable[Node]] = None,
-    ) -> Optional[list[Any]]:
+        keys: Iterable[Node] | None = None,
+    ) -> list[Any] | None:
         """Get or set an attribute of multiple nodes.
 
         Parameters
@@ -1586,9 +1586,9 @@ class Graph(Datastructure):
 
     def nodes_attributes(
         self,
-        names: Optional[Sequence[str]] = None,
-        values: Optional[list[Any]] = None,
-        keys: Optional[Iterable[Node]] = None,
+        names: Sequence[str] | None = None,
+        values: list[Any] | None = None,
+        keys: Iterable[Node] | None = None,
     ) -> Any:
         """Get or set multiple attributes of multiple nodes.
 
@@ -1721,8 +1721,8 @@ class Graph(Datastructure):
     def edge_attributes(
         self,
         key: Edge,
-        names: Optional[Sequence[str]] = None,
-        values: Optional[list[Any]] = None,
+        names: Sequence[str] | None = None,
+        values: list[Any] | None = None,
     ) -> Any:
         """Get or set multiple attributes of an edge.
 
@@ -1777,7 +1777,7 @@ class Graph(Datastructure):
         self,
         name: str,
         *,
-        keys: Optional[Iterable[Edge]] = None,
+        keys: Iterable[Edge] | None = None,
     ) -> list[Any]: ...
 
     @overload
@@ -1785,15 +1785,15 @@ class Graph(Datastructure):
         self,
         name: str,
         value: Any,
-        keys: Optional[Iterable[Edge]] = None,
+        keys: Iterable[Edge] | None = None,
     ) -> None: ...
 
     def edges_attribute(
         self,
         name: str,
         value: Any = _MISSING,
-        keys: Optional[Iterable[Edge]] = None,
-    ) -> Optional[list[Any]]:
+        keys: Iterable[Edge] | None = None,
+    ) -> list[Any] | None:
         """Get or set an attribute of multiple edges.
 
         Parameters
@@ -1833,9 +1833,9 @@ class Graph(Datastructure):
 
     def edges_attributes(
         self,
-        names: Optional[Sequence[str]] = None,
-        values: Optional[list[Any]] = None,
-        keys: Optional[Iterable[Edge]] = None,
+        names: Sequence[str] | None = None,
+        values: list[Any] | None = None,
+        keys: Iterable[Edge] | None = None,
     ) -> Any:
         """Get or set multiple attributes of multiple edges.
 
@@ -2455,7 +2455,7 @@ class Graph(Datastructure):
         return distance_point_point(a, b)
 
     # --------------------------------------------------------------------------
-    # Transformations and BBox
+    # Transformations
     # --------------------------------------------------------------------------
 
     def transform(self, transformation: Any) -> None:
@@ -2476,7 +2476,11 @@ class Graph(Datastructure):
         for point, node in zip(points, self.nodes()):
             self.node_attributes(node, "xyz", point)
 
-    def aabb(self) -> Box:  # type: ignore[override]
+    # --------------------------------------------------------------------------
+    # Bounding boxes
+    # --------------------------------------------------------------------------
+
+    def aabb(self) -> Box:
         """Calculate the axis aligned bounding box of the graph.
 
         Returns
@@ -2487,7 +2491,7 @@ class Graph(Datastructure):
         nodes = self.nodes_attributes("xyz")
         return Box.from_bounding_box(bounding_box(nodes))
 
-    def obb(self) -> Box:  # type: ignore[override]
+    def obb(self) -> Box:
         """Calculate the oriented bounding box of the graph.
 
         Returns
@@ -2499,7 +2503,7 @@ class Graph(Datastructure):
         return Box.from_bounding_box(oriented_bounding_box(nodes))
 
     # --------------------------------------------------------------------------
-    # Other Methods
+    # Methods
     # --------------------------------------------------------------------------
 
     def connected_nodes(self) -> list[list[Node]]:
@@ -2529,13 +2533,6 @@ class Graph(Datastructure):
 
         """
         return self._group_edges_by_component(self.connected_nodes())
-
-    def _group_edges_by_component(self, components: Sequence[Sequence[Node]]) -> list[list[Edge]]:
-        node_component = {node: index for index, nodes in enumerate(components) for node in nodes}
-        edges_by_component: list[list[Edge]] = [[] for _ in components]
-        for edge in self.edges():
-            edges_by_component[node_component[edge[0]]].append(edge)
-        return edges_by_component
 
     def exploded(self) -> list[Self]:
         """Explode the graph into its connected components.
@@ -2693,3 +2690,14 @@ class Graph(Datastructure):
         node_index = self.node_index()
         edges = [(node_index[u], node_index[v]) for u, v in self.edges()]
         return laplacian_matrix(edges, normalize=normalize, rtype=rtype)
+
+    # --------------------------------------------------------------------------
+    # Private helpers
+    # --------------------------------------------------------------------------
+
+    def _group_edges_by_component(self, components: Sequence[Sequence[Node]]) -> list[list[Edge]]:
+        node_component = {node: index for index, nodes in enumerate(components) for node in nodes}
+        edges_by_component: list[list[Edge]] = [[] for _ in components]
+        for edge in self.edges():
+            edges_by_component[node_component[edge[0]]].append(edge)
+        return edges_by_component

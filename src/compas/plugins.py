@@ -2,16 +2,10 @@
 
 Notes
 -----
-Plugin discovery currently imports every installed top-level ``compas*``
-package and every module listed in its ``__all_plugins__`` attribute. Plugin
-modules should therefore remain lightweight and defer imports of optional or
-heavy dependencies until the plugin function is called. In particular, GUI
-toolkits may terminate the process during import instead of raising an
-``ImportError``, which cannot be handled by :class:`Importer`.
-
-In the future, discovery should preferably use explicit package entry points
-so that unrelated extension packages do not have to be imported merely to
-locate plugin implementations.
+External plugin packages register lightweight plugin modules through the
+`compas.plugins` package entry-point group. Core plugin modules are registered
+explicitly. Discovery therefore imports only declared plugin modules rather
+than scanning unrelated installed packages.
 
 """
 
@@ -27,10 +21,19 @@ locate plugin implementations.
 
 import functools
 import inspect
-import pkgutil
 import threading
-
-import compas
+from collections.abc import Callable
+from collections.abc import Sequence
+from dataclasses import dataclass
+from importlib import import_module
+from importlib.metadata import entry_points
+from importlib.util import find_spec
+from types import ModuleType
+from typing import Any
+from typing import Literal
+from typing import ParamSpec
+from typing import TypeVar
+from typing import overload
 
 __all__ = [
     "pluggable",
@@ -39,20 +42,13 @@ __all__ = [
     "IncompletePluginImplError",
     "PluginManager",
     "PluginNotInstalledError",
-    "PluginValidator",
+    "validate_plugin_implementation",
     "PluginDefaultNotAvailableError",
+    "PluginConflictError",
+    "PluginValidationError",
+    "ExtensionPoint",
+    "PluginSpec",
 ]
-
-if compas.RHINO:
-    import System  # type: ignore
-
-    DotNetException = System.Exception
-else:
-
-    class DotNetException(BaseException):
-        """Ensures DotNetException is always a valid exception class. Even when not in IPY."""
-
-        pass
 
 
 class PluginNotInstalledError(Exception):
@@ -72,15 +68,40 @@ class PluginDefaultNotAvailableError(Exception):
     pass
 
 
-def _get_extension_point_url_from_name(domain, category, pluggable_name):
-    """Get the extension point URL based on a pluggable method name"""
-    return "{}/{}/{}".format(domain, category, pluggable_name).replace("//", "/")
+class PluginConflictError(Exception):
+    """Raised when multiple selectable plugins have the same highest priority."""
 
 
-def _get_extension_point_url_from_method(domain, category, plugin_method):
-    """Get the extension point URL based on a method instance"""
-    name = getattr(plugin_method, "__name__", None) or str(id(plugin_method))
-    return "{}/{}/{}".format(domain, category, name).replace("//", "/")
+class PluginValidationError(Exception):
+    """Raised when a plugin cannot accept an extension-point invocation."""
+
+
+type Requirement = str | Callable[[], bool]
+type Selector = Literal["first_match", "collect_all"]
+
+P = ParamSpec("P")
+R = TypeVar("R")
+
+
+@dataclass(frozen=True, slots=True)
+class ExtensionPoint:
+    """Unique identifier of a pluggable operation."""
+
+    domain: str
+    category: str | None
+    name: str
+
+    def __str__(self) -> str:
+        return "{}/{}/{}".format(self.domain, self.category or "", self.name).replace("//", "/")
+
+
+@dataclass(frozen=True, slots=True)
+class PluginSpec:
+    """Registration metadata attached to a plugin implementation."""
+
+    extension_point: ExtensionPoint
+    requires: tuple[Requirement, ...] = ()
+    priority: int = 0
 
 
 class IncompletePluginImplError(Exception):
@@ -89,42 +110,26 @@ class IncompletePluginImplError(Exception):
     pass
 
 
-class PluginImpl(object):
-    """Internal data class to keep track of a loaded plugin implementation.
+@dataclass(frozen=True, slots=True)
+class PluginImpl:
+    """Registered implementation of an extension point."""
 
-    Parameters
-    ----------
-    plugin : module
-        Instance of the module containing one or more plugin implementations.
-    method : method
-        Method implementing the a plugin's behavior.
-    plugin_opts : dict
-        Dictionary containing plugin options.
-
-    """
-
-    def __init__(self, plugin, method, plugin_opts):
-        self.plugin = plugin
-        self.method = method
-        self.opts = plugin_opts
-
-        if plugin_opts["tryfirst"]:
-            self.key = 1
-        elif plugin_opts["trylast"]:
-            self.key = 3
-        else:
-            self.key = 2
+    plugin: ModuleType
+    method: Callable[..., Any]
+    spec: PluginSpec
 
     @property
-    def id(self):
+    def id(self) -> str:
         """Identifier of the plugin implementation."""
         return "{}.{}".format(self.plugin.__name__, self.method.__name__)
 
-    def __repr__(self):
-        return "<PluginImpl id={}, plugin_module={}>".format(self.id, self.plugin)
+    @property
+    def priority(self) -> int:
+        """Selection priority of the implementation."""
+        return self.spec.priority
 
 
-class PluginManager(object):
+class PluginManager:
     """Plugin Manager handles discovery and registry of plugins.
 
     Usually there is only one instance of a plugin manager per host.
@@ -133,23 +138,32 @@ class PluginManager(object):
 
     DEBUG = False
 
-    def __init__(self):
-        self.importer = Importer()
-        self._registry = {}
+    # =============================================================================
+    # Dunder methods
+    # =============================================================================
+
+    def __init__(self, builtin_modules: tuple[str, ...] = (), entry_points_provider: Callable[..., Any] = entry_points) -> None:
+        self._registry: dict[ExtensionPoint, list[PluginImpl]] = {}
+        self._builtin_modules = tuple(builtin_modules)
+        self._entry_points_provider = entry_points_provider
+        self._registered_modules = set()
         self._discovery_done = False
         self._discovery_lock = threading.Lock()
 
+    # =============================================================================
+    # Properties
+    # =============================================================================
+
     @property
-    def registry(self):
+    def registry(self) -> dict[ExtensionPoint, list[PluginImpl]]:
         """Plugin registry.
 
         Lazy-loaded dictionary of all plugins available in the system.
 
         Returns
         -------
-        dict
-            Dictionary of available plugins. The keys are extension point URLs
-            and the values are instances of :class:`PluginImpl`.
+        dict[ExtensionPoint, list[PluginImpl]]
+            Available implementations grouped by extension point.
 
         """
         if not self._discovery_done:
@@ -157,7 +171,11 @@ class PluginManager(object):
 
         return self._registry
 
-    def load_plugins(self):
+    # =============================================================================
+    # Methods
+    # =============================================================================
+
+    def load_plugins(self) -> int:
         """Load available plugin modules.
 
         Returns
@@ -166,44 +184,28 @@ class PluginManager(object):
             Number of loaded plugins.
 
         """
-        # Since we modify global state,
-        # let's lock around this.
         with self._discovery_lock:
+            if self._discovery_done:
+                return 0
+
             count = 0
 
-            modules = [module_name for _importer, module_name, is_pkg in pkgutil.iter_modules() if is_pkg and module_name.startswith("compas")]
+            for module_name in self._builtin_modules:
+                plugin_module = import_module(module_name)
+                count += self.register_module(plugin_module)
 
-            modules_to_inspect = dict()
-
-            for module_name in modules:
-                module = self.importer.try_import(module_name)
-                if module:
-                    modules_to_inspect[module_name] = module
-                else:
-                    if self.DEBUG:
-                        print("Error importing module {}, skipping entire package.".format(module_name))
-                    continue
-
-                if "__all_plugins__" in dir(module):
-                    for plugin_module_name in module.__all_plugins__:
-                        plugin_module = self.importer.try_import(plugin_module_name)
-                        if plugin_module:
-                            modules_to_inspect[plugin_module_name] = plugin_module
-                        else:
-                            if self.DEBUG:
-                                print("Error importing plugin {}, skipping.".format(plugin_module_name))
-
-            if self.DEBUG:
-                print("Will inspect modules: {}".format(list(modules_to_inspect.keys())))
-
-            for plugin_module in modules_to_inspect.values():
+            discovered = self._entry_points_provider(group="compas.plugins")
+            for entry_point in sorted(discovered, key=lambda item: (item.name, item.value)):
+                plugin_module = entry_point.load()
+                if not isinstance(plugin_module, ModuleType):
+                    raise TypeError("Plugin entry point {!r} must resolve to a module.".format(entry_point.name))
                 count += self.register_module(plugin_module)
 
             self._discovery_done = True
 
         return count
 
-    def register_module(self, plugin_module):
+    def register_module(self, plugin_module: ModuleType) -> int:
         """Register a module that potentially contains plugin implementations.
 
         Parameters
@@ -219,6 +221,11 @@ class PluginManager(object):
         """
         count = 0
 
+        if plugin_module.__name__ in self._registered_modules:
+            return count
+
+        self._registered_modules.add(plugin_module.__name__)
+
         # Iterate over the plugin to locate specific @plugin decorated methods
         for name in dir(plugin_module):
             plugin_method = getattr(plugin_module, name)
@@ -226,54 +233,163 @@ class PluginManager(object):
 
             if plugin_opts is not None:
                 plugin_impl = PluginImpl(plugin_module, plugin_method, plugin_opts)
-                plugins_list = self._registry.setdefault(plugin_opts["extension_point_url"], [])
+                plugins_list = self._registry.setdefault(plugin_opts.extension_point, [])
                 plugins_list.append(plugin_impl)
-                plugins_list.sort(key=lambda p: p.key)
+                plugins_list.sort(key=lambda plugin: (-plugin.priority, plugin.id))
 
                 if self.DEBUG:
-                    print('Registered plugin with ID "{}" for extension point: {}'.format(plugin_impl.id, plugin_opts["extension_point_url"]))
+                    print('Registered plugin with ID "{}" for extension point: {}'.format(plugin_impl.id, plugin_opts.extension_point))
                 count += 1
 
         return count
 
-    def _parse_plugin_opts(self, plugin_method):
+    def reset(self) -> None:
+        """Clear registered plugins and allow discovery to run again."""
+        with self._discovery_lock:
+            self._registry.clear()
+            self._registered_modules.clear()
+            self._discovery_done = False
+
+    def verify_requirement(self, requirement: Requirement) -> bool:
+        """Verify that one plugin requirement is available."""
+        if callable(requirement):
+            return requirement()
+        return find_spec(requirement) is not None
+
+    def is_selectable(self, plugin: PluginImpl) -> bool:
+        """Determine whether all requirements of a plugin are available."""
+        selectable = all(self.verify_requirement(requirement) for requirement in plugin.spec.requires)
+        if not selectable and self.DEBUG:
+            print("Requirements not satisfied. Plugin will not be used: {}".format(plugin.id))
+        return selectable
+
+    def select(self, extension_point: ExtensionPoint) -> PluginImpl | None:
+        """Select the unique highest-priority implementation of an extension point."""
+        plugins = [plugin for plugin in self.registry.get(extension_point, []) if self.is_selectable(plugin)]
+        if not plugins:
+            return None
+        highest_priority = plugins[0].priority
+        matches = [plugin for plugin in plugins if plugin.priority == highest_priority]
+        if len(matches) > 1:
+            raise PluginConflictError(
+                'Multiple plugins have priority {} for extension point "{}": {}'.format(
+                    highest_priority,
+                    extension_point,
+                    ", ".join(plugin.id for plugin in matches),
+                )
+            )
+        return matches[0]
+
+    def collect(self, extension_point: ExtensionPoint) -> list[PluginImpl]:
+        """Collect all selectable implementations of an extension point."""
+        return [plugin for plugin in self.registry.get(extension_point, []) if self.is_selectable(plugin)]
+
+    def validate_call(self, plugin: PluginImpl, extension_point: ExtensionPoint, *args: object, **kwargs: object) -> None:
+        """Verify that a plugin implementation can accept an extension-point call.
+
+        Parameters
+        ----------
+        plugin
+            The implementation to validate.
+        extension_point
+            The extension point being called.
+        *args
+            Positional arguments passed to the extension point.
+        **kwargs
+            Keyword arguments passed to the extension point.
+
+        Raises
+        ------
+        PluginValidationError
+            If the implementation cannot accept the call.
+
+        """
+        try:
+            inspect.signature(plugin.method).bind(*args, **kwargs)
+        except TypeError as error:
+            raise PluginValidationError('Plugin "{}" cannot accept the call defined by extension point "{}".'.format(plugin.id, extension_point)) from error
+
+    # =============================================================================
+    # Private helpers
+    # =============================================================================
+
+    def _parse_plugin_opts(self, plugin_method: object) -> PluginSpec | None:
         if not inspect.isroutine(plugin_method):
             return
         try:
             res = getattr(plugin_method, "__plugin_spec__", None)
         except Exception:
             res = {}
-        if res is not None and not isinstance(res, dict):
-            # false positive
-            res = None
+        if res is not None and not isinstance(res, PluginSpec):
+            return None
         return res
 
 
+@overload
 def pluggable(
-    pluggable_method=None,
-    category=None,
-    selector="first_match",
-    domain="https://plugins.compas.dev/",
-):
+    pluggable_method: Callable[P, R],
+    category: str | None = None,
+    selector: Literal["first_match"] = "first_match",
+    domain: str = "https://plugins.compas.dev/",
+) -> Callable[P, R]: ...
+
+
+@overload
+def pluggable(
+    pluggable_method: Callable[P, R],
+    category: str | None = None,
+    *,
+    selector: Literal["collect_all"],
+    domain: str = "https://plugins.compas.dev/",
+) -> Callable[P, list[R]]: ...
+
+
+@overload
+def pluggable(
+    pluggable_method: None = None,
+    category: str | None = None,
+    selector: Literal["first_match"] = "first_match",
+    domain: str = "https://plugins.compas.dev/",
+) -> Callable[[Callable[P, R]], Callable[P, R]]: ...
+
+
+@overload
+def pluggable(
+    pluggable_method: None = None,
+    category: str | None = None,
+    *,
+    selector: Literal["collect_all"],
+    domain: str = "https://plugins.compas.dev/",
+) -> Callable[[Callable[P, R]], Callable[P, list[R]]]: ...
+
+
+def pluggable(
+    pluggable_method: Callable[P, R] | None = None,
+    category: str | None = None,
+    selector: Selector = "first_match",
+    domain: str = "https://plugins.compas.dev/",
+) -> Callable[..., Any]:
     """Decorator to mark a method as a pluggable extension point.
 
     A pluggable interface is uniquely identifiable/locatable via a URL
-    derived from the parameters ``domain``, ``category`` and name ``pluggable_method``.
-    In the example below, the URL of the pluggable definition is::
+    derived from the `domain`, `category`, and `pluggable_method` name.
+    For example:
 
-        https://plugins.compas.dev/triangulation/triangulate_mesh
+    ```text
+    https://plugins.compas.dev/triangulation/triangulate_mesh
+    ```
 
     Parameters
     ----------
     pluggable_method : callable
-        The method to decorate as ``pluggable``.
+        The method to decorate as `pluggable`.
     category : str, optional
         An optional string to group or categorize extension points.
     selector : str, optional
         String that determines the selection mode of extension points.
 
-        - ``"first_match"``: (str) Execute the first matching implementation.
-        - ``"collect_all"``: (str) Executes all matching implementations and return list of its return values.
+        - `"first_match"`: execute the uniquely highest-priority implementation.
+        - `"collect_all"`: execute all matching implementations and return their results.
 
     domain : str, optional
         Domain name that "owns" the pluggable extension point.
@@ -288,38 +404,34 @@ def pluggable(
 
     """
 
-    def pluggable_decorator(func):
+    def pluggable_decorator(func: Callable[P, R]) -> Callable[..., Any]:
         @functools.wraps(func)
-        def wrapper(*args, **kwargs):
-            extension_point_url = _get_extension_point_url_from_method(domain, category, func)
+        def wrapper(*args: P.args, **kwargs: P.kwargs) -> R | list[R]:
+            extension_point = ExtensionPoint(domain, category, func.__name__)
 
             # Select first matching plugin
             if selector == "first_match":
-                plugin_impl = _select_plugin(extension_point_url)
+                plugin_impl = plugin_manager.select(extension_point)
                 if plugin_impl is None:
                     try:
                         return func(*args, **kwargs)
                     except NotImplementedError:
-                        raise PluginNotInstalledError("Plugin not found and no default implementation for extension point URL: {}".format(extension_point_url))
+                        raise PluginNotInstalledError("Plugin not found and no default implementation for extension point: {}".format(extension_point))
                     except ImportError:
                         raise PluginDefaultNotAvailableError(
-                            "Plugin not found and the default implementation is not available in your environment for extension point URL: {}".format(extension_point_url)
+                            "Plugin not found and the default implementation is not available in your environment for extension point: {}".format(extension_point)
                         )
 
                 # Invoke plugin
+                plugin_manager.validate_call(plugin_impl, extension_point, *args, **kwargs)
                 return plugin_impl.method(*args, **kwargs)
 
             # Collect all matching plugins
             elif selector == "collect_all":
                 results = []
-
-                for plugin_impl in _collect_plugins(extension_point_url):
-                    try:
-                        result = plugin_impl.method(*args, **kwargs)
-                        results.append(result)
-                    except Exception as e:
-                        results.append(e)
-
+                for plugin_impl in plugin_manager.collect(extension_point):
+                    plugin_manager.validate_call(plugin_impl, extension_point, *args, **kwargs)
+                    results.append(plugin_impl.method(*args, **kwargs))
                 return results
             else:
                 raise ValueError("Unexpected selector type. Must be either: first_match or collect_all")
@@ -332,19 +444,40 @@ def pluggable(
         return pluggable_decorator(pluggable_method)
 
 
+@overload
 def plugin(
-    method=None,
-    category=None,
-    requires=None,
-    tryfirst=False,
-    trylast=False,
-    pluggable_name=None,
-    domain="https://plugins.compas.dev/",
-):
+    method: Callable[P, R],
+    category: str | None = None,
+    requires: Sequence[Requirement] | None = None,
+    priority: int = 0,
+    pluggable_name: str | None = None,
+    domain: str = "https://plugins.compas.dev/",
+) -> Callable[P, R]: ...
+
+
+@overload
+def plugin(
+    method: None = None,
+    category: str | None = None,
+    requires: Sequence[Requirement] | None = None,
+    priority: int = 0,
+    pluggable_name: str | None = None,
+    domain: str = "https://plugins.compas.dev/",
+) -> Callable[[Callable[P, R]], Callable[P, R]]: ...
+
+
+def plugin(
+    method: Callable[P, R] | None = None,
+    category: str | None = None,
+    requires: Sequence[Requirement] | None = None,
+    priority: int = 0,
+    pluggable_name: str | None = None,
+    domain: str = "https://plugins.compas.dev/",
+) -> Callable[P, R] | Callable[[Callable[P, R]], Callable[P, R]]:
     """Decorator to declare a plugin.
 
-    A plugin decorator marks a method as a plugin for a specified
-    :meth:`pluggable` extension point. Plugins are matched to their pluggable
+    A plugin decorator marks a method as a plugin for a specified `pluggable`
+    extension point. Plugins are matched to their pluggable
     counterparts by a combination of the name of the plugin method, the category
     and the domain specified. These 3 parts form the **extension point URL** used
     for matching.
@@ -352,20 +485,16 @@ def plugin(
     Parameters
     ----------
     method : callable
-        The method to decorate as ``plugin``.
+        The method to decorate as `plugin`.
     category : str, optional
         An optional string to group or categorize plugins.
     requires : list, optional
         Optionally defines a list of requirements that should be fulfilled
         for this plugin to be used. The requirement can either be a package
-        name (``str``) or a ``callable`` with a boolean return value,
+        name (`str`) or a callable with a boolean return value,
         in which any arbitrary check can be implemented.
-    tryfirst : bool, optional
-        Plugins can declare a preferred priority by setting this to ``True``.
-        By default ``False``.
-    trylast : bool, optional
-        Alternatively, a plugin can demote itself to be least preferable
-        setting ``trylast`` to ``True``. By default ``False``.
+    priority : int, optional
+        Selection priority. Higher values are selected first.
     pluggable_name : str, optional
         Usually, the name of the decorated plugin method matches that of the
         pluggable interface. When that is not the case, the pluggable name can be
@@ -377,23 +506,14 @@ def plugin(
 
     """
 
-    def setattr_hookspec_opts(func):
-        if tryfirst and trylast:
-            raise ValueError("You cannot set a plugin to try first and last at the same time.")
-
-        name = pluggable_name or getattr(func, "__name__", None)
-        extension_point_url = _get_extension_point_url_from_name(domain, category, name)
+    def setattr_hookspec_opts(func: Callable[P, R]) -> Callable[P, R]:
+        name = pluggable_name or func.__name__
+        extension_point = ExtensionPoint(domain, category, name)
 
         setattr(
             func,
             "__plugin_spec__",
-            dict(
-                extension_point_url=extension_point_url,
-                pluggable_name=name,
-                requires=requires,
-                tryfirst=tryfirst,
-                trylast=trylast,
-            ),
+            PluginSpec(extension_point=extension_point, requires=tuple(requires or ()), priority=priority),
         )
         return func
 
@@ -403,111 +523,23 @@ def plugin(
         return setattr_hookspec_opts
 
 
-class Importer(object):
-    """Internal class to help importing modules."""
+def validate_plugin_implementation(implementation_type: type[object]) -> None:
+    """Verify that a class implements all inherited abstract methods.
 
-    def __init__(self):
-        # dictionary of module_name => bool (importable yes/no)
-        self._cache = {}
+    Parameters
+    ----------
+    implementation_type
+        The implementation class to verify.
 
-    def try_import(self, module_name):
-        """Attempt to import a module, but do not raise in case of error.
+    Raises
+    ------
+    IncompletePluginImplError
+        If an abstract method remains unimplemented.
 
-        Parameters
-        ----------
-        module_name : str
-            Module to try to import.
-
-        Returns
-        -------
-        module
-            If importable, it returns the imported module, otherwise ``None``.
-
-        """
-        module = None
-        try:
-            module = __import__(module_name, fromlist=["__name__"], level=0)
-            self._cache[module_name] = True
-
-        # There are two types of possible failure modes:
-        # 1) cannot be imported, or
-        # 2) is a python 3 module and we're in IPY, which causes a SyntaxError
-        # 3) in Rhino8 we may get a nasty DotNet Exception when trying to import a module
-        except (ImportError, SyntaxError, DotNetException):
-            self._cache[module_name] = False
-
-        return module
-
-    def check_importable(self, module_name):
-        """Check if a module is importable.
-
-        Parameters
-        ----------
-        module_name : str
-            Name of the module to check for importability.
-
-        Returns
-        -------
-        bool
-            ``True`` if the module can be imported correctly, otherwise ``False``.
-
-        """
-        if module_name not in self._cache:
-            self.try_import(module_name)
-
-        return self._cache[module_name]
+    """
+    for _, value in inspect.getmembers(implementation_type):
+        if (inspect.isfunction(value) or inspect.ismethod(value)) and hasattr(value, "__isabstractmethod__"):
+            raise IncompletePluginImplError("Abstract method not implemented: {}".format(value))
 
 
-class PluginValidator(object):
-    """Plugin Validator handles validation of plugins."""
-
-    def __init__(self, manager):
-        self.manager = manager
-
-    def verify_requirement(self, requirement):
-        if callable(requirement):
-            return requirement()
-
-        return self.manager.importer.check_importable(requirement)
-
-    def is_plugin_selectable(self, plugin):
-        if plugin.opts["requires"]:
-            importable_requirements = (self.verify_requirement(requirement) for requirement in plugin.opts["requires"])
-
-            if not all(importable_requirements):
-                if self.manager.DEBUG:
-                    print("Requirements not satisfied. Plugin will not be used: {}".format(plugin.id))
-                return False
-
-        return True
-
-    def select_plugin(self, extension_point_url):
-        if self.manager.DEBUG:
-            print("Extension Point URL {} invoked. Will select a matching plugin".format(extension_point_url))
-
-        plugins = self.manager.registry.get(extension_point_url) or []
-        for plugin in plugins:
-            if self.is_plugin_selectable(plugin):
-                return plugin
-
-        # Nothing found, raise
-        # raise PluginNotInstalledError("Plugin not found for extension point URL: {}".format(extension_point_url))
-
-    def collect_plugins(self, extension_point_url):
-        if self.manager.DEBUG:
-            print("Extension Point URL {} invoked. Will select a matching plugin".format(extension_point_url))
-
-        plugins = self.manager.registry.get(extension_point_url) or []
-        return [plugin for plugin in plugins if self.is_plugin_selectable(plugin)]
-
-    @staticmethod
-    def ensure_implementations(cls):
-        for name, value in inspect.getmembers(cls):
-            if inspect.isfunction(value) or inspect.ismethod(value):
-                if hasattr(value, "__isabstractmethod__"):
-                    raise IncompletePluginImplError("Abstract method not implemented: {}".format(value))
-
-
-plugin_manager = PluginManager()
-_select_plugin = PluginValidator(plugin_manager).select_plugin
-_collect_plugins = PluginValidator(plugin_manager).collect_plugins
+plugin_manager = PluginManager(builtin_modules=("compas.scene",))

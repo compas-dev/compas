@@ -1,15 +1,11 @@
-from typing import Iterator
-from typing import MutableSequence
-from typing import Optional
-from typing import Sequence
+from collections.abc import Iterator
+from collections.abc import MutableSequence
+from collections.abc import Sequence
+from typing import Self
 from typing import TypeVar
-from typing import Union
 from typing import overload
 
-from typing_extensions import Self
-
 from compas._typing import Coordinates
-from compas._typing import CoordinatesType
 from compas._typing import CoordinateType
 from compas.geometry import Geometry
 from compas.geometry import Transformation
@@ -121,6 +117,10 @@ class Frame(Geometry):
 
     """
 
+    # ==========================================================================
+    # Data
+    # ==========================================================================
+
     @property
     def __data__(self) -> dict[str, list[float]]:
         """The data representation of the frame."""
@@ -130,18 +130,50 @@ class Frame(Geometry):
             "yaxis": self.yaxis.__data__,
         }
 
+    @classmethod
+    def __from_data__(cls, data: dict[str, Sequence[float]]) -> Self:
+        """Reconstruct a frame from its canonical data representation.
+
+        Parameters
+        ----------
+        data
+            Canonical frame data produced by `Frame.__data__`.
+
+        Returns
+        -------
+        Self
+            A frame containing independent copies of the serialized point and
+            axes.
+
+        Notes
+        -----
+        This is a trusted deserialization path. Canonical serialized frame axes
+        are already orthonormal, so they are copied directly without validation,
+        unitization, or orthogonalization. Malformed data can therefore create
+        an invalid frame.
+
+        Use `Frame(...)` to construct a frame from arbitrary axes. The public
+        constructor establishes the orthonormal frame invariant.
+
+        """
+        return cls._from_trusted_data(data["point"], data["xaxis"], data["yaxis"])
+
+    # ==========================================================================
+    # Dunder methods
+    # ==========================================================================
+
     def __init__(
         self,
         point: CoordinateType,
-        xaxis: Optional[CoordinateType] = None,
-        yaxis: Optional[CoordinateType] = None,
-        name: Optional[str] = None,
+        xaxis: CoordinateType | None = None,
+        yaxis: CoordinateType | None = None,
+        name: str | None = None,
     ) -> None:
         super().__init__(name=name)
-        self._point = None
-        self._xaxis = None
-        self._yaxis = None
-        self._zaxis = None
+        self._point: Point | None = None
+        self._xaxis: Vector | None = None
+        self._yaxis: Vector | None = None
+        self._zaxis: Vector | None = None
         self.point = point
         self.xaxis = Vector(1, 0, 0) if xaxis is None else xaxis
         self.yaxis = Vector(0, 1, 0) if yaxis is None else yaxis
@@ -165,7 +197,7 @@ class Frame(Geometry):
     def __len__(self) -> int:
         return 3
 
-    def __getitem__(self, key: int) -> Union[Point, Vector]:
+    def __getitem__(self, key: int) -> Point | Vector:
         if key == 0:
             return self.point
         if key == 1:
@@ -186,8 +218,8 @@ class Frame(Geometry):
             return
         raise KeyError
 
-    def __iter__(self) -> Iterator[Union[Point, Vector]]:
-        return iter([self.point, self.xaxis, self.yaxis])
+    def __iter__(self) -> Iterator[Point | Vector]:
+        return iter((self.point, self.xaxis, self.yaxis))
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, Coordinates):
@@ -344,9 +376,6 @@ class Frame(Geometry):
             self._zaxis = self.xaxis.cross(self.yaxis)
         return self._zaxis
 
-    def axes(self) -> list[Vector]:
-        return [self.xaxis, self.yaxis, self.zaxis]
-
     @property
     def quaternion(self) -> Quaternion:
         """The rotation of the frame represented as a quaternion.
@@ -399,7 +428,7 @@ class Frame(Geometry):
         Vector(x=0.000, y=1.000, z=0.000)
 
         """
-        return cls([0, 0, 0], [1, 0, 0], [0, 1, 0])
+        return cls._from_trusted_data((0, 0, 0), (1, 0, 0), (0, 1, 0))
 
     @classmethod
     def worldZX(cls) -> Self:
@@ -421,7 +450,7 @@ class Frame(Geometry):
         Vector(x=1.000, y=0.000, z=0.000)
 
         """
-        return cls([0, 0, 0], [0, 0, 1], [1, 0, 0])
+        return cls._from_trusted_data((0, 0, 0), (0, 0, 1), (1, 0, 0))
 
     @classmethod
     def worldYZ(cls) -> Self:
@@ -443,7 +472,7 @@ class Frame(Geometry):
         Vector(x=0.000, y=0.000, z=1.000)
 
         """
-        return cls([0, 0, 0], [0, 1, 0], [0, 0, 1])
+        return cls._from_trusted_data((0, 0, 0), (0, 1, 0), (0, 0, 1))
 
     @classmethod
     def from_points(cls, point: CoordinateType, point_xaxis: CoordinateType, point_xyplane: CoordinateType) -> Self:
@@ -506,7 +535,7 @@ class Frame(Geometry):
 
         """
         xaxis, yaxis = rotation.basis_vectors
-        return cls(point, xaxis, yaxis)
+        return cls._from_trusted_data(point, xaxis, yaxis)
 
     @classmethod
     def from_transformation(cls, transformation: Transformation) -> Self:
@@ -535,10 +564,10 @@ class Frame(Geometry):
         """
         xaxis, yaxis = transformation.basis_vectors
         point = transformation.translation_vector
-        return cls(point, xaxis, yaxis)
+        return cls._from_trusted_data(point, xaxis, yaxis)
 
     @classmethod
-    def from_matrix(cls, matrix: CoordinatesType) -> Self:
+    def from_matrix(cls, matrix: Sequence[Sequence[float]]) -> Self:
         """Construct a frame from a matrix.
 
         Parameters
@@ -566,7 +595,7 @@ class Frame(Geometry):
         _, _, angles, point, _ = decompose_matrix(matrix)
         R = matrix_from_euler_angles(angles, static=True, axes="xyz")
         xaxis, yaxis = basis_vectors_from_matrix(R)
-        return cls(point, xaxis, yaxis)
+        return cls._from_trusted_data(point, xaxis, yaxis)
 
     @classmethod
     def from_list(cls, values: MutableSequence[float]) -> Self:
@@ -638,7 +667,7 @@ class Frame(Geometry):
         """
         R = matrix_from_quaternion(quaternion)
         xaxis, yaxis = basis_vectors_from_matrix(R)
-        return cls(point, xaxis, yaxis)
+        return cls._from_trusted_data(point, xaxis, yaxis)
 
     @classmethod
     def from_axis_angle_vector(cls, axis_angle_vector: CoordinateType, point: CoordinateType = (0, 0, 0)) -> Self:
@@ -669,7 +698,7 @@ class Frame(Geometry):
         """
         R = matrix_from_axis_angle_vector(axis_angle_vector)
         xaxis, yaxis = basis_vectors_from_matrix(R)
-        return cls(point, xaxis, yaxis)
+        return cls._from_trusted_data(point, xaxis, yaxis)
 
     @classmethod
     def from_euler_angles(
@@ -710,7 +739,7 @@ class Frame(Geometry):
         """
         R = matrix_from_euler_angles(euler_angles, static, axes)
         xaxis, yaxis = basis_vectors_from_matrix(R)
-        return cls(point, xaxis, yaxis)
+        return cls._from_trusted_data(point, xaxis, yaxis)
 
     @classmethod
     def from_plane(cls, plane: PlaneType) -> Self:
@@ -772,6 +801,33 @@ class Frame(Geometry):
     # ==========================================================================
     # Methods
     # ==========================================================================
+
+    def axes(self) -> list[Vector]:
+        """Return the X, Y, and Z axes of the frame."""
+        return [self.xaxis, self.yaxis, self.zaxis]
+
+    def copy(self, cls: type[Self] | None = None, copy_guid: bool = False) -> Self:  # type: ignore[override]
+        """Make an independent copy of the frame.
+
+        Parameters
+        ----------
+        cls
+            The frame type to return. Defaults to the type of this frame.
+        copy_guid
+            If True, preserve the GUID of this frame.
+
+        Returns
+        -------
+        Self
+            An independent frame with the same point, axes, and name.
+
+        """
+        if cls is None:
+            cls = type(self)
+        frame = cls._from_trusted_data(self.point, self.xaxis, self.yaxis, name=self._name)
+        if copy_guid:
+            frame._guid = self.guid
+        return frame
 
     def invert(self) -> None:
         """Invert the frame while keeping the X axis fixed."""
@@ -888,7 +944,7 @@ class Frame(Geometry):
     @overload
     def to_local_coordinates(self, obj_in_wcf: GeometryType) -> GeometryType: ...
 
-    def to_local_coordinates(self, obj_in_wcf: Union[CoordinateType, GeometryType]) -> Union[Point, GeometryType]:
+    def to_local_coordinates(self, obj_in_wcf: CoordinateType | GeometryType) -> Point | GeometryType:
         """Returns the object's coordinates in the local coordinate system of the frame.
 
         Parameters
@@ -928,7 +984,7 @@ class Frame(Geometry):
     @overload
     def to_world_coordinates(self, obj_in_lcf: GeometryType) -> GeometryType: ...
 
-    def to_world_coordinates(self, obj_in_lcf: Union[CoordinateType, GeometryType]) -> Union[Point, GeometryType]:
+    def to_world_coordinates(self, obj_in_lcf: CoordinateType | GeometryType) -> Point | GeometryType:
         """Returns the object's coordinates in the global coordinate frame.
 
         Parameters
@@ -962,6 +1018,10 @@ class Frame(Geometry):
             return obj_in_lcf.transformed(T)
         return Point(obj_in_lcf[0], obj_in_lcf[1], obj_in_lcf[2]).transformed(T)
 
+    # ==========================================================================
+    # Transformations
+    # ==========================================================================
+
     def transform(self, transformation: TransformationType) -> None:
         """Transform the frame.
 
@@ -984,10 +1044,39 @@ class Frame(Geometry):
         # Frame transformation uses concatenation, so raw matrix inputs need the
         # same lightweight wrapper accepted by the base geometry API.
         if not isinstance(transformation, Transformation):
-            transformation = Transformation(transformation)
+            transformation = Transformation(transformation)  # pyright: ignore[reportArgumentType]
         X = transformation * Transformation.from_frame(self)
         point = X.translation_vector
         xaxis, yaxis = X.basis_vectors
-        self.point = point
-        self.xaxis = xaxis
-        self.yaxis = yaxis
+        # The decomposition above already returns an orthonormal rotation basis.
+        # Assign it directly to avoid repeating the constructor's validation.
+        self._point = Point(point[0], point[1], point[2])
+        self._xaxis = xaxis
+        self._yaxis = yaxis
+        self._zaxis = None
+
+    # ==========================================================================
+    # Private helpers
+    # ==========================================================================
+
+    @classmethod
+    def _from_trusted_data(
+        cls,
+        point: CoordinateType,
+        xaxis: CoordinateType,
+        yaxis: CoordinateType,
+        name: str | None = None,
+    ) -> Self:
+        """Construct a frame by copying coordinates known to be valid.
+
+        This internal constructor preserves the frame invariant without paying
+        for redundant axis validation and orthonormalization.
+
+        """
+        frame = cls.__new__(cls)
+        Geometry.__init__(frame, name=name)
+        frame._point = Point(point[0], point[1], point[2])
+        frame._xaxis = Vector(xaxis[0], xaxis[1], xaxis[2])
+        frame._yaxis = Vector(yaxis[0], yaxis[1], yaxis[2])
+        frame._zaxis = None
+        return frame

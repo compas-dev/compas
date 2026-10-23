@@ -60,9 +60,7 @@ def test_accessor_decoder_normalizes_non_sparse_accessors():
     document = {
         "buffers": [{"byteLength": 1}],
         "bufferViews": [{"buffer": 0, "byteLength": 1}],
-        "accessors": [
-            {"bufferView": 0, "componentType": 5121, "count": 1, "type": "SCALAR", "normalized": True}
-        ],
+        "accessors": [{"bufferView": 0, "componentType": 5121, "count": 1, "type": "SCALAR", "normalized": True}],
     }
 
     assert GLTFAccessorDecoder(document, b"\xff", None).decode_all() == [[1.0]]

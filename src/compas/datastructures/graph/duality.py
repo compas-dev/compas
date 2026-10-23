@@ -1,9 +1,8 @@
+from collections.abc import Iterable
+from collections.abc import Mapping
+from collections.abc import Sequence
 from math import pi
 from typing import TYPE_CHECKING
-from typing import Iterable
-from typing import Mapping
-from typing import Optional
-from typing import Sequence
 
 from compas.geometry import angle_vectors
 from compas.geometry import is_ccw_xy
@@ -17,7 +16,7 @@ if TYPE_CHECKING:
 PI2 = 2.0 * pi
 
 
-def graph_find_cycles(graph: "Graph", breakpoints: Optional[Iterable[Node]] = None) -> list[list[Node]]:
+def graph_find_cycles(graph: "Graph", breakpoints: Iterable[Node] | None = None) -> list[list[Node]]:
     """Find the faces of a graph.
 
     Parameters

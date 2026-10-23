@@ -2,7 +2,6 @@
 
 from os import PathLike
 from pathlib import Path
-from typing import Optional
 
 from compas import _iotools
 
@@ -15,7 +14,7 @@ from .gltf_resources import URLResourceLoader
 class GLTFReader:
     """Read a primary glTF source without parsing it."""
 
-    def __init__(self, source: _iotools.IOSource, resource_loader: Optional[GLTFResourceLoader] = None) -> None:
+    def __init__(self, source: _iotools.IOSource, resource_loader: GLTFResourceLoader | None = None) -> None:
         self.source = source
         self.resource_loader = resource_loader
 

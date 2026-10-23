@@ -20,4 +20,3 @@ class STLReader:
 
         """
         return _iotools.read_bytes(self.source, encoding=self.encoding)
-

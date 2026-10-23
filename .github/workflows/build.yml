@@ -2,26 +2,39 @@ name: build
 
 on:
   push:
-    branches:
-      - main
-      - '*.LTS'
+    branches: [main]
   pull_request:
-    branches:
-      - main
-      - '*.LTS'
+    branches: [main]
+
+permissions:
+  contents: read
 
 jobs:
+  release-change:
+    name: Detect release merge
+    runs-on: ubuntu-latest
+    outputs:
+      is-release: ${{ steps.release.outputs.is-release }}
+    steps:
+      - uses: compas-dev/compas-actions/release-check@v1
+        id: release
+
   build:
-    if: "!contains(github.event.pull_request.labels.*.name, 'docs-only')"
+    needs: release-change
+    if: >-
+      !contains(github.event.pull_request.labels.*.name, 'docs-only') &&
+      (github.event_name == 'pull_request' || needs.release-change.outputs.is-release != 'true')
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        python: ["3.9", "3.10", "3.11", "3.12"]
+        python: ["3.12", "3.13", "3.14"]
 
     steps:
-      - uses: compas-dev/compas-actions.build@v4
+      - uses: compas-dev/compas-actions/ci@v1
         with:
-          invoke_lint: true
-          invoke_test: true
-          python: ${{ matrix.python }}
+          python-version: ${{ matrix.python }}
+          management-tool: uv
+          extras: dev
+          invoke-tasks: lint test

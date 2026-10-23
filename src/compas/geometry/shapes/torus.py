@@ -1,12 +1,20 @@
 from math import cos
 from math import pi
 from math import sin
+from math import sqrt
+from typing import TYPE_CHECKING
+from typing import Self
 
+from compas._typing import CoordinatesType
+from compas._typing import CoordinateType
 from compas.geometry import Frame
 from compas.geometry import Plane
-from compas.geometry import transform_points
+from compas.geometry import Point
 
 from .shape import Shape
+
+if TYPE_CHECKING:
+    from compas.geometry import Brep
 
 
 class Torus(Shape):
@@ -14,42 +22,15 @@ class Torus(Shape):
 
     Parameters
     ----------
-    radius_axis: float, optional
+    radius_axis
         The radius of the axis.
-    radius_pipe: float, optional
+    radius_pipe
         The radius of the pipe.
-    frame : :class:`compas.geometry.Frame`, optional
+    frame
         The local coordinate system of the torus.
-        Default is ``None``, in which case the torus is constructed in the world XY plane.
-    name : str, optional
+        Default is `None`, in which case the torus is constructed in the world XY plane.
+    name
         The name of the shape.
-
-    Attributes
-    ----------
-    frame : :class:`compas.geometry.Frame`
-        The coordinate system of the torus.
-    transformation : :class:`compas.geometry.Transformation`
-        The transformation of the sphere to global coordinates.
-    radius_axis : float
-        The radius of the axis.
-    radius_pipe : float
-        The radius of the pipe.
-    axis : :class:`compas.geometry.Line`, read-only
-        The central axis of the torus.
-    base : :class:`compas.geometry.Point`, read-only
-        The base point of the torus.
-        The base point is at the origin of the local coordinate system.
-    plane : :class:`compas.geometry.Plane`, read-only
-        The plane of the torus.
-        The base point of the plane is at the origin of the local coordinate system.
-        The normal of the plane is in the direction of the z-axis of the local coordinate system.
-    circle : :class:`compas.geometry.Circle`, read-only
-        The base circle of the torus.
-        The center of the circle is at the origin of the local coordinate system.
-    area : float, read-only
-        The surface area of the torus.
-    volume : float, read-only
-        The volume of the torus.
 
     Examples
     --------
@@ -60,9 +41,8 @@ class Torus(Shape):
 
     """
 
-
     @property
-    def __data__(self):
+    def __data__(self) -> dict:
         return {
             "radius_axis": self.radius_axis,
             "radius_pipe": self.radius_pipe,
@@ -70,21 +50,27 @@ class Torus(Shape):
         }
 
     @classmethod
-    def __from_data__(cls, data):
+    def __from_data__(cls, data: dict) -> Self:
         return cls(
             radius_axis=data["radius_axis"],
             radius_pipe=data["radius_pipe"],
             frame=Frame.__from_data__(data["frame"]),
         )
 
-    def __init__(self, radius_axis, radius_pipe, frame=None, name=None):
-        super(Torus, self).__init__(frame=frame, name=name)
-        self._radius_axis = None
-        self._radius_pipe = None
+    def __init__(
+        self,
+        radius_axis: float,
+        radius_pipe: float,
+        frame: Frame | None = None,
+        name: str | None = None,
+    ) -> None:
+        super().__init__(frame=frame, name=name)
+        self._radius_axis: float | None = None
+        self._radius_pipe: float | None = None
         self.radius_axis = radius_axis
         self.radius_pipe = radius_pipe
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "Torus(frame={0!r}, radius_axis={1!r}, radius_pipe={2!r})".format(
             self.frame,
             self.radius_axis,
@@ -96,43 +82,53 @@ class Torus(Shape):
     # ==========================================================================
 
     @property
-    def plane(self):
+    def plane(self) -> Plane:
+        """The equatorial plane of the torus."""
         return Plane(self.frame.point, self.frame.zaxis)
 
     @property
-    def radius_axis(self):
+    def radius_axis(self) -> float:
+        """The radius from the torus axis to the pipe center."""
         if self._radius_axis is None:
             raise ValueError("The torus has no axis radius.")
         return self._radius_axis
 
     @radius_axis.setter
-    def radius_axis(self, radius):
-        if radius < 0:
-            raise ValueError("The value for the axis radius should be radius >= 0.")
+    def radius_axis(self, radius: float) -> None:
+        if radius <= 0:
+            raise ValueError("The axis radius of a torus should be larger than zero.")
+        if self._radius_pipe is not None and radius <= self._radius_pipe:
+            raise ValueError("The axis radius of a ring torus should be larger than its pipe radius.")
         self._radius_axis = float(radius)
+        self._invalidate_discretization()
 
     @property
-    def radius_pipe(self):
+    def radius_pipe(self) -> float:
+        """The positive radius of the torus pipe."""
         if self._radius_pipe is None:
             raise ValueError("The torus has no pipe radius.")
         return self._radius_pipe
 
     @radius_pipe.setter
-    def radius_pipe(self, radius):
-        if radius < 0:
-            raise ValueError("The value for the pipe radius should be radius >= 0.")
+    def radius_pipe(self, radius: float) -> None:
+        if radius <= 0:
+            raise ValueError("The pipe radius of a torus should be larger than zero.")
+        if self._radius_axis is not None and radius >= self._radius_axis:
+            raise ValueError("The pipe radius of a ring torus should be smaller than its axis radius.")
         self._radius_pipe = float(radius)
+        self._invalidate_discretization()
 
     @property
-    def center(self):
-        return self.plane.point
+    def center(self) -> Point:
+        """The center point of the torus."""
+        return self.frame.point
 
-    @property
-    def area(self):
+    def area(self) -> float:
+        """Compute the surface area of the torus."""
         return (2 * pi * self.radius_pipe) * (2 * pi * self.radius_axis)
 
-    @property
-    def volume(self):
+    def volume(self) -> float:
+        """Compute the volume enclosed by the torus."""
         return (pi * self.radius_pipe**2) * (2 * pi * self.radius_axis)
 
     # ==========================================================================
@@ -140,21 +136,21 @@ class Torus(Shape):
     # ==========================================================================
 
     @classmethod
-    def from_plane_and_radii(cls, plane, radius_axis, radius_pipe):
+    def from_plane_and_radii(cls, plane: Plane, radius_axis: float, radius_pipe: float) -> Self:
         """Construct a torus from a plane and two radii.
 
         Parameters
         ----------
-        plane : :class:`compas.geometry.Plane`
+        plane
             The plane of the torus.
-        radius_axis: float
+        radius_axis
             The radius of the axis.
-        radius_pipe: float
+        radius_pipe
             The radius of the pipe.
 
         Returns
         -------
-        :class:`compas.geometry.Torus`
+        Self
             The constructed torus.
 
         Examples
@@ -172,21 +168,18 @@ class Torus(Shape):
     # Discretisation
     # ==========================================================================
 
-    def compute_vertices(self):  # type: () -> list[float]
-        """Compute the vertices of the discrete representation of the sphere.
+    def _compute_vertices(self, u: int, v: int) -> list[CoordinateType]:
+        """Compute the vertices of the discrete representation of the torus.
 
         Returns
         -------
         list[list[float]]
 
         """
-        u = self.resolution_u
-        v = self.resolution_v
-
         theta = pi * 2 / u
         phi = pi * 2 / v
 
-        vertices = []
+        vertices: list[CoordinateType] = []
         for i in range(u):
             for j in range(v):
                 x = cos(i * theta) * (self.radius_axis + self.radius_pipe * cos(j * phi))
@@ -194,19 +187,17 @@ class Torus(Shape):
                 z = self.radius_pipe * sin(j * phi)
                 vertices.append([x, y, z])
 
-        vertices = transform_points(vertices, self.transformation)
         return vertices
 
-    def compute_faces(self):  # type: () -> list[list[int]]
-        """Compute the faces of the discrete representation of the sphere.
+    def compute_faces(self, u: int | None = None, v: int | None = None) -> list[list[int]]:
+        """Compute the faces of the discrete representation of the torus.
 
         Returns
         -------
         list[list[int]]
 
         """
-        u = self.resolution_u
-        v = self.resolution_v
+        u, v = self._resolutions(u, v)
 
         faces = []
         for i in range(u):
@@ -225,12 +216,12 @@ class Torus(Shape):
     # Conversions
     # ==========================================================================
 
-    def to_brep(self):
-        """Returns a BRep representation of the torus.
+    def to_brep(self) -> "Brep":
+        """Return a BRep representation of the torus.
 
         Returns
         -------
-        :class:`compas.brep.Brep`
+        Brep
 
         """
         from compas.geometry import Brep
@@ -241,43 +232,64 @@ class Torus(Shape):
     # Transformations
     # ==========================================================================
 
-    def transform(self, transformation):
-        """Transform the torus.
-
-        Parameters
-        ----------
-        transformation : :class:`compas.geometry.Transformation`
-            The transformation used to transform the Torus.
-
-        Returns
-        -------
-        None
-
-        Examples
-        --------
-        >>> from compas.geometry import Frame
-        >>> from compas.geometry import Transformation
-        >>> from compas.geometry import Torus
-        >>> torus = Torus(5, 2)
-        >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> T = Transformation.from_frame(frame)
-        >>> torus.transform(T)
-
-        """
-        self.frame.transform(transformation)
-
-    def scale(self, factor):
+    def scale(self, x: float, y: float | None = None, z: float | None = None) -> None:
         """Scale the torus by multiplying the axis radius and pipe radius by a factor.
 
         Parameters
         ----------
-        factor : float
-            The scaling factor.
+        x
+            The uniform scaling factor.
+        y
+            An optional scaling factor that must equal `x`.
+        z
+            An optional scaling factor that must equal `x`.
+
+        """
+        if (y is not None and y != x) or (z is not None and z != x):
+            raise ValueError("A torus only supports uniform scaling.")
+        if x <= 0:
+            raise ValueError("The scaling factor should be larger than zero.")
+        # Update both radii atomically so the ring-torus invariant is preserved
+        # while scaling down as well as while scaling up.
+        self._radius_axis = self.radius_axis * x
+        self._radius_pipe = self.radius_pipe * x
+
+    # ==========================================================================
+    # Methods
+    # ==========================================================================
+
+    def contains_point(self, point: CoordinateType, tol: float = 1e-6) -> bool:
+        """Verify whether a point is inside the torus.
+
+        Parameters
+        ----------
+        point
+            The point to test.
+        tol
+            The tolerance for the test.
 
         Returns
         -------
-        None
+        bool
 
         """
-        self.radius_axis *= factor
-        self.radius_pipe *= factor
+        x, y, z = self.frame.to_local_coordinates(point)
+        radial = sqrt(x**2 + y**2) - self.radius_axis
+        return radial**2 + z**2 <= (self.radius_pipe + tol) ** 2
+
+    def contains_points(self, points: CoordinatesType, tol: float = 1e-6) -> list[bool]:
+        """Verify whether points are inside the torus.
+
+        Parameters
+        ----------
+        points
+            The points to test.
+        tol
+            The tolerance for the test.
+
+        Returns
+        -------
+        list[bool]
+
+        """
+        return [self.contains_point(point, tol=tol) for point in points]

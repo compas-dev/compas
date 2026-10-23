@@ -1,6 +1,5 @@
+from collections.abc import Sequence
 from typing import Any
-from typing import Optional
-from typing import Sequence
 
 from compas._typing import CoordinatesType
 from compas._typing import CoordinateType
@@ -196,7 +195,7 @@ def is_polygon_convex_xy(polygon: Sequence[Sequence[float]], colinear: bool = Fa
 # =============================================================================
 
 
-def is_point_on_line_xy(point: CoordinateType, line: CoordinatesType, tol: Optional[float] = None) -> bool:
+def is_point_on_line_xy(point: CoordinateType, line: CoordinatesType, tol: float | None = None) -> bool:
     """Determine if a point lies on a line on the XY-plane.
 
     Parameters
@@ -224,7 +223,7 @@ def is_point_on_line_xy(point: CoordinateType, line: CoordinatesType, tol: Optio
     return TOL.is_zero(distance_point_line_xy(point, line), tol)
 
 
-def is_point_on_segment_xy(point: CoordinateType, segment: CoordinatesType, tol: Optional[float] = None) -> bool:
+def is_point_on_segment_xy(point: CoordinateType, segment: CoordinatesType, tol: float | None = None) -> bool:
     """Determine if a point lies on a given line segment on the XY-plane.
 
     Parameters
@@ -268,7 +267,7 @@ def is_point_on_segment_xy(point: CoordinateType, segment: CoordinatesType, tol:
     return False
 
 
-def is_point_on_polyline_xy(point: Sequence[float], polyline: Sequence[Sequence[float]], tol: Optional[float] = None) -> bool:
+def is_point_on_polyline_xy(point: Sequence[float], polyline: Sequence[Sequence[float]], tol: float | None = None) -> bool:
     """Determine if a point is on a polyline on the XY-plane.
 
     Parameters
@@ -532,7 +531,7 @@ def is_polygon_in_polygon_xy(polygon1: Sequence[Sequence[float]], polygon2: Sequ
 # =============================================================================
 
 
-def is_intersection_line_line_xy(l1: Sequence[Sequence[float]], l2: Sequence[Sequence[float]], tol: Optional[float] = None) -> bool:
+def is_intersection_line_line_xy(l1: Sequence[Sequence[float]], l2: Sequence[Sequence[float]], tol: float | None = None) -> bool:
     """Verifies if two lines intersect on the XY-plane.
 
     Parameters

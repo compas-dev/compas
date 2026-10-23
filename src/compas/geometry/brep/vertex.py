@@ -1,47 +1,47 @@
+from typing import TYPE_CHECKING
+from typing import Any
+from typing import Self
+
 from compas.data import Data
+
+if TYPE_CHECKING:
+    from compas.geometry import Point
 
 
 class BrepVertex(Data):
-    """An interface for a Brep Vertex
+    """Interface for a topological vertex of a boundary representation."""
 
-    Attributes
-    ----------
-    point : :class:`compas.geometry.Point`, read_only
-        Returns the geometry of this vertex as a 3D point
-    native_vertex : Any
-        The underlying vertex object. Type is backend-dependent.
-
-    """
-
-    # ==============================================================================
+    # ==========================================================================
     # Properties
-    # ==============================================================================
+    # ==========================================================================
 
     @property
-    def point(self):
+    def point(self) -> "Point":
+        """The geometric point of the vertex."""
         raise NotImplementedError
 
     @property
-    def native_vertex(self):
+    def native_vertex(self) -> Any:
+        """The backend-specific vertex object."""
         raise NotImplementedError
 
-    # ==============================================================================
+    # ==========================================================================
     # Constructors
-    # ==============================================================================
+    # ==========================================================================
 
     @classmethod
-    def from_point(cls, point):
-        """Creates a Brep vertex from a Point
+    def from_point(cls, point: "Point") -> Self:
+        """Construct a Brep vertex from a point.
 
         Parameters
         ----------
-        point: :class:`compas.geometry.Point`
-            The point to create a vertex from
+        point
+            The geometric point.
 
         Returns
         -------
-        :class:`compas.geometry.BrepVertex`
-            The created vertex
+        Self
+            The constructed vertex.
 
         """
         raise NotImplementedError

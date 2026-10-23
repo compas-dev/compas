@@ -15,6 +15,45 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Replaced backend-specific `NurbsCurve` and `NurbsSurface` substitution with stable core wrappers and operation-level plugin contracts.
+* Modernized internal path, URL, text-stream, and binary-stream handling and made ownership of opened resources explicit.
+* Corrected variance, standard-deviation, Gram-Schmidt, determinant, inverse, matrix-decomposition, and projection edge-case behavior in `compas.linalg`.
+* Removed the undocumented `Memoized` and `memoize` factorization cache API. `chofactor()` and `lufactorized()` now directly factor the supplied matrix instead of relying on a caller-provided cache key for mutable NumPy data.
+* Grouped triangle-mesh algorithms in `compas.geometry.trimesh`, removed obsolete `_numpy` names, exposed useful numerical utilities, and corrected curvature, pulling, sampling, gradient, and smoothing defects.
+* Standardized triangle-mesh parameter names and matrix return types, with explicit errors for meshes that cannot support area sampling or normalized cotangent weights.
+* Grouped all transformation classes in `compas.geometry.transformations` while preserving their root-level public imports and serialized dtype identifiers.
+* Renamed `pca_numpy` to `pca`, moved it to the canonical `pca` module, and made its numerical imports lazy.
+* Consolidated the barycentric, Coons-patch, and point-tweening interpolation modules into one canonical module.
+* Added built-in SciPy-interpolated scalar-field contours with Python marching-squares path extraction.
+* Modernized geometry offset annotations and documentation and replaced mutable normal defaults.
+* Added Python 3.12 generic annotations and MkDocs-compatible documentation throughout `compas.itertools` while preserving lazy iterator behavior.
+* Removed obsolete casts and type suppressions from glTF conversion, subdivision, JSON encoding, NumPy scalar handling, and URL retrieval. Added subclass-preserving `gltf_to_scene` overloads.
+* Made scene-context selection deterministic and simplified scene serialization to store local transformations without redundant derived frames.
+* Changed `Scene` from inheriting `Tree` to owning a typed `Tree[SceneObject]` with a `Group` root.
+* Made `Tree` and `TreeNode` generic and enforced cycle, parent, and tree-ownership invariants. Child collections are now immutable views and specialized node deserialization is configurable through `Tree.node_type`.
+* Made graph and volmesh scene coordinate caches detect changes to ancestor transformations lazily while preserving explicitly assigned view coordinates.
+* Modernized typing and MkDocs-compatible API documentation throughout `compas.scene`.
+* Fixed class-level scene descriptor access and `ColorDict` assignment semantics.
+* Added explicit scene-object cache invalidation for mutations of underlying data.
+* Removed the obsolete IronPython-era vendored mapping ABCs in favor of `collections.abc`.
+* Standardized geometry and datastructure bounding volumes as fresh-computation `aabb()` and `obb()` methods returning `Box`, and removed the redundant `compute_aabb()` and `compute_obb()` API.
+* Standardized computed `area()`, `volume()`, and `centroid()` quantities as methods across geometry, datastructures, and Brep interfaces.
+* Changed computed polygon normals to `Polygon.normal()`, matching other computed measurement methods while retaining state-like `Frame.normal` and `Plane.normal` properties.
+* Removed the redundant `Polygon.bounding_box` alias in favor of the canonical `Polygon.aabb()` method.
+* Consolidated bounding-box algorithms in `bbox.py`, replaced `_numpy` public names with canonical unsuffixed functions, made numerical imports lazy, and modernized their annotations and documentation.
+* Consolidated best-fit algorithms in `bestfit.py`, removed `_numpy` public names, made numerical imports lazy, switched the canonical plane fit to PCA, and standardized fitted radii as scalar floats.
+* Consolidated hull and ICP algorithms under unsuffixed APIs, corrected convex-hull polyhedron construction and stable ICP returns, and moved optional Shapely polygon Boolean defaults into `booleans.py`.
+* Added deferred topology validation to `PlanarRegion` tessellation, with clear errors for invalid boundary loops, holes outside or touching the exterior, and overlapping, touching, or nested holes.
+* Added a zero-copy, triangle-only `Tessellation` result with shared vertex indexing for triangles, normals, and texture coordinates, and introduced `tessellated()` across shapes, surfaces, and polygonal geometry. Direct mesh and polygonal-surface conversions preserve polygonal topology; conversion through `Tessellation` explicitly produces triangular geometry.
+* Added cached polygonal parametric-representation APIs to shapes and surfaces through `vertices`, `edges`, and `faces`, with geometry-object views and public uncached `compute_*` methods. Triangles now exist only in `Tessellation` results.
+* Defined discretisation as resolution-dependent sampling that preserves polygonal topology, and tessellation as conversion to indexed triangles for visualization or triangle-based processing. Shape placement changes now reuse cached local vertices and topology; surface placement changes preserve cached topology.
+* Renamed the NURBS surface defining-point grid from `points` to `control_points`, reserving `Surface.points` for sampled polygonal vertices as geometry objects.
+* Made shape and surface tessellation resolution overrides non-mutating and added aligned analytic normals and normalized UV coordinates to surface tessellations.
+* Changed `Frame.__from_data__` to trust canonical data produced by `Frame.__data__` and copy its axes without repeating validation or orthonormalization. The same internal path now accelerates copies, world frames, and rotation-based factories whose axes are already orthonormal. Malformed serialized axes are no longer repaired during reconstruction; use `Frame(...)` for arbitrary axes that require normalization and orthogonalization.
+* Cached successful COMPAS JSON dtype resolution and consolidated unavailable dtype failures into a single `DecoderError` path.
+* Scoped the COMPAS JSON `minimal` option to each `DataEncoder` instance instead of sharing mutable global state between serialization calls.
+* Simplified `Data` pickle state by removing the redundant embedded COMPAS JSON representation.
+* Preserved explicitly assigned empty `Data.name` values; only `None` now selects the class-name default.
 * Changed `Tolerance` class to no longer use singleton pattern. `Tolerance()` now creates independent instances instead of returning the global `TOL`. 
 * Renamed `Tolerance.units` to `Tolerance.unit` to better reflect the documented properties. Left `units` with deprecation warning.
 * Fixed `NotImplementedErorr` when calling `BrepLoop.vertices`.
@@ -22,6 +61,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+* Removed `Shape.to_polyhedron()` because `Polyhedron` represents a validated closed solid rather than the generic polygonal discretization of a shape. Use `to_polygonal_surface()`, `tessellated()`, or `to_mesh()`.
+* Removed the private `compas._os` compatibility module and its obsolete Python 2, IronPython, CAD-host, Conda-bootstrapper, and Windows elevation helpers.
+* Removed the deprecated `compas.linalg.close` and `compas.linalg.allclose` helpers in favor of `TOL.is_close` and `TOL.is_allclose`.
+* Removed the `compas.rpc` package and the `compas_rpc` command-line entry point.
+* Replaced the unused `quadmesh_planarize_none.py` fallback module with a built-in default implementation of `quadmesh_planarize`.
+* Removed the redundant `Data.__clstype__` class identifier hook; `Data.__dtype__` remains the canonical serialized dtype identifier.
+* Removed unused sequence coercion and concrete-type validation helpers from `compas.data`.
+* Removed the obsolete Python 2 `izip_longest` fallback and commented-out random-selection recipes from `compas.itertools`.
+* Removed the Python 2 `urllib.urlretrieve` fallback.
+* Removed the obsolete pre-Python-3.6 scene descriptor metaclass compatibility layer.
 
 ## [2.15.0] 2025-11-12
 

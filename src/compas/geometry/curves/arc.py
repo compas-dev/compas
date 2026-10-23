@@ -2,9 +2,7 @@ from math import cos
 from math import pi
 from math import sin
 from typing import Any
-from typing import Optional
-
-from typing_extensions import Self
+from typing import Self
 
 from compas.geometry import Circle
 from compas.geometry import Frame
@@ -57,6 +55,10 @@ class Arc(Curve):
 
     """
 
+    # =============================================================================
+    # Data
+    # =============================================================================
+
     @property
     def __data__(self) -> dict[str, Any]:
         return {
@@ -75,18 +77,22 @@ class Arc(Curve):
             frame=Frame.__from_data__(data["frame"]),
         )
 
+    # =============================================================================
+    # Dunder methods
+    # =============================================================================
+
     def __init__(
         self,
         radius: float,
         start_angle: float,
         end_angle: float,
-        frame: Optional[Frame] = None,
-        name: Optional[str] = None,
+        frame: Frame | None = None,
+        name: str | None = None,
     ) -> None:
         super().__init__(frame=frame, name=name)
-        self._radius: Optional[float] = None
-        self._start_angle: Optional[float] = None
-        self._end_angle: Optional[float] = None
+        self._radius: float | None = None
+        self._start_angle: float | None = None
+        self._end_angle: float | None = None
         self.radius = radius
         self.start_angle = start_angle
         self.end_angle = end_angle
@@ -98,6 +104,10 @@ class Arc(Curve):
         if not isinstance(other, Arc):
             return False
         return self.radius == other.radius and self.start_angle == other.start_angle and self.end_angle == other.end_angle and self.frame == other.frame
+
+    # =============================================================================
+    # Properties
+    # =============================================================================
 
     @property
     def radius(self) -> float:
@@ -214,6 +224,10 @@ class Arc(Curve):
         """Whether the arc covers a complete circle."""
         return self.is_circle
 
+    # =============================================================================
+    # Constructors
+    # =============================================================================
+
     @classmethod
     def from_circle(cls, circle: Circle, start_angle: float, end_angle: float) -> Self:
         """Construct an arc from a circle and two angles.
@@ -245,6 +259,10 @@ class Arc(Curve):
 
         """
         return cls(circle.radius, start_angle, end_angle, frame=circle.frame)
+
+    # =============================================================================
+    # Methods
+    # =============================================================================
 
     def point_at(self, t: float, world: bool = True) -> Point:
         """Compute the point at a normalized parameter.

@@ -4,139 +4,63 @@ from compas.geometry import NurbsSurface
 from compas.geometry import Point
 
 
-class TestNurbsSurface(NurbsSurface):
-    __test__ = False
-
-    def __init__(
-        self,
-        points,
-        weights,
-        knots_u,
-        knots_v,
-        mults_u,
-        mults_v,
-        degree_u,
-        degree_v,
-        is_periodic_u=False,
-        is_periodic_v=False,
-    ):
+class StubNurbsSurface(NurbsSurface):
+    def __init__(self):
         super().__init__()
-        self._points = [[Point(point[0], point[1], point[2]) for point in row] for row in points]
-        self._weights = [list(row) for row in weights]
-        self._knots_u = list(knots_u)
-        self._knots_v = list(knots_v)
-        self._mults_u = list(mults_u)
-        self._mults_v = list(mults_v)
-        self._degree_u = degree_u
-        self._degree_v = degree_v
-        self._is_periodic_u = is_periodic_u
-        self._is_periodic_v = is_periodic_v
-
-    @classmethod
-    def from_parameters(
-        cls,
-        points,
-        weights,
-        knots_u,
-        knots_v,
-        mults_u,
-        mults_v,
-        degree_u,
-        degree_v,
-        is_periodic_u=False,
-        is_periodic_v=False,
-    ):
-        return cls(
-            points,
-            weights,
-            knots_u,
-            knots_v,
-            mults_u,
-            mults_v,
-            degree_u,
-            degree_v,
-            is_periodic_u,
-            is_periodic_v,
-        )
-
-    @classmethod
-    def from_points(cls, points, degree_u=3, degree_v=3):
-        count_u = len(points[0])
-        count_v = len(points)
-        degree_u = min(degree_u, count_u - 1)
-        degree_v = min(degree_v, count_v - 1)
-        return cls.from_parameters(
-            points=points,
-            weights=[[1.0] * count_u for _ in range(count_v)],
-            knots_u=[0.0, 1.0],
-            knots_v=[0.0, 1.0],
-            mults_u=[degree_u + 1, degree_u + 1],
-            mults_v=[degree_v + 1, degree_v + 1],
-            degree_u=degree_u,
-            degree_v=degree_v,
-        )
+        self._points = [[Point(0, 0, 0), Point(1, 0, 0)], [Point(0, 1, 0), Point(1, 1, 0)]]
 
     @property
-    def points(self):
+    def control_points(self):
         return self._points
 
     @property
     def weights(self):
-        return self._weights
+        return [[1.0, 0.5], [1.0, 1.0]]
 
     @property
     def knots_u(self):
-        return self._knots_u
+        return [0.0, 1.0]
 
     @property
     def knots_v(self):
-        return self._knots_v
+        return [0.0, 1.0]
 
     @property
     def mults_u(self):
-        return self._mults_u
+        return [2, 2]
 
     @property
     def mults_v(self):
-        return self._mults_v
+        return [2, 2]
 
     @property
     def degree_u(self):
-        return self._degree_u
+        return 1
 
     @property
     def degree_v(self):
-        return self._degree_v
+        return 1
 
     @property
     def domain_u(self):
-        return self.knots_u[0], self.knots_u[-1]
+        return 0.0, 1.0
 
     @property
     def domain_v(self):
-        return self.knots_v[0], self.knots_v[-1]
+        return 0.0, 1.0
 
     @property
     def is_periodic_u(self):
-        return self._is_periodic_u
+        return False
 
     @property
     def is_periodic_v(self):
-        return self._is_periodic_v
+        return False
 
 
 @pytest.fixture
 def surface():
-    return TestNurbsSurface.from_parameters(
-        points=[[[0, 0, 0], [1, 0, 0]], [[0, 1, 0], [1, 1, 0]]],
-        weights=[[1.0, 0.5], [1.0, 1.0]],
-        knots_u=[0.0, 1.0],
-        knots_v=[0.0, 1.0],
-        mults_u=[2, 2],
-        mults_v=[2, 2],
-        degree_u=1,
-        degree_v=1,
-    )
+    return StubNurbsSurface()
 
 
 def test_nurbs_surface_derived_properties(surface):
@@ -147,32 +71,87 @@ def test_nurbs_surface_derived_properties(surface):
     assert surface.is_rational
 
 
-def test_nurbs_surface_data_roundtrip_preserves_concrete_class(surface):
-    other = TestNurbsSurface.__from_data__(surface.__data__)
+def test_nurbs_surface_data_reconstruction_returns_core_wrapper(surface, monkeypatch):
+    captured = {}
+    native_surface = object()
 
-    assert isinstance(other, TestNurbsSurface)
-    assert other.__data__ == surface.__data__
+    def factory(*args, **kwargs):
+        captured.update(points=args[0], is_periodic_u=kwargs["is_periodic_u"], is_periodic_v=kwargs["is_periodic_v"])
+        return NurbsSurface(native_surface)
+
+    monkeypatch.setattr("compas.geometry.surfaces.nurbs.from_parameters", factory)
+
+    other = StubNurbsSurface.__from_data__(surface.__data__)
+
+    assert type(other) is NurbsSurface
+    assert other.native_surface is native_surface
+    assert captured["points"] == surface.__data__["control_points"]
+    assert captured["is_periodic_u"] is False
+    assert captured["is_periodic_v"] is False
 
 
-def test_nurbs_surface_copy_preserves_concrete_class_and_is_independent(surface):
+def test_nurbs_surface_copy_returns_independent_core_wrapper(surface, monkeypatch):
+    native_surface = object()
+
+    def factory(*args, **kwargs):
+        return NurbsSurface(native_surface)
+
+    monkeypatch.setattr("compas.geometry.surfaces.nurbs.from_parameters", factory)
+
     other = surface.copy()
 
-    assert isinstance(other, TestNurbsSurface)
-    assert other.__data__ == surface.__data__
-    assert other.points[0][0] is not surface.points[0][0]
+    assert type(other) is NurbsSurface
+    assert other.native_surface is native_surface
 
 
-def test_nurbs_surface_meshgrid_uses_requested_interval_counts():
-    surface = TestNurbsSurface.from_meshgrid(nu=2, nv=3)
+def test_nurbs_surface_meshgrid_uses_requested_interval_counts(monkeypatch):
+    captured = {}
+    result = NurbsSurface(object())
 
-    assert len(surface.points) == 4
-    assert len(surface.points[0]) == 3
-    assert surface.degree_u == 2
-    assert surface.degree_v == 3
-    assert surface.points[1][2] == [2.0, 1.0, 0.0]
+    def factory(points, degree_u, degree_v):
+        captured.update(points=points, degree_u=degree_u, degree_v=degree_v)
+        return result
+
+    monkeypatch.setattr("compas.geometry.surfaces.nurbs.from_points", factory)
+
+    surface = StubNurbsSurface.from_meshgrid(nu=2, nv=3)
+
+    assert surface is result
+    assert len(captured["points"]) == 4
+    assert len(captured["points"][0]) == 3
+    assert captured["points"][1][2] == [2.0, 1.0, 0.0]
 
 
 @pytest.mark.parametrize("nu, nv", [(0, 1), (1, 0), (-1, 1), (1, -1)])
 def test_nurbs_surface_meshgrid_requires_positive_interval_counts(nu, nv):
     with pytest.raises(ValueError, match="at least one interval"):
-        TestNurbsSurface.from_meshgrid(nu=nu, nv=nv)
+        NurbsSurface.from_meshgrid(nu=nu, nv=nv)
+
+
+def test_nurbs_surface_query_dispatch_uses_core_wrapper(monkeypatch):
+    surface = NurbsSurface(object())
+    captured = []
+
+    def query(value):
+        captured.append(value)
+        return [0.0, 1.0]
+
+    monkeypatch.setattr("compas.geometry.surfaces.nurbs.surface_knots_u", query)
+
+    assert surface.knots_u == [0.0, 1.0]
+    assert captured == [surface]
+
+
+def test_nurbs_surface_evaluation_dispatch_uses_core_wrapper(monkeypatch):
+    surface = NurbsSurface(object())
+    point = Point(1, 2, 3)
+    captured = []
+
+    def evaluate(value, u, v):
+        captured.append((value, u, v))
+        return point
+
+    monkeypatch.setattr("compas.geometry.surfaces.nurbs.surface_point_at", evaluate)
+
+    assert surface.point_at(0.25, 0.75) is point
+    assert captured == [(surface, 0.25, 0.75)]

@@ -1,29 +1,30 @@
 # recipes with itertools
 # see: https://docs.python.org/3.6/library/itertools.html
 
+from collections.abc import Iterable
+from collections.abc import Iterator
+from collections.abc import Sequence
 from functools import reduce
 from itertools import chain
 from itertools import islice
 from itertools import repeat
 from itertools import tee
+from itertools import zip_longest
 from operator import mul
-
-try:
-    from itertools import zip_longest
-except ImportError:
-    from itertools import izip_longest as zip_longest  # type: ignore
+from typing import Any
+from typing import overload
 
 
-def normalize_values(values, new_min=0.0, new_max=1.0):
-    """Normalize a list of numbers to the range between new_min and new_max.
+def normalize_values(values: Sequence[float], new_min: float = 0.0, new_max: float = 1.0) -> list[float]:
+    """Normalize values to a specified range.
 
     Parameters
     ----------
-    values : sequence[float]
+    values
         The data to be normalized.
-    new_min : float, optional
+    new_min
         The new minimum of the data.
-    new_max : float, optional
+    new_max
         The new maximum of the data.
 
     Returns
@@ -48,26 +49,34 @@ def normalize_values(values, new_min=0.0, new_max=1.0):
     return [(((value - old_min) * new_range) / old_range) + new_min for value in values]
 
 
-def remap_values(values, target_min=0.0, target_max=1.0, original_min=None, original_max=None):
-    """Maps a list of numbers from one domain to another.
+def remap_values(
+    values: Sequence[float],
+    target_min: float = 0.0,
+    target_max: float = 1.0,
+    original_min: float | None = None,
+    original_max: float | None = None,
+) -> list[float]:
+    """Map values from one domain to another.
 
     Parameters
     ----------
-    values : sequence[int | float]
-        The value to remap
-    target_min : int | float, optional
-        The minimun value of the target domain.
-    target_max : int | float, optional
+    values
+        The values to remap.
+    target_min
+        The minimum value of the target domain.
+    target_max
         The maximum value of the target domain.
-    original_min : int | float, optional
-        The minimun value of the original domain, other than the actual minimum value.
-    original_max : int | float, optional
+    original_min
+        The minimum value of the original domain.
+        By default, the minimum of `values` is used.
+    original_max
         The maximum value of the original domain, other than the actual maximum value.
+        By default, the maximum of `values` is used.
 
     Returns
     -------
     list[float]
-        The remaped list of values.
+        The remapped values.
 
     """
     if original_min is None:
@@ -80,43 +89,41 @@ def remap_values(values, target_min=0.0, target_max=1.0, original_min=None, orig
     return [target_min + ((value - original_min) * ratio) for value in values]
 
 
-def meshgrid(x, y, indexing="xy"):
+def meshgrid[T, U](
+    x: Iterable[T],
+    y: Iterable[U],
+    indexing: str = "xy",
+) -> tuple[list[list[T]], list[list[U]]]:
     """Construct coordinate matrices from two coordinate vectors.
 
     Parameters
     ----------
-    x : list[float]
-        The values of the "x axis" of the grid.
-    y : list[float]
-        The values of the "y axis" of the grid.
-    indexing : Literal['xy', 'ij'], optional
+    x
+        The values of the x-axis of the grid.
+    y
+        The values of the y-axis of the grid.
+    indexing
         The indexing strategy determines the structure of the output.
 
     Returns
     -------
-    list[list[float]]
-        The X values of the coordinate grid.
-    list[list[float]]
-        The Y values of the coordinate grid.
+    tuple[list[list[T]], list[list[U]]]
+        The X and Y values of the coordinate grid, in that order.
 
     Notes
     -----
     The output of this function consists of two "matrices", `X` and `Y`.
     The structure of the matrices is determined by the choice of `indexing`.
-    Assuming ``m = len(x)`` and ``n = len(y)``.
-    If `indexing` is ``'xy'``,
-    the shape of both matrices is ``(n, m)``,
+    Assuming `m = len(x)` and `n = len(y)`.
+    If `indexing` is `"xy"`,
+    the shape of both matrices is `(n, m)`,
     with `X` containing the elements of `x` in its rows, and `Y` the elements of `y` in its columns.
-    If `indexing` is ``'ij'``,
-    the shape of both matrices is ``(m, n)``,
+    Otherwise, the shape of both matrices is `(m, n)`,
     with `X` containing the elements of `x` in its columns, and `Y` the elements of `y` in its rows.
 
     References
     ----------
-    This function mimicks the functionality of ``numpy.meshgrid`` [1]_, but in a simpler form.
-
-    .. [1] `numpy.meshgrid`.
-           Available at https://numpy.org/doc/stable/reference/generated/numpy.meshgrid.html
+    - [NumPy `meshgrid`](https://numpy.org/doc/stable/reference/generated/numpy.meshgrid.html)
 
     Examples
     --------
@@ -148,16 +155,16 @@ def meshgrid(x, y, indexing="xy"):
     return X, Y
 
 
-def linspace(start, stop, num=50):
+def linspace(start: float, stop: float, num: int = 50) -> Iterator[float]:
     """Generate a sequence of evenly spaced numbers over a specified interval.
 
     Parameters
     ----------
-    start : float
+    start
         The start value of the sequence.
-    stop : float
+    stop
         The end value of the sequence.
-    num : int
+    num
         The number of elements in the sequence.
 
     Yields
@@ -172,9 +179,7 @@ def linspace(start, stop, num=50):
 
     References
     ----------
-    This function mimicks the functionality of ``numpy.linspace`` [1]_, but in a simpler form.
-
-    .. [1] ``numpy.linspace`` Available at https://numpy.org/doc/stable/reference/generated/numpy.linspace.html
+    - [NumPy `linspace`](https://numpy.org/doc/stable/reference/generated/numpy.linspace.html)
 
     Examples
     --------
@@ -184,7 +189,7 @@ def linspace(start, stop, num=50):
 
     """
     if num < 2:
-        raise ValueError("ValueError: number of elements must be at least 2, got {:d}".format(num))
+        raise ValueError(f"ValueError: number of elements must be at least 2, got {num:d}")
 
     step = (stop - start) / (num - 1)
     for i in range(num - 1):
@@ -192,35 +197,39 @@ def linspace(start, stop, num=50):
     yield float(stop)
 
 
-def flatten(list_of_lists):
+def flatten[T](list_of_lists: Iterable[Iterable[T]]) -> Iterator[T]:
     """Flatten one level of nesting.
 
     Parameters
     ----------
-    list_of_lists : iterable[iterable[Any]]
+    list_of_lists
         An iterable object containing other iterable objects.
 
     Returns
     -------
-    iterable
-        An iterable containing the elements of the elements of the nested iterables.
+    Iterator[T]
+        An iterator over the items of the nested iterables.
 
     """
     return chain.from_iterable(list_of_lists)
 
 
-def reshape(lst, shape):
-    """Gives a new shape to an array without changing its data.
+def reshape(lst: Sequence[Any], shape: int | tuple[int, ...]) -> Sequence[Any]:
+    """Give a new shape to an array without changing its data.
 
-    This function mimics the functionality of ``numpy.reshape`` [1]_, but in a simpler form.
+    This function mimics the functionality of `numpy.reshape`, but in a simpler form.
 
     Parameters
     ----------
-    lst : list
+    lst
         A list of items.
-    shape : int or tuple of ints
-        The new shape of the list
+    shape
+        The new shape of the list.
 
+    Returns
+    -------
+    Sequence[Any]
+        The reshaped values.
 
     Examples
     --------
@@ -236,18 +245,18 @@ def reshape(lst, shape):
 
     References
     ----------
-    .. [1] ``numpy.reshape`` Available at https://numpy.org/doc/stable/reference/generated/numpy.reshape.html
+    - [NumPy `reshape`](https://numpy.org/doc/stable/reference/generated/numpy.reshape.html)
 
     """
 
-    def helper(l, shape):  # noqa E741
-        if len(shape) == 1:
-            if len(l) % shape[0] != 0:
+    def helper(values: Sequence[Any], dimensions: tuple[int, ...]) -> Sequence[Any]:
+        if len(dimensions) == 1:
+            if len(values) % dimensions[0] != 0:
                 raise ValueError("ValueError: cannot reshape array of size %d into shape %s" % (len(lst), shape))
-            return l
+            return values
         else:
-            n = reduce(mul, shape[1:])
-            return [helper(l[i * n : (i + 1) * n], shape[1:]) for i in range(len(l) // n)]
+            n = reduce(mul, dimensions[1:])
+            return [helper(values[i * n : (i + 1) * n], dimensions[1:]) for i in range(len(values) // n)]
 
     shape = (shape,) if isinstance(shape, int) else shape
     flattened_list = list(flatten(lst)) if isinstance(lst[0], list) else lst
@@ -256,17 +265,17 @@ def reshape(lst, shape):
     return helper(flattened_list, shape)
 
 
-def pairwise(iterable):
-    """Returns a sliding window of size 2 over the data of the iterable.
+def pairwise[T](iterable: Iterable[T]) -> Iterator[tuple[T, T]]:
+    """Return a sliding window of size two over an iterable.
 
     Parameters
     ----------
-    iterable : iterable
+    iterable
         A sequence of items.
 
     Yields
     ------
-    tuple
+    tuple[T, T]
         Two items per iteration, if there are at least two items in the iterable.
 
     Examples
@@ -284,19 +293,19 @@ def pairwise(iterable):
     return zip(a, b)
 
 
-def window(seq, n=2):
-    """Returns a sliding window (of width n) over the data from the iterable.
+def window[T](seq: Iterable[T], n: int = 2) -> Iterator[tuple[T, ...]]:
+    """Return a sliding window over an iterable.
 
     Parameters
     ----------
-    seq : iterable
+    seq
         A sequence of items.
-    n : int, optional
+    n
         The width of the sliding window.
 
     Yields
     ------
-    tuple
+    tuple[T, ...]
         A tuple of size `n` at every iteration,
         if there are at least `n` items in the sequence.
 
@@ -323,22 +332,36 @@ def window(seq, n=2):
         yield result
 
 
-def iterable_like(target, reference, fillvalue=None):
-    """Creates an iterator from a reference object with size equivalent to that of a target iterable.
+@overload
+def iterable_like[T, U](target: Iterable[T], reference: Iterable[U], fillvalue: U) -> Iterator[U]: ...
+
+
+@overload
+def iterable_like[T, U](target: Iterable[T], reference: Iterable[U], fillvalue: None = None) -> Iterator[U | None]: ...
+
+
+def iterable_like[T, U](
+    target: Iterable[T],
+    reference: Iterable[U],
+    fillvalue: U | None = None,
+) -> Iterator[U | None]:
+    """Create an iterator matching the length of a target iterable.
 
     Parameters
     ----------
-    target : iterable
-        An iterable to be matched in size.
-    reference: iterable
-        The iterable containing the original data.
-    fillvalue : object, optional
+    target
+        The iterable whose length should be matched.
+    reference
+        The iterable containing the values to yield.
+    fillvalue
         A value to replace missing items.
 
     Yields
     ------
-    object
-        The next value in the iterator.
+    U
+        The next value when `fillvalue` is provided.
+    U | None
+        The next value when `fillvalue` is omitted.
 
     Notes
     -----
@@ -367,19 +390,19 @@ def iterable_like(target, reference, fillvalue=None):
 # ==============================================================================
 
 
-def take(n, iterable):
+def take[T](n: int, iterable: Iterable[T]) -> list[T]:
     """Return the first n items of the iterable as a list.
 
     Parameters
     ----------
-    n : int
+    n
         The number of items.
-    iterable : iterable
+    iterable
         An iterable object.
 
     Returns
     -------
-    list
+    list[T]
         A list with the first `n` items of `iterable`.
 
     Examples
@@ -391,50 +414,71 @@ def take(n, iterable):
     return list(islice(iterable, n))
 
 
-def nth(iterable, n, default=None):
-    """Returns the nth item or a default value"""
+@overload
+def nth[T](iterable: Iterable[T], n: int) -> T | None: ...
+
+
+@overload
+def nth[T, U](iterable: Iterable[T], n: int, default: U) -> T | U: ...
+
+
+def nth[T, U](iterable: Iterable[T], n: int, default: U | None = None) -> T | U | None:
+    """Return the item at an index, or a default value.
+
+    Parameters
+    ----------
+    iterable
+        The iterable containing the item.
+    n
+        The zero-based item index.
+    default
+        The value returned when the index is not present.
+
+    Returns
+    -------
+    T | None
+        The item, or `None` when `default` is omitted and the index is not present.
+    T | U
+        The item, or `default` when a default value is provided and the index is not present.
+
+    """
     return next(islice(iterable, n, None), default)
 
 
-def padnone(iterable):
-    """Returns the sequence elements and then returns None indefinitely.
+def padnone[T](iterable: Iterable[T]) -> Iterator[T | None]:
+    """Return the items of an iterable followed by `None` indefinitely.
 
-    Useful for emulating the behavior of the built-in map() function.
+    Parameters
+    ----------
+    iterable
+        The iterable to pad.
+
+    Yields
+    ------
+    T | None
+        The original items followed by `None` values.
 
     """
     return chain(iterable, repeat(None))
 
 
-def grouper(iterable, n, fillvalue=None):
-    """Collect data into fixed-length chunks or blocks."""
+def grouper[T, U](iterable: Iterable[T], n: int, fillvalue: U | None = None) -> Iterator[tuple[T | U | None, ...]]:
+    """Collect data into fixed-length groups.
+
+    Parameters
+    ----------
+    iterable
+        The iterable to group.
+    n
+        The number of items per group.
+    fillvalue
+        The value used to complete the final group.
+
+    Yields
+    ------
+    tuple[T | U | None, ...]
+        A fixed-length group of items.
+
+    """
     args = [iter(iterable)] * n
     return zip_longest(*args, fillvalue=fillvalue)
-
-
-# def random_product(*args, repeat=1):
-#     """Random selection from itertools.product(*args, **kwds)"""
-#     pools = [tuple(pool) for pool in args] * repeat
-#     return tuple(random.choice(pool) for pool in pools)
-
-
-# def random_permutation(iterable, r=None):
-#     """Random selection from itertools.permutations(iterable, r)"""
-#     pool = tuple(iterable)
-#     r = len(pool) if r is None else r
-#     return tuple(random.sample(pool, r))
-
-
-# def random_combination(iterable, r):
-#     """Random selection from itertools.combinations(iterable, r)"""
-#     pool = tuple(iterable)
-#     n = len(pool)
-#     indices = sorted(random.sample(range(n), r))
-#     return tuple(pool[i] for i in indices)
-
-
-# def random_combination_with_replacement(iterable, r):
-#     """Random selection from itertools.combinations_with_replacement(iterable, r)"""
-#     pool = tuple(iterable)
-#     n = len(pool)
-#     indices = sorted(random.randrange(n) for i in range(r))
-#     return tuple(pool[i] for i in indices)

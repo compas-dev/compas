@@ -1,8 +1,6 @@
 from copy import deepcopy
 from typing import TYPE_CHECKING
 from typing import Any
-from typing import Optional
-from typing import Union
 from typing import cast
 
 from compas.files.gltf.data_classes import AnimationData
@@ -56,9 +54,13 @@ class GLTFDocument:
 
     """
 
+    # =============================================================================
+    # Dunder methods
+    # =============================================================================
+
     def __init__(self) -> None:
         self.scenes: dict[int, GLTFScene] = {}
-        self.default_scene_key: Optional[int] = None
+        self.default_scene_key: int | None = None
         self.nodes: dict[int, GLTFNode] = {}
         self.meshes: dict[int, GLTFMesh] = {}
         self.cameras: dict[int, CameraData] = {}
@@ -70,15 +72,23 @@ class GLTFDocument:
         self.images: dict[int, ImageData] = {}
         self.extras: Any = None
         self.extensions: Any = None
-        self.extensions_used: Optional[list[str]] = None
-        self.extensions_required: Optional[list[str]] = None
+        self.extensions_used: list[str] | None = None
+        self.extensions_required: list[str] | None = None
         self.asset: dict[str, Any] = {"version": "2.0"}
         self.unknown: dict[str, Any] = {}
+
+    # =============================================================================
+    # Properties
+    # =============================================================================
 
     @property
     def default_or_first_scene(self) -> GLTFScene:
         key = self.default_scene_key or 0
         return self.scenes[key]
+
+    # =============================================================================
+    # Methods
+    # =============================================================================
 
     def check_if_forest(self) -> None:
         """Verify that the nodes form a disjoint union of rooted trees.
@@ -290,11 +300,6 @@ class GLTFDocument:
         # remove unvisited images
         self._remove_unvisited(image_visit_log, self.images)
 
-    def _remove_unvisited(self, log: dict[int, bool], dictionary: dict[int, Any]) -> None:
-        for key, visited in log.items():
-            if not visited:
-                del dictionary[key]
-
     def update_node_transforms_and_positions(self) -> None:
         """Update transforms and positions throughout all scenes."""
         for scene in self.scenes.values():
@@ -313,21 +318,20 @@ class GLTFDocument:
         for node_key in scene.children:
             node = self.nodes[node_key]
             node.transform = node.matrix or node.get_matrix_from_trs()
-            node.position = cast(list[float], transform_points([origin], node.transform)[0])
+            node.position = transform_points([origin], node.transform)[0]
             queue = [node_key]
             while queue:
                 cur_key = queue.pop(0)
                 cur = self.nodes[cur_key]
                 for child_key in cur.children:
                     child = self.nodes[child_key]
-                    child.transform = cast(
-                        list[list[float]],
-                        multiply_matrices(cur.transform, child.matrix or child.get_matrix_from_trs()),
-                    )
-                    child.position = cast(list[float], transform_points([origin], child.transform)[0])
+                    # Every node is assigned a transform before it enters the queue.
+                    parent_transform = cast(list[list[float]], cur.transform)
+                    child.transform = multiply_matrices(parent_transform, child.matrix or child.get_matrix_from_trs())
+                    child.position = transform_points([origin], child.transform)[0]
                     queue.append(child_key)
 
-    def get_node_faces(self, node: GLTFNode) -> Optional[list[tuple[int, ...]]]:
+    def get_node_faces(self, node: GLTFNode) -> list[tuple[int, ...]] | None:
         """Return the faces of the mesh attached to a node.
 
         Parameters
@@ -348,7 +352,7 @@ class GLTFDocument:
             return None
         return mesh_data.faces
 
-    def get_node_vertices(self, node: GLTFNode) -> Optional[list[tuple[float, ...]]]:
+    def get_node_vertices(self, node: GLTFNode) -> list[tuple[float, ...]] | None:
         """Return the vertices of the mesh attached to a node.
 
         Parameters
@@ -371,7 +375,7 @@ class GLTFDocument:
             return mesh_data.vertices
         return get_weighted_mesh_vertices(mesh_data, node.weights)
 
-    def get_node_by_name(self, name: str) -> Optional[GLTFNode]:
+    def get_node_by_name(self, name: str) -> GLTFNode | None:
         """Return the node with a specific name.
 
         Parameters
@@ -389,13 +393,6 @@ class GLTFDocument:
             if self.nodes[key].name == name:
                 return self.nodes[key]
         return None
-
-    @classmethod
-    def _get_next_available_key(cls, adict: dict[int, Any]) -> int:
-        key = len(adict)
-        while key in adict:
-            key += 1
-        return key
 
     def add_material(self, material: MaterialData) -> int:
         """Add a material to the document.
@@ -451,7 +448,7 @@ class GLTFDocument:
         self.images[key] = image
         return key
 
-    def get_material_index_by_name(self, name: str) -> Optional[int]:
+    def get_material_index_by_name(self, name: str) -> int | None:
         """Return the key of a material with a specific name.
 
         Parameters
@@ -470,7 +467,7 @@ class GLTFDocument:
                 return key
         return None
 
-    def add_scene(self, name: Optional[str] = None, extras: Any = None) -> GLTFScene:
+    def add_scene(self, name: str | None = None, extras: Any = None) -> GLTFScene:
         """Add a scene to the document.
 
         Parameters
@@ -487,7 +484,7 @@ class GLTFDocument:
         """
         return GLTFScene(self, name=name, extras=extras)
 
-    def add_node_to_scene(self, scene: GLTFScene, node_name: Optional[str] = None, node_extras: Any = None) -> GLTFNode:
+    def add_node_to_scene(self, scene: GLTFScene, node_name: str | None = None, node_extras: Any = None) -> GLTFNode:
         """Create a node and add it as a scene root.
 
         Parameters
@@ -510,7 +507,7 @@ class GLTFDocument:
         scene.children.append(node.key)
         return node
 
-    def add_child_to_node(self, parent_node: GLTFNode, child_name: Optional[str] = None, child_extras: Any = None) -> GLTFNode:
+    def add_child_to_node(self, parent_node: GLTFNode, child_name: str | None = None, child_extras: Any = None) -> GLTFNode:
         """Create a node and add it as a child of another node.
 
         Parameters
@@ -546,7 +543,7 @@ class GLTFDocument:
         """
         return GLTFMesh.from_mesh(self, mesh)
 
-    def add_mesh_to_node(self, node: GLTFNode, mesh: "Union[int, Mesh]") -> GLTFMesh:
+    def add_mesh_to_node(self, node: GLTFNode, mesh: "int | Mesh") -> GLTFMesh:
         """Attach an existing or converted mesh to a node.
 
         Parameters
@@ -620,3 +617,19 @@ class GLTFDocument:
         visit(scene, "root")
 
         return positions_dict, edges_list
+
+    # =============================================================================
+    # Private helpers
+    # =============================================================================
+
+    @classmethod
+    def _get_next_available_key(cls, adict: dict[int, Any]) -> int:
+        key = len(adict)
+        while key in adict:
+            key += 1
+        return key
+
+    def _remove_unvisited(self, log: dict[int, bool], dictionary: dict[int, Any]) -> None:
+        for key, visited in log.items():
+            if not visited:
+                del dictionary[key]

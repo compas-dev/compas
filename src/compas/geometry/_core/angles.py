@@ -1,8 +1,7 @@
+from collections.abc import Sequence
 from math import acos
 from math import degrees
 from math import pi
-from typing import Optional
-from typing import Sequence
 
 from compas._typing import CoordinateType
 from compas.linalg.vectors import cross_vectors
@@ -15,7 +14,7 @@ from compas.linalg.vectors import subtract_vectors_xy
 from compas.tolerance import TOL
 
 
-def angle_vectors(u: CoordinateType, v: CoordinateType, deg: bool = False, tol: Optional[float] = None) -> float:
+def angle_vectors(u: CoordinateType, v: CoordinateType, deg: bool = False, tol: float | None = None) -> float:
     """Compute the smallest angle between two vectors.
 
     Parameters
@@ -78,7 +77,7 @@ def angle_vectors_signed(
     v: CoordinateType,
     normal: CoordinateType,
     deg: bool = False,
-    tol: Optional[float] = None,
+    tol: float | None = None,
 ) -> float:
     """Computes the signed angle between two vectors.
 
@@ -129,7 +128,7 @@ def angle_vectors_projected(
     v: Sequence[float],
     normal: Sequence[float],
     deg: bool = False,
-    tol: Optional[float] = None,
+    tol: float | None = None,
 ) -> float:
     """Computes the signed angle between two vectors.
 
@@ -168,7 +167,7 @@ def angle_vectors_projected(
     return angle_vectors_signed(u_cross, v_cross, normal, deg, tol)
 
 
-def angle_vectors_xy(u: Sequence[float], v: Sequence[float], deg: bool = False, tol: Optional[float] = None) -> float:
+def angle_vectors_xy(u: Sequence[float], v: Sequence[float], deg: bool = False, tol: float | None = None) -> float:
     """Compute the smallest angle between the XY components of two vectors.
 
     Parameters
@@ -200,7 +199,7 @@ def angle_vectors_xy(u: Sequence[float], v: Sequence[float], deg: bool = False, 
     return acos(a)
 
 
-def angle_points(a: Sequence[float], b: Sequence[float], c: Sequence[float], deg: bool = False) -> float:
+def angle_points(a: CoordinateType, b: CoordinateType, c: CoordinateType, deg: bool = False) -> float:
     r"""Compute the smallest angle between the vectors defined by three points.
 
     Parameters

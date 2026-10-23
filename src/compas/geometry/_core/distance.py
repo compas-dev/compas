@@ -1,11 +1,9 @@
+from collections.abc import Sequence
 from math import fabs
 from math import sqrt
 from typing import TYPE_CHECKING
 from typing import Any
 from typing import Literal
-from typing import Optional
-from typing import Sequence
-from typing import Union
 from typing import overload
 
 if TYPE_CHECKING:
@@ -391,7 +389,7 @@ def distance_point_plane_signed(point: CoordinateType, plane: CoordinatesType) -
     return dot_vectors(vector, normal)
 
 
-def distance_line_line(l1: Sequence[Sequence[float]], l2: Sequence[Sequence[float]], tol: Optional[float] = None) -> float:
+def distance_line_line(l1: Sequence[Sequence[float]], l2: Sequence[Sequence[float]], tol: float | None = None) -> float:
     r"""Compute the shortest distance between two lines.
 
     Parameters
@@ -400,9 +398,9 @@ def distance_line_line(l1: Sequence[Sequence[float]], l2: Sequence[Sequence[floa
         Two points defining a line.
     l2
         Two points defining a line.
-    tol, optional
+    tol
         The tolerance for comparing values to zero.
-        Default is [`TOL.absolute`][compas.tolerance.Tolerance.absolute].
+        Default is `TOL.absolute`.
 
     Returns
     -------
@@ -412,16 +410,13 @@ def distance_line_line(l1: Sequence[Sequence[float]], l2: Sequence[Sequence[floa
     Notes
     -----
     The distance is the absolute value of the dot product of a unit vector that
-    is perpendicular to the two lines, and the vector between two points on the lines.[^line-line-distance][^skew-lines-distance]
+    is perpendicular to the two lines and the vector between two points on the
+    lines. See [Line-Line Distance](https://mathworld.wolfram.com/Line-LineDistance.html)
+    and [Skew lines: Distance](https://en.wikipedia.org/wiki/Skew_lines#Distance).
 
     If each of the lines is defined by two points ($l_1 = (\mathbf{x_1}, \mathbf{x_2})$,
     $l_2 = (\mathbf{x_3}, \mathbf{x_4})$), then the unit vector that is
     perpendicular to both lines is...
-
-    References
-    ----------
-    [^line-line-distance]: E. W. Weisstein, [Line-Line Distance](https://mathworld.wolfram.com/Line-LineDistance.html).
-    [^skew-lines-distance]: Wikipedia, [Skew lines: Distance](https://en.wikipedia.org/wiki/Skew_lines#Distance).
 
     """
     a, b = l1
@@ -442,7 +437,7 @@ def distance_line_line(l1: Sequence[Sequence[float]], l2: Sequence[Sequence[floa
 # ==============================================================================
 
 
-def sort_points(point: Sequence[float], cloud: Sequence[Sequence[float]]) -> list[tuple[float, Sequence[float], int]]:
+def sort_points(point: CoordinateType, cloud: CoordinatesType) -> list[tuple[float, CoordinateType, int]]:
     """Sorts points of a pointcloud based on their distance from a given point.
 
     Parameters
@@ -495,7 +490,7 @@ def sort_points_xy(point: Sequence[float], cloud: Sequence[Sequence[float]]) -> 
     return sorted(zip(minsq, cloud, range(len(cloud))), key=lambda x: x[0])
 
 
-def closest_point_in_cloud(point: Sequence[float], cloud: Sequence[Sequence[float]]) -> tuple[float, Sequence[float], int]:
+def closest_point_in_cloud(point: CoordinateType, cloud: CoordinatesType) -> tuple[float, CoordinateType, int]:
     """Calculates the closest point in a pointcloud.
 
     Parameters
@@ -557,7 +552,7 @@ def closest_points_in_cloud_numpy(
     threshold: int = 10**7,
     distances: bool = True,
     num_nbrs: int = 1,
-) -> "Union[NDArray[Any], tuple[NDArray[Any], NDArray[Any]]]":
+) -> "NDArray[Any] | tuple[NDArray[Any], NDArray[Any]]":
     """Find the closest points in a point cloud to a set of sample points.
 
     Parameters
@@ -566,11 +561,11 @@ def closest_points_in_cloud_numpy(
         The sample points.
     cloud
         The cloud points to compare to.
-    threshold, optional
+    threshold
         Size threshold at which SciPy switches from vectorised operations to a Python loop.
-    distances, optional
+    distances
         If True, return the distance matrix in addition to the indices of the closest points.
-    num_nbrs, optional
+    num_nbrs
         The number of nearest neighbors to include in the result.
 
     Returns
@@ -743,7 +738,7 @@ def closest_point_on_segment_xy(point: Sequence[float], segment: Sequence[Sequen
     return p
 
 
-def closest_point_on_polyline(point: Sequence[float], polyline: Sequence[Sequence[float]]) -> Sequence[float]:
+def closest_point_on_polyline(point: CoordinateType, polyline: CoordinatesType) -> CoordinateType:
     """Find the closest point on a polyline to a given point.
 
     Parameters

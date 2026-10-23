@@ -124,6 +124,7 @@ def test_plane_from_plane_and_size_preserves_subclass():
     assert isinstance(surface, CustomPlanarSurface)
     assert surface.to_plane() == Plane.worldYZ()
 
+
 # =============================================================================
 # Properties and Geometry
 # =============================================================================
@@ -150,6 +151,7 @@ def test_plane_frame_at_is_located_at_evaluated_point_and_is_independent():
     assert frame.xaxis == surface.frame.xaxis
     assert frame.yaxis == surface.frame.yaxis
     assert frame is not surface.frame
+
 
 # =============================================================================
 # Conversions

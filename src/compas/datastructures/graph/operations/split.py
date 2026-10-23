@@ -1,5 +1,4 @@
 from typing import TYPE_CHECKING
-from typing import Optional
 
 from ..types import Edge
 from ..types import Node
@@ -12,7 +11,7 @@ def graph_split_edge(
     graph: "Graph",
     edge: Edge,
     t: float = 0.5,
-) -> Optional[Node]:
+) -> Node | None:
     """Split an edge by inserting a node along its length.
 
     Parameters

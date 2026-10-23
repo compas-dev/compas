@@ -1,298 +1,137 @@
-class Ear(object):
-    """Represents an Ear of a polygon. An Ear is a triangle formed by three consecutive vertices of the polygon.
+from collections.abc import Sequence
+from typing import TYPE_CHECKING
 
-    Parameters
-    ----------
-    points : list
-        List of points representing the polygon.
-    indexes : list
-        List of indices of the points representing the polygon.
-    ind : int
-        Index of the vertex of the Ear triangle.
+import mapbox_earcut  # pyright: ignore[reportMissingImports]
+import numpy as np  # pyright: ignore[reportMissingImports]
 
-    Attributes
-    ----------
-    index : int
-        Index of the vertex of the Ear triangle.
-    coords : list
-        Coordinates of the vertex of the Ear triangle.
-    next : int
-        Index of the next vertex of the Ear triangle.
-    prev : int
-        Index of the previous vertex of the Ear triangle.
-    neighbour_coords : list
-        Coordinates of the next and previous vertices of the Ear triangle.
+from compas._typing import CoordinateType
+from compas.linalg import cross_vectors
+from compas.linalg import length_vector
+from compas.linalg import subtract_vectors
 
-    """
-
-    def __init__(self, points, indexes, ind):
-        self.index = ind
-        self.coords = points[ind]
-        length = len(indexes)
-        index_in_indexes_arr = indexes.index(ind)
-        self.next = indexes[(index_in_indexes_arr + 1) % length]
-        if index_in_indexes_arr == 0:
-            self.prev = indexes[length - 1]
-        else:
-            self.prev = indexes[index_in_indexes_arr - 1]
-        self.neighbour_coords = [points[self.prev], points[self.next]]
-
-    def is_inside(self, point):
-        """Check if a given point is inside the triangle formed by the Ear.
-
-        Returns
-        -------
-        bool
-            True, if the point is inside the triangle, False otherwise.
-
-        """
-        p1 = self.coords
-        p2 = self.neighbour_coords[0]
-        p3 = self.neighbour_coords[1]
-        p0 = point
-
-        d = [
-            (p1[0] - p0[0]) * (p2[1] - p1[1]) - (p2[0] - p1[0]) * (p1[1] - p0[1]),
-            (p2[0] - p0[0]) * (p3[1] - p2[1]) - (p3[0] - p2[0]) * (p2[1] - p0[1]),
-            (p3[0] - p0[0]) * (p1[1] - p3[1]) - (p1[0] - p3[0]) * (p3[1] - p0[1]),
-        ]
-
-        if d[0] * d[1] >= 0 and d[2] * d[1] >= 0 and d[0] * d[2] >= 0:
-            return True
-        return False
-
-    def is_ear_point(self, p):
-        """Check if a given point is one of the vertices of the Ear triangle.
-
-        Returns
-        -------
-        bool
-            True, if the point is a vertex of the Ear triangle, False otherwise.
-
-        """
-        if p == self.coords or p in self.neighbour_coords:
-            return True
-        return False
-
-    def validate(self, points, indexes, ears):
-        """Validate if the Ear triangle is a valid Ear by checking its convexity and that no points lie inside.
-
-        Returns
-        -------
-        bool
-            True if the Ear triangle is valid, False otherwise.
-
-        """
-
-        not_ear_points = [points[i] for i in indexes if points[i] != self.coords and points[i] not in self.neighbour_coords]
-        insides = [self.is_inside(p) for p in not_ear_points]
-        if self.is_convex() and True not in insides:
-            for e in ears:
-                if e.is_ear_point(self.coords):
-                    return False
-            return True
-        return False
-
-    def is_convex(self):
-        """Check if the Ear triangle is convex.
-
-        Returns
-        -------
-        bool
-            True if the Ear triangle is convex, False otherwise.
-
-        """
-        a = self.neighbour_coords[0]
-        b = self.coords
-        c = self.neighbour_coords[1]
-        ab = [b[0] - a[0], b[1] - a[1]]
-        bc = [c[0] - b[0], c[1] - b[1]]
-        if ab[0] * bc[1] - ab[1] * bc[0] <= 0:
-            return False
-        return True
-
-    def get_triangle(self):
-        """Get the indices of the vertices forming the Ear triangle.
-
-        Returns
-        -------
-        list
-            List of vertex indices forming the Ear triangle.
-
-        """
-        return [self.prev, self.index, self.next]
+if TYPE_CHECKING:
+    from compas.geometry import Frame
+    from compas.geometry import Polygon
 
 
-class Earcut(object):
-    """A class for triangulating points forming a polygon using the Ear-cutting algorithm.
+def _signed_area_xy(points: Sequence[CoordinateType]) -> float:
+    return 0.5 * sum(points[index][0] * points[(index + 1) % len(points)][1] - points[(index + 1) % len(points)][0] * points[index][1] for index in range(len(points)))
 
-    Parameters
-    ----------
-    points : list
-        List of points representing the polygon.
 
-    Attributes
-    ----------
-    vertices : list
-        List of points representing the polygon.
-    ears : list
-        List of Ear objects representing the Ears of the polygon.
-    neighbours : list
-        List of indices of the neighbouring vertices.
-    triangles : list
-        List of triangles forming the triangulation of the polygon.
-    length : int
-        Number of vertices of the polygon.
+def _validate_boundaries_xy(boundaries: Sequence[Sequence[CoordinateType]]) -> None:
+    from shapely import LinearRing  # pyright: ignore[reportMissingModuleSource]
+    from shapely import Polygon as ShapelyPolygon  # pyright: ignore[reportMissingModuleSource]
+    from shapely.validation import explain_validity  # pyright: ignore[reportMissingModuleSource]
+
+    polygons = []
+    for index, boundary in enumerate(boundaries):
+        label = "exterior boundary" if index == 0 else f"hole {index}"
+        points = [(point[0], point[1]) for point in boundary]
+        if len(set(points)) != len(points):
+            raise ValueError(f"The planar region's {label} contains duplicate vertices.")
+
+        ring = LinearRing(points)
+        if not ring.is_simple:
+            raise ValueError(f"The planar region's {label} is self-intersecting.")
+
+        polygon = ShapelyPolygon(points)
+        if polygon.area == 0.0 or not polygon.is_valid:
+            reason = explain_validity(polygon)
+            raise ValueError(f"The planar region's {label} is invalid: {reason}.")
+        polygons.append(polygon)
+
+    outer = polygons[0]
+    holes = polygons[1:]
+    for index, hole in enumerate(holes, start=1):
+        if not outer.contains(hole) or not outer.boundary.disjoint(hole):
+            raise ValueError(f"Hole {index} must lie strictly inside the planar region's exterior boundary.")
+
+    for index, hole in enumerate(holes):
+        for other_index, other in enumerate(holes[index + 1 :], start=index + 1):
+            if not hole.disjoint(other):
+                raise ValueError(f"Holes {index + 1} and {other_index + 1} must not overlap, touch, or contain one another.")
+
+
+def _projection_frame(boundary: "Polygon") -> "Frame":
+    from compas.geometry import Frame
+
+    point = boundary.points[0]
+    for point_xaxis in boundary.points[1:]:
+        xaxis = subtract_vectors(point_xaxis, point)
+        if not length_vector(xaxis):
+            continue
+        for point_xyplane in boundary.points[1:]:
+            xyvector = subtract_vectors(point_xyplane, point)
+            if length_vector(cross_vectors(xaxis, xyvector)):
+                return Frame.from_points(point, point_xaxis, point_xyplane)
+    raise ValueError("The planar region's exterior boundary is degenerate.")
+
+
+def _earclip_boundaries(outer: "Polygon", holes: Sequence["Polygon"] = ()) -> tuple[list[list[float]], list[list[int]]]:
+    """Triangulate coplanar polygon boundaries with Mapbox Earcut.
+
+    The returned vertex list contains the exterior vertices followed by the
+    vertices of each hole. Triangle indices refer to this flattened list.
 
     """
+    from compas.geometry import Frame
+    from compas.geometry import Transformation
 
-    def __init__(self, points):
-        self.vertices = points
-        self.ears = []
-        self.neighbours = []
-        self.triangles = []
-        self.length = len(points)
+    boundaries = [outer, *holes]
+    vertices = [[float(value) for value in point] for boundary in boundaries for point in boundary.points]
+    transformation = Transformation.from_frame_to_frame(_projection_frame(outer), Frame.worldXY())
+    points = [point.transformed(transformation) for boundary in boundaries for point in boundary.points]
+    boundaries_xy: list[Sequence[CoordinateType]] = []
+    start = 0
+    for boundary in boundaries:
+        end = start + len(boundary)
+        boundaries_xy.append(points[start:end])
+        start = end
+    _validate_boundaries_xy(boundaries_xy)
 
-    def update_neighbours(self):
-        """Update the list of neighboring vertices."""
-        neighbours = []
-        self.neighbours = neighbours
+    vertices_xy = np.asarray([[point.x, point.y] for point in points], dtype=np.float64)
+    ring_ends = np.cumsum([len(boundary) for boundary in boundaries], dtype=np.uint32)
+    indices = mapbox_earcut.triangulate_float64(vertices_xy, ring_ends).tolist()
+    triangles = [indices[index : index + 3] for index in range(0, len(indices), 3)]
 
-    def add_ear(self, new_ear):
-        """Add a new Ear to the list of Ears and update neighboring vertices.
+    # Earcut has its own winding convention. Restore the exterior boundary's
+    # winding so face triangulation preserves the orientation of its source.
+    outer_xy = points[: len(outer)]
+    outer_sign = _signed_area_xy(outer_xy)
+    for triangle in triangles:
+        triangle_sign = _signed_area_xy([points[index] for index in triangle])
+        if outer_sign * triangle_sign < 0.0:
+            triangle[1], triangle[2] = triangle[2], triangle[1]
 
-        Parameters
-        ----------
-        new_ear : Ear
-            Ear object to be added to the list of Ears.
-
-        """
-        self.ears.append(new_ear)
-        self.neighbours.append(new_ear.prev)
-        self.neighbours.append(new_ear.next)
-
-    def find_ears(self):
-        """Find valid Ear triangles among the vertices and add them to the Ears list."""
-        i = 0
-        indexes = list(range(self.length))
-        while True:
-            if i >= self.length:
-                break
-            new_ear = Ear(self.vertices, indexes, i)
-            if new_ear.validate(self.vertices, indexes, self.ears):
-                self.add_ear(new_ear)
-                indexes.remove(new_ear.index)
-            i += 1
-
-    def triangulate(self):
-        """Triangulate the polygon using the Ear-cutting algorithm.
-
-        Returns
-        -------
-        list[list[int]]
-            List of triangles forming the triangulation of the polygon.
-
-        Raises
-        ------
-        ValueError
-            If no Ears were found for triangulation.
-        IndexError
-            If no more Ears were found for triangulation.
-
-        """
-
-        if self.length < 3:
-            raise ValueError("Polygon must have at least 3 vertices.")
-        elif self.length == 3:
-            self.triangles.append([0, 1, 2])
-            return self.triangles
-
-        indexes = list(range(self.length))
-        self.find_ears()
-
-        num_of_ears = len(self.ears)
-
-        if num_of_ears == 0:
-            raise ValueError("No ears found for triangulation.")
-        if num_of_ears == 1:
-            self.triangles.append(self.ears[0].get_triangle())
-            return
-
-        while True:
-            if len(self.ears) == 2 and len(indexes) == 4:
-                self.triangles.append(self.ears[0].get_triangle())
-                self.triangles.append(self.ears[1].get_triangle())
-                break
-
-            if len(self.ears) == 0:
-                raise IndexError("Unable to find more Ears for triangulation.")
-            current = self.ears.pop(0)
-
-            indexes.remove(current.index)
-            self.neighbours.remove(current.prev)
-            self.neighbours.remove(current.next)
-
-            self.triangles.append(current.get_triangle())
-
-            # Check if prev and next vertices form new ears
-            prev_ear_new = Ear(self.vertices, indexes, current.prev)
-            next_ear_new = Ear(self.vertices, indexes, current.next)
-            if prev_ear_new.validate(self.vertices, indexes, self.ears) and prev_ear_new.index not in self.neighbours:
-                self.add_ear(prev_ear_new)
-                continue
-            if next_ear_new.validate(self.vertices, indexes, self.ears) and next_ear_new.index not in self.neighbours:
-                self.add_ear(next_ear_new)
-                continue
-
-        return self.triangles
+    return vertices, triangles
 
 
-def earclip_polygon(polygon):
-    """Triangulate a polygon using the ear clipping method.
-    The polygon is assumed to be planar and non-self-intersecting and position on XY plane.
-    The winding direction is checked. If the polygon is not oriented counter-clockwise, it is reversed.
+def earclip_polygon(polygon: "Polygon") -> list[list[int]]:
+    """Triangulate a simple planar polygon using Mapbox Earcut.
 
     Parameters
     ----------
-    polygon : :class:`compas.geometry.Polygon`
-        A polygon defined by a sequence of points.
+    polygon
+        A non-self-intersecting polygon. Non-planar polygons are projected to
+        their best-fit plane before triangulation.
 
     Returns
     -------
-    list[[int, int, int]]
-        A list of triangles referencing the points of the original polygon.
+    list[list[int]]
+        The triangles as indices into the polygon points.
 
     Raises
     ------
     ValueError
-        If no ears were found for triangulation.
-    IndexError
-        If no more ears were found for triangulation.
+        If the polygon has fewer than three points or its boundary is invalid.
+
+    See Also
+    --------
+    [`PlanarRegion`][compas.geometry.PlanarRegion] for triangulating an exterior
+    boundary with holes.
 
     """
-    from compas.geometry import Frame  # Avoid circular import.
-    from compas.geometry import Plane  # Avoid circular import.
-    from compas.geometry import Transformation  # Avoid circular import.
-
-    frame = Frame.from_plane(Plane(polygon.points[0], polygon.normal))
-    xform = Transformation.from_frame_to_frame(frame, Frame.worldXY())
-    points = [point.transformed(xform) for point in polygon.points]
-
-    # Check polygon winding by signed area of all current and next points pairs.
-    sum_val = 0.0
-    for p0, p1 in zip(points, points[1:] + [points[0]]):
-        sum_val += (p1[0] - p0[0]) * (p1[1] + p0[1])
-
-    if sum_val > 0.0:
-        points.reverse()
-
-    # Run the Earcut algorithm.
-    ear_cut = Earcut(points)
-    triangles = ear_cut.triangulate()
-
-    # Reverse the triangles to match the original polygon winding.
-    if sum_val > 0.0:
-        n = len(points) - 1
-        for i in range(len(triangles)):
-            triangles[i] = [abs(triangles[i][j % 3] - n) for j in range(3)]
+    if len(polygon) < 3:
+        raise ValueError("A polygon requires at least three points for triangulation.")
+    _, triangles = _earclip_boundaries(polygon)
     return triangles

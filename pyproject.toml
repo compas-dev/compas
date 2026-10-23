@@ -13,7 +13,7 @@ keywords = ["architecture", "engineering", "fabrication", "construction"]
 authors = [{ name = "tom van mele", email = "tom.v.mele@gmail.com" }]
 license = { file = "LICENSE" }
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.12"
 dynamic = ['version']
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -23,19 +23,15 @@ classifiers = [
     "Operating System :: Microsoft :: Windows",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
 ]
 dependencies = [
-    "jsonschema",
+    "mapbox-earcut",
     "networkx >= 3.0",
     "numpy >= 1.15.4",
     "scipy >= 1.1",
-    "watchdog; sys_platform != 'emscripten'",
+    "shapely",
 ]
-
 
 [project.optional-dependencies]
 dev = [
@@ -65,7 +61,6 @@ docs = [
     "mkdocs-section-index >=0.3",
     "mkdocstrings[python]",
     "pydantic >=2.10",
-    "tomli >=2.0; python_version < '3.11'",
 ]
 viz = ["compas_notebook", "compas_viewer"]
 
@@ -76,10 +71,6 @@ Repository = "https://github.com/compas-dev/compas.git"
 Changelog = "https://github.com/compas-dev/compas/blob/main/CHANGELOG.md"
 Issues = "https://github.com/compas-dev/compas/issues"
 Forum = "https://forum.compas-framework.org/"
-
-[project.scripts]
-compas_rpc = "compas.rpc.__main__:main"
-install_in_rhino = "compas_rhino.install_with_pip:main"
 
 # ============================================================================
 # setuptools config
@@ -92,8 +83,6 @@ zip-safe = false
 
 [tool.setuptools.dynamic]
 version = { attr = "compas.__version__" }
-dependencies = { file = "requirements.txt" }
-optional-dependencies = { dev = { file = "requirements-dev.txt" } }
 
 [tool.setuptools.packages.find]
 where = ["src"]
@@ -101,7 +90,6 @@ where = ["src"]
 [tool.setuptools.package-data]
 "compas.colors.cmcrameri" = ["*.txt"]
 "compas.data.samples" = ["*.obj", "*.stl", "*.off", "*.ply", "*.json"]
-"compas_ghpython.components.ghuser" = ["*.ghuser"]
 
 # ============================================================================
 # replace pytest.ini
@@ -136,21 +124,6 @@ search = "{current_version}"
 replace = "{new_version}"
 
 [[tool.bumpversion.files]]
-filename = "src/compas_blender/__init__.py"
-search = "{current_version}"
-replace = "{new_version}"
-
-[[tool.bumpversion.files]]
-filename = "src/compas_ghpython/__init__.py"
-search = "{current_version}"
-replace = "{new_version}"
-
-[[tool.bumpversion.files]]
-filename = "src/compas_rhino/__init__.py"
-search = "{current_version}"
-replace = "{new_version}"
-
-[[tool.bumpversion.files]]
 filename = "CHANGELOG.md"
 search = "Unreleased"
 replace = "[{new_version}] {now:%Y-%m-%d}"
@@ -165,7 +138,7 @@ line-length = 179
 [tool.ruff]
 line-length = 179
 indent-width = 4
-target-version = "py39"
+target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F", "I"]
@@ -177,12 +150,7 @@ select = ["E", "F", "I"]
 
 [tool.ruff.lint.isort]
 force-single-line = true
-known-first-party = [
-    "compas",
-    "compas_blender",
-    "compas_ghpython",
-    "compas_rhino",
-]
+known-first-party = ["compas"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "numpy"

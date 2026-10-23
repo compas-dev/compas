@@ -143,6 +143,11 @@ def test_project_point_plane():
     )
 
 
+def test_project_point_plane_rejects_zero_normal():
+    with pytest.raises(ValueError, match="plane normal"):
+        project_point_plane([1, 2, 3], ([0, 0, 0], [0, 0, 0]))
+
+
 def test_project_points_plane():
     assert TOL.is_allclose(
         project_points_plane([[0, 2.5, 2]], ([3, 4, 5], [6, 7, 8.8])),
@@ -202,8 +207,8 @@ def test_orient_points():
     ab = points[0], points[1]
     cd = points[2], points[3]
 
-    point = intersection_segment_segment_xy(ab, cd)
+    point = intersection_segment_segment_xy(ab, cd)[0]
 
-    points = orient_points([point], tarplane, refplane)
+    points = orient_points([(point.x, point.y, point.z)], tarplane, refplane)
 
     assert TOL.is_allclose(points[0], [0.57735, 0.57735, 0.57735])

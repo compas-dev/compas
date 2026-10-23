@@ -1,10 +1,7 @@
-from typing import Iterator
+from collections.abc import Iterator
 from typing import Literal
-from typing import Optional
-from typing import Union
+from typing import Self
 from typing import overload
-
-from typing_extensions import Self
 
 from compas._typing import Coordinates
 from compas._typing import CoordinateType
@@ -72,16 +69,24 @@ class Line(Geometry):
 
     """
 
+    # ==========================================================================
+    # Data
+    # ==========================================================================
+
     @property
     def __data__(self) -> dict[str, list[float]]:
         """The data representation of the line."""
         return {"start": self.start.__data__, "end": self.end.__data__}
 
-    def __init__(self, start: CoordinateType, end: CoordinateType, name: Optional[str] = None) -> None:
+    # ==========================================================================
+    # Dunder methods
+    # ==========================================================================
+
+    def __init__(self, start: CoordinateType, end: CoordinateType, name: str | None = None) -> None:
         super().__init__(name=name)
-        self._point: Optional[Point] = None
-        self._vector: Optional[Vector] = None
-        self._direction: Optional[Vector] = None
+        self._point: Point | None = None
+        self._vector: Vector | None = None
+        self._direction: Vector | None = None
         self.start = start
         self.end = end
 
@@ -121,7 +126,7 @@ class Line(Geometry):
         return self.start == other[0] and self.end == other[1]
 
     # ==========================================================================
-    # properties
+    # Properties
     # ==========================================================================
 
     @property
@@ -368,32 +373,6 @@ class Line(Geometry):
         return cls(point, add_vectors(point, direction * length))
 
     # ==========================================================================
-    # Transformations
-    # ==========================================================================
-
-    def transform(self, transformation: TransformationType) -> None:
-        """Transform this line.
-
-        Parameters
-        ----------
-        transformation
-            The transformation.
-
-        Examples
-        --------
-        >>> from math import radians
-        >>> from compas.geometry import Rotation
-        >>> line = Line([0.0, 0.0, 0.0], [1.0, 0.0, 0.0])
-        >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], radians(90))
-        >>> line.transform(R)
-        >>> print(line.end)
-        Point(x=0.000, y=1.000, z=0.000)
-
-        """
-        self.point.transform(transformation)
-        self.vector.transform(transformation)
-
-    # ==========================================================================
     # Methods
     # ==========================================================================
 
@@ -476,7 +455,7 @@ class Line(Geometry):
     @overload
     def closest_point(self, point: CoordinateType, return_parameter: Literal[True]) -> tuple[Point, float]: ...
 
-    def closest_point(self, point: CoordinateType, return_parameter: bool = False) -> Union[Point, tuple[Point, float]]:
+    def closest_point(self, point: CoordinateType, return_parameter: bool = False) -> Point | tuple[Point, float]:
         """Compute the closest point on the line to a given point.
 
         Parameters
@@ -552,3 +531,29 @@ class Line(Geometry):
 
         """
         return type(self)(self.end, self.start)
+
+    # ==========================================================================
+    # Transformations
+    # ==========================================================================
+
+    def transform(self, transformation: TransformationType) -> None:
+        """Transform this line.
+
+        Parameters
+        ----------
+        transformation
+            The transformation.
+
+        Examples
+        --------
+        >>> from math import radians
+        >>> from compas.geometry import Rotation
+        >>> line = Line([0.0, 0.0, 0.0], [1.0, 0.0, 0.0])
+        >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], radians(90))
+        >>> line.transform(R)
+        >>> print(line.end)
+        Point(x=0.000, y=1.000, z=0.000)
+
+        """
+        self.point.transform(transformation)
+        self.vector.transform(transformation)

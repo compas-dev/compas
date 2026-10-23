@@ -1,7 +1,6 @@
+from collections.abc import Collection
+from collections.abc import Iterable
 from typing import TYPE_CHECKING
-from typing import Collection
-from typing import Iterable
-from typing import Optional
 
 from compas.topology import connected_components
 from compas.topology import vertex_adjacency_from_edges
@@ -15,9 +14,7 @@ if TYPE_CHECKING:
     from ..mesh import Mesh
 
 
-def mesh_unweld_vertices(
-    mesh: "Mesh", fkey: Face, where: Optional[Collection[Vertex]] = None
-) -> list[Vertex]:
+def mesh_unweld_vertices(mesh: "Mesh", fkey: Face, where: Collection[Vertex] | None = None) -> list[Vertex]:
     """Unweld a face of the mesh.
 
     Parameters

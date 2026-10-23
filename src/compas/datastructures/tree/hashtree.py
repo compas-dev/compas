@@ -2,16 +2,14 @@
 
 import hashlib
 from collections import deque
+from collections.abc import Callable
+from collections.abc import Hashable
+from collections.abc import Iterator
+from collections.abc import Sequence
 from copy import deepcopy
 from typing import TYPE_CHECKING
 from typing import Any
-from typing import Callable
-from typing import Hashable
-from typing import Iterator
-from typing import Optional
-from typing import Sequence
-
-from typing_extensions import Self
+from typing import Self
 
 from compas.data import Data
 from compas.data import json_dumps
@@ -57,6 +55,10 @@ class HashNode(Data):
 
     """
 
+    # =============================================================================
+    # Data
+    # =============================================================================
+
     @property
     def __data__(self) -> dict[str, Any]:
         data = {
@@ -80,6 +82,10 @@ class HashNode(Data):
             **data.get("attributes", {}),
         )
 
+    # =============================================================================
+    # Dunder methods
+    # =============================================================================
+
     def __init__(
         self,
         path: str,
@@ -93,8 +99,8 @@ class HashNode(Data):
         self._is_value = value is not _MISSING
         self._value = None if value is _MISSING else deepcopy(value)
         self._children = tuple(children)
-        self._parent: Optional[HashNode] = None
-        self._signature: Optional[str] = None
+        self._parent: HashNode | None = None
+        self._signature: str | None = None
 
         if self.is_value and self.children:
             raise ValueError("A value node cannot have children.")
@@ -116,8 +122,12 @@ class HashNode(Data):
             return "{}:{} @ {}".format(path, self.value, self.signature[:5])
         return "{} @ {}".format(path, self.signature[:5])
 
+    # =============================================================================
+    # Properties
+    # =============================================================================
+
     @property
-    def parent(self) -> Optional["HashNode"]:
+    def parent(self) -> "HashNode | None":
         return self._parent
 
     @property
@@ -183,6 +193,42 @@ class HashNode(Data):
             yield child
             yield from child.descendants
 
+    # =============================================================================
+    # Constructors
+    # =============================================================================
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any], path: str = "") -> Self:
+        """Construct a HashNode from a dictionary.
+
+        Parameters
+        ----------
+        data
+            The dictionary representation of the hierarchy.
+        path
+            The relative path of the node.
+
+        Returns
+        -------
+        HashNode
+            The constructed node.
+
+        """
+        children = []
+        for key in sorted(data):
+            if not isinstance(key, str):
+                raise TypeError("HashTree dictionary keys must be strings.")
+            child_path = ".{}".format(key)
+            if isinstance(data[key], dict):
+                children.append(cls.from_dict(data[key], path=child_path))
+            else:
+                children.append(cls(child_path, value=data[key]))
+        return cls(path, children=children)
+
+    # =============================================================================
+    # Methods
+    # =============================================================================
+
     def traverse(
         self,
         strategy: TraversalStrategy = "depthfirst",
@@ -223,34 +269,6 @@ class HashNode(Data):
         else:
             raise ValueError("Unknown traversal strategy: {}".format(strategy))
 
-    @classmethod
-    def from_dict(cls, data: dict[str, Any], path: str = "") -> Self:
-        """Construct a HashNode from a dictionary.
-
-        Parameters
-        ----------
-        data
-            The dictionary representation of the hierarchy.
-        path
-            The relative path of the node.
-
-        Returns
-        -------
-        HashNode
-            The constructed node.
-
-        """
-        children = []
-        for key in sorted(data):
-            if not isinstance(key, str):
-                raise TypeError("HashTree dictionary keys must be strings.")
-            child_path = ".{}".format(key)
-            if isinstance(data[key], dict):
-                children.append(cls.from_dict(data[key], path=child_path))
-            else:
-                children.append(cls(child_path, value=data[key]))
-        return cls(path, children=children)
-
 
 class HashTree(Data):
     """An immutable hash tree for comparing hierarchical data.
@@ -266,6 +284,10 @@ class HashTree(Data):
 
     """
 
+    # =============================================================================
+    # Data
+    # =============================================================================
+
     @property
     def __data__(self) -> dict[str, Any]:
         return {
@@ -278,10 +300,14 @@ class HashTree(Data):
         root = HashNode.__from_data__(data["root"]) if data.get("root") else None
         return cls(root=root, **data.get("attributes", {}))
 
+    # =============================================================================
+    # Dunder methods
+    # =============================================================================
+
     def __init__(
         self,
-        root: Optional[HashNode] = None,
-        name: Optional[str] = None,
+        root: HashNode | None = None,
+        name: str | None = None,
         **kwargs: Any,
     ) -> None:
         super().__init__(name=name)
@@ -295,8 +321,12 @@ class HashTree(Data):
     def __str__(self) -> str:
         return self.get_hierarchy_string()
 
+    # =============================================================================
+    # Properties
+    # =============================================================================
+
     @property
-    def root(self) -> Optional[HashNode]:
+    def root(self) -> HashNode | None:
         return self._root
 
     @property
@@ -314,28 +344,9 @@ class HashTree(Data):
     def signatures(self) -> dict[str, str]:
         return {node.absolute_path: node.signature for node in self.nodes}
 
-    def traverse(
-        self,
-        strategy: TraversalStrategy = "depthfirst",
-        order: TraversalOrder = "preorder",
-    ) -> Iterator[HashNode]:
-        """Traverse the hash tree from its root.
-
-        Parameters
-        ----------
-        strategy
-            The traversal strategy.
-        order
-            The traversal order used for depth-first traversal.
-
-        Yields
-        ------
-        HashNode
-            The next node in the traversal.
-
-        """
-        if self.root:
-            yield from self.root.traverse(strategy, order)
+    # =============================================================================
+    # Constructors
+    # =============================================================================
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> Self:
@@ -360,6 +371,33 @@ class HashTree(Data):
         if not isinstance(obj, Data):
             raise TypeError("The object must be a COMPAS data object.")
         return cls.from_dict(obj.__data__)
+
+    # =============================================================================
+    # Methods
+    # =============================================================================
+
+    def traverse(
+        self,
+        strategy: TraversalStrategy = "depthfirst",
+        order: TraversalOrder = "preorder",
+    ) -> Iterator[HashNode]:
+        """Traverse the hash tree from its root.
+
+        Parameters
+        ----------
+        strategy
+            The traversal strategy.
+        order
+            The traversal order used for depth-first traversal.
+
+        Yields
+        ------
+        HashNode
+            The next node in the traversal.
+
+        """
+        if self.root:
+            yield from self.root.traverse(strategy, order)
 
     def node_signature(self, node: HashNode) -> str:
         """Return the SHA256 signature of a node.
@@ -439,7 +477,7 @@ class HashTree(Data):
         for item in diff["modified"]:
             print(item)
 
-    def get_hierarchy_string(self, max_depth: Optional[int] = None) -> str:
+    def get_hierarchy_string(self, max_depth: int | None = None) -> str:
         """Return a string representation of the hash tree hierarchy."""
         hierarchy = []
 
@@ -461,9 +499,13 @@ class HashTree(Data):
             visit(self.root)
         return "\n".join(hierarchy)
 
+    # =============================================================================
+    # Conversions
+    # =============================================================================
+
     def to_graph(
         self,
-        key_mapper: Optional[Callable[[HashNode], Hashable]] = None,
+        key_mapper: Callable[[HashNode], Hashable] | None = None,
     ) -> "Graph":
         """Convert the hash tree to a graph."""
         from compas.datastructures import Graph

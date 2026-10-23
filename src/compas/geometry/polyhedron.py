@@ -1,12 +1,29 @@
+from collections.abc import Iterator
+from collections.abc import Sequence
 from math import sqrt
+from typing import TYPE_CHECKING
+from typing import Self
 
+from compas._typing import CoordinatesType
+from compas._typing import CoordinateType
 from compas.geometry import Line
+from compas.geometry import Plane
 from compas.geometry import Point
 from compas.geometry import Polygon
+from compas.geometry import PolygonalSurface
+from compas.geometry import Transformation
+from compas.geometry import centroid_polyhedron
 from compas.geometry import transform_points
+from compas.geometry import volume_polyhedron
 from compas.tolerance import TOL
 
+from ._typing import PlaneType
 from .geometry import Geometry
+
+if TYPE_CHECKING:
+    from compas.datastructures import Mesh
+    from compas.geometry import Box
+    from compas.geometry import Tessellation
 
 
 def tetrahedron():
@@ -146,58 +163,64 @@ def icosahedron():
 
 
 class Polyhedron(Geometry):
-    """A polyhedron is a geometric object defined by its vertices and faces.
+    """A closed polygonal solid defined by its boundary vertices and faces.
 
     Parameters
     ----------
-    vertices : list[[float, float, float] | :class:`compas.geometry.Point`]
+    vertices
         The point locations of the vertices of the polyhedron.
-    faces : list[list[int]]
+    faces
         The faces as a list of index lists.
-    name : str, optional
+    name
         The name of the polyhedron.
 
-    Attributes
-    ----------
-    vertices : list[list[float]]
-        The XYZ coordinates of the vertices of the polyhedron.
-    faces : list[list[int]]
-        The faces of the polyhedron defined as lists of vertex indices.
-    edges : list[tuple[int, int]], read-only
-        The edges of the polyhedron as vertex index pairs.
+    Notes
+    -----
+    The boundary must be closed, manifold, consistently oriented, and composed
+    of planar faces. Inward-facing boundaries are automatically reversed.
 
     """
 
+    # ==========================================================================
+    # Data
+    # ==========================================================================
 
     @property
-    def __data__(self):
+    def __data__(self) -> dict:
         return {"vertices": self.vertices, "faces": self.faces}
 
-    def __init__(self, vertices, faces, name=None):
-        super(Polyhedron, self).__init__(name=name)
-        self._vertices = None
-        self._faces = None
-        self.vertices = vertices
-        self.faces = faces
+    @classmethod
+    def __from_data__(cls, data: dict) -> Self:
+        return cls(data["vertices"], data["faces"])
 
-    def __repr__(self):
+    # ==========================================================================
+    # Dunder methods
+    # ==========================================================================
+
+    def __init__(self, vertices: CoordinatesType, faces: list[list[int]], name: str | None = None) -> None:
+        super().__init__(name=name)
+        self._boundary = PolygonalSurface(vertices, faces)
+        self._volume = 0.0
+        self._validate_boundary()
+
+    def __repr__(self) -> str:
         return "{0}(vertices={1!r}, faces={2!r})".format(
             type(self).__name__,
             self.vertices,
             self.faces,
         )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "{0}(vertices={1}, faces={2})".format(
             type(self).__name__,
             [[TOL.format_number(num) for num in vertice] for vertice in self.vertices],
             self.faces,
         )
 
-    def __len__(self):
+    def __len__(self) -> int:
         return 2
 
-    def __getitem__(self, key):
+    def __getitem__(self, key: int) -> list[list[float]] | list[list[int]]:
         if key == 0:
             return self.vertices
         elif key == 1:
@@ -205,42 +228,34 @@ class Polyhedron(Geometry):
         else:
             raise KeyError
 
-    def __setitem__(self, key, value):
-        if key == 0:
-            self.vertices = value
-        elif key == 1:
-            self.faces = value
-        else:
-            raise KeyError
-
-    def __iter__(self):
+    def __iter__(self) -> Iterator[list[list[float]] | list[list[int]]]:
         return iter([self.vertices, self.faces])
 
-    def __add__(self, other):
+    def __add__(self, other: "Polyhedron") -> Self:
         from compas.geometry import boolean_union_mesh_mesh
 
-        A = self.vertices, self.faces
-        B = other.vertices, other.faces
-        V, F = boolean_union_mesh_mesh(A, B)  # type: ignore
-        return Polyhedron(V, F)
+        A = self.to_vertices_and_faces(triangulated=True)
+        B = other.to_vertices_and_faces(triangulated=True)
+        V, F = boolean_union_mesh_mesh(A, B)
+        return type(self)(V, F)
 
-    def __sub__(self, other):
+    def __sub__(self, other: "Polyhedron") -> Self:
         from compas.geometry import boolean_difference_mesh_mesh
 
-        A = self.vertices, self.faces
-        B = other.vertices, other.faces
-        V, F = boolean_difference_mesh_mesh(A, B)  # type: ignore
-        return Polyhedron(V, F)
+        A = self.to_vertices_and_faces(triangulated=True)
+        B = other.to_vertices_and_faces(triangulated=True)
+        V, F = boolean_difference_mesh_mesh(A, B)
+        return type(self)(V, F)
 
-    def __and__(self, other):
+    def __and__(self, other: "Polyhedron") -> Self:
         from compas.geometry import boolean_intersection_mesh_mesh
 
-        A = self.vertices, self.faces
-        B = other.vertices, other.faces
-        V, F = boolean_intersection_mesh_mesh(A, B)  # type: ignore
-        return Polyhedron(V, F)
+        A = self.to_vertices_and_faces(triangulated=True)
+        B = other.to_vertices_and_faces(triangulated=True)
+        V, F = boolean_intersection_mesh_mesh(A, B)
+        return type(self)(V, F)
 
-    def __or__(self, other):
+    def __or__(self, other: "Polyhedron") -> Self:
         return self.__add__(other)
 
     # ==========================================================================
@@ -248,55 +263,53 @@ class Polyhedron(Geometry):
     # ==========================================================================
 
     @property
-    def vertices(self):
-        if self._vertices is None:
-            self._vertices = []
-        return self._vertices
-
-    @vertices.setter
-    def vertices(self, vertices):
-        self._vertices = vertices
+    def boundary(self) -> PolygonalSurface:
+        """The polygonal boundary of the solid."""
+        return self._boundary
 
     @property
-    def faces(self):
-        if self._faces is None:
-            self._faces = []
-        return self._faces
-
-    @faces.setter
-    def faces(self, faces):
-        self._faces = faces
+    def vertices(self) -> list[list[float]]:
+        """The boundary vertex coordinates."""
+        return self.boundary.vertices
 
     @property
-    def edges(self):
-        seen = set()
-        for face in self.faces:
-            for i in range(-1, len(face) - 1):
-                u = face[i]
-                v = face[i + 1]
-                if (u, v) not in seen:
-                    seen.add((u, v))
-                    seen.add((v, u))
-                    yield u, v
+    def faces(self) -> list[list[int]]:
+        """The oriented planar boundary faces."""
+        return self.boundary.faces
 
     @property
-    def points(self):
-        return [Point(x, y, z) for x, y, z in self.vertices]
+    def edges(self) -> list[tuple[int, int]]:
+        """The unique boundary edges."""
+        return self.boundary.edges
 
     @property
-    def lines(self):
-        return [Line(self.vertices[u], self.vertices[v]) for u, v in self.edges]
+    def points(self) -> list[Point]:
+        """The boundary vertices as points."""
+        return self.boundary.points
 
     @property
-    def polygons(self):
-        return [Polygon([self.vertices[index] for index in face]) for face in self.faces]
+    def lines(self) -> list[Line]:
+        """The boundary edges as lines."""
+        return self.boundary.lines
 
     @property
-    def planes(self):
+    def polygons(self) -> list[Polygon]:
+        """The boundary faces as polygons."""
+        return self.boundary.polygons
+
+    @property
+    def triangles(self) -> list[list[int]]:
+        """A triangulation of the boundary faces."""
+        return self.boundary.triangles
+
+    @property
+    def planes(self) -> list[Plane]:
+        """The planes of the boundary faces."""
         return [polygon.plane for polygon in self.polygons]
 
     @property
-    def is_convex(self):
+    def is_convex(self) -> bool:
+        """Whether the polyhedron is convex."""
         for plane in self.planes:
             for vertex in self.vertices:
                 if plane.normal.dot(plane.point - vertex) < 0:
@@ -304,47 +317,41 @@ class Polyhedron(Geometry):
         return True
 
     @property
-    def area(self):
-        """Compute the area of the polyhedron.
-
-        Returns
-        -------
-        float
-            The area of the polyhedron.
-
-        """
-        return sum(polygon.area for polygon in self.polygons)
-
-    @property
-    def volume(self):
-        """Compute the volume of the polyhedron."""
-        raise NotImplementedError
+    def is_closed(self) -> bool:
+        """Whether the boundary is closed, which is always `True`."""
+        return True
 
     # ==========================================================================
     # Constructors
     # ==========================================================================
 
     @classmethod
-    def from_platonicsolid(cls, f):
+    def from_platonicsolid(cls, f: int) -> Self:
         """Construct a polyhedron from one of the platonic solids.
 
         A Platonic solid is a regular, convex polyhedron. It is constructed by
         congruent regular polygonal faces with the same number of faces meeting
-        at each vertex [1]_.
+        at each vertex.[^polyhedron-platonic-solids]
 
         Parameters
         ----------
-        f : {4, 6, 8, 12, 20}
+        f
+            The number of faces: `4`, `6`, `8`, `12`, or `20`.
 
         Returns
         -------
-        :class:`compas.geometry.Polyhedron`
+        Self
             The constructed polyhedron.
+
+        Examples
+        --------
+        >>> solid = Polyhedron.from_platonicsolid(6)
+        >>> len(solid.faces)
+        6
 
         References
         ----------
-        .. [1] Wikipedia. *Platonic solids*.
-            Available at: https://en.wikipedia.org/wiki/Platonic_solid.
+        [^polyhedron-platonic-solids]: Wikipedia. [*Platonic solid*](https://en.wikipedia.org/wiki/Platonic_solid).
 
         """
         if f == 4:
@@ -359,23 +366,22 @@ class Polyhedron(Geometry):
             vertices, faces = icosahedron()
         else:
             raise ValueError("The number of sides of a platonic solid must be one of: 4, 6, 8, 12, 20.")
-        solid = cls(vertices, faces)
-        return solid
+        return cls(vertices, faces)
 
     @classmethod
-    def from_halfspaces(cls, halfspaces, interior_point):
+    def from_halfspaces(cls, halfspaces: Sequence[Sequence[float]], interior_point: CoordinateType) -> Self:
         """Construct a polyhedron from its half-spaces and one interior point.
 
         Parameters
         ----------
-        halfspaces : array-like
-            The coefficients of the hgalfspace equations in normal form.
-        interior_point : array-like
+        halfspaces
+            The coefficients of the half-space equations in normal form.
+        interior_point
             A point on the interior.
 
         Returns
         -------
-        :class:`compas.geometry.Polyhedron`
+        Self
 
         Examples
         --------
@@ -396,7 +402,7 @@ class Polyhedron(Geometry):
         """
         from itertools import combinations
 
-        from numpy import asarray
+        from numpy import asarray  # type: ignore
         from scipy.spatial import ConvexHull  # type: ignore
         from scipy.spatial import HalfspaceIntersection  # type: ignore
 
@@ -405,11 +411,11 @@ class Polyhedron(Geometry):
         from compas.linalg.vectors import dot_vectors
         from compas.linalg.vectors import length_vector
 
-        halfspaces = asarray(halfspaces, dtype=float)
-        interior_point = asarray(interior_point, dtype=float)
-        hsi = HalfspaceIntersection(halfspaces, interior_point)
+        halfspaces_array = asarray(halfspaces, dtype=float)
+        interior_point_array = asarray(interior_point, dtype=float)
+        hsi = HalfspaceIntersection(halfspaces_array, interior_point_array)
         hull = ConvexHull(hsi.intersections)
-        mesh = Mesh.from_vertices_and_faces([hsi.intersections[i] for i in hull.vertices], hull.simplices)
+        mesh = Mesh.from_vertices_and_faces([hsi.intersections[i] for i in hull.vertices], hull.simplices.tolist())
         mesh.unify_cycles()
         to_merge = []
         for a, b in combinations(mesh.faces(), 2):
@@ -424,16 +430,17 @@ class Polyhedron(Geometry):
         return cls(vertices, faces)
 
     @classmethod
-    def from_planes(cls, planes):
+    def from_planes(cls, planes: Sequence[PlaneType]) -> Self:
         """Construct a polyhedron from intersecting planes.
 
         Parameters
         ----------
-        planes : list[[point, normal] | :class:`compas.geometry.Plane`]
+        planes
+            The intersecting planes.
 
         Returns
         -------
-        :class:`compas.geometry.Polyhedron`
+        Self
 
         Examples
         --------
@@ -455,17 +462,17 @@ class Polyhedron(Geometry):
         return cls.from_halfspaces([plane.abcd for plane in planes], interior)
 
     @classmethod
-    def from_convex_hull(cls, points):
+    def from_convex_hull(cls, points: CoordinatesType) -> Self:
         """Construct a polyhedron from the convex hull of a set of points.
 
         Parameters
         ----------
-        points : list[point]
+        points
             The XYZ coordinates of the points.
 
         Returns
         -------
-        :class:`compas.geometry.Polyhedron`
+        Self
 
         Examples
         --------
@@ -474,157 +481,229 @@ class Polyhedron(Geometry):
         >>> p = Polyhedron.from_convex_hull(points)  # doctest: +SKIP
 
         """
-        from compas.geometry import convex_hull_numpy
+        from compas.geometry import convex_hull
+        from compas.topology import unify_cycles
 
-        vertices, faces = convex_hull_numpy(points)
-        return cls(vertices, faces)
+        indices, faces = convex_hull(points)
+        index = {vertex: local for local, vertex in enumerate(indices)}
+        vertices = [points[vertex] for vertex in indices]
+        remapped = [[index[vertex] for vertex in face] for face in faces]
+        unify_cycles(vertices, remapped)
+        return cls(vertices, remapped)
 
     # =============================================================================
     # Conversions
     # =============================================================================
 
-    def to_vertices_and_faces(self):
-        """Returns a list of vertices and faces.
+    def tessellated(self) -> "Tessellation":
+        """Return a triangular tessellation of the polyhedron boundary.
 
         Returns
         -------
-        tuple[list[float], list[int]
-            A list of vertices and a list of faces.
+        Tessellation
+            The indexed triangular representation for visualization.
 
         """
-        return self.vertices, self.faces
+        return self.boundary.tessellated()
 
-    def to_mesh(self):
-        """Returns a mesh representation of the polyhedron.
+    def to_vertices_and_faces(self, triangulated: bool = False) -> tuple[list[list[float]], list[list[int]]]:
+        """Return independent copies of the vertices and faces.
+
+        Parameters
+        ----------
+        triangulated
+            If `True`, triangulate all polygonal faces.
 
         Returns
         -------
-        :class:`compas.datastructures.Mesh`
+        tuple[list[list[float]], list[list[int]]]
+            The vertex coordinates and indexed faces.
+
+        """
+        return self.boundary.to_vertices_and_faces(triangulated=triangulated)
+
+    def to_mesh(self) -> "Mesh":
+        """Return a mesh representation of the polyhedron.
+
+        Returns
+        -------
+        Mesh
             A mesh object.
 
         """
-        from compas.datastructures import Mesh
-
-        return Mesh.from_vertices_and_faces(self.vertices, self.faces)
+        return self.boundary.to_mesh()
 
     # =============================================================================
     # Transformations
     # =============================================================================
 
-    def transform(self, transformation):
+    def transform(self, transformation: Transformation) -> None:
         """Transform the polyhedron.
 
         Parameters
         ----------
-        transformation : :class:`compas.geometry.Transformation`
-
-        Returns
-        -------
-        None
+        transformation
 
         """
-        self.vertices = transform_points(self.vertices, transformation)
+        vertices = transform_points(self.vertices, transformation)
+        faces = self.faces
+        volume = volume_polyhedron((vertices, faces))
+        if TOL.is_zero(volume):
+            raise ValueError("A transformation should not collapse a polyhedron.")
+        if volume < 0:
+            faces = [face[::-1] for face in faces]
+            volume = -volume
+        self._boundary = PolygonalSurface(vertices, faces)
+        self._volume = volume
 
     # =============================================================================
     # Methods
     # =============================================================================
 
-    def is_closed(self):
-        """Verify that the polyhedron forms a closed surface.
+    def aabb(self) -> "Box":
+        """Compute the axis-aligned bounding box.
 
         Returns
         -------
-        bool
-            True if the polyhedron is closed.
-            False otherwise.
+        Box
 
         """
-        mesh = self.to_mesh()
-        return mesh.is_closed()
+        return self.boundary.aabb()
 
-    def boolean_union(self, other):
+    def obb(self) -> "Box":
+        """Compute the oriented bounding box.
+
+        Returns
+        -------
+        Box
+
+        """
+        return self.boundary.obb()
+
+    def area(self) -> float:
+        """Compute the area of the polygonal boundary."""
+        return sum(polygon.area() for polygon in self.polygons)
+
+    def volume(self) -> float:
+        """Compute the volume enclosed by the polyhedron."""
+        return self._volume
+
+    def centroid(self) -> Point:
+        """Compute the center of mass of the polyhedron."""
+        vertices, faces = self.to_vertices_and_faces()
+        centroid_vertices: list[Sequence[float]] = [vertex for vertex in vertices]
+        x, y, z = centroid_polyhedron((centroid_vertices, faces))
+        return Point(x, y, z)
+
+    def boolean_union(self, other: "Polyhedron") -> Self:
         """Compute the boolean union of this polyhedron and another.
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Polyhedron`
+        other
             The polyhedron to add.
 
         Returns
         -------
-        :class:`compas.geometry.Polyhedron`
+        Self
             The resulting polyhedron.
 
         Examples
         --------
-        >>> from compas.geometry import Box, Sphere
-        >>> A = Box(2).to_polyhedron(triangulated=True)
-        >>> B = Sphere(point=[1, 1, 1], radius=1.0).to_polyhedron(triangulated=True)
-        >>> C = A.boolean_union(B)
+        >>> from compas.geometry import Box, Polyhedron, Sphere
+        >>> A = Polyhedron(*Box(2).tessellated().to_vertices_and_triangles())
+        >>> B = Polyhedron(*Sphere.from_point_and_radius([1, 1, 1], 1.0).tessellated().to_vertices_and_triangles())
+        >>> C = A.boolean_union(B)  # doctest: +SKIP
 
         """
         from compas.geometry import boolean_union_mesh_mesh
 
-        A = self.vertices, self.faces
-        B = other.vertices, other.faces
-        V, F = boolean_union_mesh_mesh(A, B)  # type: ignore
+        A = self.to_vertices_and_faces(triangulated=True)
+        B = other.to_vertices_and_faces(triangulated=True)
+        V, F = boolean_union_mesh_mesh(A, B)
 
-        return Polyhedron(V, F)
+        return type(self)(V, F)
 
-    def boolean_difference(self, other):
+    def boolean_difference(self, other: "Polyhedron") -> Self:
         """Compute the boolean difference of this polyhedron and another.
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Polyhedron`
+        other
             The polyhedron to subtract.
 
         Returns
         -------
-        :class:`compas.geometry.Polyhedron`
+        Self
             The resulting polyhedron.
 
         Examples
         --------
-        >>> from compas.geometry import Box, Sphere
-        >>> A = Box(2).to_polyhedron(triangulated=True)
-        >>> B = Sphere(point=[1, 1, 1], radius=1.0).to_polyhedron(triangulated=True)
-        >>> C = A.boolean_difference(B)
+        >>> from compas.geometry import Box, Polyhedron, Sphere
+        >>> A = Polyhedron(*Box(2).tessellated().to_vertices_and_triangles())
+        >>> B = Polyhedron(*Sphere.from_point_and_radius([1, 1, 1], 1.0).tessellated().to_vertices_and_triangles())
+        >>> C = A.boolean_difference(B)  # doctest: +SKIP
 
         """
         from compas.geometry import boolean_difference_mesh_mesh
 
-        A = self.vertices, self.faces
-        B = other.vertices, other.faces
-        V, F = boolean_difference_mesh_mesh(A, B)  # type: ignore
+        A = self.to_vertices_and_faces(triangulated=True)
+        B = other.to_vertices_and_faces(triangulated=True)
+        V, F = boolean_difference_mesh_mesh(A, B)
 
-        return Polyhedron(V, F)
+        return type(self)(V, F)
 
-    def boolean_intersection(self, other):
+    def boolean_intersection(self, other: "Polyhedron") -> Self:
         """Compute the boolean intersection of this polyhedron and another.
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Polyhedron`
+        other
             The polyhedron to intersect with.
 
         Returns
         -------
-        :class:`compas.geometry.Polyhedron`
+        Self
             The resulting polyhedron.
 
         Examples
         --------
-        >>> from compas.geometry import Box, Sphere
-        >>> A = Box(2).to_polyhedron(triangulated=True)
-        >>> B = Sphere(point=[1, 1, 1], radius=1.0).to_polyhedron(triangulated=True)
-        >>> C = A.boolean_intersection(B)
+        >>> from compas.geometry import Box, Polyhedron, Sphere
+        >>> A = Polyhedron(*Box(2).tessellated().to_vertices_and_triangles())
+        >>> B = Polyhedron(*Sphere.from_point_and_radius([1, 1, 1], 1.0).tessellated().to_vertices_and_triangles())
+        >>> C = A.boolean_intersection(B)  # doctest: +SKIP
 
         """
         from compas.geometry import boolean_intersection_mesh_mesh
 
-        A = self.vertices, self.faces
-        B = other.vertices, other.faces
-        V, F = boolean_intersection_mesh_mesh(A, B)  # type: ignore
+        A = self.to_vertices_and_faces(triangulated=True)
+        B = other.to_vertices_and_faces(triangulated=True)
+        V, F = boolean_intersection_mesh_mesh(A, B)
 
-        return Polyhedron(V, F)
+        return type(self)(V, F)
+
+    # =============================================================================
+    # Private helpers
+    # =============================================================================
+
+    def _validate_boundary(self) -> None:
+        if len(self.vertices) < 4:
+            raise ValueError("A polyhedron requires at least four vertices.")
+        closed, manifold, _, oriented = self.boundary._analyze_topology()
+        if not closed:
+            raise ValueError("The boundary of a polyhedron should be closed.")
+        if not manifold:
+            raise ValueError("The boundary of a polyhedron should be manifold.")
+        if not oriented:
+            raise ValueError("The boundary faces of a polyhedron should be consistently oriented.")
+        if not all(polygon.is_planar for polygon in self.polygons):
+            raise ValueError("The boundary faces of a polyhedron should be planar.")
+
+        vertices, faces = self.to_vertices_and_faces()
+        volume = volume_polyhedron((vertices, faces))
+        if TOL.is_zero(volume):
+            raise ValueError("A polyhedron should enclose a nonzero volume.")
+        if volume < 0:
+            self.boundary.faces = [face[::-1] for face in self.faces]
+            volume = -volume
+        self._volume = volume

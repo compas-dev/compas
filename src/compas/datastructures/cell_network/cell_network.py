@@ -1,17 +1,14 @@
 from ast import literal_eval
+from collections.abc import Callable
+from collections.abc import Iterable
+from collections.abc import Iterator
+from collections.abc import Mapping
+from collections.abc import Sequence
 from random import sample
 from typing import Any
-from typing import Callable
-from typing import Iterable
-from typing import Iterator
 from typing import Literal
-from typing import Mapping
-from typing import Optional
-from typing import Sequence
-from typing import Union
+from typing import Self
 from typing import overload
-
-from typing_extensions import Self
 
 from compas.datastructures import Graph
 from compas.datastructures import Mesh
@@ -22,6 +19,7 @@ from compas.datastructures.attributes import VertexAttributeView
 from compas.datastructures.datastructure import Datastructure
 from compas.files import read_obj
 from compas.files import weld_obj_data
+from compas.geometry import Box
 from compas.geometry import Line
 from compas.geometry import Plane
 from compas.geometry import Point
@@ -35,6 +33,7 @@ from compas.geometry import centroid_polygon
 from compas.geometry import centroid_polyhedron
 from compas.geometry import distance_point_point
 from compas.geometry import normal_polygon
+from compas.geometry import oriented_bounding_box
 from compas.geometry import project_point_plane
 from compas.geometry import volume_polyhedron
 from compas.itertools import pairwise
@@ -107,6 +106,10 @@ class CellNetwork(Datastructure):
 
     """
 
+    # --------------------------------------------------------------------------
+    # Data
+    # --------------------------------------------------------------------------
+
     @property
     def __data__(self) -> dict[str, Any]:
         cell: dict[Cell, list[Face]] = {}
@@ -173,13 +176,17 @@ class CellNetwork(Datastructure):
 
         return cell_network
 
+    # --------------------------------------------------------------------------
+    # Dunder methods
+    # --------------------------------------------------------------------------
+
     def __init__(
         self,
-        default_vertex_attributes: Optional[AttributeDict] = None,
-        default_edge_attributes: Optional[AttributeDict] = None,
-        default_face_attributes: Optional[AttributeDict] = None,
-        default_cell_attributes: Optional[AttributeDict] = None,
-        name: Optional[str] = None,
+        default_vertex_attributes: AttributeDict | None = None,
+        default_edge_attributes: AttributeDict | None = None,
+        default_face_attributes: AttributeDict | None = None,
+        default_cell_attributes: AttributeDict | None = None,
+        name: str | None = None,
         **kwargs: Any,
     ) -> None:
         super().__init__(kwargs, name=name)
@@ -189,7 +196,7 @@ class CellNetwork(Datastructure):
         self._vertex: dict[Vertex, AttributeDict] = {}
         self._edge: dict[Vertex, dict[Vertex, AttributeDict]] = {}
         self._face: dict[Face, list[Vertex]] = {}
-        self._plane: dict[Vertex, dict[Vertex, dict[Face, Optional[Cell]]]] = {}
+        self._plane: dict[Vertex, dict[Vertex, dict[Face, Cell | None]]] = {}
         self._cell: dict[Cell, dict[Vertex, dict[Vertex, Face]]] = {}
         self._edge_data: dict[Edge, AttributeDict] = {}
         self._face_data: dict[Face, AttributeDict] = {}
@@ -217,7 +224,87 @@ class CellNetwork(Datastructure):
         )
 
     # --------------------------------------------------------------------------
-    # Helpers
+    # Constructors
+    # --------------------------------------------------------------------------
+
+    @classmethod
+    def from_obj(cls, filepath: Any, precision: int | None = None) -> Self:
+        """Construct a cell network object from the data described in an OBJ file.
+
+        Parameters
+        ----------
+        filepath
+            A path, a file-like object or a URL pointing to a file.
+        precision
+            The precision of the geometric map that is used to connect the lines.
+
+        Returns
+        -------
+        VolMesh
+            A cell network object.
+
+        See Also
+        --------
+        to_obj
+        from_meshgrid, from_vertices_and_cells
+        read_obj
+
+        """
+        data = weld_obj_data(read_obj(filepath), precision)
+        vertices = data.vertices
+        faces = data.faces
+        groups = data.groups
+        cells = []
+        for name in groups:
+            group = groups[name]
+            cell = []
+            for item in group:
+                if item[0] != "f":
+                    continue
+                face = faces[item[1]]
+                cell.append(face)
+            cells.append(cell)
+        return cls.from_vertices_and_cells(vertices, cells)
+
+    @classmethod
+    def from_vertices_and_cells(
+        cls,
+        vertices: Sequence[PointCoordinates],
+        cells: Sequence[Sequence[Sequence[Vertex]]],
+    ) -> Self:
+        """Construct a cell network object from vertices and cells.
+
+        Parameters
+        ----------
+        vertices
+            Ordered list of vertices, represented by their XYZ coordinates.
+        cells
+            List of cells defined by their faces.
+
+        Returns
+        -------
+        VolMesh
+            A cell network object.
+
+        See Also
+        --------
+        to_vertices_and_cells
+        from_obj
+
+        """
+        cellnetwork = cls()
+        for x, y, z in vertices:
+            cellnetwork.add_vertex(x=x, y=y, z=z)
+        for cell in cells:
+            faces = []
+            for face_vertices in cell:
+                face = cellnetwork.add_face(face_vertices)
+                faces.append(face)
+            cellnetwork.add_cell(faces)
+        return cellnetwork
+
+    # --------------------------------------------------------------------------
+    # Private helpers
     # --------------------------------------------------------------------------
 
     def clear(self) -> None:
@@ -358,7 +445,7 @@ class CellNetwork(Datastructure):
         """
         return dict(enumerate(self.vertices()))
 
-    def vertex_gkey(self, precision: Optional[int] = None) -> dict[Vertex, str]:
+    def vertex_gkey(self, precision: int | None = None) -> dict[Vertex, str]:
         """Returns a dictionary that maps vertex identifiers to the corresponding *geometric key* up to a certain precision.
 
         Parameters
@@ -381,7 +468,7 @@ class CellNetwork(Datastructure):
         xyz = self.vertex_coordinates
         return {vertex: gkey(xyz(vertex), precision) for vertex in self.vertices()}
 
-    def gkey_vertex(self, precision: Optional[int] = None) -> dict[str, Vertex]:
+    def gkey_vertex(self, precision: int | None = None) -> dict[str, Vertex]:
         """Returns a dictionary that maps *geometric keys* of a certain precision to the corresponding vertex identifiers.
 
         Parameters
@@ -410,8 +497,8 @@ class CellNetwork(Datastructure):
 
     def add_vertex(
         self,
-        key: Optional[Vertex] = None,
-        attr_dict: Optional[Mapping[str, Any]] = None,
+        key: Vertex | None = None,
+        attr_dict: Mapping[str, Any] | None = None,
         **kwattr: Any,
     ) -> Vertex:
         """Add a vertex and specify its attributes.
@@ -458,7 +545,7 @@ class CellNetwork(Datastructure):
         self,
         u: Vertex,
         v: Vertex,
-        attr_dict: Optional[Mapping[str, Any]] = None,
+        attr_dict: Mapping[str, Any] | None = None,
         **kwattr: Any,
     ) -> Edge:
         """Add an edge and specify its attributes.
@@ -516,8 +603,8 @@ class CellNetwork(Datastructure):
     def add_face(
         self,
         vertices: Sequence[Vertex],
-        fkey: Optional[Face] = None,
-        attr_dict: Optional[Mapping[str, Any]] = None,
+        fkey: Face | None = None,
+        attr_dict: Mapping[str, Any] | None = None,
         **kwattr: Any,
     ) -> Face:
         """Add a face to the cell network.
@@ -599,20 +686,6 @@ class CellNetwork(Datastructure):
 
         return fkey
 
-    def _faces_to_unified_mesh(self, faces: Iterable[Face]) -> Optional[Mesh]:
-        faces = list(set(faces))
-        # 0. Check if all the faces have been added
-        for face in faces:
-            if face not in self._face:
-                raise ValueError("Face {} does not exist.".format(face))
-        # 2. Check if the faces can be unified
-        mesh = self.faces_to_mesh(faces, data=False)
-        try:
-            mesh.unify_cycles()
-        except Exception:
-            return None
-        return mesh
-
     def is_faces_closed(self, faces: Iterable[Face]) -> bool:
         """Checks if the faces form a closed cell."""
         mesh = self._faces_to_unified_mesh(faces)
@@ -623,8 +696,8 @@ class CellNetwork(Datastructure):
     def add_cell(
         self,
         faces: Iterable[Face],
-        ckey: Optional[Cell] = None,
-        attr_dict: Optional[Mapping[str, Any]] = None,
+        ckey: Cell | None = None,
+        attr_dict: Mapping[str, Any] | None = None,
         **kwattr: Any,
     ) -> Cell:
         """Add a cell to the cell network object.
@@ -702,26 +775,6 @@ class CellNetwork(Datastructure):
     # --------------------------------------------------------------------------
     # Modifiers
     # --------------------------------------------------------------------------
-
-    # def delete_vertex(self, vertex):
-    #     """Delete a vertex from the cell network and everything that is attached to it.
-
-    #     Parameters
-    #     ----------
-    #     vertex : int
-    #         The identifier of the vertex.
-
-    #     Returns
-    #     -------
-    #     None
-
-    #     See Also
-    #     --------
-    #     delete_halfface, delete_cell
-
-    #     """
-    #     for cell in self.vertex_cells(vertex):
-    #         self.delete_cell(cell)
 
     def delete_edge(self, edge: Edge) -> None:
         """Delete an edge from the cell network.
@@ -818,225 +871,9 @@ class CellNetwork(Datastructure):
         if cell in self._cell_data:
             del self._cell_data[cell]
 
-    # def remove_unused_vertices(self):
-    #     """Remove all unused vertices from the cell network object.
-
-    #     Returns
-    #     -------
-    #     None
-
-    #     """
-    #     for vertex in list(self.vertices()):
-    #         if vertex not in self._plane:
-    #             del self._vertex[vertex]
-    #         else:
-    #             if not self._plane[vertex]:
-    #                 del self._vertex[vertex]
-    #                 del self._plane[vertex]
-
-    # --------------------------------------------------------------------------
-    # Constructors
-    # --------------------------------------------------------------------------
-
-    # @classmethod
-    # def from_meshgrid(cls, dx=10, dy=None, dz=None, nx=10, ny=None, nz=None):
-    #     """Construct a cell network from a 3D meshgrid.
-
-    #     Parameters
-    #     ----------
-    #     dx : float, optional
-    #         The size of the grid in the x direction.
-    #     dy : float, optional
-    #         The size of the grid in the y direction.
-    #         Defaults to the value of `dx`.
-    #     dz : float, optional
-    #         The size of the grid in the z direction.
-    #         Defaults to the value of `dx`.
-    #     nx : int, optional
-    #         The number of elements in the x direction.
-    #     ny : int, optional
-    #         The number of elements in the y direction.
-    #         Defaults to the value of `nx`.
-    #     nz : int, optional
-    #         The number of elements in the z direction.
-    #         Defaults to the value of `nx`.
-
-    #     Returns
-    #     -------
-    #     VolMesh
-
-    #     See Also
-    #     --------
-    #     from_obj, from_vertices_and_cells
-
-    #     """
-    #     dy = dy or dx
-    #     dz = dz or dx
-    #     ny = ny or nx
-    #     nz = nz or nx
-
-    #     vertices = [
-    #         [x, y, z]
-    #         for z, x, y in product(
-    #             linspace(0, dz, nz + 1),
-    #             linspace(0, dx, nx + 1),
-    #             linspace(0, dy, ny + 1),
-    #         )
-    #     ]
-    #     cells = []
-    #     for k, i, j in product(range(nz), range(nx), range(ny)):
-    #         a = k * ((nx + 1) * (ny + 1)) + i * (ny + 1) + j
-    #         b = k * ((nx + 1) * (ny + 1)) + (i + 1) * (ny + 1) + j
-    #         c = k * ((nx + 1) * (ny + 1)) + (i + 1) * (ny + 1) + j + 1
-    #         d = k * ((nx + 1) * (ny + 1)) + i * (ny + 1) + j + 1
-    #         aa = (k + 1) * ((nx + 1) * (ny + 1)) + i * (ny + 1) + j
-    #         bb = (k + 1) * ((nx + 1) * (ny + 1)) + (i + 1) * (ny + 1) + j
-    #         cc = (k + 1) * ((nx + 1) * (ny + 1)) + (i + 1) * (ny + 1) + j + 1
-    #         dd = (k + 1) * ((nx + 1) * (ny + 1)) + i * (ny + 1) + j + 1
-    #         bottom = [d, c, b, a]
-    #         front = [a, b, bb, aa]
-    #         right = [b, c, cc, bb]
-    #         left = [a, aa, dd, d]
-    #         back = [c, d, dd, cc]
-    #         top = [aa, bb, cc, dd]
-    #         cells.append([bottom, front, left, back, right, top])
-
-    #     return cls.from_vertices_and_cells(vertices, cells)
-
-    @classmethod
-    def from_obj(cls, filepath: Any, precision: Optional[int] = None) -> Self:
-        """Construct a cell network object from the data described in an OBJ file.
-
-        Parameters
-        ----------
-        filepath
-            A path, a file-like object or a URL pointing to a file.
-        precision
-            The precision of the geometric map that is used to connect the lines.
-
-        Returns
-        -------
-        VolMesh
-            A cell network object.
-
-        See Also
-        --------
-        to_obj
-        from_meshgrid, from_vertices_and_cells
-        read_obj
-
-        """
-        data = weld_obj_data(read_obj(filepath), precision)
-        vertices = data.vertices
-        faces = data.faces
-        groups = data.groups
-        cells = []
-        for name in groups:
-            group = groups[name]
-            cell = []
-            for item in group:
-                if item[0] != "f":
-                    continue
-                face = faces[item[1]]
-                cell.append(face)
-            cells.append(cell)
-        return cls.from_vertices_and_cells(vertices, cells)
-
-    @classmethod
-    def from_vertices_and_cells(
-        cls,
-        vertices: Sequence[PointCoordinates],
-        cells: Sequence[Sequence[Sequence[Vertex]]],
-    ) -> Self:
-        """Construct a cell network object from vertices and cells.
-
-        Parameters
-        ----------
-        vertices
-            Ordered list of vertices, represented by their XYZ coordinates.
-        cells
-            List of cells defined by their faces.
-
-        Returns
-        -------
-        VolMesh
-            A cell network object.
-
-        See Also
-        --------
-        to_vertices_and_cells
-        from_obj
-
-        """
-        cellnetwork = cls()
-        for x, y, z in vertices:
-            cellnetwork.add_vertex(x=x, y=y, z=z)
-        for cell in cells:
-            faces = []
-            for face_vertices in cell:
-                face = cellnetwork.add_face(face_vertices)
-                faces.append(face)
-            cellnetwork.add_cell(faces)
-        return cellnetwork
-
     # --------------------------------------------------------------------------
     # Conversions
     # --------------------------------------------------------------------------
-
-    # def to_obj(self, filepath, precision=None, **kwargs):
-    #     """Write the cell network to an OBJ file.
-
-    #     Parameters
-    #     ----------
-    #     filepath : path string | file-like object
-    #         A path or a file-like object pointing to a file.
-    #     precision: str, optional
-    #         The precision of the geometric map that is used to connect the lines.
-    #     unweld : bool, optional
-    #         If True, all faces have their own unique vertices.
-    #         If False, vertices are shared between faces if this is also the case in the mesh.
-    #         Default is False.
-
-    #     Returns
-    #     -------
-    #     None
-
-    #     See Also
-    #     --------
-    #     from_obj
-
-    #     Warnings
-    #     --------
-    #     This function only writes geometric data about the vertices and
-    #     the faces to the file.
-
-    #     """
-    #     write_obj(filepath, self, precision=precision, **kwargs)
-
-    # def to_vertices_and_cells(self):
-    #     """Return the vertices and cells of a cell network.
-
-    #     Returns
-    #     -------
-    #     list[list[float]]
-    #         A list of vertices, represented by their XYZ coordinates.
-    #     list[list[list[int]]]
-    #         A list of cells, with each cell a list of faces, and each face a list of vertex indices.
-
-    #     See Also
-    #     --------
-    #     from_vertices_and_cells
-
-    #     """
-    #     vertex_index = self.vertex_index()
-    #     vertices = [self.vertex_coordinates(vertex) for vertex in self.vertices()]
-    #     cells = []
-    #     for cell in self.cells():
-    #         faces = [
-    #             [vertex_index[vertex] for vertex in self.halfface_vertices(face)] for face in self.cell_faces(cell)
-    #         ]
-    #         cells.append(faces)
-    #     return vertices, cells
 
     def edges_to_graph(self) -> Graph:
         """Convert the edges of the cell network to a graph.
@@ -1177,17 +1014,27 @@ class CellNetwork(Datastructure):
         """
         return Point(*centroid_points([self.vertex_coordinates(vertex) for vertex in self.vertices()]))
 
-    def aabb(self) -> list[list[float]]:
+    def aabb(self) -> Box:
         """Calculate the axis aligned bounding box of the mesh.
 
         Returns
         -------
-        list[[float, float, float]]
-            XYZ coordinates of 8 points defining a box.
+        Box
 
         """
         xyz = self.vertices_attributes("xyz")
-        return bounding_box(xyz)
+        return Box.from_bounding_box(bounding_box(xyz))
+
+    def obb(self) -> Box:
+        """Calculate the oriented bounding box of the cell network.
+
+        Returns
+        -------
+        Box
+
+        """
+        xyz = self.vertices_attributes("xyz")
+        return Box.from_bounding_box(oriented_bounding_box(xyz))
 
     def number_of_vertices(self) -> int:
         """Count the number of vertices in the cell network.
@@ -1267,7 +1114,7 @@ class CellNetwork(Datastructure):
         raise NotImplementedError
 
     # --------------------------------------------------------------------------
-    # Vertex Accessors
+    # Vertex accessors
     # --------------------------------------------------------------------------
 
     @overload
@@ -1277,7 +1124,7 @@ class CellNetwork(Datastructure):
     def vertices(self, data: Literal[True]) -> Iterator[tuple[Vertex, VertexAttributeView]]: ...
 
     @overload
-    def vertices(self, data: bool) -> Iterator[Union[Vertex, tuple[Vertex, VertexAttributeView]]]: ...
+    def vertices(self, data: bool) -> Iterator[Vertex | tuple[Vertex, VertexAttributeView]]: ...
 
     def vertices(self, data: bool = False) -> Iterator[Any]:
         """Iterate over the vertices of the cell network.
@@ -1308,7 +1155,7 @@ class CellNetwork(Datastructure):
     @overload
     def vertices_where(
         self,
-        conditions: Optional[Mapping[str, Any]] = None,
+        conditions: Mapping[str, Any] | None = None,
         data: Literal[False] = False,
         **kwargs: Any,
     ) -> Iterator[Vertex]: ...
@@ -1316,7 +1163,7 @@ class CellNetwork(Datastructure):
     @overload
     def vertices_where(
         self,
-        conditions: Optional[Mapping[str, Any]],
+        conditions: Mapping[str, Any] | None,
         data: Literal[True],
         **kwargs: Any,
     ) -> Iterator[tuple[Vertex, VertexAttributeView]]: ...
@@ -1332,14 +1179,14 @@ class CellNetwork(Datastructure):
     @overload
     def vertices_where(
         self,
-        conditions: Optional[Mapping[str, Any]],
+        conditions: Mapping[str, Any] | None,
         data: bool,
         **kwargs: Any,
-    ) -> Iterator[Union[Vertex, tuple[Vertex, VertexAttributeView]]]: ...
+    ) -> Iterator[Vertex | tuple[Vertex, VertexAttributeView]]: ...
 
     def vertices_where(
         self,
-        conditions: Optional[Mapping[str, Any]] = None,
+        conditions: Mapping[str, Any] | None = None,
         data: bool = False,
         **kwargs: Any,
     ) -> Iterator[Any]:
@@ -1445,7 +1292,7 @@ class CellNetwork(Datastructure):
         self,
         predicate: Callable[[Vertex, VertexAttributeView], bool],
         data: bool,
-    ) -> Iterator[Union[Vertex, tuple[Vertex, VertexAttributeView]]]: ...
+    ) -> Iterator[Vertex | tuple[Vertex, VertexAttributeView]]: ...
 
     def vertices_where_predicate(
         self,
@@ -1483,12 +1330,12 @@ class CellNetwork(Datastructure):
                     yield key
 
     # --------------------------------------------------------------------------
-    # Vertex Attributes
+    # Vertex attributes
     # --------------------------------------------------------------------------
 
     def update_default_vertex_attributes(
         self,
-        attr_dict: Optional[Mapping[str, Any]] = None,
+        attr_dict: Mapping[str, Any] | None = None,
         **kwattr: Any,
     ) -> None:
         """Update the default vertex attributes.
@@ -1612,8 +1459,8 @@ class CellNetwork(Datastructure):
     def vertex_attributes(
         self,
         vertex: Vertex,
-        names: Optional[Sequence[str]] = None,
-        values: Optional[Sequence[Any]] = None,
+        names: Sequence[str] | None = None,
+        values: Sequence[Any] | None = None,
     ) -> Any:
         """Get or set multiple attributes of a vertex.
 
@@ -1672,7 +1519,7 @@ class CellNetwork(Datastructure):
         self,
         name: str,
         *,
-        keys: Optional[Iterable[Vertex]] = None,
+        keys: Iterable[Vertex] | None = None,
     ) -> list[Any]: ...
 
     @overload
@@ -1680,15 +1527,15 @@ class CellNetwork(Datastructure):
         self,
         name: str,
         value: Any,
-        keys: Optional[Iterable[Vertex]] = None,
+        keys: Iterable[Vertex] | None = None,
     ) -> None: ...
 
     def vertices_attribute(
         self,
         name: str,
         value: Any = _MISSING,
-        keys: Optional[Iterable[Vertex]] = None,
-    ) -> Optional[list[Any]]:
+        keys: Iterable[Vertex] | None = None,
+    ) -> list[Any] | None:
         """Get or set an attribute of multiple vertices.
 
         Parameters
@@ -1731,7 +1578,7 @@ class CellNetwork(Datastructure):
         self,
         names: None = None,
         values: None = None,
-        keys: Optional[Iterable[Vertex]] = None,
+        keys: Iterable[Vertex] | None = None,
     ) -> list[VertexAttributeView]: ...
 
     @overload
@@ -1739,7 +1586,7 @@ class CellNetwork(Datastructure):
         self,
         names: Sequence[str],
         values: None = None,
-        keys: Optional[Iterable[Vertex]] = None,
+        keys: Iterable[Vertex] | None = None,
     ) -> list[list[Any]]: ...
 
     @overload
@@ -1747,7 +1594,7 @@ class CellNetwork(Datastructure):
         self,
         names: Sequence[str],
         values: Sequence[Any],
-        keys: Optional[Iterable[Vertex]] = None,
+        keys: Iterable[Vertex] | None = None,
     ) -> None: ...
 
     @overload
@@ -1755,15 +1602,15 @@ class CellNetwork(Datastructure):
         self,
         names: None,
         values: Sequence[Any],
-        keys: Optional[Iterable[Vertex]] = None,
+        keys: Iterable[Vertex] | None = None,
     ) -> None: ...
 
     def vertices_attributes(
         self,
-        names: Optional[Sequence[str]] = None,
-        values: Optional[Sequence[Any]] = None,
-        keys: Optional[Iterable[Vertex]] = None,
-    ) -> Optional[list[Any]]:
+        names: Sequence[str] | None = None,
+        values: Sequence[Any] | None = None,
+        keys: Iterable[Vertex] | None = None,
+    ) -> list[Any] | None:
         """Get or set multiple attributes of multiple vertices.
 
         Parameters
@@ -1774,7 +1621,7 @@ class CellNetwork(Datastructure):
         values
             The values of the attributes.
             Default is None.
-        key
+        keys
             A list of vertex identifiers.
 
         Returns
@@ -1805,7 +1652,7 @@ class CellNetwork(Datastructure):
         return [self.vertex_attributes(vertex, names) for vertex in vertices]
 
     # --------------------------------------------------------------------------
-    # Vertex Topology
+    # Vertex topology
     # --------------------------------------------------------------------------
 
     def has_vertex(self, vertex: Vertex) -> bool:
@@ -1998,33 +1845,8 @@ class CellNetwork(Datastructure):
                     cells.add(cell)
         return list(cells)
 
-    # def is_vertex_on_boundary(self, vertex):
-    #     """Verify that a vertex is on a boundary.
-
-    #     Parameters
-    #     ----------
-    #     vertex : int
-    #         The identifier of the vertex.
-
-    #     Returns
-    #     -------
-    #     bool
-    #         True if the vertex is on the boundary.
-    #         False otherwise.
-
-    #     See Also
-    #     --------
-    #     is_edge_on_boundary, is_face_on_boundary, is_cell_on_boundary
-
-    #     """
-    #     halffaces = self.vertex_halffaces(vertex)
-    #     for halfface in halffaces:
-    #         if self.is_halfface_on_boundary(halfface):
-    #             return True
-    #     return False
-
     # --------------------------------------------------------------------------
-    # Vertex Geometry
+    # Vertex geometry
     # --------------------------------------------------------------------------
 
     def vertex_coordinates(self, vertex: Vertex, axes: str = "xyz") -> list[float]:
@@ -2086,19 +1908,19 @@ class CellNetwork(Datastructure):
 
         Parameters
         ----------
-         vertices
+        vertices
             The vertex identifiers.
 
         Returns
         -------
-        list of Point
+        list[Point]
             The points.
 
         """
         return [self.vertex_point(vertex) for vertex in vertices]
 
     # --------------------------------------------------------------------------
-    # Edge Accessors
+    # Edge accessors
     # --------------------------------------------------------------------------
 
     @overload
@@ -2108,7 +1930,7 @@ class CellNetwork(Datastructure):
     def edges(self, data: Literal[True]) -> Iterator[tuple[Edge, EdgeAttributeView]]: ...
 
     @overload
-    def edges(self, data: bool) -> Iterator[Union[Edge, tuple[Edge, EdgeAttributeView]]]: ...
+    def edges(self, data: bool) -> Iterator[Edge | tuple[Edge, EdgeAttributeView]]: ...
 
     def edges(self, data: bool = False) -> Iterator[Any]:
         """Iterate over the edges of the cell network.
@@ -2141,7 +1963,7 @@ class CellNetwork(Datastructure):
     @overload
     def edges_where(
         self,
-        conditions: Optional[Mapping[str, Any]] = None,
+        conditions: Mapping[str, Any] | None = None,
         data: Literal[False] = False,
         **kwargs: Any,
     ) -> Iterator[Edge]: ...
@@ -2149,7 +1971,7 @@ class CellNetwork(Datastructure):
     @overload
     def edges_where(
         self,
-        conditions: Optional[Mapping[str, Any]],
+        conditions: Mapping[str, Any] | None,
         data: Literal[True],
         **kwargs: Any,
     ) -> Iterator[tuple[Edge, EdgeAttributeView]]: ...
@@ -2165,14 +1987,14 @@ class CellNetwork(Datastructure):
     @overload
     def edges_where(
         self,
-        conditions: Optional[Mapping[str, Any]],
+        conditions: Mapping[str, Any] | None,
         data: bool,
         **kwargs: Any,
-    ) -> Iterator[Union[Edge, tuple[Edge, EdgeAttributeView]]]: ...
+    ) -> Iterator[Edge | tuple[Edge, EdgeAttributeView]]: ...
 
     def edges_where(
         self,
-        conditions: Optional[Mapping[str, Any]] = None,
+        conditions: Mapping[str, Any] | None = None,
         data: bool = False,
         **kwargs: Any,
     ) -> Iterator[Any]:
@@ -2260,7 +2082,7 @@ class CellNetwork(Datastructure):
         self,
         predicate: Callable[[Edge, EdgeAttributeView], bool],
         data: bool,
-    ) -> Iterator[Union[Edge, tuple[Edge, EdgeAttributeView]]]: ...
+    ) -> Iterator[Edge | tuple[Edge, EdgeAttributeView]]: ...
 
     def edges_where_predicate(
         self,
@@ -2298,12 +2120,12 @@ class CellNetwork(Datastructure):
                     yield key
 
     # --------------------------------------------------------------------------
-    # Edge Attributes
+    # Edge attributes
     # --------------------------------------------------------------------------
 
     def update_default_edge_attributes(
         self,
-        attr_dict: Optional[Mapping[str, Any]] = None,
+        attr_dict: Mapping[str, Any] | None = None,
         **kwattr: Any,
     ) -> None:
         """Update the default edge attributes.
@@ -2429,8 +2251,8 @@ class CellNetwork(Datastructure):
     def edge_attributes(
         self,
         edge: Edge,
-        names: Optional[Sequence[str]] = None,
-        values: Optional[Sequence[Any]] = None,
+        names: Sequence[str] | None = None,
+        values: Sequence[Any] | None = None,
     ) -> Any:
         """Get or set multiple attributes of an edge.
 
@@ -2483,7 +2305,7 @@ class CellNetwork(Datastructure):
         self,
         name: str,
         *,
-        edges: Optional[Iterable[Edge]] = None,
+        edges: Iterable[Edge] | None = None,
     ) -> list[Any]: ...
 
     @overload
@@ -2491,15 +2313,15 @@ class CellNetwork(Datastructure):
         self,
         name: str,
         value: Any,
-        edges: Optional[Iterable[Edge]] = None,
+        edges: Iterable[Edge] | None = None,
     ) -> None: ...
 
     def edges_attribute(
         self,
         name: str,
         value: Any = _MISSING,
-        edges: Optional[Iterable[Edge]] = None,
-    ) -> Optional[list[Any]]:
+        edges: Iterable[Edge] | None = None,
+    ) -> list[Any] | None:
         """Get or set an attribute of multiple edges.
 
         Parameters
@@ -2542,7 +2364,7 @@ class CellNetwork(Datastructure):
         self,
         names: None = None,
         values: None = None,
-        edges: Optional[Iterable[Edge]] = None,
+        edges: Iterable[Edge] | None = None,
     ) -> list[EdgeAttributeView]: ...
 
     @overload
@@ -2550,7 +2372,7 @@ class CellNetwork(Datastructure):
         self,
         names: Sequence[str],
         values: None = None,
-        edges: Optional[Iterable[Edge]] = None,
+        edges: Iterable[Edge] | None = None,
     ) -> list[list[Any]]: ...
 
     @overload
@@ -2558,7 +2380,7 @@ class CellNetwork(Datastructure):
         self,
         names: Sequence[str],
         values: Sequence[Any],
-        edges: Optional[Iterable[Edge]] = None,
+        edges: Iterable[Edge] | None = None,
     ) -> None: ...
 
     @overload
@@ -2566,15 +2388,15 @@ class CellNetwork(Datastructure):
         self,
         names: None,
         values: Sequence[Any],
-        edges: Optional[Iterable[Edge]] = None,
+        edges: Iterable[Edge] | None = None,
     ) -> None: ...
 
     def edges_attributes(
         self,
-        names: Optional[Sequence[str]] = None,
-        values: Optional[Sequence[Any]] = None,
-        edges: Optional[Iterable[Edge]] = None,
-    ) -> Optional[list[Any]]:
+        names: Sequence[str] | None = None,
+        values: Sequence[Any] | None = None,
+        edges: Iterable[Edge] | None = None,
+    ) -> list[Any] | None:
         """Get or set multiple attributes of multiple edges.
 
         Parameters
@@ -2614,7 +2436,7 @@ class CellNetwork(Datastructure):
         return [self.edge_attributes(edge, names) for edge in edges]
 
     # --------------------------------------------------------------------------
-    # Edge Topology
+    # Edge topology
     # --------------------------------------------------------------------------
 
     def has_edge(self, edge: Edge, directed: bool = False) -> bool:
@@ -2690,33 +2512,6 @@ class CellNetwork(Datastructure):
                 cells.append(cell)
         return cells
 
-    # def is_edge_on_boundary(self, edge):
-    #     """Verify that an edge is on the boundary.
-
-    #     Parameters
-    #     ----------
-    #     edge : tuple[int, int]
-    #         The identifier of the edge.
-
-    #     Returns
-    #     -------
-    #     bool
-    #         True if the edge is on the boundary.
-    #         False otherwise.
-
-    #     See Also
-    #     --------
-    #     is_vertex_on_boundary, is_face_on_boundary, is_cell_on_boundary
-
-    #     Notes
-    #     -----
-    #     This method simply checks if u-v or v-u is on the edge of the cell network.
-    #     The direction u-v does not matter.
-
-    #     """
-    #     u, v = edge
-    #     return None in self._plane[u][v].values()
-
     def edges_without_face(self) -> list[Edge]:
         """Find the edges that are not part of a face.
 
@@ -2742,7 +2537,7 @@ class CellNetwork(Datastructure):
         return list(edges)
 
     # --------------------------------------------------------------------------
-    # Edge Geometry
+    # Edge geometry
     # --------------------------------------------------------------------------
 
     def edge_coordinates(self, edge: Edge, axes: str = "xyz") -> tuple[list[float], list[float]]:
@@ -2918,7 +2713,7 @@ class CellNetwork(Datastructure):
         return distance_point_point(a, b)
 
     # --------------------------------------------------------------------------
-    # Face Accessors
+    # Face accessors
     # --------------------------------------------------------------------------
 
     @overload
@@ -2928,7 +2723,7 @@ class CellNetwork(Datastructure):
     def faces(self, data: Literal[True]) -> Iterator[tuple[Face, FaceAttributeView]]: ...
 
     @overload
-    def faces(self, data: bool) -> Iterator[Union[Face, tuple[Face, FaceAttributeView]]]: ...
+    def faces(self, data: bool) -> Iterator[Face | tuple[Face, FaceAttributeView]]: ...
 
     def faces(self, data: bool = False) -> Iterator[Any]:
         """Iterate over the faces of the cell network.
@@ -2959,7 +2754,7 @@ class CellNetwork(Datastructure):
     @overload
     def faces_where(
         self,
-        conditions: Optional[Mapping[str, Any]] = None,
+        conditions: Mapping[str, Any] | None = None,
         data: Literal[False] = False,
         **kwargs: Any,
     ) -> Iterator[Face]: ...
@@ -2967,7 +2762,7 @@ class CellNetwork(Datastructure):
     @overload
     def faces_where(
         self,
-        conditions: Optional[Mapping[str, Any]],
+        conditions: Mapping[str, Any] | None,
         data: Literal[True],
         **kwargs: Any,
     ) -> Iterator[tuple[Face, FaceAttributeView]]: ...
@@ -2983,14 +2778,14 @@ class CellNetwork(Datastructure):
     @overload
     def faces_where(
         self,
-        conditions: Optional[Mapping[str, Any]],
+        conditions: Mapping[str, Any] | None,
         data: bool,
         **kwargs: Any,
-    ) -> Iterator[Union[Face, tuple[Face, FaceAttributeView]]]: ...
+    ) -> Iterator[Face | tuple[Face, FaceAttributeView]]: ...
 
     def faces_where(
         self,
-        conditions: Optional[Mapping[str, Any]] = None,
+        conditions: Mapping[str, Any] | None = None,
         data: bool = False,
         **kwargs: Any,
     ) -> Iterator[Any]:
@@ -3078,7 +2873,7 @@ class CellNetwork(Datastructure):
         self,
         predicate: Callable[[Face, FaceAttributeView], bool],
         data: bool,
-    ) -> Iterator[Union[Face, tuple[Face, FaceAttributeView]]]: ...
+    ) -> Iterator[Face | tuple[Face, FaceAttributeView]]: ...
 
     def faces_where_predicate(
         self,
@@ -3116,12 +2911,12 @@ class CellNetwork(Datastructure):
                     yield fkey
 
     # --------------------------------------------------------------------------
-    # Face Attributes
+    # Face attributes
     # --------------------------------------------------------------------------
 
     def update_default_face_attributes(
         self,
-        attr_dict: Optional[Mapping[str, Any]] = None,
+        attr_dict: Mapping[str, Any] | None = None,
         **kwattr: Any,
     ) -> None:
         """Update the default face attributes.
@@ -3250,8 +3045,8 @@ class CellNetwork(Datastructure):
     def face_attributes(
         self,
         face: Face,
-        names: Optional[Sequence[str]] = None,
-        values: Optional[Sequence[Any]] = None,
+        names: Sequence[str] | None = None,
+        values: Sequence[Any] | None = None,
     ) -> Any:
         """Get or set multiple attributes of a face.
 
@@ -3308,7 +3103,7 @@ class CellNetwork(Datastructure):
         self,
         name: str,
         *,
-        faces: Optional[Iterable[Face]] = None,
+        faces: Iterable[Face] | None = None,
     ) -> list[Any]: ...
 
     @overload
@@ -3316,15 +3111,15 @@ class CellNetwork(Datastructure):
         self,
         name: str,
         value: Any,
-        faces: Optional[Iterable[Face]] = None,
+        faces: Iterable[Face] | None = None,
     ) -> None: ...
 
     def faces_attribute(
         self,
         name: str,
         value: Any = _MISSING,
-        faces: Optional[Iterable[Face]] = None,
-    ) -> Optional[list[Any]]:
+        faces: Iterable[Face] | None = None,
+    ) -> list[Any] | None:
         """Get or set an attribute of multiple faces.
 
         Parameters
@@ -3367,7 +3162,7 @@ class CellNetwork(Datastructure):
         self,
         names: None = None,
         values: None = None,
-        faces: Optional[Iterable[Face]] = None,
+        faces: Iterable[Face] | None = None,
     ) -> list[FaceAttributeView]: ...
 
     @overload
@@ -3375,7 +3170,7 @@ class CellNetwork(Datastructure):
         self,
         names: Sequence[str],
         values: None = None,
-        faces: Optional[Iterable[Face]] = None,
+        faces: Iterable[Face] | None = None,
     ) -> list[list[Any]]: ...
 
     @overload
@@ -3383,7 +3178,7 @@ class CellNetwork(Datastructure):
         self,
         names: Sequence[str],
         values: Sequence[Any],
-        faces: Optional[Iterable[Face]] = None,
+        faces: Iterable[Face] | None = None,
     ) -> None: ...
 
     @overload
@@ -3391,15 +3186,15 @@ class CellNetwork(Datastructure):
         self,
         names: None,
         values: Sequence[Any],
-        faces: Optional[Iterable[Face]] = None,
+        faces: Iterable[Face] | None = None,
     ) -> None: ...
 
     def faces_attributes(
         self,
-        names: Optional[Sequence[str]] = None,
-        values: Optional[Sequence[Any]] = None,
-        faces: Optional[Iterable[Face]] = None,
-    ) -> Optional[list[Any]]:
+        names: Sequence[str] | None = None,
+        values: Sequence[Any] | None = None,
+        faces: Iterable[Face] | None = None,
+    ) -> list[Any] | None:
         """Get or set multiple attributes of multiple faces.
 
         Parameters
@@ -3441,7 +3236,7 @@ class CellNetwork(Datastructure):
         return [self.face_attributes(face, names) for face in faces]
 
     # --------------------------------------------------------------------------
-    # Face Topology
+    # Face topology
     # --------------------------------------------------------------------------
 
     def has_face(self, face: Face) -> bool:
@@ -3574,7 +3369,7 @@ class CellNetwork(Datastructure):
         return [face for face in self.faces() if self.is_face_on_boundary(face)]
 
     # --------------------------------------------------------------------------
-    # Face Geometry
+    # Face geometry
     # --------------------------------------------------------------------------
 
     def face_coordinates(self, face: Face, axes: str = "xyz") -> list[list[float]]:
@@ -3803,7 +3598,7 @@ class CellNetwork(Datastructure):
         return max(lengths) / min(lengths)
 
     # --------------------------------------------------------------------------
-    # Cell Accessors
+    # Cell accessors
     # --------------------------------------------------------------------------
 
     @overload
@@ -3813,7 +3608,7 @@ class CellNetwork(Datastructure):
     def cells(self, data: Literal[True]) -> Iterator[tuple[Cell, CellAttributeView]]: ...
 
     @overload
-    def cells(self, data: bool) -> Iterator[Union[Cell, tuple[Cell, CellAttributeView]]]: ...
+    def cells(self, data: bool) -> Iterator[Cell | tuple[Cell, CellAttributeView]]: ...
 
     def cells(self, data: bool = False) -> Iterator[Any]:
         """Iterate over the cells of the cell network.
@@ -3844,7 +3639,7 @@ class CellNetwork(Datastructure):
     @overload
     def cells_where(
         self,
-        conditions: Optional[Mapping[str, Any]] = None,
+        conditions: Mapping[str, Any] | None = None,
         data: Literal[False] = False,
         **kwargs: Any,
     ) -> Iterator[Cell]: ...
@@ -3852,7 +3647,7 @@ class CellNetwork(Datastructure):
     @overload
     def cells_where(
         self,
-        conditions: Optional[Mapping[str, Any]],
+        conditions: Mapping[str, Any] | None,
         data: Literal[True],
         **kwargs: Any,
     ) -> Iterator[tuple[Cell, CellAttributeView]]: ...
@@ -3868,14 +3663,14 @@ class CellNetwork(Datastructure):
     @overload
     def cells_where(
         self,
-        conditions: Optional[Mapping[str, Any]],
+        conditions: Mapping[str, Any] | None,
         data: bool,
         **kwargs: Any,
-    ) -> Iterator[Union[Cell, tuple[Cell, CellAttributeView]]]: ...
+    ) -> Iterator[Cell | tuple[Cell, CellAttributeView]]: ...
 
     def cells_where(
         self,
-        conditions: Optional[Mapping[str, Any]] = None,
+        conditions: Mapping[str, Any] | None = None,
         data: bool = False,
         **kwargs: Any,
     ) -> Iterator[Any]:
@@ -3963,7 +3758,7 @@ class CellNetwork(Datastructure):
         self,
         predicate: Callable[[Cell, CellAttributeView], bool],
         data: bool,
-    ) -> Iterator[Union[Cell, tuple[Cell, CellAttributeView]]]: ...
+    ) -> Iterator[Cell | tuple[Cell, CellAttributeView]]: ...
 
     def cells_where_predicate(
         self,
@@ -4001,12 +3796,12 @@ class CellNetwork(Datastructure):
                     yield ckey
 
     # --------------------------------------------------------------------------
-    # Cell Attributes
+    # Cell attributes
     # --------------------------------------------------------------------------
 
     def update_default_cell_attributes(
         self,
-        attr_dict: Optional[Mapping[str, Any]] = None,
+        attr_dict: Mapping[str, Any] | None = None,
         **kwattr: Any,
     ) -> None:
         """Update the default cell attributes.
@@ -4134,8 +3929,8 @@ class CellNetwork(Datastructure):
     def cell_attributes(
         self,
         cell: Cell,
-        names: Optional[Sequence[str]] = None,
-        values: Optional[Sequence[Any]] = None,
+        names: Sequence[str] | None = None,
+        values: Sequence[Any] | None = None,
     ) -> Any:
         """Get or set multiple attributes of a cell.
 
@@ -4189,7 +3984,7 @@ class CellNetwork(Datastructure):
         self,
         name: str,
         *,
-        cells: Optional[Iterable[Cell]] = None,
+        cells: Iterable[Cell] | None = None,
     ) -> list[Any]: ...
 
     @overload
@@ -4197,15 +3992,15 @@ class CellNetwork(Datastructure):
         self,
         name: str,
         value: Any,
-        cells: Optional[Iterable[Cell]] = None,
+        cells: Iterable[Cell] | None = None,
     ) -> None: ...
 
     def cells_attribute(
         self,
         name: str,
         value: Any = _MISSING,
-        cells: Optional[Iterable[Cell]] = None,
-    ) -> Optional[list[Any]]:
+        cells: Iterable[Cell] | None = None,
+    ) -> list[Any] | None:
         """Get or set an attribute of multiple cells.
 
         Parameters
@@ -4247,7 +4042,7 @@ class CellNetwork(Datastructure):
         self,
         names: None = None,
         values: None = None,
-        cells: Optional[Iterable[Cell]] = None,
+        cells: Iterable[Cell] | None = None,
     ) -> list[CellAttributeView]: ...
 
     @overload
@@ -4255,7 +4050,7 @@ class CellNetwork(Datastructure):
         self,
         names: Sequence[str],
         values: None = None,
-        cells: Optional[Iterable[Cell]] = None,
+        cells: Iterable[Cell] | None = None,
     ) -> list[list[Any]]: ...
 
     @overload
@@ -4263,7 +4058,7 @@ class CellNetwork(Datastructure):
         self,
         names: Sequence[str],
         values: Sequence[Any],
-        cells: Optional[Iterable[Cell]] = None,
+        cells: Iterable[Cell] | None = None,
     ) -> None: ...
 
     @overload
@@ -4271,15 +4066,15 @@ class CellNetwork(Datastructure):
         self,
         names: None,
         values: Sequence[Any],
-        cells: Optional[Iterable[Cell]] = None,
+        cells: Iterable[Cell] | None = None,
     ) -> None: ...
 
     def cells_attributes(
         self,
-        names: Optional[Sequence[str]] = None,
-        values: Optional[Sequence[Any]] = None,
-        cells: Optional[Iterable[Cell]] = None,
-    ) -> Optional[list[Any]]:
+        names: Sequence[str] | None = None,
+        values: Sequence[Any] | None = None,
+        cells: Iterable[Cell] | None = None,
+    ) -> list[Any] | None:
         """Get or set multiple attributes of multiple cells.
 
         Parameters
@@ -4321,7 +4116,7 @@ class CellNetwork(Datastructure):
         return [self.cell_attributes(cell, names) for cell in cells]
 
     # --------------------------------------------------------------------------
-    # Cell Topology
+    # Cell topology
     # --------------------------------------------------------------------------
 
     def has_cell(self, cell: Cell) -> bool:
@@ -4657,29 +4452,6 @@ class CellNetwork(Datastructure):
             raise KeyError(halfedge)
         return self._cell[cell][u][v]
 
-    # def cell_halfedge_opposite_face(self, cell, halfedge):
-    #     """Find the opposite face corresponding to a specific halfedge of a cell.
-
-    #     Parameters
-    #     ----------
-    #     cell : int
-    #         The identifier of the cell.
-    #     halfedge : tuple[int, int]
-    #         The identifier of the halfedge.
-
-    #     Returns
-    #     -------
-    #     int
-    #         The identifier of the face.
-
-    #     See Also
-    #     --------
-    #     cell_halfedge_face
-
-    #     """
-    #     u, v = halfedge
-    #     return self._cell[cell][v][u]
-
     def cell_face_neighbors(self, cell: Cell, face: Face) -> list[Face]:
         """Find the faces adjacent to a given face of a cell.
 
@@ -4705,13 +4477,6 @@ class CellNetwork(Datastructure):
         but in the context of a cell of the `VolMesh`.
 
         """
-        # nbrs = []
-        # for halfedge in self.halfface_halfedges(face):
-        #     nbr = self.cell_halfedge_opposite_face(cell, halfedge)
-        #     if nbr is not None:
-        #         nbrs.append(nbr)
-        # return nbrs
-
         nbrs = []
         for u in self.face_vertices(face):
             for v in self._cell[cell][u]:
@@ -4792,7 +4557,7 @@ class CellNetwork(Datastructure):
         return cells
 
     # --------------------------------------------------------------------------
-    # Cell Geometry
+    # Cell geometry
     # --------------------------------------------------------------------------
 
     def cell_points(self, cell: Cell) -> list[Point]:
@@ -4857,27 +4622,6 @@ class CellNetwork(Datastructure):
         vertices, faces = self.cell_to_vertices_and_faces(cell)
         return Point(*centroid_polyhedron((vertices, faces)))
 
-    # def cell_vertex_normal(self, cell, vertex):
-    #     """Return the normal vector at the vertex of a boundary cell as the weighted average of the
-    #     normals of the neighboring faces.
-
-    #     Parameters
-    #     ----------
-    #     cell : int
-    #         The identifier of the vertex of the cell.
-    #     vertex : int
-    #         The identifier of the vertex of the cell.
-
-    #     Returns
-    #     -------
-    #     Vector
-    #         The components of the normal vector.
-
-    #     """
-    #     cell_faces = self.cell_faces(cell)
-    #     vectors = [self.face_normal(face) for face in self.vertex_halffaces(vertex) if face in cell_faces]
-    #     return Vector(*normalize_vector(centroid_points(vectors)))
-
     def cell_polyhedron(self, cell: Cell) -> Polyhedron:
         """Construct a polyhedron from the vertices and faces of a cell.
 
@@ -4912,92 +4656,18 @@ class CellNetwork(Datastructure):
         vertices, faces = self.cell_to_vertices_and_faces(cell)
         return abs(volume_polyhedron((vertices, faces)))
 
-    # # --------------------------------------------------------------------------
-    # # Boundaries
-    # # --------------------------------------------------------------------------
+    # --------------------------------------------------------------------------
+    # Private helpers
+    # --------------------------------------------------------------------------
 
-    # def vertices_on_boundaries(self):
-    #     """Find the vertices on the boundary.
-
-    #     Returns
-    #     -------
-    #     list[int]
-    #         The vertices of the boundary.
-
-    #     See Also
-    #     --------
-    #     faces_on_boundaries, cells_on_boundaries
-
-    #     """
-    #     vertices = set()
-    #     for face in self._halfface:
-    #         if self.is_halfface_on_boundary(face):
-    #             vertices.update(self.halfface_vertices(face))
-    #     return list(vertices)
-
-    # def halffaces_on_boundaries(self):
-    #     """Find the faces on the boundary.
-
-    #     Returns
-    #     -------
-    #     list[int]
-    #         The faces of the boundary.
-
-    #     See Also
-    #     --------
-    #     vertices_on_boundaries, cells_on_boundaries
-
-    #     """
-    #     faces = set()
-    #     for face in self._halfface:
-    #         if self.is_halfface_on_boundary(face):
-    #             faces.add(face)
-    #     return list(faces)
-
-    # def cells_on_boundaries(self):
-    #     """Find the cells on the boundary.
-
-    #     Returns
-    #     -------
-    #     list[int]
-    #         The cells of the boundary.
-
-    #     See Also
-    #     --------
-    #     vertices_on_boundaries, faces_on_boundaries
-
-    #     """
-    #     cells = set()
-    #     for face in self.halffaces_on_boundaries():
-    #         cells.add(self.halfface_cell(face))
-    #     return list(cells)
-
-    # # --------------------------------------------------------------------------
-    # # Transformations
-    # # --------------------------------------------------------------------------
-
-    # def transform(self, T):
-    #     """Transform the mesh.
-
-    #     Parameters
-    #     ----------
-    #     T : Transformation
-    #         The transformation used to transform the mesh.
-
-    #     Returns
-    #     -------
-    #     None
-    #         The mesh is modified in-place.
-
-    #     Examples
-    #     --------
-    #     >>> from compas.datastructures import Mesh
-    #     >>> from compas.linalg import matrix_from_axis_and_angle
-    #     >>> mesh = Mesh.from_polyhedron(6)
-    #     >>> T = matrix_from_axis_and_angle([0, 0, 1], math.pi / 4)
-    #     >>> mesh.transform(T)
-
-    #     """
-    #     points = transform_points(self.vertices_attributes("xyz"), T)
-    #     for vertex, point in zip(self.vertices(), points):
-    #         self.vertex_attributes(vertex, "xyz", point)
+    def _faces_to_unified_mesh(self, faces: Iterable[Face]) -> Mesh | None:
+        faces = list(set(faces))
+        for face in faces:
+            if face not in self._face:
+                raise ValueError("Face {} does not exist.".format(face))
+        mesh = self.faces_to_mesh(faces, data=False)
+        try:
+            mesh.unify_cycles()
+        except Exception:
+            return None
+        return mesh

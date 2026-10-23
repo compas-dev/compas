@@ -1,17 +1,18 @@
 import json
-import os
 import zipfile
-from typing import IO
 from typing import Any
-from typing import Union
+from typing import BinaryIO
+from typing import TextIO
+from typing import cast
 
 from compas import _iotools
+from compas._typing import FilePath
 from compas.data import DataDecoder
 from compas.data import DataEncoder
 
 _JSON_CONTENT_FILENAME = "content.json"
-JSONFile = Union[str, os.PathLike[str], IO[str]]
-ZipFile = Union[str, os.PathLike[str], IO[bytes]]
+JSONFile = FilePath | TextIO
+ZipFile = FilePath | BinaryIO
 
 
 def json_dump(data: Any, fp: JSONFile, pretty: bool = False, compact: bool = False, minimal: bool = False) -> None:
@@ -31,15 +32,11 @@ def json_dump(data: Any, fp: JSONFile, pretty: bool = False, compact: bool = Fal
     minimal
         If True, exclude the GUID from the JSON output.
 
-    Returns
-    -------
-    None
-
     See Also
     --------
-    compas.data.json_dumps
-    compas.data.json_load
-    compas.data.json_loads
+    [`json_dumps`][compas.data.json_dumps]
+    [`json_load`][compas.data.json_load]
+    [`json_loads`][compas.data.json_loads]
 
     Examples
     --------
@@ -52,8 +49,6 @@ def json_dump(data: Any, fp: JSONFile, pretty: bool = False, compact: bool = Fal
     True
 
     """
-    DataEncoder.minimal = minimal
-
     with _iotools.open_file(fp, "w") as f:
         kwargs = {}
 
@@ -64,7 +59,7 @@ def json_dump(data: Any, fp: JSONFile, pretty: bool = False, compact: bool = Fal
             kwargs["indent"] = None
             kwargs["separators"] = (",", ":")
 
-        return json.dump(data, f, cls=DataEncoder, **kwargs)
+        json.dump(data, f, cls=DataEncoder, minimal=minimal, **kwargs)
 
 
 def json_dumps(data: Any, pretty: bool = False, compact: bool = False, minimal: bool = False) -> str:
@@ -88,9 +83,9 @@ def json_dumps(data: Any, pretty: bool = False, compact: bool = False, minimal: 
 
     See Also
     --------
-    compas.data.json_dump
-    compas.data.json_load
-    compas.data.json_loads
+    [`json_dump`][compas.data.json_dump]
+    [`json_load`][compas.data.json_load]
+    [`json_loads`][compas.data.json_loads]
 
     Examples
     --------
@@ -103,8 +98,6 @@ def json_dumps(data: Any, pretty: bool = False, compact: bool = False, minimal: 
     True
 
     """
-    DataEncoder.minimal = minimal
-
     kwargs = {}
     if pretty:
         kwargs["sort_keys"] = True
@@ -112,7 +105,7 @@ def json_dumps(data: Any, pretty: bool = False, compact: bool = False, minimal: 
     if compact:
         kwargs["indent"] = None
         kwargs["separators"] = (",", ":")
-    return json.dumps(data, cls=DataEncoder, **kwargs)
+    return json.dumps(data, cls=DataEncoder, minimal=minimal, **kwargs)
 
 
 def json_dumpz(data: Any, zip_filename: ZipFile, pretty: bool = False, compact: bool = False, minimal: bool = False) -> None:
@@ -132,16 +125,12 @@ def json_dumpz(data: Any, zip_filename: ZipFile, pretty: bool = False, compact: 
     minimal
         If True, exclude the GUID from the JSON output.
 
-    Returns
-    -------
-    None
-
     See Also
     --------
-    compas.data.json_dump
-    compas.data.json_load
-    compas.data.json_loads
-    compas.data.json_loadz
+    [`json_dump`][compas.data.json_dump]
+    [`json_load`][compas.data.json_load]
+    [`json_loads`][compas.data.json_loads]
+    [`json_loadz`][compas.data.json_loadz]
 
     """
     json_str = json_dumps(data, pretty=pretty, compact=compact, minimal=minimal)
@@ -165,10 +154,10 @@ def json_loadz(zip_file: ZipFile) -> Any:
 
     See Also
     --------
-    compas.data.json_dump
-    compas.data.json_dumps
-    compas.data.json_dumpz
-    compas.data.json_loads
+    [`json_dump`][compas.data.json_dump]
+    [`json_dumps`][compas.data.json_dumps]
+    [`json_dumpz`][compas.data.json_dumpz]
+    [`json_loads`][compas.data.json_loads]
 
     """
     with zipfile.ZipFile(zip_file) as zf:
@@ -193,9 +182,9 @@ def json_load(fp: JSONFile) -> Any:
 
     See Also
     --------
-    compas.data.json_dump
-    compas.data.json_dumps
-    compas.data.json_loads
+    [`json_dump`][compas.data.json_dump]
+    [`json_dumps`][compas.data.json_dumps]
+    [`json_loads`][compas.data.json_loads]
 
     Examples
     --------
@@ -209,7 +198,9 @@ def json_load(fp: JSONFile) -> Any:
 
     """
     with _iotools.open_file(fp, "r") as f:
-        return json.load(f, cls=DataDecoder)
+        # The standard json loader accepts binary streams although typeshed
+        # models only text reads.
+        return json.load(cast(TextIO, f), cls=DataDecoder)
 
 
 def json_loads(s: str) -> Any:
@@ -222,14 +213,14 @@ def json_loads(s: str) -> Any:
 
     Returns
     -------
-    obj
+    object
         The (COMPAS) data contained in the string.
 
     See Also
     --------
-    compas.data.json_dump
-    compas.data.json_dumps
-    compas.data.json_load
+    [`json_dump`][compas.data.json_dump]
+    [`json_dumps`][compas.data.json_dumps]
+    [`json_load`][compas.data.json_load]
 
     Examples
     --------

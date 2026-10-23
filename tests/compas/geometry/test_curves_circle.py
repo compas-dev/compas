@@ -12,7 +12,7 @@ def test_circle_create():
     circle = Circle(radius=1.0)
 
     assert TOL.is_close(circle.radius, 1.0)
-    assert TOL.is_close(circle.area, 3.141592653589793)
+    assert TOL.is_close(circle.area(), 3.141592653589793)
     assert TOL.is_close(circle.circumference, 6.283185307179586)
     assert TOL.is_close(circle.length, circle.circumference)
     assert TOL.is_close(circle.diameter, 2.0)
@@ -43,7 +43,7 @@ def test_circle_create_with_frame():
     circle = Circle(radius=1.0, frame=Frame.worldZX())
 
     assert TOL.is_close(circle.radius, 1.0)
-    assert TOL.is_close(circle.area, 3.141592653589793)
+    assert TOL.is_close(circle.area(), 3.141592653589793)
     assert TOL.is_close(circle.circumference, 6.283185307179586)
     assert TOL.is_close(circle.diameter, 2.0)
 
@@ -110,7 +110,7 @@ def test_circle_create_from_point_and_radius():
     circle = Circle.from_point_and_radius([1.0, 2.0, 3.0], 1.0)
 
     assert TOL.is_close(circle.radius, 1.0)
-    assert TOL.is_close(circle.area, 3.141592653589793)
+    assert TOL.is_close(circle.area(), 3.141592653589793)
     assert TOL.is_close(circle.circumference, 6.283185307179586)
     assert TOL.is_close(circle.diameter, 2.0)
 
@@ -129,7 +129,7 @@ def test_circle_create_from_plane_and_radius():
     circle = Circle.from_plane_and_radius(plane, 1.0)
 
     assert TOL.is_close(circle.radius, 1.0)
-    assert TOL.is_close(circle.area, 3.141592653589793)
+    assert TOL.is_close(circle.area(), 3.141592653589793)
     assert TOL.is_close(circle.circumference, 6.283185307179586)
     assert TOL.is_close(circle.diameter, 2.0)
 

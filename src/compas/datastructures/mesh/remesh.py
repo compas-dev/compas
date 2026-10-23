@@ -1,8 +1,7 @@
+from collections.abc import Callable
+from collections.abc import Collection
 from typing import TYPE_CHECKING
 from typing import Any
-from typing import Callable
-from typing import Collection
-from typing import Optional
 
 from .operations.collapse import trimesh_collapse_edge
 from .operations.split import trimesh_split_edge
@@ -27,8 +26,8 @@ def trimesh_remesh(
     allow_boundary_swap: bool = False,
     allow_boundary_collapse: bool = False,
     smooth: bool = True,
-    fixed: Optional[Collection[Vertex]] = None,
-    callback: Optional[RemeshCallback] = None,
+    fixed: Collection[Vertex] | None = None,
+    callback: RemeshCallback | None = None,
     callback_args: Any = None,
 ) -> None:
     """Remesh until all edges have a specified target length.
@@ -62,15 +61,10 @@ def trimesh_remesh(
     callback_args
         Additional parameters to pass to the callback function.
 
-    Returns
-    -------
-    None
-        The mesh is modified in place.
-
     Raises
     ------
     ValueError
-        If the target length is not positive.
+        If the target length is not positive or the mesh has no edges.
 
     Notes
     -----
@@ -79,22 +73,23 @@ def trimesh_remesh(
     Topological changes are made such that vertex valencies are well-balanced
     and close to six. This involves three operations:
 
-        * split edges that are longer than a maximum length,
-        * collapse edges that are shorter than a minimum length,
-        * swap edges if this improves the valency error.
+    - split edges that are longer than a maximum length,
+    - collapse edges that are shorter than a minimum length,
+    - swap edges if this improves the valency error.
 
     The minimum and maximum lengths are calculated based on a desired target
     length.
 
     References
     ----------
-    * Botsch, M. & Kobbelt, L., 2004. *A remeshing approach to multiresolution modeling*.
-      Proceedings of the 2004 Eurographics/ACM SIGGRAPH symposium on Geometry processing - SGP '04, p.185.
-      Available at: http://portal.acm.org/citation.cfm?doid=1057432.1057457.
+    - Botsch, M. & Kobbelt, L., 2004. [*A remeshing approach to
+      multiresolution modeling*](https://doi.org/10.1145/1057432.1057457).
 
     """
     if target <= 0:
         raise ValueError("The target length should be greater than zero.")
+    if kmax <= 0:
+        return
 
     if verbose:
         print(target)
@@ -103,18 +98,21 @@ def trimesh_remesh(
     lmax = (1 + tol) * (4.0 / 3.0) * target
 
     edge_lengths = [mesh.edge_length(edge) for edge in mesh.edges()]
+    if not edge_lengths:
+        raise ValueError("The mesh should contain at least one edge.")
     target_start = max(edge_lengths) / 2.0
 
     fac = target_start / target
 
     boundary = set(mesh.vertices_on_boundary())
 
-    fixed = fixed or []
-    fixed = set(fixed)
+    fixed = set() if fixed is None else set(fixed)
 
     count = 0
 
     kmax_start = kmax / 2.0
+    # This is the baseline for the first convergence check at iteration 10.
+    num_vertices_1 = mesh.number_of_vertices()
 
     for k in range(kmax):
         if k <= kmax_start:

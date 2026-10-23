@@ -1,6 +1,7 @@
+from collections.abc import Sequence
 from math import fabs
-from typing import Sequence
 
+from compas._typing import CoordinatesType
 from compas.itertools import pairwise
 from compas.linalg.vectors import cross_vectors
 from compas.linalg.vectors import cross_vectors_xy
@@ -15,7 +16,7 @@ from .normals import normal_triangle
 from .normals import normal_triangle_xy
 
 
-def area_triangle(triangle: Sequence[Sequence[float]]) -> float:
+def area_triangle(triangle: CoordinatesType) -> float:
     """Compute the area of a triangle defined by three points.
 
     Parameters
@@ -61,7 +62,7 @@ def area_triangle_xy(triangle: Sequence[Sequence[float]]) -> float:
     return 0.5 * length_vector(normal_triangle_xy(triangle, False))
 
 
-def area_polygon(polygon: Sequence[Sequence[float]]) -> float:
+def area_polygon(polygon: CoordinatesType) -> float:
     """Compute the area of a polygon.
 
     Parameters

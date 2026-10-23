@@ -1,13 +1,20 @@
 from math import cos
 from math import pi
 from math import sin
+from typing import TYPE_CHECKING
+from typing import Self
 
+from compas._typing import CoordinatesType
+from compas._typing import CoordinateType
 from compas.geometry import Circle
 from compas.geometry import Frame
 from compas.geometry import Line
-from compas.geometry import transform_points
+from compas.geometry import Point
 
 from .shape import Shape
+
+if TYPE_CHECKING:
+    from compas.geometry import Brep
 
 
 class Sphere(Shape):
@@ -15,43 +22,13 @@ class Sphere(Shape):
 
     Parameters
     ----------
-    radius: float
+    radius
         The radius of the sphere.
-    frame: :class:`compas.geometry.Frame`, optional
+    frame
         The local coordinates system, or "frame", of the sphere.
-        Default is ``None``, in which case the sphere is constructed in world coordinates.
-    point: :class:`compas.geometry.Point`, optional
-        The center of the sphere.
-        When provided, this point overwrites the location of the origin of the local coordinate system.
-    name : str, optional
+        Default is `None`, in which case the sphere is constructed in world coordinates.
+    name
         The name of the shape.
-
-    Attributes
-    ----------
-    area : float, read-only
-        The surface area of the sphere.
-    axis : :class:`compas.geometry.Line`, read-only
-        The central axis of the sphere.
-    base : :class:`compas.geometry.Point`, read-only
-        The base point of the sphere.
-        The base point is at the origin of the local coordinate system.
-    circle : :class:`compas.geometry.Circle`, read-only
-        The base circle of the sphere.
-        The center of the circle is at the origin of the local coordinate system.
-    diameter : float, read-only
-        The diameter of the sphere.
-    frame : :class:`compas.geometry.Frame`
-        The coordinate system of the sphere.
-    plane : :class:`compas.geometry.Plane`, read-only
-        The plane of the sphere.
-        The base point of the plane is at the origin of the local coordinate system.
-        The normal of the plane is in the direction of the z-axis of the local coordinate system.
-    radius : float
-        The radius of the sphere.
-    transformation : :class:`compas.geometry.Transformation`
-        The transformation of the sphere to global coordinates.
-    volume : float, read-only
-        The volume of the sphere.
 
     Examples
     --------
@@ -62,29 +39,26 @@ class Sphere(Shape):
 
     """
 
-
     @property
-    def __data__(self):
+    def __data__(self) -> dict:
         return {
             "radius": self.radius,
             "frame": self.frame.__data__,
         }
 
     @classmethod
-    def __from_data__(cls, data):
+    def __from_data__(cls, data: dict) -> Self:
         return cls(
             radius=data["radius"],
             frame=Frame.__from_data__(data["frame"]),
         )
 
-    def __init__(self, radius, frame=None, point=None, name=None):
-        super(Sphere, self).__init__(frame=frame, name=name)
-        self._radius = 1.0
+    def __init__(self, radius: float, frame: Frame | None = None, name: str | None = None) -> None:
+        super().__init__(frame=frame, name=name)
+        self._radius: float | None = None
         self.radius = radius
-        if point:
-            self.frame.point = point
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "{0}(radius={1}, frame={2!r})".format(
             type(self).__name__,
             self.radius,
@@ -96,43 +70,50 @@ class Sphere(Shape):
     # ==========================================================================
 
     @property
-    def base(self):
+    def base(self) -> Point:
+        """The center point of the sphere."""
         return self.frame.point
 
     @property
-    def radius(self):
+    def radius(self) -> float:
+        """The positive radius of the sphere."""
         if self._radius is None:
             raise ValueError("The radius of the sphere is not set.")
         return self._radius
 
     @radius.setter
-    def radius(self, radius):
-        if radius < 0:
-            raise ValueError("The radius of the sphere should be larger than or equal to zero.")
+    def radius(self, radius: float) -> None:
+        if radius <= 0:
+            raise ValueError("The radius of the sphere should be larger than zero.")
         self._radius = float(radius)
+        self._invalidate_discretization()
 
     @property
-    def start(self):
+    def start(self) -> Point:
+        """The point at the negative end of the local z-axis."""
         return self.frame.point + self.frame.zaxis * -self.radius
 
     @property
-    def end(self):
+    def end(self) -> Point:
+        """The point at the positive end of the local z-axis."""
         return self.frame.point + self.frame.zaxis * +self.radius
 
     @property
-    def axis(self):
+    def axis(self) -> Line:
+        """The diameter line along the local z-axis."""
         return Line(self.start, self.end)
 
     @property
-    def circle(self):
-        return Circle(self.frame, self.radius)
+    def circle(self) -> Circle:
+        """The equatorial circle in the local XY plane."""
+        return Circle(self.radius, frame=self.frame)
 
-    @property
-    def area(self):
+    def area(self) -> float:
+        """Compute the surface area of the sphere."""
         return 4 * pi * self.radius**2
 
-    @property
-    def volume(self):
+    def volume(self) -> float:
+        """Compute the volume enclosed by the sphere."""
         return 4.0 / 3.0 * pi * self.radius**3
 
     # ==========================================================================
@@ -140,19 +121,19 @@ class Sphere(Shape):
     # ==========================================================================
 
     @classmethod
-    def from_point_and_radius(cls, point, radius):  # type: (...) -> Sphere
+    def from_point_and_radius(cls, point: CoordinateType, radius: float) -> Self:
         """Construct a sphere from a point and a radius.
 
         Parameters
         ----------
-        point : :class:`compas.geometry.Point`
+        point
             The center of the sphere.
-        radius : float
+        radius
             The radius of the sphere.
 
         Returns
         -------
-        :class:`compas.geometry.Sphere`
+        Self
             The constructed sphere.
 
         """
@@ -164,7 +145,7 @@ class Sphere(Shape):
     # Discretisation
     # ==========================================================================
 
-    def compute_vertices(self):  # type: () -> list[list[float]]
+    def _compute_vertices(self, u: int, v: int) -> list[CoordinateType]:
         """Compute the vertices of the discrete representation of the sphere.
 
         Returns
@@ -172,16 +153,13 @@ class Sphere(Shape):
         list[list[float]]
 
         """
-        u = self.resolution_u
-        v = self.resolution_v
-
         theta = pi / v
         phi = pi * 2 / u
         hpi = pi * 0.5
 
         x, y, z = 0, 0, 0
 
-        vertices = []
+        vertices: list[CoordinateType] = []
         for i in range(1, v):
             for j in range(u):
                 tx = self.radius * cos(i * theta - hpi) * cos(j * phi) + x
@@ -192,10 +170,9 @@ class Sphere(Shape):
         vertices.append([x, y, z + self.radius])
         vertices.append([x, y, z - self.radius])
 
-        vertices = transform_points(vertices, self.transformation)
         return vertices
 
-    def compute_faces(self):  # type: () -> list[list[int]]
+    def compute_faces(self, u: int | None = None, v: int | None = None) -> list[list[int]]:
         """Compute the faces of the discrete representation of the sphere.
 
         Returns
@@ -203,15 +180,13 @@ class Sphere(Shape):
         list[list[int]]
 
         """
-        u = self.resolution_u
-        v = self.resolution_v
-
-        vertices = self.vertices
+        u, v = self._resolutions(u, v)
 
         faces = []
+        vertex_count = (v - 1) * u + 2
 
         # south pole triangle fan
-        sp = len(vertices) - 1
+        sp = vertex_count - 1
         for j in range(u):
             faces.append([sp, (j + 1) % u, j])
 
@@ -225,10 +200,10 @@ class Sphere(Shape):
                 faces.append([a, b, c, d])
 
         # north pole triangle fan
-        np = len(vertices) - 2
+        np = vertex_count - 2
         for j in range(u):
-            nc = len(vertices) - 3 - j
-            nn = len(vertices) - 3 - (j + 1) % u
+            nc = vertex_count - 3 - j
+            nn = vertex_count - 3 - (j + 1) % u
             faces.append([np, nn, nc])
 
         return faces
@@ -237,12 +212,12 @@ class Sphere(Shape):
     # Conversions
     # ==========================================================================
 
-    def to_brep(self):
-        """Returns a BRep representation of the sphere.
+    def to_brep(self) -> "Brep":
+        """Return a BRep representation of the sphere.
 
         Returns
         -------
-        :class:`compas.brep.Brep`
+        Brep
 
         """
         from compas.geometry import Brep
@@ -253,33 +228,35 @@ class Sphere(Shape):
     # Transformations
     # =============================================================================
 
-    def scale(self, factor):
+    def scale(self, x: float, y: float | None = None, z: float | None = None) -> None:
         """Scale the sphere.
 
         Parameters
         ----------
-        factor : float
-            The scaling factor.
-
-        Returns
-        -------
-        None
+        x
+            The uniform scaling factor.
+        y
+            An optional scaling factor that must equal `x`.
+        z
+            An optional scaling factor that must equal `x`.
 
         """
-        self.radius *= factor
+        if (y is not None and y != x) or (z is not None and z != x):
+            raise ValueError("A sphere only supports uniform scaling.")
+        self.radius *= x
 
     # =============================================================================
     # Methods
     # =============================================================================
 
-    def contains_point(self, point, tol=1e-6):
+    def contains_point(self, point: CoordinateType, tol: float = 1e-6) -> bool:
         """Verify if a point is inside the sphere.
 
         Parameters
         ----------
-        point : :class:`compas.geometry.Point`
+        point
             The point to test.
-        tol : float, optional
+        tol
             The tolerance for the test.
 
         Returns
@@ -291,19 +268,19 @@ class Sphere(Shape):
         """
         return self.frame.point.distance_to_point(point) <= self.radius + tol
 
-    def contains_points(self, points, tol=1e-6):
+    def contains_points(self, points: CoordinatesType, tol: float = 1e-6) -> list[bool]:
         """Verify if a list of points are inside the sphere.
 
         Parameters
         ----------
-        points : list of :class:`compas.geometry.Point`
+        points
             The points to test.
-        tol : float, optional
+        tol
             The tolerance for the test.
 
         Returns
         -------
-        list
+        list[bool]
             A list of booleans indicating for each point if it is inside the sphere.
 
         """

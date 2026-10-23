@@ -1,7 +1,11 @@
 import os
 import tempfile
+import json
 
 import compas
+import pytest
+from compas.data import DecoderError
+from compas.data import DataEncoder
 from compas.datastructures import Mesh
 from compas.datastructures import Graph
 from compas.datastructures import VolMesh
@@ -18,17 +22,33 @@ def test_json_native():
     assert after == [[], [], {}, "", 1, 1.0, True, None]
 
 
+@pytest.mark.parametrize("dtype", ["invalid", "missing.module/Type", "compas.geometry/MissingType"])
+def test_json_rejects_unknown_dtype(dtype):
+    with pytest.raises(DecoderError, match="No class found"):
+        compas.json_loads(compas.json_dumps({"dtype": dtype, "data": {}}))
+
+
 def test_json_primitive():
     before = Point(0, 0, 0)
-    after = compas.json_loads(compas.json_dumps(before))  # type: Point
+    after: Point = compas.json_loads(compas.json_dumps(before))
     assert before.__dtype__ == after.__dtype__
     assert all(a == b for a, b in zip(before, after))
     assert before.guid == after.guid
 
 
+def test_json_minimal_is_scoped_to_encoder_instance():
+    point = Point(0, 0, 0)
+
+    minimal = compas.json_dumps(point, minimal=True)
+    regular = json.dumps(point, cls=DataEncoder)
+
+    assert "guid" not in json.loads(minimal)
+    assert "guid" in json.loads(regular)
+
+
 def test_json_shape():
     before = Box(frame=Frame(Point(0, 0, 0), Vector(1, 0, 0), Vector(0, 1, 0)), xsize=1, ysize=1, zsize=1)
-    after = compas.json_loads(compas.json_dumps(before))  # type: Box
+    after: Box = compas.json_loads(compas.json_dumps(before))
     assert before.__dtype__ == after.__dtype__
     assert all(a == b for a, b in zip(before.to_vertices_and_faces()[0], after.to_vertices_and_faces()[0]))
     assert before.guid == after.guid
@@ -36,7 +56,7 @@ def test_json_shape():
 
 def test_json_xform():
     before = Transformation.from_frame_to_frame(Frame.worldXY(), Frame.worldXY())
-    after = compas.json_loads(compas.json_dumps(before))  # type: Transformation
+    after: Transformation = compas.json_loads(compas.json_dumps(before))
     assert before.__dtype__ == after.__dtype__
     assert all(a == b for a, b in zip(before, after))
     assert before.guid == after.guid
@@ -47,7 +67,7 @@ def test_json_graph():
     a = before.add_node()
     b = before.add_node()
     before.add_edge(a, b)
-    after = compas.json_loads(compas.json_dumps(before))  # type: Graph
+    after: Graph = compas.json_loads(compas.json_dumps(before))
     assert before.__dtype__ == after.__dtype__
     # assert before.attributes == after.attributes
     assert all(before.has_node(node) for node in after.nodes())
@@ -59,7 +79,7 @@ def test_json_graph():
 
 def test_json_mesh():
     before = Mesh.from_vertices_and_faces([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]], [[0, 1, 2, 3]])
-    after = compas.json_loads(compas.json_dumps(before))  # type: Mesh
+    after: Mesh = compas.json_loads(compas.json_dumps(before))
     assert before.__dtype__ == after.__dtype__
     # assert before.attributes == after.attributes
     assert all(before.has_vertex(vertex) for vertex in after.vertices())
@@ -95,7 +115,7 @@ def test_json_volmesh():
             ]
         ],
     )
-    after = compas.json_loads(compas.json_dumps(before))  # type: VolMesh
+    after: VolMesh = compas.json_loads(compas.json_dumps(before))
     assert before.__dtype__ == after.__dtype__
     # assert before.attributes == after.attributes
     assert all(before.has_vertex(vertex) for vertex in after.vertices())
@@ -121,7 +141,7 @@ def test_json_zip():
 
     before = Box(frame=Frame(Point(0, 0, 0), Vector(1, 0, 0), Vector(0, 1, 0)), xsize=2, ysize=5, zsize=3)
     compas.json_dumpz(before, zipfile_name)
-    after = compas.json_loadz(zipfile_name)  # type: Box
+    after: Box = compas.json_loadz(zipfile_name)
     assert before.__dtype__ == after.__dtype__
     assert all(a == b for a, b in zip(before.to_vertices_and_faces()[0], after.to_vertices_and_faces()[0]))
     assert before.guid == after.guid
@@ -136,7 +156,7 @@ def test_json_attributeview():
     for face in mesh.faces():
         attr = mesh.face_attributes(face)
         before.add_face(vertices=mesh.face_vertices(face), fkey=face, attr_dict=attr)
-    after = compas.json_loads(compas.json_dumps(before))  # type: Mesh
+    after: Mesh = compas.json_loads(compas.json_dumps(before))
 
     assert before.__dtype__ == after.__dtype__
     assert all(before.has_vertex(vertex) for vertex in after.vertices())

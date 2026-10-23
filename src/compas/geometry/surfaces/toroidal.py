@@ -2,9 +2,7 @@ from math import cos
 from math import pi
 from math import sin
 from typing import Any
-from typing import Optional
-
-from typing_extensions import Self
+from typing import Self
 
 from compas._typing import CoordinateType
 from compas.geometry import Circle
@@ -46,7 +44,6 @@ class ToroidalSurface(Surface):
 
     """
 
-
     @property
     def __data__(self) -> dict[str, Any]:
         """The data representation of the toroidal surface."""
@@ -68,12 +65,12 @@ class ToroidalSurface(Surface):
         self,
         radius_axis: float,
         radius_pipe: float,
-        frame: Optional[Frame] = None,
-        name: Optional[str] = None,
+        frame: Frame | None = None,
+        name: str | None = None,
     ) -> None:
         super().__init__(frame=frame, name=name)
-        self._radius_axis: Optional[float] = None
-        self._radius_pipe: Optional[float] = None
+        self._radius_axis: float | None = None
+        self._radius_pipe: float | None = None
         self.radius_axis = radius_axis
         self.radius_pipe = radius_pipe
 
@@ -124,6 +121,7 @@ class ToroidalSurface(Surface):
         if self._radius_pipe is not None and radius <= self._radius_pipe:
             raise ValueError("The axis radius of a ring torus should be larger than its pipe radius.")
         self._radius_axis = float(radius)
+        self._invalidate_discretization()
 
     @property
     def radius_pipe(self) -> float:
@@ -139,15 +137,14 @@ class ToroidalSurface(Surface):
         if self._radius_axis is not None and radius >= self._radius_axis:
             raise ValueError("The pipe radius of a ring torus should be smaller than its axis radius.")
         self._radius_pipe = float(radius)
+        self._invalidate_discretization()
 
-    @property
     def area(self) -> float:
-        """The surface area of the torus."""
+        """Compute the surface area of the torus."""
         return 4.0 * pi**2 * self.radius_axis * self.radius_pipe
 
-    @property
     def volume(self) -> float:
-        """The volume enclosed by the torus."""
+        """Compute the volume enclosed by the torus."""
         return 2.0 * pi**2 * self.radius_axis * self.radius_pipe**2
 
     @property
@@ -184,10 +181,6 @@ class ToroidalSurface(Surface):
 
         """
         return cls(radius_axis, radius_pipe, frame=Frame.from_plane(plane))
-
-    # =============================================================================
-    # Conversions
-    # =============================================================================
 
     # =============================================================================
     # Methods

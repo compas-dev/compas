@@ -61,6 +61,13 @@ def test_bounding_box(coords, expected):
     assert expected == bounding_box(coords)
 
 
+def test_axis_aligned_bounding_boxes_accept_generators():
+    points = [[0, 0, 0], [1, 2, 3]]
+
+    assert bounding_box(iter(points)) == bounding_box(points)
+    assert bounding_box_xy(iter(points)) == bounding_box_xy(points)
+
+
 @pytest.mark.parametrize(
     "coords,expected",
     [
@@ -90,13 +97,10 @@ def test_bounding_box(coords, expected):
         ],
     ],
 )
-def test_oriented_bounding_box_xy_numpy(coords, expected):
-    if compas.IPY:
-        return
+def test_oriented_bounding_box_xy(coords, expected):
+    from compas.geometry import oriented_bounding_box_xy
 
-    from compas.geometry import oriented_bounding_box_xy_numpy
-
-    assert expected == oriented_bounding_box_xy_numpy(coords)
+    assert expected == oriented_bounding_box_xy(coords)
 
 
 @pytest.mark.parametrize(
@@ -117,21 +121,15 @@ def test_oriented_bounding_box_xy_numpy(coords, expected):
         ]
     ],
 )
-def test_oriented_bounding_box_numpy(coords, expected):
-    if compas.IPY:
-        return
+def test_oriented_bounding_box(coords, expected):
+    from compas.geometry import oriented_bounding_box
 
-    from compas.geometry import oriented_bounding_box_numpy
-
-    results = oriented_bounding_box_numpy(coords)
+    results = oriented_bounding_box(coords)
     for result, expected_values in zip(results, expected):
         assert TOL.is_allclose(result, expected_values)
 
 
-def test_oriented_bounding_box_numpy_from_fixtures():
-    if compas.IPY:
-        return
-
+def test_oriented_bounding_box_from_fixtures():
     coords = compas.json_load(os.path.join(HERE, "fixtures", "bbox_points_00.json"))
     expected = [
         [-16.324597659837302, 17.160372549942966, 3.56729],
@@ -144,21 +142,18 @@ def test_oriented_bounding_box_numpy_from_fixtures():
         [-17.874709811518226, 13.052029092033992, 3.56729],
     ]
 
-    from compas.geometry import oriented_bounding_box_numpy
+    from compas.geometry import oriented_bounding_box
 
-    results = oriented_bounding_box_numpy(coords)
+    results = oriented_bounding_box(coords)
     for result, expected_values in zip(results, expected):
         assert TOL.is_allclose(result, expected_values)
 
 
-def test_oriented_bounding_box_numpy_flat():
-    if compas.IPY:
-        return
-
-    from compas.geometry import oriented_bounding_box_numpy
+def test_oriented_bounding_box_flat():
+    from compas.geometry import oriented_bounding_box
 
     points = [[10 * random(), 10 * random(), 0] for i in range(100)]
-    box = Box.from_bounding_box(oriented_bounding_box_numpy(points))
+    box = Box.from_bounding_box(oriented_bounding_box(points))
 
     for point in points:
         assert box.contains_point(point)
@@ -166,7 +161,7 @@ def test_oriented_bounding_box_numpy_flat():
     assert not box.contains_point([10 * random(), 10 * random(), 1])
 
     points = [[10 * random(), 10 * random(), 10] for i in range(100)]
-    box = Box.from_bounding_box(oriented_bounding_box_numpy(points))
+    box = Box.from_bounding_box(oriented_bounding_box(points))
 
     for point in points:
         assert box.contains_point(point)
@@ -175,32 +170,54 @@ def test_oriented_bounding_box_numpy_flat():
 
 
 def test_minimum_area_rectangle_xy():
-    if compas.IPY:
-        return
-
-    from compas.geometry import bbox_numpy
+    from compas.geometry.bbox import _minimum_area_rectangle_xy
     import numpy as np
 
     mesh = Mesh.from_obj(os.path.join(HERE, "fixtures", "bbox_rect_bad.obj"))
     points, _ = mesh.to_vertices_and_faces()
     expected = [[359.481028, 229.73229169], [256.84043629, 120.92493596], [295.67358196, 84.29269706], [398.31417367, 193.10005279]]
 
-    min_bbox = bbox_numpy.minimum_area_rectangle_xy(np.array(points))
+    min_bbox = _minimum_area_rectangle_xy(np.array(points))
 
     assert TOL.is_allclose(min_bbox, expected)
 
 
 def test_minimum_area_rectangle_xy_translated():
-    if compas.IPY:
-        return
-
-    from compas.geometry import bbox_numpy
+    from compas.geometry.bbox import _minimum_area_rectangle_xy
     import numpy as np
 
     mesh = Mesh.from_obj(os.path.join(HERE, "fixtures", "bbox_rect_good.obj"))
     points, _ = mesh.to_vertices_and_faces()
     expected = [[307.39472429, 358.36965131], [204.75412877, 249.56229154], [243.58728967, 212.93003827], [346.22788519, 321.73739804]]
 
-    min_bbox = bbox_numpy.minimum_area_rectangle_xy(np.array(points))
+    min_bbox = _minimum_area_rectangle_xy(np.array(points))
 
     assert TOL.is_allclose(min_bbox, expected)
+
+
+def test_minimum_box_helpers_return_size():
+    import numpy as np
+
+    from compas.geometry.bbox import _minimum_area_rectangle_xy
+    from compas.geometry.bbox import _minimum_volume_box
+
+    points = np.array(
+        [
+            [0.0, 0.0, 0.0],
+            [1.0, 0.0, 0.0],
+            [1.0, 1.0, 0.0],
+            [0.0, 1.0, 0.0],
+            [0.0, 0.0, 1.0],
+            [1.0, 0.0, 1.0],
+            [1.0, 1.0, 1.0],
+            [0.0, 1.0, 1.0],
+        ]
+    )
+
+    box, volume = _minimum_volume_box(points, return_size=True)
+    rectangle, area = _minimum_area_rectangle_xy(points, return_size=True)
+
+    assert box.shape == (8, 3)
+    assert len(rectangle) == 4
+    assert volume == pytest.approx(1.0)
+    assert area == pytest.approx(1.0)

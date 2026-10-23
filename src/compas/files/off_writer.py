@@ -9,18 +9,16 @@ from target writing, following the XML API.
 
 from os import PathLike
 from typing import BinaryIO
-from typing import Optional
 from typing import TextIO
-from typing import Union
 
 from compas import _iotools
 
 from .off_document import OFFDocument
 
-OFFTarget = Union[str, PathLike[str], TextIO, BinaryIO]
+OFFTarget = str | PathLike[str] | TextIO | BinaryIO
 
 
-def _precision_digits(precision: Optional[Union[int, str]]) -> Optional[int]:
+def _precision_digits(precision: int | str | None) -> int | None:
     if precision is None:
         return None
     if isinstance(precision, int):
@@ -28,14 +26,14 @@ def _precision_digits(precision: Optional[Union[int, str]]) -> Optional[int]:
     return int(precision.rstrip("f"))
 
 
-def _number(value: float, precision: Optional[int]) -> str:
+def _number(value: float, precision: int | None) -> str:
     if precision is None:
         return str(float(value))
     number = f"{value:.{precision}f}".rstrip("0").rstrip(".")
     return "0" if number in ("", "-0") else number
 
 
-def _lines(document: OFFDocument, precision: Optional[int]) -> list[str]:
+def _lines(document: OFFDocument, precision: int | None) -> list[str]:
     lines = ["OFF"]
     lines.extend(f"# {comment}" for comment in document.comments)
     lines.append(f"{len(document.vertices)} {len(document.faces)} {document.edge_count}")
@@ -50,7 +48,7 @@ class OFFWriter:
     def __init__(
         self,
         target: OFFTarget,
-        precision: Optional[Union[int, str]] = None,
+        precision: int | str | None = None,
         encoding: str = "utf-8",
     ) -> None:
         self.target = target

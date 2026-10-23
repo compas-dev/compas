@@ -1,11 +1,10 @@
+from collections.abc import Iterator
+from collections.abc import Sequence
 from os import PathLike
-from typing import Iterator
 from typing import Protocol
-from typing import Sequence
-from typing import Union
 from typing import runtime_checkable
 
-FilePath = Union[str, PathLike[str]]
+FilePath = str | PathLike[str]
 
 
 class FloatSequence(Protocol):
@@ -16,8 +15,8 @@ class FloatSequence(Protocol):
     def __iter__(self) -> Iterator[float]: ...
 
 
-FloatSequenceType = Union[FloatSequence, Sequence[float]]
-RawCoordinateType = Union[list[float], tuple[float, float, float]]
+FloatSequenceType = FloatSequence | Sequence[float]
+RawCoordinateType = list[float] | tuple[float, float, float]
 
 
 @runtime_checkable
@@ -25,7 +24,7 @@ class Coordinate(FloatSequence, Protocol):
     pass
 
 
-CoordinateType = Union[Coordinate, Sequence[float]]
+CoordinateType = Coordinate | Sequence[float]
 
 
 @runtime_checkable
@@ -37,4 +36,9 @@ class Coordinates(Protocol):
     def __iter__(self) -> Iterator[CoordinateType]: ...
 
 
-CoordinatesType = Union[Coordinates, Sequence[CoordinateType]]
+CoordinatesType = Coordinates | Sequence[CoordinateType]
+
+SphereType = tuple[CoordinateType, float]
+MeshType = tuple[CoordinatesType, Sequence[Sequence[int]]]
+RayType = tuple[CoordinateType, CoordinateType]
+RayMeshHit = tuple[int, float, float, float]

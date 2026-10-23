@@ -1,34 +1,77 @@
+from typing import TYPE_CHECKING
+from typing import Any
+
+from compas._typing import CoordinatesType
+from compas._typing import MeshType
 from compas.plugins import PluginNotInstalledError
 from compas.plugins import pluggable
 
+if TYPE_CHECKING:
+    from compas.geometry import PlanarRegion
+    from compas.geometry import Polygon
+
+
+def _xy_coordinates(points: Any) -> list[list[float]]:
+    return [[point[0], point[1]] for point in points]
+
+
+def _shapely_polygon(region: "PlanarRegion | Polygon | CoordinatesType") -> Any:
+    from shapely.geometry import Polygon  # pyright: ignore[reportMissingModuleSource]
+
+    outer = getattr(region, "outer", None)
+    if outer is not None:
+        return Polygon(
+            _xy_coordinates(outer.points),
+            [_xy_coordinates(hole.points) for hole in getattr(region, "holes")],
+        )
+    return Polygon(_xy_coordinates(getattr(region, "points", region)))
+
+
+def _planar_regions(geometry: Any) -> list["PlanarRegion"]:
+    from compas.geometry import PlanarRegion
+
+    def polygons_of(item: Any) -> list[Any]:
+        if item.is_empty:
+            return []
+        if item.geom_type == "Polygon":
+            return [item]
+        if item.geom_type in {"MultiPolygon", "GeometryCollection"}:
+            return [polygon for part in item.geoms for polygon in polygons_of(part)]
+        return []
+
+    return [
+        PlanarRegion(
+            [[x, y, 0.0] for x, y in polygon.exterior.coords[:-1]],
+            holes=[[[x, y, 0.0] for x, y in ring.coords[:-1]] for ring in polygon.interiors],
+        )
+        for polygon in polygons_of(geometry)
+    ]
+
 
 @pluggable(category="booleans")
-def boolean_union_mesh_mesh(A, B):
+def boolean_union_mesh_mesh(A: MeshType, B: MeshType) -> tuple[list[list[float]], list[list[int]]]:
     """Compute the boolean union of two triangle meshes.
 
     Parameters
     ----------
-    A : tuple[sequence[point], sequence[[int, int, int]]]
+    A
         The vertices and faces of mesh A.
-    B : tuple[sequence[point], sequence[[int, int, int]]]
+    B
         The vertices and faces of mesh B.
 
     Returns
     -------
-    tuple[list[point], list[[int, int, int]]]
+    tuple[list[list[float]], list[list[int]]]
         The vertices and the faces of the boolean union.
 
     See Also
     --------
-    boolean_difference_mesh_mesh
-    boolean_intersection_mesh_mesh
+    [`boolean_difference_mesh_mesh`][compas.geometry.boolean_difference_mesh_mesh]
+    [`boolean_intersection_mesh_mesh`][compas.geometry.boolean_intersection_mesh_mesh]
 
     Notes
     -----
-    This function is a "pluggable".
-    This means that it doesn't provide an implementation, but receives an implementation from a corresponding "plugin".
-    To use the plugin implementation, you have to install it in the same environment as COMPAS.
-    One such plugin is available in ``compas_cgal``.
+    This function requires a Boolean plugin, such as `compas_cgal`.
 
     Examples
     --------
@@ -41,7 +84,7 @@ def boolean_union_mesh_mesh(A, B):
     >>> box = Mesh.from_shape(box)
     >>> box.quads_to_triangles()
 
-    >>> sphere = Sphere(1, point=[1, 1, 1])
+    >>> sphere = Sphere.from_point_and_radius([1, 1, 1], 1)
     >>> sphere = Mesh.from_shape(sphere, u=30, v=30)
     >>> sphere.quads_to_triangles()
 
@@ -56,238 +99,216 @@ def boolean_union_mesh_mesh(A, B):
     raise PluginNotInstalledError("No plugin was found for the boolean_union_mesh_mesh pluggable. A plugin is available in compas_cgal...")
 
 
-boolean_union_mesh_mesh.__pluggable__ = True
+setattr(boolean_union_mesh_mesh, "__pluggable__", True)
 
 
 @pluggable(category="booleans")
-def boolean_difference_mesh_mesh(A, B):
+def boolean_difference_mesh_mesh(A: MeshType, B: MeshType) -> tuple[list[list[float]], list[list[int]]]:
     """Compute the boolean difference of two triangle meshes.
 
     Parameters
     ----------
-    A : tuple[sequence[point], sequence[[int, int, int]]]
+    A
         The vertices and faces of mesh A.
-    B : tuple[sequence[point], sequence[[int, int, int]]]
+    B
         The vertices and faces of mesh B.
 
     Returns
     -------
-    tuple[list[point], list[[int, int, int]]]
+    tuple[list[list[float]], list[list[int]]]
         The vertices and the faces of the boolean difference.
 
     See Also
     --------
-    boolean_union_mesh_mesh
-    boolean_intersection_mesh_mesh
+    [`boolean_union_mesh_mesh`][compas.geometry.boolean_union_mesh_mesh]
+    [`boolean_intersection_mesh_mesh`][compas.geometry.boolean_intersection_mesh_mesh]
 
     Notes
     -----
-    This function is a "pluggable".
-    This means that it doesn't provide an implementation, but receives an implementation from a corresponding "plugin".
-    To use the plugin implementation, you have to install it in the same environment as COMPAS.
-    One such plugin is available in ``compas_cgal``.
+    This function requires a Boolean plugin, such as `compas_cgal`.
 
     """
     raise PluginNotInstalledError("No plugin was found for the boolean_difference_mesh_mesh pluggable. A plugin is available in compas_cgal...")
 
 
-boolean_difference_mesh_mesh.__pluggable__ = True
+setattr(boolean_difference_mesh_mesh, "__pluggable__", True)
 
 
 @pluggable(category="booleans")
-def boolean_intersection_mesh_mesh(A, B):
+def boolean_intersection_mesh_mesh(A: MeshType, B: MeshType) -> tuple[list[list[float]], list[list[int]]]:
     """Compute the boolean intersection of two triangle meshes.
 
     Parameters
     ----------
-    A : tuple[sequence[point], sequence[[int, int, int]]]
+    A
         The vertices and faces of mesh A.
-    B : tuple[sequence[point], sequence[[int, int, int]]]
+    B
         The vertices and faces of mesh B.
 
     Returns
     -------
-    tuple[list[point], list[[int, int, int]]]
+    tuple[list[list[float]], list[list[int]]]
         The vertices and the faces of the boolean intersection.
 
     See Also
     --------
-    boolean_union_mesh_mesh
-    boolean_difference_mesh_mesh
+    [`boolean_union_mesh_mesh`][compas.geometry.boolean_union_mesh_mesh]
+    [`boolean_difference_mesh_mesh`][compas.geometry.boolean_difference_mesh_mesh]
 
     Notes
     -----
-    This function is a "pluggable".
-    This means that it doesn't provide an implementation, but receives an implementation from a corresponding "plugin".
-    To use the plugin implementation, you have to install it in the same environment as COMPAS.
-    One such plugin is available in ``compas_cgal``.
+    This function requires a Boolean plugin, such as `compas_cgal`.
 
     """
     raise PluginNotInstalledError("No plugin was found for the boolean_intersection_mesh_mesh pluggable. A plugin is available in compas_cgal...")
 
 
-boolean_intersection_mesh_mesh.__pluggable__ = True
+setattr(boolean_intersection_mesh_mesh, "__pluggable__", True)
 
 
 @pluggable(category="booleans")
-def boolean_union_polygon_polygon(A, B):
-    """Compute the boolean union of two polygons.
+def boolean_union_polygon_polygon(A: "PlanarRegion | Polygon | CoordinatesType", B: "PlanarRegion | Polygon | CoordinatesType") -> list["PlanarRegion"]:
+    """Compute the Boolean union of two planar regions.
 
-    For this operation, the polygons are assumed to lie in the XY plane.
-    Therefore, the Z components of the points defining the polygons are simply ignored.
-    If the polygons are not in the XY plane, it is the responibility of the user to transform them accordingly.
-    Otherwise the results are meaningless.
+    The polygons are assumed to lie in the XY plane. Z coordinates are ignored.
 
     Parameters
     ----------
-    A : sequence[point]
-        The vertices of polygon A.
-    B : sequence[point]
-        The vertices of polygon B.
+    A
+        The first polygon, planar region, or exterior coordinate loop.
+    B
+        The second polygon, planar region, or exterior coordinate loop.
 
     Returns
     -------
-    list[point]
-        The vertices of the boolean union.
+    list[PlanarRegion]
+        The connected components of the union. The list is empty if the result
+        is empty.
 
     See Also
     --------
-    boolean_difference_polygon_polygon
-    boolean_intersection_polygon_polygon
-    boolean_symmetric_difference_polygon_polygon
+    [`boolean_difference_polygon_polygon`][compas.geometry.boolean_difference_polygon_polygon]
+    [`boolean_intersection_polygon_polygon`][compas.geometry.boolean_intersection_polygon_polygon]
+    [`boolean_symmetric_difference_polygon_polygon`][compas.geometry.boolean_symmetric_difference_polygon_polygon]
 
     Notes
     -----
-    This function is a "pluggable".
-    This means that it doesn't provide an implementation, but receives an implementation from a corresponding "plugin".
-    To use the plugin implementation, you have to install it in the same environment as COMPAS.
-    One such plugin is available through ``shapely``.
+    The default implementation uses `shapely`. A registered plugin may override
+    it.
 
     """
-    raise PluginNotInstalledError("No plugin was found for the boolean_union_polygon_polygon pluggable. Installing Shapely should solve the problem.")
+    return _planar_regions(_shapely_polygon(A).union(_shapely_polygon(B)))
 
 
-boolean_union_polygon_polygon.__pluggable__ = True
+setattr(boolean_union_polygon_polygon, "__pluggable__", True)
 
 
 @pluggable(category="booleans")
-def boolean_difference_polygon_polygon(A, B):
-    """Compute the boolean difference of two polygons.
+def boolean_difference_polygon_polygon(A: "PlanarRegion | Polygon | CoordinatesType", B: "PlanarRegion | Polygon | CoordinatesType") -> list["PlanarRegion"]:
+    """Compute the Boolean difference of two planar regions.
 
-    For this operation, the polygons are assumed to lie in the XY plane.
-    Therefore, the Z components of the points defining the polygons are simply ignored.
-    If the polygons are not in the XY plane, it is the responibility of the user to transform them accordingly.
-    Otherwise the results are meaningless.
+    The polygons are assumed to lie in the XY plane. Z coordinates are ignored.
 
     Parameters
     ----------
-    A : sequence[point]
-        The vertices of polygon A.
-    B : sequence[point]
-        The vertices of polygon B.
+    A
+        The first polygon, planar region, or exterior coordinate loop.
+    B
+        The second polygon, planar region, or exterior coordinate loop.
 
     Returns
     -------
-    list[point]
-        The vertices of the boolean difference.
+    list[PlanarRegion]
+        The connected components of the difference. Interior rings are
+        preserved as holes.
 
     See Also
     --------
-    boolean_union_polygon_polygon
-    boolean_intersection_polygon_polygon
-    boolean_symmetric_difference_polygon_polygon
+    [`boolean_union_polygon_polygon`][compas.geometry.boolean_union_polygon_polygon]
+    [`boolean_intersection_polygon_polygon`][compas.geometry.boolean_intersection_polygon_polygon]
+    [`boolean_symmetric_difference_polygon_polygon`][compas.geometry.boolean_symmetric_difference_polygon_polygon]
 
     Notes
     -----
-    This function is a "pluggable".
-    This means that it doesn't provide an implementation, but receives an implementation from a corresponding "plugin".
-    To use the plugin implementation, you have to install it in the same environment as COMPAS.
-    One such plugin is available through ``shapely``.
+    The default implementation uses `shapely`. A registered plugin may override
+    it.
 
     """
-    raise PluginNotInstalledError("No plugin was found for the boolean_difference_polygon_polygon pluggable. Installing Shapely should solve the problem.")
+    return _planar_regions(_shapely_polygon(A).difference(_shapely_polygon(B)))
 
 
-boolean_difference_polygon_polygon.__pluggable__ = True
+setattr(boolean_difference_polygon_polygon, "__pluggable__", True)
 
 
 @pluggable(category="booleans")
-def boolean_symmetric_difference_polygon_polygon(A, B):
-    """Compute the boolean symmetric difference of two polygons.
+def boolean_symmetric_difference_polygon_polygon(A: "PlanarRegion | Polygon | CoordinatesType", B: "PlanarRegion | Polygon | CoordinatesType") -> list["PlanarRegion"]:
+    """Compute the Boolean symmetric difference of two planar regions.
 
-    For this operation, the polygons are assumed to lie in the XY plane.
-    Therefore, the Z components of the points defining the polygons are simply ignored.
-    If the polygons are not in the XY plane, it is the responibility of the user to transform them accordingly.
-    Otherwise the results are meaningless.
+    The polygons are assumed to lie in the XY plane. Z coordinates are ignored.
 
     Parameters
     ----------
-    A : sequence[point]
-        The vertices of polygon A.
-    B : sequence[point]
-        The vertices of polygon B.
+    A
+        The first polygon, planar region, or exterior coordinate loop.
+    B
+        The second polygon, planar region, or exterior coordinate loop.
 
     Returns
     -------
-    list[point]
-        The vertices of the boolean symmetric difference.
+    list[PlanarRegion]
+        The connected components of the symmetric difference, including any
+        interior holes.
 
     See Also
     --------
-    boolean_union_polygon_polygon
-    boolean_intersection_polygon_polygon
-    boolean_difference_polygon_polygon
+    [`boolean_union_polygon_polygon`][compas.geometry.boolean_union_polygon_polygon]
+    [`boolean_intersection_polygon_polygon`][compas.geometry.boolean_intersection_polygon_polygon]
+    [`boolean_difference_polygon_polygon`][compas.geometry.boolean_difference_polygon_polygon]
 
     Notes
     -----
-    This function is a "pluggable".
-    This means that it doesn't provide an implementation, but receives an implementation from a corresponding "plugin".
-    To use the plugin implementation, you have to install it in the same environment as COMPAS.
-    One such plugin is available through ``shapely``.
+    The default implementation uses `shapely`. A registered plugin may override
+    it.
 
     """
-    raise PluginNotInstalledError("No plugin was found for the boolean_symmetric_difference_polygon_polygon pluggable. Installing Shapely should solve the problem.")
+    return _planar_regions(_shapely_polygon(A).symmetric_difference(_shapely_polygon(B)))
 
 
-boolean_symmetric_difference_polygon_polygon.__pluggable__ = True
+setattr(boolean_symmetric_difference_polygon_polygon, "__pluggable__", True)
 
 
 @pluggable(category="booleans")
-def boolean_intersection_polygon_polygon(A, B):
-    """Compute the boolean intersection of two polygons.
+def boolean_intersection_polygon_polygon(A: "PlanarRegion | Polygon | CoordinatesType", B: "PlanarRegion | Polygon | CoordinatesType") -> list["PlanarRegion"]:
+    """Compute the Boolean intersection of two planar regions.
 
-    For this operation, the polygons are assumed to lie in the XY plane.
-    Therefore, the Z components of the points defining the polygons are simply ignored.
-    If the polygons are not in the XY plane, it is the responibility of the user to transform them accordingly.
-    Otherwise the results are meaningless.
+    The polygons are assumed to lie in the XY plane. Z coordinates are ignored.
 
     Parameters
     ----------
-    A : sequence[point]
-        The vertices of polygon A.
-    B : sequence[point]
-        The vertices of polygon B.
+    A
+        The first polygon, planar region, or exterior coordinate loop.
+    B
+        The second polygon, planar region, or exterior coordinate loop.
 
     Returns
     -------
-    list[point]
-        The vertices of the boolean difference.
+    list[PlanarRegion]
+        The connected components of the intersection. The list is empty if
+        the regions do not overlap with positive area.
 
     See Also
     --------
-    boolean_union_polygon_polygon
-    boolean_difference_polygon_polygon
-    boolean_symmetric_difference_polygon_polygon
+    [`boolean_union_polygon_polygon`][compas.geometry.boolean_union_polygon_polygon]
+    [`boolean_difference_polygon_polygon`][compas.geometry.boolean_difference_polygon_polygon]
+    [`boolean_symmetric_difference_polygon_polygon`][compas.geometry.boolean_symmetric_difference_polygon_polygon]
 
     Notes
     -----
-    This function is a "pluggable".
-    This means that it doesn't provide an implementation, but receives an implementation from a corresponding "plugin".
-    To use the plugin implementation, you have to install it in the same environment as COMPAS.
-    One such plugin is available through ``shapely``.
+    The default implementation uses `shapely`. A registered plugin may override
+    it.
 
     """
-    raise PluginNotInstalledError("No plugin was found for the boolean_intersection_polygon_polygon pluggable. Installing Shapely should solve the problem.")
+    return _planar_regions(_shapely_polygon(A).intersection(_shapely_polygon(B)))
 
 
-boolean_intersection_polygon_polygon.__pluggable__ = True
+setattr(boolean_intersection_polygon_polygon, "__pluggable__", True)

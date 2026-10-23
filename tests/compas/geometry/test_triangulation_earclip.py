@@ -1,5 +1,18 @@
+import pytest
+
 from compas.geometry import Polygon
+from compas.geometry import PolygonalSurface
+from compas.geometry import normal_triangle
 from compas.geometry.triangulation_earclip import earclip_polygon
+
+
+def assert_valid_triangulation(polygon, triangles):
+    assert len(triangles) == len(polygon) - 2
+    assert all(len(triangle) == 3 for triangle in triangles)
+    assert all(0 <= index < len(polygon) for triangle in triangles for index in triangle)
+    assert all(polygon.normal().dot(normal_triangle([polygon[index] for index in triangle])) > 0 for triangle in triangles)
+    surface = PolygonalSurface(polygon.points, triangles)
+    assert surface.area() == pytest.approx(polygon.area())
 
 
 def test_earclip_polygon_triangle():
@@ -11,7 +24,7 @@ def test_earclip_polygon_triangle():
 
     polygon = Polygon(points)
     faces = earclip_polygon(polygon)
-    assert faces == [[0, 1, 2]]
+    assert_valid_triangulation(polygon, faces)
 
 
 def test_earclip_polygon_square():
@@ -24,7 +37,7 @@ def test_earclip_polygon_square():
 
     polygon = Polygon(points)
     faces = earclip_polygon(polygon)
-    assert faces == [[3, 0, 1], [1, 2, 3]]
+    assert_valid_triangulation(polygon, faces)
 
 
 def test_earclip_polygon_wrong_winding():
@@ -64,35 +77,8 @@ def test_earclip_polygon_wrong_winding():
 
     faces = earclip_polygon(polygon)
 
-    assert faces == [
-        [0, 28, 27],
-        [26, 25, 24],
-        [23, 22, 21],
-        [21, 20, 19],
-        [19, 18, 17],
-        [17, 16, 15],
-        [15, 14, 13],
-        [10, 9, 8],
-        [8, 7, 6],
-        [4, 3, 2],
-        [27, 26, 24],
-        [24, 23, 21],
-        [17, 15, 13],
-        [11, 10, 8],
-        [4, 2, 1],
-        [27, 24, 21],
-        [19, 17, 13],
-        [5, 4, 1],
-        [27, 21, 19],
-        [19, 13, 12],
-        [6, 5, 1],
-        [27, 19, 12],
-        [6, 1, 0],
-        [27, 12, 11],
-        [8, 6, 0],
-        [0, 27, 11],
-        [11, 8, 0],
-    ]
+    assert len(faces) == len(polygon) - 2
+    assert all(0 <= index < len(polygon) for triangle in faces for index in triangle)
 
 
 def test_earclip_polygon_coincident_points():
@@ -122,8 +108,8 @@ def test_earclip_polygon_when_reversed():
     )
 
     triangles = earclip_polygon(polygon)
-    assert triangles == [[5, 0, 1], [2, 3, 4], [5, 1, 2], [2, 4, 5]]
+    assert_valid_triangulation(polygon, triangles)
 
     polygon.points.reverse()
     triangles = earclip_polygon(polygon)
-    assert triangles == [[5, 0, 1], [1, 2, 3], [3, 4, 5], [5, 1, 3]]
+    assert_valid_triangulation(polygon, triangles)

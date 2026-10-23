@@ -39,8 +39,16 @@ from .gltf_types import GLTFJson
 class GLTFParser:
     """Parse a complete primary source and its referenced resources."""
 
+    # =============================================================================
+    # Dunder methods
+    # =============================================================================
+
     def __init__(self, source: GLTFSource) -> None:
         self.source = source
+
+    # =============================================================================
+    # Methods
+    # =============================================================================
 
     def parse(self) -> GLTFDocument:
         """Parse semantic glTF content.
@@ -62,37 +70,36 @@ class GLTFParser:
         content.extensions_required = document.get("extensionsRequired")
         content.asset = document["asset"].copy()
         known = {
-            "accessors", "animations", "asset", "bufferViews", "buffers", "cameras", "extensions",
-            "extensionsRequired", "extensionsUsed", "extras", "images", "materials", "meshes", "nodes",
-            "samplers", "scene", "scenes", "skins", "textures",
+            "accessors",
+            "animations",
+            "asset",
+            "bufferViews",
+            "buffers",
+            "cameras",
+            "extensions",
+            "extensionsRequired",
+            "extensionsUsed",
+            "extras",
+            "images",
+            "materials",
+            "meshes",
+            "nodes",
+            "samplers",
+            "scene",
+            "scenes",
+            "skins",
+            "textures",
         }
         content.unknown = {key: value for key, value in document.items() if key not in known}
-        content.images = {
-            key: _image_data(image, decoder) for key, image in enumerate(document.get("images", []))
-        }
-        content.samplers = {
-            key: _sampler_data(value)
-            for key, value in enumerate(document.get("samplers", []))
-        }
-        content.textures = {
-            key: _texture_data(value)
-            for key, value in enumerate(document.get("textures", []))
-        }
-        content.materials = {
-            key: _material_data(value)
-            for key, value in enumerate(document.get("materials", []))
-        }
-        content.cameras = {
-            key: _camera_data(value)
-            for key, value in enumerate(document.get("cameras", []))
-        }
+        content.images = {key: _image_data(image, decoder) for key, image in enumerate(document.get("images", []))}
+        content.samplers = {key: _sampler_data(value) for key, value in enumerate(document.get("samplers", []))}
+        content.textures = {key: _texture_data(value) for key, value in enumerate(document.get("textures", []))}
+        content.materials = {key: _material_data(value) for key, value in enumerate(document.get("materials", []))}
+        content.cameras = {key: _camera_data(value) for key, value in enumerate(document.get("cameras", []))}
         content.skins = {
-            key: _skin_data(value, accessors[value["inverseBindMatrices"]] if "inverseBindMatrices" in value else None)
-            for key, value in enumerate(document.get("skins", []))
+            key: _skin_data(value, accessors[value["inverseBindMatrices"]] if "inverseBindMatrices" in value else None) for key, value in enumerate(document.get("skins", []))
         }
-        content.animations = {
-            key: _animation_data(value, accessors) for key, value in enumerate(document.get("animations", []))
-        }
+        content.animations = {key: _animation_data(value, accessors) for key, value in enumerate(document.get("animations", []))}
         for mesh in document.get("meshes", []):
             _add_mesh(mesh, accessors, content)
         for node in document.get("nodes", []):
@@ -163,9 +170,7 @@ def _add_mesh(mesh: GLTFJson, accessors: list[AccessorData], content: GLTFDocume
             continue
         attributes = {name: accessors[index] for name, index in primitive["attributes"].items()}
         indices = accessors[primitive["indices"]] if "indices" in primitive else list(range(len(attributes["POSITION"])))
-        targets = [
-            {name: accessors[index] for name, index in target.items()} for target in primitive.get("targets", [])
-        ]
+        targets = [{name: accessors[index] for name, index in target.items()} for target in primitive.get("targets", [])]
         primitives.append(
             PrimitiveData(
                 attributes=attributes,
@@ -242,7 +247,9 @@ def _texture_info(data, cls=TextureInfoData):
     if data is None:
         return None
     kwargs = {
-        "index": data["index"], "tex_coord": data.get("texCoord"), "extras": data.get("extras"),
+        "index": data["index"],
+        "tex_coord": data.get("texCoord"),
+        "extras": data.get("extras"),
         "extensions": _extensions_from_json(data.get("extensions")),
     }
     if cls is NormalTextureInfoData:
@@ -259,19 +266,26 @@ def _material_data(data: GLTFJson) -> MaterialData:
         pbr_data = PBRMetallicRoughnessData(
             base_color_factor=pbr.get("baseColorFactor"),
             base_color_texture=_texture_info(pbr.get("baseColorTexture")),
-            metallic_factor=pbr.get("metallicFactor"), roughness_factor=pbr.get("roughnessFactor"),
+            metallic_factor=pbr.get("metallicFactor"),
+            roughness_factor=pbr.get("roughnessFactor"),
             metallic_roughness_texture=_texture_info(pbr.get("metallicRoughnessTexture")),
-            extras=pbr.get("extras"), extensions=_extensions_from_json(pbr.get("extensions")),
+            extras=pbr.get("extras"),
+            extensions=_extensions_from_json(pbr.get("extensions")),
         )
     return MaterialData(
-        name=data.get("name"), extras=data.get("extras"), pbr_metallic_roughness=pbr_data,
+        name=data.get("name"),
+        extras=data.get("extras"),
+        pbr_metallic_roughness=pbr_data,
         normal_texture=cast(NormalTextureInfoData, _texture_info(data.get("normalTexture"), NormalTextureInfoData)),
         occlusion_texture=cast(
             OcclusionTextureInfoData,
             _texture_info(data.get("occlusionTexture"), OcclusionTextureInfoData),
         ),
-        emissive_texture=_texture_info(data.get("emissiveTexture")), emissive_factor=data.get("emissiveFactor"),
-        alpha_mode=data.get("alphaMode"), alpha_cutoff=data.get("alphaCutoff"), double_sided=data.get("doubleSided"),
+        emissive_texture=_texture_info(data.get("emissiveTexture")),
+        emissive_factor=data.get("emissiveFactor"),
+        alpha_mode=data.get("alphaMode"),
+        alpha_cutoff=data.get("alphaCutoff"),
+        double_sided=data.get("doubleSided"),
         extensions=_extensions_from_json(data.get("extensions")),
     )
 

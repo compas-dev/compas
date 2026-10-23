@@ -1,7 +1,6 @@
+from collections.abc import Collection
 from typing import TYPE_CHECKING
-from typing import Collection
 from typing import Literal
-from typing import Optional
 
 from ..types import Edge
 from ..types import Vertex
@@ -86,8 +85,8 @@ def mesh_collapse_edge(
     edge: Edge,
     t: float = 0.5,
     allow_boundary: bool = False,
-    fixed: Optional[Collection[Vertex]] = None,
-) -> Optional[Literal[False]]:
+    fixed: Collection[Vertex] | None = None,
+) -> Literal[False] | None:
     """Collapse an edge to its first or second vertex, or to an intermediate point.
 
     Parameters
@@ -243,7 +242,7 @@ def trimesh_collapse_edge(
     edge: Edge,
     t: float = 0.5,
     allow_boundary: bool = False,
-    fixed: Optional[Collection[Vertex]] = None,
+    fixed: Collection[Vertex] | None = None,
 ) -> bool:
     """Collapse an edge to its first or second vertex, or to an intermediate point.
 

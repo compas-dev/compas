@@ -1,6 +1,9 @@
 from compas.geometry import Frame
+from compas.geometry import Projection
+from compas.geometry import Reflection
 from compas.geometry import Rotation
 from compas.geometry import Scale
+from compas.geometry import Shear
 from compas.geometry import Transformation
 from compas.geometry import Translation
 from compas.geometry import Vector
@@ -15,6 +18,72 @@ def test_transformation():
         [0.0, 0.0, 1.0, 0.0],
         [0.0, 0.0, 0.0, 1.0],
     ]
+
+
+def test_repr_can_reconstruct_base_transformation():
+    transformation = Transformation.from_list(range(16))
+    reconstructed = eval(repr(transformation), {"Transformation": Transformation})
+    assert reconstructed == transformation
+
+
+def test_alternative_constructors_preserve_subclasses():
+    class CustomTransformation(Transformation):
+        pass
+
+    class CustomRotation(Rotation):
+        pass
+
+    class CustomTranslation(Translation):
+        pass
+
+    class CustomScale(Scale):
+        pass
+
+    class CustomShear(Shear):
+        pass
+
+    class CustomProjection(Projection):
+        pass
+
+    class CustomReflection(Reflection):
+        pass
+
+    assert type(CustomTransformation.from_list(range(16))) is CustomTransformation
+    assert type(CustomRotation.from_axis_and_angle((0.0, 0.0, 1.0), 0.5)) is CustomRotation
+    assert type(CustomRotation.from_euler_angles((0.1, 0.2, 0.3))) is CustomRotation
+    assert type(CustomTranslation.from_vector((1.0, 2.0, 3.0))) is CustomTranslation
+    assert type(CustomScale.from_factors((1.0, 2.0, 3.0))) is CustomScale
+    assert type(CustomShear.from_entries((0.1, 0.2, 0.3))) is CustomShear
+    assert type(CustomShear.from_angle_direction_plane(0.1, (1.0, 0.0, 0.0), ((0.0, 0.0, 0.0), (0.0, 0.0, 1.0)))) is CustomShear
+    plane = (0.0, 0.0, 0.0), (0.0, 0.0, 1.0)
+    assert type(CustomProjection.from_plane(plane)) is CustomProjection
+    assert type(CustomProjection.from_plane_and_direction(plane, (0.0, 0.0, 1.0))) is CustomProjection
+    assert type(CustomProjection.from_plane_and_point(plane, (0.0, 0.0, 1.0))) is CustomProjection
+    assert type(CustomProjection.from_entries((0.1, 0.2, 0.3, 1.0))) is CustomProjection
+    assert type(CustomReflection.from_plane(plane)) is CustomReflection
+    assert type(CustomReflection.from_frame(Frame.worldXY())) is CustomReflection
+
+
+def test_transformation_subpackage_exports_root_classes():
+    from compas.geometry.transformations import Projection
+    from compas.geometry.transformations import Reflection
+    from compas.geometry.transformations import Rotation as PackagedRotation
+    from compas.geometry.transformations import Scale as PackagedScale
+    from compas.geometry.transformations import Shear
+    from compas.geometry.transformations import Transformation as PackagedTransformation
+    from compas.geometry.transformations import Translation as PackagedTranslation
+
+    from compas.geometry import Projection as RootProjection
+    from compas.geometry import Reflection as RootReflection
+    from compas.geometry import Shear as RootShear
+
+    assert PackagedTransformation is Transformation
+    assert PackagedTranslation is Translation
+    assert PackagedRotation is Rotation
+    assert PackagedScale is Scale
+    assert Projection is RootProjection
+    assert Reflection is RootReflection
+    assert Shear is RootShear
 
 
 def test_copy():
