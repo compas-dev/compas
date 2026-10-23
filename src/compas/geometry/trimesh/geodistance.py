@@ -29,6 +29,3 @@ def trimesh_geodistance(mesh: MeshType, source: int, method: Literal["exact", "h
 
     """
     raise NotImplementedError
-
-
-setattr(trimesh_geodistance, "__pluggable__", True)

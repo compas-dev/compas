@@ -335,6 +335,11 @@
   requirement probing with `importlib.util.find_spec`, and removed the obsolete
   `Importer` and `PluginValidator` classes. Extension packages now have a
   documented `compas.plugins` entry-point contract.
+- Removed the unused `__pluggable__` marker attributes from extension-point
+  callables. Dispatch now relies exclusively on the typed metadata attached by
+  the current plugin decorators.
+- Added Pyright to the development dependencies, Invoke tasks, and CI, and
+  resolved the remaining static type errors across the core package.
 
 ## Quaternion
 

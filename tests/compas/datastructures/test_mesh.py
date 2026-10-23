@@ -507,11 +507,6 @@ def test_is_manifold(cube, biohazard):
     assert not biohazard.is_manifold()
 
 
-@pytest.mark.skip(reason="euh")
-def test_is_orientable():
-    pass
-
-
 def test_is_trimesh(tet, cube):
     assert tet.is_trimesh()
     assert not cube.is_trimesh()
@@ -527,16 +522,6 @@ def test_is_empty():
     assert mesh.is_empty()
     mesh.add_vertex()
     assert not mesh.is_empty()
-
-
-@pytest.mark.skip(reason="euh")
-def test_euler():
-    pass
-
-
-@pytest.mark.skip(reason="euh")
-def test_genus():
-    pass
 
 
 # --------------------------------------------------------------------------
@@ -964,11 +949,6 @@ def test_vertex_neighborhood():
     assert mesh.vertex_neighborhood(0) == {1, 6}
 
 
-@pytest.mark.skip(reason="euh")
-def test_vertex_degree():
-    pass
-
-
 def test_vertex_min_degree():
     mesh = Mesh.from_obj(compas.get("faces.obj"))
     assert mesh.vertex_min_degree() == 2
@@ -1015,50 +995,10 @@ def test_is_edge_on_boundary():
 # --------------------------------------------------------------------------
 
 
-@pytest.mark.skip(reason="euh")
-def test_face_vertices():
-    pass
-
-
-@pytest.mark.skip(reason="euh")
-def test_face_halfedges():
-    pass
-
-
-@pytest.mark.skip(reason="euh")
-def test_face_corners():
-    pass
-
-
 def test_face_neighbors():
     mesh = Mesh.from_obj(compas.get("faces.obj"))
     assert mesh.face_neighborhood(0) == [1, 5]
     assert mesh.face_neighborhood(0, 2) == [0, 1, 2, 5, 6, 10]
-
-
-@pytest.mark.skip(reason="euh")
-def test_face_degree():
-    pass
-
-
-@pytest.mark.skip(reason="euh")
-def test_face_min_degree():
-    pass
-
-
-@pytest.mark.skip(reason="euh")
-def test_face_max_degree():
-    pass
-
-
-@pytest.mark.skip(reason="euh")
-def test_face_vertex_ancestor():
-    pass
-
-
-@pytest.mark.skip(reason="euh")
-def test_face_vertex_descendant():
-    pass
 
 
 def test_face_adjacency_halfedge():

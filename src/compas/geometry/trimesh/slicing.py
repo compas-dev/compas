@@ -27,6 +27,3 @@ def trimesh_slice(mesh: MeshType, planes: Sequence[PlaneType]) -> list[list[list
 
     """
     raise NotImplementedError
-
-
-setattr(trimesh_slice, "__pluggable__", True)

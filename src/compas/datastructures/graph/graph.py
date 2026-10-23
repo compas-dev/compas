@@ -2206,7 +2206,8 @@ class Graph(Datastructure):
         node_coordinates, node_laplacian, node_neighborhood_centroid
 
         """
-        return Point(*self.node_coordinates(node))
+        x, y, z = self.node_coordinates(node)
+        return Point(x, y, z)
 
     def node_laplacian(self, key: Node) -> Vector:
         """Return the vector from the node to the centroid of its 1-ring neighborhood.
@@ -2228,7 +2229,8 @@ class Graph(Datastructure):
         """
         c = centroid_points([self.node_coordinates(nbr) for nbr in self.neighbors(key)])
         p = self.node_coordinates(key)
-        return Vector(*subtract_vectors(c, p))
+        x, y, z = subtract_vectors(c, p)
+        return Vector(x, y, z)
 
     def node_neighborhood_centroid(self, key: Node) -> Point:
         """Return the computed centroid of the neighboring nodes.
@@ -2248,7 +2250,8 @@ class Graph(Datastructure):
         node_coordinates, node_point, node_laplacian
 
         """
-        return Point(*centroid_points([self.node_coordinates(nbr) for nbr in self.neighbors(key)]))
+        x, y, z = centroid_points([self.node_coordinates(nbr) for nbr in self.neighbors(key)])
+        return Point(x, y, z)
 
     # --------------------------------------------------------------------------
     # Edge geometry
@@ -2349,7 +2352,8 @@ class Graph(Datastructure):
 
         a, b = self.edge_coordinates(edge)
         ab = subtract_vectors(b, a)
-        return Point(*add_vectors(a, scale_vector(ab, t)))
+        x, y, z = add_vectors(a, scale_vector(ab, t))
+        return Point(x, y, z)
 
     def edge_midpoint(self, edge: Edge) -> Point:
         """Return the location of the midpoint of an edge.
@@ -2370,7 +2374,8 @@ class Graph(Datastructure):
 
         """
         a, b = self.edge_coordinates(edge)
-        return Point(*midpoint_line((a, b)))
+        x, y, z = midpoint_line((a, b))
+        return Point(x, y, z)
 
     def edge_vector(self, edge: Edge) -> Vector:
         """Return the vector of an edge.
@@ -2411,7 +2416,8 @@ class Graph(Datastructure):
         edge_vector, edge_line, edge_length
 
         """
-        return Vector(*normalize_vector(self.edge_vector(edge)))
+        x, y, z = normalize_vector(self.edge_vector(edge))
+        return Vector(x, y, z)
 
     def edge_line(self, edge: Edge) -> Line:
         """Return the line of an edge.

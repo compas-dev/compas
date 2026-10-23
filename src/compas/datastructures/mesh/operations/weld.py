@@ -96,9 +96,7 @@ def mesh_unweld_edges(mesh: "Mesh", edges: Iterable[Edge]) -> None:
                     )
                 )
 
-        adjacency = vertex_adjacency_from_edges(network_edges)
-        for key, values in adjacency.items():
-            adjacency[key] = {value: None for value in values}
+        adjacency = {key: {value: None for value in values} for key, values in vertex_adjacency_from_edges(network_edges).items()}
         # include non connected vertices
         edge_vertices = list(set([i for edge in network_edges for i in edge]))
         for i in range(len(mesh.vertex_faces(vkey))):

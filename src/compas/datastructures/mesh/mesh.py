@@ -721,7 +721,7 @@ class Mesh(Datastructure):
             else:
                 centroid = centroid_polygon([vertices[vertex_index[vertex]] for vertex in face_vertices])
                 c = len(vertices)
-                vertices.append(centroid)
+                vertices.append([centroid[0], centroid[1], centroid[2]])
 
                 for a, b in pairwise(face_vertices + face_vertices[:1]):
                     faces.append([vertex_index[a], vertex_index[b], c])
@@ -3959,7 +3959,7 @@ class Mesh(Datastructure):
 
         """
         vertices = self.face_vertices(fkey)
-        return list(window(vertices + vertices[0:2], 3))
+        return [(corner[0], corner[1], corner[2]) for corner in window(vertices + vertices[0:2], 3)]
 
     def face_neighbors(self, fkey: Face) -> list[Face]:
         """Return the neighbors of a face across its edges.
@@ -4444,7 +4444,8 @@ class Mesh(Datastructure):
             The point of the vertex.
 
         """
-        return Point(*self.vertex_coordinates(key))
+        x, y, z = self.vertex_coordinates(key)
+        return Point(x, y, z)
 
     def vertices_points(self, vertices: Iterable[Vertex]) -> list[Point]:
         """Return the points of multiple vertices.
@@ -4531,7 +4532,8 @@ class Mesh(Datastructure):
         """
         c = self.vertex_neighborhood_centroid(key)
         p = self.vertex_coordinates(key)
-        return Vector(*subtract_vectors(c, p))
+        x, y, z = subtract_vectors(c, p)
+        return Vector(x, y, z)
 
     def vertex_neighborhood_centroid(self, key: Vertex) -> Point:
         """Compute the centroid of the neighbors of a vertex.
@@ -4547,7 +4549,8 @@ class Mesh(Datastructure):
             The centroid of the vertex neighbors.
 
         """
-        return Point(*centroid_points([self.vertex_coordinates(nbr) for nbr in self.vertex_neighbors(key)]))
+        x, y, z = centroid_points([self.vertex_coordinates(nbr) for nbr in self.vertex_neighbors(key)])
+        return Point(x, y, z)
 
     def vertex_normal(self, key: Vertex) -> Vector:
         """Return the normal vector at the vertex as the weighted average of the
@@ -4565,7 +4568,8 @@ class Mesh(Datastructure):
 
         """
         vectors = [self.face_normal(fkey, False) for fkey in self.vertex_faces(key) if fkey is not None]
-        return Vector(*normalize_vector(centroid_points(vectors)))
+        x, y, z = normalize_vector(centroid_points(vectors))
+        return Vector(x, y, z)
 
     def vertex_curvature(self, vkey: Vertex) -> float:
         """Dimensionless vertex curvature.
@@ -4681,7 +4685,7 @@ class Mesh(Datastructure):
         """
         a, b = self.edge_coordinates(edge)
         ab = subtract_vectors(b, a)
-        return Vector(*ab)
+        return Vector(ab[0], ab[1], ab[2])
 
     def edge_point(self, edge: Edge, t: float = 0.5) -> Point:
         """Return a point along an edge.
@@ -4703,7 +4707,8 @@ class Mesh(Datastructure):
         """
         a, b = self.edge_coordinates(edge)
         ab = subtract_vectors(b, a)
-        return Point(*add_vectors(a, scale_vector(ab, t)))
+        x, y, z = add_vectors(a, scale_vector(ab, t))
+        return Point(x, y, z)
 
     def edge_midpoint(self, edge: Edge) -> Point:
         """Return the midpoint of an edge.
@@ -4720,7 +4725,8 @@ class Mesh(Datastructure):
 
         """
         a, b = self.edge_coordinates(edge)
-        return Point(*midpoint_line((a, b)))
+        x, y, z = midpoint_line((a, b))
+        return Point(x, y, z)
 
     def edge_direction(self, edge: Edge) -> Vector:
         """Return the direction vector of an edge.
@@ -4810,7 +4816,8 @@ class Mesh(Datastructure):
         Vector
 
         """
-        return Vector(*normal_polygon(self.face_coordinates(fkey), unitized=unitized))
+        x, y, z = normal_polygon(self.face_coordinates(fkey), unitized=unitized)
+        return Vector(x, y, z)
 
     def face_centroid(self, fkey: Face) -> Point:
         """Compute the point at the centroid of a face.
@@ -4826,7 +4833,8 @@ class Mesh(Datastructure):
             The point at the centroid.
 
         """
-        return Point(*centroid_points(self.face_coordinates(fkey)))
+        x, y, z = centroid_points(self.face_coordinates(fkey))
+        return Point(x, y, z)
 
     def face_center(self, fkey: Face) -> Point:
         """Compute the point at the center of mass of a face.
@@ -4842,7 +4850,8 @@ class Mesh(Datastructure):
             The point at the center of mass.
 
         """
-        return Point(*centroid_polygon(self.face_coordinates(fkey)))  # type: ignore
+        x, y, z = centroid_polygon(self.face_coordinates(fkey))
+        return Point(x, y, z)
 
     def face_area(self, fkey: Face) -> float:
         """Compute the area of a face.
@@ -4979,7 +4988,8 @@ class Mesh(Datastructure):
         vertices = self.face_vertices(fkey)
         points = [self.vertex_coordinates(key) for key in vertices]
         centroid = self.face_centroid(fkey)
-        plane = bestfit_plane(points)
+        origin, normal = bestfit_plane(points)
+        plane = ([float(origin[0]), float(origin[1]), float(origin[2])], [float(normal[0]), float(normal[1]), float(normal[2])])
         max_deviation = max([distance_point_plane(point, plane) for point in points])
         average_distances = vector_average([distance_point_point(point, centroid) for point in points])
         return max_deviation / average_distances
@@ -5033,7 +5043,9 @@ class Mesh(Datastructure):
         from compas.geometry import bestfit_circle
 
         point, normal, radius = bestfit_circle(self.face_coordinates(face))
-        return Circle.from_plane_and_radius(Plane(point, normal), radius)
+        plane_point = [float(point[0]), float(point[1]), float(point[2])]
+        plane_normal = [float(normal[0]), float(normal[1]), float(normal[2])]
+        return Circle.from_plane_and_radius(Plane(plane_point, plane_normal), radius)
 
     def face_frame(self, face: Face) -> Frame:
         """The frame of a face.
@@ -5052,7 +5064,10 @@ class Mesh(Datastructure):
         from compas.geometry import bestfit_frame
 
         point, xaxis, yaxis = bestfit_frame(self.face_coordinates(face))
-        return Frame(point, xaxis, yaxis)
+        frame_point = [float(point[0]), float(point[1]), float(point[2])]
+        frame_xaxis = [float(xaxis[0]), float(xaxis[1]), float(xaxis[2])]
+        frame_yaxis = [float(yaxis[0]), float(yaxis[1]), float(yaxis[2])]
+        return Frame(frame_point, frame_xaxis, frame_yaxis)
 
     # --------------------------------------------------------------------------
     # Boundaries

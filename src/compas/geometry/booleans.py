@@ -99,9 +99,6 @@ def boolean_union_mesh_mesh(A: MeshType, B: MeshType) -> tuple[list[list[float]]
     raise PluginNotInstalledError("No plugin was found for the boolean_union_mesh_mesh pluggable. A plugin is available in compas_cgal...")
 
 
-setattr(boolean_union_mesh_mesh, "__pluggable__", True)
-
-
 @pluggable(category="booleans")
 def boolean_difference_mesh_mesh(A: MeshType, B: MeshType) -> tuple[list[list[float]], list[list[int]]]:
     """Compute the boolean difference of two triangle meshes.
@@ -131,9 +128,6 @@ def boolean_difference_mesh_mesh(A: MeshType, B: MeshType) -> tuple[list[list[fl
     raise PluginNotInstalledError("No plugin was found for the boolean_difference_mesh_mesh pluggable. A plugin is available in compas_cgal...")
 
 
-setattr(boolean_difference_mesh_mesh, "__pluggable__", True)
-
-
 @pluggable(category="booleans")
 def boolean_intersection_mesh_mesh(A: MeshType, B: MeshType) -> tuple[list[list[float]], list[list[int]]]:
     """Compute the boolean intersection of two triangle meshes.
@@ -161,9 +155,6 @@ def boolean_intersection_mesh_mesh(A: MeshType, B: MeshType) -> tuple[list[list[
 
     """
     raise PluginNotInstalledError("No plugin was found for the boolean_intersection_mesh_mesh pluggable. A plugin is available in compas_cgal...")
-
-
-setattr(boolean_intersection_mesh_mesh, "__pluggable__", True)
 
 
 @pluggable(category="booleans")
@@ -200,9 +191,6 @@ def boolean_union_polygon_polygon(A: "PlanarRegion | Polygon | CoordinatesType",
     return _planar_regions(_shapely_polygon(A).union(_shapely_polygon(B)))
 
 
-setattr(boolean_union_polygon_polygon, "__pluggable__", True)
-
-
 @pluggable(category="booleans")
 def boolean_difference_polygon_polygon(A: "PlanarRegion | Polygon | CoordinatesType", B: "PlanarRegion | Polygon | CoordinatesType") -> list["PlanarRegion"]:
     """Compute the Boolean difference of two planar regions.
@@ -235,9 +223,6 @@ def boolean_difference_polygon_polygon(A: "PlanarRegion | Polygon | CoordinatesT
 
     """
     return _planar_regions(_shapely_polygon(A).difference(_shapely_polygon(B)))
-
-
-setattr(boolean_difference_polygon_polygon, "__pluggable__", True)
 
 
 @pluggable(category="booleans")
@@ -274,9 +259,6 @@ def boolean_symmetric_difference_polygon_polygon(A: "PlanarRegion | Polygon | Co
     return _planar_regions(_shapely_polygon(A).symmetric_difference(_shapely_polygon(B)))
 
 
-setattr(boolean_symmetric_difference_polygon_polygon, "__pluggable__", True)
-
-
 @pluggable(category="booleans")
 def boolean_intersection_polygon_polygon(A: "PlanarRegion | Polygon | CoordinatesType", B: "PlanarRegion | Polygon | CoordinatesType") -> list["PlanarRegion"]:
     """Compute the Boolean intersection of two planar regions.
@@ -309,6 +291,3 @@ def boolean_intersection_polygon_polygon(A: "PlanarRegion | Polygon | Coordinate
 
     """
     return _planar_regions(_shapely_polygon(A).intersection(_shapely_polygon(B)))
-
-
-setattr(boolean_intersection_polygon_polygon, "__pluggable__", True)

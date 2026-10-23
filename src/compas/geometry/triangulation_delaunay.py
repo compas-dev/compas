@@ -46,9 +46,6 @@ def delaunay_triangulation(points: CoordinatesType) -> "NDArray[np.signedinteger
     return d.simplices
 
 
-setattr(delaunay_triangulation, "__pluggable__", True)
-
-
 @pluggable(category="triangulation")
 def constrained_delaunay_triangulation(
     boundary: CoordinatesType,
@@ -78,9 +75,6 @@ def constrained_delaunay_triangulation(
 
     """
     raise NotImplementedError
-
-
-setattr(constrained_delaunay_triangulation, "__pluggable__", True)
 
 
 @pluggable(category="triangulation")
@@ -123,6 +117,3 @@ def conforming_delaunay_triangulation(
 
     """
     raise NotImplementedError
-
-
-setattr(conforming_delaunay_triangulation, "__pluggable__", True)

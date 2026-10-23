@@ -42,9 +42,6 @@ def trimesh_remesh(
     raise NotImplementedError
 
 
-setattr(trimesh_remesh, "__pluggable__", True)
-
-
 @pluggable(category="trimesh")
 def trimesh_remesh_constrained(
     mesh: MeshType,
@@ -82,9 +79,6 @@ def trimesh_remesh_constrained(
     raise NotImplementedError
 
 
-setattr(trimesh_remesh_constrained, "__pluggable__", True)
-
-
 @pluggable(category="trimesh")
 def trimesh_remesh_along_isoline(mesh: MeshType, scalarfield: Sequence[float], scalar: float) -> MeshResult:
     """Remesh a triangle mesh so an isoline follows mesh edges.
@@ -109,6 +103,3 @@ def trimesh_remesh_along_isoline(mesh: MeshType, scalarfield: Sequence[float], s
 
     """
     raise NotImplementedError
-
-
-setattr(trimesh_remesh_along_isoline, "__pluggable__", True)

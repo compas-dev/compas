@@ -24,9 +24,6 @@ def trimesh_harmonic(mesh: MeshType) -> list[list[float]]:
     raise NotImplementedError
 
 
-setattr(trimesh_harmonic, "__pluggable__", True)
-
-
 @pluggable(category="trimesh")
 def trimesh_lscm(mesh: MeshType) -> list[list[float]]:
     """Compute a least-squares conformal parametrisation.
@@ -47,6 +44,3 @@ def trimesh_lscm(mesh: MeshType) -> list[list[float]]:
 
     """
     raise NotImplementedError
-
-
-setattr(trimesh_lscm, "__pluggable__", True)

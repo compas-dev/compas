@@ -60,7 +60,7 @@ def distance_point_point(a: CoordinateType, b: CoordinateType) -> float:
     return length_vector(ab)
 
 
-def distance_point_point_xy(a: Sequence[float], b: Sequence[float]) -> float:
+def distance_point_point_xy(a: CoordinateType, b: CoordinateType) -> float:
     """Compute the distance between points a and b, assuming they lie in the XY plane.
 
     Parameters
@@ -519,7 +519,6 @@ def closest_point_in_cloud(point: CoordinateType, cloud: CoordinatesType) -> tup
 def closest_points_in_cloud_numpy(
     points: "ArrayLike",
     cloud: "ArrayLike",
-    threshold: int = 10**7,
     distances: Literal[True] = True,
     num_nbrs: int = 1,
 ) -> "tuple[NDArray[Any], NDArray[Any]]": ...
@@ -529,18 +528,6 @@ def closest_points_in_cloud_numpy(
 def closest_points_in_cloud_numpy(
     points: "ArrayLike",
     cloud: "ArrayLike",
-    threshold: int,
-    distances: Literal[False],
-    num_nbrs: int = 1,
-) -> "NDArray[Any]": ...
-
-
-@overload
-def closest_points_in_cloud_numpy(
-    points: "ArrayLike",
-    cloud: "ArrayLike",
-    threshold: int = 10**7,
-    *,
     distances: Literal[False],
     num_nbrs: int = 1,
 ) -> "NDArray[Any]": ...
@@ -549,7 +536,6 @@ def closest_points_in_cloud_numpy(
 def closest_points_in_cloud_numpy(
     points: "ArrayLike",
     cloud: "ArrayLike",
-    threshold: int = 10**7,
     distances: bool = True,
     num_nbrs: int = 1,
 ) -> "NDArray[Any] | tuple[NDArray[Any], NDArray[Any]]":
@@ -561,8 +547,6 @@ def closest_points_in_cloud_numpy(
         The sample points.
     cloud
         The cloud points to compare to.
-    threshold
-        Size threshold at which SciPy switches from vectorised operations to a Python loop.
     distances
         If True, return the distance matrix in addition to the indices of the closest points.
     num_nbrs
@@ -574,11 +558,6 @@ def closest_points_in_cloud_numpy(
         If `distances` is False, indices of the closest points in the cloud per point in points.
         If `distances` is True, indices of the closest points in the cloud per point in points
         and distances between points and closest points in cloud (n x n).
-
-    Notes
-    -----
-    The `threshold` parameter controls the implementation strategy of
-    `scipy.spatial.distance_matrix`; it does not filter points by distance.
 
     Examples
     --------
@@ -593,11 +572,11 @@ def closest_points_in_cloud_numpy(
     from numpy import argmin
     from numpy import argpartition
     from numpy import asarray
-    from scipy.spatial import distance_matrix
+    from scipy.spatial.distance import cdist
 
     points = asarray(points).reshape((-1, 3))
     cloud = asarray(cloud).reshape((-1, 3))
-    d_matrix = distance_matrix(points, cloud, threshold=threshold)
+    d_matrix = cdist(points, cloud)
     if num_nbrs == 1:
         indices = argmin(d_matrix, axis=1)
     else:

@@ -41,9 +41,6 @@ def trimesh_gaussian_curvature(mesh: MeshType) -> list[float]:
     return [(pi if vertex in boundary else 2 * pi) - angle for vertex, angle in enumerate(angles)]
 
 
-setattr(trimesh_gaussian_curvature, "__pluggable__", True)
-
-
 @pluggable(category="trimesh")
 def trimesh_principal_curvature(mesh: MeshType) -> list[tuple[list[float], list[float]]]:
     """Compute the principal curvature directions of a triangle mesh.
@@ -66,9 +63,6 @@ def trimesh_principal_curvature(mesh: MeshType) -> list[tuple[list[float], list[
     raise NotImplementedError
 
 
-setattr(trimesh_principal_curvature, "__pluggable__", True)
-
-
 @pluggable(category="trimesh")
 def trimesh_mean_curvature(mesh: MeshType) -> list[float]:
     """Compute the discrete mean curvature of a triangle mesh.
@@ -89,6 +83,3 @@ def trimesh_mean_curvature(mesh: MeshType) -> list[float]:
 
     """
     raise NotImplementedError
-
-
-setattr(trimesh_mean_curvature, "__pluggable__", True)

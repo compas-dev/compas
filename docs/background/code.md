@@ -137,8 +137,8 @@ def my_function():
 
 ## Docstrings
 
-Docstings in the COMPAS ecosystem follow the [NumPy style docstrings](https://numpydoc.readthedocs.io/en/latest/format.html).
-These docstrings are later used by [Sphinx](https://www.sphinx-doc.org/en/master/) to generate the API documentation.
+Docstrings in the COMPAS ecosystem follow the [NumPy style](https://numpydoc.readthedocs.io/en/latest/format.html), with Markdown content for MkDocs and mkdocstrings.
+Mkdocstrings uses these docstrings to generate the API documentation.
 
 Therefore, it is important that functions and methods have at least the following docstrings:
 

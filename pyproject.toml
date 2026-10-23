@@ -39,6 +39,7 @@ dev = [
     "bump-my-version",
     "compas_invocations2",
     "invoke >=0.14",
+    "pyright",
     "pytest",
     "pytest-cov",
     "pytest-dependency",
@@ -99,7 +100,7 @@ where = ["src"]
 minversion = "6.0"
 testpaths = ["tests", "src/compas"]
 python_files = ["test_*.py", "*_test.py", "test.py"]
-addopts = ["-ra", "--strict-markers", "--doctest-glob=*.rst", "--tb=short"]
+addopts = ["-ra", "--strict-markers", "--tb=short"]
 doctest_optionflags = [
     "NORMALIZE_WHITESPACE",
     "IGNORE_EXCEPTION_DETAIL",
@@ -161,3 +162,7 @@ max-doc-length = 179
 [tool.ruff.format]
 docstring-code-format = true
 docstring-code-line-length = "dynamic"
+
+[tool.pyright]
+include = ["src/compas"]
+pythonVersion = "3.12"

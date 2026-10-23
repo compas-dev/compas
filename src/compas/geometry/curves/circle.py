@@ -331,7 +331,9 @@ class Circle(Conic):
         from compas.geometry import bestfit_circle
 
         point, normal, radius = bestfit_circle(points)
-        plane = Plane(point, normal)
+        plane_point = [float(point[0]), float(point[1]), float(point[2])]
+        plane_normal = [float(normal[0]), float(normal[1]), float(normal[2])]
+        plane = Plane(plane_point, plane_normal)
         return cls.from_plane_and_radius(plane, radius)
 
     # =============================================================================

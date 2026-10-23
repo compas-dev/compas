@@ -1012,7 +1012,8 @@ class CellNetwork(Datastructure):
             The point at the centroid.
 
         """
-        return Point(*centroid_points([self.vertex_coordinates(vertex) for vertex in self.vertices()]))
+        x, y, z = centroid_points([self.vertex_coordinates(vertex) for vertex in self.vertices()])
+        return Point(x, y, z)
 
     def aabb(self) -> Box:
         """Calculate the axis aligned bounding box of the mesh.
@@ -1901,7 +1902,8 @@ class CellNetwork(Datastructure):
             The point.
 
         """
-        return Point(*self.vertex_coordinates(vertex))
+        x, y, z = self.vertex_coordinates(vertex)
+        return Point(x, y, z)
 
     def vertices_points(self, vertices: Iterable[Vertex]) -> list[Point]:
         """Returns the point representation of multiple vertices.
@@ -2644,7 +2646,8 @@ class CellNetwork(Datastructure):
 
         a, b = self.edge_coordinates(edge)
         ab = subtract_vectors(b, a)
-        return Point(*add_vectors(a, scale_vector(ab, t)))
+        x, y, z = add_vectors(a, scale_vector(ab, t))
+        return Point(x, y, z)
 
     def edge_vector(self, edge: Edge) -> Vector:
         """Return the vector of an edge.
@@ -2677,7 +2680,8 @@ class CellNetwork(Datastructure):
             The direction vector of the edge.
 
         """
-        return Vector(*normalize_vector(self.edge_vector(edge)))
+        x, y, z = normalize_vector(self.edge_vector(edge))
+        return Vector(x, y, z)
 
     def edge_line(self, edge: Edge) -> Line:
         """Return the line representation of an edge.
@@ -3456,7 +3460,8 @@ class CellNetwork(Datastructure):
         face_points, face_polygon, face_centroid, face_center
 
         """
-        return Vector(*normal_polygon(self.face_coordinates(face), unitized=unitized))
+        x, y, z = normal_polygon(self.face_coordinates(face), unitized=unitized)
+        return Vector(x, y, z)
 
     def face_centroid(self, face: Face) -> Point:
         """Compute the point at the centroid of a face.
@@ -3476,7 +3481,8 @@ class CellNetwork(Datastructure):
         face_points, face_polygon, face_normal, face_center
 
         """
-        return Point(*centroid_points(self.face_coordinates(face)))
+        x, y, z = centroid_points(self.face_coordinates(face))
+        return Point(x, y, z)
 
     def face_center(self, face: Face) -> Point:
         """Compute the point at the center of mass of a face.
@@ -3496,7 +3502,8 @@ class CellNetwork(Datastructure):
         face_points, face_polygon, face_normal, face_centroid
 
         """
-        return Point(*centroid_polygon(self.face_coordinates(face)))
+        x, y, z = centroid_polygon(self.face_coordinates(face))
+        return Point(x, y, z)
 
     def face_area(self, face: Face) -> float:
         """Compute the oriented area of a face.
@@ -3564,7 +3571,8 @@ class CellNetwork(Datastructure):
         """
         deviation = 0
         polygon = self.face_coordinates(face)
-        plane = bestfit_plane(polygon)
+        origin, normal = bestfit_plane(polygon)
+        plane = ([float(origin[0]), float(origin[1]), float(origin[2])], [float(normal[0]), float(normal[1]), float(normal[2])])
         for pt in polygon:
             pt_proj = project_point_plane(pt, plane)
             dev = distance_point_point(pt, pt_proj)
@@ -4599,7 +4607,8 @@ class CellNetwork(Datastructure):
 
         """
         vertices = self.cell_vertices(cell)
-        return Point(*centroid_points([self.vertex_coordinates(vertex) for vertex in vertices]))
+        x, y, z = centroid_points([self.vertex_coordinates(vertex) for vertex in vertices])
+        return Point(x, y, z)
 
     def cell_center(self, cell: Cell) -> Point:
         """Compute the point at the center of mass of a cell.
@@ -4619,8 +4628,10 @@ class CellNetwork(Datastructure):
         cell_centroid
 
         """
-        vertices, faces = self.cell_to_vertices_and_faces(cell)
-        return Point(*centroid_polyhedron((vertices, faces)))
+        cell_vertices, faces = self.cell_to_vertices_and_faces(cell)
+        vertices: list[Sequence[float]] = [vertex for vertex in cell_vertices]
+        x, y, z = centroid_polyhedron((vertices, faces))
+        return Point(x, y, z)
 
     def cell_polyhedron(self, cell: Cell) -> Polyhedron:
         """Construct a polyhedron from the vertices and faces of a cell.

@@ -11,7 +11,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added `TOL.update()` method for explicit global state modification. 
 * Added `TOL.temporary()` context manager for scoped changes.
-* Added missing implementation of `Brep.to_polygons()` in `compas_rhino.geometry.RhinoBrep`.
 
 ### Changed
 
@@ -55,9 +54,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Simplified `Data` pickle state by removing the redundant embedded COMPAS JSON representation.
 * Preserved explicitly assigned empty `Data.name` values; only `None` now selects the class-name default.
 * Changed `Tolerance` class to no longer use singleton pattern. `Tolerance()` now creates independent instances instead of returning the global `TOL`. 
-* Renamed `Tolerance.units` to `Tolerance.unit` to better reflect the documented properties. Left `units` with deprecation warning.
+* Renamed `Tolerance.units` to `Tolerance.unit` to better reflect the documented property.
 * Fixed `NotImplementedErorr` when calling `BrepLoop.vertices`.
 * Fixed `python -m compas` to detect extensions based on `importlib` rather than `pkg_resources`.
+* Replaced legacy pluggable marker attributes with the typed plugin metadata used by the current dispatcher.
+* Added Pyright to the development checks and CI, and resolved the remaining core-package type errors.
+* Replaced the deprecated SciPy distance-matrix helper used by point-cloud nearest-neighbor queries.
 
 ### Removed
 

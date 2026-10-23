@@ -20,8 +20,7 @@ _No task currently selected._
   affected results. Use deterministic equality-comparable keys for cache
   correctness; reserve Python `__hash__` for genuinely immutable objects and
   derive compact hashes only as an optional lookup optimization.
-- [ ] Complete the shared `Tessellation` migration described in the
-  `AGENTS.md` known modernization follow-ups. Add Brep and backend integration,
+- [ ] Complete the shared `Tessellation` migration. Add Brep and backend integration,
   analytic normals and UVs for shapes, explicit seam and pole handling, a
   reliable geometry-revision contract for position caching, and contiguous
   NumPy/GPU buffer support. Parametric surfaces already provide aligned
@@ -38,8 +37,6 @@ _No task currently selected._
 - [ ] Add conversions from `Mesh` to edge graphs, face graphs, and other useful
   topology-derived graphs.
 - [ ] Add coherent bidirectional conversion between `Mesh` and `Brep`.
-- [ ] Define the `Brep` abstraction through pluggable operations instead of
-  replacing the entire class; review `compas_brep` as a reference design.
 - [ ] Evaluate `cadquery-ocp-novtk`, or another pip-installable OpenCascade
   binding, as a replacement for `pythonocc-core`.
 - [ ] Make NumPy the default representation where it materially improves

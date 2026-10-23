@@ -45,7 +45,6 @@ def trimesh_massmatrix(mesh: MeshType) -> list[float]:
     raise NotImplementedError
 
 
-setattr(trimesh_massmatrix, "__pluggable__", True)
 
 
 def trimesh_edge_cotangent(mesh: "Mesh", edge: "Edge") -> float:

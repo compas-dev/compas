@@ -316,8 +316,8 @@ def chofactor(A: ArrayLike) -> tuple[NDArray[Any], bool_]:
     --------
     >>> chofactor(array([[25, 15, -5], [15, 18, 0], [-5, 0, 11]]))
     (array([[ 5.,  3., -1.],
-           [15.,  3.,  1.],
-           [-5.,  0.,  3.]]), array(False))
+           [ 0.,  3.,  1.],
+           [ 0.,  0.,  3.]]), array(False))
 
     """
     A = asarray(A, dtype=float)

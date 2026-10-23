@@ -581,9 +581,9 @@ def intersection_plane_circle(
     >>> circle = ((0, 0, 0), (0, 1, 0)), 10.0
     >>> x1, x2 = intersection_plane_circle(plane, circle)
     >>> x1
-    (-10.0, 0.0, 0.0)
+    Point(x=-10.0, y=0.0, z=0.0)
     >>> x2
-    (10.0, 0.0, 0.0)
+    Point(x=10.0, y=0.0, z=0.0)
 
     """
     origin, normal = plane
@@ -629,9 +629,6 @@ def intersection_mesh_mesh(A: MeshType, B: MeshType) -> list[CoordinatesType]:
     raise PluginNotInstalledError
 
 
-setattr(intersection_mesh_mesh, "__pluggable__", True)
-
-
 @pluggable(category="intersections")
 def intersection_ray_mesh(ray: RayType, mesh: MeshType) -> list[RayMeshHit]:
     """Compute the intersection(s) between a ray and a mesh.
@@ -656,9 +653,6 @@ def intersection_ray_mesh(ray: RayType, mesh: MeshType) -> list[RayMeshHit]:
 
     """
     raise PluginNotInstalledError
-
-
-setattr(intersection_ray_mesh, "__pluggable__", True)
 
 
 # ==============================================================================

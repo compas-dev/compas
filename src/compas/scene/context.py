@@ -27,16 +27,10 @@ def clear(guids: list[object] | None = None) -> None:
     raise NotImplementedError
 
 
-setattr(clear, "__pluggable__", True)
-
-
 @pluggable(category="drawing-utils")
 def before_draw() -> None:
     """Perform context-specific operations before drawing a scene."""
     pass
-
-
-setattr(before_draw, "__pluggable__", True)
 
 
 @pluggable(category="drawing-utils")
@@ -52,16 +46,10 @@ def after_draw(drawn_objects: list[object]) -> None:
     pass
 
 
-setattr(after_draw, "__pluggable__", True)
-
-
 @pluggable(category="factories", selector="collect_all")
 def register_scene_objects() -> None:
     """Register scene object types available in the current context."""
     raise NotImplementedError
-
-
-setattr(register_scene_objects, "__pluggable__", True)
 
 
 def register(item_type: type[Data], sceneobject_type: "type[SceneObject]", context: str | None = None) -> None:

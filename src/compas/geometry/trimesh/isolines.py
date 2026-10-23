@@ -33,6 +33,3 @@ def trimesh_isolines(
 
     """
     raise NotImplementedError
-
-
-setattr(trimesh_isolines, "__pluggable__", True)

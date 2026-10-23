@@ -287,7 +287,7 @@ def laplacian_matrix(edges: Sequence[Sequence[int]], normalize: bool, rtype: Spa
 
 
 @overload
-def laplacian_matrix(edges: Sequence[Sequence[int]], normalize: bool, rtype: str) -> MatrixResult: ...
+def laplacian_matrix(edges: Sequence[Sequence[int]], normalize: bool = False, rtype: str = "array") -> MatrixResult: ...
 
 
 def laplacian_matrix(edges: Sequence[Sequence[int]], normalize: bool = False, rtype: str = "array") -> MatrixResult:
@@ -408,12 +408,13 @@ def equilibrium_matrix(C: ArrayLike, xyz: ArrayLike, free: Sequence[int], rtype:
     # Keep the concrete sparse matrix separate from the general ArrayLike input.
     C_ = csr_matrix(C)
     xy = xyz[:, :2]
-    uv = C_.dot(xy)
+    uv = cast(NDArray[Any], C_.dot(xy))
     # SciPy's overload does not accept the supported sequence-of-offsets form.
     offsets = cast(Any, [0])
     U = diags([uv[:, 0].flatten()], offsets)
     V = diags([uv[:, 1].flatten()], offsets)
-    Ct = C_.transpose()
+    # SciPy types transpose as the abstract sparse base, whose stub omits indexing.
+    Ct = cast(Any, C_.transpose())
     Cti = Ct[free, :]
     E = svstack((Cti.dot(U), Cti.dot(V)))
     return _return_matrix(E, rtype)

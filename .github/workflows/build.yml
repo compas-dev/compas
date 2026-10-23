@@ -37,4 +37,4 @@ jobs:
           python-version: ${{ matrix.python }}
           management-tool: uv
           extras: dev
-          invoke-tasks: lint test
+          invoke-tasks: lint typecheck test

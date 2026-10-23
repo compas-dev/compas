@@ -68,6 +68,3 @@ def quadmesh_planarize(M: MeshType, kmax: int = 500, maxdev: float = 0.005) -> l
             break
 
     return vertices
-
-
-setattr(quadmesh_planarize, "__pluggable__", True)

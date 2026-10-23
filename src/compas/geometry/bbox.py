@@ -316,6 +316,3 @@ def _minimum_area_rectangle_xy(points: "NDArray", return_size: bool = False) -> 
     if return_size:
         return rectangle, area
     return rectangle
-
-
-setattr(oriented_bounding_box, "__pluggable__", True)
