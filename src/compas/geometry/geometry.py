@@ -31,8 +31,9 @@ class Geometry(Data):
     # Methods
     # ==========================================================================
 
+    @property
     def aabb(self) -> "Box":
-        """Compute the axis-aligned bounding box of the geometry.
+        """The axis-aligned bounding box of the geometry.
 
         Returns
         -------
@@ -41,8 +42,9 @@ class Geometry(Data):
         """
         raise NotImplementedError
 
+    @property
     def obb(self) -> "Box":
-        """Compute the oriented bounding box of the geometry.
+        """The oriented bounding box of the geometry.
 
         Returns
         -------

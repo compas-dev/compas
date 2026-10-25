@@ -68,6 +68,8 @@ class Surface(Geometry):
         self._vertex_cache: dict[tuple[int, int, tuple[float, float], tuple[float, float]], tuple[CoordinateType, ...]] = {}
         self._edge_cache: dict[tuple[int, int], tuple[tuple[int, int], ...]] = {}
         self._face_cache: dict[tuple[int, int], tuple[tuple[int, ...], ...]] = {}
+        self._tessellation_cache: Tessellation | None = None
+        self._mesh_cache: Mesh | None = None
         self._cached_frame: tuple[float, ...] | None = None
         self.frame = frame
 
@@ -237,6 +239,29 @@ class Surface(Geometry):
         points = self.points
         return [Polygon([points[index] for index in face]) for face in self.faces]
 
+    @property
+    def tessellation(self) -> "Tessellation":
+        """The cached triangular representation at the current resolution."""
+        self._ensure_placement_cache_is_current()
+        if self._tessellation_cache is None:
+            self._tessellation_cache = self.compute_tessellation()
+        return self._tessellation_cache
+
+    @property
+    def mesh(self) -> "Mesh":
+        """The cached topology-preserving mesh at the current resolution.
+
+        Notes
+        -----
+        The returned mesh is shared by subsequent property accesses. Use
+        `compute_mesh()` when an independent mesh is required.
+
+        """
+        self._ensure_placement_cache_is_current()
+        if self._mesh_cache is None:
+            self._mesh_cache = self.compute_mesh()
+        return self._mesh_cache
+
     # ==============================================================================
     # Cache
     # ==============================================================================
@@ -245,10 +270,14 @@ class Surface(Geometry):
         self._vertex_cache.clear()
         self._edge_cache.clear()
         self._face_cache.clear()
+        self._tessellation_cache = None
+        self._mesh_cache = None
         self._cached_frame = None
 
     def _invalidate_placement(self) -> None:
         self._vertex_cache.clear()
+        self._tessellation_cache = None
+        self._mesh_cache = None
         self._cached_frame = None
 
     def _ensure_placement_cache_is_current(self) -> None:
@@ -256,6 +285,8 @@ class Surface(Geometry):
         current = tuple(frame.point) + tuple(frame.xaxis) + tuple(frame.yaxis)
         if self._cached_frame != current:
             self._vertex_cache.clear()
+            self._tessellation_cache = None
+            self._mesh_cache = None
             self._cached_frame = current
 
     # ==============================================================================
@@ -406,7 +437,7 @@ class Surface(Geometry):
     # Conversions
     # ==============================================================================
 
-    def tessellated(
+    def compute_tessellation(
         self,
         nu: int | None = None,
         nv: int | None = None,
@@ -415,7 +446,7 @@ class Surface(Geometry):
         include_normals: bool = True,
         include_texture_coordinates: bool = True,
     ) -> "Tessellation[list[CoordinateType], list[list[int]]]":
-        """Return a triangular tessellation of a parameter-domain subset.
+        """Compute a triangular tessellation of a parameter-domain subset.
 
         Parameters
         ----------
@@ -628,14 +659,14 @@ class Surface(Geometry):
         vertices, faces = self.to_vertices_and_faces(nu=nu, nv=nv, du=du, dv=dv)
         return PolygonalSurface(vertices, faces)
 
-    def to_mesh(
+    def compute_mesh(
         self,
         nu: int | None = None,
         nv: int | None = None,
         du: tuple[float, float] | None = None,
         dv: tuple[float, float] | None = None,
     ) -> "Mesh":
-        """Convert the surface to a mesh.
+        """Compute a topology-preserving mesh representation of the surface.
 
         Parameters
         ----------

@@ -253,8 +253,9 @@ class Pointcloud(Geometry):
         """
         return centroid_points(self.points)
 
+    @property
     def aabb(self) -> "Box":
-        """Compute the axis-aligned bounding box of the point cloud.
+        """The axis-aligned bounding box of the point cloud.
 
         Returns
         -------
@@ -265,8 +266,9 @@ class Pointcloud(Geometry):
 
         return Box.from_bounding_box(bounding_box(self.points))
 
+    @property
     def obb(self) -> "Box":
-        """Compute the oriented bounding box of the point cloud.
+        """The oriented bounding box of the point cloud.
 
         Returns
         -------

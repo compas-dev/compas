@@ -191,7 +191,10 @@ from .hull import convex_hull, convex_hull_xy
 from .interpolation import barycentric_coordinates, discrete_coons_patch, tween_points, tween_points_distance
 from .intersections import (
     intersection_circle_circle_xy,
+    intersection_curve_brep,
+    intersection_curve_surface,
     intersection_ellipse_line_xy,
+    intersection_line_brep,
     intersection_line_box_xy,
     intersection_line_line_xy,
     intersection_line_line,
@@ -199,9 +202,12 @@ from .intersections import (
     intersection_line_segment_xy,
     intersection_line_segment,
     intersection_line_triangle,
+    intersection_line_surface,
+    intersection_plane_brep,
     intersection_plane_circle,
     intersection_plane_plane_plane,
     intersection_plane_plane,
+    intersection_plane_surface,
     intersection_polyline_box_xy,
     intersection_polyline_plane,
     intersection_segment_plane,
@@ -211,6 +217,8 @@ from .intersections import (
     intersection_segment_segment,
     intersection_sphere_line,
     intersection_sphere_sphere,
+    intersection_surface_brep,
+    intersection_surface_surface,
     intersection_mesh_mesh,
     intersection_ray_mesh,
 )
@@ -277,6 +285,7 @@ from .curves.circle import Circle
 from .curves.ellipse import Ellipse
 from .curves.parabola import Parabola
 from .curves.hyperbola import Hyperbola
+from .curves.line import LineCurve
 from .curves.arc import Arc
 from .curves.bezier import Bezier
 from .curves.nurbs import NurbsCurve
@@ -475,7 +484,10 @@ __all__ = [
     "tween_points",
     "tween_points_distance",
     "intersection_circle_circle_xy",
+    "intersection_curve_brep",
+    "intersection_curve_surface",
     "intersection_ellipse_line_xy",
+    "intersection_line_brep",
     "intersection_line_box_xy",
     "intersection_line_line_xy",
     "intersection_line_line",
@@ -483,9 +495,12 @@ __all__ = [
     "intersection_line_segment_xy",
     "intersection_line_segment",
     "intersection_line_triangle",
+    "intersection_line_surface",
+    "intersection_plane_brep",
     "intersection_plane_circle",
     "intersection_plane_plane_plane",
     "intersection_plane_plane",
+    "intersection_plane_surface",
     "intersection_polyline_box_xy",
     "intersection_polyline_plane",
     "intersection_segment_plane",
@@ -495,6 +510,8 @@ __all__ = [
     "intersection_segment_segment",
     "intersection_sphere_line",
     "intersection_sphere_sphere",
+    "intersection_surface_brep",
+    "intersection_surface_surface",
     "intersection_mesh_mesh",
     "intersection_ray_mesh",
     "KDTree",
@@ -553,6 +570,7 @@ __all__ = [
     "Ellipse",
     "Parabola",
     "Hyperbola",
+    "LineCurve",
     "Arc",
     "Bezier",
     "NurbsCurve",

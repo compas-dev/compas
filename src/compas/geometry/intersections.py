@@ -32,10 +32,62 @@ from ._typing import TriangleType
 from .intersection import IntersectionResult
 
 if TYPE_CHECKING:
+    from .brep.brep import Brep
     from .curves.circle import Circle
+    from .curves.curve import Curve
     from .line import Line
+    from .plane import Plane
     from .point import Point
     from .shapes.sphere import Sphere
+    from .surfaces.surface import Surface
+
+
+@pluggable(category="intersections")
+def intersection_line_surface(line: "Line", surface: "Surface", tol: float | None = None) -> "IntersectionResult[Point]":
+    """Compute the intersection points of an infinite line and a surface."""
+    raise PluginNotInstalledError
+
+
+@pluggable(category="intersections")
+def intersection_plane_surface(plane: "Plane", surface: "Surface", tol: float | None = None) -> "IntersectionResult[Curve | Line]":
+    """Compute the intersection curves of an infinite plane and a surface."""
+    raise PluginNotInstalledError
+
+
+@pluggable(category="intersections")
+def intersection_curve_surface(curve: "Curve", surface: "Surface", tol: float | None = None) -> "IntersectionResult[Point]":
+    """Compute the intersection points of a curve and a surface."""
+    raise PluginNotInstalledError
+
+
+@pluggable(category="intersections")
+def intersection_surface_surface(surface_a: "Surface", surface_b: "Surface", tol: float | None = None) -> "IntersectionResult[Curve | Line]":
+    """Compute the intersection curves of two surfaces."""
+    raise PluginNotInstalledError
+
+
+@pluggable(category="intersections")
+def intersection_line_brep(line: "Line", brep: "Brep", tol: float | None = None) -> "IntersectionResult[Point]":
+    """Compute the intersection points of an infinite line and a BRep boundary."""
+    raise PluginNotInstalledError
+
+
+@pluggable(category="intersections")
+def intersection_plane_brep(plane: "Plane", brep: "Brep", tol: float | None = None) -> "IntersectionResult[Curve | Line]":
+    """Compute the intersection curves of an infinite plane and a BRep boundary."""
+    raise PluginNotInstalledError
+
+
+@pluggable(category="intersections")
+def intersection_curve_brep(curve: "Curve", brep: "Brep", tol: float | None = None) -> "IntersectionResult[Point]":
+    """Compute the intersection points of a curve and a BRep boundary."""
+    raise PluginNotInstalledError
+
+
+@pluggable(category="intersections")
+def intersection_surface_brep(surface: "Surface", brep: "Brep", tol: float | None = None) -> "IntersectionResult[Curve | Line]":
+    """Compute the intersection curves of a surface and a BRep boundary."""
+    raise PluginNotInstalledError
 
 
 def intersection_line_line(
@@ -983,24 +1035,3 @@ def intersection_ellipse_line_xy(
         return IntersectionResult((Point(points[0], points[1], points[2]),))
     point1, point2 = points
     return IntersectionResult((Point(point1[0], point1[1], point1[2]), Point(point2[0], point2[1], point2[2])))
-
-
-# def intersection_line_circle_xy(line, circle):
-#     """Compute the intersection of a line and a circle in the XY plane.
-
-#     Parameters
-#     ----------
-
-#     """
-#     x0, y0 = circle[0][:2]
-#     r = circle[1]
-#     x1, y1 = line[0][:2]
-#     x2, y2 = line[1][:2]
-#     a = y1 - y2
-#     b = x2 - x1
-#     c = x1 * y2 - x2 * y1
-#     D = sqrt(r**2 - c**2 / (a**2 + b**2))
-#     m = sqrt(D**2 / (a**2 + b**2))
-#     p1 = [x0 + b * m, y0 - a * m, 0]
-#     p2 = [x0 - b * m, y0 + a * m, 0]
-#     return p1, p2

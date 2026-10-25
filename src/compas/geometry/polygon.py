@@ -93,6 +93,8 @@ class Polygon(Geometry):
         super().__init__(name=name)
         self._points: list[Point] = []
         self._lines: list[Line] | None = None
+        self._tessellation: Tessellation | None = None
+        self._mesh: Mesh | None = None
         self.points = points
 
     def __repr__(self) -> str:
@@ -116,6 +118,8 @@ class Polygon(Geometry):
     def __setitem__(self, key: int, value: CoordinateType) -> None:
         self.points[key] = Point(value[0], value[1], value[2])
         self._lines = None
+        self._tessellation = None
+        self._mesh = None
 
     def __iter__(self) -> Iterator[Point]:
         return iter(self.points)
@@ -155,6 +159,8 @@ class Polygon(Geometry):
         if self._points[0] == self._points[-1]:
             del self._points[-1]
         self._lines = None
+        self._tessellation = None
+        self._mesh = None
 
     @property
     def lines(self) -> list[Line]:
@@ -209,6 +215,20 @@ class Polygon(Geometry):
     def is_planar(self) -> bool:
         """Whether all polygon points are coplanar."""
         return is_coplanar(self.points)
+
+    @property
+    def tessellation(self) -> "Tessellation":
+        """The cached triangular representation of the polygon."""
+        if self._tessellation is None:
+            self._tessellation = self.compute_tessellation()
+        return self._tessellation
+
+    @property
+    def mesh(self) -> "Mesh":
+        """The cached single-face mesh representation of the polygon."""
+        if self._mesh is None:
+            self._mesh = self.compute_mesh()
+        return self._mesh
 
     # ==========================================================================
     # Constructors
@@ -303,8 +323,8 @@ class Polygon(Geometry):
     # Conversions
     # =============================================================================
 
-    def tessellated(self) -> "Tessellation":
-        """Return a triangular tessellation of the polygon.
+    def compute_tessellation(self) -> "Tessellation":
+        """Compute a triangular tessellation of the polygon.
 
         Returns
         -------
@@ -334,8 +354,8 @@ class Polygon(Geometry):
             return self.vertices, earclip_polygon(self)
         return self.vertices, self.faces
 
-    def to_mesh(self) -> "Mesh":
-        """Convert the polygon to a mesh.
+    def compute_mesh(self) -> "Mesh":
+        """Compute a single-face mesh representation of the polygon.
 
         Returns
         -------
@@ -388,11 +408,14 @@ class Polygon(Geometry):
             self.points[index].y = point[1]
             self.points[index].z = point[2]
         self._lines = None
+        self._tessellation = None
+        self._mesh = None
 
     # =============================================================================
     # Methods
     # =============================================================================
 
+    @property
     def aabb(self) -> "Box":
         """Compute the axis-aligned bounding box.
 
@@ -405,6 +428,7 @@ class Polygon(Geometry):
 
         return Box.from_bounding_box(bounding_box(self.points))
 
+    @property
     def obb(self) -> "Box":
         """Compute the oriented bounding box.
 

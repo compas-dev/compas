@@ -45,7 +45,7 @@ class Curve(Geometry):
     See Also
     --------
     [`Arc`][compas.geometry.Arc], [`Circle`][compas.geometry.Circle],
-    [`Ellipse`][compas.geometry.Ellipse] and
+    [`Ellipse`][compas.geometry.Ellipse], [`LineCurve`][compas.geometry.LineCurve], and
     [`NurbsCurve`][compas.geometry.NurbsCurve] are concrete curve types.
 
     Notes

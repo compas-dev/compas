@@ -73,6 +73,8 @@ class PolygonalSurface(Geometry):
         super().__init__(name=name)
         self._vertices: list[list[float]] = []
         self._faces: list[list[int]] = []
+        self._tessellation: Tessellation | None = None
+        self._mesh: Mesh | None = None
         self.vertices = vertices
         self.faces = faces
 
@@ -110,6 +112,8 @@ class PolygonalSurface(Geometry):
             copied.append([float(vertex[0]), float(vertex[1]), float(vertex[2])])
         self._validate_faces(self._faces, vertex_count=len(copied))
         self._vertices = copied
+        self._tessellation = None
+        self._mesh = None
 
     @property
     def faces(self) -> list[list[int]]:
@@ -127,6 +131,8 @@ class PolygonalSurface(Geometry):
         copied = [list(face) for face in faces]
         self._validate_faces(copied)
         self._faces = copied
+        self._tessellation = None
+        self._mesh = None
 
     @property
     def edges(self) -> list[tuple[int, int]]:
@@ -197,6 +203,20 @@ class PolygonalSurface(Geometry):
         _, _, _, oriented = self._analyze_topology()
         return oriented
 
+    @property
+    def tessellation(self) -> "Tessellation":
+        """The cached triangular representation of the surface."""
+        if self._tessellation is None:
+            self._tessellation = self.compute_tessellation()
+        return self._tessellation
+
+    @property
+    def mesh(self) -> "Mesh":
+        """The cached topology-preserving half-edge mesh."""
+        if self._mesh is None:
+            self._mesh = self.compute_mesh()
+        return self._mesh
+
     # =============================================================================
     # Constructors
     # =============================================================================
@@ -230,8 +250,8 @@ class PolygonalSurface(Geometry):
     # Conversions
     # =============================================================================
 
-    def tessellated(self) -> "Tessellation":
-        """Return a triangular tessellation of the polygonal surface.
+    def compute_tessellation(self) -> "Tessellation":
+        """Compute a triangular tessellation of the polygonal surface.
 
         Returns
         -------
@@ -265,8 +285,8 @@ class PolygonalSurface(Geometry):
         faces = self.triangles if triangulated else self.faces
         return [vertex[:] for vertex in self.vertices], [face[:] for face in faces]
 
-    def to_mesh(self) -> "Mesh":
-        """Convert the polygonal surface to a half-edge mesh.
+    def compute_mesh(self) -> "Mesh":
+        """Compute a topology-preserving half-edge mesh.
 
         Returns
         -------
@@ -286,6 +306,7 @@ class PolygonalSurface(Geometry):
         """Compute the sum of the polygonal face areas."""
         return sum(polygon.area() for polygon in self.polygons)
 
+    @property
     def aabb(self) -> "Box":
         """Compute the axis-aligned bounding box.
 
@@ -301,6 +322,7 @@ class PolygonalSurface(Geometry):
             raise ValueError("An empty polygonal surface has no bounding box.")
         return Box.from_bounding_box(bounding_box(self.vertices))
 
+    @property
     def obb(self) -> "Box":
         """Compute the oriented bounding box.
 
@@ -330,6 +352,8 @@ class PolygonalSurface(Geometry):
 
         """
         self._vertices = transform_points(self.vertices, transformation)
+        self._tessellation = None
+        self._mesh = None
 
     # =============================================================================
     # Private helpers

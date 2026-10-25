@@ -153,7 +153,7 @@ class PlanarRegion(Geometry):
         """
         return _earclip_boundaries(self.outer, self.holes)
 
-    def tessellated(self) -> "Tessellation":
+    def to_tessellation(self) -> "Tessellation":
         """Return a triangular tessellation of the planar region.
 
         Returns
@@ -175,7 +175,7 @@ class PlanarRegion(Geometry):
         PolygonalSurface
 
         """
-        return self.tessellated().to_polygonal_surface()
+        return self.to_tessellation().to_polygonal_surface()
 
     def to_mesh(self) -> "Mesh":
         """Convert the region to a triangulated half-edge mesh.
@@ -185,7 +185,7 @@ class PlanarRegion(Geometry):
         Mesh
 
         """
-        return self.tessellated().to_mesh()
+        return self.to_tessellation().to_mesh()
 
     # =============================================================================
     # Methods
@@ -195,6 +195,7 @@ class PlanarRegion(Geometry):
         """Compute the exterior area minus the areas of the holes."""
         return self.outer.area() - sum(hole.area() for hole in self.holes)
 
+    @property
     def aabb(self) -> "Box":
         """Compute the axis-aligned bounding box.
 
@@ -203,8 +204,9 @@ class PlanarRegion(Geometry):
         Box
 
         """
-        return self.to_polygonal_surface().aabb()
+        return self.to_polygonal_surface().aabb
 
+    @property
     def obb(self) -> "Box":
         """Compute the oriented bounding box.
 
@@ -213,7 +215,7 @@ class PlanarRegion(Geometry):
         Box
 
         """
-        return self.to_polygonal_surface().obb()
+        return self.to_polygonal_surface().obb
 
     # =============================================================================
     # Transformations

@@ -495,7 +495,7 @@ class Polyhedron(Geometry):
     # Conversions
     # =============================================================================
 
-    def tessellated(self) -> "Tessellation":
+    def to_tessellation(self) -> "Tessellation":
         """Return a triangular tessellation of the polyhedron boundary.
 
         Returns
@@ -504,7 +504,7 @@ class Polyhedron(Geometry):
             The indexed triangular representation for visualization.
 
         """
-        return self.boundary.tessellated()
+        return self.boundary.to_tessellation()
 
     def to_vertices_and_faces(self, triangulated: bool = False) -> tuple[list[list[float]], list[list[int]]]:
         """Return independent copies of the vertices and faces.
@@ -560,6 +560,7 @@ class Polyhedron(Geometry):
     # Methods
     # =============================================================================
 
+    @property
     def aabb(self) -> "Box":
         """Compute the axis-aligned bounding box.
 
@@ -568,8 +569,9 @@ class Polyhedron(Geometry):
         Box
 
         """
-        return self.boundary.aabb()
+        return self.boundary.aabb
 
+    @property
     def obb(self) -> "Box":
         """Compute the oriented bounding box.
 
@@ -578,7 +580,7 @@ class Polyhedron(Geometry):
         Box
 
         """
-        return self.boundary.obb()
+        return self.boundary.obb
 
     def area(self) -> float:
         """Compute the area of the polygonal boundary."""
@@ -611,8 +613,8 @@ class Polyhedron(Geometry):
         Examples
         --------
         >>> from compas.geometry import Box, Polyhedron, Sphere
-        >>> A = Polyhedron(*Box(2).tessellated().to_vertices_and_triangles())
-        >>> B = Polyhedron(*Sphere.from_point_and_radius([1, 1, 1], 1.0).tessellated().to_vertices_and_triangles())
+        >>> A = Polyhedron(*Box(2).to_tessellation().to_vertices_and_triangles())
+        >>> B = Polyhedron(*Sphere.from_point_and_radius([1, 1, 1], 1.0).to_tessellation().to_vertices_and_triangles())
         >>> C = A.boolean_union(B)  # doctest: +SKIP
 
         """
@@ -640,8 +642,8 @@ class Polyhedron(Geometry):
         Examples
         --------
         >>> from compas.geometry import Box, Polyhedron, Sphere
-        >>> A = Polyhedron(*Box(2).tessellated().to_vertices_and_triangles())
-        >>> B = Polyhedron(*Sphere.from_point_and_radius([1, 1, 1], 1.0).tessellated().to_vertices_and_triangles())
+        >>> A = Polyhedron(*Box(2).to_tessellation().to_vertices_and_triangles())
+        >>> B = Polyhedron(*Sphere.from_point_and_radius([1, 1, 1], 1.0).to_tessellation().to_vertices_and_triangles())
         >>> C = A.boolean_difference(B)  # doctest: +SKIP
 
         """
@@ -669,8 +671,8 @@ class Polyhedron(Geometry):
         Examples
         --------
         >>> from compas.geometry import Box, Polyhedron, Sphere
-        >>> A = Polyhedron(*Box(2).tessellated().to_vertices_and_triangles())
-        >>> B = Polyhedron(*Sphere.from_point_and_radius([1, 1, 1], 1.0).tessellated().to_vertices_and_triangles())
+        >>> A = Polyhedron(*Box(2).to_tessellation().to_vertices_and_triangles())
+        >>> B = Polyhedron(*Sphere.from_point_and_radius([1, 1, 1], 1.0).to_tessellation().to_vertices_and_triangles())
         >>> C = A.boolean_intersection(B)  # doctest: +SKIP
 
         """

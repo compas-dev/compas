@@ -35,7 +35,7 @@ class Shape(Geometry):
 
     Tessellation is the separate conversion of geometry to indexed triangles,
     with optional rendering attributes such as normals and texture
-    coordinates. The `tessellated()` method performs that conversion for
+    coordinates. The cached `tessellation` property performs that conversion for
     visualization and triangle-based processing. Supported backends can
     convert a shape to a `Brep`.
 
@@ -66,6 +66,8 @@ class Shape(Geometry):
         self._vertex_cache: dict[tuple[int, int], tuple[CoordinateType, ...]] = {}
         self._edge_cache: dict[tuple[int, int], tuple[tuple[int, int], ...]] = {}
         self._face_cache: dict[tuple[int, int], tuple[tuple[int, ...], ...]] = {}
+        self._tessellation_cache: Tessellation | None = None
+        self._mesh_cache: Mesh | None = None
         self._cached_frame: tuple[float, ...] | None = None
         self.frame = frame
 
@@ -78,10 +80,14 @@ class Shape(Geometry):
         self._vertex_cache.clear()
         self._edge_cache.clear()
         self._face_cache.clear()
+        self._tessellation_cache = None
+        self._mesh_cache = None
         self._cached_frame = None
 
     def _invalidate_placement(self) -> None:
         self._vertex_cache.clear()
+        self._tessellation_cache = None
+        self._mesh_cache = None
         self._cached_frame = None
 
     def _ensure_placement_cache_is_current(self) -> None:
@@ -89,6 +95,8 @@ class Shape(Geometry):
         current = tuple(frame.point) + tuple(frame.xaxis) + tuple(frame.yaxis)
         if self._cached_frame != current:
             self._vertex_cache.clear()
+            self._tessellation_cache = None
+            self._mesh_cache = None
             self._cached_frame = current
 
     def _resolutions(self, u: int | None = None, v: int | None = None) -> tuple[int, int]:
@@ -222,6 +230,29 @@ class Shape(Geometry):
         points = self.points
         return [Polygon([points[index] for index in face]) for face in self.faces]
 
+    @property
+    def tessellation(self) -> "Tessellation":
+        """The cached triangular representation at the current resolution."""
+        self._ensure_placement_cache_is_current()
+        if self._tessellation_cache is None:
+            self._tessellation_cache = self.compute_tessellation()
+        return self._tessellation_cache
+
+    @property
+    def mesh(self) -> "Mesh":
+        """The cached topology-preserving mesh at the current resolution.
+
+        Notes
+        -----
+        The returned mesh is shared by subsequent property accesses. Use
+        `compute_mesh()` when an independent mesh is required.
+
+        """
+        self._ensure_placement_cache_is_current()
+        if self._mesh_cache is None:
+            self._mesh_cache = self.compute_mesh()
+        return self._mesh_cache
+
     # =============================================================================
     # Discretisation
     # =============================================================================
@@ -298,8 +329,9 @@ class Shape(Geometry):
     # Bounding boxes
     # =============================================================================
 
+    @property
     def aabb(self) -> "Box":
-        """Compute the axis-aligned bounding box of the discretized shape.
+        """The axis-aligned bounding box of the discretized shape.
 
         Returns
         -------
@@ -312,8 +344,9 @@ class Shape(Geometry):
         vertices, _ = self.to_vertices_and_faces()
         return Box.from_bounding_box(bounding_box(vertices))
 
+    @property
     def obb(self) -> "Box":
-        """Compute the oriented bounding box of the discretized shape.
+        """The oriented bounding box of the discretized shape.
 
         Returns
         -------
@@ -330,12 +363,12 @@ class Shape(Geometry):
     # Conversions
     # =============================================================================
 
-    def tessellated(
+    def compute_tessellation(
         self,
         u: int | None = None,
         v: int | None = None,
     ) -> "Tessellation[list[CoordinateType], tuple[tuple[int, ...], ...]]":
-        """Return a triangular tessellation of the shape boundary.
+        """Compute a triangular tessellation of the shape boundary.
 
         Parameters
         ----------
@@ -419,8 +452,8 @@ class Shape(Geometry):
         vertices, faces = self.to_vertices_and_faces(u=u, v=v)
         return PolygonalSurface(vertices, faces)
 
-    def to_mesh(self, u: int | None = None, v: int | None = None) -> "Mesh":
-        """Returns a mesh representation of the shape.
+    def compute_mesh(self, u: int | None = None, v: int | None = None) -> "Mesh":
+        """Compute a topology-preserving mesh representation of the shape.
 
         Parameters
         ----------
