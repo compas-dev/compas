@@ -4385,6 +4385,7 @@ class Mesh(Datastructure):
             1.0 / self.area(),
         )
 
+    @property
     def aabb(self) -> Box:
         """Calculate the axis aligned bounding box of the mesh.
 
@@ -4396,6 +4397,7 @@ class Mesh(Datastructure):
         xyz = self.vertices_attributes("xyz")
         return Box.from_bounding_box(bounding_box(xyz))
 
+    @property
     def obb(self) -> Box:
         """Calculate the oriented bounding box of the mesh.
 

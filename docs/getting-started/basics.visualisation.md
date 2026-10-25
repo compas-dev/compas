@@ -75,28 +75,28 @@ See the section about mesh visualisation for more information.
 
 ## Scene Hierarchy
 
-Scene objects are organised in a hierarchy, with the scene as the root node.
-The hierarchy is represented by a COMPAS Tree data structure.
-All scene objects are nodes in the tree.
-The scene tree has an implicit root node, which is the scene itself.
+Scene objects are organised in a hierarchy under a private root group.
+The scene stores data and scene objects by GUID, while a COMPAS tree of
+lightweight internal nodes records the hierarchy. Public hierarchy properties
+on scene objects resolve these internal references.
 
 ```pycon
 >>> scene = Scene()
->>> scene.root
-SceneObject
+>>> scene.root.name
+'ROOT'
 ```
 
 By default, every scene object is added as a direct child of the scene.
 
 ```pycon
 >>> sceneobj = scene.add(box)
->>> sceneobj.parent
-SceneObject
->>> scene.children()
-[BoxObject]
+>>> sceneobj.parent is scene.root
+True
+>>> list(scene.root.children) == [sceneobj]
+True
 ```
 
-To use a different scene object as the parent, the parent attribute of the scene object can be set to the desired parent.
+To use a different scene object as the parent, pass it to `Scene.add`.
 
 ```pycon
 >>> from compas.geometry import Point

@@ -77,8 +77,9 @@ class Datastructure(Data):
     # Bounding boxes
     # =============================================================================
 
+    @property
     def aabb(self) -> Box:
-        """Compute the axis-aligned bounding box of the datastructure.
+        """The axis-aligned bounding box of the datastructure.
 
         Returns
         -------
@@ -90,8 +91,9 @@ class Datastructure(Data):
 
         return Box.from_bounding_box(bounding_box(self.to_points()))
 
+    @property
     def obb(self) -> Box:
-        """Compute the oriented bounding box of the datastructure.
+        """The oriented bounding box of the datastructure.
 
         Returns
         -------

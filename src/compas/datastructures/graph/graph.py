@@ -2486,6 +2486,7 @@ class Graph(Datastructure):
     # Bounding boxes
     # --------------------------------------------------------------------------
 
+    @property
     def aabb(self) -> Box:
         """Calculate the axis aligned bounding box of the graph.
 
@@ -2497,6 +2498,7 @@ class Graph(Datastructure):
         nodes = self.nodes_attributes("xyz")
         return Box.from_bounding_box(bounding_box(nodes))
 
+    @property
     def obb(self) -> Box:
         """Calculate the oriented bounding box of the graph.
 

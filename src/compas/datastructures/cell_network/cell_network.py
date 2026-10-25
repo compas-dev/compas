@@ -1015,6 +1015,7 @@ class CellNetwork(Datastructure):
         x, y, z = centroid_points([self.vertex_coordinates(vertex) for vertex in self.vertices()])
         return Point(x, y, z)
 
+    @property
     def aabb(self) -> Box:
         """Calculate the axis aligned bounding box of the mesh.
 
@@ -1026,6 +1027,7 @@ class CellNetwork(Datastructure):
         xyz = self.vertices_attributes("xyz")
         return Box.from_bounding_box(bounding_box(xyz))
 
+    @property
     def obb(self) -> Box:
         """Calculate the oriented bounding box of the cell network.
 
