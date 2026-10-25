@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added `TOL.update()` method for explicit global state modification. 
 * Added `TOL.temporary()` context manager for scoped changes.
+* Added `LineCurve` as the finite linear implementation of the shared parametric `Curve` API while keeping `Line` as a lightweight geometry primitive.
+* Added pluggable line, plane, curve, surface, and BRep intersection operations returning `IntersectionResult`.
 
 ### Changed
 
@@ -28,22 +30,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added Python 3.12 generic annotations and MkDocs-compatible documentation throughout `compas.itertools` while preserving lazy iterator behavior.
 * Removed obsolete casts and type suppressions from glTF conversion, subdivision, JSON encoding, NumPy scalar handling, and URL retrieval. Added subclass-preserving `gltf_to_scene` overloads.
 * Made scene-context selection deterministic and simplified scene serialization to store local transformations without redundant derived frames.
-* Changed `Scene` from inheriting `Tree` to owning a typed `Tree[SceneObject]` with a `Group` root.
+* Separated scene ownership into GUID-indexed data and scene-object stores plus a lightweight hierarchy tree. Scene objects resolve their represented data through the scene store and no longer serve as tree nodes.
 * Made `Tree` and `TreeNode` generic and enforced cycle, parent, and tree-ownership invariants. Child collections are now immutable views and specialized node deserialization is configurable through `Tree.node_type`.
 * Made graph and volmesh scene coordinate caches detect changes to ancestor transformations lazily while preserving explicitly assigned view coordinates.
 * Modernized typing and MkDocs-compatible API documentation throughout `compas.scene`.
 * Fixed class-level scene descriptor access and `ColorDict` assignment semantics.
 * Added explicit scene-object cache invalidation for mutations of underlying data.
 * Removed the obsolete IronPython-era vendored mapping ABCs in favor of `collections.abc`.
-* Standardized geometry and datastructure bounding volumes as fresh-computation `aabb()` and `obb()` methods returning `Box`, and removed the redundant `compute_aabb()` and `compute_obb()` API.
+* Standardized geometry and datastructure bounding volumes as fresh-computation `aabb` and `obb` properties returning `Box`, and removed the redundant `compute_aabb()` and `compute_obb()` API.
 * Standardized computed `area()`, `volume()`, and `centroid()` quantities as methods across geometry, datastructures, and Brep interfaces.
 * Changed computed polygon normals to `Polygon.normal()`, matching other computed measurement methods while retaining state-like `Frame.normal` and `Plane.normal` properties.
-* Removed the redundant `Polygon.bounding_box` alias in favor of the canonical `Polygon.aabb()` method.
+* Removed the redundant `Polygon.bounding_box` alias in favor of the canonical `Polygon.aabb` property.
 * Consolidated bounding-box algorithms in `bbox.py`, replaced `_numpy` public names with canonical unsuffixed functions, made numerical imports lazy, and modernized their annotations and documentation.
 * Consolidated best-fit algorithms in `bestfit.py`, removed `_numpy` public names, made numerical imports lazy, switched the canonical plane fit to PCA, and standardized fitted radii as scalar floats.
 * Consolidated hull and ICP algorithms under unsuffixed APIs, corrected convex-hull polyhedron construction and stable ICP returns, and moved optional Shapely polygon Boolean defaults into `booleans.py`.
 * Added deferred topology validation to `PlanarRegion` tessellation, with clear errors for invalid boundary loops, holes outside or touching the exterior, and overlapping, touching, or nested holes.
-* Added a zero-copy, triangle-only `Tessellation` result with shared vertex indexing for triangles, normals, and texture coordinates, and introduced `tessellated()` across shapes, surfaces, and polygonal geometry. Direct mesh and polygonal-surface conversions preserve polygonal topology; conversion through `Tessellation` explicitly produces triangular geometry.
+* Added a zero-copy, triangle-only `Tessellation` result with shared vertex indexing for triangles, normals, and texture coordinates, and introduced `to_tessellation()` across shapes, surfaces, and polygonal geometry. Direct mesh and polygonal-surface conversions preserve polygonal topology; conversion through `Tessellation` explicitly produces triangular geometry.
 * Added cached polygonal parametric-representation APIs to shapes and surfaces through `vertices`, `edges`, and `faces`, with geometry-object views and public uncached `compute_*` methods. Triangles now exist only in `Tessellation` results.
 * Defined discretisation as resolution-dependent sampling that preserves polygonal topology, and tessellation as conversion to indexed triangles for visualization or triangle-based processing. Shape placement changes now reuse cached local vertices and topology; surface placement changes preserve cached topology.
 * Renamed the NURBS surface defining-point grid from `points` to `control_points`, reserving `Surface.points` for sampled polygonal vertices as geometry objects.
@@ -63,7 +65,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-* Removed `Shape.to_polyhedron()` because `Polyhedron` represents a validated closed solid rather than the generic polygonal discretization of a shape. Use `to_polygonal_surface()`, `tessellated()`, or `to_mesh()`.
+* Removed `Shape.to_polyhedron()` because `Polyhedron` represents a validated closed solid rather than the generic polygonal discretization of a shape. Use `to_polygonal_surface()`, `to_tessellation()`, or `to_mesh()`.
 * Removed the private `compas._os` compatibility module and its obsolete Python 2, IronPython, CAD-host, Conda-bootstrapper, and Windows elevation helpers.
 * Removed the deprecated `compas.linalg.close` and `compas.linalg.allclose` helpers in favor of `TOL.is_close` and `TOL.is_allclose`.
 * Removed the `compas.rpc` package and the `compas_rpc` command-line entry point.

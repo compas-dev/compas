@@ -85,8 +85,8 @@ or decorative sections.
   geometry's representation at a requested resolution. `Tessellation` contains
   visualization-oriented vertices and triangles.
 - Direct `to_mesh()` and `to_polygonal_surface()` conversions preserve the
-  source topology. Use `geometry.tessellated().to_mesh()` or
-  `geometry.tessellated().to_polygonal_surface()` for triangulated conversions.
+  source topology. Use `geometry.to_tessellation().to_mesh()` or
+  `geometry.to_tessellation().to_polygonal_surface()` for triangulated conversions.
 - Cache intrinsic geometry, topology, placement, and tessellation independently
   where possible. Placement changes must not force recomputation of unaffected
   local geometry or topology.

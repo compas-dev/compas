@@ -417,16 +417,16 @@
 
 ## Bounding boxes
 
-- Standardized axis-aligned and oriented bounding volumes as `aabb()` and
-  `obb()` methods returning `Box` across geometry and datastructures. Removed
+- Standardized axis-aligned and oriented bounding volumes as `aabb` and
+  `obb` properties returning `Box` across geometry and datastructures. Removed
   the redundant `compute_aabb()` and `compute_obb()` names.
 - Removed bounding-box caches and their invalidation plumbing. Bounds are now
   computed from current geometry on every call, which avoids stale results for
   mutable objects and datastructures whose public storage can be edited
   directly.
-- Changed `CellNetwork.aabb()` from raw box coordinates to the shared `Box`
-  result and added `CellNetwork.obb()`.
-- Removed the redundant `Polygon.bounding_box` property; `Polygon.aabb()` is
+- Changed `CellNetwork.aabb` from raw box coordinates to the shared `Box`
+  result and added `CellNetwork.obb`.
+- Removed the redundant `Polygon.bounding_box` property; `Polygon.aabb` is
   the canonical object-level axis-aligned bounding-box API.
 - Consolidated the pure-Python and NumPy bounding-box implementations in
   `bbox.py`. Removed the implementation-specific `_numpy` public names and the
@@ -480,10 +480,13 @@
   nested world transformations are reconstructed from the scene hierarchy.
 - Added regression coverage for context selection, local transformation
   payloads, nested transformation reconstruction, and shared item identity.
-- Changed `Scene` from a `Tree` subclass to a `Data` object that owns a typed
-  `Tree[SceneObject]` through its `tree` attribute. The scene root is now a
-  private `Group`, so every node in the scene tree follows the same
-  `SceneObject` contract.
+- Changed `Scene` from a `Tree` subclass to a `Data` object with separate
+  GUID-indexed data and scene-object stores. Its hierarchy tree contains
+  lightweight private nodes that reference scene objects by GUID, while the
+  public `SceneObject.parent`, `children`, and traversal APIs resolve those
+  references through the scene. Scene objects similarly store only the GUID of
+  their represented data after attachment and resolve `item` through the data
+  store. The root remains a private `Group`.
 - Made `Tree` and `TreeNode` generic over their node family. Parent, child,
   root, traversal, lookup, and conversion APIs now preserve specialized node
   types, and tree subclasses can configure `node_type` for subclass-preserving
@@ -848,9 +851,8 @@
   discretization, native conversion, evaluation, isocurves, boundaries, and
   closest-point overloads. Direct frame mutation now updates transformations
   without a stale cache.
-- Removed conflicting `Surface.aabb()` and `Surface.obb()` methods in favor of
-  the standard `Geometry` bounding-box properties and `compute_aabb()` and
-  `compute_obb()` implementation hooks.
+- Removed conflicting `Surface.aabb` and `Surface.obb` implementations in favor
+  of the standard `Geometry` bounding-box properties.
 - Removed unimplemented generic OBJ, STEP, intersection, and inconsistent
   curvature placeholders from the base surface API. Backend-supported STEP and
   BREP conversion hooks remain where their contracts are meaningful.
@@ -946,7 +948,7 @@
   polylines. All per-vertex attributes share one index domain, so seams are
   represented by duplicated vertices and the buffers map directly to common
   mesh and GPU layouts. Shapes, surfaces, polygons, planar regions, polygonal
-  surfaces, and polyhedra now provide `tessellated()`. Direct `to_mesh()` and
+  surfaces, and polyhedra now provide `to_tessellation()`. Direct `to_mesh()` and
   `to_polygonal_surface()` conversions preserve the polygonal topology of the
   source conversion, whereas converting a `Tessellation` produces triangular
   geometry. Shapes and surfaces expose their polygonal parametric
@@ -959,7 +961,7 @@
   available. Resolution and geometric parameter changes invalidate the full
   discretisation. Placement changes invalidate only world-space vertices:
   shapes reuse cached local vertices and topology, and surfaces preserve their
-  cached topology. Triangles exist only in the result of `tessellated()` and
+  cached topology. Triangles exist only in the result of `to_tessellation()` and
   are not stored as a parallel shape or surface representation. Per-call
   resolution overrides remain non-mutating, and results of
   `to_vertices_and_faces()` cannot mutate cached topology. Surface tessellation
@@ -971,7 +973,7 @@
   explicit as `control_points[v][u]`.
 - Removed `Shape.to_polyhedron()`. `Polyhedron` is a validated closed solid, not
   the generic polygonal representation of a discretized shape. Use
-  `Shape.to_polygonal_surface()`, `Shape.tessellated()`, or `Shape.to_mesh()`.
+  `Shape.to_polygonal_surface()`, `Shape.to_tessellation()`, or `Shape.to_mesh()`.
 - Modernized `Polygon` as the single-boundary counterpart to `PlanarRegion`.
   Its public API is typed, its documentation uses the MkDocs conventions,
   transforms invalidate derived lines and bounds, and ear-clipped conversion no
