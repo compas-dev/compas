@@ -81,7 +81,11 @@ class MeshObject(SceneObject):
 
     @mesh.setter
     def mesh(self, mesh: Mesh) -> None:
-        self._item = mesh
+        if self.scene is None:
+            self._item_guid = mesh.guid
+            self._detached_item = mesh
+        else:
+            self.scene.replace_item(self, mesh)
         self._transformation = None
 
     # ==========================================================================

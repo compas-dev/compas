@@ -88,7 +88,11 @@ class VolMeshObject(SceneObject):
 
     @volmesh.setter
     def volmesh(self, volmesh: VolMesh) -> None:
-        self._item = volmesh
+        if self.scene is None:
+            self._item_guid = volmesh.guid
+            self._detached_item = volmesh
+        else:
+            self.scene.replace_item(self, volmesh)
         self._transformation = None
         self._vertex_xyz = None
         self._vertex_xyz_revision = None

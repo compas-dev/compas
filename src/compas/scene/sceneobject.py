@@ -1,14 +1,16 @@
+from collections.abc import Iterator
 from functools import reduce
 from operator import mul
 from typing import TYPE_CHECKING
 from typing import Any
+from typing import Literal
 from typing import NoReturn
 from typing import Self
 from typing import cast
+from uuid import UUID
 
 from compas.colors import Color
 from compas.data import Data
-from compas.datastructures import TreeNode
 from compas.geometry import Frame
 from compas.geometry import Transformation
 
@@ -17,10 +19,13 @@ from .context import get_sceneobject_cls
 from .descriptors.color import ColorAttribute
 
 if TYPE_CHECKING:
+    from compas.datastructures import Tree
     from compas.scene import Scene
 
+    from ._scenenode import SceneNode
 
-class SceneObject(TreeNode["SceneObject"]):
+
+class SceneObject(Data):
     """Base class for all scene objects.
 
     Parameters
@@ -60,10 +65,10 @@ class SceneObject(TreeNode["SceneObject"]):
 
     @property
     def __data__(self) -> dict[str, object]:
-        if self.item is None:
+        if self.item_guid is None:
             raise ValueError("A scene object without an item cannot be serialized independently.")
         return {
-            "item": str(self.item.guid),
+            "item": str(self.item_guid),
             "settings": self.settings,
             "children": [child.__data__ for child in self.children],
         }
@@ -103,15 +108,16 @@ class SceneObject(TreeNode["SceneObject"]):
         # This factory-only option has already been handled by __new__.
         kwargs.pop("sceneobject_type", None)
         name = name or getattr(item, "name", None)
-        super().__init__(name=name, **kwargs)
+        super().__init__(name=name)
         # the scene object needs to store the context
         # because it has no access to the tree and/or the scene before it is added
         # which means that adding child objects will be added in context "None"
         self.context = context
-        self._item = item
+        self.attributes = kwargs
+        self._item_guid: UUID | None = item.guid if item else None
+        self._detached_item = item
         self._scene: Scene | None = None
         self._guids: list[object] | None = []
-        self._node = None
         self._transformation = transformation
         self._transformation_revision = 0
         self._contrastcolor = None
@@ -134,7 +140,70 @@ class SceneObject(TreeNode["SceneObject"]):
     @property
     def item(self) -> Data | None:
         """The data item represented by this scene object."""
-        return self._item
+        if self._item_guid is None:
+            return None
+        if self.scene is None:
+            return getattr(self, "_detached_item", None)
+        return self.scene.item_store[self._item_guid]
+
+    @property
+    def item_guid(self) -> UUID | None:
+        """The GUID of the represented data item."""
+        return self._item_guid
+
+    @property
+    def parent(self) -> "SceneObject | None":
+        """The parent scene object."""
+        if self.scene is None:
+            return None
+        node = self.scene._nodes[self.guid]
+        if node.parent is None:
+            return None
+        return self.scene._objects[node.parent.object_guid]
+
+    @property
+    def children(self) -> tuple["SceneObject", ...]:
+        """The child scene objects."""
+        if self.scene is None:
+            return ()
+        node = self.scene._nodes[self.guid]
+        return tuple(self.scene._objects[child.object_guid] for child in node.children)
+
+    @property
+    def tree(self) -> "Tree[SceneNode] | None":
+        """The hierarchy tree containing this scene object."""
+        return self.scene.tree if self.scene else None
+
+    @property
+    def is_root(self) -> bool:
+        """Whether this scene object is the root group."""
+        return bool(self.scene and self.scene._nodes[self.guid].is_root)
+
+    @property
+    def is_leaf(self) -> bool:
+        """Whether this scene object has no children."""
+        return not self.children
+
+    @property
+    def is_branch(self) -> bool:
+        """Whether this scene object is neither the root nor a leaf."""
+        return not self.is_root and not self.is_leaf
+
+    @property
+    def ancestors(self) -> Iterator["SceneObject"]:
+        """An iterator over the ancestor scene objects."""
+        if self.scene is None:
+            return iter(())
+        node = self.scene._nodes[self.guid]
+        return (self.scene._objects[ancestor.object_guid] for ancestor in node.ancestors)
+
+    @property
+    def descendants(self) -> Iterator["SceneObject"]:
+        """An iterator over the descendant scene objects."""
+        if self.scene is None:
+            return iter(())
+        node = self.scene._nodes[self.guid]
+        return (self.scene._objects[descendant.object_guid] for descendant in node.descendants)
 
     @property
     def guids(self) -> list[object]:
@@ -265,20 +334,36 @@ class SceneObject(TreeNode["SceneObject"]):
             The scene object associated with the added item.
 
         """
-        if self.scene is not None:
-            return self.scene.add(item, parent=self, **kwargs)
+        if self.scene is None:
+            raise RuntimeError("A detached scene object cannot own child objects.")
+        return self.scene.add(item, parent=self, **kwargs)
 
-        if isinstance(item, SceneObject):
-            sceneobject = item
-        else:
-            if "context" in kwargs:
-                if kwargs["context"] != self.context:
-                    raise Exception("Child context should be the same as parent context: {} != {}".format(kwargs["context"], self.context))
-                del kwargs["context"]  # otherwist the SceneObject receives "context" twice, which results in an error
-            sceneobject = SceneObject(item=item, context=self.context, **kwargs)
+    def traverse(
+        self,
+        strategy: Literal["depthfirst", "breadthfirst"] = "depthfirst",
+        order: Literal["preorder", "postorder"] = "preorder",
+    ) -> Iterator["SceneObject"]:
+        """Traverse this scene-object subtree.
 
-        super().add(sceneobject)
-        return sceneobject
+        Parameters
+        ----------
+        strategy
+            The traversal strategy.
+        order
+            The depth-first traversal order.
+
+        Yields
+        ------
+        SceneObject
+            The next scene object in the traversal.
+
+        """
+        if self.scene is None:
+            yield self
+            return
+        node = self.scene._nodes[self.guid]
+        for descendant in node.traverse(strategy=strategy, order=order):
+            yield self.scene._objects[descendant.object_guid]
 
     def draw(self) -> list[object]:
         """The main drawing method."""

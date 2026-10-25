@@ -77,7 +77,11 @@ class GraphObject(SceneObject):
 
     @graph.setter
     def graph(self, graph: Graph) -> None:
-        self._item = graph
+        if self.scene is None:
+            self._item_guid = graph.guid
+            self._detached_item = graph
+        else:
+            self.scene.replace_item(self, graph)
         self._transformation = None
         self._node_xyz = None
         self._node_xyz_revision = None

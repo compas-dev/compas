@@ -1,8 +1,11 @@
 from collections.abc import Iterator
+from collections.abc import Mapping
+from types import MappingProxyType
 from typing import TYPE_CHECKING
 from typing import Any
 from typing import Self
 from typing import cast
+from uuid import UUID
 
 import compas.data  # noqa: F401
 import compas.datastructures  # noqa: F401
@@ -10,6 +13,7 @@ import compas.geometry  # noqa: F401
 from compas.data import Data
 from compas.datastructures import Tree
 
+from ._scenenode import SceneNode
 from .context import after_draw
 from .context import before_draw
 from .context import clear
@@ -49,11 +53,24 @@ class Scene(Data):
 
     @property
     def __data__(self) -> dict[str, Any]:
-        items = {str(object.item.guid): object.item for object in self.objects if object.item is not None}
+        def node_data(node: SceneNode) -> dict[str, Any]:
+            sceneobject = self._objects[node.object_guid]
+            data = {
+                "settings": sceneobject.settings,
+                "children": [node_data(child) for child in node.children],
+            }
+            if sceneobject.item_guid is not None:
+                data["item"] = str(sceneobject.item_guid)
+            return data
+
+        root = self.tree.root
+        if root is None:
+            raise RuntimeError("The scene tree has no root node.")
+        item_guids = {sceneobject.item_guid for sceneobject in self.objects if sceneobject.item_guid is not None}
         return {
             "name": self.name,
-            "root": self.root.__data__,
-            "items": list(items.values()),
+            "root": node_data(root),
+            "items": [item for guid, item in self._items.items() if guid in item_guids],
         }
 
     @classmethod
@@ -82,10 +99,12 @@ class Scene(Data):
     def __init__(self, name: str = "Scene", context: str | None = None) -> None:
         super().__init__(name=name)
         self.context = context or detect_current_context()
-        self.tree: Tree[SceneObject] = Tree(name=name)
+        self._items: dict[UUID, Data] = {}
+        self._objects: dict[UUID, SceneObject] = {}
+        self._nodes: dict[UUID, SceneNode] = {}
+        self.tree: Tree[SceneNode] = Tree(name=name)
         root = Group(name="ROOT", context=self.context)
-        root._scene = self
-        self.tree.add(root)
+        self._attach(root, parent=None)
 
     def __str__(self) -> str:
         return str(self.tree)
@@ -97,20 +116,30 @@ class Scene(Data):
     @property
     def root(self) -> Group:
         """The root group of the scene tree."""
-        root = self.tree.root
-        if root is None:
+        node = self.tree.root
+        if node is None:
             raise RuntimeError("The scene tree has no root group.")
-        return cast(Group, root)
+        return cast(Group, self._objects[node.object_guid])
 
     @property
     def nodes(self) -> Iterator[SceneObject]:
         """An iterator over all nodes in the scene tree, including the root."""
-        return self.tree.nodes
+        return (self._objects[node.object_guid] for node in self.tree.nodes)
 
     @property
     def objects(self) -> list[SceneObject]:
         """All scene objects except the private root group."""
-        return [node for node in self.nodes if not node.is_root]
+        return [self._objects[node.object_guid] for node in self.tree.nodes if not node.is_root]
+
+    @property
+    def item_store(self) -> Mapping[UUID, Data]:
+        """The read-only GUID-to-data mapping owned by the scene."""
+        return MappingProxyType(self._items)
+
+    @property
+    def object_store(self) -> Mapping[UUID, SceneObject]:
+        """The read-only GUID-to-scene-object mapping owned by the scene."""
+        return MappingProxyType(self._objects)
 
     @property
     def context_objects(self) -> list[object]:
@@ -170,7 +199,7 @@ class Scene(Data):
 
     def add(
         self,
-        item: Data,
+        item: Data | SceneObject,
         parent: SceneObject | None = None,
         **kwargs: Any,
     ) -> SceneObject:
@@ -194,8 +223,13 @@ class Scene(Data):
 
         parent = parent or self.root
 
+        if parent.scene is not self:
+            raise ValueError("The parent scene object does not belong to this scene.")
+
         if isinstance(item, SceneObject):
             sceneobject = item
+            if sceneobject.scene is not None:
+                raise ValueError("The scene object already belongs to a scene.")
         else:
             if isinstance(parent, Group):
                 # Use the parent group's settings as defaults for the child.
@@ -207,9 +241,7 @@ class Scene(Data):
                     raise Exception("Object context should be the same as scene context: {} != {}".format(kwargs["context"], self.context))
                 del kwargs["context"]  # otherwist the SceneObject receives "context" twice, which results in an error
             sceneobject = SceneObject(item=item, context=self.context, **kwargs)
-        for node in sceneobject.traverse():
-            node._scene = self
-        self.tree.add(sceneobject, parent=parent)
+        self._attach(sceneobject, parent=parent)
         return sceneobject
 
     def add_group(
@@ -248,10 +280,41 @@ class Scene(Data):
             The scene object to remove.
 
         """
-        removed = list(sceneobject.traverse())
-        self.tree.remove(sceneobject)
-        for node in removed:
-            node._scene = None
+        if sceneobject.scene is not self:
+            raise ValueError("The scene object does not belong to this scene.")
+        if sceneobject is self.root:
+            raise ValueError("The root group cannot be removed.")
+
+        node = self._nodes[sceneobject.guid]
+        removed_nodes = list(node.traverse())
+        self.tree.remove(node)
+        for removed_node in removed_nodes:
+            removed = self._objects.pop(removed_node.object_guid)
+            self._nodes.pop(removed.guid)
+            removed._detached_item = self._items.get(removed.item_guid) if removed.item_guid is not None else None
+            removed._scene = None
+        self._prune_items()
+
+    def replace_item(self, sceneobject: SceneObject, item: Data) -> None:
+        """Replace the data item represented by a scene object.
+
+        Parameters
+        ----------
+        sceneobject
+            The scene object whose represented item should change.
+        item
+            The replacement data item.
+
+        """
+        if sceneobject.scene is not self:
+            raise ValueError("The scene object does not belong to this scene.")
+        existing = self._items.get(item.guid)
+        if existing is not None and existing is not item:
+            raise ValueError("A different data item with the same GUID is already stored.")
+        self._items[item.guid] = item
+        sceneobject._item_guid = item.guid
+        sceneobject.invalidate()
+        self._prune_items()
 
     def clear_context(self, guids: list[object] | None = None) -> None:
         """Clear the visualization context.
@@ -298,7 +361,8 @@ class Scene(Data):
             guids += sceneobject.guids
             sceneobject._guids = None
 
-            if clear_scene:
+        if clear_scene:
+            for sceneobject in tuple(self.root.children):
                 self.remove(sceneobject)
 
         if clear_context:
@@ -356,7 +420,7 @@ class Scene(Data):
             The first matching scene object, or `None`.
 
         """
-        return self.tree.get_node_by_name(name=name)
+        return next((sceneobject for sceneobject in self.objects if sceneobject.name == name), None)
 
     def find_by_itemtype(self, itemtype: type[Data]) -> SceneObject | None:
         """Find the first scene object with a data item of the given type.
@@ -395,3 +459,32 @@ class Scene(Data):
             if isinstance(obj.item, itemtype):
                 sceneobjects.append(obj)
         return sceneobjects
+
+    # ==========================================================================
+    # Private helpers
+    # ==========================================================================
+
+    def _attach(self, sceneobject: SceneObject, parent: SceneObject | None) -> None:
+        if sceneobject.guid in self._objects:
+            raise ValueError("A scene object with the same GUID is already stored.")
+
+        item = sceneobject.item
+        if item is not None:
+            existing = self._items.get(item.guid)
+            if existing is not None and existing is not item:
+                raise ValueError("A different data item with the same GUID is already stored.")
+            self._items[item.guid] = item
+
+        node = SceneNode(sceneobject.guid)
+        parent_node = self._nodes[parent.guid] if parent else None
+        self.tree.add(node, parent=parent_node)
+        self._objects[sceneobject.guid] = sceneobject
+        self._nodes[sceneobject.guid] = node
+        sceneobject._scene = self
+        if hasattr(sceneobject, "_detached_item"):
+            del sceneobject._detached_item
+
+    def _prune_items(self) -> None:
+        referenced = {sceneobject.item_guid for sceneobject in self._objects.values()}
+        for guid in set(self._items) - referenced:
+            del self._items[guid]
