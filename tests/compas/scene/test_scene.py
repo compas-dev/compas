@@ -264,6 +264,53 @@ def test_scene_owns_tree_with_group_root():
     assert isinstance(scene.tree, Tree)
     assert isinstance(scene.root, Group)
     assert scene.root.tree is scene.tree
+    assert all(not isinstance(node, SceneObject) for node in scene.tree.nodes)
+
+
+def test_scene_stores_objects_and_items_by_guid():
+    scene = Scene()
+    box = Box()
+    boxobject = scene.add(box)
+
+    assert scene.object_store[boxobject.guid] is boxobject
+    assert scene.item_store[box.guid] is box
+    assert boxobject.item_guid == box.guid
+    assert boxobject.item is box
+    assert not hasattr(boxobject, "_detached_item")
+    assert not hasattr(boxobject, "_item")
+    assert scene.tree.root.children[0].object_guid == boxobject.guid
+
+
+def test_scene_reuses_shared_item_and_prunes_it_after_last_reference():
+    scene = Scene()
+    box = Box()
+    first = scene.add(box)
+    second = scene.add(box)
+
+    assert first.item is second.item is box
+    assert list(scene.item_store) == [box.guid]
+
+    scene.remove(first)
+    assert scene.item_store[box.guid] is box
+    assert first.scene is None
+    assert first.item is box
+
+    scene.remove(second)
+    assert box.guid not in scene.item_store
+
+
+def test_scene_replaces_an_objects_item_in_the_store():
+    scene = Scene()
+    original = Box(1.0)
+    replacement = Box(2.0)
+    sceneobject = scene.add(original)
+
+    scene.replace_item(sceneobject, replacement)
+
+    assert sceneobject.item is replacement
+    assert sceneobject.item_guid == replacement.guid
+    assert replacement.guid in scene.item_store
+    assert original.guid not in scene.item_store
 
 
 def test_group_creation():

@@ -101,8 +101,8 @@ def test_surface_placement_preserves_discretization_topology():
 
 
 def test_surface_preserves_geometry_bounding_box_property_contract():
-    assert callable(PlanarSurface.aabb)
-    assert callable(PlanarSurface.obb)
+    assert isinstance(PlanarSurface.aabb, property)
+    assert isinstance(PlanarSurface.obb, property)
 
 
 @pytest.mark.parametrize(

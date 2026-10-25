@@ -80,8 +80,8 @@ def test_torus_contains_points_in_arbitrary_frame():
 
 def test_torus_bounds_are_invalidated():
     torus = Torus(5.0, 2.0)
-    initial = torus.aabb()
+    initial = torus.aabb
     torus.radius_axis = 6.0
 
-    assert torus.aabb() is not initial
-    assert torus.aabb().xsize == pytest.approx(16.0)
+    assert torus.aabb is not initial
+    assert torus.aabb.xsize == pytest.approx(16.0)

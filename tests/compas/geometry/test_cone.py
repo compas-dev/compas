@@ -90,8 +90,8 @@ def test_cone_faces_do_not_compute_vertices(monkeypatch):
 
 def test_cone_bounds_are_invalidated():
     cone = Cone(1.0, 2.0)
-    initial = cone.aabb()
+    initial = cone.aabb
     cone.radius = 2.0
 
-    assert cone.aabb() is not initial
-    assert cone.aabb().xsize == pytest.approx(4.0)
+    assert cone.aabb is not initial
+    assert cone.aabb.xsize == pytest.approx(4.0)

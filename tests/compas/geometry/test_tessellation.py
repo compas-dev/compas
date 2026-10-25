@@ -50,15 +50,15 @@ def test_polygonal_geometry_produces_tessellations():
     surface = PolygonalSurface([[0, 0, 0], [1, 0, 0], [0, 1, 0]], [[0, 1, 2]])
     polyhedron = Polyhedron.from_platonicsolid(4)
 
-    assert polygon.tessellated().number_of_triangles == 1
-    assert region.tessellated().number_of_triangles == 1
-    assert surface.tessellated().vertices is surface.vertices
-    assert polyhedron.tessellated().number_of_triangles == 4
+    assert polygon.to_tessellation().number_of_triangles == 1
+    assert region.to_tessellation().number_of_triangles == 1
+    assert surface.to_tessellation().vertices is surface.vertices
+    assert polyhedron.to_tessellation().number_of_triangles == 4
 
 
 def test_parametric_geometry_produces_tessellations():
-    shape_tessellation = Box(1.0).tessellated()
-    surface_tessellation = PlanarSurface().tessellated(nu=2, nv=3)
+    shape_tessellation = Box(1.0).to_tessellation()
+    surface_tessellation = PlanarSurface().to_tessellation(nu=2, nv=3)
 
     assert shape_tessellation.number_of_triangles == 12
     assert surface_tessellation.number_of_vertices == 12
@@ -66,7 +66,7 @@ def test_parametric_geometry_produces_tessellations():
 
 
 def test_surface_tessellation_aligns_positions_normals_uvs_and_winding():
-    tessellation = PlanarSurface().tessellated(nu=2, nv=3)
+    tessellation = PlanarSurface().to_tessellation(nu=2, nv=3)
 
     assert tessellation.vertex_normals is not None
     assert tessellation.texture_coordinates is not None
@@ -83,7 +83,7 @@ def test_surface_tessellation_aligns_positions_normals_uvs_and_winding():
 
 
 def test_surface_tessellation_attributes_are_optional():
-    tessellation = PlanarSurface().tessellated(
+    tessellation = PlanarSurface().to_tessellation(
         include_normals=False,
         include_texture_coordinates=False,
     )
@@ -97,7 +97,7 @@ def test_shape_tessellation_resolution_override_does_not_mutate_shape():
     original_u = shape.resolution_u
     original_v = shape.resolution_v
 
-    tessellation = shape.tessellated(u=5, v=7)
+    tessellation = shape.to_tessellation(u=5, v=7)
 
     assert tessellation.number_of_vertices == 32
     assert shape.resolution_u == original_u
@@ -113,17 +113,17 @@ def test_direct_conversions_preserve_polygonal_topology():
     )
 
     assert shape.to_mesh().number_of_faces() == 6
-    assert shape.tessellated().to_mesh().number_of_faces() == 12
+    assert shape.to_tessellation().to_mesh().number_of_faces() == 12
     assert surface.to_mesh(nu=2, nv=3).number_of_faces() == 6
-    assert surface.tessellated(nu=2, nv=3).to_mesh().number_of_faces() == 12
+    assert surface.to_tessellation(nu=2, nv=3).to_mesh().number_of_faces() == 12
     assert polygonal_surface.to_mesh().number_of_faces() == 1
-    assert polygonal_surface.tessellated().to_mesh().number_of_faces() == 2
+    assert polygonal_surface.to_tessellation().to_mesh().number_of_faces() == 2
 
 
 def test_shape_topology_results_do_not_expose_cached_mutable_lists():
     shape = Box(1.0)
     _, faces = shape.to_vertices_and_faces()
-    triangles = shape.tessellated().triangles
+    triangles = shape.to_tessellation().triangles
 
     faces[0][0] = 99
 

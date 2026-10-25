@@ -79,11 +79,11 @@ def test_sphere_faces_do_not_compute_vertices(monkeypatch):
 
 def test_sphere_bounds_are_invalidated():
     sphere = Sphere(1.0)
-    initial = sphere.aabb()
+    initial = sphere.aabb
     sphere.radius = 2.0
 
-    assert sphere.aabb() is not initial
-    assert sphere.aabb().xsize == pytest.approx(4.0)
+    assert sphere.aabb is not initial
+    assert sphere.aabb.xsize == pytest.approx(4.0)
 
 
 def test_sphere_rejects_nonuniform_scaling():

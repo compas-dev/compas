@@ -100,8 +100,8 @@ def test_cylinder_faces_do_not_compute_vertices(monkeypatch):
 
 def test_cylinder_bounds_are_invalidated():
     cylinder = Cylinder(1.0, 2.0)
-    initial = cylinder.aabb()
+    initial = cylinder.aabb
     cylinder.radius = 2.0
 
-    assert cylinder.aabb() is not initial
-    assert cylinder.aabb().xsize == pytest.approx(4.0)
+    assert cylinder.aabb is not initial
+    assert cylinder.aabb.xsize == pytest.approx(4.0)

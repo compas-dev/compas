@@ -87,8 +87,8 @@ def test_capsule_faces_do_not_compute_vertices(monkeypatch):
 
 def test_capsule_bounds_are_invalidated():
     capsule = Capsule(1.0, 2.0)
-    initial = capsule.aabb()
+    initial = capsule.aabb
     capsule.radius = 2.0
 
-    assert capsule.aabb() is not initial
-    assert capsule.aabb().xsize == pytest.approx(4.0)
+    assert capsule.aabb is not initial
+    assert capsule.aabb.xsize == pytest.approx(4.0)

@@ -115,10 +115,10 @@ def test_polygon_requires_three_coordinate_components():
 def test_polygon_transform_invalidates_geometric_caches():
     polygon = Polygon([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]])
     lines = polygon.lines
-    aabb = polygon.aabb()
+    aabb = polygon.aabb
 
     polygon.transform(Translation.from_vector([2, 3, 4]))
 
     assert polygon.lines is not lines
-    assert polygon.aabb() is not aabb
-    assert polygon.aabb().frame.point == [2.5, 3.5, 4.0]
+    assert polygon.aabb is not aabb
+    assert polygon.aabb.frame.point == [2.5, 3.5, 4.0]

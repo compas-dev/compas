@@ -48,9 +48,9 @@ def test_box_corner(default_box):
 
 
 def test_box_bounds_are_invalidated_when_dimensions_change(default_box):
-    assert default_box.aabb().xsize == 1.0
+    assert default_box.aabb.xsize == 1.0
     default_box.xsize = 4.0
-    assert default_box.aabb().xsize == 4.0
+    assert default_box.aabb.xsize == 4.0
 
 
 def test_box_placement_preserves_local_discretization_and_topology(default_box, monkeypatch):

@@ -1358,13 +1358,13 @@ def test_matrix_types_with_noncontiguous_vertex_keys():
 
 
 def test_aabb_and_obb_return_boxes(cube):
-    assert isinstance(cube.aabb(), Box)
-    assert isinstance(cube.obb(), Box)
+    assert isinstance(cube.aabb, Box)
+    assert isinstance(cube.obb, Box)
 
 
 def test_aabb():
     mesh = Mesh.from_obj(compas.get("tubemesh.obj"))
-    aabb = mesh.aabb()
+    aabb = mesh.aabb
 
     assert isinstance(aabb, Box)
     assert len(aabb.points) == 8
@@ -1373,7 +1373,7 @@ def test_aabb():
 
 def test_obb():
     mesh = Mesh.from_obj(compas.get("tubemesh.obj"))
-    obb = mesh.obb()
+    obb = mesh.obb
 
     assert isinstance(obb, Box)
     assert len(obb.points) == 8

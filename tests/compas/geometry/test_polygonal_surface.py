@@ -83,10 +83,10 @@ def test_nonmanifold_polygonal_surface():
 
 
 def test_polygonal_surface_transform_invalidates_bounds(quad):
-    initial = quad.aabb()
+    initial = quad.aabb
     quad.transform(Translation.from_vector([2.0, 3.0, 4.0]))
 
-    assert quad.aabb() is not initial
+    assert quad.aabb is not initial
     assert quad.vertices[0] == [2.0, 3.0, 4.0]
 
 
