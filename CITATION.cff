@@ -1,0 +1,101 @@
+cff-version: 1.2.0
+message: "If you use COMPAS in your research, please cite it as below."
+title: "COMPAS"
+type: software
+abstract: >-
+  COMPAS is an open-source, Python-based framework for computational research
+  and collaboration in Architecture, Engineering, Fabrication and Construction.
+# Concept DOI: always resolves to the latest release on Zenodo.
+doi: 10.5281/zenodo.2594510
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.2594510
+    description: Concept DOI for all versions of COMPAS.
+repository-code: "https://github.com/compas-dev/compas"
+url: "https://compas.dev"
+license: MIT
+keywords:
+  - architecture
+  - engineering
+  - fabrication
+  - construction
+  - computational design
+  - python
+# Authors follow AUTHORS.md: project lead, main developers, then contributors.
+authors:
+  - given-names: Tom
+    family-names: Van Mele
+  - given-names: Gonzalo
+    family-names: Casas
+  - given-names: Romana
+    family-names: Rust
+  - given-names: Mathias
+    family-names: Bernhard
+  - given-names: Andrew
+    family-names: Liew
+  - given-names: Tomás
+    family-names: Méndez Echenagucia
+  - given-names: Matthias
+    family-names: Rippmann
+  - given-names: Kathrin
+    family-names: Dörfler
+  - given-names: Robin
+    family-names: Oval
+  - given-names: Rafael
+    family-names: Pastrana
+  - given-names: Achilleas
+    family-names: Xydis
+  - given-names: Elitsa
+    family-names: Dimitrova
+  - given-names: Li
+    family-names: Chen
+  - given-names: Anton
+    family-names: Johansson
+  - given-names: Victor
+    family-names: Leung
+  - given-names: Robin
+    family-names: Jodon
+  - given-names: Nik
+    family-names: Eftekhar Olivo
+  - given-names: Beverly
+    family-names: Lytle
+  - given-names: Juney
+    family-names: Lee
+  - given-names: Xingxin
+    family-names: He
+  - given-names: Robin
+    family-names: Godwyll
+  - given-names: Mattis
+    family-names: Koh
+  - given-names: Andrea
+    family-names: Ghensi
+  - given-names: Nizar
+    family-names: Taha
+  - given-names: Gene Ting-Chun
+    family-names: Kao
+  - given-names: Chen
+    family-names: Kasirer
+  - given-names: Aleksandra
+    family-names: Apolinarska
+  - given-names: Nickolas
+    family-names: Maslarinos
+  - given-names: Katerina
+    family-names: Toumpektsi
+  - given-names: Joelle
+    family-names: Baehr-Bruyere
+  - given-names: Adam
+    family-names: Anouar
+  - given-names: Joseph
+    family-names: Kenny
+  - given-names: Panayiotis
+    family-names: Papacharalambous
+  - given-names: Oliver
+    family-names: Bucklin
+  - given-names: Dominik
+    family-names: Reisach
+  - given-names: Eric
+    family-names: Gozzi
+  - given-names: Daniel
+    family-names: Nunes Locatelli
+  - given-names: Mengxi
+    family-names: He

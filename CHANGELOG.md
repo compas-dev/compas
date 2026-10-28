@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `CITATION.cff` with the concept DOI and the authors from `AUTHORS.md`, so GitHub's "Cite this repository" and Zenodo use proper citation metadata.
 * Added `TOL.update()` method for explicit global state modification. 
 * Added `TOL.temporary()` context manager for scoped changes.
 * Added missing implementation of `Brep.to_polygons()` in `compas_rhino.geometry.RhinoBrep`.
