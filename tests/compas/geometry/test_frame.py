@@ -72,6 +72,22 @@ def test_frame_predefined():
     assert frame.yaxis == Vector(1, 0, 0)
 
 
+@pytest.mark.parametrize("point", [[0.33, -1.66, 0.444], Point(0.33, -1.66, 0.444)])
+@pytest.mark.parametrize(
+    "constructor,xaxis,yaxis",
+    [
+        (Frame.worldXY, Vector(1, 0, 0), Vector(0, 1, 0)),
+        (Frame.worldYZ, Vector(0, 1, 0), Vector(0, 0, 1)),
+        (Frame.worldZX, Vector(0, 0, 1), Vector(1, 0, 0)),
+    ],
+)
+def test_frame_predefined_at_point(constructor, xaxis, yaxis, point):
+    frame = constructor(point)
+    assert frame.point == Point(0.33, -1.66, 0.444)
+    assert frame.xaxis == xaxis
+    assert frame.yaxis == yaxis
+
+
 def test_interpolate_frame_start_end():
     frame1 = Frame(Point(0, 0, 0), Vector(1, 0, 0), Vector(0, 1, 0))
     frame2 = Frame(Point(1, 1, 1), Vector(0, 0, 1), Vector(0, 1, 0))

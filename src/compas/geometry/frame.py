@@ -216,8 +216,13 @@ class Frame(Geometry):
     # ==========================================================================
 
     @classmethod
-    def worldXY(cls):  # type: () -> Frame
+    def worldXY(cls, point=None):  # type: (...) -> Frame
         """Construct the world XY frame.
+
+        Parameters
+        ----------
+        point : [float, float, float] | :class:`compas.geometry.Point`, optional
+            The origin of the frame. Defaults to the world origin.
 
         Returns
         -------
@@ -233,13 +238,20 @@ class Frame(Geometry):
         Vector(x=1.000, y=0.000, z=0.000)
         >>> print(frame.yaxis)
         Vector(x=0.000, y=1.000, z=0.000)
+        >>> Frame.worldXY([1, 2, 3]).point
+        Point(x=1.000, y=2.000, z=3.000)
 
         """
-        return cls([0, 0, 0], [1, 0, 0], [0, 1, 0])
+        return cls(point if point is not None else [0, 0, 0], [1, 0, 0], [0, 1, 0])
 
     @classmethod
-    def worldZX(cls):  # type: () -> Frame
+    def worldZX(cls, point=None):  # type: (...) -> Frame
         """Construct the world ZX frame.
+
+        Parameters
+        ----------
+        point : [float, float, float] | :class:`compas.geometry.Point`, optional
+            The origin of the frame. Defaults to the world origin.
 
         Returns
         -------
@@ -255,13 +267,20 @@ class Frame(Geometry):
         Vector(x=0.000, y=0.000, z=1.000)
         >>> print(frame.yaxis)
         Vector(x=1.000, y=0.000, z=0.000)
+        >>> Frame.worldZX([1, 2, 3]).point
+        Point(x=1.000, y=2.000, z=3.000)
 
         """
-        return cls([0, 0, 0], [0, 0, 1], [1, 0, 0])
+        return cls(point if point is not None else [0, 0, 0], [0, 0, 1], [1, 0, 0])
 
     @classmethod
-    def worldYZ(cls):  # type: () -> Frame
+    def worldYZ(cls, point=None):  # type: (...) -> Frame
         """Construct the world YZ frame.
+
+        Parameters
+        ----------
+        point : [float, float, float] | :class:`compas.geometry.Point`, optional
+            The origin of the frame. Defaults to the world origin.
 
         Returns
         -------
@@ -277,9 +296,11 @@ class Frame(Geometry):
         Vector(x=0.000, y=1.000, z=0.000)
         >>> print(frame.yaxis)
         Vector(x=0.000, y=0.000, z=1.000)
+        >>> Frame.worldYZ([1, 2, 3]).point
+        Point(x=1.000, y=2.000, z=3.000)
 
         """
-        return cls([0, 0, 0], [0, 1, 0], [0, 0, 1])
+        return cls(point if point is not None else [0, 0, 0], [0, 1, 0], [0, 0, 1])
 
     @classmethod
     def from_points(cls, point, point_xaxis, point_xyplane):  # type: (...) -> Frame
