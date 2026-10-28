@@ -347,11 +347,6 @@ class Shape(Geometry):
     def transform(self, transformation):
         """Transform the shape.
 
-        Transformations of a shape are performed by applying the transformation to the frame of the shape.
-        Transformations of the shape with respect to its local coordinate system are not supported.
-        For this reason, only (combinations of) translations and rotations are supported.
-        To scale a shape, use the :meth:`Shape.scale` method.
-
         Parameters
         ----------
         transformation : :class:`Transformation`
@@ -360,6 +355,12 @@ class Shape(Geometry):
         Returns
         -------
         None
+        
+        Notes
+        -----
+        Subclasses must override this method to decompose the transformation,
+        extract the scale component, and apply it appropriately to their dimensions
+        before transforming the frame.
 
         See Also
         --------
@@ -368,7 +369,7 @@ class Shape(Geometry):
         scale
 
         """
-        self.frame.transform(transformation)
+        raise NotImplementedError
 
     def translate(self, vector):
         """Translate the shape.
