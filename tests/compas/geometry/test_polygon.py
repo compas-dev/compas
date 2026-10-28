@@ -99,6 +99,15 @@ def test_polygon_normal_direction():
     assert polygon.normal.dot([0, 0, 1]) < 0
 
 
+def test_concave_polygon_normal_follows_winding_for_any_starting_vertex():
+    points = [[3, 1, 0], [1, 1, 0], [1, 4, 0], [0, 4, 0], [0, 0, 0], [4, 0, 0], [4, 4, 0], [3, 4, 0]]
+
+    for index in range(len(points)):
+        rotated = points[index:] + points[:index]
+        assert Polygon(rotated).normal.dot([0, 0, 1]) > 0
+        assert Polygon(list(reversed(rotated))).normal.dot([0, 0, 1]) < 0
+
+
 @pytest.mark.parametrize(
     "points",
     [
