@@ -27,6 +27,7 @@ if TYPE_CHECKING:
     from compas.geometry import Surface
     from compas.geometry import Tessellation
     from compas.geometry import Torus
+    from compas.geometry import Transformation
     from compas.geometry import Vector
 
     from .brep import Brep
@@ -177,6 +178,16 @@ def from_boolean_union(brep_a: "Brep | list[Brep]", brep_b: "Brep | list[Brep]")
     raise PluginNotInstalledError
 
 
+@pluggable(category="brep-operations")
+def brep_copy(brep: "Brep") -> "Brep":
+    raise PluginNotInstalledError
+
+
+@pluggable(category="brep-operations")
+def brep_transform(brep: "Brep", transformation: "Transformation") -> None:
+    raise PluginNotInstalledError
+
+
 @pluggable(category="brep-serialization")
 def brep_rebuild(brep: "Brep", data: dict[str, Any]) -> None:
     raise PluginNotInstalledError
@@ -193,6 +204,11 @@ def brep_area(brep: "Brep") -> float:
 
 
 @pluggable(category="brep-queries")
+def brep_aabb(brep: "Brep") -> "Box":
+    raise PluginNotInstalledError
+
+
+@pluggable(category="brep-queries")
 def brep_centroid(brep: "Brep") -> "Point":
     raise PluginNotInstalledError
 
@@ -204,6 +220,11 @@ def brep_classification(brep: "Brep") -> BrepClassification:
 
 @pluggable(category="brep-queries")
 def brep_frame(brep: "Brep") -> "Frame":
+    raise PluginNotInstalledError
+
+
+@pluggable(category="brep-queries")
+def brep_obb(brep: "Brep") -> "Box":
     raise PluginNotInstalledError
 
 

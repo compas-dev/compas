@@ -3,7 +3,10 @@ from os import PathLike
 from typing import TYPE_CHECKING
 from typing import Any
 from typing import Literal
+from typing import Self
+from typing import cast
 
+from compas.data import Data
 from compas.geometry import Geometry
 
 if TYPE_CHECKING:
@@ -29,14 +32,17 @@ if TYPE_CHECKING:
     from compas.geometry import Surface
     from compas.geometry import Tessellation
     from compas.geometry import Torus
+    from compas.geometry import Transformation
     from compas.geometry import Vector
 
+from .operations import brep_aabb
 from .operations import brep_area
 from .operations import brep_cap_planar_holes
 from .operations import brep_centroid
 from .operations import brep_classification
 from .operations import brep_contains
 from .operations import brep_contours
+from .operations import brep_copy
 from .operations import brep_cull_unused_edges
 from .operations import brep_cull_unused_faces
 from .operations import brep_cull_unused_loops
@@ -47,6 +53,7 @@ from .operations import brep_flip
 from .operations import brep_frame
 from .operations import brep_heal
 from .operations import brep_make_solid
+from .operations import brep_obb
 from .operations import brep_overlap
 from .operations import brep_polygonize
 from .operations import brep_rebuild
@@ -59,6 +66,7 @@ from .operations import brep_to_iges
 from .operations import brep_to_step
 from .operations import brep_to_stl
 from .operations import brep_topology
+from .operations import brep_transform
 from .operations import brep_trimmed
 from .operations import brep_volume
 from .operations import from_boolean_difference
@@ -367,6 +375,16 @@ class Brep(Geometry):
     def centroid(self) -> "Point":
         """The volume centroid."""
         return brep_centroid(self)
+
+    @property
+    def aabb(self) -> "Box":
+        """The axis-aligned bounding box of the Brep."""
+        return brep_aabb(self)
+
+    @property
+    def obb(self) -> "Box":
+        """The oriented bounding box of the Brep."""
+        return brep_obb(self)
 
     # ==============================================================================
     # Constructors
@@ -942,6 +960,34 @@ class Brep(Geometry):
     # Methods
     # ==============================================================================
 
+    def copy(self, cls: "type[Data] | None" = None, copy_guid: bool = False) -> Self:
+        """Make an independent copy of the Brep.
+
+        Parameters
+        ----------
+        cls
+            The type of Brep to return. Defaults to the type of this Brep.
+        copy_guid
+            If `True`, preserve the identifier of this Brep.
+
+        Returns
+        -------
+        Self
+            An independent copy of this Brep.
+
+        """
+        if cls is not None and not issubclass(cls, Brep):
+            raise TypeError("The copy class should be a Brep subclass.")
+
+        target_cls = cast(type[Self], cls or type(self))
+        copied = brep_copy(self)
+        result = target_cls(native_brep=copied.native_brep)
+        if self._name is not None:
+            result._name = self.name
+        if copy_guid:
+            result._guid = self.guid
+        return result
+
     def contains(self, object: "Point | Curve | Surface") -> bool:
         """Check if the Brep contains a given geometric primitive.
 
@@ -1195,6 +1241,25 @@ class Brep(Geometry):
 
         """
         self._replace_from(brep_cap_planar_holes(self, tolerance=tolerance))
+
+    # ==============================================================================
+    # Transformations
+    # ==============================================================================
+
+    def transform(self, transformation: "Transformation") -> None:
+        """Transform this Brep.
+
+        Parameters
+        ----------
+        transformation
+            The transformation applied to this Brep.
+
+        See Also
+        --------
+        [`Geometry.transformed`][compas.geometry.Geometry.transformed]
+
+        """
+        brep_transform(self, transformation)
 
     # ==============================================================================
     # Private helpers
