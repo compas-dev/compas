@@ -2,13 +2,15 @@ from typing import TYPE_CHECKING
 from typing import Any
 
 from compas._typing import CoordinatesType
-from compas._typing import MeshType
 from compas.plugins import PluginNotInstalledError
 from compas.plugins import pluggable
 
+from ._tessellation_plugin import tessellation_pluggable
+from .tessellation import Tessellation
+
 if TYPE_CHECKING:
-    from compas.geometry import PlanarRegion
-    from compas.geometry import Polygon
+    from .planar_region import PlanarRegion
+    from .polygon import Polygon
 
 
 def _xy_coordinates(points: Any) -> list[list[float]]:
@@ -48,21 +50,21 @@ def _planar_regions(geometry: Any) -> list["PlanarRegion"]:
     ]
 
 
-@pluggable(category="booleans")
-def boolean_union_mesh_mesh(A: MeshType, B: MeshType) -> tuple[list[list[float]], list[list[int]]]:
+@tessellation_pluggable(category="booleans", inputs=("A", "B"), result=True)
+def boolean_union_mesh_mesh(A: "Tessellation", B: "Tessellation") -> "Tessellation":
     """Compute the boolean union of two triangle meshes.
 
     Parameters
     ----------
     A
-        The vertices and faces of mesh A.
+        The first triangle tessellation.
     B
-        The vertices and faces of mesh B.
+        The second triangle tessellation.
 
     Returns
     -------
-    tuple[list[list[float]], list[list[int]]]
-        The vertices and the faces of the boolean union.
+    Tessellation
+        The triangle geometry of the boolean union.
 
     See Also
     --------
@@ -75,45 +77,38 @@ def boolean_union_mesh_mesh(A: MeshType, B: MeshType) -> tuple[list[list[float]]
 
     Examples
     --------
-    >>> from compas.geometry import Box, Sphere
+    >>> from compas.geometry import Box, Native, Sphere, UVGrid
     >>> from compas.geometry import boolean_union_mesh_mesh  # doctest: +SKIP
     >>> from compas.geometry import trimesh_remesh  # doctest: +SKIP
-    >>> from compas.datastructures import Mesh
 
     >>> box = Box.from_width_height_depth(2, 2, 2)
-    >>> box = Mesh.from_shape(box)
-    >>> box.quads_to_triangles()
+    >>> A = box.tessellate(Native())
 
     >>> sphere = Sphere.from_point_and_radius([1, 1, 1], 1)
-    >>> sphere = Mesh.from_shape(sphere, u=30, v=30)
-    >>> sphere.quads_to_triangles()
+    >>> B = sphere.tessellate(UVGrid(30, 30))
 
-    >>> A = box.to_vertices_and_faces()
-    >>> B = sphere.to_vertices_and_faces()
     >>> B = trimesh_remesh(B, 0.3, 10)  # doctest: +SKIP
-
-    >>> V, F = boolean_union_mesh_mesh(A, B)  # doctest: +SKIP
-    >>> union = Mesh.from_vertices_and_faces(V, F)  # doctest: +SKIP
+    >>> union = boolean_union_mesh_mesh(A, B)  # doctest: +SKIP
 
     """
     raise PluginNotInstalledError("No plugin was found for the boolean_union_mesh_mesh pluggable. A plugin is available in compas_cgal...")
 
 
-@pluggable(category="booleans")
-def boolean_difference_mesh_mesh(A: MeshType, B: MeshType) -> tuple[list[list[float]], list[list[int]]]:
+@tessellation_pluggable(category="booleans", inputs=("A", "B"), result=True)
+def boolean_difference_mesh_mesh(A: "Tessellation", B: "Tessellation") -> "Tessellation":
     """Compute the boolean difference of two triangle meshes.
 
     Parameters
     ----------
     A
-        The vertices and faces of mesh A.
+        The first triangle tessellation.
     B
-        The vertices and faces of mesh B.
+        The second triangle tessellation.
 
     Returns
     -------
-    tuple[list[list[float]], list[list[int]]]
-        The vertices and the faces of the boolean difference.
+    Tessellation
+        The triangle geometry of the boolean difference.
 
     See Also
     --------
@@ -128,21 +123,21 @@ def boolean_difference_mesh_mesh(A: MeshType, B: MeshType) -> tuple[list[list[fl
     raise PluginNotInstalledError("No plugin was found for the boolean_difference_mesh_mesh pluggable. A plugin is available in compas_cgal...")
 
 
-@pluggable(category="booleans")
-def boolean_intersection_mesh_mesh(A: MeshType, B: MeshType) -> tuple[list[list[float]], list[list[int]]]:
+@tessellation_pluggable(category="booleans", inputs=("A", "B"), result=True)
+def boolean_intersection_mesh_mesh(A: "Tessellation", B: "Tessellation") -> "Tessellation":
     """Compute the boolean intersection of two triangle meshes.
 
     Parameters
     ----------
     A
-        The vertices and faces of mesh A.
+        The first triangle tessellation.
     B
-        The vertices and faces of mesh B.
+        The second triangle tessellation.
 
     Returns
     -------
-    tuple[list[list[float]], list[list[int]]]
-        The vertices and the faces of the boolean intersection.
+    Tessellation
+        The triangle geometry of the boolean intersection.
 
     See Also
     --------

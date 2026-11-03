@@ -16,13 +16,16 @@ if TYPE_CHECKING:
     from compas.geometry import Cone
     from compas.geometry import Curve
     from compas.geometry import Cylinder
+    from compas.geometry import Deflection
     from compas.geometry import Frame
     from compas.geometry import Plane
     from compas.geometry import Point
     from compas.geometry import Polygon
+    from compas.geometry import PolygonalSurface
     from compas.geometry import Polyline
     from compas.geometry import Sphere
     from compas.geometry import Surface
+    from compas.geometry import Tessellation
     from compas.geometry import Torus
     from compas.geometry import Vector
 
@@ -227,10 +230,13 @@ def brep_contours(brep: "Brep", planes: Sequence["Plane"]) -> list[list["Polylin
 @pluggable(category="brep-operations")
 def brep_tessellate(
     brep: "Brep",
-    linear_deflection: float | None = None,
-    angular_deflection: float | None = None,
-    **kwargs: Any,
-) -> tuple["Mesh", list["Polyline"]]:
+    strategy: "Deflection",
+) -> "Tessellation":
+    raise PluginNotInstalledError
+
+
+@pluggable(category="brep-operations")
+def brep_polygonize(brep: "Brep", strategy: "Deflection") -> "PolygonalSurface":
     raise PluginNotInstalledError
 
 

@@ -11,12 +11,14 @@ from compas.geometry import Line
 from compas.geometry import Plane
 from compas.geometry import Point
 from compas.geometry import Transformation
+from compas.geometry import UVGrid
 from compas.geometry import transform_points
 
+from .box import Box
 from .shape import Shape
 
 
-class Capsule(Shape):
+class Capsule(Shape[UVGrid]):
     """A capsule is defined by a frame, radius, and height.
 
     The capsule is oriented along the z-axis of the frame.
@@ -92,7 +94,6 @@ class Capsule(Shape):
         if radius < 0:
             raise ValueError("The radius of the capsule should be greater than or equal to zero.")
         self._radius = float(radius)
-        self._invalidate_discretization()
 
     @property
     def height(self) -> float:
@@ -106,7 +107,6 @@ class Capsule(Shape):
         if height < 0:
             raise ValueError("The height of the capsule should be greater than or equal to zero.")
         self._height = float(height)
-        self._invalidate_discretization()
 
     @property
     def length(self) -> float:
@@ -132,6 +132,26 @@ class Capsule(Shape):
     def circle(self) -> Circle:
         """The circle at the middle of the cylindrical section."""
         return Circle(self.radius, frame=self.frame)
+
+    @property
+    def aabb(self) -> Box:
+        """The exact world-axis-aligned bounding box."""
+        axis = self.frame.zaxis
+        ex = 0.5 * self.height * abs(axis.x) + self.radius
+        ey = 0.5 * self.height * abs(axis.y) + self.radius
+        ez = 0.5 * self.height * abs(axis.z) + self.radius
+        return Box(2.0 * ex, 2.0 * ey, 2.0 * ez, frame=Frame(self.frame.point, [1, 0, 0], [0, 1, 0]))
+
+    @property
+    def obb(self) -> Box:
+        """The minimum-volume oriented bounding box.
+
+        Raises
+        ------
+        NotImplementedError
+            A continuous minimum-volume implementation is not available.
+        """
+        raise NotImplementedError("The continuous minimum-volume OBB of a capsule is not implemented.")
 
     def volume(self) -> float:
         """Compute the volume of the capsule."""
@@ -212,7 +232,7 @@ class Capsule(Shape):
     # Discretisation
     # =============================================================================
 
-    def _compute_vertices(self, u: int, v: int) -> list[CoordinateType]:
+    def _compute_local_vertices(self, strategy: UVGrid) -> list[CoordinateType]:
         """Compute the vertices of the discrete representation of the capsule.
 
         Returns
@@ -220,8 +240,10 @@ class Capsule(Shape):
         list[list[float]]
 
         """
+        u = strategy.u
+        v = strategy.v
         if v % 2 == 1:
-            v += 1
+            raise ValueError("Capsule V resolution should be even.")
 
         theta = pi / v
         phi = pi * 2 / u
@@ -248,7 +270,7 @@ class Capsule(Shape):
 
         return vertices
 
-    def compute_faces(self, u: int | None = None, v: int | None = None) -> list[list[int]]:
+    def _compute_faces(self, strategy: UVGrid) -> list[list[int]]:
         """Compute the faces of the discrete representation of the capsule.
 
         Returns
@@ -256,10 +278,10 @@ class Capsule(Shape):
         list[list[int]]
 
         """
-        u, v = self._resolutions(u, v)
-
+        u = strategy.u
+        v = strategy.v
         if v % 2 == 1:
-            v += 1
+            raise ValueError("Capsule V resolution should be even.")
 
         faces = []
 

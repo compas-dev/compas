@@ -16,6 +16,7 @@ if TYPE_CHECKING:
     from compas.geometry import PolygonalSurface
     from compas.geometry import Tessellation
     from compas.geometry import Transformation
+    from compas.geometry import TriangulationStrategy
 
 
 class PlanarRegion(Geometry):
@@ -36,17 +37,18 @@ class PlanarRegion(Geometry):
     contain at least three points. Tessellation additionally requires simple,
     non-intersecting loops, holes strictly inside the exterior boundary, and
     mutually disjoint holes. These more expensive topology checks run only when
-    `triangles`, `to_vertices_and_faces()`, `to_polygonal_surface()`, or
-    `to_mesh()` requests a tessellation.
+    `triangulated()`, `to_polygonal_surface()`, or `to_mesh()` requests a
+    tessellation.
 
     Examples
     --------
     >>> outer = [[0, 0, 0], [4, 0, 0], [4, 4, 0], [0, 4, 0]]
     >>> hole = [[1, 1, 0], [1, 3, 0], [3, 3, 0], [3, 1, 0]]
+    >>> from compas.geometry import EarClipping
     >>> region = PlanarRegion(outer, holes=[hole])
     >>> region.area()
     12.0
-    >>> len(region.triangles)
+    >>> region.triangulated(EarClipping()).number_of_triangles
     8
 
     """
@@ -118,43 +120,18 @@ class PlanarRegion(Geometry):
         """Independent coordinates of all flattened boundary vertices."""
         return [[float(value) for value in point] for boundary in self.boundaries for point in boundary.points]
 
-    @property
-    def triangles(self) -> list[list[int]]:
-        """The triangulation as indices into `vertices`.
-
-        Raises
-        ------
-        ValueError
-            If a boundary self-intersects, a hole is not strictly inside the
-            exterior boundary, or holes overlap, touch, or contain one another.
-
-        """
-        _, triangles = _earclip_boundaries(self.outer, self.holes)
-        return triangles
-
     # =============================================================================
     # Conversions
     # =============================================================================
 
-    def to_vertices_and_faces(self) -> tuple[list[list[float]], list[list[int]]]:
-        """Return the flattened boundary vertices and triangulated faces.
+    def triangulated(self, strategy: "TriangulationStrategy") -> "Tessellation":
+        """Triangulate the planar region without modifying it.
 
-        Returns
-        -------
-        tuple[list[list[float]], list[list[int]]]
-            The exterior vertices followed by each hole's vertices, and the
-            triangles indexing that flattened vertex list.
-
-        Raises
-        ------
-        ValueError
-            If the boundary topology is invalid for tessellation.
-
-        """
-        return _earclip_boundaries(self.outer, self.holes)
-
-    def to_tessellation(self) -> "Tessellation":
-        """Return a triangular tessellation of the planar region.
+        Parameters
+        ----------
+        strategy
+            The face triangulation strategy. Planar regions support
+            [`EarClipping`][compas.geometry.EarClipping].
 
         Returns
         -------
@@ -162,9 +139,12 @@ class PlanarRegion(Geometry):
             The indexed triangular representation.
 
         """
+        from compas.geometry import EarClipping
         from compas.geometry import Tessellation
 
-        vertices, triangles = self.to_vertices_and_faces()
+        if not isinstance(strategy, EarClipping):
+            raise TypeError("PlanarRegion supports only the EarClipping strategy.")
+        vertices, triangles = _earclip_boundaries(self.outer, self.holes)
         return Tessellation(vertices, triangles)
 
     def to_polygonal_surface(self) -> "PolygonalSurface":
@@ -175,7 +155,9 @@ class PlanarRegion(Geometry):
         PolygonalSurface
 
         """
-        return self.to_tessellation().to_polygonal_surface()
+        from compas.geometry import EarClipping
+
+        return self.triangulated(EarClipping()).to_polygonal_surface()
 
     def to_mesh(self) -> "Mesh":
         """Convert the region to a triangulated half-edge mesh.
@@ -185,7 +167,9 @@ class PlanarRegion(Geometry):
         Mesh
 
         """
-        return self.to_tessellation().to_mesh()
+        from compas.geometry import EarClipping
+
+        return self.triangulated(EarClipping()).to_mesh()
 
     # =============================================================================
     # Methods

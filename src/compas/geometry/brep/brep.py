@@ -17,14 +17,17 @@ if TYPE_CHECKING:
     from compas.geometry import Cone
     from compas.geometry import Curve
     from compas.geometry import Cylinder
+    from compas.geometry import Deflection
     from compas.geometry import Frame
     from compas.geometry import Line
     from compas.geometry import Plane
     from compas.geometry import Point
     from compas.geometry import Polygon
+    from compas.geometry import PolygonalSurface
     from compas.geometry import Polyline
     from compas.geometry import Sphere
     from compas.geometry import Surface
+    from compas.geometry import Tessellation
     from compas.geometry import Torus
     from compas.geometry import Vector
 
@@ -45,6 +48,7 @@ from .operations import brep_frame
 from .operations import brep_heal
 from .operations import brep_make_solid
 from .operations import brep_overlap
+from .operations import brep_polygonize
 from .operations import brep_rebuild
 from .operations import brep_sew
 from .operations import brep_slice
@@ -799,25 +803,6 @@ class Brep(Geometry):
         """
         return brep_to_iges(self, filepath)
 
-    def to_meshes(self, u: int = 16, v: int = 16) -> list["Mesh"]:
-        """Convert the faces of this Brep shape to meshes.
-
-        Parameters
-        ----------
-        u
-            The number of mesh faces in the U direction of the underlying surface geometry of every face of the Brep.
-        v
-            The number of mesh faces in the V direction of the underlying surface geometry of every face of the Brep.
-
-        Returns
-        -------
-        list[Mesh]
-            One mesh per Brep face.
-
-        """
-        mesh, _ = brep_tessellate(self, u=u, v=v)
-        return [mesh]
-
     def to_polygons(self) -> list["Polygon"]:
         """Convert the faces of this Brep shape to polygons.
 
@@ -856,57 +841,45 @@ class Brep(Geometry):
         """
         return brep_to_stl(self, filepath)
 
-    def to_tesselation(
-        self,
-        linear_deflection: float | None = None,
-        angular_deflection: float | None = None,
-    ) -> tuple["Mesh", list["Polyline"]]:
-        """Create a tessellation of the shape for visualization.
+    def tessellate(self, strategy: "Deflection") -> "Tessellation":
+        """Create a triangle tessellation of the trimmed shape.
 
         Parameters
         ----------
-        linear_deflection
-            Allowable deviation between curved geometry and mesh discretisation.
-        angular_deflection
-            Allowable angular deviation between adjacent mesh facets.
+        strategy
+            The linear and angular deflection targets.
 
         Returns
         -------
-        tuple[Mesh, list[Polyline]]
-            The tessellation mesh and discretized edge curves.
+        Tessellation
+            The ephemeral triangle representation.
 
         """
-        return brep_tessellate(
-            self,
-            linear_deflection=linear_deflection,
-            angular_deflection=angular_deflection,
-        )
+        from compas.geometry import Deflection
 
-    def to_viewmesh(
-        self,
-        linear_deflection: float | None = None,
-        angular_deflection: float | None = None,
-    ) -> tuple["Mesh", list["Polyline"]]:
-        """Convert this Brep to a view mesh.
+        if not isinstance(strategy, Deflection):
+            raise TypeError("Brep tessellation requires a Deflection strategy.")
+        return brep_tessellate(self, strategy)
+
+    def polygonize(self, strategy: "Deflection") -> "PolygonalSurface":
+        """Create a polygonal representation of the trimmed shape.
 
         Parameters
         ----------
-        linear_deflection
-            Allowable deviation between curved geometry and mesh discretisation.
-        angular_deflection
-            Allowable angular deviation between adjacent mesh facets.
+        strategy
+            The linear and angular deflection targets.
 
         Returns
         -------
-        tuple[Mesh, list[Polyline]]
-            The view mesh and discretized edge curves.
+        PolygonalSurface
+            The fresh polygonal representation.
 
         """
-        return brep_tessellate(
-            self,
-            linear_deflection=linear_deflection,
-            angular_deflection=angular_deflection,
-        )
+        from compas.geometry import Deflection
+
+        if not isinstance(strategy, Deflection):
+            raise TypeError("Brep polygonization requires a Deflection strategy.")
+        return brep_polygonize(self, strategy)
 
     # ==============================================================================
     # Relationships

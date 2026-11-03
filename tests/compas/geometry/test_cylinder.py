@@ -4,6 +4,7 @@ from compas.geometry import Cylinder
 from compas.geometry import Frame
 from compas.geometry import Line
 from compas.geometry import Point
+from compas.geometry import UGrid
 
 
 @pytest.fixture
@@ -14,9 +15,9 @@ def cylinder():
 def test_cylinder_discretization(cylinder):
     # just checking these don't break. Could not quickly find a formula that worked to test the actual values
     # as function of the resolution
-    vertices, faces = cylinder.to_vertices_and_faces()
-    assert vertices
-    assert faces
+    surface = cylinder.polygonize(UGrid(6))
+    assert surface.vertices
+    assert surface.faces
 
 
 def test_cylinder_scaled():
@@ -94,8 +95,8 @@ def test_cylinder_faces_do_not_compute_vertices(monkeypatch):
     def fail():
         raise AssertionError("Topology computation should not regenerate positions.")
 
-    monkeypatch.setattr(cylinder, "compute_vertices", fail)
-    assert cylinder.compute_faces()
+    monkeypatch.setattr(cylinder, "_compute_local_vertices", fail)
+    assert cylinder._compute_faces(UGrid(6))
 
 
 def test_cylinder_bounds_are_invalidated():

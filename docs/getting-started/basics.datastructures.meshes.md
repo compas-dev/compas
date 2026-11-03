@@ -40,7 +40,6 @@ Meshes can be constructed in a number of ways:
 >>> mesh = Mesh.from_meshgrid(...)
 >>> mesh = Mesh.from_polygons(...)
 >>> mesh = Mesh.from_polyhedron(...)
->>> mesh = Mesh.from_shape(...)
 >>> mesh = Mesh.from_vertices_and_faces(...)
 ```
 

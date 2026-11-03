@@ -14,12 +14,15 @@ if TYPE_CHECKING:
     from compas.geometry import BrepVertex
     from compas.geometry import Cone
     from compas.geometry import Cylinder
+    from compas.geometry import Deflection
     from compas.geometry import Frame
     from compas.geometry import NurbsSurface
     from compas.geometry import Plane
     from compas.geometry import Point
+    from compas.geometry import PolygonalSurface
     from compas.geometry import Sphere
     from compas.geometry import Surface
+    from compas.geometry import Tessellation
     from compas.geometry import Torus
 
 
@@ -287,6 +290,14 @@ class BrepFace(Data):
     def to_nurbs(self) -> "NurbsSurface":
         """Return the face surface as a NURBS surface."""
         raise NotImplementedError
+
+    def tessellate(self, strategy: "Deflection") -> "Tessellation":
+        """Create a triangle tessellation respecting this face's trims."""
+        return self.as_brep().tessellate(strategy)
+
+    def polygonize(self, strategy: "Deflection") -> "PolygonalSurface":
+        """Create a polygonal representation respecting this face's trims."""
+        return self.as_brep().polygonize(strategy)
 
     # ==========================================================================
     # Methods

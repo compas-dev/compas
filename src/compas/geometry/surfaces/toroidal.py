@@ -1,6 +1,8 @@
 from math import cos
 from math import pi
 from math import sin
+from math import sqrt
+from typing import TYPE_CHECKING
 from typing import Any
 from typing import Self
 
@@ -12,6 +14,9 @@ from compas.geometry import Point
 from compas.geometry import Vector
 
 from .surface import Surface
+
+if TYPE_CHECKING:
+    from compas.geometry import Box
 
 PI2 = 2 * pi
 
@@ -92,6 +97,21 @@ class ToroidalSurface(Surface):
     # =============================================================================
 
     @property
+    def aabb(self) -> "Box":
+        """The exact world-axis-aligned bounding box of the full surface domain."""
+        from compas.geometry import Box
+
+        xaxis = self.frame.xaxis
+        yaxis = self.frame.yaxis
+        extents = [self.radius_axis * sqrt(xaxis[i] ** 2 + yaxis[i] ** 2) + self.radius_pipe for i in range(3)]
+        return Box(
+            xsize=2.0 * extents[0],
+            ysize=2.0 * extents[1],
+            zsize=2.0 * extents[2],
+            frame=Frame(self.center),
+        )
+
+    @property
     def center(self) -> Point:
         """The center point on the torus axis.
 
@@ -121,7 +141,6 @@ class ToroidalSurface(Surface):
         if self._radius_pipe is not None and radius <= self._radius_pipe:
             raise ValueError("The axis radius of a ring torus should be larger than its pipe radius.")
         self._radius_axis = float(radius)
-        self._invalidate_discretization()
 
     @property
     def radius_pipe(self) -> float:
@@ -137,7 +156,6 @@ class ToroidalSurface(Surface):
         if self._radius_axis is not None and radius >= self._radius_axis:
             raise ValueError("The pipe radius of a ring torus should be smaller than its axis radius.")
         self._radius_pipe = float(radius)
-        self._invalidate_discretization()
 
     def area(self) -> float:
         """Compute the surface area of the torus."""

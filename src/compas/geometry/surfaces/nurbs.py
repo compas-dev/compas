@@ -1,4 +1,5 @@
 from collections.abc import Sequence
+from math import isfinite
 from typing import TYPE_CHECKING
 from typing import Any
 from typing import Literal
@@ -48,6 +49,7 @@ from .nurbs_operations import surface_weights
 from .surface import Surface
 
 if TYPE_CHECKING:
+    from compas.geometry import Box
     from compas.geometry import Brep
     from compas.geometry import Curve
     from compas.geometry import Cylinder
@@ -164,6 +166,59 @@ class NurbsSurface(Surface):
     def weights(self) -> Sequence[Sequence[float]]:
         """The control-point weights in the same V-by-U layout as `control_points`."""
         return surface_weights(self)
+
+    @property
+    def aabb(self) -> "Box":
+        """A conservative world-axis-aligned bounding box of the surface.
+
+        The box is the axis-aligned bounding box of the control net. For
+        strictly positive finite weights, a rational B-spline surface is
+        contained in the convex hull of its control points. Therefore this box
+        encloses the complete continuous surface without sampling it, although
+        it is not necessarily tight.
+
+        Raises
+        ------
+        ValueError
+            If the control-point and weight grids are empty, non-rectangular,
+            differently shaped, or contain values for which the convex-hull
+            guarantee cannot be established.
+
+        """
+        from compas.geometry import Box
+        from compas.geometry import Frame
+
+        points = [list(row) for row in self.control_points]
+        weights = [list(row) for row in self.weights]
+
+        if not points or not points[0]:
+            raise ValueError("The NURBS surface should have a nonempty control-point grid.")
+
+        column_count = len(points[0])
+        if any(len(row) != column_count for row in points):
+            raise ValueError("The NURBS surface control-point grid should be rectangular.")
+
+        if len(weights) != len(points) or any(len(row) != column_count for row in weights):
+            raise ValueError("The NURBS surface weight grid should match the control-point grid.")
+
+        if any(not isfinite(weight) or weight <= 0.0 for row in weights for weight in row):
+            raise ValueError("NURBS surface bounds require finite, strictly positive weights.")
+
+        coordinates = [coordinate for row in points for point in row for coordinate in point]
+        if any(not isfinite(coordinate) for coordinate in coordinates):
+            raise ValueError("NURBS surface bounds require finite control-point coordinates.")
+
+        flat_points = [point for row in points for point in row]
+        minimum = [min(point[index] for point in flat_points) for index in range(3)]
+        maximum = [max(point[index] for point in flat_points) for index in range(3)]
+        center = [0.5 * (a + b) for a, b in zip(minimum, maximum)]
+
+        return Box(
+            xsize=maximum[0] - minimum[0],
+            ysize=maximum[1] - minimum[1],
+            zsize=maximum[2] - minimum[2],
+            frame=Frame(center),
+        )
 
     @property
     def knots_u(self) -> Sequence[float]:
@@ -600,7 +655,6 @@ class NurbsSurface(Surface):
 
         """
         surface_transform(self, transformation)
-        self._invalidate_discretization()
 
     def isocurve_u(self, u: float) -> "Curve | Line":
         """Compute the isoparametric curve at a U parameter."""

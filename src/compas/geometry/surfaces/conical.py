@@ -2,6 +2,7 @@ from math import cos
 from math import pi
 from math import sin
 from math import sqrt
+from typing import TYPE_CHECKING
 from typing import Any
 from typing import Self
 
@@ -14,6 +15,9 @@ from compas.geometry import Point
 from compas.geometry import Vector
 
 from .surface import Surface
+
+if TYPE_CHECKING:
+    from compas.geometry import Box
 
 PI2 = 2 * pi
 
@@ -97,6 +101,30 @@ class ConicalSurface(Surface):
     # =============================================================================
 
     @property
+    def aabb(self) -> "Box":
+        """The exact world-axis-aligned bounding box of the full surface domain."""
+        from compas.geometry import Box
+
+        origin = self.frame.point
+        xaxis = self.frame.xaxis
+        yaxis = self.frame.yaxis
+        zaxis = self.frame.zaxis
+        apex = origin + self.height * zaxis
+        minimum = []
+        maximum = []
+        for i in range(3):
+            radial = self.radius * sqrt(xaxis[i] ** 2 + yaxis[i] ** 2)
+            minimum.append(min(origin[i] - radial, apex[i]))
+            maximum.append(max(origin[i] + radial, apex[i]))
+        center = Point(*[0.5 * (a + b) for a, b in zip(minimum, maximum)])
+        return Box(
+            xsize=maximum[0] - minimum[0],
+            ysize=maximum[1] - minimum[1],
+            zsize=maximum[2] - minimum[2],
+            frame=Frame(center),
+        )
+
+    @property
     def center(self) -> Point:
         """The center point of the cone base.
 
@@ -124,7 +152,6 @@ class ConicalSurface(Surface):
         if radius <= 0:
             raise ValueError("The radius of a cone should be larger than zero.")
         self._radius = float(radius)
-        self._invalidate_discretization()
 
     @property
     def height(self) -> float:
@@ -138,7 +165,6 @@ class ConicalSurface(Surface):
         if height <= 0:
             raise ValueError("The height of a cone should be larger than zero.")
         self._height = float(height)
-        self._invalidate_discretization()
 
     def area(self) -> float:
         """Compute the lateral area of the cone, excluding its circular base."""

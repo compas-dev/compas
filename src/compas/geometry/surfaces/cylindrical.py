@@ -1,6 +1,8 @@
 from math import cos
 from math import pi
 from math import sin
+from math import sqrt
+from typing import TYPE_CHECKING
 from typing import Any
 from typing import Self
 
@@ -13,6 +15,9 @@ from compas.geometry import Point
 from compas.geometry import Vector
 
 from .surface import Surface
+
+if TYPE_CHECKING:
+    from compas.geometry import Box
 
 PI2 = 2 * pi
 
@@ -80,6 +85,25 @@ class CylindricalSurface(Surface):
     # =============================================================================
 
     @property
+    def aabb(self) -> "Box":
+        """The exact world-axis-aligned bounding box of the full surface domain."""
+        from compas.geometry import Box
+
+        vmin, vmax = self.domain_v
+        xaxis = self.frame.xaxis
+        yaxis = self.frame.yaxis
+        zaxis = self.frame.zaxis
+        center = self.frame.point + 0.5 * (vmin + vmax) * zaxis
+        halfheight = 0.5 * (vmax - vmin)
+        extents = [self.radius * sqrt(xaxis[i] ** 2 + yaxis[i] ** 2) + halfheight * abs(zaxis[i]) for i in range(3)]
+        return Box(
+            xsize=2.0 * extents[0],
+            ysize=2.0 * extents[1],
+            zsize=2.0 * extents[2],
+            frame=Frame(center),
+        )
+
+    @property
     def center(self) -> Point:
         """The point on the cylinder axis at V parameter zero.
 
@@ -107,7 +131,6 @@ class CylindricalSurface(Surface):
         if radius <= 0:
             raise ValueError("The radius of a cylinder should be larger than zero.")
         self._radius = float(radius)
-        self._invalidate_discretization()
 
     def area(self) -> float:
         """The lateral area over the surface V domain.

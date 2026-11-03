@@ -102,9 +102,7 @@ def _contours_from_grid(x: "NDArray", y: "NDArray", values: "NDArray", level: fl
                 i, j = edge_corners[edge]
                 point = _interpolate_edge(corners[i], corners[j], scalar[i], scalar[j], level)
                 intersections[edge] = tuple(round(coordinate, 14) for coordinate in point)
-            segments.extend(
-                (intersections[a], intersections[b]) for a, b in pairs if intersections[a] != intersections[b]
-            )
+            segments.extend((intersections[a], intersections[b]) for a, b in pairs if intersections[a] != intersections[b])
 
     return _join_segments(segments)
 

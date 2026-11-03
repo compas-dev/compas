@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added serializable strategies and structural validation for polygonization, ephemeral `Tessellation` buffers, mixed-face triangulation, and planar Delaunay triangulation.
+* Added `polygonize(strategy)` and deterministic `tessellate(strategy=None)` operations for continuous geometry. Shape and surface defaults use `Native()`, `UGrid(64)`, or `UVGrid(64, 64)` according to parameter dimensionality.
+* Added `FaceTriangulation` for mixed polygonal collections, explicit projected ear clipping for bounded near-planar polygons, and minimum-area dynamic programming for twisted 3D polygons.
+* Added parameter-derived continuous AABBs for analytic shapes and surfaces, minimum-volume OBBs where established, and certified conservative control-net bounds for positive-weight NURBS surfaces.
 * Added `TOL.update()` method for explicit global state modification. 
 * Added `TOL.temporary()` context manager for scoped changes.
 * Added `LineCurve` as the finite linear implementation of the shared parametric `Curve` API while keeping `Line` as a lightweight geometry primitive.
@@ -16,6 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Standardized triangle-processing plugin inputs and outputs on the ephemeral `Tessellation` representation. See the geometry discretization and tessellation migration guide for the COMPAS 3 replacements.
+* Renamed planar Delaunay operations to `triangulate_planar_points` and `triangulate_planar_domain`, with core-owned validation before backend dispatch.
 * Replaced backend-specific `NurbsCurve` and `NurbsSurface` substitution with stable core wrappers and operation-level plugin contracts.
 * Modernized internal path, URL, text-stream, and binary-stream handling and made ownership of opened resources explicit.
 * Corrected variance, standard-deviation, Gram-Schmidt, determinant, inverse, matrix-decomposition, and projection edge-case behavior in `compas.linalg`.
@@ -44,12 +50,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Consolidated bounding-box algorithms in `bbox.py`, replaced `_numpy` public names with canonical unsuffixed functions, made numerical imports lazy, and modernized their annotations and documentation.
 * Consolidated best-fit algorithms in `bestfit.py`, removed `_numpy` public names, made numerical imports lazy, switched the canonical plane fit to PCA, and standardized fitted radii as scalar floats.
 * Consolidated hull and ICP algorithms under unsuffixed APIs, corrected convex-hull polyhedron construction and stable ICP returns, and moved optional Shapely polygon Boolean defaults into `booleans.py`.
-* Added deferred topology validation to `PlanarRegion` tessellation, with clear errors for invalid boundary loops, holes outside or touching the exterior, and overlapping, touching, or nested holes.
-* Added a zero-copy, triangle-only `Tessellation` result with shared vertex indexing for triangles, normals, and texture coordinates, and introduced `to_tessellation()` across shapes, surfaces, and polygonal geometry. Direct mesh and polygonal-surface conversions preserve polygonal topology; conversion through `Tessellation` explicitly produces triangular geometry.
-* Added cached polygonal parametric-representation APIs to shapes and surfaces through `vertices`, `edges`, and `faces`, with geometry-object views and public uncached `compute_*` methods. Triangles now exist only in `Tessellation` results.
-* Defined discretisation as resolution-dependent sampling that preserves polygonal topology, and tessellation as conversion to indexed triangles for visualization or triangle-based processing. Shape placement changes now reuse cached local vertices and topology; surface placement changes preserve cached topology.
-* Renamed the NURBS surface defining-point grid from `points` to `control_points`, reserving `Surface.points` for sampled polygonal vertices as geometry objects.
-* Made shape and surface tessellation resolution overrides non-mutating and added aligned analytic normals and normalized UV coordinates to surface tessellations.
+* Added deferred topology validation to `PlanarRegion` triangulation, with clear errors for invalid boundary loops, holes outside or touching the exterior, and overlapping, touching, or nested holes.
+* Added a zero-copy, triangle-only `Tessellation` result with shared vertex indexing for triangles, normals, and texture coordinates. Continuous defining geometry uses explicit `polygonize(strategy)` for persistent `PolygonalSurface` results and fresh `tessellate(strategy=None)` for ephemeral triangle results; polygonal collections use composite `FaceTriangulation` policies.
+* Defined discretization as the broad category of operations producing finite representations of continuous geometry, polygonization as the persistent `PolygonalSurface` operation, and tessellation as the ephemeral indexed-triangle operation.
+* Renamed the NURBS surface defining-point grid from `points` to `control_points`.
+* Made shape and surface strategy arguments non-mutating and added aligned analytic normals and normalized UV coordinates to surface tessellations.
 * Changed `Frame.__from_data__` to trust canonical data produced by `Frame.__data__` and copy its axes without repeating validation or orthonormalization. The same internal path now accelerates copies, world frames, and rotation-based factories whose axes are already orthonormal. Malformed serialized axes are no longer repaired during reconstruction; use `Frame(...)` for arbitrary axes that require normalization and orthogonalization.
 * Cached successful COMPAS JSON dtype resolution and consolidated unavailable dtype failures into a single `DecoderError` path.
 * Scoped the COMPAS JSON `minimal` option to each `DataEncoder` instance instead of sharing mutable global state between serialization calls.
@@ -65,7 +70,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-* Removed `Shape.to_polyhedron()` because `Polyhedron` represents a validated closed solid rather than the generic polygonal discretization of a shape. Use `to_polygonal_surface()`, `to_tessellation()`, or `to_mesh()`.
+* Removed implicit and misspelled tessellation conversions, scalar resolution overrides, implicit quad splitting, and raw triangle-buffer plugin boundaries in favor of explicit strategies and result types.
+* Removed stored shape and surface resolution state, derived discretization caches, generic sampled geometry properties, `Shape.to_vertices_and_faces()`, and `Mesh.from_shape()`.
+* Removed unused runtime tessellation capability discovery and speculative approximation-error schemas.
+* Removed `Shape.to_polyhedron()` because `Polyhedron` represents a validated closed solid rather than the generic polygonal discretization of a shape. Use `polygonize(strategy)`, `tessellate(strategy)`, or convert the result to a mesh.
 * Removed the private `compas._os` compatibility module and its obsolete Python 2, IronPython, CAD-host, Conda-bootstrapper, and Windows elevation helpers.
 * Removed the deprecated `compas.linalg.close` and `compas.linalg.allclose` helpers in favor of `TOL.is_close` and `TOL.is_allclose`.
 * Removed the `compas.rpc` package and the `compas_rpc` command-line entry point.

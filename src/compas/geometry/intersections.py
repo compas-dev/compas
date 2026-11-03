@@ -2,7 +2,6 @@ from itertools import chain
 from typing import TYPE_CHECKING
 
 from compas._typing import CoordinatesType
-from compas._typing import MeshType
 from compas._typing import RayMeshHit
 from compas._typing import RayType
 from compas._typing import SphereType
@@ -24,12 +23,14 @@ from ._core.intersections import intersection_sphere_line as _intersection_spher
 from ._core.intersections import intersection_sphere_sphere as _intersection_sphere_sphere
 from ._core.predicates_2 import is_point_on_segment_xy
 from ._core.predicates_3 import is_point_on_segment
+from ._tessellation_plugin import tessellation_pluggable
 from ._typing import CircleType
 from ._typing import LineType
 from ._typing import PlaneType
 from ._typing import PolylineType
 from ._typing import TriangleType
 from .intersection import IntersectionResult
+from .tessellation import Tessellation
 
 if TYPE_CHECKING:
     from .brep.brep import Brep
@@ -656,16 +657,16 @@ def intersection_plane_circle(
     )
 
 
-@pluggable(category="intersections")
-def intersection_mesh_mesh(A: MeshType, B: MeshType) -> list[CoordinatesType]:
+@tessellation_pluggable(category="intersections", inputs=("A", "B"))
+def intersection_mesh_mesh(A: "Tessellation", B: "Tessellation") -> list[CoordinatesType]:
     """Compute the intersection of two meshes.
 
     Parameters
     ----------
     A
-        The vertices and faces of the first mesh.
+        The first triangle tessellation.
     B
-        The vertices and faces of the second mesh.
+        The second triangle tessellation.
 
     Returns
     -------
@@ -681,8 +682,8 @@ def intersection_mesh_mesh(A: MeshType, B: MeshType) -> list[CoordinatesType]:
     raise PluginNotInstalledError
 
 
-@pluggable(category="intersections")
-def intersection_ray_mesh(ray: RayType, mesh: MeshType) -> list[RayMeshHit]:
+@tessellation_pluggable(category="intersections", inputs=("mesh",))
+def intersection_ray_mesh(ray: RayType, mesh: "Tessellation") -> list[RayMeshHit]:
     """Compute the intersection(s) between a ray and a mesh.
 
     Parameters
@@ -690,7 +691,7 @@ def intersection_ray_mesh(ray: RayType, mesh: MeshType) -> list[RayMeshHit]:
     ray
         The ray origin and direction vector.
     mesh
-        The vertices and faces of the mesh.
+        The triangle tessellation.
 
     Returns
     -------

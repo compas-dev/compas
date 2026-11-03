@@ -14,13 +14,15 @@ from compas.geometry import trimesh_pull_points
 from compas.geometry import trimesh_sample_points
 from compas.geometry import trimesh_smooth_laplacian_cotangent
 from compas.geometry import trimesh_vertexarea_matrix
+from compas.geometry import Tessellation
 from compas.geometry.trimesh import trimesh_gaussian_curvature as packaged_trimesh_gaussian_curvature
 
 
-TRIANGLE = (
+TRIANGLE_BUFFERS = (
     [[0, 0, 0], [1, 0, 0], [0, 1, 0]],
     [[0, 1, 2]],
 )
+TRIANGLE = Tessellation(*TRIANGLE_BUFFERS)
 
 
 def test_trimesh_gaussian_curvature_counts_each_corner_once():
@@ -30,7 +32,7 @@ def test_trimesh_gaussian_curvature_counts_each_corner_once():
 
 
 def test_trimesh_gaussian_curvature_uses_full_angular_deficit_at_interior_vertices():
-    fan = (
+    fan = Tessellation(
         [[0, 0, 0], [1, 0, 0], [0, 1, 0], [-1, 0, 0], [0, -1, 0]],
         [[0, 1, 2], [0, 2, 3], [0, 3, 4], [0, 4, 1]],
     )
@@ -41,23 +43,23 @@ def test_trimesh_gaussian_curvature_uses_full_angular_deficit_at_interior_vertic
 
 
 def test_trimesh_gradient_accepts_raw_lists_and_all_result_formats():
-    array = trimesh_gradient(TRIANGLE)
+    array = trimesh_gradient(TRIANGLE_BUFFERS)
 
     assert array.shape == (3, 3)
-    assert trimesh_gradient(TRIANGLE, rtype="list") == array.tolist()
-    assert isspmatrix_coo(trimesh_gradient(TRIANGLE, rtype="coo"))
-    assert isspmatrix_csr(trimesh_gradient(TRIANGLE, rtype="csr"))
-    assert isspmatrix_csc(trimesh_gradient(TRIANGLE, rtype="csc"))
+    assert trimesh_gradient(TRIANGLE_BUFFERS, rtype="list") == array.tolist()
+    assert isspmatrix_coo(trimesh_gradient(TRIANGLE_BUFFERS, rtype="coo"))
+    assert isspmatrix_csr(trimesh_gradient(TRIANGLE_BUFFERS, rtype="csr"))
+    assert isspmatrix_csc(trimesh_gradient(TRIANGLE_BUFFERS, rtype="csc"))
 
 
 def test_trimesh_pull_points_handles_faces_edges_and_vertices():
-    pulled = trimesh_pull_points(TRIANGLE, [[0.25, 0.25, 1], [0.75, 0.75, 0], [-1, -1, 0]])
+    pulled = trimesh_pull_points(TRIANGLE_BUFFERS, [[0.25, 0.25, 1], [0.75, 0.75, 0], [-1, -1, 0]])
 
     assert np.allclose(pulled, [[0.25, 0.25, 0], [0.5, 0.5, 0], [0, 0, 0]])
 
 
 def test_trimesh_sample_points_preserves_normal_direction():
-    reversed_triangle = (TRIANGLE[0], [[0, 2, 1]])
+    reversed_triangle = (TRIANGLE_BUFFERS[0], [[0, 2, 1]])
 
     points, normals = trimesh_sample_points(reversed_triangle, 5, return_normals=True)
 
@@ -120,7 +122,7 @@ def test_trimesh_cotangent_laplacian_rejects_zero_weight_sum():
 
 
 def test_trimesh_smoothing_preserves_fixed_vertices():
-    mesh = Mesh.from_vertices_and_faces(*TRIANGLE)
+    mesh = Mesh.from_vertices_and_faces(*TRIANGLE_BUFFERS)
     fixed_point = mesh.vertex_coordinates(0)
 
     trimesh_smooth_laplacian_cotangent(mesh, fixed=[0], kmax=1)

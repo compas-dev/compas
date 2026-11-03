@@ -1,119 +1,179 @@
 from collections.abc import Sequence
+from math import isfinite
 from typing import TYPE_CHECKING
-from typing import Any
 
 from compas._typing import CoordinatesType
 from compas.plugins import pluggable
+from compas.tolerance import TOL
+
+from .triangulation import ConformingDelaunay
+from .triangulation import ConstrainedDelaunay
+from .triangulation import Delaunay
 
 if TYPE_CHECKING:
-    import numpy as np
-    from numpy.typing import NDArray
+    from compas.geometry import Frame
+    from compas.geometry import Tessellation
 
 
-@pluggable(category="triangulation")
-def delaunay_triangulation(points: CoordinatesType) -> "NDArray[np.signedinteger[Any]]":
-    """Construct the two-dimensional Delaunay triangulation of a set of points.
+def _planar_coordinates(
+    points: CoordinatesType,
+    frame: "Frame | None",
+    name: str,
+    minimum: int,
+) -> tuple[list[list[float]], list[list[float]]]:
+    from compas.geometry import Frame
+    from compas.geometry import distance_point_plane
+
+    source = []
+    for point in points:
+        if len(point) != 3:
+            raise ValueError(f"{name} points should have exactly three coordinates.")
+        coordinates = [float(value) for value in point]
+        if not all(isfinite(value) for value in coordinates):
+            raise ValueError(f"{name} points should contain finite coordinates.")
+        source.append(coordinates)
+    if len(source) < minimum:
+        raise ValueError(f"{name} requires at least {minimum} points.")
+
+    plane = Frame.worldXY() if frame is None else frame
+    for point in source:
+        if not TOL.is_zero(distance_point_plane(point, (plane.point, plane.normal))):
+            location = "world XY" if frame is None else "the triangulation frame"
+            raise ValueError(f"{name} points should lie on {location} within tolerance.")
+    xy = []
+    for point in source:
+        vector = [point[index] - plane.point[index] for index in range(3)]
+        xy.append(
+            [
+                sum(vector[index] * plane.xaxis[index] for index in range(3)),
+                sum(vector[index] * plane.yaxis[index] for index in range(3)),
+            ]
+        )
+    return source, xy
+
+
+def triangulate_planar_points(
+    points: CoordinatesType,
+    *,
+    strategy: Delaunay,
+    frame: "Frame | None" = None,
+) -> "Tessellation":
+    """Construct a planar Delaunay triangulation of points.
 
     Parameters
     ----------
     points
-        XY(Z) coordinates of the points to triangulate.
+        The points to triangulate. Input coordinates are retained exactly.
+    strategy
+        The Delaunay strategy.
+    frame
+        The triangulation frame. If `None`, use world XY.
 
     Returns
     -------
-    numpy.typing.NDArray[numpy.signedinteger[Any]]
-        The triangle vertex indices.
+    Tessellation
 
-    Notes
-    -----
-    Only the XY coordinates participate in the triangulation. The default
-    implementation uses `scipy.spatial.Delaunay` and can be overridden by a
-    registered plugin.
-
-    Examples
-    --------
-    >>> points = [[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]]
-    >>> triangles = delaunay_triangulation(points)
-    >>> triangles.shape
-    (2, 3)
+    Raises
+    ------
+    TypeError
+        If the strategy is not a Delaunay strategy.
+    ValueError
+        If there are fewer than three points, coordinates are non-finite or
+        are not three-dimensional, or an input point lies outside the
+        triangulation plane within the standard COMPAS tolerance.
 
     """
-    from numpy import asarray
-    from scipy.spatial import Delaunay
-
-    xyz = asarray(points)
-    d = Delaunay(xyz[:, 0:2])
-    return d.simplices
+    if not isinstance(strategy, Delaunay):
+        raise TypeError("strategy should be a Delaunay strategy.")
+    vertices, _ = _planar_coordinates(points, frame, "Delaunay input", 3)
+    return _triangulate_planar_points(vertices, strategy=strategy, frame=frame)
 
 
 @pluggable(category="triangulation")
-def constrained_delaunay_triangulation(
+def _triangulate_planar_points(
+    points: CoordinatesType,
+    *,
+    strategy: Delaunay,
+    frame: "Frame | None" = None,
+) -> "Tessellation":
+    from scipy.spatial import Delaunay as ScipyDelaunay  # pyright: ignore[reportMissingImports]
+
+    from compas.geometry import Tessellation
+
+    vertices, points_xy = _planar_coordinates(points, frame, "Delaunay input", 3)
+    triangles = ScipyDelaunay(points_xy).simplices.tolist()
+    return Tessellation(vertices, triangles)
+
+
+def triangulate_planar_domain(
     boundary: CoordinatesType,
-    polylines: Sequence[CoordinatesType] | None = None,
-    polygons: Sequence[CoordinatesType] | None = None,
-) -> tuple[list[list[float]], list[list[int]]]:
-    """Construct a Delaunay triangulation constrained by specified segments.
+    *,
+    holes: Sequence[CoordinatesType] = (),
+    constraints: Sequence[CoordinatesType] = (),
+    points: CoordinatesType = (),
+    strategy: ConstrainedDelaunay | ConformingDelaunay,
+    frame: "Frame | None" = None,
+) -> "Tessellation":
+    """Triangulate a planar domain with optional holes and constraints.
 
     Parameters
     ----------
     boundary
-        Ordered points on the boundary.
-    polylines
-        Lists of ordered points defining internal guide curves.
-    polygons
-        Lists of ordered points defining holes in the triangulation.
+        The exterior domain boundary.
+    holes
+        Closed interior hole boundaries.
+    constraints
+        Open constrained polylines.
+    points
+        Optional unconstrained interior points.
+    strategy
+        A constrained or conforming Delaunay strategy.
+    frame
+        The triangulation frame. If `None`, use world XY.
 
     Returns
     -------
-    tuple[list[list[float]], list[list[int]]]
-        The vertices of the triangulation, and the faces of the triangulation.
+    Tessellation
+
+    Raises
+    ------
+    TypeError
+        If the strategy is not a constrained or conforming Delaunay strategy.
+    ValueError
+        If coordinates are non-finite, are not three-dimensional, lie outside
+        the triangulation plane, or a boundary, hole, or constraint has too few
+        points.
 
     Notes
     -----
-    No additional points are inserted. This extension point has no core
-    implementation and requires a triangulation plugin.
+    This extension point has no core implementation and requires a plugin.
 
     """
-    raise NotImplementedError
+    if not isinstance(strategy, (ConstrainedDelaunay, ConformingDelaunay)):
+        raise TypeError("strategy should be a ConstrainedDelaunay or ConformingDelaunay strategy.")
+
+    boundary_source, _ = _planar_coordinates(boundary, frame, "Boundary", 3)
+    hole_sources = [_planar_coordinates(hole, frame, "Hole", 3)[0] for hole in holes]
+    constraint_sources = [_planar_coordinates(constraint, frame, "Constraint", 2)[0] for constraint in constraints]
+    point_source, _ = _planar_coordinates(points, frame, "Interior", 0)
+    return _triangulate_planar_domain(
+        boundary_source,
+        holes=hole_sources,
+        constraints=constraint_sources,
+        points=point_source,
+        strategy=strategy,
+        frame=frame,
+    )
 
 
 @pluggable(category="triangulation")
-def conforming_delaunay_triangulation(
+def _triangulate_planar_domain(
     boundary: CoordinatesType,
-    polylines: Sequence[CoordinatesType] | None = None,
-    polygons: Sequence[CoordinatesType] | None = None,
-    angle: float | None = None,
-    area: float | None = None,
-) -> tuple[list[list[float]], list[list[int]]]:
-    """Construct a conforming Delaunay triangulation with segment constraints.
-
-    Parameters
-    ----------
-    boundary
-        Ordered points on the boundary.
-    polylines
-        Lists of ordered points defining internal guide curves.
-    polygons
-        Lists of ordered points defining holes in the triangulation.
-    angle
-        Minimum angle constraint for the triangles of the triangulation.
-        If an angle constraint is given, "Steiner points" may be inserted internally
-        and along the constraint segments to satisfy the constraint.
-        The angle constraint should be specified in degrees.
-    area
-        Maximum area constraint for the triangles of the triangulation.
-        If an area constraint is given, "Steiner points" may be inserted internally
-        and along the constraint segments to satisfy the constraint.
-
-    Returns
-    -------
-    tuple[list[list[float]], list[list[int]]]
-        The vertices of the triangulation, and the faces of the triangulation.
-
-    Notes
-    -----
-    This extension point has no core implementation and requires a
-    triangulation plugin.
-
-    """
+    *,
+    holes: Sequence[CoordinatesType] = (),
+    constraints: Sequence[CoordinatesType] = (),
+    points: CoordinatesType = (),
+    strategy: ConstrainedDelaunay | ConformingDelaunay,
+    frame: "Frame | None" = None,
+) -> "Tessellation":
     raise NotImplementedError

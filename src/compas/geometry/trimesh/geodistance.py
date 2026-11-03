@@ -1,17 +1,17 @@
 from typing import Literal
 
-from compas._typing import MeshType
-from compas.plugins import pluggable
+from .._tessellation_plugin import tessellation_pluggable
+from ..tessellation import Tessellation
 
 
-@pluggable(category="trimesh")
-def trimesh_geodistance(mesh: MeshType, source: int, method: Literal["exact", "heat"] = "exact") -> list[float]:
+@tessellation_pluggable(category="trimesh", inputs=("mesh",))
+def trimesh_geodistance(mesh: "Tessellation", source: int, method: Literal["exact", "heat"] = "exact") -> list[float]:
     """Compute geodesic distances from one mesh vertex.
 
     Parameters
     ----------
     mesh
-        The mesh vertex coordinates and triangular faces.
+        The triangle tessellation.
     source
         Index of the source vertex.
     method

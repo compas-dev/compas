@@ -14,11 +14,10 @@ from compas.geometry import transform_points
 from compas.itertools import pairwise
 from compas.tolerance import TOL
 
-from .triangulation_earclip import earclip_polygon
-
 if TYPE_CHECKING:
     from compas.datastructures import Mesh
     from compas.geometry import Box
+    from compas.geometry import FaceTriangulation
     from compas.geometry import Tessellation
 
 
@@ -73,8 +72,6 @@ class PolygonalSurface(Geometry):
         super().__init__(name=name)
         self._vertices: list[list[float]] = []
         self._faces: list[list[int]] = []
-        self._tessellation: Tessellation | None = None
-        self._mesh: Mesh | None = None
         self.vertices = vertices
         self.faces = faces
 
@@ -112,8 +109,6 @@ class PolygonalSurface(Geometry):
             copied.append([float(vertex[0]), float(vertex[1]), float(vertex[2])])
         self._validate_faces(self._faces, vertex_count=len(copied))
         self._vertices = copied
-        self._tessellation = None
-        self._mesh = None
 
     @property
     def faces(self) -> list[list[int]]:
@@ -131,8 +126,6 @@ class PolygonalSurface(Geometry):
         copied = [list(face) for face in faces]
         self._validate_faces(copied)
         self._faces = copied
-        self._tessellation = None
-        self._mesh = None
 
     @property
     def edges(self) -> list[tuple[int, int]]:
@@ -163,23 +156,6 @@ class PolygonalSurface(Geometry):
         return [Polygon([self.vertices[index] for index in face]) for face in self.faces]
 
     @property
-    def triangles(self) -> list[list[int]]:
-        """A triangulation of all faces using the existing vertex indices.
-
-        General polygonal faces are triangulated by ear clipping, which supports
-        concave planar faces without introducing additional vertices.
-
-        """
-        triangles = []
-        for face in self.faces:
-            if len(face) == 3:
-                triangles.append(face[:])
-                continue
-            polygon = Polygon([self.vertices[index] for index in face])
-            triangles.extend([[face[index] for index in triangle] for triangle in earclip_polygon(polygon)])
-        return triangles
-
-    @property
     def is_closed(self) -> bool:
         """Whether every edge belongs to exactly two faces."""
         closed, _, _, _ = self._analyze_topology()
@@ -202,20 +178,6 @@ class PolygonalSurface(Geometry):
         """Whether adjacent faces use every shared edge in opposite directions."""
         _, _, _, oriented = self._analyze_topology()
         return oriented
-
-    @property
-    def tessellation(self) -> "Tessellation":
-        """The cached triangular representation of the surface."""
-        if self._tessellation is None:
-            self._tessellation = self.compute_tessellation()
-        return self._tessellation
-
-    @property
-    def mesh(self) -> "Mesh":
-        """The cached topology-preserving half-edge mesh."""
-        if self._mesh is None:
-            self._mesh = self.compute_mesh()
-        return self._mesh
 
     # =============================================================================
     # Constructors
@@ -250,31 +212,35 @@ class PolygonalSurface(Geometry):
     # Conversions
     # =============================================================================
 
-    def compute_tessellation(self) -> "Tessellation":
-        """Compute a triangular tessellation of the polygonal surface.
+    def triangulated(self, strategy: "FaceTriangulation") -> "Tessellation":
+        """Triangulate the polygonal faces without modifying the surface.
+
+        Parameters
+        ----------
+        strategy
+            The collection-level face triangulation strategy.
 
         Returns
         -------
         Tessellation
             The indexed triangular representation for visualization.
 
-        Notes
-        -----
-        The result references the surface's vertex buffer directly. Treat the
-        buffer as immutable while using the tessellation.
-
         """
+        from compas.geometry import FaceTriangulation
         from compas.geometry import Tessellation
+        from compas.geometry.triangulation import triangulate_polygon
 
-        return Tessellation(self.vertices, self.triangles)
+        if not isinstance(strategy, FaceTriangulation):
+            raise TypeError("strategy should be a FaceTriangulation.")
 
-    def to_vertices_and_faces(self, triangulated: bool = False) -> tuple[list[list[float]], list[list[int]]]:
+        triangles = []
+        for face in self.faces:
+            local = triangulate_polygon([self.vertices[index] for index in face], strategy)
+            triangles.extend([[face[index] for index in triangle] for triangle in local])
+        return Tessellation(self.vertices, triangles)
+
+    def to_vertices_and_faces(self) -> tuple[list[list[float]], list[list[int]]]:
         """Return independent copies of the vertices and faces.
-
-        Parameters
-        ----------
-        triangulated
-            If `True`, triangulate all polygonal faces.
 
         Returns
         -------
@@ -282,11 +248,10 @@ class PolygonalSurface(Geometry):
             The vertex coordinates and indexed faces.
 
         """
-        faces = self.triangles if triangulated else self.faces
-        return [vertex[:] for vertex in self.vertices], [face[:] for face in faces]
+        return [vertex[:] for vertex in self.vertices], [face[:] for face in self.faces]
 
-    def compute_mesh(self) -> "Mesh":
-        """Compute a topology-preserving half-edge mesh.
+    def to_mesh(self) -> "Mesh":
+        """Convert the polygonal surface to an independent half-edge mesh.
 
         Returns
         -------
@@ -352,8 +317,6 @@ class PolygonalSurface(Geometry):
 
         """
         self._vertices = transform_points(self.vertices, transformation)
-        self._tessellation = None
-        self._mesh = None
 
     # =============================================================================
     # Private helpers

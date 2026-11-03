@@ -197,9 +197,7 @@ def surface_frame_at(surface: "NurbsSurface", u: float, v: float) -> "Frame":
 
 
 @pluggable(category="nurbssurface-evaluation")
-def surface_closest_point(
-    surface: "NurbsSurface", point: CoordinateType, return_parameters: bool = False
-) -> "Point | tuple[Point, tuple[float, float]] | None":
+def surface_closest_point(surface: "NurbsSurface", point: CoordinateType, return_parameters: bool = False) -> "Point | tuple[Point, tuple[float, float]] | None":
     raise PluginNotInstalledError
 
 

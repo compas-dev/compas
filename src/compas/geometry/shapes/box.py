@@ -6,6 +6,7 @@ from compas._typing import CoordinatesType
 from compas._typing import CoordinateType
 from compas.geometry import Frame
 from compas.geometry import Line
+from compas.geometry import Native
 from compas.geometry import Point
 from compas.geometry import Transformation
 from compas.geometry import Vector
@@ -18,7 +19,7 @@ if TYPE_CHECKING:
     from compas.geometry import Brep
 
 
-class Box(Shape):
+class Box(Shape[Native]):
     """A box is defined by a frame and its dimensions along the frame's x-, y- and z-axes.
 
     The center of the box is positioned at the origin of the
@@ -71,6 +72,8 @@ class Box(Shape):
     22.0
 
     """
+
+    _tessellation_strategy = "native"
 
     @property
     def __data__(self) -> dict:
@@ -131,7 +134,6 @@ class Box(Shape):
         if xsize < 0:
             raise ValueError("The minimum value of the size of the box along the local X axis is zero.")
         self._xsize = float(xsize)
-        self._invalidate_discretization()
 
     @property
     def ysize(self) -> float:
@@ -145,7 +147,6 @@ class Box(Shape):
         if ysize < 0:
             raise ValueError("The minimum value of the size of the box along the local Y axis is zero.")
         self._ysize = float(ysize)
-        self._invalidate_discretization()
 
     @property
     def zsize(self) -> float:
@@ -159,7 +160,6 @@ class Box(Shape):
         if zsize < 0:
             raise ValueError("The minimum value of the size of the box along the local Z axis is zero.")
         self._zsize = float(zsize)
-        self._invalidate_discretization()
 
     @property
     def width(self) -> float:
@@ -188,6 +188,22 @@ class Box(Shape):
         """The dimensions along the three axes of the box frame."""
         return [self.xsize, self.ysize, self.zsize]
 
+    @property
+    def aabb(self) -> "Box":
+        """The exact world-axis-aligned bounding box."""
+        xaxis = self.frame.xaxis
+        yaxis = self.frame.yaxis
+        zaxis = self.frame.zaxis
+        xsize = self.xsize * abs(xaxis.x) + self.ysize * abs(yaxis.x) + self.zsize * abs(zaxis.x)
+        ysize = self.xsize * abs(xaxis.y) + self.ysize * abs(yaxis.y) + self.zsize * abs(zaxis.y)
+        zsize = self.xsize * abs(xaxis.z) + self.ysize * abs(yaxis.z) + self.zsize * abs(zaxis.z)
+        return Box(xsize, ysize, zsize, frame=Frame(self.frame.point, [1, 0, 0], [0, 1, 0]))
+
+    @property
+    def obb(self) -> "Box":
+        """The exact minimum-volume oriented bounding box."""
+        return Box(self.xsize, self.ysize, self.zsize, frame=self.frame.copy())
+
     def area(self) -> float:
         """Compute the surface area of the box."""
         return 2 * self.xsize * self.ysize + 2 * self.ysize * self.zsize + 2 * self.zsize * self.xsize
@@ -199,7 +215,7 @@ class Box(Shape):
     @property
     def points(self) -> list[Point]:
         """The eight defining corner points of the box."""
-        return super().points
+        return [self.frame.to_world_coordinates(vertex) for vertex in self._compute_local_vertices(Native())]
 
     @property
     def bottom(self) -> list[int]:
@@ -417,7 +433,7 @@ class Box(Shape):
     # Discretisation
     # ==========================================================================
 
-    def _compute_vertices(self, u: int, v: int) -> list[CoordinateType]:
+    def _compute_local_vertices(self, strategy: Native) -> list[CoordinateType]:
         dx = 0.5 * self.xsize
         dy = 0.5 * self.ysize
         dz = 0.5 * self.zsize
@@ -432,7 +448,7 @@ class Box(Shape):
             [-dx, +dy, +dz],
         ]
 
-    def compute_faces(self, u: int | None = None, v: int | None = None) -> list[list[int]]:
+    def _compute_faces(self, strategy: Native) -> list[list[int]]:
         """Compute the faces of the discrete representation of the box."""
         return [self.bottom, self.front, self.right, self.back, self.left, self.top]
 

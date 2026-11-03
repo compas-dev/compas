@@ -1,6 +1,7 @@
 from math import cos
 from math import pi
 from math import sin
+from math import sqrt
 from typing import TYPE_CHECKING
 from typing import Self
 
@@ -11,14 +12,16 @@ from compas.geometry import Frame
 from compas.geometry import Line
 from compas.geometry import Plane
 from compas.geometry import Point
+from compas.geometry import UGrid
 
+from .box import Box
 from .shape import Shape
 
 if TYPE_CHECKING:
     from compas.geometry import Brep
 
 
-class Cylinder(Shape):
+class Cylinder(Shape[UGrid]):
     """A cylinder is defined by a frame, radius, and height.
 
     The cylinder is oriented along the z-axis of the frame.
@@ -46,6 +49,8 @@ class Cylinder(Shape):
     >>> cylinder = Cylinder(0.3, 1.0)
 
     """
+
+    _tessellation_strategy = "u"
 
     @property
     def __data__(self) -> dict:
@@ -94,7 +99,6 @@ class Cylinder(Shape):
         if radius <= 0:
             raise ValueError("The cylinder radius should be larger than zero.")
         self._radius = float(radius)
-        self._invalidate_discretization()
 
     @property
     def height(self) -> float:
@@ -108,7 +112,6 @@ class Cylinder(Shape):
         if height <= 0:
             raise ValueError("The cylinder height should be larger than zero.")
         self._height = float(height)
-        self._invalidate_discretization()
 
     @property
     def start(self) -> Point:
@@ -145,6 +148,26 @@ class Cylinder(Shape):
     def diameter(self) -> float:
         """The diameter of the cylinder."""
         return 2 * self.radius
+
+    @property
+    def aabb(self) -> Box:
+        """The exact world-axis-aligned bounding box."""
+        axis = self.frame.zaxis
+        ex = self.radius * sqrt(max(0.0, 1.0 - axis.x**2)) + 0.5 * self.height * abs(axis.x)
+        ey = self.radius * sqrt(max(0.0, 1.0 - axis.y**2)) + 0.5 * self.height * abs(axis.y)
+        ez = self.radius * sqrt(max(0.0, 1.0 - axis.z**2)) + 0.5 * self.height * abs(axis.z)
+        return Box(2.0 * ex, 2.0 * ey, 2.0 * ez, frame=Frame(self.frame.point, [1, 0, 0], [0, 1, 0]))
+
+    @property
+    def obb(self) -> Box:
+        """The minimum-volume oriented bounding box.
+
+        Raises
+        ------
+        NotImplementedError
+            A continuous minimum-volume implementation is not available.
+        """
+        raise NotImplementedError("The continuous minimum-volume OBB of a cylinder is not implemented.")
 
     def area(self) -> float:
         """Compute the total surface area, including both bases."""
@@ -217,7 +240,7 @@ class Cylinder(Shape):
     # Discretisation
     # =============================================================================
 
-    def _compute_vertices(self, u: int, v: int) -> list[CoordinateType]:
+    def _compute_local_vertices(self, strategy: UGrid) -> list[CoordinateType]:
         """Compute the vertices of the discrete representation of the cylinder.
 
         Returns
@@ -225,6 +248,7 @@ class Cylinder(Shape):
         list[list[float]]
 
         """
+        u = strategy.u
         vertices: list[CoordinateType] = []
         a = 2 * pi / u
         z = self.height / 2
@@ -239,7 +263,7 @@ class Cylinder(Shape):
 
         return vertices
 
-    def compute_faces(self, u: int | None = None, v: int | None = None) -> list[list[int]]:
+    def _compute_faces(self, strategy: UGrid) -> list[list[int]]:
         """Compute the faces of the discrete representation of the cylinder.
 
         Returns
@@ -247,8 +271,7 @@ class Cylinder(Shape):
         list[list[int]]
 
         """
-        u, _ = self._resolutions(u, v)
-
+        u = strategy.u
         faces = []
         # side faces
         for i in range(0, u * 2, 2):

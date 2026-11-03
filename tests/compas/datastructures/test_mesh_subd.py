@@ -4,12 +4,14 @@ import pytest
 
 from compas.datastructures import Mesh
 from compas.datastructures.mesh.subdivision import mesh_subdivide
+from compas.geometry import DiagonalSplit
+from compas.geometry import FaceTriangulation
 
 
 @pytest.fixture
 def mesh_tris():
     mesh = Mesh.from_polyhedron(6)
-    mesh.quads_to_triangles()
+    mesh.triangulate(FaceTriangulation(quad=DiagonalSplit()))
     return mesh
 
 

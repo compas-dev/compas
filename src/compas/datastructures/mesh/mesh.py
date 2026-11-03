@@ -25,6 +25,7 @@ from collections.abc import Sequence
 from itertools import product
 from math import pi
 from random import sample
+from typing import TYPE_CHECKING
 from typing import Any
 from typing import Literal
 from typing import Self
@@ -53,7 +54,6 @@ from compas.geometry import Plane
 from compas.geometry import Point
 from compas.geometry import Polygon
 from compas.geometry import Polyhedron
-from compas.geometry import Shape  # noqa: F401
 from compas.geometry import Transformation
 from compas.geometry import Vector
 from compas.geometry import angle_points
@@ -88,6 +88,10 @@ from compas.topology import unify_cycles
 
 from .duality import mesh_dual
 from .operations.collapse import mesh_collapse_edge
+
+if TYPE_CHECKING:
+    from compas.geometry import FaceTriangulation
+    from compas.geometry import Tessellation
 from .operations.merge import mesh_merge_faces
 from .operations.split import mesh_split_edge
 from .operations.split import mesh_split_face
@@ -532,30 +536,8 @@ class Mesh(Datastructure):
         return cls.from_vertices_and_faces(p.vertices, p.faces)
 
     @classmethod
-    def from_shape(cls, shape: Shape, **kwargs: Any) -> Self:
-        """Construct a mesh from a primitive shape.
-
-        Parameters
-        ----------
-        shape
-            The input shape to generate a mesh from.
-        **kwargs
-            Optional keyword arguments to be passed on to
-
-        Returns
-        -------
-        Mesh
-            A mesh object.
-
-        """
-        vertices, faces = shape.to_vertices_and_faces(**kwargs)
-        mesh = cls.from_vertices_and_faces(vertices, faces)
-        mesh.name = shape.name
-        return mesh
-
-    @classmethod
     def from_points(cls, points: Sequence[PointCoordinates]) -> Self:
-        """Construct a mesh from a delaunay triangulation of a set of points.
+        """Construct a mesh from a planar Delaunay triangulation of points.
 
         Parameters
         ----------
@@ -569,10 +551,11 @@ class Mesh(Datastructure):
             A mesh object.
 
         """
-        from compas.geometry import delaunay_triangulation
+        from compas.geometry import Delaunay
+        from compas.geometry import triangulate_planar_points
 
-        faces = delaunay_triangulation(points)
-        return cls.from_vertices_and_faces(points, faces)  # type: ignore
+        tessellation = triangulate_planar_points(points, strategy=Delaunay())
+        return cls.from_vertices_and_faces(tessellation.vertices, tessellation.triangles)
 
     @classmethod
     def from_polygons(
@@ -683,13 +666,8 @@ class Mesh(Datastructure):
         """
         raise NotImplementedError
 
-    def to_vertices_and_faces(self, triangulated: bool = False) -> tuple[list[list[float]], list[list[int]]]:
+    def to_vertices_and_faces(self) -> tuple[list[list[float]], list[list[int]]]:
         """Return the vertices and faces of a mesh.
-
-        Parameters
-        ----------
-        triangulated
-            If True, triangulate the faces.
 
         Returns
         -------
@@ -702,31 +680,36 @@ class Mesh(Datastructure):
         vertex_index = self.vertex_index()
         vertices = [self.vertex_coordinates(vertex) for vertex in self.vertices()]
 
-        if not triangulated:
-            faces = [[vertex_index[vertex] for vertex in self.face_vertices(face)] for face in self.faces()]
-            return vertices, faces
-
-        faces = []
-
-        for fkey in self.faces():
-            face_vertices = self.face_vertices(fkey)
-
-            if len(face_vertices) == 3:
-                a, b, c = face_vertices
-                faces.append([vertex_index[a], vertex_index[b], vertex_index[c]])
-            elif len(face_vertices) == 4:
-                a, b, c, d = face_vertices
-                faces.append([vertex_index[a], vertex_index[b], vertex_index[c]])
-                faces.append([vertex_index[a], vertex_index[c], vertex_index[d]])
-            else:
-                centroid = centroid_polygon([vertices[vertex_index[vertex]] for vertex in face_vertices])
-                c = len(vertices)
-                vertices.append([centroid[0], centroid[1], centroid[2]])
-
-                for a, b in pairwise(face_vertices + face_vertices[:1]):
-                    faces.append([vertex_index[a], vertex_index[b], c])
-
+        faces = [[vertex_index[vertex] for vertex in self.face_vertices(face)] for face in self.faces()]
         return vertices, faces
+
+    def triangulated(self, strategy: "FaceTriangulation") -> "Tessellation":
+        """Triangulate the faces without modifying the mesh.
+
+        Parameters
+        ----------
+        strategy
+            The mixed-face triangulation strategy.
+
+        Returns
+        -------
+        Tessellation
+
+        """
+        from compas.geometry import FaceTriangulation
+        from compas.geometry import Tessellation
+        from compas.geometry.triangulation import triangulate_polygon
+
+        if not isinstance(strategy, FaceTriangulation):
+            raise TypeError("strategy should be a FaceTriangulation.")
+        vertex_index = self.vertex_index()
+        vertices = [self.vertex_coordinates(vertex) for vertex in self.vertices()]
+        triangles = []
+        for face in self.faces():
+            face_vertices = self.face_vertices(face)
+            local = triangulate_polygon([self.vertex_coordinates(vertex) for vertex in face_vertices], strategy)
+            triangles.extend([[vertex_index[face_vertices[index]] for index in triangle] for triangle in local])
+        return Tessellation(vertices, triangles)
 
     def to_points(self) -> list[list[float]]:
         """Convert the mesh to a collection of points.
@@ -824,7 +807,7 @@ class Mesh(Datastructure):
         -----
         STL files only support triangle faces.
         It is the user's responsibility to convert all faces of a mesh to triangles.
-        For example, with `compas.datastructures.Mesh.quads_to_triangles`.
+        For example, with `compas.datastructures.Mesh.triangulate`.
 
         """
         write_stl(filepath, self, precision=precision, binary=binary, **kwargs)
@@ -1172,8 +1155,9 @@ class Mesh(Datastructure):
         >>> b = Box.from_width_height_depth(1, 1, 1)
         >>> T = Translation.from_vector([2, 0, 0])
         >>> b.transform(T)
-        >>> a = Mesh.from_shape(a)
-        >>> b = Mesh.from_shape(b)
+        >>> from compas.geometry import Native
+        >>> a = a.polygonize(Native()).to_mesh()
+        >>> b = b.polygonize(Native()).to_mesh()
         >>> a.number_of_vertices()
         8
         >>> a.number_of_faces()
@@ -3303,27 +3287,38 @@ class Mesh(Datastructure):
                 if u not in self.halfedge[v]:
                     self.halfedge[v][u] = None
 
-    def quads_to_triangles(self) -> None:
-        """Convert all quadrilateral faces to triangles by adding a diagonal edge.
+    def triangulate(self, strategy: "FaceTriangulation") -> None:
+        """Triangulate the faces in place.
 
-        Returns
-        -------
-        None
-            The mesh is modified in place.
+        Parameters
+        ----------
+        strategy
+            The mixed-face triangulation strategy.
+
+        Notes
+        -----
+        Generated faces inherit the attributes of their source face. Vertex
+        keys are preserved; face keys are not.
 
         """
+        from compas.geometry import FaceTriangulation
+        from compas.geometry.triangulation import triangulate_polygon
+
+        if not isinstance(strategy, FaceTriangulation):
+            raise TypeError("strategy should be a FaceTriangulation.")
+        replacements = []
         for face in list(self.faces()):
-            attr = self.face_attributes(face)
             vertices = self.face_vertices(face)
-            if len(vertices) == 4:
-                a, b, c, d = vertices
-                t1, t2 = self.split_face(face, b, d)
-                self.face_attributes(t1, names=attr.keys(), values=attr.values())  # type: ignore
-                self.face_attributes(t2, names=attr.keys(), values=attr.values())  # type: ignore
-                # self.facedata[t1] = attr.copy()
-                # self.facedata[t2] = attr.copy()
-                if face in self.facedata:
-                    del self.facedata[face]
+            if len(vertices) == 3:
+                continue
+            local = triangulate_polygon([self.vertex_coordinates(vertex) for vertex in vertices], strategy)
+            triangles = [[vertices[index] for index in triangle] for triangle in local]
+            replacements.append((face, triangles, dict(self.face_attributes(face))))
+
+        for face, triangles, attributes in replacements:
+            self.delete_face(face)
+            for triangle in triangles:
+                self.add_face(triangle, attr_dict=attributes)
 
     # only reason this is here and not on the halfedge is because of the spatial tree
     def unify_cycles(
@@ -4343,7 +4338,10 @@ class Mesh(Datastructure):
             mesh_to_use.unify_cycles()
 
         # Use built-in triangulation to get triangulated faces
-        vertices, faces = mesh_to_use.to_vertices_and_faces(triangulated=True)
+        from compas.geometry import FaceTriangulation
+
+        tessellation = mesh_to_use.triangulated(FaceTriangulation())
+        vertices, faces = tessellation.to_vertices_and_triangles()
 
         volume = 0.0
         for face in faces:

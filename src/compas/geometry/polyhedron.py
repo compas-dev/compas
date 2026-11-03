@@ -23,6 +23,7 @@ from .geometry import Geometry
 if TYPE_CHECKING:
     from compas.datastructures import Mesh
     from compas.geometry import Box
+    from compas.geometry import FaceTriangulation
     from compas.geometry import Tessellation
 
 
@@ -234,26 +235,20 @@ class Polyhedron(Geometry):
     def __add__(self, other: "Polyhedron") -> Self:
         from compas.geometry import boolean_union_mesh_mesh
 
-        A = self.to_vertices_and_faces(triangulated=True)
-        B = other.to_vertices_and_faces(triangulated=True)
-        V, F = boolean_union_mesh_mesh(A, B)
-        return type(self)(V, F)
+        result = boolean_union_mesh_mesh(self._tessellation(), other._tessellation())
+        return type(self)(result.vertices, result.triangles)
 
     def __sub__(self, other: "Polyhedron") -> Self:
         from compas.geometry import boolean_difference_mesh_mesh
 
-        A = self.to_vertices_and_faces(triangulated=True)
-        B = other.to_vertices_and_faces(triangulated=True)
-        V, F = boolean_difference_mesh_mesh(A, B)
-        return type(self)(V, F)
+        result = boolean_difference_mesh_mesh(self._tessellation(), other._tessellation())
+        return type(self)(result.vertices, result.triangles)
 
     def __and__(self, other: "Polyhedron") -> Self:
         from compas.geometry import boolean_intersection_mesh_mesh
 
-        A = self.to_vertices_and_faces(triangulated=True)
-        B = other.to_vertices_and_faces(triangulated=True)
-        V, F = boolean_intersection_mesh_mesh(A, B)
-        return type(self)(V, F)
+        result = boolean_intersection_mesh_mesh(self._tessellation(), other._tessellation())
+        return type(self)(result.vertices, result.triangles)
 
     def __or__(self, other: "Polyhedron") -> Self:
         return self.__add__(other)
@@ -296,11 +291,6 @@ class Polyhedron(Geometry):
     def polygons(self) -> list[Polygon]:
         """The boundary faces as polygons."""
         return self.boundary.polygons
-
-    @property
-    def triangles(self) -> list[list[int]]:
-        """A triangulation of the boundary faces."""
-        return self.boundary.triangles
 
     @property
     def planes(self) -> list[Plane]:
@@ -495,8 +485,13 @@ class Polyhedron(Geometry):
     # Conversions
     # =============================================================================
 
-    def to_tessellation(self) -> "Tessellation":
-        """Return a triangular tessellation of the polyhedron boundary.
+    def triangulated(self, strategy: "FaceTriangulation") -> "Tessellation":
+        """Triangulate the boundary faces without modifying the polyhedron.
+
+        Parameters
+        ----------
+        strategy
+            The collection-level face triangulation strategy.
 
         Returns
         -------
@@ -504,15 +499,10 @@ class Polyhedron(Geometry):
             The indexed triangular representation for visualization.
 
         """
-        return self.boundary.to_tessellation()
+        return self.boundary.triangulated(strategy)
 
-    def to_vertices_and_faces(self, triangulated: bool = False) -> tuple[list[list[float]], list[list[int]]]:
+    def to_vertices_and_faces(self) -> tuple[list[list[float]], list[list[int]]]:
         """Return independent copies of the vertices and faces.
-
-        Parameters
-        ----------
-        triangulated
-            If `True`, triangulate all polygonal faces.
 
         Returns
         -------
@@ -520,7 +510,7 @@ class Polyhedron(Geometry):
             The vertex coordinates and indexed faces.
 
         """
-        return self.boundary.to_vertices_and_faces(triangulated=triangulated)
+        return self.boundary.to_vertices_and_faces()
 
     def to_mesh(self) -> "Mesh":
         """Return a mesh representation of the polyhedron.
@@ -612,19 +602,17 @@ class Polyhedron(Geometry):
 
         Examples
         --------
-        >>> from compas.geometry import Box, Polyhedron, Sphere
-        >>> A = Polyhedron(*Box(2).to_tessellation().to_vertices_and_triangles())
-        >>> B = Polyhedron(*Sphere.from_point_and_radius([1, 1, 1], 1.0).to_tessellation().to_vertices_and_triangles())
+        >>> from compas.geometry import Box, Native, Polyhedron, Sphere, UVGrid
+        >>> A = Polyhedron(*Box(2).tessellate(Native()).to_vertices_and_triangles())
+        >>> sphere = Sphere.from_point_and_radius([1, 1, 1], 1.0)
+        >>> B = Polyhedron(*sphere.tessellate(UVGrid(16, 16)).to_vertices_and_triangles())
         >>> C = A.boolean_union(B)  # doctest: +SKIP
 
         """
         from compas.geometry import boolean_union_mesh_mesh
 
-        A = self.to_vertices_and_faces(triangulated=True)
-        B = other.to_vertices_and_faces(triangulated=True)
-        V, F = boolean_union_mesh_mesh(A, B)
-
-        return type(self)(V, F)
+        result = boolean_union_mesh_mesh(self._tessellation(), other._tessellation())
+        return type(self)(result.vertices, result.triangles)
 
     def boolean_difference(self, other: "Polyhedron") -> Self:
         """Compute the boolean difference of this polyhedron and another.
@@ -641,19 +629,17 @@ class Polyhedron(Geometry):
 
         Examples
         --------
-        >>> from compas.geometry import Box, Polyhedron, Sphere
-        >>> A = Polyhedron(*Box(2).to_tessellation().to_vertices_and_triangles())
-        >>> B = Polyhedron(*Sphere.from_point_and_radius([1, 1, 1], 1.0).to_tessellation().to_vertices_and_triangles())
+        >>> from compas.geometry import Box, Native, Polyhedron, Sphere, UVGrid
+        >>> A = Polyhedron(*Box(2).tessellate(Native()).to_vertices_and_triangles())
+        >>> sphere = Sphere.from_point_and_radius([1, 1, 1], 1.0)
+        >>> B = Polyhedron(*sphere.tessellate(UVGrid(16, 16)).to_vertices_and_triangles())
         >>> C = A.boolean_difference(B)  # doctest: +SKIP
 
         """
         from compas.geometry import boolean_difference_mesh_mesh
 
-        A = self.to_vertices_and_faces(triangulated=True)
-        B = other.to_vertices_and_faces(triangulated=True)
-        V, F = boolean_difference_mesh_mesh(A, B)
-
-        return type(self)(V, F)
+        result = boolean_difference_mesh_mesh(self._tessellation(), other._tessellation())
+        return type(self)(result.vertices, result.triangles)
 
     def boolean_intersection(self, other: "Polyhedron") -> Self:
         """Compute the boolean intersection of this polyhedron and another.
@@ -670,23 +656,27 @@ class Polyhedron(Geometry):
 
         Examples
         --------
-        >>> from compas.geometry import Box, Polyhedron, Sphere
-        >>> A = Polyhedron(*Box(2).to_tessellation().to_vertices_and_triangles())
-        >>> B = Polyhedron(*Sphere.from_point_and_radius([1, 1, 1], 1.0).to_tessellation().to_vertices_and_triangles())
+        >>> from compas.geometry import Box, Native, Polyhedron, Sphere, UVGrid
+        >>> A = Polyhedron(*Box(2).tessellate(Native()).to_vertices_and_triangles())
+        >>> sphere = Sphere.from_point_and_radius([1, 1, 1], 1.0)
+        >>> B = Polyhedron(*sphere.tessellate(UVGrid(16, 16)).to_vertices_and_triangles())
         >>> C = A.boolean_intersection(B)  # doctest: +SKIP
 
         """
         from compas.geometry import boolean_intersection_mesh_mesh
 
-        A = self.to_vertices_and_faces(triangulated=True)
-        B = other.to_vertices_and_faces(triangulated=True)
-        V, F = boolean_intersection_mesh_mesh(A, B)
-
-        return type(self)(V, F)
+        result = boolean_intersection_mesh_mesh(self._tessellation(), other._tessellation())
+        return type(self)(result.vertices, result.triangles)
 
     # =============================================================================
     # Private helpers
     # =============================================================================
+
+    def _tessellation(self) -> "Tessellation":
+        from compas.geometry import EarClipping
+        from compas.geometry import FaceTriangulation
+
+        return self.triangulated(FaceTriangulation(quad=EarClipping()))
 
     def _validate_boundary(self) -> None:
         if len(self.vertices) < 4:
