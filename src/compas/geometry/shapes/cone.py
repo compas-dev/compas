@@ -11,14 +11,17 @@ from compas.geometry import Circle
 from compas.geometry import Frame
 from compas.geometry import Line
 from compas.geometry import Plane
+from compas.geometry import Point
+from compas.geometry import UGrid
 
+from .box import Box
 from .shape import Shape
 
 if TYPE_CHECKING:
     from compas.geometry import Brep
 
 
-class Cone(Shape):
+class Cone(Shape[UGrid]):
     """A cone is defined by a frame, radius, and height.
 
     The cone is oriented along the z-axis of the frame.
@@ -47,6 +50,8 @@ class Cone(Shape):
     >>> cone = Cone(0.3, 1.0)
 
     """
+
+    _tessellation_strategy = "u"
 
     @property
     def __data__(self) -> dict:
@@ -95,7 +100,6 @@ class Cone(Shape):
         if radius <= 0:
             raise ValueError("The cone radius should be larger than zero.")
         self._radius = float(radius)
-        self._invalidate_discretization()
 
     @property
     def height(self) -> float:
@@ -109,7 +113,6 @@ class Cone(Shape):
         if height <= 0:
             raise ValueError("The cone height should be larger than zero.")
         self._height = float(height)
-        self._invalidate_discretization()
 
     @property
     def axis(self) -> Line:
@@ -125,6 +128,43 @@ class Cone(Shape):
     def diameter(self) -> float:
         """The diameter of the cone base."""
         return 2 * self.radius
+
+    @property
+    def aabb(self) -> Box:
+        """The exact world-axis-aligned bounding box."""
+        center = self.frame.point
+        axis = self.frame.zaxis
+        radial = [
+            self.radius * sqrt(max(0.0, 1.0 - axis.x**2)),
+            self.radius * sqrt(max(0.0, 1.0 - axis.y**2)),
+            self.radius * sqrt(max(0.0, 1.0 - axis.z**2)),
+        ]
+        base = [center.x, center.y, center.z]
+        apex = [center.x + self.height * axis.x, center.y + self.height * axis.y, center.z + self.height * axis.z]
+        minimum = [min(base[index] - radial[index], apex[index]) for index in range(3)]
+        maximum = [max(base[index] + radial[index], apex[index]) for index in range(3)]
+        midpoint = Point(
+            0.5 * (minimum[0] + maximum[0]),
+            0.5 * (minimum[1] + maximum[1]),
+            0.5 * (minimum[2] + maximum[2]),
+        )
+        return Box(
+            maximum[0] - minimum[0],
+            maximum[1] - minimum[1],
+            maximum[2] - minimum[2],
+            frame=Frame(midpoint, [1, 0, 0], [0, 1, 0]),
+        )
+
+    @property
+    def obb(self) -> Box:
+        """The minimum-volume oriented bounding box.
+
+        Raises
+        ------
+        NotImplementedError
+            A continuous minimum-volume implementation is not available.
+        """
+        raise NotImplementedError("The continuous minimum-volume OBB of a cone is not implemented.")
 
     def area(self) -> float:
         """Compute the total surface area, including the base."""
@@ -205,7 +245,7 @@ class Cone(Shape):
     # Discretisation
     # =============================================================================
 
-    def _compute_vertices(self, u: int, v: int) -> list[CoordinateType]:
+    def _compute_local_vertices(self, strategy: UGrid) -> list[CoordinateType]:
         """Compute the vertices of the discrete representation of the cone.
 
         Returns
@@ -213,6 +253,7 @@ class Cone(Shape):
         list[list[float]]
 
         """
+        u = strategy.u
         vertices: list[CoordinateType] = [[0, 0, 0]]
         a = 2 * pi / u
         radius = self.circle.radius
@@ -224,7 +265,7 @@ class Cone(Shape):
 
         return vertices
 
-    def compute_faces(self, u: int | None = None, v: int | None = None) -> list[list[int]]:
+    def _compute_faces(self, strategy: UGrid) -> list[list[int]]:
         """Compute the faces of the discrete representation of the cone.
 
         Returns
@@ -232,7 +273,7 @@ class Cone(Shape):
         list[list[int]]
 
         """
-        u, _ = self._resolutions(u, v)
+        u = strategy.u
         faces = []
         first = 0
         last = u + 1

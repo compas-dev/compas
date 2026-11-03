@@ -1,12 +1,12 @@
 from collections.abc import Sequence
 
-from compas._typing import MeshType
-from compas.plugins import pluggable
+from .._tessellation_plugin import tessellation_pluggable
+from ..tessellation import Tessellation
 
 
-@pluggable(category="trimesh")
+@tessellation_pluggable(category="trimesh", inputs=("mesh",))
 def trimesh_isolines(
-    mesh: MeshType,
+    mesh: "Tessellation",
     scalarfield: Sequence[float],
     number_of_isolines: int = 50,
 ) -> tuple[list[list[float]], list[list[int]]]:
@@ -15,7 +15,7 @@ def trimesh_isolines(
     Parameters
     ----------
     mesh
-        The mesh vertex coordinates and triangular faces.
+        The triangle tessellation.
     scalarfield
         Scalar value at every mesh vertex.
     number_of_isolines

@@ -1,5 +1,6 @@
 import pytest
 from compas.geometry import Box
+from compas.geometry import Native
 from compas.geometry import Point
 
 
@@ -35,6 +36,28 @@ def test_box_corners(default_box):
     assert len(default_box.points) == 8
 
 
+def test_box_native_materialization_has_no_synthetic_resolution(monkeypatch, unit_box):
+    strategies = []
+    compute_local_vertices = unit_box._compute_local_vertices
+    compute_faces = unit_box._compute_faces
+
+    def record_vertices(strategy):
+        strategies.append(strategy)
+        return compute_local_vertices(strategy)
+
+    def record_faces(strategy):
+        strategies.append(strategy)
+        return compute_faces(strategy)
+
+    monkeypatch.setattr(unit_box, "_compute_local_vertices", record_vertices)
+    monkeypatch.setattr(unit_box, "_compute_faces", record_faces)
+
+    unit_box.polygonize(Native())
+
+    assert len(strategies) == 2
+    assert all(isinstance(strategy, Native) for strategy in strategies)
+
+
 def test_box_corner(default_box):
     assert default_box.corner(0) == Point(-0.5, -1.0, -1.5)
     assert default_box.corner(1) == Point(-0.5, 1.0, -1.5)
@@ -53,20 +76,12 @@ def test_box_bounds_are_invalidated_when_dimensions_change(default_box):
     assert default_box.aabb.xsize == 4.0
 
 
-def test_box_placement_preserves_local_discretization_and_topology(default_box, monkeypatch):
-    vertices = default_box.vertices
-    edges = default_box.edges
-    faces = default_box.faces
-
-    def fail_if_recomputed(u, v):
-        raise AssertionError("local vertices should remain cached after a placement change")
-
-    monkeypatch.setattr(default_box, "_compute_vertices", fail_if_recomputed)
+def test_box_placement_updates_exact_corner_points(default_box):
+    points = default_box.points
     default_box.frame.point.x = 10.0
 
-    assert default_box.vertices != vertices
-    assert default_box.edges is edges
-    assert default_box.faces is faces
+    assert default_box.points != points
+    assert default_box.points[0].x == pytest.approx(points[0].x + 10.0)
 
 
 def test_box_contains_point(default_box):

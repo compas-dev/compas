@@ -1,6 +1,7 @@
 from math import cos
 from math import pi
 from math import sin
+from typing import TYPE_CHECKING
 from typing import Any
 from typing import Self
 
@@ -14,6 +15,9 @@ from compas.geometry import Point
 from compas.geometry import Vector
 
 from .surface import Surface
+
+if TYPE_CHECKING:
+    from compas.geometry import Box
 
 PI2 = 2 * pi
 
@@ -84,6 +88,14 @@ class SphericalSurface(Surface):
     # =============================================================================
 
     @property
+    def aabb(self) -> "Box":
+        """The exact world-axis-aligned bounding box of the surface."""
+        from compas.geometry import Box
+
+        diameter = 2.0 * self.radius
+        return Box(diameter, diameter, diameter, frame=Frame(self.center))
+
+    @property
     def center(self) -> Point:
         """The center point of the sphere.
 
@@ -111,7 +123,6 @@ class SphericalSurface(Surface):
         if radius < 0:
             raise ValueError("The radius of a sphere should be larger than or equal to zero.")
         self._radius = float(radius)
-        self._invalidate_discretization()
 
     def area(self) -> float:
         """Compute the surface area of the sphere."""

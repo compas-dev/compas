@@ -140,23 +140,17 @@ def curve_reverse(curve: "NurbsCurve") -> None:
 
 
 @pluggable(category="nurbscurve-operations")
-def curve_closest_point(
-    curve: "NurbsCurve", point: CoordinateType, return_parameter: bool = False
-) -> "Point | tuple[Point, float]":
+def curve_closest_point(curve: "NurbsCurve", point: CoordinateType, return_parameter: bool = False) -> "Point | tuple[Point, float]":
     raise PluginNotInstalledError
 
 
 @pluggable(category="nurbscurve-operations")
-def curve_divide_by_count(
-    curve: "NurbsCurve", count: int, return_points: bool = False
-) -> "list[float] | tuple[list[float], list[Point]]":
+def curve_divide_by_count(curve: "NurbsCurve", count: int, return_points: bool = False) -> "list[float] | tuple[list[float], list[Point]]":
     raise PluginNotInstalledError
 
 
 @pluggable(category="nurbscurve-operations")
-def curve_divide_by_length(
-    curve: "NurbsCurve", length: float, return_points: bool = False
-) -> "list[float] | tuple[list[float], list[Point]]":
+def curve_divide_by_length(curve: "NurbsCurve", length: float, return_points: bool = False) -> "list[float] | tuple[list[float], list[Point]]":
     raise PluginNotInstalledError
 
 

@@ -1,4 +1,3 @@
-from compas.datastructures import Mesh
 from compas.datastructures import Graph
 from compas.geometry import Box, Frame
 from compas.topology import astar_shortest_path
@@ -41,7 +40,9 @@ def test_astar_shortest_path_disconnected():
 
 
 def test_astar_shortest_path_mesh():
-    mesh = Mesh.from_shape(Box(frame=Frame.worldXY(), xsize=1, ysize=1, zsize=1))
+    from compas.geometry import Native
+
+    mesh = Box(frame=Frame.worldXY(), xsize=1, ysize=1, zsize=1).polygonize(Native()).to_mesh()
     a, b = mesh.vertex_sample(size=2)
     path = astar_shortest_path(mesh, a, b)
     assert path is not None

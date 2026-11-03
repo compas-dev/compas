@@ -1,18 +1,19 @@
 from math import pi
 
-from compas._typing import MeshType
 from compas.geometry import angle_points
-from compas.plugins import pluggable
+
+from .._tessellation_plugin import tessellation_pluggable
+from ..tessellation import Tessellation
 
 
-@pluggable(category="trimesh")
-def trimesh_gaussian_curvature(mesh: MeshType) -> list[float]:
+@tessellation_pluggable(category="trimesh", inputs=("mesh",))
+def trimesh_gaussian_curvature(mesh: "Tessellation") -> list[float]:
     """Compute the discrete Gaussian curvature of a triangle mesh.
 
     Parameters
     ----------
     mesh
-        The mesh vertex coordinates and triangular faces.
+        The triangle tessellation.
 
     Returns
     -------
@@ -26,7 +27,7 @@ def trimesh_gaussian_curvature(mesh: MeshType) -> list[float]:
     at boundary vertices.
 
     """
-    vertices, faces = mesh
+    vertices, faces = mesh.to_vertices_and_triangles()
     angles = [0.0] * len(vertices)
     edge_faces = {}
     for face in faces:
@@ -41,14 +42,14 @@ def trimesh_gaussian_curvature(mesh: MeshType) -> list[float]:
     return [(pi if vertex in boundary else 2 * pi) - angle for vertex, angle in enumerate(angles)]
 
 
-@pluggable(category="trimesh")
-def trimesh_principal_curvature(mesh: MeshType) -> list[tuple[list[float], list[float]]]:
+@tessellation_pluggable(category="trimesh", inputs=("mesh",))
+def trimesh_principal_curvature(mesh: "Tessellation") -> list[tuple[list[float], list[float]]]:
     """Compute the principal curvature directions of a triangle mesh.
 
     Parameters
     ----------
     mesh
-        The mesh vertex coordinates and triangular faces.
+        The triangle tessellation.
 
     Returns
     -------
@@ -63,14 +64,14 @@ def trimesh_principal_curvature(mesh: MeshType) -> list[tuple[list[float], list[
     raise NotImplementedError
 
 
-@pluggable(category="trimesh")
-def trimesh_mean_curvature(mesh: MeshType) -> list[float]:
+@tessellation_pluggable(category="trimesh", inputs=("mesh",))
+def trimesh_mean_curvature(mesh: "Tessellation") -> list[float]:
     """Compute the discrete mean curvature of a triangle mesh.
 
     Parameters
     ----------
     mesh
-        The mesh vertex coordinates and triangular faces.
+        The triangle tessellation.
 
     Returns
     -------

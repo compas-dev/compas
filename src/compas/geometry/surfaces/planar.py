@@ -1,3 +1,4 @@
+from typing import TYPE_CHECKING
 from typing import Any
 from typing import Self
 
@@ -7,6 +8,9 @@ from compas.geometry import Point
 from compas.geometry import Vector
 
 from .surface import Surface
+
+if TYPE_CHECKING:
+    from compas.geometry import Box
 
 
 class PlanarSurface(Surface):
@@ -86,6 +90,22 @@ class PlanarSurface(Surface):
     # =============================================================================
 
     @property
+    def aabb(self) -> "Box":
+        """The exact world-axis-aligned bounding box of the surface."""
+        from compas.geometry import Box
+
+        xaxis = self.frame.xaxis
+        yaxis = self.frame.yaxis
+        center = self.frame.point + 0.5 * self.xsize * xaxis + 0.5 * self.ysize * yaxis
+        extents = [0.5 * (self.xsize * abs(xaxis[i]) + self.ysize * abs(yaxis[i])) for i in range(3)]
+        return Box(
+            xsize=2.0 * extents[0],
+            ysize=2.0 * extents[1],
+            zsize=2.0 * extents[2],
+            frame=Frame(center),
+        )
+
+    @property
     def xsize(self) -> float:
         """The size of the surface in its local X-direction."""
         if self._xsize is None:
@@ -97,7 +117,6 @@ class PlanarSurface(Surface):
         if xsize < 0:
             raise ValueError("The size of the surface in the local X-direction should be at least zero.")
         self._xsize = float(xsize)
-        self._invalidate_discretization()
 
     @property
     def ysize(self) -> float:
@@ -111,7 +130,6 @@ class PlanarSurface(Surface):
         if ysize < 0:
             raise ValueError("The size of the surface in the local Y-direction should be at least zero.")
         self._ysize = float(ysize)
-        self._invalidate_discretization()
 
     # =============================================================================
     # Constructors

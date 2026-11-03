@@ -50,7 +50,7 @@ def test_json_shape():
     before = Box(frame=Frame(Point(0, 0, 0), Vector(1, 0, 0), Vector(0, 1, 0)), xsize=1, ysize=1, zsize=1)
     after: Box = compas.json_loads(compas.json_dumps(before))
     assert before.__dtype__ == after.__dtype__
-    assert all(a == b for a, b in zip(before.to_vertices_and_faces()[0], after.to_vertices_and_faces()[0]))
+    assert before.points == after.points
     assert before.guid == after.guid
 
 
@@ -143,7 +143,7 @@ def test_json_zip():
     compas.json_dumpz(before, zipfile_name)
     after: Box = compas.json_loadz(zipfile_name)
     assert before.__dtype__ == after.__dtype__
-    assert all(a == b for a, b in zip(before.to_vertices_and_faces()[0], after.to_vertices_and_faces()[0]))
+    assert before.points == after.points
     assert before.guid == after.guid
 
 

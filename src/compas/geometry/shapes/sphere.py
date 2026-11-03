@@ -10,14 +10,16 @@ from compas.geometry import Circle
 from compas.geometry import Frame
 from compas.geometry import Line
 from compas.geometry import Point
+from compas.geometry import UVGrid
 
+from .box import Box
 from .shape import Shape
 
 if TYPE_CHECKING:
     from compas.geometry import Brep
 
 
-class Sphere(Shape):
+class Sphere(Shape[UVGrid]):
     """A sphere is defined by a point and a radius.
 
     Parameters
@@ -86,7 +88,6 @@ class Sphere(Shape):
         if radius <= 0:
             raise ValueError("The radius of the sphere should be larger than zero.")
         self._radius = float(radius)
-        self._invalidate_discretization()
 
     @property
     def start(self) -> Point:
@@ -107,6 +108,18 @@ class Sphere(Shape):
     def circle(self) -> Circle:
         """The equatorial circle in the local XY plane."""
         return Circle(self.radius, frame=self.frame)
+
+    @property
+    def aabb(self) -> Box:
+        """The exact world-axis-aligned bounding box."""
+        diameter = 2.0 * self.radius
+        return Box(diameter, diameter, diameter, frame=Frame(self.frame.point, [1, 0, 0], [0, 1, 0]))
+
+    @property
+    def obb(self) -> Box:
+        """An exact minimum-volume oriented bounding box."""
+        diameter = 2.0 * self.radius
+        return Box(diameter, diameter, diameter, frame=self.frame.copy())
 
     def area(self) -> float:
         """Compute the surface area of the sphere."""
@@ -145,7 +158,7 @@ class Sphere(Shape):
     # Discretisation
     # ==========================================================================
 
-    def _compute_vertices(self, u: int, v: int) -> list[CoordinateType]:
+    def _compute_local_vertices(self, strategy: UVGrid) -> list[CoordinateType]:
         """Compute the vertices of the discrete representation of the sphere.
 
         Returns
@@ -153,6 +166,8 @@ class Sphere(Shape):
         list[list[float]]
 
         """
+        u = strategy.u
+        v = strategy.v
         theta = pi / v
         phi = pi * 2 / u
         hpi = pi * 0.5
@@ -172,7 +187,7 @@ class Sphere(Shape):
 
         return vertices
 
-    def compute_faces(self, u: int | None = None, v: int | None = None) -> list[list[int]]:
+    def _compute_faces(self, strategy: UVGrid) -> list[list[int]]:
         """Compute the faces of the discrete representation of the sphere.
 
         Returns
@@ -180,8 +195,8 @@ class Sphere(Shape):
         list[list[int]]
 
         """
-        u, v = self._resolutions(u, v)
-
+        u = strategy.u
+        v = strategy.v
         faces = []
         vertex_count = (v - 1) * u + 2
 

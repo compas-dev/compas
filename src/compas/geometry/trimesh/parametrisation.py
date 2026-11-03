@@ -1,15 +1,15 @@
-from compas._typing import MeshType
-from compas.plugins import pluggable
+from .._tessellation_plugin import tessellation_pluggable
+from ..tessellation import Tessellation
 
 
-@pluggable(category="trimesh")
-def trimesh_harmonic(mesh: MeshType) -> list[list[float]]:
+@tessellation_pluggable(category="trimesh", inputs=("mesh",))
+def trimesh_harmonic(mesh: "Tessellation") -> list[list[float]]:
     """Compute a harmonic parametrisation with a fixed circular boundary.
 
     Parameters
     ----------
     mesh
-        The mesh vertex coordinates and triangular faces.
+        The triangle tessellation.
 
     Returns
     -------
@@ -24,14 +24,14 @@ def trimesh_harmonic(mesh: MeshType) -> list[list[float]]:
     raise NotImplementedError
 
 
-@pluggable(category="trimesh")
-def trimesh_lscm(mesh: MeshType) -> list[list[float]]:
+@tessellation_pluggable(category="trimesh", inputs=("mesh",))
+def trimesh_lscm(mesh: "Tessellation") -> list[list[float]]:
     """Compute a least-squares conformal parametrisation.
 
     Parameters
     ----------
     mesh
-        The mesh vertex coordinates and triangular faces.
+        The triangle tessellation.
 
     Returns
     -------

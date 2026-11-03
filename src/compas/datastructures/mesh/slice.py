@@ -48,10 +48,11 @@ def mesh_slice_plane(mesh: MeshType, plane: Plane) -> tuple[MeshType, MeshType] 
     --------
     >>> from compas.geometry import Plane
     >>> from compas.geometry import Box
+    >>> from compas.geometry import Native
     >>> from compas.datastructures import Mesh
     >>> plane = Plane((0, 0, 0), (1, 0, 0))
     >>> box = Box.from_width_height_depth(1, 1, 1)
-    >>> mesh = Mesh.from_shape(box)
+    >>> mesh = box.polygonize(Native()).to_mesh()
     >>> result = mesh_slice_plane(mesh, plane)
     >>> len(result) == 2
     True

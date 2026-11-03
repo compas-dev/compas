@@ -161,6 +161,7 @@ nav:
       - Visualisation: getting-started/basics.visualisation.md
       - Data Serialisation: getting-started/advanced.serialisation.md
       - Plugins and Pluggables: getting-started/advanced.pluggables.md
+      - Geometry Discretization and Tessellation: getting-started/advanced.tessellation.md
       - Hash Trees: getting-started/advanced.hashtree.md
       - Tolerances: getting-started/advanced.tolerance.md
       - Releases: getting-started/releases.md

@@ -13,17 +13,16 @@ from compas._typing import FilePath
 from compas.geometry import Frame
 from compas.geometry import Geometry
 from compas.geometry import Point
+from compas.geometry import TessellationStrategy
 from compas.geometry import Transformation
+from compas.geometry import UVGrid
 from compas.geometry import Vector
 from compas.itertools import linspace
 from compas.plugins import PluginNotInstalledError
 from compas.plugins import pluggable
 
 if TYPE_CHECKING:
-    from compas.datastructures import Mesh
     from compas.geometry import Brep
-    from compas.geometry import Line
-    from compas.geometry import Polygon
     from compas.geometry import PolygonalSurface
     from compas.geometry import Tessellation
 
@@ -39,10 +38,12 @@ def surface_from_native(cls: type[SurfaceType], *args: object, **kwargs: object)
 class Surface(Geometry):
     """Class representing a general surface object.
 
-    Discretisation samples a parameter domain into indexed vertices, edges,
-    and polygon faces while preserving its polygonal grid topology.
-    Tessellation is a separate conversion of that representation to indexed
-    triangles with optional normals and texture coordinates.
+    Polygonization samples a parameter domain into an independent
+    `PolygonalSurface` while preserving its polygonal grid topology.
+    Tessellation creates an ephemeral indexed triangular representation with
+    aligned normals and texture coordinates. Polygonization requires an
+    explicit strategy. Tessellation uses `UVGrid(64, 64)` when none is
+    provided.
 
     Parameters
     ----------
@@ -51,26 +52,11 @@ class Surface(Geometry):
     name
         The name of the surface.
 
-    Notes
-    -----
-    Assigning a frame creates an independent copy. Mutating `surface.frame`
-    afterwards changes the surface directly. Placement changes invalidate
-    cached world-space vertices but leave the resolution-dependent edge and
-    face topology cached.
-
     """
 
     def __init__(self, frame: Frame | None = None, name: str | None = None) -> None:
         super().__init__(name=name)
         self._frame: Frame | None = None
-        self._resolution_u = 16
-        self._resolution_v = 16
-        self._vertex_cache: dict[tuple[int, int, tuple[float, float], tuple[float, float]], tuple[CoordinateType, ...]] = {}
-        self._edge_cache: dict[tuple[int, int], tuple[tuple[int, int], ...]] = {}
-        self._face_cache: dict[tuple[int, int], tuple[tuple[int, ...], ...]] = {}
-        self._tessellation_cache: Tessellation | None = None
-        self._mesh_cache: Mesh | None = None
-        self._cached_frame: tuple[float, ...] | None = None
         self.frame = frame
 
     def __repr__(self) -> str:
@@ -105,7 +91,6 @@ class Surface(Geometry):
             self._frame = None
         else:
             self._frame = frame.copy(cls=Frame)
-        self._invalidate_placement()
 
     @property
     def transformation(self) -> Transformation:
@@ -127,7 +112,6 @@ class Surface(Geometry):
     @point.setter
     def point(self, point: CoordinateType) -> None:
         self.frame.point = point
-        self._invalidate_placement()
 
     @property
     def xaxis(self) -> Vector:
@@ -169,126 +153,6 @@ class Surface(Geometry):
         """Whether the surface is periodic in the v-direction."""
         return False
 
-    @property
-    def resolution_u(self) -> int:
-        """The number of faces in the U parameter direction."""
-        return self._resolution_u
-
-    @resolution_u.setter
-    def resolution_u(self, resolution: int) -> None:
-        if resolution < 1:
-            raise ValueError("The U resolution should be at least 1.")
-        self._resolution_u = resolution
-        self._invalidate_discretization()
-
-    @property
-    def resolution_v(self) -> int:
-        """The number of faces in the V parameter direction."""
-        return self._resolution_v
-
-    @resolution_v.setter
-    def resolution_v(self, resolution: int) -> None:
-        if resolution < 1:
-            raise ValueError("The V resolution should be at least 1.")
-        self._resolution_v = resolution
-        self._invalidate_discretization()
-
-    @property
-    def vertices(self) -> tuple[CoordinateType, ...]:
-        """The cached vertices of the polygonal parametric representation."""
-        return self._vertices(self.resolution_u, self.resolution_v, self.domain_u, self.domain_v)
-
-    @property
-    def edges(self) -> tuple[tuple[int, int], ...]:
-        """The cached edges of the polygonal parametric representation."""
-        key = self.resolution_u, self.resolution_v
-        edges = self._edge_cache.get(key)
-        if edges is None:
-            edges = tuple(self.compute_edges())
-            self._edge_cache[key] = edges
-        return edges
-
-    @property
-    def faces(self) -> tuple[tuple[int, ...], ...]:
-        """The cached faces of the polygonal parametric representation."""
-        key = self.resolution_u, self.resolution_v
-        faces = self._face_cache.get(key)
-        if faces is None:
-            faces = tuple(tuple(face) for face in self.compute_faces())
-            self._face_cache[key] = faces
-        return faces
-
-    @property
-    def points(self) -> list[Point]:
-        """The vertices of the polygonal representation as points."""
-        return [Point(vertex[0], vertex[1], vertex[2]) for vertex in self.vertices]
-
-    @property
-    def lines(self) -> list["Line"]:
-        """The edges of the polygonal representation as lines."""
-        from compas.geometry import Line
-
-        points = self.points
-        return [Line(points[u], points[v]) for u, v in self.edges]
-
-    @property
-    def polygons(self) -> list["Polygon"]:
-        """The faces of the polygonal representation as polygons."""
-        from compas.geometry import Polygon
-
-        points = self.points
-        return [Polygon([points[index] for index in face]) for face in self.faces]
-
-    @property
-    def tessellation(self) -> "Tessellation":
-        """The cached triangular representation at the current resolution."""
-        self._ensure_placement_cache_is_current()
-        if self._tessellation_cache is None:
-            self._tessellation_cache = self.compute_tessellation()
-        return self._tessellation_cache
-
-    @property
-    def mesh(self) -> "Mesh":
-        """The cached topology-preserving mesh at the current resolution.
-
-        Notes
-        -----
-        The returned mesh is shared by subsequent property accesses. Use
-        `compute_mesh()` when an independent mesh is required.
-
-        """
-        self._ensure_placement_cache_is_current()
-        if self._mesh_cache is None:
-            self._mesh_cache = self.compute_mesh()
-        return self._mesh_cache
-
-    # ==============================================================================
-    # Cache
-    # ==============================================================================
-
-    def _invalidate_discretization(self) -> None:
-        self._vertex_cache.clear()
-        self._edge_cache.clear()
-        self._face_cache.clear()
-        self._tessellation_cache = None
-        self._mesh_cache = None
-        self._cached_frame = None
-
-    def _invalidate_placement(self) -> None:
-        self._vertex_cache.clear()
-        self._tessellation_cache = None
-        self._mesh_cache = None
-        self._cached_frame = None
-
-    def _ensure_placement_cache_is_current(self) -> None:
-        frame = self.frame
-        current = tuple(frame.point) + tuple(frame.xaxis) + tuple(frame.yaxis)
-        if self._cached_frame != current:
-            self._vertex_cache.clear()
-            self._tessellation_cache = None
-            self._mesh_cache = None
-            self._cached_frame = current
-
     # ==============================================================================
     # Constructors
     # ==============================================================================
@@ -316,86 +180,34 @@ class Surface(Geometry):
 
     def _discretization_parameters(
         self,
-        nu: int | None = None,
-        nv: int | None = None,
-        du: tuple[float, float] | None = None,
-        dv: tuple[float, float] | None = None,
+        strategy: TessellationStrategy,
     ) -> tuple[int, int, tuple[float, float], tuple[float, float]]:
-        nu = self.resolution_u if nu is None else nu
-        nv = self.resolution_v if nv is None else nv
+        if not isinstance(strategy, UVGrid):
+            raise TypeError(f"{type(self).__name__} discretization requires UVGrid.")
+        nu = strategy.u
+        nv = strategy.v
         if nu < 1 or nv < 1:
             raise ValueError("Surface discretization requires at least one face in each parameter direction.")
-        domain_u = self.domain_u if du is None else du
-        domain_v = self.domain_v if dv is None else dv
+        domain_u = self.domain_u
+        domain_v = self.domain_v
         if not all(isfinite(value) for value in domain_u + domain_v):
             raise ValueError("Surface discretization requires finite parameter domains.")
         return nu, nv, domain_u, domain_v
 
-    def _vertices(
+    def _compute_vertices(
         self,
         nu: int,
         nv: int,
         domain_u: tuple[float, float],
         domain_v: tuple[float, float],
-    ) -> tuple[CoordinateType, ...]:
-        self._ensure_placement_cache_is_current()
-        key = nu, nv, domain_u, domain_v
-        vertices = self._vertex_cache.get(key)
-        if vertices is None:
-            vertices = tuple(tuple(vertex) for vertex in self.compute_vertices(nu, nv, domain_u, domain_v))
-            self._vertex_cache[key] = vertices
-        return vertices
-
-    def compute_vertices(
-        self,
-        nu: int | None = None,
-        nv: int | None = None,
-        du: tuple[float, float] | None = None,
-        dv: tuple[float, float] | None = None,
     ) -> list[CoordinateType]:
-        """Compute the vertices of the polygonal parametric representation.
-
-        Parameters
-        ----------
-        nu
-            The U resolution. If omitted, use `resolution_u`.
-        nv
-            The V resolution. If omitted, use `resolution_v`.
-        du
-            The U domain subset. If omitted, use `domain_u`.
-        dv
-            The V domain subset. If omitted, use `domain_v`.
-
-        Returns
-        -------
-        list[CoordinateType]
-            The computed vertex coordinates.
-
-        """
-        nu, nv, domain_u, domain_v = self._discretization_parameters(nu, nv, du, dv)
         parameters = product(
             linspace(domain_u[0], domain_u[1], nu + 1),
             linspace(domain_v[0], domain_v[1], nv + 1),
         )
         return [self.point_at(u, v) for u, v in parameters]
 
-    def compute_faces(self, nu: int | None = None, nv: int | None = None) -> list[list[int]]:
-        """Compute the faces of the polygonal parametric representation.
-
-        Parameters
-        ----------
-        nu
-            The U resolution. If omitted, use `resolution_u`.
-        nv
-            The V resolution. If omitted, use `resolution_v`.
-
-        Returns
-        -------
-        list[list[int]]
-            The quadrilateral faces as vertex-index cycles.
-
-        """
-        nu, nv, _, _ = self._discretization_parameters(nu, nv)
+    def _compute_faces(self, nu: int, nv: int) -> list[list[int]]:
         return [
             [
                 i * (nv + 1) + j,
@@ -406,82 +218,71 @@ class Surface(Geometry):
             for i, j in product(range(nu), range(nv))
         ]
 
-    def compute_edges(self, nu: int | None = None, nv: int | None = None) -> list[tuple[int, int]]:
-        """Compute the edges of the polygonal parametric representation.
-
-        Parameters
-        ----------
-        nu
-            The U resolution. If omitted, use `resolution_u`.
-        nv
-            The V resolution. If omitted, use `resolution_v`.
-
-        Returns
-        -------
-        list[tuple[int, int]]
-            The unique edges as vertex-index pairs.
-
-        """
-        edges = []
-        seen = set()
-        for face in self.compute_faces(nu, nv):
-            for index, start in enumerate(face):
-                end = face[(index + 1) % len(face)]
-                key = (start, end) if start < end else (end, start)
-                if key not in seen:
-                    seen.add(key)
-                    edges.append((start, end))
-        return edges
-
     # ==============================================================================
     # Conversions
     # ==============================================================================
 
-    def compute_tessellation(
-        self,
-        nu: int | None = None,
-        nv: int | None = None,
-        du: tuple[float, float] | None = None,
-        dv: tuple[float, float] | None = None,
-        include_normals: bool = True,
-        include_texture_coordinates: bool = True,
-    ) -> "Tessellation[list[CoordinateType], list[list[int]]]":
-        """Compute a triangular tessellation of a parameter-domain subset.
+    def polygonize(self, strategy: TessellationStrategy) -> "PolygonalSurface":
+        """Polygonize the surface with an explicit approximation strategy.
 
         Parameters
         ----------
-        nu
-            The number of faces in the U direction.
-        nv
-            The number of faces in the V direction.
-        du
-            The U domain subset. If omitted, use the entire domain.
-        dv
-            The V domain subset. If omitted, use the entire domain.
-        include_normals
-            If True, include analytic vertex normals.
-        include_texture_coordinates
-            If True, include normalized UV coordinates.
+        strategy
+            The polygonization strategy.
+
+        Returns
+        -------
+        PolygonalSurface
+            An independent polygonal surface with quadrilateral cells.
+
+        Raises
+        ------
+        TypeError
+            If the strategy is not `UVGrid`.
+
+        """
+        from compas.geometry import PolygonalSurface
+
+        nu, nv, domain_u, domain_v = self._discretization_parameters(strategy)
+        vertices = self._compute_vertices(nu, nv, domain_u, domain_v)
+        faces = self._compute_faces(nu, nv)
+        return PolygonalSurface(vertices, faces)
+
+    def tessellate(
+        self,
+        strategy: TessellationStrategy | None = None,
+    ) -> "Tessellation[list[CoordinateType], list[list[int]]]":
+        """Tessellate the surface.
+
+        Parameters
+        ----------
+        strategy
+            The tessellation strategy. If `None`, `UVGrid(64, 64)` is used.
 
         Returns
         -------
         Tessellation
-            The indexed triangular representation for visualization.
+            The ephemeral indexed triangular representation, including
+            analytic normals and normalized UV coordinates.
+
+        Raises
+        ------
+        TypeError
+            If the strategy is not `UVGrid`.
 
         """
         from compas.geometry import Tessellation
 
-        nu, nv, domain_u, domain_v = self._discretization_parameters(nu, nv, du, dv)
-
+        nu, nv, domain_u, domain_v = self._discretization_parameters(strategy if strategy is not None else UVGrid(64, 64))
         parameters = list(
             product(
                 linspace(domain_u[0], domain_u[1], nu + 1),
                 linspace(domain_v[0], domain_v[1], nv + 1),
             )
         )
-        vertices = list(self._vertices(nu, nv, domain_u, domain_v))
-        normals = [self.normal_at(u, v) for u, v in parameters] if include_normals else None
-        texture_coordinates = [[i / nu, j / nv] for i, j in product(range(nu + 1), range(nv + 1))] if include_texture_coordinates else None
+        vertices = self._compute_vertices(nu, nv, domain_u, domain_v)
+        normals = [self.normal_at(u, v) for u, v in parameters]
+        texture_coordinates = [[i / nu, j / nv] for i, j in product(range(nu + 1), range(nv + 1))]
         triangles = []
         for i, j in product(range(nu), range(nv)):
             a = i * (nv + 1) + j
@@ -504,195 +305,6 @@ class Surface(Geometry):
 
         """
         raise NotImplementedError
-
-    def to_vertices_and_faces(
-        self,
-        nu: int | None = None,
-        nv: int | None = None,
-        du: tuple[float, float] | None = None,
-        dv: tuple[float, float] | None = None,
-    ) -> tuple[list[CoordinateType], list[list[int]]]:
-        """Convert the surface to a list of vertices and faces.
-
-        Parameters
-        ----------
-        nu
-            The number of faces in the u direction.
-            Default is `16`.
-        nv
-            The number of faces in the v direction.
-            Default is `16`.
-        du
-            The subset of the domain in the u direction.
-            Default is `None`, in which case the entire domain is used.
-        dv
-            The subset of the domain in the v direction.
-            Default is `None`, in which case the entire domain is used.
-
-        Returns
-        -------
-        tuple[list[CoordinateType], list[list[int]]]
-            The vertices and quadrilateral faces of the discretization.
-
-        Raises
-        ------
-        ValueError
-            If either face count is less than one or a domain endpoint is not
-            finite.
-
-        """
-        nu, nv, domain_u, domain_v = self._discretization_parameters(nu, nv, du, dv)
-        vertices = list(self._vertices(nu, nv, domain_u, domain_v))
-        faces = self.compute_faces(nu, nv)
-        return vertices, faces
-
-    def to_triangles(
-        self,
-        nu: int | None = None,
-        nv: int | None = None,
-        du: tuple[float, float] | None = None,
-        dv: tuple[float, float] | None = None,
-    ) -> list[list[CoordinateType]]:
-        """Convert the surface to a list of triangles.
-
-        Parameters
-        ----------
-        nu
-            The number of faces in the u direction.
-            Default is `16`.
-        nv
-            The number of faces in the v direction.
-            Default is `16`.
-        du
-            The subset of the domain in the u direction.
-            Default is `None`, in which case the entire domain is used.
-        dv
-            The subset of the domain in the v direction.
-            Default is `None`, in which case the entire domain is used.
-
-        Returns
-        -------
-        list[list[CoordinateType]]
-            The triangular faces as coordinate lists.
-
-        """
-        vertices, faces = self.to_vertices_and_faces(nu=nu, nv=nv, du=du, dv=dv)
-        triangles: list[list[CoordinateType]] = []
-        for a, b, c, d in faces:
-            triangles.append([vertices[a], vertices[b], vertices[c]])
-            triangles.append([vertices[a], vertices[c], vertices[d]])
-        return triangles
-
-    def to_quads(
-        self,
-        nu: int | None = None,
-        nv: int | None = None,
-        du: tuple[float, float] | None = None,
-        dv: tuple[float, float] | None = None,
-    ) -> list[list[CoordinateType]]:
-        """Convert the surface to a list of quads.
-
-        Parameters
-        ----------
-        nu
-            The number of faces in the u direction.
-            Default is `16`.
-        nv
-            The number of faces in the v direction.
-            Default is `16`.
-        du
-            The subset of the domain in the u direction.
-            Default is `None`, in which case the entire domain is used.
-        dv
-            The subset of the domain in the v direction.
-            Default is `None`, in which case the entire domain is used.
-
-        Returns
-        -------
-        list[list[CoordinateType]]
-            The quadrilateral faces as coordinate lists.
-
-        """
-        vertices, faces = self.to_vertices_and_faces(nu=nu, nv=nv, du=du, dv=dv)
-        quads: list[list[CoordinateType]] = []
-        for a, b, c, d in faces:
-            quads.append([vertices[a], vertices[b], vertices[c], vertices[d]])
-        return quads
-
-    def to_polygonal_surface(
-        self,
-        nu: int | None = None,
-        nv: int | None = None,
-        du: tuple[float, float] | None = None,
-        dv: tuple[float, float] | None = None,
-    ) -> "PolygonalSurface":
-        """Convert a discretized parameter domain to a polygonal surface.
-
-        Parameters
-        ----------
-        nu
-            The number of faces in the u direction.
-        nv
-            The number of faces in the v direction.
-        du
-            The subset of the domain in the u direction.
-            If omitted, the entire domain is used.
-        dv
-            The subset of the domain in the v direction.
-            If omitted, the entire domain is used.
-
-        Returns
-        -------
-        PolygonalSurface
-            The lightweight polygonal approximation of the parameter domain.
-
-        Examples
-        --------
-        >>> from compas.geometry import PlanarSurface
-        >>> surface = PlanarSurface().to_polygonal_surface(nu=2, nv=2)
-        >>> len(surface.faces)
-        4
-
-        """
-        from compas.geometry import PolygonalSurface
-
-        vertices, faces = self.to_vertices_and_faces(nu=nu, nv=nv, du=du, dv=dv)
-        return PolygonalSurface(vertices, faces)
-
-    def compute_mesh(
-        self,
-        nu: int | None = None,
-        nv: int | None = None,
-        du: tuple[float, float] | None = None,
-        dv: tuple[float, float] | None = None,
-    ) -> "Mesh":
-        """Compute a topology-preserving mesh representation of the surface.
-
-        Parameters
-        ----------
-        nu
-            The number of faces in the u direction.
-            Default is `16`.
-        nv
-            The number of faces in the v direction.
-            Default is `16`.
-        du
-            The subset of the domain in the u direction.
-            Default is `None`, in which case the entire domain is used.
-        dv
-            The subset of the domain in the v direction.
-            Default is `None`, in which case the entire domain is used.
-
-        Returns
-        -------
-        Mesh
-            A mesh object.
-
-        """
-        from compas.datastructures import Mesh
-
-        vertices, faces = self.to_vertices_and_faces(nu=nu, nv=nv, du=du, dv=dv)
-        return Mesh.from_vertices_and_faces(vertices, faces)
 
     def to_brep(self) -> "Brep":
         """Convert the surface to a BREP representation.
@@ -725,7 +337,6 @@ class Surface(Geometry):
 
         """
         self.frame.transform(transformation)
-        self._invalidate_placement()
 
     # ==============================================================================
     # Methods
@@ -878,7 +489,6 @@ class Surface(Geometry):
         """
         raise NotImplementedError
 
-    # ==============================================================================
     @overload
     def closest_point(self, point: CoordinateType, return_parameters: Literal[False] = False) -> Point | None: ...
 

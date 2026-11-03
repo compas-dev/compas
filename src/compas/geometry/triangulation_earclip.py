@@ -112,8 +112,7 @@ def earclip_polygon(polygon: "Polygon") -> list[list[int]]:
     Parameters
     ----------
     polygon
-        A non-self-intersecting polygon. Non-planar polygons are projected to
-        their best-fit plane before triangulation.
+        A planar, non-self-intersecting polygon.
 
     Returns
     -------

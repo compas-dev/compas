@@ -1,18 +1,19 @@
 from collections.abc import Sequence
 
-from compas._typing import MeshType
 from compas.geometry._typing import PlaneType
-from compas.plugins import pluggable
+
+from .._tessellation_plugin import tessellation_pluggable
+from ..tessellation import Tessellation
 
 
-@pluggable(category="trimesh")
-def trimesh_slice(mesh: MeshType, planes: Sequence[PlaneType]) -> list[list[list[float]]]:
+@tessellation_pluggable(category="trimesh", inputs=("mesh",))
+def trimesh_slice(mesh: "Tessellation", planes: Sequence[PlaneType]) -> list[list[list[float]]]:
     """Slice a triangle mesh with multiple planes.
 
     Parameters
     ----------
     mesh
-        The mesh vertex coordinates and triangular faces.
+        The triangle tessellation.
     planes
         The slicing planes.
 

@@ -324,7 +324,9 @@ def mesh_to_gltf_primitive(mesh: Mesh) -> PrimitiveData:
         Converted primitive.
 
     """
-    vertices, faces = mesh.to_vertices_and_faces(triangulated=True)
+    from compas.geometry import FaceTriangulation
+
+    vertices, faces = mesh.triangulated(FaceTriangulation()).to_vertices_and_triangles()
     indices = [index for face in faces for index in face]
     primitive = PrimitiveData({"POSITION": vertices}, indices, mode=MODE_TRIANGLES)
     texture_coordinates = mesh.vertices_attribute("texture_coordinate")

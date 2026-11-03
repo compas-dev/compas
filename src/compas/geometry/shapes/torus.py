@@ -10,14 +10,16 @@ from compas._typing import CoordinateType
 from compas.geometry import Frame
 from compas.geometry import Plane
 from compas.geometry import Point
+from compas.geometry import UVGrid
 
+from .box import Box
 from .shape import Shape
 
 if TYPE_CHECKING:
     from compas.geometry import Brep
 
 
-class Torus(Shape):
+class Torus(Shape[UVGrid]):
     """A torus is defined by a plane and two radii.
 
     Parameters
@@ -100,7 +102,6 @@ class Torus(Shape):
         if self._radius_pipe is not None and radius <= self._radius_pipe:
             raise ValueError("The axis radius of a ring torus should be larger than its pipe radius.")
         self._radius_axis = float(radius)
-        self._invalidate_discretization()
 
     @property
     def radius_pipe(self) -> float:
@@ -116,12 +117,31 @@ class Torus(Shape):
         if self._radius_axis is not None and radius >= self._radius_axis:
             raise ValueError("The pipe radius of a ring torus should be smaller than its axis radius.")
         self._radius_pipe = float(radius)
-        self._invalidate_discretization()
 
     @property
     def center(self) -> Point:
         """The center point of the torus."""
         return self.frame.point
+
+    @property
+    def aabb(self) -> Box:
+        """The exact world-axis-aligned bounding box."""
+        axis = self.frame.zaxis
+        ex = self.radius_axis * sqrt(max(0.0, 1.0 - axis.x**2)) + self.radius_pipe
+        ey = self.radius_axis * sqrt(max(0.0, 1.0 - axis.y**2)) + self.radius_pipe
+        ez = self.radius_axis * sqrt(max(0.0, 1.0 - axis.z**2)) + self.radius_pipe
+        return Box(2.0 * ex, 2.0 * ey, 2.0 * ez, frame=Frame(self.frame.point, [1, 0, 0], [0, 1, 0]))
+
+    @property
+    def obb(self) -> Box:
+        """The minimum-volume oriented bounding box.
+
+        Raises
+        ------
+        NotImplementedError
+            A continuous minimum-volume implementation is not available.
+        """
+        raise NotImplementedError("The continuous minimum-volume OBB of a torus is not implemented.")
 
     def area(self) -> float:
         """Compute the surface area of the torus."""
@@ -168,7 +188,7 @@ class Torus(Shape):
     # Discretisation
     # ==========================================================================
 
-    def _compute_vertices(self, u: int, v: int) -> list[CoordinateType]:
+    def _compute_local_vertices(self, strategy: UVGrid) -> list[CoordinateType]:
         """Compute the vertices of the discrete representation of the torus.
 
         Returns
@@ -176,6 +196,8 @@ class Torus(Shape):
         list[list[float]]
 
         """
+        u = strategy.u
+        v = strategy.v
         theta = pi * 2 / u
         phi = pi * 2 / v
 
@@ -189,7 +211,7 @@ class Torus(Shape):
 
         return vertices
 
-    def compute_faces(self, u: int | None = None, v: int | None = None) -> list[list[int]]:
+    def _compute_faces(self, strategy: UVGrid) -> list[list[int]]:
         """Compute the faces of the discrete representation of the torus.
 
         Returns
@@ -197,8 +219,8 @@ class Torus(Shape):
         list[list[int]]
 
         """
-        u, v = self._resolutions(u, v)
-
+        u = strategy.u
+        v = strategy.v
         faces = []
         for i in range(u):
             ii = (i + 1) % u

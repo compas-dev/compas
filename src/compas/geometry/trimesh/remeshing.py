@@ -1,24 +1,22 @@
 from collections.abc import Sequence
 
-from compas._typing import MeshType
-from compas.plugins import pluggable
-
-type MeshResult = tuple[list[list[float]], list[list[int]]]
+from .._tessellation_plugin import tessellation_pluggable
+from ..tessellation import Tessellation
 
 
-@pluggable(category="trimesh")
+@tessellation_pluggable(category="trimesh", inputs=("mesh",), result=True)
 def trimesh_remesh(
-    mesh: MeshType,
+    mesh: "Tessellation",
     target_edge_length: float,
     number_of_iterations: int = 10,
     do_project: bool = True,
-) -> MeshResult:
+) -> "Tessellation":
     """Remesh a triangle mesh toward a uniform target edge length.
 
     Parameters
     ----------
     mesh
-        The mesh vertex coordinates and triangular faces.
+        The triangle tessellation.
     target_edge_length
         Target length of mesh edges.
     number_of_iterations
@@ -29,8 +27,8 @@ def trimesh_remesh(
 
     Returns
     -------
-    tuple[list[list[float]], list[list[int]]]
-        The remeshed vertex coordinates and triangular faces.
+    Tessellation
+        The remeshed triangle geometry.
 
     Notes
     -----
@@ -42,20 +40,20 @@ def trimesh_remesh(
     raise NotImplementedError
 
 
-@pluggable(category="trimesh")
+@tessellation_pluggable(category="trimesh", inputs=("mesh",), result=True)
 def trimesh_remesh_constrained(
-    mesh: MeshType,
+    mesh: "Tessellation",
     target_edge_length: float,
     protected_edges: Sequence[Sequence[int]],
     number_of_iterations: int = 10,
     do_project: bool = True,
-) -> MeshResult:
+) -> "Tessellation":
     """Remesh a triangle mesh while preserving selected edges.
 
     Parameters
     ----------
     mesh
-        The mesh vertex coordinates and triangular faces.
+        The triangle tessellation.
     target_edge_length
         Target length of mesh edges.
     protected_edges
@@ -68,8 +66,8 @@ def trimesh_remesh_constrained(
 
     Returns
     -------
-    tuple[list[list[float]], list[list[int]]]
-        The remeshed vertex coordinates and triangular faces.
+    Tessellation
+        The remeshed triangle geometry.
 
     Notes
     -----
@@ -79,14 +77,14 @@ def trimesh_remesh_constrained(
     raise NotImplementedError
 
 
-@pluggable(category="trimesh")
-def trimesh_remesh_along_isoline(mesh: MeshType, scalarfield: Sequence[float], scalar: float) -> MeshResult:
+@tessellation_pluggable(category="trimesh", inputs=("mesh",), result=True)
+def trimesh_remesh_along_isoline(mesh: "Tessellation", scalarfield: Sequence[float], scalar: float) -> "Tessellation":
     """Remesh a triangle mesh so an isoline follows mesh edges.
 
     Parameters
     ----------
     mesh
-        The mesh vertex coordinates and triangular faces.
+        The triangle tessellation.
     scalarfield
         Scalar value at every mesh vertex.
     scalar
@@ -94,12 +92,13 @@ def trimesh_remesh_along_isoline(mesh: MeshType, scalarfield: Sequence[float], s
 
     Returns
     -------
-    tuple[list[list[float]], list[list[int]]]
-        The remeshed vertex coordinates and triangular faces.
+    Tessellation
+        The remeshed triangle geometry.
 
     Notes
     -----
-    This operation requires a registered plugin.
+    This operation requires a registered plugin. Backend-internal face labels
+    are not part of the initial public result contract.
 
     """
     raise NotImplementedError

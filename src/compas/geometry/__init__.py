@@ -231,9 +231,8 @@ from .offset import (
 )
 from .quadmesh_planarize import quadmesh_planarize
 from .triangulation_delaunay import (
-    conforming_delaunay_triangulation,
-    constrained_delaunay_triangulation,
-    delaunay_triangulation,
+    triangulate_planar_domain,
+    triangulate_planar_points,
 )
 from .triangulation_earclip import earclip_polygon
 from .trimesh import (
@@ -278,7 +277,23 @@ from .plane import Plane
 from .line import Line
 from .polyline import Polyline
 from .pointcloud import Pointcloud
+from .tessellation import Adaptive
+from .tessellation import Deflection
+from .tessellation import Native
 from .tessellation import Tessellation
+from .tessellation import TessellationStrategy
+from .tessellation import UGrid
+from .tessellation import UVGrid
+from .triangulation import ConformingDelaunay
+from .triangulation import ConstrainedDelaunay
+from .triangulation import Delaunay
+from .triangulation import DiagonalSplit
+from .triangulation import EarClipping
+from .triangulation import FaceTriangulation
+from .triangulation import MinimumAreaTriangulation
+from .triangulation import ProjectedEarClipping
+from .triangulation import TriangulationQuality
+from .triangulation import TriangulationStrategy
 
 from .curves.curve import Curve
 from .curves.circle import Circle
@@ -520,9 +535,8 @@ __all__ = [
     "offset_polyline",
     "offset_polygon",
     "quadmesh_planarize",
-    "conforming_delaunay_triangulation",
-    "constrained_delaunay_triangulation",
-    "delaunay_triangulation",
+    "triangulate_planar_domain",
+    "triangulate_planar_points",
     "earclip_polygon",
     "trimesh_cotangent_laplacian_matrix",
     "trimesh_descent",
@@ -564,7 +578,23 @@ __all__ = [
     "Polyline",
     "Pointcloud",
     "IntersectionResult",
+    "Adaptive",
+    "Deflection",
+    "Native",
     "Tessellation",
+    "TessellationStrategy",
+    "UGrid",
+    "UVGrid",
+    "ConformingDelaunay",
+    "ConstrainedDelaunay",
+    "Delaunay",
+    "DiagonalSplit",
+    "EarClipping",
+    "FaceTriangulation",
+    "MinimumAreaTriangulation",
+    "ProjectedEarClipping",
+    "TriangulationQuality",
+    "TriangulationStrategy",
     "Curve",
     "Circle",
     "Ellipse",

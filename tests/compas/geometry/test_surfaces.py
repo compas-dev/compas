@@ -1,5 +1,3 @@
-from math import inf
-
 import pytest
 
 from compas.tolerance import TOL
@@ -9,6 +7,7 @@ from compas.geometry import CylindricalSurface
 from compas.geometry import ConicalSurface
 from compas.geometry import ToroidalSurface
 from compas.geometry import PlanarSurface
+from compas.geometry import UVGrid
 
 
 @pytest.mark.parametrize(
@@ -89,15 +88,13 @@ def test_surface_transformation_reflects_direct_frame_mutation():
 
 def test_surface_placement_preserves_discretization_topology():
     surface = PlanarSurface()
-    vertices = surface.vertices
-    edges = surface.edges
-    faces = surface.faces
+    before = surface.polygonize(UVGrid(2, 3))
 
     surface.frame.point.x = 10.0
+    after = surface.polygonize(UVGrid(2, 3))
 
-    assert surface.vertices != vertices
-    assert surface.edges is edges
-    assert surface.faces is faces
+    assert after.vertices != before.vertices
+    assert after.faces == before.faces
 
 
 def test_surface_preserves_geometry_bounding_box_property_contract():
@@ -122,21 +119,39 @@ def test_analytic_surface_periodicity(surface, periodic_u, periodic_v):
 
 def test_surface_discretization_counts():
     surface = PlanarSurface(xsize=2.0, ysize=3.0)
+    polygonal = surface.polygonize(UVGrid(2, 3))
 
-    vertices, faces = surface.to_vertices_and_faces(nu=2, nv=3)
-
-    assert len(vertices) == 12
-    assert len(faces) == 6
-    assert len(surface.to_quads(nu=2, nv=3)) == 6
-    assert len(surface.to_triangles(nu=2, nv=3)) == 12
+    assert len(polygonal.vertices) == 12
+    assert len(polygonal.faces) == 6
+    assert surface.tessellate(UVGrid(2, 3)).number_of_triangles == 12
 
 
-@pytest.mark.parametrize("nu, nv", [(0, 1), (1, 0), (-1, 1), (1, -1)])
-def test_surface_discretization_requires_positive_face_counts(nu, nv):
-    with pytest.raises(ValueError, match="at least one face"):
-        PlanarSurface().to_vertices_and_faces(nu=nu, nv=nv)
+@pytest.mark.parametrize("operation", ["polygonize", "tessellate"])
+def test_surface_discretization_rejects_nonfinite_domains(operation):
+    class UnboundedPlanarSurface(PlanarSurface):
+        @property
+        def domain_u(self):
+            return -float("inf"), float("inf")
 
+    surface = UnboundedPlanarSurface()
 
-def test_surface_discretization_requires_finite_domains():
     with pytest.raises(ValueError, match="finite parameter domains"):
-        PlanarSurface().to_vertices_and_faces(du=(-inf, inf))
+        getattr(surface, operation)(UVGrid(2, 3))
+
+
+def test_surface_face_computation_is_pure_topology():
+    class DomainAccessRaises(PlanarSurface):
+        @property
+        def domain_u(self):
+            raise AssertionError("Face computation should not inspect the parameter domain.")
+
+    assert len(DomainAccessRaises()._compute_faces(2, 3)) == 6
+
+
+def test_surface_has_no_parallel_materialization_api():
+    surface = PlanarSurface()
+
+    assert not hasattr(surface, "to_vertices_and_faces")
+    assert not hasattr(surface, "compute_vertices")
+    assert not hasattr(surface, "compute_edges")
+    assert not hasattr(surface, "compute_faces")

@@ -2,9 +2,12 @@ import json
 
 import pytest
 
+from compas.geometry import DiagonalSplit
+from compas.geometry import FaceTriangulation
 from compas.geometry import Point
 from compas.geometry import PolygonalSurface
 from compas.geometry import Polyhedron
+from compas.geometry import Tessellation
 from compas.geometry import Scale
 
 
@@ -87,7 +90,8 @@ def test_polyhedron_rejects_collapsing_transform_without_mutation():
 
 def test_polyhedron_triangulates_polygonal_boundary():
     polyhedron = Polyhedron.from_platonicsolid(6)
-    vertices, faces = polyhedron.to_vertices_and_faces(triangulated=True)
+    tessellation = polyhedron.triangulated(FaceTriangulation(quad=DiagonalSplit("02")))
+    vertices, faces = tessellation.to_vertices_and_triangles()
 
     assert len(vertices) == 8
     assert len(faces) == 12
@@ -106,4 +110,5 @@ def test_polyhedron_boolean_receives_triangles(monkeypatch):
     result = polyhedron.boolean_union(polyhedron)
 
     assert isinstance(result, Polyhedron)
-    assert all(len(face) == 3 for _, faces in captured for face in faces)
+    assert all(isinstance(item, Tessellation) for item in captured)
+    assert all(len(face) == 3 for item in captured for face in item.triangles)
