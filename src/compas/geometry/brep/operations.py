@@ -5,7 +5,6 @@ from os import PathLike
 from typing import TYPE_CHECKING
 from typing import Any
 from typing import Literal
-from typing import TypedDict
 
 from compas.plugins import PluginNotInstalledError
 from compas.plugins import pluggable
@@ -36,36 +35,6 @@ if TYPE_CHECKING:
     from .loop import BrepLoop
     from .trim import BrepTrim
     from .vertex import BrepVertex
-
-
-class BrepClassification(TypedDict):
-    """Backend-independent classification values for a Brep."""
-
-    orientation: Literal[0, 1, 2, 3]
-    type: Literal[0, 1, 2, 3, 4, 5, 6, 7, 8]
-    is_valid: bool
-    is_orientable: bool
-    is_closed: bool
-    is_infinite: bool
-    is_convex: bool
-    is_manifold: bool
-    is_surface: bool
-    is_compound: bool
-    is_compoundsolid: bool
-    is_shell: bool
-    is_solid: bool
-
-
-class BrepTopology(TypedDict):
-    """Backend-independent topology extracted from a Brep."""
-
-    vertices: list["BrepVertex"]
-    edges: list["BrepEdge"]
-    trims: list["BrepTrim"]
-    loops: list["BrepLoop"]
-    faces: list["BrepFace"]
-    shells: list["Brep"]
-    solids: list["Brep"]
 
 
 @pluggable(category="brep-factories")
@@ -214,7 +183,7 @@ def brep_centroid(brep: "Brep") -> "Point":
 
 
 @pluggable(category="brep-queries")
-def brep_classification(brep: "Brep") -> BrepClassification:
+def brep_orientation(brep: "Brep") -> Literal[0, 1, 2, 3]:
     raise PluginNotInstalledError
 
 
@@ -229,7 +198,97 @@ def brep_obb(brep: "Brep") -> "Box":
 
 
 @pluggable(category="brep-queries")
-def brep_topology(brep: "Brep") -> BrepTopology:
+def brep_type(brep: "Brep") -> Literal[0, 1, 2, 3, 4, 5, 6, 7, 8]:
+    raise PluginNotInstalledError
+
+
+@pluggable(category="brep-queries")
+def brep_is_valid(brep: "Brep") -> bool:
+    raise PluginNotInstalledError
+
+
+@pluggable(category="brep-queries")
+def brep_is_orientable(brep: "Brep") -> bool:
+    raise PluginNotInstalledError
+
+
+@pluggable(category="brep-queries")
+def brep_is_closed(brep: "Brep") -> bool:
+    raise PluginNotInstalledError
+
+
+@pluggable(category="brep-queries")
+def brep_is_infinite(brep: "Brep") -> bool:
+    raise PluginNotInstalledError
+
+
+@pluggable(category="brep-queries")
+def brep_is_convex(brep: "Brep") -> bool:
+    raise PluginNotInstalledError
+
+
+@pluggable(category="brep-queries")
+def brep_is_manifold(brep: "Brep") -> bool:
+    raise PluginNotInstalledError
+
+
+@pluggable(category="brep-queries")
+def brep_is_surface(brep: "Brep") -> bool:
+    raise PluginNotInstalledError
+
+
+@pluggable(category="brep-queries")
+def brep_is_compound(brep: "Brep") -> bool:
+    raise PluginNotInstalledError
+
+
+@pluggable(category="brep-queries")
+def brep_is_compoundsolid(brep: "Brep") -> bool:
+    raise PluginNotInstalledError
+
+
+@pluggable(category="brep-queries")
+def brep_is_shell(brep: "Brep") -> bool:
+    raise PluginNotInstalledError
+
+
+@pluggable(category="brep-queries")
+def brep_is_solid(brep: "Brep") -> bool:
+    raise PluginNotInstalledError
+
+
+@pluggable(category="brep-queries")
+def brep_vertices(brep: "Brep") -> list["BrepVertex"]:
+    raise PluginNotInstalledError
+
+
+@pluggable(category="brep-queries")
+def brep_edges(brep: "Brep") -> list["BrepEdge"]:
+    raise PluginNotInstalledError
+
+
+@pluggable(category="brep-queries")
+def brep_trims(brep: "Brep") -> list["BrepTrim"]:
+    raise PluginNotInstalledError
+
+
+@pluggable(category="brep-queries")
+def brep_loops(brep: "Brep") -> list["BrepLoop"]:
+    raise PluginNotInstalledError
+
+
+@pluggable(category="brep-queries")
+def brep_faces(brep: "Brep") -> list["BrepFace"]:
+    raise PluginNotInstalledError
+
+
+@pluggable(category="brep-queries")
+def brep_shells(brep: "Brep") -> list["Brep"]:
+    raise PluginNotInstalledError
+
+
+@pluggable(category="brep-queries")
+def brep_solids(brep: "Brep") -> list["Brep"]:
     raise PluginNotInstalledError
 
 

@@ -39,7 +39,6 @@ from .operations import brep_aabb
 from .operations import brep_area
 from .operations import brep_cap_planar_holes
 from .operations import brep_centroid
-from .operations import brep_classification
 from .operations import brep_contains
 from .operations import brep_contours
 from .operations import brep_copy
@@ -47,27 +46,46 @@ from .operations import brep_cull_unused_edges
 from .operations import brep_cull_unused_faces
 from .operations import brep_cull_unused_loops
 from .operations import brep_cull_unused_vertices
+from .operations import brep_edges
+from .operations import brep_faces
 from .operations import brep_fillet
 from .operations import brep_fix
 from .operations import brep_flip
 from .operations import brep_frame
 from .operations import brep_heal
+from .operations import brep_is_closed
+from .operations import brep_is_compound
+from .operations import brep_is_compoundsolid
+from .operations import brep_is_convex
+from .operations import brep_is_infinite
+from .operations import brep_is_manifold
+from .operations import brep_is_orientable
+from .operations import brep_is_shell
+from .operations import brep_is_solid
+from .operations import brep_is_surface
+from .operations import brep_is_valid
+from .operations import brep_loops
 from .operations import brep_make_solid
 from .operations import brep_obb
+from .operations import brep_orientation
 from .operations import brep_overlap
 from .operations import brep_polygonize
 from .operations import brep_rebuild
 from .operations import brep_sew
+from .operations import brep_shells
 from .operations import brep_slice
+from .operations import brep_solids
 from .operations import brep_split
 from .operations import brep_tessellate
 from .operations import brep_to_data
 from .operations import brep_to_iges
 from .operations import brep_to_step
 from .operations import brep_to_stl
-from .operations import brep_topology
 from .operations import brep_transform
 from .operations import brep_trimmed
+from .operations import brep_trims
+from .operations import brep_type
+from .operations import brep_vertices
 from .operations import brep_volume
 from .operations import from_boolean_difference
 from .operations import from_boolean_intersection
@@ -129,6 +147,12 @@ class Brep(Geometry):
         The backend-native boundary representation, if available.
     name
         The optional object name.
+
+    Notes
+    -----
+    Query properties are implemented independently by the active backend. A
+    backend raises :class:`NotImplementedError` for a property whose documented
+    meaning it cannot provide; it does not substitute a false or empty value.
 
     """
 
@@ -232,67 +256,67 @@ class Brep(Geometry):
     @property
     def orientation(self) -> Literal[0, 1, 2, 3]:
         """The orientation as a `BrepOrientation` value."""
-        return brep_classification(self)["orientation"]
+        return brep_orientation(self)
 
     @property
     def type(self) -> Literal[0, 1, 2, 3, 4, 5, 6, 7, 8]:
         """The topological type as a `BrepType` value."""
-        return brep_classification(self)["type"]
+        return brep_type(self)
 
     @property
     def is_valid(self) -> bool:
         """Whether the Brep is valid according to the backend."""
-        return brep_classification(self)["is_valid"]
+        return brep_is_valid(self)
 
     @property
     def is_orientable(self) -> bool:
         """Whether the Brep is orientable."""
-        return brep_classification(self)["is_orientable"]
+        return brep_is_orientable(self)
 
     @property
     def is_closed(self) -> bool:
         """Whether the Brep has no naked boundaries."""
-        return brep_classification(self)["is_closed"]
+        return brep_is_closed(self)
 
     @property
     def is_infinite(self) -> bool:
         """Whether the Brep represents an unbounded shape."""
-        return brep_classification(self)["is_infinite"]
+        return brep_is_infinite(self)
 
     @property
     def is_convex(self) -> bool:
         """Whether the Brep is convex."""
-        return brep_classification(self)["is_convex"]
+        return brep_is_convex(self)
 
     @property
     def is_manifold(self) -> bool:
         """Whether the Brep is manifold."""
-        return brep_classification(self)["is_manifold"]
+        return brep_is_manifold(self)
 
     @property
     def is_surface(self) -> bool:
         """Whether the Brep represents a single surface."""
-        return brep_classification(self)["is_surface"]
+        return brep_is_surface(self)
 
     @property
     def is_compound(self) -> bool:
         """Whether the Brep is a compound."""
-        return brep_classification(self)["is_compound"]
+        return brep_is_compound(self)
 
     @property
     def is_compoundsolid(self) -> bool:
         """Whether the Brep is a compound solid."""
-        return brep_classification(self)["is_compoundsolid"]
+        return brep_is_compoundsolid(self)
 
     @property
     def is_shell(self) -> bool:
         """Whether the Brep is a shell."""
-        return brep_classification(self)["is_shell"]
+        return brep_is_shell(self)
 
     @property
     def is_solid(self) -> bool:
         """Whether the Brep is a solid."""
-        return brep_classification(self)["is_solid"]
+        return brep_is_solid(self)
 
     # ==============================================================================
     # Geometric Components
@@ -320,37 +344,37 @@ class Brep(Geometry):
     @property
     def vertices(self) -> list["BrepVertex"]:
         """The topological vertices."""
-        return brep_topology(self)["vertices"]
+        return brep_vertices(self)
 
     @property
     def edges(self) -> list["BrepEdge"]:
         """The topological edges."""
-        return brep_topology(self)["edges"]
+        return brep_edges(self)
 
     @property
     def trims(self) -> list["BrepTrim"]:
         """The parametric trims."""
-        return brep_topology(self)["trims"]
+        return brep_trims(self)
 
     @property
     def loops(self) -> list["BrepLoop"]:
         """The boundary loops."""
-        return brep_topology(self)["loops"]
+        return brep_loops(self)
 
     @property
     def faces(self) -> list["BrepFace"]:
         """The topological faces."""
-        return brep_topology(self)["faces"]
+        return brep_faces(self)
 
     @property
     def shells(self) -> list["Brep"]:
         """The shells contained in the Brep."""
-        return brep_topology(self)["shells"]
+        return brep_shells(self)
 
     @property
     def solids(self) -> list["Brep"]:
         """The solids contained in the Brep."""
-        return brep_topology(self)["solids"]
+        return brep_solids(self)
 
     # ==============================================================================
     # Geometric Properties
