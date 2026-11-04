@@ -11,7 +11,7 @@ __author__ = "Tom Van Mele and many others (see AUTHORS.md)"
 __copyright__ = "Copyright 2014-2022 - ETH Zurich, Copyright 2023 - COMPAS Association"
 __license__ = "MIT License"
 __email__ = "tom.v.mele@gmail.com"
-__version__ = "2.15.0"
+__version__ = "3.0.0"
 
 
 _PACKAGE_DIR = Path(__file__).resolve().parent

@@ -117,13 +117,18 @@ doctest_optionflags = [
 # ============================================================================
 
 [tool.bumpversion]
-current_version = "2.15.0"
+current_version = "3.0.0"
 message = "Bump version to {new_version}"
 commit = true
 tag = true
 
 [[tool.bumpversion.files]]
 filename = "src/compas/__init__.py"
+search = "{current_version}"
+replace = "{new_version}"
+
+[[tool.bumpversion.files]]
+filename = "tests/compas/test_version.py"
 search = "{current_version}"
 replace = "{new_version}"
 
