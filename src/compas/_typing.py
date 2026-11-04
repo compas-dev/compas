@@ -1,10 +1,24 @@
 from collections.abc import Iterator
 from collections.abc import Sequence
 from os import PathLike
+from typing import Any
 from typing import Protocol
+from typing import TypeAlias
 from typing import runtime_checkable
 
+import numpy as np
+from numpy.typing import NDArray
+
 FilePath = str | PathLike[str]
+
+RealInput: TypeAlias = int | float | np.integer[Any] | np.floating[Any]
+IntegralInput: TypeAlias = int | np.integer[Any]
+
+NumericArray: TypeAlias = NDArray[np.integer[Any] | np.floating[Any]]
+FloatingArray: TypeAlias = NDArray[np.floating[Any]]
+IntegerArray: TypeAlias = NDArray[np.integer[Any]]
+Float64Array: TypeAlias = NDArray[np.float64]
+Int32Array: TypeAlias = NDArray[np.int32]
 
 
 class FloatSequence(Protocol):
@@ -25,6 +39,7 @@ class Coordinate(FloatSequence, Protocol):
 
 
 CoordinateType = Coordinate | Sequence[float]
+PointCoordinates: TypeAlias = Sequence[float]
 
 
 @runtime_checkable
@@ -37,6 +52,10 @@ class Coordinates(Protocol):
 
 
 CoordinatesType = Coordinates | Sequence[CoordinateType]
+
+CoordinateInput: TypeAlias = Coordinate | Sequence[RealInput] | NumericArray
+CoordinatesInput: TypeAlias = Coordinates | Sequence[CoordinateInput] | NumericArray
+IndicesInput: TypeAlias = Sequence[IntegralInput] | IntegerArray
 
 SphereType = tuple[CoordinateType, float]
 MeshType = tuple[CoordinatesType, Sequence[Sequence[int]]]

@@ -31,7 +31,7 @@ classifiers = [
 dependencies = [
     "mapbox-earcut",
     "networkx >= 3.0",
-    "numpy >= 1.15.4",
+    "numpy >= 1.26",
     "scipy >= 1.1",
     "shapely",
 ]
@@ -42,7 +42,7 @@ dev = [
     "bump-my-version",
     "compas_invocations2",
     "invoke >=0.14",
-    "pyright",
+    "pyright == 1.1.414",
     "pytest",
     "pytest-cov",
     "pytest-dependency",

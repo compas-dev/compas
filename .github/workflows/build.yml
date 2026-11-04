@@ -51,3 +51,35 @@ jobs:
         run: uv run pyright
       - name: Run tests
         run: uv run pytest
+
+  numpy-compatibility:
+    name: NumPy ${{ matrix.numpy }}
+    if: "!contains(github.event.pull_request.labels.*.name, 'docs-only')"
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        numpy: [minimum, current]
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: compas-dev/compas-actions/setup-python@5c64e6e2b576a1232d28fed47d9478ca8eb63b2d # v2 candidate
+        with:
+          python-version: "3.12"
+          frozen: "true"
+          dependency-groups: ""
+          extras: dev
+      - name: Resolve minimum supported NumPy
+        if: matrix.numpy == 'minimum'
+        run: uv pip compile pyproject.toml --extra dev --constraint .github/constraints/numpy-min.txt --output-file ${{ runner.temp }}/compas-numpy-min.txt
+      - name: Test minimum supported NumPy
+        if: matrix.numpy == 'minimum'
+        run: uv run --isolated --no-project --with-requirements ${{ runner.temp }}/compas-numpy-min.txt --with-editable . python -m pytest
+      - name: Resolve current NumPy
+        if: matrix.numpy == 'current'
+        run: uv pip compile pyproject.toml --extra dev --upgrade --output-file ${{ runner.temp }}/compas-numpy-current.txt
+      - name: Test current NumPy
+        if: matrix.numpy == 'current'
+        run: uv run --isolated --no-project --with-requirements ${{ runner.temp }}/compas-numpy-current.txt --with-editable . python -m pytest

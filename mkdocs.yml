@@ -191,6 +191,7 @@ nav:
       - Development Setup: background/setup.md
       - Development Workflow: background/workflow.md
       - Contributing Code: background/code.md
+      - Type Annotations: background/typing.md
       - Documentation: background/documentation.md
       - Plugins: background/plugins.md
       - Extensions: background/extensions.md
