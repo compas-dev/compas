@@ -55,7 +55,42 @@ CoordinatesType = Coordinates | Sequence[CoordinateType]
 
 CoordinateInput: TypeAlias = Coordinate | Sequence[RealInput] | NumericArray
 CoordinatesInput: TypeAlias = Coordinates | Sequence[CoordinateInput] | NumericArray
-IndicesInput: TypeAlias = Sequence[IntegralInput] | IntegerArray
+
+
+@runtime_checkable
+class Indices(Protocol):
+    def __len__(self) -> int: ...
+
+    def __getitem__(self, key: int) -> IntegralInput: ...
+
+    def __iter__(self) -> Iterator[IntegralInput]: ...
+
+
+IndicesInput: TypeAlias = Indices | Sequence[IntegralInput] | IntegerArray
+
+
+@runtime_checkable
+class IndicesCollection(Protocol):
+    def __len__(self) -> int: ...
+
+    def __getitem__(self, key: int) -> IndicesInput: ...
+
+    def __iter__(self) -> Iterator[IndicesInput]: ...
+
+
+IndicesCollectionInput: TypeAlias = IndicesCollection | Sequence[IndicesInput] | IntegerArray
+
+
+@runtime_checkable
+class CoordinatesCollection(Protocol):
+    def __len__(self) -> int: ...
+
+    def __getitem__(self, key: int) -> CoordinatesInput: ...
+
+    def __iter__(self) -> Iterator[CoordinatesInput]: ...
+
+
+CoordinatesCollectionInput: TypeAlias = CoordinatesCollection | Sequence[CoordinatesInput] | NumericArray
 
 SphereType = tuple[CoordinateType, float]
 MeshType = tuple[CoordinatesType, Sequence[Sequence[int]]]

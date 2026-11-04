@@ -1,4 +1,5 @@
 from collections.abc import Iterator
+from typing import assert_type
 
 import numpy as np
 
@@ -13,7 +14,9 @@ from compas._typing import IntegralInput
 from compas._typing import NumericArray
 from compas._typing import RealInput
 from compas.geometry import Point
+from compas.geometry import Tessellation
 from compas.geometry import Vector
+from compas.datastructures import Mesh
 
 
 class CustomCoordinate:
@@ -27,6 +30,62 @@ class CustomCoordinate:
         return self.values[key]
 
     def __iter__(self) -> Iterator[float]:
+        return iter(self.values)
+
+
+class CustomCoordinates:
+    def __init__(self, values: list[CustomCoordinate]):
+        self.values = values
+
+    def __len__(self) -> int:
+        return len(self.values)
+
+    def __getitem__(self, key: int) -> CustomCoordinate:
+        return self.values[key]
+
+    def __iter__(self) -> Iterator[CustomCoordinate]:
+        return iter(self.values)
+
+
+class CustomIndices:
+    def __init__(self, values: tuple[int, int, int]):
+        self.values = values
+
+    def __len__(self) -> int:
+        return len(self.values)
+
+    def __getitem__(self, key: int) -> int:
+        return self.values[key]
+
+    def __iter__(self) -> Iterator[int]:
+        return iter(self.values)
+
+
+class CustomTriangles:
+    def __init__(self, values: list[CustomIndices]):
+        self.values = values
+
+    def __len__(self) -> int:
+        return len(self.values)
+
+    def __getitem__(self, key: int) -> CustomIndices:
+        return self.values[key]
+
+    def __iter__(self) -> Iterator[CustomIndices]:
+        return iter(self.values)
+
+
+class CustomPolylines:
+    def __init__(self, values: list[CustomCoordinates]):
+        self.values = values
+
+    def __len__(self) -> int:
+        return len(self.values)
+
+    def __getitem__(self, key: int) -> CustomCoordinates:
+        return self.values[key]
+
+    def __iter__(self) -> Iterator[CustomCoordinates]:
         return iter(self.values)
 
 
@@ -50,3 +109,26 @@ coordinate_inputs: list[CoordinateInput] = [
 ]
 coordinates_inputs: list[CoordinatesInput] = [coordinate_inputs, np.asarray([[0, 0, 0], [1, 1, 1]], dtype=np.float64)]
 indices_inputs: list[IndicesInput] = [[0, 1, 2], (np.int32(0), np.int64(1)), int32_array, int64_array]
+
+vertices32 = np.asarray([[0, 0, 0], [1, 0, 0], [0, 1, 0]], dtype=np.float32)
+triangles32 = np.asarray([[0, 1, 2]], dtype=np.int32)
+normals64 = np.asarray([[0, 0, 1]] * 3, dtype=np.float64)
+uvs32 = np.asarray([[0, 0], [1, 0], [0, 1]], dtype=np.float32)
+polylines64 = np.asarray([[[0, 0, 0], [1, 0, 0]]], dtype=np.float64)
+tessellation = Tessellation(vertices32, triangles32, normals64, uvs32, polylines64)
+assert_type(tessellation.vertices, np.ndarray[tuple[int, int], np.dtype[np.float32]])
+assert_type(tessellation.triangles, np.ndarray[tuple[int, int], np.dtype[np.int32]])
+assert_type(
+    tessellation.to_vertices_and_triangles(),
+    tuple[
+        np.ndarray[tuple[int, int], np.dtype[np.float32]],
+        np.ndarray[tuple[int, int], np.dtype[np.int32]],
+    ],
+)
+custom_vertices = CustomCoordinates([CustomCoordinate((0.0, 0.0, 0.0))])
+custom_triangles = CustomTriangles([CustomIndices((0, 0, 0))])
+custom_polylines = CustomPolylines([custom_vertices])
+custom_tessellation = Tessellation(custom_vertices, custom_triangles, polylines=custom_polylines)
+assert_type(custom_tessellation.vertices, CustomCoordinates)
+assert_type(custom_tessellation.triangles, CustomTriangles)
+Mesh.from_vertices_and_faces(vertices32, triangles32)

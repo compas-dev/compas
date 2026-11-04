@@ -31,6 +31,11 @@ from typing import Literal
 from typing import Self
 from typing import overload
 
+from compas._typing import CoordinateInput
+from compas._typing import CoordinatesInput
+from compas._typing import IndicesInput
+from compas._typing import IntegerArray
+from compas._typing import IntegralInput
 from compas.datastructures.attributes import EdgeAttributeView
 from compas.datastructures.attributes import FaceAttributeView
 from compas.datastructures.attributes import VertexAttributeView
@@ -479,8 +484,8 @@ class Mesh(Datastructure):
     @classmethod
     def from_vertices_and_faces(
         cls,
-        vertices: Sequence[Iterable[float]] | Mapping[Vertex, Iterable[float]],
-        faces: Sequence[Sequence[Vertex]] | Mapping[Face, Sequence[Vertex]],
+        vertices: CoordinatesInput | Sequence[Iterable[float]] | Mapping[Vertex, CoordinateInput | Iterable[float]],
+        faces: Sequence[IndicesInput] | IntegerArray | Mapping[Face, IndicesInput],
     ) -> Self:
         """Construct a mesh object from a list of vertices and faces.
 
@@ -510,10 +515,10 @@ class Mesh(Datastructure):
 
         if isinstance(faces, Mapping):
             for fkey, face_vertices in faces.items():
-                mesh.add_face(face_vertices, fkey)
+                mesh.add_face(list(face_vertices), fkey)
         else:
             for face in iter(faces):
-                mesh.add_face(face)
+                mesh.add_face(list(face))
 
         return mesh
 
@@ -1056,7 +1061,7 @@ class Mesh(Datastructure):
 
     def add_face(
         self,
-        vertices: Sequence[Vertex],
+        vertices: Sequence[IntegralInput],
         fkey: Face | None = None,
         attr_dict: Mapping[str, Any] | None = None,
         **kwattr: Any,

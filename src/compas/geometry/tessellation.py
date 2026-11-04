@@ -1,13 +1,17 @@
-from collections.abc import Sequence
 from dataclasses import dataclass
 from math import isfinite
 from numbers import Integral
 from numbers import Real
+from operator import index as integer_index
 from typing import TYPE_CHECKING
 from typing import Generic
 from typing import TypeVar
 
-from compas._typing import CoordinatesType
+import numpy as np
+
+from compas._typing import CoordinatesCollectionInput
+from compas._typing import CoordinatesInput
+from compas._typing import IndicesCollectionInput
 from compas.data import Data
 
 if TYPE_CHECKING:
@@ -24,8 +28,8 @@ __all__ = [
     "UVGrid",
 ]
 
-VerticesBuffer = TypeVar("VerticesBuffer", bound=CoordinatesType)
-TrianglesBuffer = TypeVar("TrianglesBuffer", bound=Sequence[Sequence[int]])
+VerticesBuffer = TypeVar("VerticesBuffer", bound=CoordinatesInput)
+TrianglesBuffer = TypeVar("TrianglesBuffer", bound=IndicesCollectionInput)
 
 
 def _positive_integer(value: int, name: str) -> int:
@@ -244,9 +248,9 @@ class Tessellation(Generic[VerticesBuffer, TrianglesBuffer]):
 
     vertices: VerticesBuffer
     triangles: TrianglesBuffer
-    vertex_normals: CoordinatesType | None = None
-    texture_coordinates: Sequence[Sequence[float]] | None = None
-    polylines: Sequence[CoordinatesType] = ()
+    vertex_normals: CoordinatesInput | None = None
+    texture_coordinates: CoordinatesInput | None = None
+    polylines: CoordinatesCollectionInput = ()
 
     def __post_init__(self) -> None:
         self._validate()
@@ -274,8 +278,8 @@ class Tessellation(Generic[VerticesBuffer, TrianglesBuffer]):
 
         Returns
         -------
-        tuple[CoordinatesType, Sequence[Sequence[int]]]
-            The vertex and triangle buffers.
+        tuple[VerticesBuffer, TrianglesBuffer]
+            The original vertex and triangle buffer types.
 
         """
         return self.vertices, self.triangles
@@ -291,7 +295,9 @@ class Tessellation(Generic[VerticesBuffer, TrianglesBuffer]):
         """
         from compas.geometry import PolygonalSurface
 
-        return PolygonalSurface(self.vertices, [list(triangle) for triangle in self.triangles])
+        vertices = [[float(value) for value in vertex] for vertex in self.vertices]
+        triangles = [[integer_index(index) for index in triangle] for triangle in self.triangles]
+        return PolygonalSurface(vertices, triangles)
 
     def to_mesh(self) -> "Mesh":
         """Convert the tessellation to an independent half-edge mesh.
@@ -304,7 +310,9 @@ class Tessellation(Generic[VerticesBuffer, TrianglesBuffer]):
         """
         from compas.datastructures import Mesh
 
-        return Mesh.from_vertices_and_faces(list(self.vertices), [list(triangle) for triangle in self.triangles])
+        vertices = [[float(value) for value in vertex] for vertex in self.vertices]
+        triangles = [[integer_index(index) for index in triangle] for triangle in self.triangles]
+        return Mesh.from_vertices_and_faces(vertices, triangles)
 
     # =============================================================================
     # Validation
@@ -318,9 +326,13 @@ class Tessellation(Generic[VerticesBuffer, TrianglesBuffer]):
             if len(triangle) != 3:
                 raise ValueError("A tessellation triangle requires exactly three indices.")
             for index in triangle:
-                if not isinstance(index, Integral) or isinstance(index, bool):
+                if isinstance(index, (bool, np.bool_)):
                     raise TypeError("Tessellation triangle indices should be integers.")
-                if index < 0 or index >= vertex_count:
+                try:
+                    checked_index = integer_index(index)
+                except TypeError:
+                    raise TypeError("Tessellation triangle indices should be integers.")
+                if checked_index < 0 or checked_index >= vertex_count:
                     raise IndexError("Tessellation triangle index is out of range.")
 
         if self.vertex_normals is not None:
@@ -337,12 +349,16 @@ class Tessellation(Generic[VerticesBuffer, TrianglesBuffer]):
             self._validate_coordinates(polyline, "polyline point", 3)
 
     @staticmethod
-    def _validate_coordinates(coordinates: CoordinatesType | Sequence[Sequence[float]], name: str, dimension: int) -> None:
+    def _validate_coordinates(coordinates: CoordinatesInput, name: str, dimension: int) -> None:
         for coordinate in coordinates:
             if len(coordinate) != dimension:
                 raise ValueError(f"A tessellation {name} requires exactly {dimension} coordinates.")
             for value in coordinate:
-                if not isinstance(value, Real) or isinstance(value, bool):
+                if isinstance(value, (bool, np.bool_)):
                     raise TypeError(f"Tessellation {name} coordinates should be real numbers.")
-                if not isfinite(value):
+                try:
+                    finite = isfinite(value)
+                except (TypeError, ValueError):
+                    raise TypeError(f"Tessellation {name} coordinates should be real numbers.")
+                if not finite:
                     raise ValueError(f"Tessellation {name} coordinates should be finite.")

@@ -1,4 +1,5 @@
 import math
+from operator import index
 
 import numpy as np  # pyright: ignore[reportMissingImports]
 import pytest
@@ -23,6 +24,40 @@ from compas.geometry import UGrid
 from compas.geometry import UVGrid
 from compas.geometry import normal_triangle
 from compas.tolerance import TOL
+
+
+class FloatLike:
+    def __init__(self, value):
+        self.value = value
+        self.conversions = 0
+
+    def __float__(self):
+        self.conversions += 1
+        return float(self.value)
+
+
+class IndexLike:
+    def __init__(self, value):
+        self.value = value
+        self.conversions = 0
+
+    def __index__(self):
+        self.conversions += 1
+        return index(self.value)
+
+
+class DuckBuffer:
+    def __init__(self, values):
+        self.values = values
+
+    def __len__(self):
+        return len(self.values)
+
+    def __getitem__(self, key):
+        return self.values[key]
+
+    def __iter__(self):
+        return iter(self.values)
 
 
 @pytest.mark.parametrize(
@@ -100,6 +135,84 @@ def test_tessellation_retains_input_buffers():
     assert tessellation.number_of_triangles == 1
 
 
+def test_tessellation_retains_noncontiguous_readonly_buffers_without_mutation():
+    vertex_source = np.arange(18.0).reshape(3, 6)
+    vertices = vertex_source[:, ::2]
+    vertices.setflags(write=False)
+    triangles = np.asfortranarray([[0, 1, 2]], dtype=np.int32)
+    normals = np.asfortranarray([[0.0, 0.0, 1.0]] * 3)
+    texture_coordinates = np.arange(12.0).reshape(3, 4)[:, ::2]
+    texture_coordinates.setflags(write=False)
+    polylines = np.asfortranarray([[[0.0, 0.0, 0.0], [1.0, 0.0, 0.0]]])
+    before = vertex_source.copy(), triangles.copy(), normals.copy(), texture_coordinates.copy(), polylines.copy()
+
+    tessellation = Tessellation(vertices, triangles, normals, texture_coordinates, polylines)
+
+    assert tessellation.vertices is vertices
+    assert tessellation.triangles is triangles
+    assert tessellation.vertex_normals is normals
+    assert tessellation.texture_coordinates is texture_coordinates
+    assert tessellation.polylines is polylines
+    for actual, expected in zip((vertex_source, triangles, normals, texture_coordinates, polylines), before):
+        np.testing.assert_array_equal(actual, expected)
+
+
+def test_tessellation_validates_duck_typed_numeric_elements_by_capability():
+    vertices = DuckBuffer([DuckBuffer([FloatLike(0.0), FloatLike(0.0), FloatLike(0.0)])])
+    triangles = DuckBuffer([DuckBuffer([IndexLike(0), IndexLike(0), IndexLike(0)])])
+
+    tessellation = Tessellation(vertices, triangles)
+
+    assert tessellation.vertices is vertices
+    assert tessellation.triangles is triangles
+
+
+@pytest.mark.parametrize("value", [True, np.bool_(True)])
+def test_tessellation_rejects_boolean_coordinate_elements(value):
+    with pytest.raises(TypeError, match="coordinates should be real numbers"):
+        Tessellation([[value, 0.0, 0.0]], [])
+
+
+@pytest.mark.parametrize("value", [True, np.bool_(True)])
+def test_tessellation_rejects_boolean_index_elements(value):
+    with pytest.raises(TypeError, match="indices should be integers"):
+        Tessellation([[0.0, 0.0, 0.0]], [[value, 0, 0]])
+
+
+@pytest.mark.parametrize("conversion", ["surface", "mesh"])
+def test_tessellation_normalizes_once_only_at_materialization_boundaries(conversion):
+    coordinate_values = [
+        FloatLike(0.0),
+        FloatLike(0.0),
+        FloatLike(0.0),
+        FloatLike(1.0),
+        FloatLike(0.0),
+        FloatLike(0.0),
+        FloatLike(0.0),
+        FloatLike(1.0),
+        FloatLike(0.0),
+    ]
+    index_values = [IndexLike(0), IndexLike(1), IndexLike(2)]
+    vertices = DuckBuffer([DuckBuffer(coordinate_values[offset : offset + 3]) for offset in range(0, 9, 3)])
+    triangles = DuckBuffer([DuckBuffer(index_values)])
+    tessellation = Tessellation(vertices, triangles)
+    for value in coordinate_values + index_values:
+        value.conversions = 0
+
+    if conversion == "surface":
+        result = tessellation.to_polygonal_surface()
+        assert result.vertices == [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0]]
+        assert result.faces == [[0, 1, 2]]
+    else:
+        result = tessellation.to_mesh()
+        assert result.vertex_coordinates(0) == [0.0, 0.0, 0.0]
+        assert result.face_vertices(0) == [0, 1, 2]
+
+    assert tessellation.vertices is vertices
+    assert tessellation.triangles is triangles
+    assert all(value.conversions == 1 for value in coordinate_values + index_values)
+
+
 def test_tessellation_converts_to_independent_compas_objects():
     vertices = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0]]
     triangles = [[0, 1, 2]]
@@ -126,6 +239,19 @@ def test_tessellation_converts_to_independent_compas_objects():
 def test_tessellation_validates_structural_buffers(vertices, triangles, error):
     with pytest.raises(error):
         Tessellation(vertices, triangles)
+
+
+def test_tessellation_does_not_mutate_buffers_when_validation_fails():
+    vertices = np.asarray([[0.0, 0.0, 0.0]])
+    triangles = np.asarray([[0, 0, 1]], dtype=np.int64)
+    vertices_before = vertices.copy()
+    triangles_before = triangles.copy()
+
+    with pytest.raises(IndexError, match="triangle index is out of range"):
+        Tessellation(vertices, triangles)
+
+    np.testing.assert_array_equal(vertices, vertices_before)
+    np.testing.assert_array_equal(triangles, triangles_before)
 
 
 def test_tessellation_validates_aligned_attributes():

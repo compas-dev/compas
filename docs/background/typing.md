@@ -41,6 +41,18 @@ that a collection has a particular rank, or that indices are within bounds.
 Such requirements remain part of the documented API contract and should be
 checked only where the operation needs them.
 
+Retained-buffer APIs keep the concrete type inferred for their primary buffers.
+For example, `Tessellation` accepts Python structural buffers and NumPy numeric
+arrays while its `vertices`, `triangles`, and `to_vertices_and_triangles()`
+annotations preserve the concrete input buffer types. Optional aligned buffers
+accept the same broad families without adding generic parameters. Nested
+structural buffers are described by `Indices`, `IndicesCollection`, and
+`CoordinatesCollection`, so compatible native wrappers do not have to inherit
+from `Sequence`. Validation
+uses the operations required by the invariants (`index` for triangle indices
+and finiteness testing for coordinates); it does not copy, coerce, mutate, or
+take ownership of supplied buffers.
+
 The runtime-checkable `Coordinate` and `Coordinates` protocols predate the input
 aliases and retain their existing structural `isinstance` behavior. The broader
 input aliases are static annotations: they must not be passed to `isinstance`

@@ -2,6 +2,7 @@ import tempfile
 import pytest
 import json
 import random
+from operator import index
 import compas
 
 from compas.datastructures import Mesh
@@ -452,6 +453,60 @@ def test_delete_face():
     f = mesh.number_of_faces()
     mesh.delete_face(0)
     assert mesh.number_of_faces() == f - 1
+
+
+def test_from_vertices_and_faces_materializes_structural_closed_face_once():
+    class CountingIndex:
+        def __init__(self, value):
+            self.value = value
+            self.conversions = 0
+
+        def __index__(self):
+            self.conversions += 1
+            return index(self.value)
+
+    class StructuralFace:
+        def __init__(self, values):
+            self.values = values
+
+        def __len__(self):
+            return len(self.values)
+
+        def __getitem__(self, key: int):
+            if not isinstance(key, int):
+                raise TypeError("StructuralFace does not support slicing.")
+            return self.values[key]
+
+        def __iter__(self):
+            return iter(self.values)
+
+    indices = [CountingIndex(0), CountingIndex(1), CountingIndex(2), CountingIndex(0)]
+    face = StructuralFace(indices)
+
+    mesh = Mesh.from_vertices_and_faces(
+        [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0]],
+        {7: face},
+    )
+
+    assert mesh.face_vertices(7) == [0, 1, 2]
+    assert face.values == indices
+    assert all(value.conversions == 1 for value in indices)
+
+
+@pytest.mark.parametrize(
+    ("faces", "fkey"),
+    [
+        ([["0", 1.0, "2", "0"]], 0),
+        ({7: ["0", 1.0, "2", "0"]}, 7),
+    ],
+)
+def test_from_vertices_and_faces_preserves_legacy_face_element_normalization(faces, fkey):
+    mesh = Mesh.from_vertices_and_faces(
+        [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0]],
+        faces,
+    )
+
+    assert mesh.face_vertices(fkey) == [0, 1, 2]
 
 
 def test_cull_vertices():

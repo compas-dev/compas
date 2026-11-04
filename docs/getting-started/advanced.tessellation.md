@@ -220,6 +220,15 @@ buffers they create; callers must treat all buffers as immutable for the lifetim
 the tessellation. `to_polygonal_surface()` and `to_mesh()` create independent
 COMPAS objects.
 
+Validation is structural and capability-based. Coordinates must have the required
+arity and support a finiteness check; triangle elements must support Python's index
+operation and be in range. Contiguous layout, writability, and a specific concrete
+container type are not required, and validation leaves every buffer unchanged.
+Boolean coordinate and index elements are rejected explicitly because they do not
+represent geometric numbers despite supporting Python's numeric operations.
+Conversion to a `PolygonalSurface` or `Mesh` materializes built-in floats and
+integers once at that independent-object boundary.
+
 ## Migration from pre-3.0 APIs
 
 COMPAS 3 intentionally has no compatibility aliases for the removed legacy
