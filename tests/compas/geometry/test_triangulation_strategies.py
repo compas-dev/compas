@@ -1,4 +1,5 @@
 import compas
+import numpy as np
 import pytest
 
 from compas.geometry import DiagonalSplit
@@ -73,6 +74,26 @@ def test_face_triangulation_dispatches_by_face_arity():
     triangles = triangulate_polygon(ngon, strategy)
     assert len(triangles) == 3
     assert {index for triangle in triangles for index in triangle} == set(range(5))
+
+
+@pytest.mark.parametrize("dtype", [np.float32, np.float64, np.int32, np.int64])
+@pytest.mark.parametrize("layout", ["c", "f", "sliced", "readonly"])
+def test_triangulate_polygon_accepts_numpy_inputs_without_mutation(dtype, layout):
+    values = np.asarray([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]], dtype=dtype)
+    if layout == "f":
+        vertices = np.asfortranarray(values)
+    elif layout == "sliced":
+        vertices = np.pad(values, ((0, 0), (0, 1)))[:, :3]
+    else:
+        vertices = values.copy()
+    if layout == "readonly":
+        vertices.flags.writeable = False
+    before = vertices.copy()
+
+    triangles = triangulate_polygon(vertices, DiagonalSplit("02"))
+
+    assert triangles == [[0, 1, 2], [0, 2, 3]]
+    np.testing.assert_array_equal(vertices, before)
 
 
 def test_face_triangulation_nonplanar_contract():

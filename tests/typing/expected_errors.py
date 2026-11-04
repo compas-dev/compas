@@ -8,6 +8,8 @@ from compas._typing import IntegralInput
 from compas._typing import NumericArray
 from compas._typing import RealInput
 from compas.geometry import Tessellation
+from compas.geometry import Delaunay
+from compas.geometry import triangulate_planar_points
 
 real_input: RealInput = "1"  # expected-error: reportAssignmentType
 integral_input: IntegralInput = 1.5  # expected-error: reportAssignmentType
@@ -19,3 +21,4 @@ indices_input: IndicesInput = np.asarray([0, 1, 2], dtype=np.float64)  # expecte
 float64_array: Float64Array = np.asarray([1, 2, 3], dtype=np.float32)  # expected-error: reportAssignmentType
 Tessellation([["0", "0", "0"]], [[0, 0, 0]])  # expected-error: reportArgumentType
 Tessellation([[0.0, 0.0, 0.0]], np.asarray([[0.0, 0.0, 0.0]]))  # expected-error: reportArgumentType
+triangulate_planar_points(np.asarray([[0, 0, 0]], dtype=np.complex128), strategy=Delaunay())  # expected-error: reportArgumentType

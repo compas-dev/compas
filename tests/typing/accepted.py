@@ -4,6 +4,7 @@ from typing import assert_type
 import numpy as np
 
 from compas._typing import CoordinateInput
+from compas._typing import CoordinatesCollectionInput
 from compas._typing import CoordinatesInput
 from compas._typing import Float64Array
 from compas._typing import FloatingArray
@@ -14,8 +15,14 @@ from compas._typing import IntegralInput
 from compas._typing import NumericArray
 from compas._typing import RealInput
 from compas.geometry import Point
+from compas.geometry import ConstrainedDelaunay
+from compas.geometry import Delaunay
+from compas.geometry import FaceTriangulation
 from compas.geometry import Tessellation
 from compas.geometry import Vector
+from compas.geometry import triangulate_planar_domain
+from compas.geometry import triangulate_planar_points
+from compas.geometry.triangulation import triangulate_polygon
 from compas.datastructures import Mesh
 
 
@@ -108,6 +115,10 @@ coordinate_inputs: list[CoordinateInput] = [
     int64_array,
 ]
 coordinates_inputs: list[CoordinatesInput] = [coordinate_inputs, np.asarray([[0, 0, 0], [1, 1, 1]], dtype=np.float64)]
+coordinates_collection_inputs: list[CoordinatesCollectionInput] = [
+    [coordinates_inputs[1]],
+    np.asarray([[[0, 0, 0], [1, 0, 0], [0, 1, 0]]], dtype=np.float32),
+]
 indices_inputs: list[IndicesInput] = [[0, 1, 2], (np.int32(0), np.int64(1)), int32_array, int64_array]
 
 vertices32 = np.asarray([[0, 0, 0], [1, 0, 0], [0, 1, 0]], dtype=np.float32)
@@ -132,3 +143,13 @@ custom_tessellation = Tessellation(custom_vertices, custom_triangles, polylines=
 assert_type(custom_tessellation.vertices, CustomCoordinates)
 assert_type(custom_tessellation.triangles, CustomTriangles)
 Mesh.from_vertices_and_faces(vertices32, triangles32)
+
+triangulate_planar_points(vertices32, strategy=Delaunay())
+triangulate_polygon(vertices32, FaceTriangulation())
+triangulate_planar_domain(
+    vertices32,
+    holes=np.asarray([vertices32], dtype=np.float32),
+    constraints=np.asarray([vertices32[:2]], dtype=np.float64),
+    points=np.asarray([[0.25, 0.25, 0]], dtype=np.int64),
+    strategy=ConstrainedDelaunay(),
+)

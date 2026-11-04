@@ -2,6 +2,7 @@ from math import isfinite
 from numbers import Real
 from typing import Literal
 
+from compas._typing import CoordinatesInput
 from compas._typing import CoordinatesType
 from compas.data import Data
 from compas.tolerance import TOL
@@ -386,7 +387,7 @@ def _projected_ear_clipping(vertices: CoordinatesType, strategy: ProjectedEarCli
     return earclip_polygon(Polygon(projected))
 
 
-def triangulate_polygon(vertices: CoordinatesType, strategy: TriangulationStrategy) -> list[list[int]]:
+def triangulate_polygon(vertices: CoordinatesInput, strategy: TriangulationStrategy) -> list[list[int]]:
     """Triangulate one polygon represented by ordered vertex coordinates.
 
     Parameters
@@ -402,6 +403,12 @@ def triangulate_polygon(vertices: CoordinatesType, strategy: TriangulationStrate
         Triangle indices into `vertices`.
 
     """
+    source = [[float(value) for value in vertex] for vertex in vertices]
+    return _triangulate_polygon(source, strategy)
+
+
+def _triangulate_polygon(vertices: CoordinatesType, strategy: TriangulationStrategy) -> list[list[int]]:
+    """Triangulate normalized polygon coordinates."""
     count = len(vertices)
     if count < 3:
         raise ValueError("A polygon requires at least three vertices for triangulation.")
@@ -410,8 +417,8 @@ def triangulate_polygon(vertices: CoordinatesType, strategy: TriangulationStrate
         if count == 3:
             return [[0, 1, 2]]
         if count == 4:
-            return triangulate_polygon(vertices, strategy.quad)
-        return triangulate_polygon(vertices, strategy.ngon)
+            return _triangulate_polygon(vertices, strategy.quad)
+        return _triangulate_polygon(vertices, strategy.ngon)
     if isinstance(strategy, DiagonalSplit):
         if count == 3:
             return [[0, 1, 2]]

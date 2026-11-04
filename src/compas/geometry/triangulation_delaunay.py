@@ -1,8 +1,8 @@
-from collections.abc import Sequence
 from math import isfinite
 from typing import TYPE_CHECKING
 
-from compas._typing import CoordinatesType
+from compas._typing import CoordinatesCollectionInput
+from compas._typing import CoordinatesInput
 from compas.plugins import pluggable
 from compas.tolerance import TOL
 
@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 
 
 def _planar_coordinates(
-    points: CoordinatesType,
+    points: CoordinatesInput,
     frame: "Frame | None",
     name: str,
     minimum: int,
@@ -53,7 +53,7 @@ def _planar_coordinates(
 
 
 def triangulate_planar_points(
-    points: CoordinatesType,
+    points: CoordinatesInput,
     *,
     strategy: Delaunay,
     frame: "Frame | None" = None,
@@ -91,7 +91,7 @@ def triangulate_planar_points(
 
 @pluggable(category="triangulation")
 def _triangulate_planar_points(
-    points: CoordinatesType,
+    points: CoordinatesInput,
     *,
     strategy: Delaunay,
     frame: "Frame | None" = None,
@@ -106,11 +106,11 @@ def _triangulate_planar_points(
 
 
 def triangulate_planar_domain(
-    boundary: CoordinatesType,
+    boundary: CoordinatesInput,
     *,
-    holes: Sequence[CoordinatesType] = (),
-    constraints: Sequence[CoordinatesType] = (),
-    points: CoordinatesType = (),
+    holes: CoordinatesCollectionInput = (),
+    constraints: CoordinatesCollectionInput = (),
+    points: CoordinatesInput = (),
     strategy: ConstrainedDelaunay | ConformingDelaunay,
     frame: "Frame | None" = None,
 ) -> "Tessellation":
@@ -168,11 +168,11 @@ def triangulate_planar_domain(
 
 @pluggable(category="triangulation")
 def _triangulate_planar_domain(
-    boundary: CoordinatesType,
+    boundary: CoordinatesInput,
     *,
-    holes: Sequence[CoordinatesType] = (),
-    constraints: Sequence[CoordinatesType] = (),
-    points: CoordinatesType = (),
+    holes: CoordinatesCollectionInput = (),
+    constraints: CoordinatesCollectionInput = (),
+    points: CoordinatesInput = (),
     strategy: ConstrainedDelaunay | ConformingDelaunay,
     frame: "Frame | None" = None,
 ) -> "Tessellation":

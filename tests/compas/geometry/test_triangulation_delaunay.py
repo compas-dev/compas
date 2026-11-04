@@ -1,5 +1,6 @@
 import compas
 import compas.geometry as geometry
+import numpy as np
 import pytest
 
 from compas.geometry import ConformingDelaunay
@@ -48,6 +49,58 @@ def test_triangulate_planar_points_returns_tessellation_and_preserves_coordinate
     assert result.vertices == points
     assert len(result.triangles) == 2
     assert {int(index) for triangle in result.triangles for index in triangle} == {0, 1, 2, 3}
+
+
+@pytest.mark.parametrize("dtype", [np.float32, np.float64, np.int32, np.int64])
+@pytest.mark.parametrize("layout", ["c", "f", "sliced", "readonly"])
+def test_triangulate_planar_points_accepts_numpy_inputs_without_mutation(dtype, layout):
+    values = np.asarray([[0, 0, 0], [2, 0, 0], [2, 1, 0], [0, 1, 0]], dtype=dtype)
+    if layout == "f":
+        points = np.asfortranarray(values)
+    elif layout == "sliced":
+        points = np.pad(values, ((0, 0), (0, 1)))[:, :3]
+    else:
+        points = values.copy()
+    if layout == "readonly":
+        points.flags.writeable = False
+    before = points.copy()
+
+    result = triangulate_planar_points(points, strategy=Delaunay())
+
+    assert len(result.triangles) == 2
+    np.testing.assert_array_equal(points, before)
+
+
+def test_triangulate_planar_domain_accepts_numpy_groups_without_mutation(monkeypatch):
+    boundary = np.asfortranarray(np.asarray([[0, 0, 0], [3, 0, 0], [3, 3, 0], [0, 3, 0]], dtype=np.float32))
+    holes = np.asarray([[[1, 1, 0], [2, 1, 0], [1.5, 2, 0]]], dtype=np.float64)
+    constraints = np.asarray([[[0.5, 0.5, 0], [2.5, 2.5, 0]]], dtype=np.int32)
+    points = np.asarray([[0.5, 2.5, 0]], dtype=np.int64)
+    for value in (boundary, holes, constraints, points):
+        value.flags.writeable = False
+    before = [value.copy() for value in (boundary, holes, constraints, points)]
+    captured = {}
+
+    def triangulate(boundary, *, holes, constraints, points, strategy, frame):
+        captured.update(boundary=boundary, holes=holes, constraints=constraints, points=points)
+        return Tessellation(boundary, [[0, 1, 2]])
+
+    monkeypatch.setattr("compas.geometry.triangulation_delaunay._triangulate_planar_domain", triangulate)
+
+    triangulate_planar_domain(
+        boundary,
+        holes=holes,
+        constraints=constraints,
+        points=points,
+        strategy=ConstrainedDelaunay(),
+    )
+
+    assert captured["boundary"] == boundary.tolist()
+    assert captured["holes"] == holes.tolist()
+    assert captured["constraints"] == constraints.tolist()
+    assert captured["points"] == points.tolist()
+    for value, original in zip((boundary, holes, constraints, points), before):
+        np.testing.assert_array_equal(value, original)
 
 
 def test_triangulate_planar_points_requires_world_xy_without_frame():
