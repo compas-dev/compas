@@ -162,25 +162,6 @@ def test_boolean_plugin_accepts_numpy_buffers_without_conversion(monkeypatch):
     assert result[1] is triangles
 
 
-@pytest.mark.parametrize(
-    ("mesh", "message"),
-    [
-        (([[0, 0, 0], [1, 0, 0], [0, 1, 0]], [[0, 1, 2]]), "closed"),
-        ((TETRAHEDRON[0], [[0, 1, 2, 3]]), "three indices"),
-        ((TETRAHEDRON[0], [[0, 1, 4]]), "out of range"),
-        ((TETRAHEDRON[0], [TETRAHEDRON[1][0], TETRAHEDRON[1][0][::-1]]), "duplicate"),
-        (([*TETRAHEDRON[0], [1, 1, 1]], [[0, 1, 2], [1, 0, 3], [0, 1, 4]]), "manifold"),
-    ],
-)
-def test_boolean_mesh_validation_precedes_plugin_dispatch(monkeypatch, mesh, message):
-    selected = []
-    monkeypatch.setattr(compas.plugins.plugin_manager, "select", selected.append)
-
-    with pytest.raises((IndexError, ValueError), match=message):
-        boolean_union_mesh_mesh(mesh, TETRAHEDRON)
-    assert selected == []
-
-
 def test_boolean_plugin_accepts_empty_result(monkeypatch):
     monkeypatch.setattr(
         compas.plugins.plugin_manager,
@@ -189,25 +170,6 @@ def test_boolean_plugin_accepts_empty_result(monkeypatch):
     )
 
     assert boolean_intersection_mesh_mesh(TETRAHEDRON, TETRAHEDRON) == ([], [])
-
-
-@pytest.mark.parametrize(
-    ("result", "error", "message"),
-    [
-        (([[float("nan"), 0.0, 0.0]], []), ValueError, "finite"),
-        ((TETRAHEDRON[0], [[0, 1]]), ValueError, "three indices"),
-        ((TETRAHEDRON[0], [[0, 1, 4]]), IndexError, "out of range"),
-    ],
-)
-def test_boolean_plugin_rejects_malformed_result(monkeypatch, result, error, message):
-    monkeypatch.setattr(
-        compas.plugins.plugin_manager,
-        "select",
-        lambda extension_point: SimpleNamespace(id="tests.boolean", method=lambda A, B: result),
-    )
-
-    with pytest.raises(error, match=message):
-        boolean_union_mesh_mesh(TETRAHEDRON, TETRAHEDRON)
 
 
 def test_raw_mesh_tuple_is_rejected_before_plugin_dispatch(monkeypatch):

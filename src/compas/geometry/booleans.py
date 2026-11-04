@@ -1,9 +1,5 @@
-from math import isfinite
-from operator import index as integer_index
 from typing import TYPE_CHECKING
 from typing import Any
-
-import numpy as np
 
 from compas._typing import CoordinatesType
 from compas._typing import TriangleMeshInput
@@ -51,63 +47,6 @@ def _planar_regions(geometry: Any) -> list["PlanarRegion"]:
     ]
 
 
-def _validate_boolean_mesh(mesh: TriangleMeshInput, name: str, *, require_closed: bool) -> None:
-    """Validate structural and topological Boolean mesh requirements."""
-    try:
-        vertices, triangles = mesh
-    except (TypeError, ValueError):
-        raise TypeError(f"{name} should be a (vertices, triangles) pair.")
-
-    vertex_count = len(vertices)
-    for vertex in vertices:
-        if len(vertex) != 3:
-            raise ValueError(f"{name} vertices should have exactly three coordinates.")
-        for value in vertex:
-            if isinstance(value, (bool, np.bool_)):
-                raise TypeError(f"{name} vertex coordinates should be real numbers.")
-            try:
-                finite = isfinite(value)
-            except (TypeError, ValueError):
-                raise TypeError(f"{name} vertex coordinates should be real numbers.")
-            if not finite:
-                raise ValueError(f"{name} vertex coordinates should be finite.")
-
-    incidences: dict[tuple[int, int], list[tuple[int, int]]] = {}
-    unique_triangles: set[tuple[int, int, int]] = set()
-    for triangle in triangles:
-        if len(triangle) != 3:
-            raise ValueError(f"{name} faces should have exactly three indices.")
-        checked = []
-        for value in triangle:
-            if isinstance(value, (bool, np.bool_)):
-                raise TypeError(f"{name} face indices should be integers.")
-            try:
-                index = integer_index(value)
-            except TypeError:
-                raise TypeError(f"{name} face indices should be integers.")
-            if index < 0 or index >= vertex_count:
-                raise IndexError(f"{name} face index is out of range.")
-            checked.append(index)
-
-        a, b, c = checked
-        key = tuple(sorted((a, b, c)))
-        if key in unique_triangles:
-            raise ValueError(f"{name} should not contain duplicate triangles.")
-        unique_triangles.add(key)
-        for edge in ((a, b), (b, c), (c, a)):
-            key = (min(edge), max(edge))
-            incidences.setdefault(key, []).append(edge)
-
-    if not require_closed:
-        return
-    if any(len(edges) > 2 for edges in incidences.values()):
-        raise ValueError(f"{name} should be manifold for a Boolean operation.")
-    if not incidences or any(len(edges) < 2 for edges in incidences.values()):
-        raise ValueError(f"{name} should be closed for a Boolean operation.")
-    if any(edges[0] != edges[1][::-1] for edges in incidences.values()):
-        raise ValueError(f"{name} should be consistently oriented for a Boolean operation.")
-
-
 def boolean_union_mesh_mesh(A: TriangleMeshInput, B: TriangleMeshInput) -> TriangleMeshInput:
     """Compute the boolean union of two triangle meshes.
 
@@ -131,10 +70,8 @@ def boolean_union_mesh_mesh(A: TriangleMeshInput, B: TriangleMeshInput) -> Trian
     Notes
     -----
     This function requires a Boolean plugin, such as `compas_cgal`.
-    Inputs must have finite three-dimensional vertices, triangular integral
-    connectivity with in-range indices, closed two-manifold edge incidence,
-    and consistent orientation. Geometric degeneracy and self-intersection
-    remain validity preconditions of the selected backend.
+    Input validity is a precondition of the selected backend. Core dispatches
+    the structural buffers without converting or pre-validating them.
 
     Examples
     --------
@@ -148,11 +85,7 @@ def boolean_union_mesh_mesh(A: TriangleMeshInput, B: TriangleMeshInput) -> Trian
     >>> union = boolean_union_mesh_mesh(A, B)  # doctest: +SKIP
 
     """
-    _validate_boolean_mesh(A, "A", require_closed=True)
-    _validate_boolean_mesh(B, "B", require_closed=True)
-    result = _boolean_union_mesh_mesh(A, B)
-    _validate_boolean_mesh(result, "Boolean union result", require_closed=False)
-    return result
+    return _boolean_union_mesh_mesh(A, B)
 
 
 @pluggable(category="booleans")
@@ -183,17 +116,11 @@ def boolean_difference_mesh_mesh(A: TriangleMeshInput, B: TriangleMeshInput) -> 
     Notes
     -----
     This function requires a Boolean plugin, such as `compas_cgal`.
-    Inputs must have finite three-dimensional vertices, triangular integral
-    connectivity with in-range indices, closed two-manifold edge incidence,
-    and consistent orientation. Geometric degeneracy and self-intersection
-    remain validity preconditions of the selected backend.
+    Input validity is a precondition of the selected backend. Core dispatches
+    the structural buffers without converting or pre-validating them.
 
     """
-    _validate_boolean_mesh(A, "A", require_closed=True)
-    _validate_boolean_mesh(B, "B", require_closed=True)
-    result = _boolean_difference_mesh_mesh(A, B)
-    _validate_boolean_mesh(result, "Boolean difference result", require_closed=False)
-    return result
+    return _boolean_difference_mesh_mesh(A, B)
 
 
 @pluggable(category="booleans")
@@ -224,17 +151,11 @@ def boolean_intersection_mesh_mesh(A: TriangleMeshInput, B: TriangleMeshInput) -
     Notes
     -----
     This function requires a Boolean plugin, such as `compas_cgal`.
-    Inputs must have finite three-dimensional vertices, triangular integral
-    connectivity with in-range indices, closed two-manifold edge incidence,
-    and consistent orientation. Geometric degeneracy and self-intersection
-    remain validity preconditions of the selected backend.
+    Input validity is a precondition of the selected backend. Core dispatches
+    the structural buffers without converting or pre-validating them.
 
     """
-    _validate_boolean_mesh(A, "A", require_closed=True)
-    _validate_boolean_mesh(B, "B", require_closed=True)
-    result = _boolean_intersection_mesh_mesh(A, B)
-    _validate_boolean_mesh(result, "Boolean intersection result", require_closed=False)
-    return result
+    return _boolean_intersection_mesh_mesh(A, B)
 
 
 @pluggable(category="booleans")

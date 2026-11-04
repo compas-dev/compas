@@ -198,15 +198,13 @@ sphere = Sphere(1.25).tessellate(UVGrid(u=32, v=16)).to_vertices_and_triangles()
 result = boolean_difference_mesh_mesh(box, sphere)
 ```
 
-The public wrapper validates finite three-dimensional vertices, triangular
-integral connectivity with in-range indices, closed two-manifold edge
-incidence, and consistent orientation. Duplicate triangles are rejected.
-Geometric degeneracy, self-intersection, and other backend-specific validity
-conditions remain documented preconditions or failure modes of the selected
-backend; core does not impose a speculative volume test. The backend normalizes
-the buffers for its native ABI and returns a new `(vertices, triangles)` pair.
-Construct a `Tessellation` explicitly only when a retained visualization or
-transfer representation is required.
+Core dispatches these structural buffers without converting or pre-validating
+them. The selected backend normalizes once for its native ABI, enforces the
+minimal safety requirements of that ABI, and reports algorithm failure.
+Closedness, manifoldness, orientation, degeneracy, self-intersection, and other
+geometric validity conditions remain documented preconditions or failure modes
+of the selected backend. Construct a `Tessellation` explicitly only when a
+retained visualization or transfer representation is required.
 
 ## Trims, seams, singularities, and validation
 
