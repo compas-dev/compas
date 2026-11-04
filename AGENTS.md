@@ -137,9 +137,11 @@ or decorative sections.
 - Use the `compas3` Conda environment.
 - Run the smallest relevant tests first, then broaden validation in proportion
   to risk.
-- Use the commands documented in `CONTRIBUTING.md`: `invoke test`,
-  `invoke lint`, and `invoke format`. Focused `pytest`, Ruff, and Pyright
-  commands are appropriate during development.
+- Use the direct commands documented in the development workflow: `uv run
+  pytest`, `uv run ruff check .`, `uv run ruff format --check .`, `uv run
+  pyright`, and `uv run mkdocs build --strict`. The existing Invoke tasks remain
+  convenience aliases for local use; they do not provision environments or
+  replace the direct command contract.
 - Always run `git diff --check` for changed patches.
 - For typing work, supplement runtime tests with focused static or AST checks
   where annotations may otherwise be missed.

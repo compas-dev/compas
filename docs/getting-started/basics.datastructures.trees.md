@@ -24,13 +24,13 @@ Trees can be constructed in a number of ways:
 >>> from compas.datastructures import Tree
 >>> from compas.datastructures import TreeNode
 >>> tree = Tree()
->>> root_node = TreeNode('root')
+>>> root_node = TreeNode("root")
 >>> tree.add(root_node)
->>> branch_node = TreeNode('branch')
+>>> branch_node = TreeNode("branch")
 >>> tree.add(branch_node, parent=root_node)
->>> leaf_node1 = TreeNode('leaf1')
+>>> leaf_node1 = TreeNode("leaf1")
 >>> tree.add(leaf_node1, parent=branch_node)
->>> leaf_node2 = TreeNode('leaf2')
+>>> leaf_node2 = TreeNode("leaf2")
 >>> tree.add(leaf_node2, parent=branch_node)
 >>> tree.print_hierarchy()
 └── <TreeNode root>
@@ -45,13 +45,13 @@ Trees can be constructed in a number of ways:
 >>> from compas.datastructures import Tree
 >>> from compas.datastructures import TreeNode
 >>> tree = Tree()
->>> root_node = TreeNode('root')
+>>> root_node = TreeNode("root")
 >>> tree.add(root_node)
->>> branch_node = TreeNode('branch')
+>>> branch_node = TreeNode("branch")
 >>> root_node.add(branch_node)
->>> leaf_node1 = TreeNode('leaf1')
+>>> leaf_node1 = TreeNode("leaf1")
 >>> branch_node.add(leaf_node1)
->>> leaf_node2 = TreeNode('leaf2')
+>>> leaf_node2 = TreeNode("leaf2")
 >>> branch_node.add(leaf_node2)
 └── <TreeNode root>
     └── <TreeNode branch>
@@ -63,7 +63,7 @@ Trees can be constructed in a number of ways:
 
 ```pycon
 >>> from compas.data import json_load
->>> tree = json_load('tree.json')
+>>> tree = json_load("tree.json")
 >>> tree.print_hierarchy()
 └── <TreeNode root>
     └── <TreeNode branch>
@@ -74,7 +74,7 @@ Trees can be constructed in a number of ways:
 ### Remove Node
 
 ```pycon
->>> tree.remove(leaf_node2) # Or branch_node.remove(leaf_node2)
+>>> tree.remove(leaf_node2)  # Or branch_node.remove(leaf_node2)
 >>> tree.print_hierarchy()
 └── <TreeNode root>
     └── <TreeNode branch>
@@ -96,19 +96,19 @@ the parent node is visited after its children.
 >>> from compas.datastructures import Tree
 >>> from compas.datastructures import TreeNode
 >>> tree = Tree()
->>> root_node = TreeNode('root')
+>>> root_node = TreeNode("root")
 >>> tree.add(root_node)
->>> branch_node1 = TreeNode('branch1')
+>>> branch_node1 = TreeNode("branch1")
 >>> root_node.add(branch_node1)
->>> leaf_node1 = TreeNode('leaf1')
+>>> leaf_node1 = TreeNode("leaf1")
 >>> branch_node1.add(leaf_node1)
->>> leaf_node2 = TreeNode('leaf2')
+>>> leaf_node2 = TreeNode("leaf2")
 >>> branch_node1.add(leaf_node2)
->>> branch_node2 = TreeNode('branch2')
+>>> branch_node2 = TreeNode("branch2")
 >>> root_node.add(branch_node2)
->>> leaf_node3 = TreeNode('leaf3')
+>>> leaf_node3 = TreeNode("leaf3")
 >>> branch_node2.add(leaf_node3)
->>> leaf_node4 = TreeNode('leaf4')
+>>> leaf_node4 = TreeNode("leaf4")
 >>> branch_node2.add(leaf_node4)
 >>> tree.print_hierarchy()
 └── <TreeNode root>
@@ -121,7 +121,7 @@ the parent node is visited after its children.
 ```
 
 ```pycon
->>> for node in tree.traverse(strategy='depthfirst', order='preorder'):
+>>> for node in tree.traverse(strategy="depthfirst", order="preorder"):
 ...     print(node)
 <TreeNode root>
 <TreeNode branch1>
@@ -133,7 +133,7 @@ the parent node is visited after its children.
 ```
 
 ```pycon
->>> for node in tree.traverse(strategy='depthfirst', order='postorder'):
+>>> for node in tree.traverse(strategy="depthfirst", order="postorder"):
 ...     print(node)
 <TreeNode leaf1>
 <TreeNode leaf2>
@@ -149,7 +149,7 @@ the parent node is visited after its children.
 The algorithm starts at the root node and explores the neighbour nodes first, before moving to the next level neighbours.
 
 ```pycon
->>> for node in tree.traverse(strategy='breadthfirst'):
+>>> for node in tree.traverse(strategy="breadthfirst"):
 ...     print(node)
 <TreeNode root>
 <TreeNode branch1>
@@ -163,13 +163,13 @@ The algorithm starts at the root node and explores the neighbour nodes first, be
 ## Node Attributes
 
 ```pycon
->>> nodes = tree.get_nodes_by_name('branch1')
+>>> nodes = tree.get_nodes_by_name("branch1")
 >>> nodes
 [<TreeNode branch1>]
 ```
 
 ```pycon
->>> node = tree.get_node_by_name('branch1')
+>>> node = tree.get_node_by_name("branch1")
 >>> node
 <TreeNode branch1>
 ```

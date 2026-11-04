@@ -6,8 +6,11 @@ API reference pages are generated from Python docstrings with mkdocstrings.
 Build the site locally with:
 
 ```bash
-invoke docs
+uv run mkdocs build --strict
 ```
+
+The convenience task is `uv run invoke docs`; the direct command above is the
+required strict check. Preview documentation changes with `uv run mkdocs serve`.
 
 Follow the repository's NumPy-style, MkDocs-compatible docstring conventions.
 Keep examples executable and update navigation in `mkdocs.yml` when adding or

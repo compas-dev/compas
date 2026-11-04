@@ -57,7 +57,7 @@ For more information about visualisation with [`compas.scene.Scene`][compas.scen
 >>> import compas
 >>> from compas.datastructures import CellNetwork
 >>> from compas.scene import Scene
->>> cell_network = CellNetwork.from_json(compas.get('cellnetwork_example.json'))
+>>> cell_network = CellNetwork.from_json(compas.get("cellnetwork_example.json"))
 >>> scene = Scene()
 >>> scene.add(mesh)
 >>> scene.show()
@@ -73,7 +73,7 @@ The cell network contains mixed topologic entities such as cells, faces, edges a
   - Cells are identified by a positive integer that is unique among the cells of the current mesh.
 
 ```pycon
->>> cell_network = CellNetwork.from_json(compas.get('cellnetwork_example.json'))
+>>> cell_network = CellNetwork.from_json(compas.get("cellnetwork_example.json"))
 >>> cell_network.number_of_vertices()
 44
 >>> cell_network.number_of_edges()

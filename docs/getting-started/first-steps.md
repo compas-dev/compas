@@ -51,7 +51,7 @@ import compas
 from compas.datastructures import Mesh
 from compas.scene import Scene
 
-mesh = Mesh.from_obj(compas.get('tubemesh.obj'))
+mesh = Mesh.from_obj(compas.get("tubemesh.obj"))
 
 scene = Scene()
 scene.add(mesh)

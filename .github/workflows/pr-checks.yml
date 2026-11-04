@@ -8,18 +8,22 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: pr-checks-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   release:
     name: Validate release metadata
     runs-on: ubuntu-latest
     steps:
-      - uses: compas-dev/compas-actions/release-check@v1
+      - uses: compas-dev/compas-actions/release-check@5c64e6e2b576a1232d28fed47d9478ca8eb63b2d # v2 candidate
 
   changelog:
     name: Check changelog
     runs-on: ubuntu-latest
     steps:
-      - uses: compas-dev/compas-actions/pr-checks@v1
+      - uses: compas-dev/compas-actions/pr-checks@5c64e6e2b576a1232d28fed47d9478ca8eb63b2d # v2 candidate
         with:
           changelog-path: CHANGELOG.md
           skip-label: no changelog

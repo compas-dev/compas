@@ -106,7 +106,6 @@ The serialization process will recursively serialize all these attributes.
 
 ```python
 class SomeThing(Data):
-
     def __init__(self, point, frame, mesh):
         super().__init__()
         self.point = point
@@ -152,7 +151,6 @@ To avoid this, anticipated conversions can be included explicitly in `__data__` 
 
 ```python
 class SomeThing(Data):
-
     def __init__(self, point, frame, mesh):
         super().__init__()
         self.point = point
@@ -170,8 +168,8 @@ class SomeThing(Data):
     @classmethod
     def __from_data__(cls, data):
         return cls(
-            Point.__from_data__(data['point']),
-            Frame.__from_data__(data['frame']),
-            Mesh.__from_data__(data['mesh']),
+            Point.__from_data__(data["point"]),
+            Frame.__from_data__(data["frame"]),
+            Mesh.__from_data__(data["mesh"]),
         )
 ```

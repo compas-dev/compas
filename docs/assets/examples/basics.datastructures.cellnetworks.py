@@ -1,4 +1,3 @@
-
 from compas_viewer import Viewer
 
 import compas

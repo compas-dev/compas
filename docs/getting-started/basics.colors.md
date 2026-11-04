@@ -119,15 +119,15 @@ However, using the following template we can compare various examples.
 >>> up = []
 >>> down = []
 >>> for i in linspace(0, 10, n):
-...    point = Point(i, 0, 0)
-...    up.append(point + [0, t, 0])
-...    down.append(point - [0, t, 0])
+...     point = Point(i, 0, 0)
+...     up.append(point + [0, t, 0])
+...     down.append(point - [0, t, 0])
 ```
 
 ```pycon
 >>> polygons = []
 >>> for (d, c), (a, b) in zip(pairwise(up), pairwise(down)):
-...    polygons.append(Polygon([a, b, c, d]))
+...     polygons.append(Polygon([a, b, c, d]))
 ```
 
 ```pycon
@@ -140,7 +140,7 @@ However, using the following template we can compare various examples.
 ```
 
 ```pycon
->>> viewer = Viewer(show_grid = False)
+>>> viewer = Viewer(show_grid=False)
 >>> viewer.scene.add(mesh, facecolor=facecolor, show_lines=False)
 >>> viewer.show()
 ```
@@ -148,7 +148,7 @@ However, using the following template we can compare various examples.
 ### From Palette
 
 ```pycon
->>> cmap = ColorMap.from_mpl('viridis')
+>>> cmap = ColorMap.from_mpl("viridis")
 ```
 
 ![`viridis` color map from matplotlib.](../assets/images/userguide/basics.colors_maps.png)
@@ -163,8 +163,8 @@ However, using the following template we can compare various examples.
 
 ```pycon
 >>> cmap = ColorMap.from_color(Color.red())
->>> cmap = ColorMap.from_color(Color.red(), rangetype='light')
->>> cmap = ColorMap.from_color(Color.red(), rangetype='dark')
+>>> cmap = ColorMap.from_color(Color.red(), rangetype="light")
+>>> cmap = ColorMap.from_color(Color.red(), rangetype="dark")
 ```
 
 ![Color maps constructed from a single color.](../assets/images/userguide/basics.colors_maps_from-one-color.png)

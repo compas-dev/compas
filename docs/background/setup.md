@@ -31,12 +31,14 @@ VS Code also has a built-in git client
 
 ![Image](../assets/images/vscode_git.JPG)
 
-## Python virtual environments
+## Python environments
 
 During development there might be a need to install different versions of different dependencies, some of them might conflict with ones used for other projects.
 Moreover, using early development code can often lead to a corrupt python environment which can be hard to fix. For these reasons it is highly recommended to use virtual environments for development.
 
-For developing COMPAS we recommend using [conda](https://conda.io/docs/).
+COMPAS uses [uv](https://docs.astral.sh/uv/) to create the project environment,
+lock development dependencies, and run the same commands locally and in CI.
+Install uv using its [official installation instructions](https://docs.astral.sh/uv/getting-started/installation/).
 
 ## Installing COMPAS for development
 

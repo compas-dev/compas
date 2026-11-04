@@ -47,10 +47,10 @@ Meshes can be constructed in a number of ways:
 
 ```pycon
 >>> from compas.datastructures import Mesh
->>> mesh = Mesh.from_obj('mesh.obj')
->>> mesh = Mesh.from_off('mesh.off')
->>> mesh = Mesh.from_ply('mesh.ply')
->>> mesh = Mesh.from_stl('mesh.stl')
+>>> mesh = Mesh.from_obj("mesh.obj")
+>>> mesh = Mesh.from_off("mesh.off")
+>>> mesh = Mesh.from_ply("mesh.ply")
+>>> mesh = Mesh.from_stl("mesh.stl")
 ```
 
 ## Visualisation
@@ -61,7 +61,7 @@ For more information about visualisation with [`compas.scene.Scene`][compas.scen
 ```pycon
 >>> from compas.datastructures import Mesh
 >>> from compas.scene import Scene
->>> mesh = Mesh.from_obj(compas.get('tubemesh.obj'))
+>>> mesh = Mesh.from_obj(compas.get("tubemesh.obj"))
 >>> scene = Scene()
 >>> scene.add(mesh)
 >>> scene.show()
@@ -100,7 +100,6 @@ Vertex, edge, and face accessors are generators: they are meant to be used in lo
 >>> for vertex in mesh.vertices():
 ...     # do something with this vertex
 ...     print(vertex)
-...
 0
 1
 2
@@ -111,7 +110,6 @@ Vertex, edge, and face accessors are generators: they are meant to be used in lo
 >>> for edge in mesh.edges():
 ...     # do something with this edge
 ...     print(edge)
-...
 (0, 1)
 (1, 2)
 (2, 3)
@@ -122,7 +120,6 @@ Vertex, edge, and face accessors are generators: they are meant to be used in lo
 >>> for face in mesh.faces():
 ...     # do something with this face
 ...     print(face)
-...
 0
 1
 2
@@ -168,62 +165,61 @@ It is good practice to declare default values for the added data attributes.
 Get the value of one attribute of one vertex.
 
 ```pycon
->>> mesh.vertex_attribute(0, 'a')
+>>> mesh.vertex_attribute(0, "a")
 None
 ```
 
 Get the value of multiple attributes of one vertex.
 
 ```pycon
->>> mesh.vertex_attributes(0, ['a', 'b'])
+>>> mesh.vertex_attributes(0, ["a", "b"])
 (None, 0.0)
 ```
 
 Get the value of one attribute of all vertices.
 
 ```pycon
->>> mesh.vertices_attribute('a')
+>>> mesh.vertices_attribute("a")
 [None, None, None, ... None]
 ```
 
 Get the value of multiple attributes of all vertices.
 
 ```pycon
->>> mesh.vertices_attributes(['b', 'c'])
+>>> mesh.vertices_attributes(["b", "c"])
 [(0.0, False), (0.0, False), (0.0, False), ..., (0.0, False)]
 ```
 
 Similarly, for a selection of vertices.
 
 ```pycon
->>> mesh.vertices_attribute('b', vertices=[0, 1, 2, 3])
+>>> mesh.vertices_attribute("b", vertices=[0, 1, 2, 3])
 [0.0, 0.0, 0.0, 0.0]
 ```
 
 ```pycon
->>> mesh.vertices_attributes(['a', 'c'], vertices=[0, 1, 2, 3])
+>>> mesh.vertices_attributes(["a", "c"], vertices=[0, 1, 2, 3])
 [(None, False), (None, False), (None, False), (None, False)]
 ```
 
 Updating attributes is currently only possible one vertex at a time.
 
 ```pycon
->>> mesh.vertex_attribute(0, 'a', (1.0, 0.0, 0.0))
+>>> mesh.vertex_attribute(0, "a", (1.0, 0.0, 0.0))
 ```
 
 ```pycon
 >>> for vertex in mesh.vertices():
 ...     if mesh.vertex_degree(vertex) == 2:
-...         mesh.vertex_attribute(vertex, 'a', (1.0, 0.0, 0.0))
-...
+...         mesh.vertex_attribute(vertex, "a", (1.0, 0.0, 0.0))
 ```
 
 Finally, note that the xyz coordinates of vertices can be accessed and modified using the same functions.
 
 ```pycon
->>> mesh.vertex_attributes(0, 'xyz')
+>>> mesh.vertex_attributes(0, "xyz")
 (0.0, 0.0, 0.0)
->>> mesh.vertices_attribute('x')
+>>> mesh.vertices_attribute("x")
 [0.0, 1.0, 2.0, ..., 9.0]
 ```
 
@@ -289,7 +285,6 @@ in opposite direction, except fo the edges on the boundary.
 >>> for face in mesh.faces():
 ...     for edge in mesh.face_halfedges(face):
 ...         print(mesh.halfedge_face(edge) == face)
-...
 True
 True
 ...
@@ -309,7 +304,6 @@ Using a combination of the halfedge functions, it is possible to traverse the me
 ```pycon
 >>> for i, nbr in enumerate(mesh.vertex_neighbors(23, ordered=True)):
 ...     print(i, nbr)
-...
 0 22
 1 13
 2 24
@@ -319,8 +313,7 @@ Using a combination of the halfedge functions, it is possible to traverse the me
 ![Figure](../assets/images/userguide/basics.datastructures.meshes.vertex-neighbours.png)
 ```pycon
 >>> for i, face in enumerate(mesh.vertex_faces(23)):
-...    print(i, face)
-...
+...     print(i, face)
 0 20
 1 11
 2 12
@@ -331,7 +324,6 @@ Using a combination of the halfedge functions, it is possible to traverse the me
 ```pycon
 >>> for i, nbr in enumerate(mesh.face_neighbors(21)):
 ...     print(i, nbr)
-...
 0 20
 1 22
 2 23
@@ -344,7 +336,6 @@ Using a combination of the halfedge functions, it is possible to traverse the me
 ```pycon
 >>> for edge in mesh.halfedge_loop((32, 33)):
 ...     print(edge)
-...
 (32, 33)
 (33, 34)
 (34, 35)
@@ -357,7 +348,6 @@ Using a combination of the halfedge functions, it is possible to traverse the me
 ```pycon
 >>> for edge in mesh.edge_loop((62, 63)):
 ...     print(edge)
-...
 (60, 61)
 (61, 62)
 (62, 63)
@@ -373,7 +363,6 @@ Using a combination of the halfedge functions, it is possible to traverse the me
 ```pycon
 >>> for edge in mesh.edge_strip((20, 30)):
 ...     print(edge)
-...
 (20, 30)
 (21, 31)
 (22, 32)
@@ -415,8 +404,8 @@ Using a combination of the halfedge functions, it is possible to traverse the me
 ## Mesh Serialisation
 
 ```pycon
->>> mesh.to_json('mesh.json')
->>> mesh = Mesh.from_json('mesh.json')
+>>> mesh.to_json("mesh.json")
+>>> mesh = Mesh.from_json("mesh.json")
 >>> mesh
 <Mesh with 121 vertices and 200 faces>
 ```
@@ -429,10 +418,10 @@ Using a combination of the halfedge functions, it is possible to traverse the me
 ```
 
 ```pycon
->>> session = {'mesh': mesh, 'a': 1, 'b': 2}
->>> compas.json_dump(session, 'session.json')
->>> session = compas.json_load('session.json')
->>> mesh = session['mesh']
+>>> session = {"mesh": mesh, "a": 1, "b": 2}
+>>> compas.json_dump(session, "session.json")
+>>> session = compas.json_load("session.json")
+>>> mesh = session["mesh"]
 >>> mesh
 <Mesh with 121 vertices and 200 faces>
 ```

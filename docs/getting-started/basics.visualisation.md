@@ -119,7 +119,7 @@ together with its own local frame and transformation. This prorperty can be acce
 >>> from compas.geometry import Box
 >>> from compas.geometry import Frame
 >>> sceneobj1 = scene.add(Box())
->>> sceneobj1.frame = Frame(point = [1.0, 0.0, 0.0], xaxis=[1.0, 0.0, 0.0],yaxis=[0.0, 1.0, 0.0])
+>>> sceneobj1.frame = Frame(point=[1.0, 0.0, 0.0], xaxis=[1.0, 0.0, 0.0], yaxis=[0.0, 1.0, 0.0])
 >>> sceneobj1.transformation = Translation.from_vector([10.0, 0.0, 0.0])
 >>> sceneobj1.worldtransformation
 Transformation([[1.0, 0.0, 0.0, 11.0], [0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 1.0, 0.0], [0.0, 0.0, 0.0, 1.0]], check=False)

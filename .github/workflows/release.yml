@@ -7,6 +7,9 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: release-${{ github.ref }}
+
 jobs:
   release-change:
     name: Detect release merge
@@ -16,7 +19,7 @@ jobs:
       version: ${{ steps.release.outputs.version }}
       tag: ${{ steps.release.outputs.tag }}
     steps:
-      - uses: compas-dev/compas-actions/release-check@v1
+      - uses: compas-dev/compas-actions/release-check@5c64e6e2b576a1232d28fed47d9478ca8eb63b2d # v2 candidate
         id: release
 
   build:
@@ -30,23 +33,33 @@ jobs:
         python: ["3.12", "3.13", "3.14"]
 
     steps:
-      - uses: compas-dev/compas-actions/ci@v1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: compas-dev/compas-actions/setup-python@5c64e6e2b576a1232d28fed47d9478ca8eb63b2d # v2 candidate
         with:
           python-version: ${{ matrix.python }}
-          management-tool: uv
           extras: dev
-          invoke-tasks: lint test
-          check-import: true
+      - name: Check style
+        run: uv run ruff check .
+      - name: Check formatting
+        run: uv run ruff format --check .
+      - name: Check typing
+        run: uv run pyright
+      - name: Run tests
+        run: uv run pytest
+      - name: Check package import
+        run: uv run python -m compas
 
   prepare:
     needs: [release-change, build]
     if: needs.release-change.outputs.is-release == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: compas-dev/compas-actions/prepare-release@v1
+      - uses: compas-dev/compas-actions/prepare-release@5c64e6e2b576a1232d28fed47d9478ca8eb63b2d # v2 candidate
         with:
           python-version: "3.12"
-          management-tool: uv
+          import-modules: compas
 
   publish:
     needs: [release-change, prepare]
@@ -56,25 +69,27 @@ jobs:
       name: pypi
       url: https://pypi.org/p/compas
     permissions:
+      actions: read
       contents: read
       id-token: write
     steps:
       - name: Download package distributions
-        uses: actions/download-artifact@v8.0.1
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: python-package-distributions
           path: dist
       - name: Publish package distributions to PyPI
-        uses: pypa/gh-action-pypi-publish@v1.14.2
+        uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2
 
   create-release:
     needs: [release-change, publish]
     if: needs.release-change.outputs.is-release == 'true'
     runs-on: ubuntu-latest
     permissions:
+      actions: read
       contents: write
     steps:
-      - uses: compas-dev/compas-actions/github-release@v1
+      - uses: compas-dev/compas-actions/github-release@5c64e6e2b576a1232d28fed47d9478ca8eb63b2d # v2 candidate
         with:
           github-token: ${{ github.token }}
           tag-name: ${{ needs.release-change.outputs.tag }}
@@ -87,11 +102,13 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: compas-dev/compas-actions/docs@v1
+      - uses: compas-dev/compas-actions/docs@5c64e6e2b576a1232d28fed47d9478ca8eb63b2d # v2 candidate
         with:
           deploy: true
           version: ${{ needs.release-change.outputs.version }}
+          github-token: ${{ github.token }}
           python-version: "3.12"
           extras: docs
+          dependency-groups: ""
           config-file: mkdocs.yml
-          strict: false
+          strict: true

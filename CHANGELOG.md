@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Added a committed uv development lock, documented direct quality commands while retaining Invoke convenience tasks, and migrated CI, release, artifact, and documentation mechanics to immutably pinned shared actions.
 * Standardized triangle-processing plugin inputs and outputs on the ephemeral `Tessellation` representation. See the geometry discretization and tessellation migration guide for the COMPAS 3 replacements.
 * Renamed planar Delaunay operations to `triangulate_planar_points` and `triangulate_planar_domain`, with core-owned validation before backend dispatch.
 * Replaced backend-specific `NurbsCurve` and `NurbsSurface` substitution with stable core wrappers and operation-level plugin contracts.

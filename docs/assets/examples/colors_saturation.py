@@ -6,7 +6,7 @@ from compas.colors import Color
 from compas.geometry import Circle
 from compas.geometry import Frame
 
-viewer = Viewer(show_grid = False)
+viewer = Viewer(show_grid=False)
 
 colors = [
     Color.red(),

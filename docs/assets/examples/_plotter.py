@@ -22,7 +22,7 @@ def viewer_add_vertex(viewer, mesh, vertex, facecolor=None, edgecolor=None, size
         facecolor=facecolor,
         edgecolor=edgecolor,
         linewidth=2,
-        n =100,
+        n=100,
     )
 
 

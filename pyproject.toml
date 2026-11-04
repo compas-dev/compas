@@ -11,7 +11,8 @@ name = "compas"
 description = "The main COMPAS framework library."
 keywords = ["architecture", "engineering", "fabrication", "construction"]
 authors = [{ name = "tom van mele", email = "tom.v.mele@gmail.com" }]
-license = { file = "LICENSE" }
+license = "MIT"
+license-files = ["LICENSE"]
 readme = "README.md"
 requires-python = ">=3.12"
 dynamic = ['version']
@@ -24,6 +25,8 @@ classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
 ]
 dependencies = [
     "mapbox-earcut",
@@ -130,11 +133,8 @@ search = "Unreleased"
 replace = "[{new_version}] {now:%Y-%m-%d}"
 
 # ============================================================================
-# replace setup.cfg
+# style and static analysis
 # ============================================================================
-
-[tool.black]
-line-length = 179
 
 [tool.ruff]
 line-length = 179

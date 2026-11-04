@@ -13,14 +13,19 @@ on:
           - major
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
+
+concurrency:
+  group: prepare-release
 
 jobs:
   release-pr:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
-      - uses: compas-dev/compas-actions/release-pr@v1
+      - uses: compas-dev/compas-actions/release-pr@5c64e6e2b576a1232d28fed47d9478ca8eb63b2d # v2 candidate
         with:
           release-type: ${{ inputs.release-type }}
           github-token: ${{ github.token }}

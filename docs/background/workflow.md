@@ -6,25 +6,31 @@ To set up a developer environment
 
 1. Fork [the repository](https://github.com/compas-dev/compas) and clone the fork. See [Fork a repo](https://help.github.com/articles/fork-a-repo/) for more information.
 
-2. Create a virtual environment using your tool of choice (e.g. `virtualenv`, `conda`, etc).
-
-   ```bash
-   conda create -n compas3 python=3.12 --yes
-   conda activate compas3
-   ```
-
-3. Install development dependencies:
+2. Install the locked development environment:
 
    ```bash
    cd path/to/compas
-   pip install -e ".[dev]"
+   uv sync --frozen --extra dev --extra docs
    ```
 
-4. Make sure all tests pass and the code is free of lint:
+3. Make sure all tests and checks pass. The Invoke tasks are convenient local
+   aliases:
 
    ```bash
-   invoke lint
-   invoke test
+   uv run invoke check
+   uv run invoke typecheck
+   uv run invoke test
+   uv run invoke docs
+   ```
+
+   The underlying direct commands are the authoritative CI contract:
+
+   ```bash
+   uv run ruff check .
+   uv run ruff format --check .
+   uv run pyright
+   uv run pytest
+   uv run mkdocs build --strict
    ```
 
 ## Making changes
@@ -78,12 +84,24 @@ The procedure for submitting a PR is the following.
 
 1. Please merge the `main` branch into your feature branch and resolve any conflicts (see above).
 
-2. Make sure all tests still pass, the code is free of lint, and the docstrings compile correctly:
+2. Make sure all tests still pass, the code is free of lint, and the
+   documentation builds strictly. You may run the convenience tasks:
 
    ```bash
-   invoke lint
-   invoke test
-   invoke docs
+   uv run invoke check
+   uv run invoke typecheck
+   uv run invoke test
+   uv run invoke docs
+   ```
+
+   Or run the authoritative commands directly:
+
+   ```bash
+   uv run ruff check .
+   uv run ruff format --check .
+   uv run pyright
+   uv run pytest
+   uv run mkdocs build --strict
    ```
 
 3. Add yourself to `AUTHORS.md`.

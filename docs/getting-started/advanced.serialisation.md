@@ -54,7 +54,7 @@ All objects inheriting the data interface, can be serialized to a JSON string or
 >>> point = Point(0, 0, 0)
 >>> point.to_jsonstring()
 '[0.0, 0.0, 0.0]'
->>> point.to_json('point.json')
+>>> point.to_json("point.json")
 ```
 
 ```pycon
@@ -62,7 +62,7 @@ All objects inheriting the data interface, can be serialized to a JSON string or
 >>> frame = Frame.worldXY()
 >>> frame.to_jsonstring()
 '{"point": [0.0, 0.0, 0.0], "xaxis": [1.0, 0.0, 0.0], "yaxis": [0.0, 1.0, 0.0]}'
->>> frame.to_json('frame.json')
+>>> frame.to_json("frame.json")
 ```
 
 Conversely, COMPAS data objects can be reconstructed from a compatible JSON string or file.
@@ -85,9 +85,9 @@ True
 
 ```pycon
 >>> from compas.datastructures import Mesh
->>> mesh = Mesh.from_obj('faces.obj')
->>> mesh.to_json('mesh.json')
->>> other = Mesh.from_json('mesh.json')
+>>> mesh = Mesh.from_obj("faces.obj")
+>>> mesh.to_json("mesh.json")
+>>> other = Mesh.from_json("mesh.json")
 ```
 
 The serialization mechanism applies recursively to nested structures of objects as well.
@@ -102,14 +102,14 @@ The serialization mechanism applies recursively to nested structures of objects 
 >>> a = network.add_node(point=point)
 >>> b = network.add_node(transformation=xform)
 >>> c = network.add_node(box=mesh)
->>> network.to_json('network.json')
+>>> network.to_json("network.json")
 ```
 
 ```pycon
->>> other = Network.from_json('network.json')
->>> other.node_attribute(a, 'point') == network.node_attribute(a, 'point')
+>>> other = Network.from_json("network.json")
+>>> other.node_attribute(a, "point") == network.node_attribute(a, "point")
 True
->>> other.node_attribute(b, 'transformation') == network.node_attribute(b, 'transformation')
+>>> other.node_attribute(b, "transformation") == network.node_attribute(b, "transformation")
 True
 ```
 
@@ -132,8 +132,8 @@ for point in Pointcloud.from_bounds(10, 10, 10, 100):
     boxcopy = box.copy()
     boxcopy.frame.point = point
 
-session = {'mesh': mesh, 'boxes': boxes}
-compas.json_dump(session, 'session.json')
+session = {"mesh": mesh, "boxes": boxes}
+compas.json_dump(session, "session.json")
 ```
 
 ```python
@@ -141,9 +141,9 @@ compas.json_dump(session, 'session.json')
 
 import compas
 
-session = compas.json_load('session.json')
-mesh = session['mesh']
-boxes = session['boxes']
+session = compas.json_load("session.json")
+mesh = session["mesh"]
+boxes = session["boxes"]
 ```
 
 Note that if you are working in Python 3.6 or higher, you could add some type information to script B
@@ -158,9 +158,9 @@ import compas
 from compas.datastructures import Mesh
 from compas.geometry import Box
 
-session = compas.json_load('session.json')
-mesh: Mesh = session['mesh']
-boxes: List[Box] = session['boxes']
+session = compas.json_load("session.json")
+mesh: Mesh = session["mesh"]
+boxes: List[Box] = session["boxes"]
 ```
 
 ## Inheritance
@@ -171,6 +171,7 @@ For example, a user can create a custom mesh class and serialize it to JSON:
 ```python
 from compas.datastructures import Mesh
 from compas import json_dump
+
 
 class CustomMesh(Mesh):
     def __init__(self, *args, **kwargs):
@@ -189,9 +190,10 @@ class CustomMesh(Mesh):
         obj.custom_mesh_attr = data.get("custom_mesh_attr", "")
         return obj
 
+
 # Create and serialize a custom mesh
 custom_mesh = CustomMesh(name="test")
-json_dump(custom_mesh, 'custom_mesh.json')
+json_dump(custom_mesh, "custom_mesh.json")
 ```
 
 If another user loads "custom_mesh.json" in an environment where the CustomMesh class is not available, COMPAS will reconstruct the object as an instance of its closest available superclass, which in this case is the regular Mesh class:
@@ -200,6 +202,6 @@ If another user loads "custom_mesh.json" in an environment where the CustomMesh 
 from compas.datastructures import Mesh
 from compas import json_load
 
-mesh = json_load('custom_mesh.json')
-assert isinstance(mesh, Mesh) # This will be True
+mesh = json_load("custom_mesh.json")
+assert isinstance(mesh, Mesh)  # This will be True
 ```

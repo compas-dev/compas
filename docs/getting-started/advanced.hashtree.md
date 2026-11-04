@@ -11,7 +11,7 @@ A COMPAS hash tree can be created from any raw python dictionary using the `Hash
 
 ```pycon
 >>> from compas.datastructures import HashTree
->>> data = {'a': 1, 'b': 2, 'c': {'d': 3, 'e': 4}}
+>>> data = {"a": 1, "b": 2, "c": {"d": 3, "e": 4}}
 >>> tree = HashTree.from_dict(data)
 ```
 
@@ -31,7 +31,7 @@ The structure of the hash tree and crypo hash on each node can be visualised usi
 Once the original data is modified, a new hash tree can be created from the modified data and the changes can be detected by comparing the two hash trees.
 
 ```pycon
->>> data['c']['d'] = 5
+>>> data["c"]["d"] = 5
 >>> del data["b"]
 >>> data["f"] = True
 >>> new_tree = HashTree.from_dict(data)

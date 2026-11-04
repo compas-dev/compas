@@ -17,15 +17,14 @@ Generally, we try to follow the [PEP8](https://peps.python.org/pep-0008/) style 
 **Classes** should be named using the `CamelCase` convention
 
 ```python
-class MyClass(object):
-    ...
+class MyClass(object): ...
 ```
 
 **Functions**, **methods**, **arguments** and **local/member variables** should be named using the `snake_case` convention
 
 ```python
-def my_function():
-    ...
+def my_function(): ...
+
 
 def add(self, x, y):
     result = x + y
@@ -36,7 +35,6 @@ def add(self, x, y):
 
 ```python
 class Rectangle(object):
-
     def __init__(self, width, lentgh):
         self._width = width
         self._length = length
@@ -47,8 +45,7 @@ class Rectangle(object):
         self._area = self._width * self._length
 
     @staticmethod
-    def _some_helper_function():
-        ...
+    def _some_helper_function(): ...
 ```
 
 **Class attributes** should be named using all caps and underscores
@@ -108,15 +105,14 @@ compas
 
 ```python
 # new_module.py
-class NewClass(object):
-    ...
+class NewClass(object): ...
 ```
 
 ```python
 # compas.my_package.__init__.py
 from .new_module import NewClass
 
-__all__ = ['NewClass']
+__all__ = ["NewClass"]
 ```
 
 The result should be:

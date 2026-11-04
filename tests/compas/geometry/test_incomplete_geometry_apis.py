@@ -25,6 +25,16 @@ from compas.geometry import Sphere
 from compas.geometry import Torus
 from compas.geometry import triangulate_planar_domain
 from compas.plugins import PluginNotInstalledError
+from compas.plugins import plugin_manager
+
+
+@pytest.fixture(autouse=True)
+def isolated_core_plugin_registry(monkeypatch):
+    """Keep missing-backend tests independent of installed plugin packages."""
+    plugin_manager.reset()
+    monkeypatch.setattr(plugin_manager, "_entry_points_provider", lambda **kwargs: ())
+    yield
+    plugin_manager.reset()
 
 
 def test_brep_type_values_include_solid():

@@ -166,7 +166,6 @@ These generators are meant to be used in loops.
 ```pycon
 >>> for vertex in volmesh.vertices():
 ...     print(vertex)
-...
 0
 1
 2
@@ -306,7 +305,6 @@ Updating attributes is currently only possible one vertex at a time.
 >>> for vertex in volmesh.vertices():
 ...     if volmesh.vertex_degree(vertex) == 2:
 ...         volmesh.vertex_attribute(vertex=vertex, name="a", value=(1.0, 0.0, 0.0))
-...
 ```
 
 ## Overall Topology
