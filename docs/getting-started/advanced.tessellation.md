@@ -179,11 +179,12 @@ intersection-free. [^barequet-sharir]
     polyhedron,” *Computer Aided Geometric Design* 12(2), 1995.
     <https://doi.org/10.1016/0167-8396(94)00011-G>
 
-## Pass tessellations to geometry plugins
+## Pass structural meshes to Boolean plugins
 
-Triangle-processing plugin boundaries accept `Tessellation`, not raw
-`(vertices, faces)` tuples or `Mesh`. This keeps one validation and ownership
-contract across backends.
+Boolean operations accept structural `(vertices, triangles)` pairs. Their
+buffers may be ordinary Python sequences or suitable NumPy arrays. This keeps
+the numerical boundary independent of `Tessellation`, `PolygonalSurface`, and
+`Mesh`; convert those representations explicitly when needed.
 
 ```python
 from compas.geometry import Native
@@ -192,14 +193,20 @@ from compas.geometry import UVGrid
 from compas.geometry import Box
 from compas.geometry import boolean_difference_mesh_mesh
 
-box = Box(2.0).tessellate(Native())
-sphere = Sphere(1.25).tessellate(UVGrid(u=32, v=16))
+box = Box(2.0).tessellate(Native()).to_vertices_and_triangles()
+sphere = Sphere(1.25).tessellate(UVGrid(u=32, v=16)).to_vertices_and_triangles()
 result = boolean_difference_mesh_mesh(box, sphere)
 ```
 
-The selected plugin remains authoritative for its algorithm. The same rule applies
-to CGAL and libigl triangle-processing operations: callers pass a validated
-`Tessellation`, and receive the documented result type.
+The public wrapper validates finite three-dimensional vertices, triangular
+integral connectivity with in-range indices, closed two-manifold edge
+incidence, and consistent orientation. Duplicate triangles are rejected.
+Geometric degeneracy, self-intersection, and other backend-specific validity
+conditions remain documented preconditions or failure modes of the selected
+backend; core does not impose a speculative volume test. The backend normalizes
+the buffers for its native ABI and returns a new `(vertices, triangles)` pair.
+Construct a `Tessellation` explicitly only when a retained visualization or
+transfer representation is required.
 
 ## Trims, seams, singularities, and validation
 

@@ -1,12 +1,13 @@
+from math import isfinite
+from operator import index as integer_index
 from typing import TYPE_CHECKING
 from typing import Any
 
-from compas._typing import CoordinatesType
-from compas.plugins import PluginNotInstalledError
-from compas.plugins import pluggable
+import numpy as np
 
-from ._tessellation_plugin import tessellation_pluggable
-from .tessellation import Tessellation
+from compas._typing import CoordinatesType
+from compas._typing import TriangleMeshInput
+from compas.plugins import pluggable
 
 if TYPE_CHECKING:
     from .planar_region import PlanarRegion
@@ -50,21 +51,77 @@ def _planar_regions(geometry: Any) -> list["PlanarRegion"]:
     ]
 
 
-@tessellation_pluggable(category="booleans", inputs=("A", "B"), result=True)
-def boolean_union_mesh_mesh(A: "Tessellation", B: "Tessellation") -> "Tessellation":
+def _validate_boolean_mesh(mesh: TriangleMeshInput, name: str, *, require_closed: bool) -> None:
+    """Validate structural and topological Boolean mesh requirements."""
+    try:
+        vertices, triangles = mesh
+    except (TypeError, ValueError):
+        raise TypeError(f"{name} should be a (vertices, triangles) pair.")
+
+    vertex_count = len(vertices)
+    for vertex in vertices:
+        if len(vertex) != 3:
+            raise ValueError(f"{name} vertices should have exactly three coordinates.")
+        for value in vertex:
+            if isinstance(value, (bool, np.bool_)):
+                raise TypeError(f"{name} vertex coordinates should be real numbers.")
+            try:
+                finite = isfinite(value)
+            except (TypeError, ValueError):
+                raise TypeError(f"{name} vertex coordinates should be real numbers.")
+            if not finite:
+                raise ValueError(f"{name} vertex coordinates should be finite.")
+
+    incidences: dict[tuple[int, int], list[tuple[int, int]]] = {}
+    unique_triangles: set[tuple[int, int, int]] = set()
+    for triangle in triangles:
+        if len(triangle) != 3:
+            raise ValueError(f"{name} faces should have exactly three indices.")
+        checked = []
+        for value in triangle:
+            if isinstance(value, (bool, np.bool_)):
+                raise TypeError(f"{name} face indices should be integers.")
+            try:
+                index = integer_index(value)
+            except TypeError:
+                raise TypeError(f"{name} face indices should be integers.")
+            if index < 0 or index >= vertex_count:
+                raise IndexError(f"{name} face index is out of range.")
+            checked.append(index)
+
+        a, b, c = checked
+        key = tuple(sorted((a, b, c)))
+        if key in unique_triangles:
+            raise ValueError(f"{name} should not contain duplicate triangles.")
+        unique_triangles.add(key)
+        for edge in ((a, b), (b, c), (c, a)):
+            key = (min(edge), max(edge))
+            incidences.setdefault(key, []).append(edge)
+
+    if not require_closed:
+        return
+    if any(len(edges) > 2 for edges in incidences.values()):
+        raise ValueError(f"{name} should be manifold for a Boolean operation.")
+    if not incidences or any(len(edges) < 2 for edges in incidences.values()):
+        raise ValueError(f"{name} should be closed for a Boolean operation.")
+    if any(edges[0] != edges[1][::-1] for edges in incidences.values()):
+        raise ValueError(f"{name} should be consistently oriented for a Boolean operation.")
+
+
+def boolean_union_mesh_mesh(A: TriangleMeshInput, B: TriangleMeshInput) -> TriangleMeshInput:
     """Compute the boolean union of two triangle meshes.
 
     Parameters
     ----------
     A
-        The first triangle tessellation.
+        The first triangle mesh as vertices and triangles.
     B
-        The second triangle tessellation.
+        The second triangle mesh as vertices and triangles.
 
     Returns
     -------
-    Tessellation
-        The triangle geometry of the boolean union.
+    tuple
+        The vertices and triangles of the Boolean union.
 
     See Also
     --------
@@ -74,41 +131,49 @@ def boolean_union_mesh_mesh(A: "Tessellation", B: "Tessellation") -> "Tessellati
     Notes
     -----
     This function requires a Boolean plugin, such as `compas_cgal`.
+    Inputs must have finite three-dimensional vertices, triangular integral
+    connectivity with in-range indices, closed two-manifold edge incidence,
+    and consistent orientation. Geometric degeneracy and self-intersection
+    remain validity preconditions of the selected backend.
 
     Examples
     --------
     >>> from compas.geometry import Box, Native, Sphere, UVGrid
     >>> from compas.geometry import boolean_union_mesh_mesh  # doctest: +SKIP
-    >>> from compas.geometry import trimesh_remesh  # doctest: +SKIP
-
     >>> box = Box.from_width_height_depth(2, 2, 2)
-    >>> A = box.tessellate(Native())
+    >>> A = box.tessellate(Native()).to_vertices_and_triangles()
 
     >>> sphere = Sphere.from_point_and_radius([1, 1, 1], 1)
-    >>> B = sphere.tessellate(UVGrid(30, 30))
-
-    >>> B = trimesh_remesh(B, 0.3, 10)  # doctest: +SKIP
+    >>> B = sphere.tessellate(UVGrid(30, 30)).to_vertices_and_triangles()
     >>> union = boolean_union_mesh_mesh(A, B)  # doctest: +SKIP
 
     """
-    raise PluginNotInstalledError("No plugin was found for the boolean_union_mesh_mesh pluggable. A plugin is available in compas_cgal...")
+    _validate_boolean_mesh(A, "A", require_closed=True)
+    _validate_boolean_mesh(B, "B", require_closed=True)
+    result = _boolean_union_mesh_mesh(A, B)
+    _validate_boolean_mesh(result, "Boolean union result", require_closed=False)
+    return result
 
 
-@tessellation_pluggable(category="booleans", inputs=("A", "B"), result=True)
-def boolean_difference_mesh_mesh(A: "Tessellation", B: "Tessellation") -> "Tessellation":
+@pluggable(category="booleans")
+def _boolean_union_mesh_mesh(A: TriangleMeshInput, B: TriangleMeshInput) -> TriangleMeshInput:
+    raise NotImplementedError
+
+
+def boolean_difference_mesh_mesh(A: TriangleMeshInput, B: TriangleMeshInput) -> TriangleMeshInput:
     """Compute the boolean difference of two triangle meshes.
 
     Parameters
     ----------
     A
-        The first triangle tessellation.
+        The first triangle mesh as vertices and triangles.
     B
-        The second triangle tessellation.
+        The second triangle mesh as vertices and triangles.
 
     Returns
     -------
-    Tessellation
-        The triangle geometry of the boolean difference.
+    tuple
+        The vertices and triangles of the Boolean difference.
 
     See Also
     --------
@@ -118,26 +183,38 @@ def boolean_difference_mesh_mesh(A: "Tessellation", B: "Tessellation") -> "Tesse
     Notes
     -----
     This function requires a Boolean plugin, such as `compas_cgal`.
+    Inputs must have finite three-dimensional vertices, triangular integral
+    connectivity with in-range indices, closed two-manifold edge incidence,
+    and consistent orientation. Geometric degeneracy and self-intersection
+    remain validity preconditions of the selected backend.
 
     """
-    raise PluginNotInstalledError("No plugin was found for the boolean_difference_mesh_mesh pluggable. A plugin is available in compas_cgal...")
+    _validate_boolean_mesh(A, "A", require_closed=True)
+    _validate_boolean_mesh(B, "B", require_closed=True)
+    result = _boolean_difference_mesh_mesh(A, B)
+    _validate_boolean_mesh(result, "Boolean difference result", require_closed=False)
+    return result
 
 
-@tessellation_pluggable(category="booleans", inputs=("A", "B"), result=True)
-def boolean_intersection_mesh_mesh(A: "Tessellation", B: "Tessellation") -> "Tessellation":
+@pluggable(category="booleans")
+def _boolean_difference_mesh_mesh(A: TriangleMeshInput, B: TriangleMeshInput) -> TriangleMeshInput:
+    raise NotImplementedError
+
+
+def boolean_intersection_mesh_mesh(A: TriangleMeshInput, B: TriangleMeshInput) -> TriangleMeshInput:
     """Compute the boolean intersection of two triangle meshes.
 
     Parameters
     ----------
     A
-        The first triangle tessellation.
+        The first triangle mesh as vertices and triangles.
     B
-        The second triangle tessellation.
+        The second triangle mesh as vertices and triangles.
 
     Returns
     -------
-    Tessellation
-        The triangle geometry of the boolean intersection.
+    tuple
+        The vertices and triangles of the Boolean intersection.
 
     See Also
     --------
@@ -147,9 +224,22 @@ def boolean_intersection_mesh_mesh(A: "Tessellation", B: "Tessellation") -> "Tes
     Notes
     -----
     This function requires a Boolean plugin, such as `compas_cgal`.
+    Inputs must have finite three-dimensional vertices, triangular integral
+    connectivity with in-range indices, closed two-manifold edge incidence,
+    and consistent orientation. Geometric degeneracy and self-intersection
+    remain validity preconditions of the selected backend.
 
     """
-    raise PluginNotInstalledError("No plugin was found for the boolean_intersection_mesh_mesh pluggable. A plugin is available in compas_cgal...")
+    _validate_boolean_mesh(A, "A", require_closed=True)
+    _validate_boolean_mesh(B, "B", require_closed=True)
+    result = _boolean_intersection_mesh_mesh(A, B)
+    _validate_boolean_mesh(result, "Boolean intersection result", require_closed=False)
+    return result
+
+
+@pluggable(category="booleans")
+def _boolean_intersection_mesh_mesh(A: TriangleMeshInput, B: TriangleMeshInput) -> TriangleMeshInput:
+    raise NotImplementedError
 
 
 @pluggable(category="booleans")

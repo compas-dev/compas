@@ -7,7 +7,6 @@ from compas.geometry import FaceTriangulation
 from compas.geometry import Point
 from compas.geometry import PolygonalSurface
 from compas.geometry import Polyhedron
-from compas.geometry import Tessellation
 from compas.geometry import Scale
 
 
@@ -110,5 +109,5 @@ def test_polyhedron_boolean_receives_triangles(monkeypatch):
     result = polyhedron.boolean_union(polyhedron)
 
     assert isinstance(result, Polyhedron)
-    assert all(isinstance(item, Tessellation) for item in captured)
-    assert all(len(face) == 3 for item in captured for face in item.triangles)
+    assert all(isinstance(item, tuple) for item in captured)
+    assert all(len(face) == 3 for _, faces in captured for face in faces)

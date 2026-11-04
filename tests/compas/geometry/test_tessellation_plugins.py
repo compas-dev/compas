@@ -3,9 +3,11 @@ import sys
 from types import SimpleNamespace
 from typing import get_type_hints
 
+import numpy as np
 import pytest
 
 import compas.plugins
+from compas._typing import TriangleMeshInput
 from compas.geometry import Tessellation
 from compas.geometry import boolean_difference_mesh_mesh
 from compas.geometry import boolean_intersection_mesh_mesh
@@ -30,6 +32,10 @@ TRIANGLE = Tessellation(
     [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0]],
     [[0, 1, 2]],
 )
+TETRAHEDRON = (
+    [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]],
+    [[0, 2, 1], [0, 1, 3], [1, 2, 3], [0, 3, 2]],
+)
 
 
 def test_geometry_package_imports_in_fresh_interpreter():
@@ -50,9 +56,6 @@ def test_geometry_package_imports_in_fresh_interpreter():
 @pytest.mark.parametrize(
     ("operation", "parameter"),
     [
-        (boolean_union_mesh_mesh, "A"),
-        (boolean_difference_mesh_mesh, "A"),
-        (boolean_intersection_mesh_mesh, "A"),
         (intersection_mesh_mesh, "A"),
         (intersection_ray_mesh, "mesh"),
         (trimesh_gaussian_curvature, "mesh"),
@@ -76,9 +79,6 @@ def test_geometry_processing_contracts_accept_tessellation(operation, parameter)
 @pytest.mark.parametrize(
     "operation",
     [
-        boolean_union_mesh_mesh,
-        boolean_difference_mesh_mesh,
-        boolean_intersection_mesh_mesh,
         trimesh_remesh,
         trimesh_remesh_constrained,
         trimesh_remesh_along_isoline,
@@ -107,13 +107,49 @@ def test_natural_result_plugin_receives_tessellation(monkeypatch):
     assert selected == [("trimesh", "trimesh_geodistance")]
 
 
-def test_geometry_result_plugin_returns_tessellation(monkeypatch):
+@pytest.mark.parametrize(
+    "operation",
+    [boolean_union_mesh_mesh, boolean_difference_mesh_mesh, boolean_intersection_mesh_mesh],
+)
+def test_boolean_contracts_use_structural_triangle_meshes(operation):
+    hints = get_type_hints(operation)
+    assert hints["A"] == TriangleMeshInput
+    assert hints["B"] == TriangleMeshInput
+    assert hints["return"] == TriangleMeshInput
+
+
+def test_boolean_plugin_receives_and_returns_raw_mesh(monkeypatch):
     calls = []
-    result = Tessellation(TRIANGLE.vertices, TRIANGLE.triangles)
+    selected = []
 
     def implementation(A, B):
         calls.append((A, B))
-        return result
+        return A
+
+    def select(extension_point):
+        selected.append((extension_point.category, extension_point.name))
+        return SimpleNamespace(id="tests.boolean", method=implementation)
+
+    monkeypatch.setattr(compas.plugins.plugin_manager, "select", select)
+
+    assert boolean_union_mesh_mesh(TETRAHEDRON, TETRAHEDRON) is TETRAHEDRON
+    assert calls == [(TETRAHEDRON, TETRAHEDRON)]
+    assert selected == [("booleans", "_boolean_union_mesh_mesh")]
+
+
+def test_boolean_plugin_accepts_numpy_buffers_without_conversion(monkeypatch):
+    vertices = np.asarray(TETRAHEDRON[0], dtype=np.float32, order="F")
+    triangles = np.asarray(TETRAHEDRON[1], dtype=np.int64, order="F")
+    vertices.flags.writeable = False
+    triangles.flags.writeable = False
+    mesh = (vertices, triangles)
+
+    def implementation(A, B):
+        assert A[0] is vertices
+        assert A[1] is triangles
+        assert B[0] is vertices
+        assert B[1] is triangles
+        return A
 
     monkeypatch.setattr(
         compas.plugins.plugin_manager,
@@ -121,8 +157,57 @@ def test_geometry_result_plugin_returns_tessellation(monkeypatch):
         lambda extension_point: SimpleNamespace(id="tests.boolean", method=implementation),
     )
 
-    assert boolean_union_mesh_mesh(TRIANGLE, TRIANGLE) is result
-    assert calls == [(TRIANGLE, TRIANGLE)]
+    result = boolean_union_mesh_mesh(mesh, mesh)
+    assert result[0] is vertices
+    assert result[1] is triangles
+
+
+@pytest.mark.parametrize(
+    ("mesh", "message"),
+    [
+        (([[0, 0, 0], [1, 0, 0], [0, 1, 0]], [[0, 1, 2]]), "closed"),
+        ((TETRAHEDRON[0], [[0, 1, 2, 3]]), "three indices"),
+        ((TETRAHEDRON[0], [[0, 1, 4]]), "out of range"),
+        ((TETRAHEDRON[0], [TETRAHEDRON[1][0], TETRAHEDRON[1][0][::-1]]), "duplicate"),
+        (([*TETRAHEDRON[0], [1, 1, 1]], [[0, 1, 2], [1, 0, 3], [0, 1, 4]]), "manifold"),
+    ],
+)
+def test_boolean_mesh_validation_precedes_plugin_dispatch(monkeypatch, mesh, message):
+    selected = []
+    monkeypatch.setattr(compas.plugins.plugin_manager, "select", selected.append)
+
+    with pytest.raises((IndexError, ValueError), match=message):
+        boolean_union_mesh_mesh(mesh, TETRAHEDRON)
+    assert selected == []
+
+
+def test_boolean_plugin_accepts_empty_result(monkeypatch):
+    monkeypatch.setattr(
+        compas.plugins.plugin_manager,
+        "select",
+        lambda extension_point: SimpleNamespace(id="tests.boolean", method=lambda A, B: ([], [])),
+    )
+
+    assert boolean_intersection_mesh_mesh(TETRAHEDRON, TETRAHEDRON) == ([], [])
+
+
+@pytest.mark.parametrize(
+    ("result", "error", "message"),
+    [
+        (([[float("nan"), 0.0, 0.0]], []), ValueError, "finite"),
+        ((TETRAHEDRON[0], [[0, 1]]), ValueError, "three indices"),
+        ((TETRAHEDRON[0], [[0, 1, 4]]), IndexError, "out of range"),
+    ],
+)
+def test_boolean_plugin_rejects_malformed_result(monkeypatch, result, error, message):
+    monkeypatch.setattr(
+        compas.plugins.plugin_manager,
+        "select",
+        lambda extension_point: SimpleNamespace(id="tests.boolean", method=lambda A, B: result),
+    )
+
+    with pytest.raises(error, match=message):
+        boolean_union_mesh_mesh(TETRAHEDRON, TETRAHEDRON)
 
 
 def test_raw_mesh_tuple_is_rejected_before_plugin_dispatch(monkeypatch):

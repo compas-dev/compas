@@ -6,6 +6,7 @@ from typing import Self
 
 from compas._typing import CoordinatesType
 from compas._typing import CoordinateType
+from compas._typing import TriangleMeshInput
 from compas.geometry import Line
 from compas.geometry import Plane
 from compas.geometry import Point
@@ -38,6 +39,15 @@ def tetrahedron():
         vertices.append([i, 0.0, -c / sqrt(2)])
         vertices.append([0.0, i, +c / sqrt(2)])
     return vertices, faces
+
+
+def _materialize_triangle_mesh(mesh: TriangleMeshInput) -> tuple[list[list[float]], list[list[int]]]:
+    """Materialize structural buffers for the owned Polyhedron representation."""
+    vertices, triangles = mesh
+    return (
+        [[float(value) for value in vertex] for vertex in vertices],
+        [[int(index) for index in triangle] for triangle in triangles],
+    )
 
 
 def hexahedron():
@@ -235,20 +245,20 @@ class Polyhedron(Geometry):
     def __add__(self, other: "Polyhedron") -> Self:
         from compas.geometry import boolean_union_mesh_mesh
 
-        result = boolean_union_mesh_mesh(self._tessellation(), other._tessellation())
-        return type(self)(result.vertices, result.triangles)
+        vertices, triangles = _materialize_triangle_mesh(boolean_union_mesh_mesh(self._triangle_mesh(), other._triangle_mesh()))
+        return type(self)(vertices, triangles)
 
     def __sub__(self, other: "Polyhedron") -> Self:
         from compas.geometry import boolean_difference_mesh_mesh
 
-        result = boolean_difference_mesh_mesh(self._tessellation(), other._tessellation())
-        return type(self)(result.vertices, result.triangles)
+        vertices, triangles = _materialize_triangle_mesh(boolean_difference_mesh_mesh(self._triangle_mesh(), other._triangle_mesh()))
+        return type(self)(vertices, triangles)
 
     def __and__(self, other: "Polyhedron") -> Self:
         from compas.geometry import boolean_intersection_mesh_mesh
 
-        result = boolean_intersection_mesh_mesh(self._tessellation(), other._tessellation())
-        return type(self)(result.vertices, result.triangles)
+        vertices, triangles = _materialize_triangle_mesh(boolean_intersection_mesh_mesh(self._triangle_mesh(), other._triangle_mesh()))
+        return type(self)(vertices, triangles)
 
     def __or__(self, other: "Polyhedron") -> Self:
         return self.__add__(other)
@@ -611,8 +621,8 @@ class Polyhedron(Geometry):
         """
         from compas.geometry import boolean_union_mesh_mesh
 
-        result = boolean_union_mesh_mesh(self._tessellation(), other._tessellation())
-        return type(self)(result.vertices, result.triangles)
+        vertices, triangles = _materialize_triangle_mesh(boolean_union_mesh_mesh(self._triangle_mesh(), other._triangle_mesh()))
+        return type(self)(vertices, triangles)
 
     def boolean_difference(self, other: "Polyhedron") -> Self:
         """Compute the boolean difference of this polyhedron and another.
@@ -638,8 +648,8 @@ class Polyhedron(Geometry):
         """
         from compas.geometry import boolean_difference_mesh_mesh
 
-        result = boolean_difference_mesh_mesh(self._tessellation(), other._tessellation())
-        return type(self)(result.vertices, result.triangles)
+        vertices, triangles = _materialize_triangle_mesh(boolean_difference_mesh_mesh(self._triangle_mesh(), other._triangle_mesh()))
+        return type(self)(vertices, triangles)
 
     def boolean_intersection(self, other: "Polyhedron") -> Self:
         """Compute the boolean intersection of this polyhedron and another.
@@ -665,18 +675,18 @@ class Polyhedron(Geometry):
         """
         from compas.geometry import boolean_intersection_mesh_mesh
 
-        result = boolean_intersection_mesh_mesh(self._tessellation(), other._tessellation())
-        return type(self)(result.vertices, result.triangles)
+        vertices, triangles = _materialize_triangle_mesh(boolean_intersection_mesh_mesh(self._triangle_mesh(), other._triangle_mesh()))
+        return type(self)(vertices, triangles)
 
     # =============================================================================
     # Private helpers
     # =============================================================================
 
-    def _tessellation(self) -> "Tessellation":
+    def _triangle_mesh(self) -> TriangleMeshInput:
         from compas.geometry import EarClipping
         from compas.geometry import FaceTriangulation
 
-        return self.triangulated(FaceTriangulation(quad=EarClipping()))
+        return self.triangulated(FaceTriangulation(quad=EarClipping())).to_vertices_and_triangles()
 
     def _validate_boundary(self) -> None:
         if len(self.vertices) < 4:

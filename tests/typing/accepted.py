@@ -21,6 +21,7 @@ from compas.geometry import Delaunay
 from compas.geometry import FaceTriangulation
 from compas.geometry import Tessellation
 from compas.geometry import Vector
+from compas.geometry import boolean_union_mesh_mesh
 from compas.geometry import triangulate_planar_domain
 from compas.geometry import triangulate_planar_points
 from compas.geometry.triangulation import triangulate_polygon
@@ -132,6 +133,8 @@ triangle_mesh_inputs: list[TriangleMeshInput] = [
     (vertices32, triangles32),
     (vertices64, triangles64),
 ]
+boolean_union_mesh_mesh(triangle_mesh_inputs[0], triangle_mesh_inputs[1])
+boolean_union_mesh_mesh((vertices32, triangles32), (vertices64, triangles64))
 normals64 = np.asarray([[0, 0, 1]] * 3, dtype=np.float64)
 uvs32 = np.asarray([[0, 0], [1, 0], [0, 1]], dtype=np.float32)
 polylines64 = np.asarray([[[0, 0, 0], [1, 0, 0]]], dtype=np.float64)
