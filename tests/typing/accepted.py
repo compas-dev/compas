@@ -14,6 +14,7 @@ from compas._typing import IntegerArray
 from compas._typing import IntegralInput
 from compas._typing import NumericArray
 from compas._typing import RealInput
+from compas._typing import TriangleMeshInput
 from compas.geometry import Point
 from compas.geometry import ConstrainedDelaunay
 from compas.geometry import Delaunay
@@ -123,6 +124,14 @@ indices_inputs: list[IndicesInput] = [[0, 1, 2], (np.int32(0), np.int64(1)), int
 
 vertices32 = np.asarray([[0, 0, 0], [1, 0, 0], [0, 1, 0]], dtype=np.float32)
 triangles32 = np.asarray([[0, 1, 2]], dtype=np.int32)
+vertices64 = np.asarray([[0, 0, 0], [1, 0, 0], [0, 1, 0]], dtype=np.float64)
+triangles64 = np.asarray([[0, 1, 2]], dtype=np.int64)
+triangle_mesh_inputs: list[TriangleMeshInput] = [
+    ([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0]], [[0, 1, 2]]),
+    (((0.0, 0.0, 0.0), (1.0, 0.0, 0.0), (0.0, 1.0, 0.0)), ((0, 1, 2),)),
+    (vertices32, triangles32),
+    (vertices64, triangles64),
+]
 normals64 = np.asarray([[0, 0, 1]] * 3, dtype=np.float64)
 uvs32 = np.asarray([[0, 0], [1, 0], [0, 1]], dtype=np.float32)
 polylines64 = np.asarray([[[0, 0, 0], [1, 0, 0]]], dtype=np.float64)

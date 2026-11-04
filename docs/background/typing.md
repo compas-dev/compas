@@ -17,6 +17,9 @@ The aliases in `compas._typing` cover the numeric families used by COMPAS APIs:
   exact dtype is part of the contract.
 - `CoordinateInput`, `CoordinatesInput`, and `IndicesInput` combine structural
   Python inputs with the corresponding NumPy array families.
+- `TriangleMeshInput` describes one indexed triangle mesh as a structural
+  `(vertices, triangles)` tuple. It accepts compatible Python or NumPy buffers
+  without requiring a `Mesh`, `PolygonalSurface`, or `Tessellation` object.
 
 These aliases intentionally support duck typing. APIs should operate on the
 capabilities they need instead of requiring a particular concrete container or
@@ -37,9 +40,10 @@ continues wherever an operation can consume a value by capability alone.
 
 An annotation cannot express every runtime requirement. For example, a numeric
 array annotation does not specify that a coordinate has exactly three values,
-that a collection has a particular rank, or that indices are within bounds.
-Such requirements remain part of the documented API contract and should be
-checked only where the operation needs them.
+that a collection has a particular rank, that every face of a
+`TriangleMeshInput` has three indices, or that indices are within bounds. Such
+requirements remain part of the documented API contract and should be checked
+only where the operation needs them.
 
 Retained-buffer APIs keep the concrete type inferred for their primary buffers.
 For example, `Tessellation` accepts Python structural buffers and NumPy numeric

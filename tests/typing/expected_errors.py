@@ -7,6 +7,7 @@ from compas._typing import IndicesInput
 from compas._typing import IntegralInput
 from compas._typing import NumericArray
 from compas._typing import RealInput
+from compas._typing import TriangleMeshInput
 from compas.geometry import Tessellation
 from compas.geometry import Delaunay
 from compas.geometry import triangulate_planar_points
@@ -22,3 +23,5 @@ float64_array: Float64Array = np.asarray([1, 2, 3], dtype=np.float32)  # expecte
 Tessellation([["0", "0", "0"]], [[0, 0, 0]])  # expected-error: reportArgumentType
 Tessellation([[0.0, 0.0, 0.0]], np.asarray([[0.0, 0.0, 0.0]]))  # expected-error: reportArgumentType
 triangulate_planar_points(np.asarray([[0, 0, 0]], dtype=np.complex128), strategy=Delaunay())  # expected-error: reportArgumentType
+triangle_mesh_complex_vertices: TriangleMeshInput = (np.asarray([[0, 0, 0]], dtype=np.complex128), [[0, 0, 0]])  # expected-error: reportAssignmentType
+triangle_mesh_float_indices: TriangleMeshInput = ([[0.0, 0.0, 0.0]], np.asarray([[0.0, 0.0, 0.0]]))  # expected-error: reportAssignmentType

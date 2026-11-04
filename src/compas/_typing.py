@@ -92,6 +92,8 @@ class CoordinatesCollection(Protocol):
 
 CoordinatesCollectionInput: TypeAlias = CoordinatesCollection | Sequence[CoordinatesInput] | NumericArray
 
+TriangleMeshInput: TypeAlias = tuple[CoordinatesInput, IndicesCollectionInput]
+
 SphereType = tuple[CoordinateType, float]
 MeshType = tuple[CoordinatesType, Sequence[Sequence[int]]]
 RayType = tuple[CoordinateType, CoordinateType]
