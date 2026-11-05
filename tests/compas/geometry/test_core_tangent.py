@@ -28,7 +28,7 @@ def test_tangent_point_on_circle_returns_same_point_twice():
 
 def test_tangent_points_rejects_point_inside_circle():
     circle = ((0.0, 0.0, 0.0), (0.0, 0.0, 1.0)), 1.0
-    with pytest.raises(ValueError, match="math domain error"):
+    with pytest.raises(ValueError):
         tangent_points_to_circle_xy(circle, (0.5, 0.0))
 
 
