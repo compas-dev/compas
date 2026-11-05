@@ -76,7 +76,9 @@ jobs:
         run: uv pip compile pyproject.toml --extra dev --constraint .github/constraints/numpy-min.txt --output-file ${{ runner.temp }}/compas-numpy-min.txt
       - name: Test minimum supported NumPy
         if: matrix.numpy == 'minimum'
-        run: uv run --isolated --no-project --with-requirements ${{ runner.temp }}/compas-numpy-min.txt --with-editable . python -m pytest
+        # Static typing fixtures are checked in the locked build. NumPy 1.26
+        # exposes older ndarray generic shape metadata than the current release.
+        run: uv run --isolated --no-project --with-requirements ${{ runner.temp }}/compas-numpy-min.txt --with-editable . python -m pytest --ignore=tests/compas/test_typing_fixtures.py
       - name: Resolve current NumPy
         if: matrix.numpy == 'current'
         run: uv pip compile pyproject.toml --extra dev --upgrade --output-file ${{ runner.temp }}/compas-numpy-current.txt
