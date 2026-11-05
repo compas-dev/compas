@@ -1,10 +1,12 @@
 from itertools import chain
 from typing import TYPE_CHECKING
 
+from compas._typing import CoordinatesCollectionInput
 from compas._typing import CoordinatesType
 from compas._typing import RayMeshHit
 from compas._typing import RayType
 from compas._typing import SphereType
+from compas._typing import TriangleMeshInput
 from compas.itertools import pairwise
 from compas.plugins import PluginNotInstalledError
 from compas.plugins import pluggable
@@ -657,21 +659,20 @@ def intersection_plane_circle(
     )
 
 
-@tessellation_pluggable(category="intersections", inputs=("A", "B"))
-def intersection_mesh_mesh(A: "Tessellation", B: "Tessellation") -> list[CoordinatesType]:
+def intersection_mesh_mesh(A: TriangleMeshInput, B: TriangleMeshInput) -> CoordinatesCollectionInput:
     """Compute the intersection of two meshes.
 
     Parameters
     ----------
     A
-        The first triangle tessellation.
+        The first triangle mesh as vertices and triangles.
     B
-        The second triangle tessellation.
+        The second triangle mesh as vertices and triangles.
 
     Returns
     -------
-    list[CoordinatesType]
-        The intersection polylines.
+    CoordinatesCollectionInput
+        The intersection polyline coordinate buffers.
 
     Raises
     ------
@@ -679,6 +680,11 @@ def intersection_mesh_mesh(A: "Tessellation", B: "Tessellation") -> list[Coordin
         If no intersection plugin is available.
 
     """
+    return _intersection_mesh_mesh(A, B)
+
+
+@pluggable(category="intersections")
+def _intersection_mesh_mesh(A: TriangleMeshInput, B: TriangleMeshInput) -> CoordinatesCollectionInput:
     raise PluginNotInstalledError
 
 

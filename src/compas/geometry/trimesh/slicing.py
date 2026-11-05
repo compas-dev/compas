@@ -1,30 +1,34 @@
 from collections.abc import Sequence
 
+from compas._typing import CoordinatesCollectionInput
+from compas._typing import TriangleMeshInput
 from compas.geometry._typing import PlaneType
-
-from .._tessellation_plugin import tessellation_pluggable
-from ..tessellation import Tessellation
+from compas.plugins import pluggable
 
 
-@tessellation_pluggable(category="trimesh", inputs=("mesh",))
-def trimesh_slice(mesh: "Tessellation", planes: Sequence[PlaneType]) -> list[list[list[float]]]:
+def trimesh_slice(mesh: TriangleMeshInput, planes: Sequence[PlaneType]) -> CoordinatesCollectionInput:
     """Slice a triangle mesh with multiple planes.
 
     Parameters
     ----------
     mesh
-        The triangle tessellation.
+        The triangle mesh as vertices and triangles.
     planes
         The slicing planes.
 
     Returns
     -------
-    list[list[list[float]]]
-        Slice polylines represented by lists of point coordinates.
+    CoordinatesCollectionInput
+        Slice polyline coordinate buffers.
 
     Notes
     -----
     This operation requires a registered plugin.
 
     """
+    return _trimesh_slice(mesh, planes)
+
+
+@pluggable(category="trimesh")
+def _trimesh_slice(mesh: TriangleMeshInput, planes: Sequence[PlaneType]) -> CoordinatesCollectionInput:
     raise NotImplementedError

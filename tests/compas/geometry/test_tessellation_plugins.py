@@ -8,6 +8,7 @@ import pytest
 
 import compas.plugins
 from compas._typing import TriangleMeshInput
+from compas._typing import CoordinatesCollectionInput
 from compas.geometry import Tessellation
 from compas.geometry import boolean_difference_mesh_mesh
 from compas.geometry import boolean_intersection_mesh_mesh
@@ -56,7 +57,6 @@ def test_geometry_package_imports_in_fresh_interpreter():
 @pytest.mark.parametrize(
     ("operation", "parameter"),
     [
-        (intersection_mesh_mesh, "A"),
         (intersection_ray_mesh, "mesh"),
         (trimesh_gaussian_curvature, "mesh"),
         (trimesh_principal_curvature, "mesh"),
@@ -69,7 +69,6 @@ def test_geometry_package_imports_in_fresh_interpreter():
         (trimesh_remesh, "mesh"),
         (trimesh_remesh_constrained, "mesh"),
         (trimesh_remesh_along_isoline, "mesh"),
-        (trimesh_slice, "mesh"),
     ],
 )
 def test_geometry_processing_contracts_accept_tessellation(operation, parameter):
@@ -170,6 +169,57 @@ def test_boolean_plugin_accepts_empty_result(monkeypatch):
     )
 
     assert boolean_intersection_mesh_mesh(TETRAHEDRON, TETRAHEDRON) == ([], [])
+
+
+@pytest.mark.parametrize(
+    ("operation", "parameters"),
+    [
+        (intersection_mesh_mesh, ("A", "B")),
+        (trimesh_slice, ("mesh",)),
+    ],
+)
+def test_natural_result_contracts_use_structural_triangle_meshes(operation, parameters):
+    hints = get_type_hints(operation)
+    for parameter in parameters:
+        assert hints[parameter] == TriangleMeshInput
+    assert hints["return"] == CoordinatesCollectionInput
+
+
+def test_mesh_intersection_dispatches_raw_buffers(monkeypatch):
+    selected = []
+
+    def implementation(A, B):
+        assert A is TETRAHEDRON
+        assert B is TETRAHEDRON
+        return [[[0.0, 0.0, 0.0], [1.0, 0.0, 0.0]]]
+
+    def select(extension_point):
+        selected.append((extension_point.category, extension_point.name))
+        return SimpleNamespace(id="tests.intersection", method=implementation)
+
+    monkeypatch.setattr(compas.plugins.plugin_manager, "select", select)
+
+    assert intersection_mesh_mesh(TETRAHEDRON, TETRAHEDRON) == [[[0.0, 0.0, 0.0], [1.0, 0.0, 0.0]]]
+    assert selected == [("intersections", "_intersection_mesh_mesh")]
+
+
+def test_mesh_slice_dispatches_raw_buffers(monkeypatch):
+    selected = []
+    planes = [([0.0, 0.0, 0.0], [0.0, 0.0, 1.0])]
+
+    def implementation(mesh, slicing_planes):
+        assert mesh is TETRAHEDRON
+        assert slicing_planes is planes
+        return [[[0.0, 0.0, 0.0], [1.0, 0.0, 0.0]]]
+
+    def select(extension_point):
+        selected.append((extension_point.category, extension_point.name))
+        return SimpleNamespace(id="tests.slice", method=implementation)
+
+    monkeypatch.setattr(compas.plugins.plugin_manager, "select", select)
+
+    assert trimesh_slice(TETRAHEDRON, planes) == [[[0.0, 0.0, 0.0], [1.0, 0.0, 0.0]]]
+    assert selected == [("trimesh", "_trimesh_slice")]
 
 
 def test_raw_mesh_tuple_is_rejected_before_plugin_dispatch(monkeypatch):
