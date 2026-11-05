@@ -51,6 +51,31 @@ jobs:
         run: uv run pyright
       - name: Run tests
         run: uv run pytest
+      - name: Build typed wheel
+        if: matrix.os == 'ubuntu-latest' && matrix.python == '3.12'
+        shell: bash
+        run: |
+          mkdir -p "${RUNNER_TEMP}/compas-source" "${RUNNER_TEMP}/compas-wheelhouse"
+          git archive HEAD | tar -xf - -C "${RUNNER_TEMP}/compas-source"
+          uv run python -m build \
+            --wheel \
+            --outdir "${RUNNER_TEMP}/compas-wheelhouse" \
+            "${RUNNER_TEMP}/compas-source"
+      - name: Verify typed wheel
+        if: matrix.os == 'ubuntu-latest' && matrix.python == '3.12'
+        shell: bash
+        run: |
+          uv run python .github/verify_python_wheel.py "${RUNNER_TEMP}/compas-wheelhouse"
+          uv venv "${RUNNER_TEMP}/compas-wheel"
+          uv pip install \
+            --python "${RUNNER_TEMP}/compas-wheel/bin/python" \
+            "${RUNNER_TEMP}/compas-wheelhouse"/*.whl
+          (
+            cd "${RUNNER_TEMP}"
+            "${GITHUB_WORKSPACE}/.venv/bin/pyright" \
+              --pythonpath "${RUNNER_TEMP}/compas-wheel/bin/python" \
+              "${GITHUB_WORKSPACE}/tests/typing/installed_consumer.py"
+          )
 
   numpy-compatibility:
     name: NumPy ${{ matrix.numpy }}

@@ -92,6 +92,7 @@ version = { attr = "compas.__version__" }
 where = ["src"]
 
 [tool.setuptools.package-data]
+compas = ["py.typed"]
 "compas.colors.cmcrameri" = ["*.txt"]
 "compas.data.samples" = ["*.obj", "*.stl", "*.off", "*.ply", "*.json"]
 

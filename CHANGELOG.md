@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added the PEP 561 `py.typed` marker and installed-wheel static-consumer verification.
 * Added serializable strategies and structural validation for polygonization, ephemeral `Tessellation` buffers, mixed-face triangulation, and planar Delaunay triangulation.
 * Added `polygonize(strategy)` and deterministic `tessellate(strategy=None)` operations for continuous geometry. Shape and surface defaults use `Native()`, `UGrid(64)`, or `UVGrid(64, 64)` according to parameter dimensionality.
 * Added `FaceTriangulation` for mixed polygonal collections, explicit projected ear clipping for bounded near-planar polygons, and minimum-area dynamic programming for twisted 3D polygons.
