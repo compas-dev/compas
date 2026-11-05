@@ -1,15 +1,15 @@
-from .._tessellation_plugin import tessellation_pluggable
-from ..tessellation import Tessellation
+from compas._typing import TriangleMeshInput
+from compas.plugins import PluginNotInstalledError
+from compas.plugins import pluggable
 
 
-@tessellation_pluggable(category="trimesh", inputs=("mesh",))
-def trimesh_harmonic(mesh: "Tessellation") -> list[list[float]]:
+def trimesh_harmonic(mesh: TriangleMeshInput) -> list[list[float]]:
     """Compute a harmonic parametrisation with a fixed circular boundary.
 
     Parameters
     ----------
     mesh
-        The triangle tessellation.
+        The triangle mesh as vertices and triangles.
 
     Returns
     -------
@@ -21,17 +21,21 @@ def trimesh_harmonic(mesh: "Tessellation") -> list[list[float]]:
     This operation requires a registered plugin.
 
     """
-    raise NotImplementedError
+    return _trimesh_harmonic(mesh)
 
 
-@tessellation_pluggable(category="trimesh", inputs=("mesh",))
-def trimesh_lscm(mesh: "Tessellation") -> list[list[float]]:
+@pluggable(category="trimesh")
+def _trimesh_harmonic(mesh: TriangleMeshInput) -> list[list[float]]:
+    raise PluginNotInstalledError
+
+
+def trimesh_lscm(mesh: TriangleMeshInput) -> list[list[float]]:
     """Compute a least-squares conformal parametrisation.
 
     Parameters
     ----------
     mesh
-        The triangle tessellation.
+        The triangle mesh as vertices and triangles.
 
     Returns
     -------
@@ -43,4 +47,9 @@ def trimesh_lscm(mesh: "Tessellation") -> list[list[float]]:
     This operation requires a registered plugin.
 
     """
-    raise NotImplementedError
+    return _trimesh_lscm(mesh)
+
+
+@pluggable(category="trimesh")
+def _trimesh_lscm(mesh: TriangleMeshInput) -> list[list[float]]:
+    raise PluginNotInstalledError

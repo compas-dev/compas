@@ -1,5 +1,6 @@
 from collections.abc import Sequence
 
+from compas._typing import NumericArray
 from compas._typing import TriangleMeshInput
 from compas.plugins import pluggable
 
@@ -26,7 +27,7 @@ def trimesh_remesh(
 
     Returns
     -------
-    tuple
+    tuple[Sequence[Sequence[float]], Sequence[Sequence[int]]]
         The vertices and triangles of the remeshed geometry.
 
     Notes
@@ -75,7 +76,7 @@ def trimesh_remesh_constrained(
 
     Returns
     -------
-    tuple
+    tuple[Sequence[Sequence[float]], Sequence[Sequence[int]]]
         The vertices and triangles of the remeshed geometry.
 
     Notes
@@ -98,7 +99,11 @@ def _trimesh_remesh_constrained(
     raise NotImplementedError
 
 
-def trimesh_remesh_along_isoline(mesh: TriangleMeshInput, scalarfield: Sequence[float], scalar: float) -> TriangleMeshInput:
+def trimesh_remesh_along_isoline(
+    mesh: TriangleMeshInput,
+    scalarfield: Sequence[float] | NumericArray,
+    scalar: float,
+) -> TriangleMeshInput:
     """Remesh a triangle mesh so an isoline follows mesh edges.
 
     Parameters
@@ -112,7 +117,7 @@ def trimesh_remesh_along_isoline(mesh: TriangleMeshInput, scalarfield: Sequence[
 
     Returns
     -------
-    tuple
+    tuple[Sequence[Sequence[float]], Sequence[Sequence[int]]]
         The vertices and triangles of the remeshed geometry.
 
     Notes
@@ -128,7 +133,7 @@ def trimesh_remesh_along_isoline(mesh: TriangleMeshInput, scalarfield: Sequence[
 @pluggable(category="trimesh")
 def _trimesh_remesh_along_isoline(
     mesh: TriangleMeshInput,
-    scalarfield: Sequence[float],
+    scalarfield: Sequence[float] | NumericArray,
     scalar: float,
 ) -> TriangleMeshInput:
     raise NotImplementedError

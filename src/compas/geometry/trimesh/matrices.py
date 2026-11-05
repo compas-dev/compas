@@ -3,12 +3,12 @@ from typing import Any
 from typing import Literal
 from typing import overload
 
+from compas._typing import TriangleMeshInput
 from compas.linalg.vectors import cross_vectors
 from compas.linalg.vectors import dot_vectors
 from compas.linalg.vectors import length_vector
-
-from .._tessellation_plugin import tessellation_pluggable
-from ..tessellation import Tessellation
+from compas.plugins import PluginNotInstalledError
+from compas.plugins import pluggable
 
 if TYPE_CHECKING:
     from numpy.typing import NDArray
@@ -24,14 +24,13 @@ if TYPE_CHECKING:
     from compas.datastructures.mesh.types import Edge
 
 
-@tessellation_pluggable(category="trimesh", inputs=("mesh",))
-def trimesh_massmatrix(mesh: "Tessellation") -> list[float]:
+def trimesh_massmatrix(mesh: TriangleMeshInput) -> list[float]:
     """Compute the per-vertex mass matrix of a triangle mesh.
 
     Parameters
     ----------
     mesh
-        The triangle tessellation.
+        The triangle mesh as vertices and triangles.
 
     Returns
     -------
@@ -43,7 +42,12 @@ def trimesh_massmatrix(mesh: "Tessellation") -> list[float]:
     This operation requires a registered plugin.
 
     """
-    raise NotImplementedError
+    return _trimesh_massmatrix(mesh)
+
+
+@pluggable(category="trimesh")
+def _trimesh_massmatrix(mesh: TriangleMeshInput) -> list[float]:
+    raise PluginNotInstalledError
 
 
 def trimesh_edge_cotangent(mesh: "Mesh", edge: "Edge") -> float:

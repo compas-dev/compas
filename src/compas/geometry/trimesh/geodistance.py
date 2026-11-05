@@ -1,17 +1,17 @@
 from typing import Literal
 
-from .._tessellation_plugin import tessellation_pluggable
-from ..tessellation import Tessellation
+from compas._typing import TriangleMeshInput
+from compas.plugins import PluginNotInstalledError
+from compas.plugins import pluggable
 
 
-@tessellation_pluggable(category="trimesh", inputs=("mesh",))
-def trimesh_geodistance(mesh: "Tessellation", source: int, method: Literal["exact", "heat"] = "exact") -> list[float]:
+def trimesh_geodistance(mesh: TriangleMeshInput, source: int, method: Literal["exact", "heat"] = "exact") -> list[float]:
     """Compute geodesic distances from one mesh vertex.
 
     Parameters
     ----------
     mesh
-        The triangle tessellation.
+        The triangle mesh as vertices and triangles.
     source
         Index of the source vertex.
     method
@@ -28,4 +28,9 @@ def trimesh_geodistance(mesh: "Tessellation", source: int, method: Literal["exac
     method.
 
     """
-    raise NotImplementedError
+    return _trimesh_geodistance(mesh, source, method)
+
+
+@pluggable(category="trimesh")
+def _trimesh_geodistance(mesh: TriangleMeshInput, source: int, method: Literal["exact", "heat"] = "exact") -> list[float]:
+    raise PluginNotInstalledError

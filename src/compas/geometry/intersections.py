@@ -25,14 +25,12 @@ from ._core.intersections import intersection_sphere_line as _intersection_spher
 from ._core.intersections import intersection_sphere_sphere as _intersection_sphere_sphere
 from ._core.predicates_2 import is_point_on_segment_xy
 from ._core.predicates_3 import is_point_on_segment
-from ._tessellation_plugin import tessellation_pluggable
 from ._typing import CircleType
 from ._typing import LineType
 from ._typing import PlaneType
 from ._typing import PolylineType
 from ._typing import TriangleType
 from .intersection import IntersectionResult
-from .tessellation import Tessellation
 
 if TYPE_CHECKING:
     from .brep.brep import Brep
@@ -688,8 +686,7 @@ def _intersection_mesh_mesh(A: TriangleMeshInput, B: TriangleMeshInput) -> Coord
     raise PluginNotInstalledError
 
 
-@tessellation_pluggable(category="intersections", inputs=("mesh",))
-def intersection_ray_mesh(ray: RayType, mesh: "Tessellation") -> list[RayMeshHit]:
+def intersection_ray_mesh(ray: RayType, mesh: TriangleMeshInput) -> list[RayMeshHit]:
     """Compute the intersection(s) between a ray and a mesh.
 
     Parameters
@@ -697,11 +694,11 @@ def intersection_ray_mesh(ray: RayType, mesh: "Tessellation") -> list[RayMeshHit
     ray
         The ray origin and direction vector.
     mesh
-        The triangle tessellation.
+        The triangle mesh as vertices and triangles.
 
     Returns
     -------
-    list[RayMeshHit]
+    list[tuple[int, float, float, float]]
         For every hit, the intersected face index, the `u` and `v` barycentric
         coordinates, and the distance from the ray origin.
 
@@ -711,6 +708,11 @@ def intersection_ray_mesh(ray: RayType, mesh: "Tessellation") -> list[RayMeshHit
         If no intersection plugin is available.
 
     """
+    return _intersection_ray_mesh(ray, mesh)
+
+
+@pluggable(category="intersections")
+def _intersection_ray_mesh(ray: RayType, mesh: TriangleMeshInput) -> list[RayMeshHit]:
     raise PluginNotInstalledError
 
 

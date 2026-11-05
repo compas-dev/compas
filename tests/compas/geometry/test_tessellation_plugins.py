@@ -57,22 +57,16 @@ def test_geometry_package_imports_in_fresh_interpreter():
 @pytest.mark.parametrize(
     ("operation", "parameter"),
     [
-        (intersection_ray_mesh, "mesh"),
         (trimesh_gaussian_curvature, "mesh"),
         (trimesh_principal_curvature, "mesh"),
         (trimesh_mean_curvature, "mesh"),
-        (trimesh_geodistance, "mesh"),
-        (trimesh_isolines, "mesh"),
-        (trimesh_massmatrix, "mesh"),
-        (trimesh_harmonic, "mesh"),
-        (trimesh_lscm, "mesh"),
     ],
 )
 def test_geometry_processing_contracts_accept_tessellation(operation, parameter):
     assert get_type_hints(operation)[parameter] is Tessellation
 
 
-def test_natural_result_plugin_receives_tessellation(monkeypatch):
+def test_geodistance_dispatches_raw_buffers(monkeypatch):
     calls = []
     selected = []
 
@@ -86,9 +80,72 @@ def test_natural_result_plugin_receives_tessellation(monkeypatch):
 
     monkeypatch.setattr(compas.plugins.plugin_manager, "select", select)
 
-    assert trimesh_geodistance(TRIANGLE, 0) == [0.0, 1.0, 1.0]
-    assert calls == [(TRIANGLE, 0, "exact")]
-    assert selected == [("trimesh", "trimesh_geodistance")]
+    assert trimesh_geodistance(TETRAHEDRON, 0) == [0.0, 1.0, 1.0]
+    assert calls == [(TETRAHEDRON, 0, "exact")]
+    assert selected == [("trimesh", "_trimesh_geodistance")]
+
+
+@pytest.mark.parametrize(
+    "operation",
+    [
+        intersection_ray_mesh,
+        trimesh_geodistance,
+        trimesh_isolines,
+        trimesh_massmatrix,
+        trimesh_harmonic,
+        trimesh_lscm,
+    ],
+)
+def test_libigl_backed_contracts_use_structural_triangle_meshes(operation):
+    hints = get_type_hints(operation)
+    assert hints["mesh"] == TriangleMeshInput
+
+
+@pytest.mark.parametrize(
+    ("operation", "args", "hook", "result"),
+    [
+        (trimesh_isolines, ([0.0, 1.0, 1.0, 0.0], 4), "_trimesh_isolines", ([[0.0, 0.0, 0.0]], [[0, 0]])),
+        (trimesh_massmatrix, (), "_trimesh_massmatrix", [1.0, 1.0, 1.0, 1.0]),
+        (trimesh_harmonic, (), "_trimesh_harmonic", [[0.0, 0.0]] * 4),
+        (trimesh_lscm, (), "_trimesh_lscm", [[0.0, 0.0]] * 4),
+    ],
+)
+def test_libigl_backed_operations_dispatch_raw_buffers(monkeypatch, operation, args, hook, result):
+    selected = []
+
+    def implementation(mesh, *parameters):
+        assert mesh is TETRAHEDRON
+        assert parameters == args
+        return result
+
+    def select(extension_point):
+        selected.append((extension_point.category, extension_point.name))
+        return SimpleNamespace(id="tests.libigl", method=implementation)
+
+    monkeypatch.setattr(compas.plugins.plugin_manager, "select", select)
+
+    assert operation(TETRAHEDRON, *args) == result
+    assert selected == [("trimesh", hook)]
+
+
+def test_ray_mesh_intersection_dispatches_raw_buffers(monkeypatch):
+    selected = []
+    ray = ([0.0, 0.0, -1.0], [0.0, 0.0, 1.0])
+    result = [(0, 0.25, 0.25, 1.0)]
+
+    def implementation(input_ray, mesh):
+        assert input_ray is ray
+        assert mesh is TETRAHEDRON
+        return result
+
+    def select(extension_point):
+        selected.append((extension_point.category, extension_point.name))
+        return SimpleNamespace(id="tests.libigl", method=implementation)
+
+    monkeypatch.setattr(compas.plugins.plugin_manager, "select", select)
+
+    assert intersection_ray_mesh(ray, TETRAHEDRON) == result
+    assert selected == [("intersections", "_intersection_ray_mesh")]
 
 
 @pytest.mark.parametrize(
@@ -272,5 +329,5 @@ def test_raw_mesh_tuple_is_rejected_before_plugin_dispatch(monkeypatch):
     monkeypatch.setattr(compas.plugins.plugin_manager, "select", select)
 
     with pytest.raises(TypeError, match="Tessellation"):
-        trimesh_geodistance((TRIANGLE.vertices, TRIANGLE.triangles), 0)  # pyright: ignore[reportArgumentType]
+        trimesh_gaussian_curvature((TRIANGLE.vertices, TRIANGLE.triangles))  # pyright: ignore[reportArgumentType]
     assert calls == []

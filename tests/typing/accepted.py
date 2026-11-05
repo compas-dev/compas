@@ -23,12 +23,18 @@ from compas.geometry import Tessellation
 from compas.geometry import Vector
 from compas.geometry import boolean_union_mesh_mesh
 from compas.geometry import intersection_mesh_mesh
+from compas.geometry import intersection_ray_mesh
 from compas.geometry import triangulate_planar_domain
 from compas.geometry import triangulate_planar_points
 from compas.geometry import trimesh_remesh
 from compas.geometry import trimesh_remesh_along_isoline
 from compas.geometry import trimesh_remesh_constrained
 from compas.geometry import trimesh_slice
+from compas.geometry import trimesh_geodistance
+from compas.geometry import trimesh_harmonic
+from compas.geometry import trimesh_isolines
+from compas.geometry import trimesh_lscm
+from compas.geometry import trimesh_massmatrix
 from compas.geometry.triangulation import triangulate_polygon
 from compas.datastructures import Mesh
 
@@ -142,9 +148,15 @@ boolean_union_mesh_mesh(triangle_mesh_inputs[0], triangle_mesh_inputs[1])
 boolean_union_mesh_mesh((vertices32, triangles32), (vertices64, triangles64))
 trimesh_remesh((vertices32, triangles32), 0.5)
 trimesh_remesh_constrained((vertices32, triangles32), 0.5, [[0, 1]])
-trimesh_remesh_along_isoline((vertices32, triangles32), [0.0, 1.0, 0.0], 0.5)
+trimesh_remesh_along_isoline((vertices32, triangles32), np.asarray([0.0, 1.0, 0.0], dtype=np.float32), 0.5)
 intersection_mesh_mesh((vertices32, triangles32), (vertices64, triangles64))
 trimesh_slice((vertices32, triangles32), [([0.0, 0.0, 0.0], [0.0, 0.0, 1.0])])
+intersection_ray_mesh(([0.0, 0.0, -1.0], [0.0, 0.0, 1.0]), (vertices32, triangles32))
+trimesh_geodistance((vertices32, triangles32), 0)
+trimesh_isolines((vertices32, triangles32), np.asarray([0, 1, 0], dtype=np.int64))
+trimesh_massmatrix((vertices32, triangles32))
+trimesh_harmonic((vertices32, triangles32))
+trimesh_lscm((vertices32, triangles32))
 normals64 = np.asarray([[0, 0, 1]] * 3, dtype=np.float64)
 uvs32 = np.asarray([[0, 0], [1, 0], [0, 1]], dtype=np.float32)
 polylines64 = np.asarray([[[0, 0, 0], [1, 0, 0]]], dtype=np.float64)
