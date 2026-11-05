@@ -1,11 +1,14 @@
 from math import pi
 
+from typing import get_type_hints
+
 import numpy as np
 import pytest
 from scipy.sparse import isspmatrix_coo
 from scipy.sparse import isspmatrix_csc
 from scipy.sparse import isspmatrix_csr
 
+from compas._typing import TriangleMeshInput
 from compas.datastructures import Mesh
 from compas.geometry import trimesh_cotangent_laplacian_matrix
 from compas.geometry import trimesh_gaussian_curvature
@@ -14,7 +17,6 @@ from compas.geometry import trimesh_pull_points
 from compas.geometry import trimesh_sample_points
 from compas.geometry import trimesh_smooth_laplacian_cotangent
 from compas.geometry import trimesh_vertexarea_matrix
-from compas.geometry import Tessellation
 from compas.geometry.trimesh import trimesh_gaussian_curvature as packaged_trimesh_gaussian_curvature
 
 
@@ -22,17 +24,16 @@ TRIANGLE_BUFFERS = (
     [[0, 0, 0], [1, 0, 0], [0, 1, 0]],
     [[0, 1, 2]],
 )
-TRIANGLE = Tessellation(*TRIANGLE_BUFFERS)
 
 
 def test_trimesh_gaussian_curvature_counts_each_corner_once():
-    curvature = trimesh_gaussian_curvature(TRIANGLE)
+    curvature = trimesh_gaussian_curvature(TRIANGLE_BUFFERS)
 
     assert curvature == [pi / 2, 3 * pi / 4, 3 * pi / 4]
 
 
 def test_trimesh_gaussian_curvature_uses_full_angular_deficit_at_interior_vertices():
-    fan = Tessellation(
+    fan = (
         [[0, 0, 0], [1, 0, 0], [0, 1, 0], [-1, 0, 0], [0, -1, 0]],
         [[0, 1, 2], [0, 2, 3], [0, 3, 4], [0, 4, 1]],
     )
@@ -40,6 +41,41 @@ def test_trimesh_gaussian_curvature_uses_full_angular_deficit_at_interior_vertic
     curvature = trimesh_gaussian_curvature(fan)
 
     assert curvature[0] == pytest.approx(0.0)
+
+
+def test_trimesh_gaussian_curvature_accepts_numpy_buffers():
+    vertices = np.asarray(TRIANGLE_BUFFERS[0], dtype=np.float64)
+    triangles = np.asarray(TRIANGLE_BUFFERS[1], dtype=np.int64)
+
+    curvature = trimesh_gaussian_curvature((vertices, triangles))
+
+    assert curvature == pytest.approx([pi / 2, 3 * pi / 4, 3 * pi / 4])
+
+
+def test_trimesh_gaussian_curvature_does_not_mutate_numpy_buffers():
+    vertices = np.asarray(TRIANGLE_BUFFERS[0], dtype=np.float64)
+    triangles = np.asarray(TRIANGLE_BUFFERS[1], dtype=np.int64)
+    original_vertices = vertices.copy()
+    original_triangles = triangles.copy()
+
+    trimesh_gaussian_curvature((vertices, triangles))
+
+    assert np.array_equal(vertices, original_vertices)
+    assert np.array_equal(triangles, original_triangles)
+
+
+def test_trimesh_gaussian_curvature_uses_structural_mesh_contract():
+    assert get_type_hints(trimesh_gaussian_curvature)["mesh"] == TriangleMeshInput
+
+
+def test_unsupported_curvature_operations_are_not_public():
+    import compas.geometry
+    import compas.geometry.trimesh
+
+    assert not hasattr(compas.geometry, "trimesh_mean_curvature")
+    assert not hasattr(compas.geometry, "trimesh_principal_curvature")
+    assert not hasattr(compas.geometry.trimesh, "trimesh_mean_curvature")
+    assert not hasattr(compas.geometry.trimesh, "trimesh_principal_curvature")
 
 
 def test_trimesh_gradient_accepts_raw_lists_and_all_result_formats():

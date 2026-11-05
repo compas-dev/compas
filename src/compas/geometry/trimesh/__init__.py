@@ -1,6 +1,4 @@
 from .curvature import trimesh_gaussian_curvature
-from .curvature import trimesh_mean_curvature
-from .curvature import trimesh_principal_curvature
 from .descent import trimesh_descent
 from .geodistance import trimesh_geodistance
 from .gradient import trimesh_gradient
@@ -32,8 +30,6 @@ __all__ = [
     "trimesh_isolines",
     "trimesh_lscm",
     "trimesh_massmatrix",
-    "trimesh_mean_curvature",
-    "trimesh_principal_curvature",
     "trimesh_pull_points",
     "trimesh_remesh",
     "trimesh_remesh_along_isoline",

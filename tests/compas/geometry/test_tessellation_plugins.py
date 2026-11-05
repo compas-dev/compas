@@ -9,30 +9,22 @@ import pytest
 import compas.plugins
 from compas._typing import TriangleMeshInput
 from compas._typing import CoordinatesCollectionInput
-from compas.geometry import Tessellation
 from compas.geometry import boolean_difference_mesh_mesh
 from compas.geometry import boolean_intersection_mesh_mesh
 from compas.geometry import boolean_union_mesh_mesh
 from compas.geometry import intersection_mesh_mesh
 from compas.geometry import intersection_ray_mesh
-from compas.geometry import trimesh_gaussian_curvature
 from compas.geometry import trimesh_geodistance
 from compas.geometry import trimesh_harmonic
 from compas.geometry import trimesh_isolines
 from compas.geometry import trimesh_lscm
 from compas.geometry import trimesh_massmatrix
-from compas.geometry import trimesh_mean_curvature
-from compas.geometry import trimesh_principal_curvature
 from compas.geometry import trimesh_remesh
 from compas.geometry import trimesh_remesh_along_isoline
 from compas.geometry import trimesh_remesh_constrained
 from compas.geometry import trimesh_slice
 
 
-TRIANGLE = Tessellation(
-    [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0]],
-    [[0, 1, 2]],
-)
 TETRAHEDRON = (
     [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]],
     [[0, 2, 1], [0, 1, 3], [1, 2, 3], [0, 3, 2]],
@@ -52,18 +44,6 @@ def test_geometry_package_imports_in_fresh_interpreter():
     )
 
     assert result.returncode == 0, result.stderr
-
-
-@pytest.mark.parametrize(
-    ("operation", "parameter"),
-    [
-        (trimesh_gaussian_curvature, "mesh"),
-        (trimesh_principal_curvature, "mesh"),
-        (trimesh_mean_curvature, "mesh"),
-    ],
-)
-def test_geometry_processing_contracts_accept_tessellation(operation, parameter):
-    assert get_type_hints(operation)[parameter] is Tessellation
 
 
 def test_geodistance_dispatches_raw_buffers(monkeypatch):
@@ -317,17 +297,3 @@ def test_specialized_remesh_dispatches_raw_buffers(monkeypatch, operation, args,
 
     assert operation(TETRAHEDRON, *args) is TETRAHEDRON
     assert selected == [("trimesh", hook)]
-
-
-def test_raw_mesh_tuple_is_rejected_before_plugin_dispatch(monkeypatch):
-    calls = []
-
-    def select(extension_point):
-        calls.append(extension_point)
-        return None
-
-    monkeypatch.setattr(compas.plugins.plugin_manager, "select", select)
-
-    with pytest.raises(TypeError, match="Tessellation"):
-        trimesh_gaussian_curvature((TRIANGLE.vertices, TRIANGLE.triangles))  # pyright: ignore[reportArgumentType]
-    assert calls == []

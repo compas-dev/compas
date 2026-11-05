@@ -1,86 +1,41 @@
 from math import pi
+from operator import index as integer_index
 
+from compas._typing import TriangleMeshInput
 from compas.geometry import angle_points
 
-from .._tessellation_plugin import tessellation_pluggable
-from ..tessellation import Tessellation
 
-
-@tessellation_pluggable(category="trimesh", inputs=("mesh",))
-def trimesh_gaussian_curvature(mesh: "Tessellation") -> list[float]:
-    """Compute the discrete Gaussian curvature of a triangle mesh.
+def trimesh_gaussian_curvature(mesh: TriangleMeshInput) -> list[float]:
+    r"""Compute the integrated Gaussian curvature of a triangle mesh.
 
     Parameters
     ----------
     mesh
-        The triangle tessellation.
+        The vertex coordinates and triangle indices.
 
     Returns
     -------
     list[float]
-        The discrete gaussian curvature per vertex.
+        The integrated Gaussian curvature per vertex, in radians.
 
     Notes
     -----
-    Curvature is computed as the angular deficit: $2π$ minus the incident
-    face angles at interior vertices and $π$ minus the incident face angles
-    at boundary vertices.
+    Curvature is the dimensionless angular deficit. At an interior vertex it
+    is $2\pi - \sum_i \theta_i$. At a boundary vertex it is
+    $\pi - \sum_i \theta_i$.
 
     """
-    vertices, faces = mesh.to_vertices_and_triangles()
+    vertices, faces = mesh
     angles = [0.0] * len(vertices)
     edge_faces = {}
     for face in faces:
         for index, vertex in enumerate(face):
-            previous = face[index - 1]
-            following = face[(index + 1) % len(face)]
-            angles[vertex] += angle_points(vertices[vertex], vertices[previous], vertices[following])
+            vertex = integer_index(vertex)
+            previous = integer_index(face[index - 1])
+            following = integer_index(face[(index + 1) % len(face)])
+            angles[vertex] += angle_points(vertices[vertex], vertices[previous], vertices[following])  # pyright: ignore[reportArgumentType]
             edge = tuple(sorted((vertex, following)))
             edge_faces[edge] = edge_faces.get(edge, 0) + 1
 
     boundary = {vertex for edge, count in edge_faces.items() if count == 1 for vertex in edge}
     return [(pi if vertex in boundary else 2 * pi) - angle for vertex, angle in enumerate(angles)]
-
-
-@tessellation_pluggable(category="trimesh", inputs=("mesh",))
-def trimesh_principal_curvature(mesh: "Tessellation") -> list[tuple[list[float], list[float]]]:
-    """Compute the principal curvature directions of a triangle mesh.
-
-    Parameters
-    ----------
-    mesh
-        The triangle tessellation.
-
-    Returns
-    -------
-    list[tuple[list[float], list[float]]]
-        The two principal curvature directions at every vertex.
-
-    Notes
-    -----
-    This operation requires a registered plugin.
-
-    """
-    raise NotImplementedError
-
-
-@tessellation_pluggable(category="trimesh", inputs=("mesh",))
-def trimesh_mean_curvature(mesh: "Tessellation") -> list[float]:
-    """Compute the discrete mean curvature of a triangle mesh.
-
-    Parameters
-    ----------
-    mesh
-        The triangle tessellation.
-
-    Returns
-    -------
-    list[float]
-        The discrete mean curvature per vertex.
-
-    Notes
-    -----
-    This operation requires a registered plugin.
-
-    """
-    raise NotImplementedError

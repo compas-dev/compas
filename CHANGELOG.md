@@ -21,7 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Added a committed uv development lock, documented direct quality commands while retaining Invoke convenience tasks, and migrated CI, release, artifact, and documentation mechanics to immutably pinned shared actions.
-* Standardized triangle-processing plugin inputs and outputs on the ephemeral `Tessellation` representation. See the geometry discretization and tessellation migration guide for the COMPAS 3 replacements.
+* Standardized numerical triangle-mesh plugin inputs and outputs on structural `(vertices, triangles)` buffers. `Tessellation` remains an ephemeral discrete representation for geometry producers and scene handoff, but is not required at numerical backend boundaries.
+* Defined core triangle-mesh Gaussian curvature as the dimensionless angle deficit, using $\pi - \sum_i \theta_i$ at boundary vertices and $2\pi - \sum_i \theta_i$ at interior vertices.
 * Renamed planar Delaunay operations to `triangulate_planar_points` and `triangulate_planar_domain`, with core-owned validation before backend dispatch.
 * Replaced backend-specific `NurbsCurve` and `NurbsSurface` substitution with stable core wrappers and operation-level plugin contracts.
 * Modernized internal path, URL, text-stream, and binary-stream handling and made ownership of opened resources explicit.
@@ -71,7 +72,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-* Removed implicit and misspelled tessellation conversions, scalar resolution overrides, implicit quad splitting, and raw triangle-buffer plugin boundaries in favor of explicit strategies and result types.
+* Removed implicit and misspelled tessellation conversions, scalar resolution overrides, and implicit quad splitting in favor of explicit strategies and result types.
+* Removed the unsupported core triangle-mesh mean and principal curvature plugin contracts and the obsolete tessellation-specific pluggable decorator.
 * Removed stored shape and surface resolution state, derived discretization caches, generic sampled geometry properties, `Shape.to_vertices_and_faces()`, and `Mesh.from_shape()`.
 * Removed unused runtime tessellation capability discovery and speculative approximation-error schemas.
 * Removed `Shape.to_polyhedron()` because `Polyhedron` represents a validated closed solid rather than the generic polygonal discretization of a shape. Use `polygonize(strategy)`, `tessellate(strategy)`, or convert the result to a mesh.
