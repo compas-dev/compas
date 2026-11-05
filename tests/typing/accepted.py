@@ -25,6 +25,9 @@ from compas.geometry import boolean_union_mesh_mesh
 from compas.geometry import intersection_mesh_mesh
 from compas.geometry import triangulate_planar_domain
 from compas.geometry import triangulate_planar_points
+from compas.geometry import trimesh_remesh
+from compas.geometry import trimesh_remesh_along_isoline
+from compas.geometry import trimesh_remesh_constrained
 from compas.geometry import trimesh_slice
 from compas.geometry.triangulation import triangulate_polygon
 from compas.datastructures import Mesh
@@ -137,6 +140,9 @@ triangle_mesh_inputs: list[TriangleMeshInput] = [
 ]
 boolean_union_mesh_mesh(triangle_mesh_inputs[0], triangle_mesh_inputs[1])
 boolean_union_mesh_mesh((vertices32, triangles32), (vertices64, triangles64))
+trimesh_remesh((vertices32, triangles32), 0.5)
+trimesh_remesh_constrained((vertices32, triangles32), 0.5, [[0, 1]])
+trimesh_remesh_along_isoline((vertices32, triangles32), [0.0, 1.0, 0.0], 0.5)
 intersection_mesh_mesh((vertices32, triangles32), (vertices64, triangles64))
 trimesh_slice((vertices32, triangles32), [([0.0, 0.0, 0.0], [0.0, 0.0, 1.0])])
 normals64 = np.asarray([[0, 0, 1]] * 3, dtype=np.float64)

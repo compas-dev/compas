@@ -1,22 +1,21 @@
 from collections.abc import Sequence
 
-from .._tessellation_plugin import tessellation_pluggable
-from ..tessellation import Tessellation
+from compas._typing import TriangleMeshInput
+from compas.plugins import pluggable
 
 
-@tessellation_pluggable(category="trimesh", inputs=("mesh",), result=True)
 def trimesh_remesh(
-    mesh: "Tessellation",
+    mesh: TriangleMeshInput,
     target_edge_length: float,
     number_of_iterations: int = 10,
     do_project: bool = True,
-) -> "Tessellation":
+) -> TriangleMeshInput:
     """Remesh a triangle mesh toward a uniform target edge length.
 
     Parameters
     ----------
     mesh
-        The triangle tessellation.
+        The triangle mesh as vertices and triangles.
     target_edge_length
         Target length of mesh edges.
     number_of_iterations
@@ -27,33 +26,43 @@ def trimesh_remesh(
 
     Returns
     -------
-    Tessellation
-        The remeshed triangle geometry.
+    tuple
+        The vertices and triangles of the remeshed geometry.
 
     Notes
     -----
-    This operation requires a registered plugin. Use
+    This operation requires a registered plugin. Core dispatches structural
+    buffers without converting or pre-validating them. Use
     [`trimesh_remesh_constrained`][compas.geometry.trimesh_remesh_constrained]
     when specific edges must be preserved.
 
     """
+    return _trimesh_remesh(mesh, target_edge_length, number_of_iterations, do_project)
+
+
+@pluggable(category="trimesh")
+def _trimesh_remesh(
+    mesh: TriangleMeshInput,
+    target_edge_length: float,
+    number_of_iterations: int = 10,
+    do_project: bool = True,
+) -> TriangleMeshInput:
     raise NotImplementedError
 
 
-@tessellation_pluggable(category="trimesh", inputs=("mesh",), result=True)
 def trimesh_remesh_constrained(
-    mesh: "Tessellation",
+    mesh: TriangleMeshInput,
     target_edge_length: float,
     protected_edges: Sequence[Sequence[int]],
     number_of_iterations: int = 10,
     do_project: bool = True,
-) -> "Tessellation":
+) -> TriangleMeshInput:
     """Remesh a triangle mesh while preserving selected edges.
 
     Parameters
     ----------
     mesh
-        The triangle tessellation.
+        The triangle mesh as vertices and triangles.
     target_edge_length
         Target length of mesh edges.
     protected_edges
@@ -66,25 +75,36 @@ def trimesh_remesh_constrained(
 
     Returns
     -------
-    Tessellation
-        The remeshed triangle geometry.
+    tuple
+        The vertices and triangles of the remeshed geometry.
 
     Notes
     -----
-    This operation requires a registered plugin.
+    This operation requires a registered plugin. Core dispatches structural
+    buffers without converting or pre-validating them.
 
     """
+    return _trimesh_remesh_constrained(mesh, target_edge_length, protected_edges, number_of_iterations, do_project)
+
+
+@pluggable(category="trimesh")
+def _trimesh_remesh_constrained(
+    mesh: TriangleMeshInput,
+    target_edge_length: float,
+    protected_edges: Sequence[Sequence[int]],
+    number_of_iterations: int = 10,
+    do_project: bool = True,
+) -> TriangleMeshInput:
     raise NotImplementedError
 
 
-@tessellation_pluggable(category="trimesh", inputs=("mesh",), result=True)
-def trimesh_remesh_along_isoline(mesh: "Tessellation", scalarfield: Sequence[float], scalar: float) -> "Tessellation":
+def trimesh_remesh_along_isoline(mesh: TriangleMeshInput, scalarfield: Sequence[float], scalar: float) -> TriangleMeshInput:
     """Remesh a triangle mesh so an isoline follows mesh edges.
 
     Parameters
     ----------
     mesh
-        The triangle tessellation.
+        The triangle mesh as vertices and triangles.
     scalarfield
         Scalar value at every mesh vertex.
     scalar
@@ -92,13 +112,23 @@ def trimesh_remesh_along_isoline(mesh: "Tessellation", scalarfield: Sequence[flo
 
     Returns
     -------
-    Tessellation
-        The remeshed triangle geometry.
+    tuple
+        The vertices and triangles of the remeshed geometry.
 
     Notes
     -----
-    This operation requires a registered plugin. Backend-internal face labels
-    are not part of the initial public result contract.
+    This operation requires a registered plugin. Core dispatches structural
+    buffers without converting or pre-validating them. Backend-internal face
+    labels are not part of the public result contract.
 
     """
+    return _trimesh_remesh_along_isoline(mesh, scalarfield, scalar)
+
+
+@pluggable(category="trimesh")
+def _trimesh_remesh_along_isoline(
+    mesh: TriangleMeshInput,
+    scalarfield: Sequence[float],
+    scalar: float,
+) -> TriangleMeshInput:
     raise NotImplementedError

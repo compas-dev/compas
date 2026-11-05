@@ -66,25 +66,10 @@ def test_geometry_package_imports_in_fresh_interpreter():
         (trimesh_massmatrix, "mesh"),
         (trimesh_harmonic, "mesh"),
         (trimesh_lscm, "mesh"),
-        (trimesh_remesh, "mesh"),
-        (trimesh_remesh_constrained, "mesh"),
-        (trimesh_remesh_along_isoline, "mesh"),
     ],
 )
 def test_geometry_processing_contracts_accept_tessellation(operation, parameter):
     assert get_type_hints(operation)[parameter] is Tessellation
-
-
-@pytest.mark.parametrize(
-    "operation",
-    [
-        trimesh_remesh,
-        trimesh_remesh_constrained,
-        trimesh_remesh_along_isoline,
-    ],
-)
-def test_geometry_processing_geometry_results_are_tessellations(operation):
-    assert get_type_hints(operation)["return"] is Tessellation
 
 
 def test_natural_result_plugin_receives_tessellation(monkeypatch):
@@ -222,6 +207,61 @@ def test_mesh_slice_dispatches_raw_buffers(monkeypatch):
     assert selected == [("trimesh", "_trimesh_slice")]
 
 
+@pytest.mark.parametrize(
+    "operation",
+    [trimesh_remesh, trimesh_remesh_constrained, trimesh_remesh_along_isoline],
+)
+def test_remesh_contracts_use_structural_triangle_meshes(operation):
+    hints = get_type_hints(operation)
+    assert hints["mesh"] == TriangleMeshInput
+    assert hints["return"] == TriangleMeshInput
+
+
+def test_remesh_dispatches_raw_buffers(monkeypatch):
+    selected = []
+
+    def implementation(mesh, target_edge_length, number_of_iterations=10, do_project=True):
+        assert mesh is TETRAHEDRON
+        assert target_edge_length == 0.5
+        assert number_of_iterations == 7
+        assert do_project is False
+        return mesh
+
+    def select(extension_point):
+        selected.append((extension_point.category, extension_point.name))
+        return SimpleNamespace(id="tests.remesh", method=implementation)
+
+    monkeypatch.setattr(compas.plugins.plugin_manager, "select", select)
+
+    assert trimesh_remesh(TETRAHEDRON, 0.5, 7, False) is TETRAHEDRON
+    assert selected == [("trimesh", "_trimesh_remesh")]
+
+
+@pytest.mark.parametrize(
+    ("operation", "args", "hook"),
+    [
+        (trimesh_remesh_constrained, (0.5, [[0, 1]], 7, False), "_trimesh_remesh_constrained"),
+        (trimesh_remesh_along_isoline, ([0.0, 1.0, 1.0, 0.0], 0.5), "_trimesh_remesh_along_isoline"),
+    ],
+)
+def test_specialized_remesh_dispatches_raw_buffers(monkeypatch, operation, args, hook):
+    selected = []
+
+    def implementation(mesh, *parameters):
+        assert mesh is TETRAHEDRON
+        assert parameters == args
+        return mesh
+
+    def select(extension_point):
+        selected.append((extension_point.category, extension_point.name))
+        return SimpleNamespace(id="tests.remesh", method=implementation)
+
+    monkeypatch.setattr(compas.plugins.plugin_manager, "select", select)
+
+    assert operation(TETRAHEDRON, *args) is TETRAHEDRON
+    assert selected == [("trimesh", hook)]
+
+
 def test_raw_mesh_tuple_is_rejected_before_plugin_dispatch(monkeypatch):
     calls = []
 
@@ -234,17 +274,3 @@ def test_raw_mesh_tuple_is_rejected_before_plugin_dispatch(monkeypatch):
     with pytest.raises(TypeError, match="Tessellation"):
         trimesh_geodistance((TRIANGLE.vertices, TRIANGLE.triangles), 0)  # pyright: ignore[reportArgumentType]
     assert calls == []
-
-
-def test_geometry_result_plugin_rejects_raw_tuple(monkeypatch):
-    def implementation(mesh, target_edge_length, number_of_iterations=10, do_project=True):
-        return mesh.to_vertices_and_triangles()
-
-    monkeypatch.setattr(
-        compas.plugins.plugin_manager,
-        "select",
-        lambda extension_point: SimpleNamespace(id="tests.remesh", method=implementation),
-    )
-
-    with pytest.raises(TypeError, match="return a Tessellation"):
-        trimesh_remesh(TRIANGLE, 1.0)
