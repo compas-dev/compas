@@ -1,7 +1,6 @@
 from copy import deepcopy
 from typing import TYPE_CHECKING
 from typing import Any
-from typing import cast
 
 from compas.files.gltf.data_classes import AnimationData
 from compas.files.gltf.data_classes import CameraData
@@ -317,19 +316,19 @@ class GLTFDocument:
         origin = [0, 0, 0]
         for node_key in scene.children:
             node = self.nodes[node_key]
-            node.transform = node.matrix or node.get_matrix_from_trs()
-            node.position = transform_points([origin], node.transform)[0]
-            queue = [node_key]
+            node_transform = node.matrix or node.get_matrix_from_trs()
+            node.transform = node_transform
+            node.position = transform_points([origin], node_transform)[0]
+            queue = [(node_key, node_transform)]
             while queue:
-                cur_key = queue.pop(0)
+                cur_key, parent_transform = queue.pop(0)
                 cur = self.nodes[cur_key]
                 for child_key in cur.children:
                     child = self.nodes[child_key]
-                    # Every node is assigned a transform before it enters the queue.
-                    parent_transform = cast(list[list[float]], cur.transform)
-                    child.transform = multiply_matrices(parent_transform, child.matrix or child.get_matrix_from_trs())
-                    child.position = transform_points([origin], child.transform)[0]
-                    queue.append(child_key)
+                    child_transform = multiply_matrices(parent_transform, child.matrix or child.get_matrix_from_trs())
+                    child.transform = child_transform
+                    child.position = transform_points([origin], child_transform)[0]
+                    queue.append((child_key, child_transform))
 
     def get_node_faces(self, node: GLTFNode) -> list[tuple[int, ...]] | None:
         """Return the faces of the mesh attached to a node.

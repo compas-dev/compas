@@ -4,21 +4,22 @@ from typing import TYPE_CHECKING
 import mapbox_earcut  # pyright: ignore[reportMissingImports]
 import numpy as np  # pyright: ignore[reportMissingImports]
 
-from compas._typing import CoordinateType
 from compas.linalg import cross_vectors
 from compas.linalg import length_vector
 from compas.linalg import subtract_vectors
+from compas.typing import PointLike
+from compas.typing import RealInput
 
 if TYPE_CHECKING:
     from compas.geometry import Frame
     from compas.geometry import Polygon
 
 
-def _signed_area_xy(points: Sequence[CoordinateType]) -> float:
+def _signed_area_xy(points: Sequence[PointLike]) -> RealInput:
     return 0.5 * sum(points[index][0] * points[(index + 1) % len(points)][1] - points[(index + 1) % len(points)][0] * points[index][1] for index in range(len(points)))
 
 
-def _validate_boundaries_xy(boundaries: Sequence[Sequence[CoordinateType]]) -> None:
+def _validate_boundaries_xy(boundaries: Sequence[Sequence[PointLike]]) -> None:
     from shapely import LinearRing  # pyright: ignore[reportMissingModuleSource]
     from shapely import Polygon as ShapelyPolygon  # pyright: ignore[reportMissingModuleSource]
     from shapely.validation import explain_validity  # pyright: ignore[reportMissingModuleSource]
@@ -81,7 +82,7 @@ def _earclip_boundaries(outer: "Polygon", holes: Sequence["Polygon"] = ()) -> tu
     vertices = [[float(value) for value in point] for boundary in boundaries for point in boundary.points]
     transformation = Transformation.from_frame_to_frame(_projection_frame(outer), Frame.worldXY())
     points = [point.transformed(transformation) for boundary in boundaries for point in boundary.points]
-    boundaries_xy: list[Sequence[CoordinateType]] = []
+    boundaries_xy: list[Sequence[PointLike]] = []
     start = 0
     for boundary in boundaries:
         end = start + len(boundary)

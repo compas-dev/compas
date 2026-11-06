@@ -1,12 +1,12 @@
 from typing import TYPE_CHECKING
 
-from compas._typing import CoordinatesType
+from compas.typing import PointsLike
 
 if TYPE_CHECKING:
     from numpy.typing import NDArray
 
 
-def convex_hull(points: CoordinatesType) -> "tuple[NDArray, NDArray]":
+def convex_hull(points: PointsLike) -> "tuple[NDArray, NDArray]":
     """Compute the convex hull of points in three-dimensional space.
 
     Parameters
@@ -42,7 +42,7 @@ def convex_hull(points: CoordinatesType) -> "tuple[NDArray, NDArray]":
     return hull.vertices, hull.simplices
 
 
-def convex_hull_xy(points: CoordinatesType) -> "tuple[NDArray, NDArray]":
+def convex_hull_xy(points: PointsLike) -> "tuple[NDArray, NDArray]":
     """Compute the convex hull of points in the XY plane.
 
     Parameters

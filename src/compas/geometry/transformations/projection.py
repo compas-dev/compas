@@ -1,8 +1,5 @@
-from collections.abc import Sequence
 from typing import Self
 
-from compas._typing import CoordinatesType
-from compas._typing import CoordinateType
 from compas.itertools import flatten
 from compas.linalg.transformations import decompose_matrix
 from compas.linalg.transformations import matrix_from_orthogonal_projection
@@ -10,8 +7,12 @@ from compas.linalg.transformations import matrix_from_parallel_projection
 from compas.linalg.transformations import matrix_from_perspective_entries
 from compas.linalg.transformations import matrix_from_perspective_projection
 from compas.tolerance import TOL
+from compas.typing import FloatSequenceLike
+from compas.typing import PointLike
+from compas.typing import PointsLike
+from compas.typing import VectorLike
 
-from .transformation import Matrix
+from .transformation import MatrixInput
 from .transformation import Transformation
 
 
@@ -38,7 +39,7 @@ class Projection(Transformation):
     # Dunder methods
     # ==========================================================================
 
-    def __init__(self, matrix: Matrix | None = None, check: bool = False, name: str | None = None) -> None:
+    def __init__(self, matrix: MatrixInput | None = None, check: bool = False, name: str | None = None) -> None:
         if matrix and check:
             _, _, _, _, perspective = decompose_matrix(matrix)
             if not TOL.is_allclose(flatten(matrix), flatten(matrix_from_perspective_entries(perspective))):
@@ -50,7 +51,7 @@ class Projection(Transformation):
     # ==========================================================================
 
     @classmethod
-    def from_plane(cls, plane: CoordinatesType) -> Self:
+    def from_plane(cls, plane: PointsLike) -> Self:
         """Construct an orthogonal projection transformation to project onto a plane.
 
         Parameters
@@ -76,7 +77,7 @@ class Projection(Transformation):
         return cls(matrix)
 
     @classmethod
-    def from_plane_and_direction(cls, plane: CoordinatesType, direction: CoordinateType) -> Self:
+    def from_plane_and_direction(cls, plane: PointsLike, direction: VectorLike) -> Self:
         """Construct a parallel projection transformation to project onto a plane along a specific direction.
 
         Parameters
@@ -105,7 +106,7 @@ class Projection(Transformation):
         return cls(matrix)
 
     @classmethod
-    def from_plane_and_point(cls, plane: CoordinatesType, center_of_projection: CoordinateType) -> Self:
+    def from_plane_and_point(cls, plane: PointsLike, center_of_projection: PointLike) -> Self:
         """Construct a perspective projection transformation to project onto a plane along lines that emanate from a single point, called the center of projection.
 
         Parameters
@@ -134,7 +135,7 @@ class Projection(Transformation):
         return cls(matrix)
 
     @classmethod
-    def from_entries(cls, perspective_entries: Sequence[float]) -> Self:
+    def from_entries(cls, perspective_entries: FloatSequenceLike) -> Self:
         """Construct a perspective transformation from matrix entries.
 
         Parameters

@@ -6,13 +6,13 @@ from typing import TYPE_CHECKING
 from typing import Any
 from typing import Self
 
-from compas._typing import CoordinateType
 from compas.geometry import Circle
 from compas.geometry import Frame
 from compas.geometry import Line
 from compas.geometry import Plane
 from compas.geometry import Point
 from compas.geometry import Vector
+from compas.typing import PointLike
 
 from .surface import Surface
 
@@ -116,7 +116,7 @@ class CylindricalSurface(Surface):
         return self.frame.point
 
     @center.setter
-    def center(self, point: CoordinateType) -> None:
+    def center(self, point: PointLike) -> None:
         self.frame.point = point
 
     @property
@@ -185,7 +185,7 @@ class CylindricalSurface(Surface):
         return cls(radius, frame=Frame.from_plane(plane))
 
     @classmethod
-    def from_three_points(cls, a: CoordinateType, b: CoordinateType, c: CoordinateType) -> Self:
+    def from_three_points(cls, a: PointLike, b: PointLike, c: PointLike) -> Self:
         """Construct a cylindrical from three points.
 
         Parameters

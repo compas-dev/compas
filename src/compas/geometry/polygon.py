@@ -5,7 +5,6 @@ from typing import TYPE_CHECKING
 from typing import Self
 from typing import overload
 
-from compas._typing import CoordinatesType
 from compas.geometry import Frame
 from compas.geometry import Geometry
 from compas.geometry import Line
@@ -20,8 +19,9 @@ from compas.geometry import normal_triangle
 from compas.geometry import transform_points
 from compas.itertools import pairwise
 from compas.tolerance import TOL
+from compas.typing import PointLike
+from compas.typing import PointsLike
 
-from ._typing import CoordinateType
 from ._typing import TransformationType
 
 if TYPE_CHECKING:
@@ -89,7 +89,7 @@ class Polygon(Geometry):
     # Dunder methods
     # ==========================================================================
 
-    def __init__(self, points: CoordinatesType, name: str | None = None) -> None:
+    def __init__(self, points: PointsLike, name: str | None = None) -> None:
         super().__init__(name=name)
         self._points: list[Point] = []
         self._lines: list[Line] | None = None
@@ -113,7 +113,7 @@ class Polygon(Geometry):
     def __getitem__(self, key: int | slice) -> Point | list[Point]:
         return self.points[key]
 
-    def __setitem__(self, key: int, value: CoordinateType) -> None:
+    def __setitem__(self, key: int, value: PointLike) -> None:
         self.points[key] = Point(value[0], value[1], value[2])
         self._lines = None
 
@@ -142,7 +142,7 @@ class Polygon(Geometry):
         return self._points
 
     @points.setter
-    def points(self, points: CoordinatesType) -> None:
+    def points(self, points: PointsLike) -> None:
         previous = Point(points[0][0], points[0][1], points[0][2])
         self._points = [previous]
         for index, xyz in enumerate(points):
@@ -215,7 +215,7 @@ class Polygon(Geometry):
     # ==========================================================================
 
     @classmethod
-    def from_rectangle(cls, point: CoordinateType, width: float, height: float) -> Self:
+    def from_rectangle(cls, point: PointLike, width: float, height: float) -> Self:
         """Construct a rectangle.
 
         Parameters

@@ -1,3 +1,4 @@
+from collections.abc import Iterable
 from collections.abc import Sequence
 from typing import Any
 
@@ -11,8 +12,10 @@ from numpy.typing import ArrayLike
 from numpy.typing import NDArray
 from scipy.linalg import solve
 
+from compas.typing import RealInput
 
-def transform_points_numpy(points: ArrayLike, T: ArrayLike) -> NDArray[Any]:
+
+def transform_points_numpy(points: ArrayLike, T: Iterable[Iterable[RealInput]] | ArrayLike) -> NDArray[Any]:
     """Transform multiple points with one Transformation using numpy.
 
     Parameters

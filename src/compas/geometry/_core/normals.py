@@ -1,17 +1,16 @@
-from collections.abc import Sequence
-
-from compas._typing import CoordinatesType
 from compas.linalg.vectors import cross_vectors
 from compas.linalg.vectors import cross_vectors_xy
 from compas.linalg.vectors import length_vector
 from compas.linalg.vectors import normalize_vector
 from compas.linalg.vectors import subtract_vectors
 from compas.linalg.vectors import subtract_vectors_xy
+from compas.typing import PointsLike
+from compas.typing import RealInput
 
 from .centroids import centroid_points
 
 
-def normal_polygon(polygon: CoordinatesType, unitized: bool = True) -> list[float]:
+def normal_polygon(polygon: PointsLike, unitized: bool = True) -> list[RealInput]:
     """Compute the normal of a polygon defined by a sequence of points.
 
     Parameters
@@ -71,7 +70,7 @@ def normal_polygon(polygon: CoordinatesType, unitized: bool = True) -> list[floa
     return normalize_vector([nx, ny, nz])
 
 
-def normal_triangle(triangle: CoordinatesType, unitized: bool = True) -> list[float]:
+def normal_triangle(triangle: PointsLike, unitized: bool = True) -> list[RealInput]:
     """Compute the normal vector of a triangle.
 
     Parameters
@@ -110,7 +109,7 @@ def normal_triangle(triangle: CoordinatesType, unitized: bool = True) -> list[fl
     return [lvec * n[0], lvec * n[1], lvec * n[2]]
 
 
-def normal_triangle_xy(triangle: Sequence[Sequence[float]], unitized: bool = True) -> list[float]:
+def normal_triangle_xy(triangle: PointsLike, unitized: bool = True) -> list[RealInput]:
     """Compute the normal vector of a triangle assumed to lie in the XY plane.
 
     Parameters

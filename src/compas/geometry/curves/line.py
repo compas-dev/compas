@@ -4,12 +4,14 @@ from typing import Literal
 from typing import Self
 from typing import overload
 
-from compas._typing import CoordinateType
 from compas.geometry import Frame
 from compas.geometry import Line
 from compas.geometry import Point
 from compas.geometry import Vector
 from compas.itertools import linspace
+from compas.typing import PointLike
+from compas.typing import RealInput
+from compas.typing import VectorLike
 
 from .._typing import TransformationType
 from .curve import Curve
@@ -55,7 +57,7 @@ class LineCurve(Curve):
     def __from_data__(cls, data: dict[str, Any]) -> Self:
         return cls(data["start"], data["end"])
 
-    def __init__(self, start: CoordinateType, end: CoordinateType, name: str | None = None) -> None:
+    def __init__(self, start: PointLike, end: PointLike, name: str | None = None) -> None:
         super().__init__(name=name)
         self._line = Line(start, end)
 
@@ -88,7 +90,7 @@ class LineCurve(Curve):
         return self._line.start
 
     @start.setter
-    def start(self, point: CoordinateType) -> None:
+    def start(self, point: PointLike) -> None:
         self._line.start = point
 
     @property
@@ -97,7 +99,7 @@ class LineCurve(Curve):
         return self._line.end
 
     @end.setter
-    def end(self, point: CoordinateType) -> None:
+    def end(self, point: PointLike) -> None:
         self._line.end = point
 
     @property
@@ -138,7 +140,7 @@ class LineCurve(Curve):
         return cls(line.start, line.end)
 
     @classmethod
-    def from_point_and_vector(cls, point: CoordinateType, vector: CoordinateType) -> Self:
+    def from_point_and_vector(cls, point: PointLike, vector: VectorLike) -> Self:
         """Construct a linear curve from a point and vector.
 
         Parameters
@@ -157,7 +159,7 @@ class LineCurve(Curve):
         return cls.from_line(Line.from_point_and_vector(point, vector))
 
     @classmethod
-    def from_point_direction_length(cls, point: CoordinateType, direction: CoordinateType, length: float) -> Self:
+    def from_point_direction_length(cls, point: PointLike, direction: VectorLike, length: float) -> Self:
         """Construct a linear curve from a point, direction, and length.
 
         Parameters
@@ -188,7 +190,7 @@ class LineCurve(Curve):
         """
         return Line(self.start, self.end)
 
-    def point_at(self, t: float, world: bool = True) -> Point:
+    def point_at(self, t: RealInput, world: bool = True) -> Point:
         """Compute the point at a normalized parameter.
 
         Parameters
@@ -233,12 +235,12 @@ class LineCurve(Curve):
         self._line.flip()
 
     @overload
-    def closest_point(self, point: CoordinateType, return_parameter: Literal[False] = False) -> Point: ...
+    def closest_point(self, point: PointLike, return_parameter: Literal[False] = False) -> Point: ...
 
     @overload
-    def closest_point(self, point: CoordinateType, return_parameter: Literal[True]) -> tuple[Point, float]: ...
+    def closest_point(self, point: PointLike, return_parameter: Literal[True]) -> tuple[Point, float]: ...
 
-    def closest_point(self, point: CoordinateType, return_parameter: bool = False) -> Point | tuple[Point, float]:
+    def closest_point(self, point: PointLike, return_parameter: bool = False) -> Point | tuple[Point, float]:
         """Compute the closest point on the finite curve.
 
         Parameters
@@ -310,6 +312,6 @@ class LineCurve(Curve):
         self._line.transform(transformation)
 
     @staticmethod
-    def _validate_parameter(t: float) -> None:
+    def _validate_parameter(t: RealInput) -> None:
         if t < 0.0 or t > 1.0:
             raise ValueError("The parameter should be in the domain [0, 1].")

@@ -4,9 +4,6 @@ from math import sqrt
 from typing import TYPE_CHECKING
 from typing import Self
 
-from compas._typing import CoordinatesType
-from compas._typing import CoordinateType
-from compas._typing import TriangleMeshInput
 from compas.geometry import Line
 from compas.geometry import Plane
 from compas.geometry import Point
@@ -17,6 +14,11 @@ from compas.geometry import centroid_polyhedron
 from compas.geometry import transform_points
 from compas.geometry import volume_polyhedron
 from compas.tolerance import TOL
+from compas.typing import IndexGroupsLike
+from compas.typing import PointLike
+from compas.typing import PointsLike
+from compas.typing import RealInput
+from compas.typing import VerticesFaces
 
 from ._typing import PlaneType
 from .geometry import Geometry
@@ -41,7 +43,7 @@ def tetrahedron():
     return vertices, faces
 
 
-def _materialize_triangle_mesh(mesh: TriangleMeshInput) -> tuple[list[list[float]], list[list[int]]]:
+def _materialize_triangle_mesh(mesh: VerticesFaces) -> tuple[list[list[float]], list[list[int]]]:
     """Materialize structural buffers for the owned Polyhedron representation."""
     vertices, triangles = mesh
     return (
@@ -208,7 +210,7 @@ class Polyhedron(Geometry):
     # Dunder methods
     # ==========================================================================
 
-    def __init__(self, vertices: CoordinatesType, faces: list[list[int]], name: str | None = None) -> None:
+    def __init__(self, vertices: PointsLike, faces: IndexGroupsLike, name: str | None = None) -> None:
         super().__init__(name=name)
         self._boundary = PolygonalSurface(vertices, faces)
         self._volume = 0.0
@@ -231,7 +233,7 @@ class Polyhedron(Geometry):
     def __len__(self) -> int:
         return 2
 
-    def __getitem__(self, key: int) -> list[list[float]] | list[list[int]]:
+    def __getitem__(self, key: int) -> list[list[RealInput]] | list[list[int]]:
         if key == 0:
             return self.vertices
         elif key == 1:
@@ -239,7 +241,7 @@ class Polyhedron(Geometry):
         else:
             raise KeyError
 
-    def __iter__(self) -> Iterator[list[list[float]] | list[list[int]]]:
+    def __iter__(self) -> Iterator[list[list[RealInput]] | list[list[int]]]:
         return iter([self.vertices, self.faces])
 
     def __add__(self, other: "Polyhedron") -> Self:
@@ -273,7 +275,7 @@ class Polyhedron(Geometry):
         return self._boundary
 
     @property
-    def vertices(self) -> list[list[float]]:
+    def vertices(self) -> list[list[RealInput]]:
         """The boundary vertex coordinates."""
         return self.boundary.vertices
 
@@ -369,7 +371,7 @@ class Polyhedron(Geometry):
         return cls(vertices, faces)
 
     @classmethod
-    def from_halfspaces(cls, halfspaces: Sequence[Sequence[float]], interior_point: CoordinateType) -> Self:
+    def from_halfspaces(cls, halfspaces: Sequence[Sequence[float]], interior_point: PointLike) -> Self:
         """Construct a polyhedron from its half-spaces and one interior point.
 
         Parameters
@@ -462,7 +464,7 @@ class Polyhedron(Geometry):
         return cls.from_halfspaces([plane.abcd for plane in planes], interior)
 
     @classmethod
-    def from_convex_hull(cls, points: CoordinatesType) -> Self:
+    def from_convex_hull(cls, points: PointsLike) -> Self:
         """Construct a polyhedron from the convex hull of a set of points.
 
         Parameters
@@ -511,7 +513,7 @@ class Polyhedron(Geometry):
         """
         return self.boundary.triangulated(strategy)
 
-    def to_vertices_and_faces(self) -> tuple[list[list[float]], list[list[int]]]:
+    def to_vertices_and_faces(self) -> tuple[list[list[RealInput]], list[list[int]]]:
         """Return independent copies of the vertices and faces.
 
         Returns
@@ -586,15 +588,14 @@ class Polyhedron(Geometry):
         """Compute the area of the polygonal boundary."""
         return sum(polygon.area() for polygon in self.polygons)
 
-    def volume(self) -> float:
+    def volume(self) -> RealInput:
         """Compute the volume enclosed by the polyhedron."""
         return self._volume
 
     def centroid(self) -> Point:
         """Compute the center of mass of the polyhedron."""
         vertices, faces = self.to_vertices_and_faces()
-        centroid_vertices: list[Sequence[float]] = [vertex for vertex in vertices]
-        x, y, z = centroid_polyhedron((centroid_vertices, faces))
+        x, y, z = centroid_polyhedron((vertices, faces))
         return Point(x, y, z)
 
     def boolean_union(self, other: "Polyhedron") -> Self:
@@ -682,7 +683,7 @@ class Polyhedron(Geometry):
     # Private helpers
     # =============================================================================
 
-    def _triangle_mesh(self) -> TriangleMeshInput:
+    def _triangle_mesh(self) -> VerticesFaces:
         from compas.geometry import EarClipping
         from compas.geometry import FaceTriangulation
 

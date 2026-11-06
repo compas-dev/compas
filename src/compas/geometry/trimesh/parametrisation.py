@@ -1,9 +1,9 @@
-from compas._typing import TriangleMeshInput
 from compas.plugins import PluginNotInstalledError
 from compas.plugins import pluggable
+from compas.typing import VerticesFaces
 
 
-def trimesh_harmonic(mesh: TriangleMeshInput) -> list[list[float]]:
+def trimesh_harmonic(mesh: VerticesFaces) -> list[list[float]]:
     """Compute a harmonic parametrisation with a fixed circular boundary.
 
     Parameters
@@ -25,11 +25,11 @@ def trimesh_harmonic(mesh: TriangleMeshInput) -> list[list[float]]:
 
 
 @pluggable(category="trimesh")
-def _trimesh_harmonic(mesh: TriangleMeshInput) -> list[list[float]]:
+def _trimesh_harmonic(mesh: VerticesFaces) -> list[list[float]]:
     raise PluginNotInstalledError
 
 
-def trimesh_lscm(mesh: TriangleMeshInput) -> list[list[float]]:
+def trimesh_lscm(mesh: VerticesFaces) -> list[list[float]]:
     """Compute a least-squares conformal parametrisation.
 
     Parameters
@@ -51,5 +51,5 @@ def trimesh_lscm(mesh: TriangleMeshInput) -> list[list[float]]:
 
 
 @pluggable(category="trimesh")
-def _trimesh_lscm(mesh: TriangleMeshInput) -> list[list[float]]:
+def _trimesh_lscm(mesh: VerticesFaces) -> list[list[float]]:
     raise PluginNotInstalledError

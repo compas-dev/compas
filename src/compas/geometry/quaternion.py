@@ -3,9 +3,11 @@ from collections.abc import Iterator
 from collections.abc import Sequence
 from sys import float_info
 from typing import TYPE_CHECKING
-from typing import Protocol
 from typing import Self
-from typing import runtime_checkable
+from typing import SupportsFloat
+from typing import overload
+
+import numpy as np
 
 from compas.geometry import Geometry
 from compas.geometry import Rotation
@@ -17,19 +19,14 @@ from compas.linalg.quaternions import quaternion_norm
 from compas.linalg.quaternions import quaternion_unitize
 from compas.linalg.transformations import quaternion_from_matrix
 from compas.tolerance import TOL
+from compas.typing import CoordinateProtocol
+from compas.typing import RealInput
 
 if TYPE_CHECKING:
     from compas.geometry import Frame
 
 
-@runtime_checkable
-class _QuaternionComponents(Protocol):
-    def __len__(self) -> int: ...
-
-    def __iter__(self) -> Iterator[float]: ...
-
-
-class Quaternion(Geometry):
+class Quaternion(Geometry, CoordinateProtocol[float]):
     r"""A quaternion represented by one scalar and three vector components.
 
     Parameters
@@ -91,7 +88,7 @@ class Quaternion(Geometry):
     # Dunder methods
     # ==========================================================================
 
-    def __init__(self, w: float, x: float, y: float, z: float, name: str | None = None) -> None:
+    def __init__(self, w: SupportsFloat, x: SupportsFloat, y: SupportsFloat, z: SupportsFloat, name: str | None = None) -> None:
         super().__init__(name=name)
         self._w = 0.0
         self._x = 0.0
@@ -115,11 +112,19 @@ class Quaternion(Geometry):
         )
 
     def __eq__(self, other: object) -> bool:
-        if not isinstance(other, _QuaternionComponents) or len(self) != len(other):
+        if not isinstance(other, CoordinateProtocol) or len(self) != len(other):
             return False
         return TOL.is_allclose(self, other, rtol=0)
 
-    def __getitem__(self, key: int) -> float:
+    @overload
+    def __getitem__(self, key: int) -> float: ...
+
+    @overload
+    def __getitem__(self, key: slice) -> list[float]: ...
+
+    def __getitem__(self, key: int | slice) -> float | list[float]:
+        if isinstance(key, slice):
+            return self.wxyz[key]
         if key == 0:
             return self.w
         if key == 1:
@@ -130,7 +135,7 @@ class Quaternion(Geometry):
             return self.z
         raise KeyError(key)
 
-    def __setitem__(self, key: int, value: float) -> None:
+    def __setitem__(self, key: int, value: SupportsFloat) -> None:
         if key == 0:
             self.w = value
             return
@@ -192,7 +197,7 @@ class Quaternion(Geometry):
         return self._w
 
     @w.setter
-    def w(self, w: float) -> None:
+    def w(self, w: SupportsFloat) -> None:
         self._w = float(w)
 
     @property
@@ -201,7 +206,7 @@ class Quaternion(Geometry):
         return self._x
 
     @x.setter
-    def x(self, x: float) -> None:
+    def x(self, x: SupportsFloat) -> None:
         self._x = float(x)
 
     @property
@@ -210,7 +215,7 @@ class Quaternion(Geometry):
         return self._y
 
     @y.setter
-    def y(self, y: float) -> None:
+    def y(self, y: SupportsFloat) -> None:
         self._y = float(y)
 
     @property
@@ -219,7 +224,7 @@ class Quaternion(Geometry):
         return self._z
 
     @z.setter
-    def z(self, z: float) -> None:
+    def z(self, z: SupportsFloat) -> None:
         self._z = float(z)
 
     @property
@@ -238,7 +243,7 @@ class Quaternion(Geometry):
         return quaternion_norm(self)
 
     @property
-    def is_unit(self) -> bool:
+    def is_unit(self) -> bool | np.bool_:
         """Whether the quaternion has unit length within the tolerance."""
         return quaternion_is_unit(self)
 
@@ -275,7 +280,7 @@ class Quaternion(Geometry):
         return cls(w, x, y, z)
 
     @classmethod
-    def from_matrix(cls, M: Sequence[Sequence[float]]) -> Self:
+    def from_matrix(cls, M: Sequence[Sequence[RealInput]]) -> Self:
         """Create a Quaternion from a transformation matrix.
 
         Parameters

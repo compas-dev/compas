@@ -4,15 +4,15 @@ from typing import TYPE_CHECKING
 from typing import Literal
 from typing import overload
 
-from compas._typing import CoordinatesType
-from compas._typing import CoordinateType
 from compas.plugins import pluggable
+from compas.typing import PointLike
+from compas.typing import PointsLike
 
 if TYPE_CHECKING:
     from numpy.typing import NDArray
 
 
-def bounding_box(points: Iterable[CoordinateType]) -> list[list[float]]:
+def bounding_box(points: Iterable[PointLike]) -> list[list[float]]:
     """Compute the axis-aligned bounding box of a collection of points.
 
     Parameters
@@ -50,7 +50,7 @@ def bounding_box(points: Iterable[CoordinateType]) -> list[list[float]]:
     ]
 
 
-def bounding_box_xy(points: Iterable[CoordinateType]) -> list[list[float]]:
+def bounding_box_xy(points: Iterable[PointLike]) -> list[list[float]]:
     """Compute the axis-aligned bounding box of points in the XY plane.
 
     Parameters
@@ -87,7 +87,7 @@ def bounding_box_xy(points: Iterable[CoordinateType]) -> list[list[float]]:
 
 
 @pluggable(category="geometry")
-def oriented_bounding_box(points: CoordinatesType, tol: float | None = None) -> list[list[float]]:
+def oriented_bounding_box(points: PointsLike, tol: float | None = None) -> list[list[float]]:
     """Compute the minimum-volume oriented bounding box of a collection of points.
 
     Parameters
@@ -152,7 +152,7 @@ def oriented_bounding_box(points: CoordinatesType, tol: float | None = None) -> 
     return local_to_world_coordinates_numpy(frame, aligned).tolist()
 
 
-def oriented_bounding_box_xy(points: CoordinatesType) -> list[list[float]]:
+def oriented_bounding_box_xy(points: PointsLike) -> list[list[float]]:
     """Compute the minimum-area oriented bounding box of points in the XY plane.
 
     Parameters

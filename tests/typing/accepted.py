@@ -1,29 +1,45 @@
 from collections.abc import Iterator
+from decimal import Decimal
+from typing import SupportsFloat
 from typing import assert_type
+from typing import overload
 
 import numpy as np
 
-from compas._typing import CoordinateInput
-from compas._typing import CoordinatesCollectionInput
-from compas._typing import CoordinatesInput
-from compas._typing import Float64Array
-from compas._typing import FloatingArray
-from compas._typing import IndicesInput
-from compas._typing import Int32Array
-from compas._typing import IntegerArray
-from compas._typing import IntegralInput
-from compas._typing import NumericArray
-from compas._typing import RealInput
-from compas._typing import TriangleMeshInput
+from compas.typing import PointLike
+from compas.typing import PointGroupsLike
+from compas.typing import PointsLike
+from compas.typing import Float64Array
+from compas.typing import FloatSequenceLike
+from compas.typing import FloatingArray
+from compas.typing import IndicesLike
+from compas.typing import Int32Array
+from compas.typing import IntegerArray
+from compas.typing import IntegralInput
+from compas.typing import NumericArray
+from compas.typing import RealInput
+from compas.typing import VectorLike
+from compas.typing import VerticesFaces
 from compas.geometry import Point
+from compas.geometry import Frame
+from compas.geometry import Line
+from compas.geometry import Plane
+from compas.geometry import Quaternion
+from compas.geometry import Transformation
 from compas.geometry import ConstrainedDelaunay
+from compas.geometry import Circle
 from compas.geometry import Delaunay
 from compas.geometry import FaceTriangulation
 from compas.geometry import Tessellation
 from compas.geometry import Vector
 from compas.geometry import boolean_union_mesh_mesh
+from compas.geometry import closest_point_on_polygon_xy
+from compas.geometry import closest_point_on_polyline_xy
 from compas.geometry import intersection_mesh_mesh
+from compas.geometry import intersection_line_plane
+from compas.geometry import intersection_plane_circle
 from compas.geometry import intersection_ray_mesh
+from compas.geometry import orthonormalize_axes
 from compas.geometry import triangulate_planar_domain
 from compas.geometry import triangulate_planar_points
 from compas.geometry import trimesh_remesh
@@ -35,6 +51,7 @@ from compas.geometry import trimesh_harmonic
 from compas.geometry import trimesh_isolines
 from compas.geometry import trimesh_lscm
 from compas.geometry import trimesh_massmatrix
+from compas.geometry import transform_points
 from compas.geometry.triangulation import triangulate_polygon
 from compas.datastructures import Mesh
 
@@ -46,7 +63,13 @@ class CustomCoordinate:
     def __len__(self) -> int:
         return len(self.values)
 
-    def __getitem__(self, key: int) -> float:
+    @overload
+    def __getitem__(self, key: int) -> float: ...
+
+    @overload
+    def __getitem__(self, key: slice) -> tuple[float, ...]: ...
+
+    def __getitem__(self, key: int | slice) -> float | tuple[float, ...]:
         return self.values[key]
 
     def __iter__(self) -> Iterator[float]:
@@ -117,8 +140,17 @@ float64_array: Float64Array = np.asarray([1, 2, 3], dtype=np.float64)
 int32_array: Int32Array = np.asarray([1, 2, 3], dtype=np.int32)
 int64_array: IntegerArray = np.asarray([1, 2, 3], dtype=np.int64)
 numeric_arrays: list[NumericArray] = [float32_array, float64_array, int32_array, int64_array]
+memoryview_input: PointLike = memoryview(np.asarray([1.0, 2.0, 3.0], dtype=np.float64))
 
-coordinate_inputs: list[CoordinateInput] = [
+
+def accepts_supports_float(value: SupportsFloat) -> None:
+    pass
+
+
+for real_input_value in real_inputs:
+    accepts_supports_float(real_input_value)
+
+coordinate_inputs: list[PointLike] = [
     [1, 2, 3],
     (1.0, 2.0, 3.0),
     Point(1, 2, 3),
@@ -127,18 +159,67 @@ coordinate_inputs: list[CoordinateInput] = [
     float32_array,
     int64_array,
 ]
-coordinates_inputs: list[CoordinatesInput] = [coordinate_inputs, np.asarray([[0, 0, 0], [1, 1, 1]], dtype=np.float64)]
-coordinates_collection_inputs: list[CoordinatesCollectionInput] = [
+vector_inputs: list[VectorLike] = coordinate_inputs
+
+
+def coordinate_arithmetic(coordinate: PointLike) -> RealInput:
+    subsection: FloatSequenceLike = coordinate[:2]
+    return subsection[0] + coordinate[2]
+
+
+def assign_structural_components(point: PointLike, vector: VectorLike) -> None:
+    target_point = Point(0, 0, 0)
+    target_vector = Vector(0, 0, 0)
+    target_point.x = point[0]
+    target_vector.x = vector[0]
+
+
+Plane(float32_array, int64_array)
+Line(float32_array, float64_array)
+Frame(float32_array, float64_array, int64_array)
+Circle(np.float32(1.0))
+Transformation.from_euler_angles(float32_array)
+Transformation.from_euler_angles([Decimal("0"), Decimal("0"), Decimal("0")])
+quaternion = Quaternion(1, 0, 0, 0)
+quaternion_input: FloatSequenceLike = quaternion
+assert_type(quaternion[:2], list[float])
+intersection_line_plane(np.asarray([[0, 0, -1], [0, 0, 1]], dtype=np.float32), np.asarray([[0, 0, 0], [0, 0, 1]], dtype=np.int64))
+intersection_plane_circle(
+    np.asarray([[0, 0, 0], [0, 0, 1]], dtype=np.float32),
+    (np.asarray([[0, 0, 0], [0, 0, 1]], dtype=np.float64), np.float32(1.0)),
+)
+assert_type(
+    closest_point_on_polyline_xy(float32_array, np.asarray([[0, 0, 0], [1, 0, 0]], dtype=np.float32)),
+    list[RealInput],
+)
+assert_type(
+    closest_point_on_polygon_xy(float32_array, np.asarray([[0, 0, 0], [1, 0, 0], [0, 1, 0]], dtype=np.float32)),
+    list[RealInput],
+)
+assert_type(orthonormalize_axes(float32_array, int64_array), tuple[list[RealInput], list[RealInput]])
+transform_points(np.asarray([[1, 2, 3]], dtype=np.float32), np.eye(4, dtype=np.float64))
+Point(1, 2, 3).transform(np.eye(4, dtype=np.float64))
+Transformation([[1.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 1.0, 0.0], [0.0, 0.0, 0.0, 1.0]])
+Transformation(
+    [
+        [np.float64(1), np.float64(0), np.float64(0), np.float64(0)],
+        [np.float64(0), np.float64(1), np.float64(0), np.float64(0)],
+        [np.float64(0), np.float64(0), np.float64(1), np.float64(0)],
+        [np.float64(0), np.float64(0), np.float64(0), np.float64(1)],
+    ]
+)
+coordinates_inputs: list[PointsLike] = [coordinate_inputs, np.asarray([[0, 0, 0], [1, 1, 1]], dtype=np.float64)]
+coordinates_collection_inputs: list[PointGroupsLike] = [
     [coordinates_inputs[1]],
     np.asarray([[[0, 0, 0], [1, 0, 0], [0, 1, 0]]], dtype=np.float32),
 ]
-indices_inputs: list[IndicesInput] = [[0, 1, 2], (np.int32(0), np.int64(1)), int32_array, int64_array]
+indices_inputs: list[IndicesLike] = [[0, 1, 2], (np.int32(0), np.int64(1)), int32_array, int64_array]
 
 vertices32 = np.asarray([[0, 0, 0], [1, 0, 0], [0, 1, 0]], dtype=np.float32)
 triangles32 = np.asarray([[0, 1, 2]], dtype=np.int32)
 vertices64 = np.asarray([[0, 0, 0], [1, 0, 0], [0, 1, 0]], dtype=np.float64)
 triangles64 = np.asarray([[0, 1, 2]], dtype=np.int64)
-triangle_mesh_inputs: list[TriangleMeshInput] = [
+triangle_mesh_inputs: list[VerticesFaces] = [
     ([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0]], [[0, 1, 2]]),
     (((0.0, 0.0, 0.0), (1.0, 0.0, 0.0), (0.0, 1.0, 0.0)), ((0, 1, 2),)),
     (vertices32, triangles32),

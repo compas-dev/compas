@@ -1,9 +1,6 @@
 from typing import TYPE_CHECKING
 from typing import Self
 
-from compas._typing import CoordinatesType
-from compas._typing import CoordinateType
-from compas._typing import FloatSequenceType
 from compas.itertools import flatten
 from compas.linalg.transformations import axis_and_angle_from_matrix
 from compas.linalg.transformations import basis_vectors_from_matrix
@@ -17,8 +14,12 @@ from compas.linalg.vectors import cross_vectors
 from compas.linalg.vectors import length_vector
 from compas.linalg.vectors import normalize_vector
 from compas.tolerance import TOL
+from compas.typing import FloatSequenceLike
+from compas.typing import PointLike
+from compas.typing import PointsLike
+from compas.typing import VectorLike
 
-from .transformation import Matrix
+from .transformation import MatrixInput
 from .transformation import Transformation
 
 if TYPE_CHECKING:
@@ -67,7 +68,7 @@ class Rotation(Transformation):
     # Dunder methods
     # ==========================================================================
 
-    def __init__(self, matrix: Matrix | None = None, check: bool = False, name: str | None = None) -> None:
+    def __init__(self, matrix: MatrixInput | None = None, check: bool = False, name: str | None = None) -> None:
         if matrix and check:
             _, _, angles, _, _ = decompose_matrix(matrix)
             if not TOL.is_allclose(flatten(matrix), flatten(matrix_from_euler_angles(angles))):
@@ -112,7 +113,7 @@ class Rotation(Transformation):
     # ==========================================================================
 
     @classmethod
-    def from_axis_and_angle(cls, axis: CoordinateType, angle: float, point: CoordinateType | None = None) -> Self:
+    def from_axis_and_angle(cls, axis: VectorLike, angle: float, point: PointLike | None = None) -> Self:
         """Construct a rotation transformation from a rotation axis and an angle and an optional point of rotation.
 
         The rotation is based on the right hand rule, i.e. anti-clockwise if the
@@ -153,7 +154,7 @@ class Rotation(Transformation):
         return cls(matrix)
 
     @classmethod
-    def from_basis_vectors(cls, xaxis: CoordinateType, yaxis: CoordinateType) -> Self:
+    def from_basis_vectors(cls, xaxis: VectorLike, yaxis: VectorLike) -> Self:
         """Construct a rotation transformation from basis vectors (= orthonormal vectors).
 
         Parameters
@@ -188,7 +189,7 @@ class Rotation(Transformation):
         return cls(matrix)
 
     @classmethod
-    def from_frame(cls, frame: CoordinatesType) -> Self:
+    def from_frame(cls, frame: PointsLike) -> Self:
         """Construct a rotation transformation from world XY to a frame.
 
         Parameters
@@ -223,7 +224,7 @@ class Rotation(Transformation):
         return cls(matrix)
 
     @classmethod
-    def from_quaternion(cls, quaternion: FloatSequenceType) -> Self:
+    def from_quaternion(cls, quaternion: FloatSequenceLike) -> Self:
         """Construct a rotation transformation from quaternion coefficients.
 
         Parameters
@@ -250,7 +251,7 @@ class Rotation(Transformation):
         return cls(matrix)
 
     @classmethod
-    def from_axis_angle_vector(cls, axis_angle_vector: CoordinateType, point: CoordinateType = (0.0, 0.0, 0.0)) -> Self:
+    def from_axis_angle_vector(cls, axis_angle_vector: VectorLike, point: PointLike = (0.0, 0.0, 0.0)) -> Self:
         """Construct a rotation transformation from an axis-angle vector.
 
         Parameters

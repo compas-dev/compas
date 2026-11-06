@@ -12,10 +12,10 @@ from typing import TypeVar
 if TYPE_CHECKING:
     from .mesh import Mesh
 
-MeshType = TypeVar("MeshType", bound="Mesh")
+MeshT = TypeVar("MeshT", bound="Mesh")
 
 
-def mesh_conway_dual(mesh: MeshType) -> MeshType:
+def mesh_conway_dual(mesh: MeshT) -> MeshT:
     """Generates the dual mesh from a seed mesh.
 
     Parameters
@@ -61,7 +61,7 @@ def mesh_conway_dual(mesh: MeshType) -> MeshType:
     return cls.from_vertices_and_faces(vertices, faces)
 
 
-def mesh_conway_join(mesh: MeshType) -> MeshType:
+def mesh_conway_join(mesh: MeshT) -> MeshT:
     """Generates the join mesh from a seed mesh.
 
     Parameters
@@ -115,7 +115,7 @@ def mesh_conway_join(mesh: MeshType) -> MeshType:
     return join_mesh
 
 
-def mesh_conway_ambo(mesh: MeshType) -> MeshType:
+def mesh_conway_ambo(mesh: MeshT) -> MeshT:
     """Generates the ambo mesh from a seed mesh.
 
     Parameters
@@ -153,7 +153,7 @@ def mesh_conway_ambo(mesh: MeshType) -> MeshType:
     return mesh_conway_dual(mesh_conway_join(mesh))
 
 
-def mesh_conway_kis(mesh: MeshType) -> MeshType:
+def mesh_conway_kis(mesh: MeshT) -> MeshT:
     """Generates the kis mesh from a seed mesh.
 
     Parameters
@@ -198,7 +198,7 @@ def mesh_conway_kis(mesh: MeshType) -> MeshType:
     return cls.from_vertices_and_faces(vertices, faces)
 
 
-def mesh_conway_needle(mesh: MeshType) -> MeshType:
+def mesh_conway_needle(mesh: MeshT) -> MeshT:
     """Generates the needle mesh from a seed mesh.
 
     Parameters
@@ -236,7 +236,7 @@ def mesh_conway_needle(mesh: MeshType) -> MeshType:
     return mesh_conway_kis(mesh_conway_dual(mesh))
 
 
-def mesh_conway_zip(mesh: MeshType) -> MeshType:
+def mesh_conway_zip(mesh: MeshT) -> MeshT:
     """Generates the zip mesh from a seed mesh.
 
     Parameters
@@ -274,7 +274,7 @@ def mesh_conway_zip(mesh: MeshType) -> MeshType:
     return mesh_conway_dual(mesh_conway_kis(mesh))
 
 
-def mesh_conway_truncate(mesh: MeshType) -> MeshType:
+def mesh_conway_truncate(mesh: MeshT) -> MeshT:
     """Generates the truncate mesh from a seed mesh.
 
     Parameters
@@ -313,7 +313,7 @@ def mesh_conway_truncate(mesh: MeshType) -> MeshType:
     return mesh_conway_dual(mesh_conway_kis(mesh_conway_dual(mesh)))
 
 
-def mesh_conway_ortho(mesh: MeshType) -> MeshType:
+def mesh_conway_ortho(mesh: MeshT) -> MeshT:
     """Generates the ortho mesh from a seed mesh.
 
     Parameters
@@ -351,7 +351,7 @@ def mesh_conway_ortho(mesh: MeshType) -> MeshType:
     return mesh_conway_join(mesh_conway_join(mesh))
 
 
-def mesh_conway_expand(mesh: MeshType) -> MeshType:
+def mesh_conway_expand(mesh: MeshT) -> MeshT:
     """Generates the expand mesh from a seed mesh.
 
     Parameters
@@ -389,7 +389,7 @@ def mesh_conway_expand(mesh: MeshType) -> MeshType:
     return mesh_conway_ambo(mesh_conway_ambo(mesh))
 
 
-def mesh_conway_gyro(mesh: MeshType) -> MeshType:
+def mesh_conway_gyro(mesh: MeshT) -> MeshT:
     """Generates the gyro mesh from a seed mesh.
 
     Parameters
@@ -448,7 +448,7 @@ def mesh_conway_gyro(mesh: MeshType) -> MeshType:
     return cls.from_vertices_and_faces(vertices, faces)
 
 
-def mesh_conway_snub(mesh: MeshType) -> MeshType:
+def mesh_conway_snub(mesh: MeshT) -> MeshT:
     """Generates the snub mesh from a seed mesh.
 
     Parameters
@@ -486,7 +486,7 @@ def mesh_conway_snub(mesh: MeshType) -> MeshType:
     return mesh_conway_dual(mesh_conway_gyro(mesh_conway_dual(mesh)))
 
 
-def mesh_conway_meta(mesh: MeshType) -> MeshType:
+def mesh_conway_meta(mesh: MeshT) -> MeshT:
     """Generates the meta mesh from a seed mesh.
 
     Parameters
@@ -524,7 +524,7 @@ def mesh_conway_meta(mesh: MeshType) -> MeshType:
     return mesh_conway_kis(mesh_conway_join(mesh))
 
 
-def mesh_conway_bevel(mesh: MeshType) -> MeshType:
+def mesh_conway_bevel(mesh: MeshT) -> MeshT:
     """Generates the bevel mesh from a seed mesh.
 
     Parameters

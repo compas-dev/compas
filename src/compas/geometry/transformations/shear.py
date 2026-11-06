@@ -1,15 +1,15 @@
-from collections.abc import Sequence
 from typing import Self
 
-from compas._typing import CoordinatesType
-from compas._typing import CoordinateType
 from compas.itertools import flatten
 from compas.linalg.transformations import decompose_matrix
 from compas.linalg.transformations import matrix_from_shear
 from compas.linalg.transformations import matrix_from_shear_entries
 from compas.tolerance import TOL
+from compas.typing import FloatSequenceLike
+from compas.typing import PointsLike
+from compas.typing import VectorLike
 
-from .transformation import Matrix
+from .transformation import MatrixInput
 from .transformation import Transformation
 
 
@@ -41,7 +41,7 @@ class Shear(Transformation):
     # Dunder methods
     # ==========================================================================
 
-    def __init__(self, matrix: Matrix | None = None, check: bool = False, name: str | None = None) -> None:
+    def __init__(self, matrix: MatrixInput | None = None, check: bool = False, name: str | None = None) -> None:
         if matrix and check:
             _, shear, _, _, _ = decompose_matrix(matrix)
             if not TOL.is_allclose(flatten(matrix), flatten(matrix_from_shear_entries(shear))):
@@ -53,7 +53,7 @@ class Shear(Transformation):
     # ==========================================================================
 
     @classmethod
-    def from_angle_direction_plane(cls, angle: float, direction: CoordinateType, plane: CoordinatesType) -> Self:
+    def from_angle_direction_plane(cls, angle: float, direction: VectorLike, plane: PointsLike) -> Self:
         """Construct a shear transformation from an angle, direction and plane.
 
         Parameters
@@ -91,7 +91,7 @@ class Shear(Transformation):
         return cls(matrix)
 
     @classmethod
-    def from_entries(cls, shear_entries: Sequence[float]) -> Self:
+    def from_entries(cls, shear_entries: FloatSequenceLike) -> Self:
         """Construct a shear transformation from the 3 factors for x-y, x-z, and y-z axes.
 
         Parameters

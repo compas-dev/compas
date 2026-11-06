@@ -4,6 +4,8 @@ from math import sin
 from typing import Any
 from typing import Self
 
+import numpy as np
+
 from compas.geometry import Circle
 from compas.geometry import Frame
 from compas.geometry import Point
@@ -210,17 +212,17 @@ class Arc(Curve):
         return self.diameter * pi
 
     @property
-    def is_circle(self) -> bool:
+    def is_circle(self) -> bool | np.bool_:
         """Whether the arc covers a complete circle."""
         return TOL.is_close(abs(self.angle), PI2)
 
     @property
-    def is_closed(self) -> bool:
+    def is_closed(self) -> bool | np.bool_:
         """Whether the arc covers a complete circle."""
         return self.is_circle
 
     @property
-    def is_periodic(self) -> bool:
+    def is_periodic(self) -> bool | np.bool_:
         """Whether the arc covers a complete circle."""
         return self.is_circle
 

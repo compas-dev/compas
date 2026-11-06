@@ -2,10 +2,10 @@ from collections.abc import Sequence
 from typing import TYPE_CHECKING
 from typing import Self
 
-from compas._typing import CoordinatesType
 from compas.geometry import Geometry
 from compas.geometry import Polygon
 from compas.geometry import is_coplanar
+from compas.typing import PointsLike
 
 from .triangulation_earclip import _earclip_boundaries
 
@@ -74,8 +74,8 @@ class PlanarRegion(Geometry):
 
     def __init__(
         self,
-        outer: Polygon | CoordinatesType,
-        holes: Sequence[Polygon | CoordinatesType] | None = None,
+        outer: Polygon | PointsLike,
+        holes: Sequence[Polygon | PointsLike] | None = None,
         name: str | None = None,
     ) -> None:
         super().__init__(name=name)
@@ -222,7 +222,7 @@ class PlanarRegion(Geometry):
     # =============================================================================
 
     @staticmethod
-    def _copy_boundary(boundary: Polygon | CoordinatesType) -> Polygon:
+    def _copy_boundary(boundary: Polygon | PointsLike) -> Polygon:
         points = boundary.points if isinstance(boundary, Polygon) else boundary
         return Polygon(points)
 

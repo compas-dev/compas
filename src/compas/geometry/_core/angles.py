@@ -3,7 +3,6 @@ from math import acos
 from math import degrees
 from math import pi
 
-from compas._typing import CoordinateType
 from compas.linalg.vectors import cross_vectors
 from compas.linalg.vectors import dot_vectors
 from compas.linalg.vectors import dot_vectors_xy
@@ -12,9 +11,11 @@ from compas.linalg.vectors import length_vector_xy
 from compas.linalg.vectors import subtract_vectors
 from compas.linalg.vectors import subtract_vectors_xy
 from compas.tolerance import TOL
+from compas.typing import PointLike
+from compas.typing import VectorLike
 
 
-def angle_vectors(u: CoordinateType, v: CoordinateType, deg: bool = False, tol: float | None = None) -> float:
+def angle_vectors(u: VectorLike, v: VectorLike, deg: bool = False, tol: float | None = None) -> float:
     """Compute the smallest angle between two vectors.
 
     Parameters
@@ -73,9 +74,9 @@ def angle_vectors(u: CoordinateType, v: CoordinateType, deg: bool = False, tol: 
 
 
 def angle_vectors_signed(
-    u: CoordinateType,
-    v: CoordinateType,
-    normal: CoordinateType,
+    u: VectorLike,
+    v: VectorLike,
+    normal: VectorLike,
     deg: bool = False,
     tol: float | None = None,
 ) -> float:
@@ -167,7 +168,7 @@ def angle_vectors_projected(
     return angle_vectors_signed(u_cross, v_cross, normal, deg, tol)
 
 
-def angle_vectors_xy(u: Sequence[float], v: Sequence[float], deg: bool = False, tol: float | None = None) -> float:
+def angle_vectors_xy(u: VectorLike, v: VectorLike, deg: bool = False, tol: float | None = None) -> float:
     """Compute the smallest angle between the XY components of two vectors.
 
     Parameters
@@ -199,7 +200,7 @@ def angle_vectors_xy(u: Sequence[float], v: Sequence[float], deg: bool = False, 
     return acos(a)
 
 
-def angle_points(a: CoordinateType, b: CoordinateType, c: CoordinateType, deg: bool = False) -> float:
+def angle_points(a: PointLike, b: PointLike, c: PointLike, deg: bool = False) -> float:
     r"""Compute the smallest angle between the vectors defined by three points.
 
     Parameters
@@ -273,7 +274,7 @@ def angle_points_xy(a: Sequence[float], b: Sequence[float], c: Sequence[float], 
     return angle_vectors_xy(u, v, deg)
 
 
-def angles_vectors(u: CoordinateType, v: CoordinateType, deg: bool = False) -> tuple[float, float]:
+def angles_vectors(u: VectorLike, v: VectorLike, deg: bool = False) -> tuple[float, float]:
     """Compute the the 2 angles formed by a pair of vectors.
 
     Parameters
@@ -298,7 +299,7 @@ def angles_vectors(u: CoordinateType, v: CoordinateType, deg: bool = False) -> t
     return a, pi * 2 - a
 
 
-def angles_vectors_xy(u: Sequence[float], v: Sequence[float], deg: bool = False) -> tuple[float, float]:
+def angles_vectors_xy(u: VectorLike, v: VectorLike, deg: bool = False) -> tuple[float, float]:
     """Compute the angles between the XY components of two vectors.
 
     Parameters

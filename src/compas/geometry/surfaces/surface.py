@@ -8,8 +8,6 @@ from typing import TypeVar
 from typing import overload
 
 import compas.geometry
-from compas._typing import CoordinateType
-from compas._typing import FilePath
 from compas.geometry import Frame
 from compas.geometry import Geometry
 from compas.geometry import Point
@@ -20,6 +18,8 @@ from compas.geometry import Vector
 from compas.itertools import linspace
 from compas.plugins import PluginNotInstalledError
 from compas.plugins import pluggable
+from compas.typing import FilePath
+from compas.typing import PointLike
 
 if TYPE_CHECKING:
     from compas.geometry import Brep
@@ -110,7 +110,7 @@ class Surface(Geometry):
         return self.frame.point
 
     @point.setter
-    def point(self, point: CoordinateType) -> None:
+    def point(self, point: PointLike) -> None:
         self.frame.point = point
 
     @property
@@ -200,7 +200,7 @@ class Surface(Geometry):
         nv: int,
         domain_u: tuple[float, float],
         domain_v: tuple[float, float],
-    ) -> list[CoordinateType]:
+    ) -> list[PointLike]:
         parameters = product(
             linspace(domain_u[0], domain_u[1], nu + 1),
             linspace(domain_v[0], domain_v[1], nv + 1),
@@ -251,7 +251,7 @@ class Surface(Geometry):
     def tessellate(
         self,
         strategy: TessellationStrategy | None = None,
-    ) -> "Tessellation[list[CoordinateType], list[list[int]]]":
+    ) -> "Tessellation[list[PointLike], list[list[int]]]":
         """Tessellate the surface.
 
         Parameters
@@ -490,18 +490,18 @@ class Surface(Geometry):
         raise NotImplementedError
 
     @overload
-    def closest_point(self, point: CoordinateType, return_parameters: Literal[False] = False) -> Point | None: ...
+    def closest_point(self, point: PointLike, return_parameters: Literal[False] = False) -> Point | None: ...
 
     @overload
     def closest_point(
         self,
-        point: CoordinateType,
+        point: PointLike,
         return_parameters: Literal[True],
     ) -> tuple[Point, tuple[float, float]] | None: ...
 
     def closest_point(
         self,
-        point: CoordinateType,
+        point: PointLike,
         return_parameters: bool = False,
     ) -> Point | tuple[Point, tuple[float, float]] | None:
         """Compute the closest point on the surface to a given point.

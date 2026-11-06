@@ -1,9 +1,12 @@
 from collections.abc import Iterator
 from collections.abc import Sequence
 from typing import Self
+from typing import SupportsFloat
 from typing import overload
 
-from compas._typing import Coordinate
+from numpy import floating
+from numpy import integer
+
 from compas.geometry import Geometry
 from compas.geometry import angle_vectors
 from compas.geometry import angle_vectors_signed
@@ -14,12 +17,15 @@ from compas.linalg.vectors import dot_vectors
 from compas.linalg.vectors import length_vector
 from compas.linalg.vectors import subtract_vectors
 from compas.tolerance import TOL
+from compas.typing import CoordinateProtocol
+from compas.typing import PointLike
+from compas.typing import RealInput
+from compas.typing import VectorLike
 
-from ._typing import CoordinateType
 from ._typing import TransformationType
 
 
-class Vector(Geometry):
+class Vector(Geometry, CoordinateProtocol[float]):
     """A vector is defined by XYZ components and a homogenisation factor.
 
     Parameters
@@ -132,7 +138,7 @@ class Vector(Geometry):
     # Dunder methods
     # ==========================================================================
 
-    def __init__(self, x: float, y: float, z: float = 0.0, name: str | None = None) -> None:
+    def __init__(self, x: SupportsFloat, y: SupportsFloat, z: SupportsFloat = 0.0, name: str | None = None) -> None:
         super().__init__(name=name)
         self._x = 0.0
         self._y = 0.0
@@ -179,7 +185,7 @@ class Vector(Geometry):
             return self.z
         raise IndexError("Vector index out of range.")
 
-    def __setitem__(self, key: int, value: float) -> None:
+    def __setitem__(self, key: int, value: SupportsFloat) -> None:
         if key == 0 or key == -3:
             self.x = value
             return
@@ -195,11 +201,11 @@ class Vector(Geometry):
         return iter([self.x, self.y, self.z])
 
     def __eq__(self, other: object) -> bool:
-        if not isinstance(other, Coordinate) or len(other) != 3:
+        if not isinstance(other, CoordinateProtocol) or len(other) != 3:
             return False
         return TOL.is_allclose(self, other)
 
-    def __add__(self, other: CoordinateType) -> "Vector":
+    def __add__(self, other: VectorLike) -> "Vector":
         """Return the coordinate-wise sum of this vector and another coordinate.
 
         Examples
@@ -210,7 +216,7 @@ class Vector(Geometry):
         """
         return Vector(self.x + other[0], self.y + other[1], self.z + other[2])
 
-    def __sub__(self, other: CoordinateType) -> "Vector":
+    def __sub__(self, other: VectorLike) -> "Vector":
         """Return the coordinate-wise difference with another coordinate.
 
         Examples
@@ -221,7 +227,7 @@ class Vector(Geometry):
         """
         return Vector(self.x - other[0], self.y - other[1], self.z - other[2])
 
-    def __mul__(self, other: float | CoordinateType) -> "Vector":
+    def __mul__(self, other: RealInput | VectorLike) -> "Vector":
         """Multiply by a scalar or multiply component-wise by another coordinate.
 
         Examples
@@ -230,7 +236,7 @@ class Vector(Geometry):
         [2.0, 6.0, 12.0]
 
         """
-        if isinstance(other, (int, float)):
+        if isinstance(other, (int, float, integer, floating)):
             return Vector(self.x * other, self.y * other, self.z * other)
 
         try:
@@ -239,7 +245,7 @@ class Vector(Geometry):
         except TypeError:
             raise TypeError("Cannot cast {} {} to Vector".format(other, type(other)))
 
-    def __truediv__(self, other: float | CoordinateType) -> "Vector":
+    def __truediv__(self, other: RealInput | VectorLike) -> "Vector":
         """Divide by a scalar or divide component-wise by another coordinate.
 
         Examples
@@ -248,7 +254,7 @@ class Vector(Geometry):
         [1.0, 2.0, 3.0]
 
         """
-        if isinstance(other, (int, float)):
+        if isinstance(other, (int, float, integer, floating)):
             return Vector(self.x / other, self.y / other, self.z / other)
 
         try:
@@ -263,7 +269,7 @@ class Vector(Geometry):
     def __neg__(self) -> Self:
         return self.scaled(-1.0)
 
-    def __iadd__(self, other: CoordinateType) -> Self:
+    def __iadd__(self, other: VectorLike) -> Self:
         """Add another coordinate to this vector in place and return this vector.
 
         Examples
@@ -279,7 +285,7 @@ class Vector(Geometry):
         self.z += other[2]
         return self
 
-    def __isub__(self, other: CoordinateType) -> Self:
+    def __isub__(self, other: VectorLike) -> Self:
         """Subtract another coordinate from this vector in place and return this vector.
 
         Examples
@@ -295,7 +301,7 @@ class Vector(Geometry):
         self.z -= other[2]
         return self
 
-    def __imul__(self, n: float) -> Self:
+    def __imul__(self, n: RealInput) -> Self:
         """Multiply this vector by a scalar in place and return this vector.
 
         Examples
@@ -311,7 +317,7 @@ class Vector(Geometry):
         self.z *= n
         return self
 
-    def __itruediv__(self, n: float) -> Self:
+    def __itruediv__(self, n: RealInput) -> Self:
         """Divide this vector by a scalar in place and return this vector.
 
         Examples
@@ -327,13 +333,13 @@ class Vector(Geometry):
         self.z /= n
         return self
 
-    def __ipow__(self, n: float) -> Self:
+    def __ipow__(self, n: RealInput) -> Self:
         self.x **= n
         self.y **= n
         self.z **= n
         return self
 
-    def __rmul__(self, other: float | CoordinateType) -> "Vector":
+    def __rmul__(self, other: RealInput | VectorLike) -> "Vector":
         """Multiply by a scalar or component-wise coordinate on the left.
 
         Examples
@@ -344,7 +350,7 @@ class Vector(Geometry):
         """
         return self.__mul__(other)
 
-    def __radd__(self, other: CoordinateType) -> "Vector":
+    def __radd__(self, other: VectorLike) -> "Vector":
         """Return the coordinate-wise sum with another coordinate on the left.
 
         Examples
@@ -355,7 +361,7 @@ class Vector(Geometry):
         """
         return self.__add__(other)
 
-    def __rsub__(self, other: CoordinateType) -> "Vector":
+    def __rsub__(self, other: VectorLike) -> "Vector":
         """Subtract this vector component-wise from a coordinate on the left.
 
         Examples
@@ -370,7 +376,7 @@ class Vector(Geometry):
         except TypeError:
             raise TypeError("Cannot cast {} {} to Vector".format(other, type(other)))
 
-    def __rtruediv__(self, other: CoordinateType) -> "Vector":
+    def __rtruediv__(self, other: VectorLike) -> "Vector":
         """Divide a coordinate on the left component-wise by this vector.
 
         Examples
@@ -394,7 +400,7 @@ class Vector(Geometry):
         return self._x
 
     @x.setter
-    def x(self, x: float) -> None:
+    def x(self, x: SupportsFloat) -> None:
         self._x = float(x)
         self._direction = None
         self._magnitude = None
@@ -404,7 +410,7 @@ class Vector(Geometry):
         return self._y
 
     @y.setter
-    def y(self, y: float) -> None:
+    def y(self, y: SupportsFloat) -> None:
         self._y = float(y)
         self._direction = None
         self._magnitude = None
@@ -414,7 +420,7 @@ class Vector(Geometry):
         return self._z
 
     @z.setter
-    def z(self, z: float) -> None:
+    def z(self, z: SupportsFloat) -> None:
         self._z = float(z)
         self._direction = None
         self._magnitude = None
@@ -491,7 +497,7 @@ class Vector(Geometry):
         return cls(0.0, 0.0, 1.0)
 
     @classmethod
-    def from_start_end(cls, start: CoordinateType, end: CoordinateType) -> Self:
+    def from_start_end(cls, start: PointLike, end: PointLike) -> Self:
         """Construct a vector from start and end points.
 
         Parameters
@@ -522,7 +528,7 @@ class Vector(Geometry):
     # ==========================================================================
 
     @staticmethod
-    def length_vectors(vectors: Sequence[CoordinateType]) -> list[float]:
+    def length_vectors(vectors: Sequence[VectorLike]) -> list[float]:
         """Compute the length of multiple vectors.
 
         Parameters
@@ -545,7 +551,7 @@ class Vector(Geometry):
         return [length_vector(vector) for vector in vectors]
 
     @staticmethod
-    def sum_vectors(vectors: Sequence[CoordinateType]) -> "Vector":
+    def sum_vectors(vectors: Sequence[VectorLike]) -> "Vector":
         """Compute the sum of multiple vectors.
 
         Parameters
@@ -570,7 +576,7 @@ class Vector(Geometry):
         return Vector(data[0], data[1], z)
 
     @staticmethod
-    def dot_vectors(left: Sequence[CoordinateType], right: Sequence[CoordinateType]) -> list[float]:
+    def dot_vectors(left: Sequence[VectorLike], right: Sequence[VectorLike]) -> list[RealInput]:
         """Compute the dot product of two lists of vectors.
 
         Parameters
@@ -595,7 +601,7 @@ class Vector(Geometry):
         return [dot_vectors(u, v) for u, v in zip(left, right)]
 
     @staticmethod
-    def cross_vectors(left: Sequence[CoordinateType], right: Sequence[CoordinateType]) -> list["Vector"]:
+    def cross_vectors(left: Sequence[VectorLike], right: Sequence[VectorLike]) -> list["Vector"]:
         """Compute the cross product of two lists of vectors.
 
         Parameters
@@ -625,7 +631,7 @@ class Vector(Geometry):
         return vectors
 
     @staticmethod
-    def angles_vectors(left: Sequence[CoordinateType], right: Sequence[CoordinateType]) -> list[tuple[float, float]]:
+    def angles_vectors(left: Sequence[VectorLike], right: Sequence[VectorLike]) -> list[tuple[float, float]]:
         """Compute both angles between corresponding pairs of two lists of vectors.
 
         Parameters
@@ -650,7 +656,7 @@ class Vector(Geometry):
         return [angles_vectors(u, v) for u, v in zip(left, right)]
 
     @staticmethod
-    def angle_vectors(left: Sequence[CoordinateType], right: Sequence[CoordinateType]) -> list[float]:
+    def angle_vectors(left: Sequence[VectorLike], right: Sequence[VectorLike]) -> list[float]:
         """Compute the smallest angle between corresponding pairs of two lists of vectors.
 
         Parameters
@@ -791,7 +797,13 @@ class Vector(Geometry):
 
     flipped = inverted
 
-    def dot(self, other: CoordinateType) -> float:
+    @overload
+    def dot(self, other: CoordinateProtocol[float]) -> float: ...
+
+    @overload
+    def dot(self, other: VectorLike) -> RealInput: ...
+
+    def dot(self, other: VectorLike) -> RealInput:
         """The dot product of this vector and another vector.
 
         Parameters
@@ -814,7 +826,7 @@ class Vector(Geometry):
         """
         return dot_vectors(self, other)
 
-    def cross(self, other: CoordinateType) -> "Vector":
+    def cross(self, other: VectorLike) -> "Vector":
         """The cross product of this vector and another vector.
 
         Parameters
@@ -839,7 +851,7 @@ class Vector(Geometry):
         coordinates = cross_vectors(self, other)
         return Vector(coordinates[0], coordinates[1], coordinates[2])
 
-    def angle(self, other: CoordinateType, degrees: bool = False) -> float:
+    def angle(self, other: VectorLike, degrees: bool = False) -> float:
         """Compute the smallest angle between this vector and another vector.
 
         Parameters
@@ -865,7 +877,7 @@ class Vector(Geometry):
         """
         return angle_vectors(self, other, deg=degrees)
 
-    def angle_signed(self, other: CoordinateType, normal: CoordinateType) -> float:
+    def angle_signed(self, other: VectorLike, normal: VectorLike) -> float:
         """Compute the signed angle between this vector and another vector.
 
         Parameters
@@ -893,7 +905,7 @@ class Vector(Geometry):
         """
         return angle_vectors_signed(self, other, normal)
 
-    def angles(self, other: CoordinateType) -> tuple[float, float]:
+    def angles(self, other: VectorLike) -> tuple[float, float]:
         """Compute both angles between this vector and another vector.
 
         Parameters
@@ -917,7 +929,7 @@ class Vector(Geometry):
         """
         return angles_vectors(self, other)
 
-    def component(self, other: CoordinateType) -> "Vector":
+    def component(self, other: VectorLike) -> "Vector":
         """Compute the component of this vector in the direction of another vector.
 
         Parameters
@@ -941,7 +953,7 @@ class Vector(Geometry):
     # Transformations
     # ==========================================================================
 
-    def scale(self, x: float, y: float | None = None, z: float | None = None) -> None:
+    def scale(self, x: RealInput, y: RealInput | None = None, z: RealInput | None = None) -> None:
         """Scale this vector by one or more factors.
 
         Parameters
@@ -971,7 +983,7 @@ class Vector(Geometry):
         self.y *= y
         self.z *= z
 
-    def scaled(self, x: float, y: float | None = None, z: float | None = None) -> Self:
+    def scaled(self, x: RealInput, y: RealInput | None = None, z: RealInput | None = None) -> Self:
         """Return a scaled copy of this vector.
 
         Parameters

@@ -5,8 +5,8 @@ from typing import Self
 from typing import TypeVar
 from typing import overload
 
-from compas._typing import CoordinateType
-from compas._typing import FilePath
+import numpy as np
+
 from compas.geometry import Frame
 from compas.geometry import Geometry
 from compas.geometry import Plane
@@ -14,6 +14,8 @@ from compas.geometry import Transformation
 from compas.itertools import linspace
 from compas.plugins import PluginNotInstalledError
 from compas.plugins import pluggable
+from compas.typing import FilePath
+from compas.typing import PointLike
 
 from .._typing import TransformationType
 
@@ -176,12 +178,12 @@ class Curve(Geometry):
         raise NotImplementedError
 
     @property
-    def is_closed(self) -> bool:
+    def is_closed(self) -> bool | np.bool_:
         """Whether the curve is closed."""
         raise NotImplementedError
 
     @property
-    def is_periodic(self) -> bool:
+    def is_periodic(self) -> bool | np.bool_:
         """Whether the curve is periodic."""
         raise NotImplementedError
 
@@ -568,12 +570,12 @@ class Curve(Geometry):
         return copy
 
     @overload
-    def closest_point(self, point: CoordinateType, return_parameter: Literal[False] = False) -> "Point": ...
+    def closest_point(self, point: PointLike, return_parameter: Literal[False] = False) -> "Point": ...
 
     @overload
-    def closest_point(self, point: CoordinateType, return_parameter: Literal[True]) -> tuple["Point", float]: ...
+    def closest_point(self, point: PointLike, return_parameter: Literal[True]) -> tuple["Point", float]: ...
 
-    def closest_point(self, point: CoordinateType, return_parameter: bool = False) -> "Point | tuple[Point, float]":
+    def closest_point(self, point: PointLike, return_parameter: bool = False) -> "Point | tuple[Point, float]":
         """Compute the closest point on the curve to a given point.
 
         Parameters

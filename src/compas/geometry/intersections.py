@@ -1,16 +1,17 @@
 from itertools import chain
 from typing import TYPE_CHECKING
 
-from compas._typing import CoordinatesCollectionInput
-from compas._typing import CoordinatesType
-from compas._typing import RayMeshHit
-from compas._typing import RayType
-from compas._typing import SphereType
-from compas._typing import TriangleMeshInput
 from compas.itertools import pairwise
 from compas.plugins import PluginNotInstalledError
 from compas.plugins import pluggable
 from compas.tolerance import TOL
+from compas.typing import PointGroupsLike
+from compas.typing import PointsLike
+from compas.typing import RayData
+from compas.typing import RayMeshHit
+from compas.typing import RealInput
+from compas.typing import SphereData
+from compas.typing import VerticesFaces
 
 from ._core.intersections import closest_points_line_line as _closest_points_line_line_raw
 from ._core.intersections import intersection_circle_circle_xy as _intersection_circle_circle_xy
@@ -319,7 +320,7 @@ def intersection_polyline_plane(
     if expected_number_of_intersections is not None and expected_number_of_intersections < 0:
         raise ValueError("The expected number of intersections cannot be negative.")
     origin, normal = plane
-    intersections: list[list[float]] = []
+    intersections: list[list[RealInput]] = []
     for segment in pairwise(polyline):
         if expected_number_of_intersections is not None and len(intersections) >= expected_number_of_intersections:
             break
@@ -447,8 +448,8 @@ def intersection_plane_plane_plane(
 
 
 def intersection_sphere_sphere(
-    sphere1: SphereType,
-    sphere2: SphereType,
+    sphere1: SphereData,
+    sphere2: SphereData,
     tol: float | None = None,
 ) -> "IntersectionResult[Point | Circle | Sphere]":
     """Compute the intersection of two spheres.
@@ -536,7 +537,7 @@ def intersection_segment_polyline(
 
 
 def intersection_sphere_line(
-    sphere: SphereType,
+    sphere: SphereData,
     line: LineType,
     tol: float | None = None,
 ) -> "IntersectionResult[Point]":
@@ -657,7 +658,7 @@ def intersection_plane_circle(
     )
 
 
-def intersection_mesh_mesh(A: TriangleMeshInput, B: TriangleMeshInput) -> CoordinatesCollectionInput:
+def intersection_mesh_mesh(A: VerticesFaces, B: VerticesFaces) -> PointGroupsLike:
     """Compute the intersection of two meshes.
 
     Parameters
@@ -669,7 +670,7 @@ def intersection_mesh_mesh(A: TriangleMeshInput, B: TriangleMeshInput) -> Coordi
 
     Returns
     -------
-    CoordinatesCollectionInput
+    PointGroupsLike
         The intersection polyline coordinate buffers.
 
     Raises
@@ -682,11 +683,11 @@ def intersection_mesh_mesh(A: TriangleMeshInput, B: TriangleMeshInput) -> Coordi
 
 
 @pluggable(category="intersections")
-def _intersection_mesh_mesh(A: TriangleMeshInput, B: TriangleMeshInput) -> CoordinatesCollectionInput:
+def _intersection_mesh_mesh(A: VerticesFaces, B: VerticesFaces) -> PointGroupsLike:
     raise PluginNotInstalledError
 
 
-def intersection_ray_mesh(ray: RayType, mesh: TriangleMeshInput) -> list[RayMeshHit]:
+def intersection_ray_mesh(ray: RayData, mesh: VerticesFaces) -> list[RayMeshHit]:
     """Compute the intersection(s) between a ray and a mesh.
 
     Parameters
@@ -712,7 +713,7 @@ def intersection_ray_mesh(ray: RayType, mesh: TriangleMeshInput) -> list[RayMesh
 
 
 @pluggable(category="intersections")
-def _intersection_ray_mesh(ray: RayType, mesh: TriangleMeshInput) -> list[RayMeshHit]:
+def _intersection_ray_mesh(ray: RayData, mesh: VerticesFaces) -> list[RayMeshHit]:
     raise PluginNotInstalledError
 
 
@@ -784,7 +785,7 @@ def intersection_line_segment_xy(
 
 def intersection_line_box_xy(
     line: LineType,
-    box: CoordinatesType,
+    box: PointsLike,
     tol: float | None = None,
 ) -> "IntersectionResult[Point]":
     """Compute the intersection between a line and a box in the XY plane.
@@ -823,7 +824,7 @@ def intersection_line_box_xy(
 
 def intersection_polyline_box_xy(
     polyline: PolylineType,
-    box: CoordinatesType,
+    box: PointsLike,
     tol: float | None = None,
 ) -> "IntersectionResult[Point]":
     """Compute the intersection between a polyline and a box in the XY plane.

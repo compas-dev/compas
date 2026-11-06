@@ -1,6 +1,5 @@
 from typing import Self
 
-from compas._typing import CoordinatesType
 from compas.itertools import flatten
 from compas.linalg.transformations import decompose_matrix
 from compas.linalg.transformations import identity_matrix
@@ -9,8 +8,9 @@ from compas.linalg.vectors import cross_vectors
 from compas.linalg.vectors import dot_vectors
 from compas.linalg.vectors import normalize_vector
 from compas.tolerance import TOL
+from compas.typing import PointsLike
 
-from .transformation import Matrix
+from .transformation import MatrixInput
 from .transformation import Transformation
 
 
@@ -48,7 +48,7 @@ class Reflection(Transformation):
     # Dunder methods
     # ==========================================================================
 
-    def __init__(self, matrix: Matrix | None = None, check: bool = False, name: str | None = None) -> None:
+    def __init__(self, matrix: MatrixInput | None = None, check: bool = False, name: str | None = None) -> None:
         if matrix and check:
             _, _, _, _, perspective = decompose_matrix(matrix)
             if not TOL.is_allclose(flatten(matrix), flatten(matrix_from_perspective_entries(perspective))):
@@ -60,7 +60,7 @@ class Reflection(Transformation):
     # ==========================================================================
 
     @classmethod
-    def from_plane(cls, plane: CoordinatesType) -> Self:
+    def from_plane(cls, plane: PointsLike) -> Self:
         """Construct a reflection transformation across a plane.
 
         Parameters
@@ -91,7 +91,7 @@ class Reflection(Transformation):
         return cls(matrix)
 
     @classmethod
-    def from_frame(cls, frame: CoordinatesType) -> Self:
+    def from_frame(cls, frame: PointsLike) -> Self:
         """Construct a reflection transformation across a frame's XY plane.
 
         Parameters

@@ -3,11 +3,11 @@
 from collections.abc import Sequence
 from typing import TYPE_CHECKING
 
-from compas._typing import CoordinateType
-from compas._typing import FilePath
 from compas.geometry._typing import TransformationType
 from compas.plugins import PluginNotInstalledError
 from compas.plugins import pluggable
+from compas.typing import FilePath
+from compas.typing import PointLike
 
 if TYPE_CHECKING:
     from compas.geometry import Arc
@@ -23,7 +23,7 @@ def from_arc(arc: "Arc") -> "NurbsCurve":
 
 
 @pluggable(category="nurbscurve-factories")
-def from_interpolation(points: Sequence[CoordinateType], precision: float = 1e-3) -> "NurbsCurve":
+def from_interpolation(points: Sequence[PointLike], precision: float = 1e-3) -> "NurbsCurve":
     raise PluginNotInstalledError
 
 
@@ -34,7 +34,7 @@ def from_native(native_curve: object) -> "NurbsCurve":
 
 @pluggable(category="nurbscurve-factories")
 def from_parameters(
-    points: Sequence[CoordinateType],
+    points: Sequence[PointLike],
     weights: Sequence[float],
     knots: Sequence[float],
     multiplicities: Sequence[int],
@@ -45,7 +45,7 @@ def from_parameters(
 
 
 @pluggable(category="nurbscurve-factories")
-def from_points(points: Sequence[CoordinateType], degree: int = 3, is_periodic: bool = False) -> "NurbsCurve":
+def from_points(points: Sequence[PointLike], degree: int = 3, is_periodic: bool = False) -> "NurbsCurve":
     raise PluginNotInstalledError
 
 
@@ -140,7 +140,7 @@ def curve_reverse(curve: "NurbsCurve") -> None:
 
 
 @pluggable(category="nurbscurve-operations")
-def curve_closest_point(curve: "NurbsCurve", point: CoordinateType, return_parameter: bool = False) -> "Point | tuple[Point, float]":
+def curve_closest_point(curve: "NurbsCurve", point: PointLike, return_parameter: bool = False) -> "Point | tuple[Point, float]":
     raise PluginNotInstalledError
 
 

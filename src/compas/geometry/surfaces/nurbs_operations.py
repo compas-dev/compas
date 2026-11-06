@@ -4,11 +4,11 @@ from collections.abc import Sequence
 from typing import TYPE_CHECKING
 from typing import Literal
 
-from compas._typing import CoordinateType
-from compas._typing import FilePath
 from compas.geometry._typing import TransformationType
 from compas.plugins import PluginNotInstalledError
 from compas.plugins import pluggable
+from compas.typing import FilePath
+from compas.typing import PointLike
 
 if TYPE_CHECKING:
     from compas.geometry import Brep
@@ -25,7 +25,7 @@ if TYPE_CHECKING:
 
     from .nurbs import NurbsSurface
 
-type ControlPointGrid = Sequence[Sequence[CoordinateType]]
+type ControlPointGrid = Sequence[Sequence[PointLike]]
 type WeightGrid = Sequence[Sequence[float]]
 
 
@@ -197,7 +197,7 @@ def surface_frame_at(surface: "NurbsSurface", u: float, v: float) -> "Frame":
 
 
 @pluggable(category="nurbssurface-evaluation")
-def surface_closest_point(surface: "NurbsSurface", point: CoordinateType, return_parameters: bool = False) -> "Point | tuple[Point, tuple[float, float]] | None":
+def surface_closest_point(surface: "NurbsSurface", point: PointLike, return_parameters: bool = False) -> "Point | tuple[Point, tuple[float, float]] | None":
     raise PluginNotInstalledError
 
 

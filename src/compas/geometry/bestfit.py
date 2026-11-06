@@ -1,12 +1,12 @@
 from typing import TYPE_CHECKING
 
-from compas._typing import CoordinatesType
+from compas.typing import PointsLike
 
 if TYPE_CHECKING:
     from numpy.typing import NDArray
 
 
-def bestfit_line(points: CoordinatesType) -> "tuple[NDArray, NDArray]":
+def bestfit_line(points: PointsLike) -> "tuple[NDArray, NDArray]":
     """Fit a line to points using principal component analysis.
 
     Parameters
@@ -31,7 +31,7 @@ def bestfit_line(points: CoordinatesType) -> "tuple[NDArray, NDArray]":
     return origin, axes[0]
 
 
-def bestfit_plane(points: CoordinatesType) -> "tuple[NDArray, NDArray]":
+def bestfit_plane(points: PointsLike) -> "tuple[NDArray, NDArray]":
     """Fit a plane to points using principal component analysis.
 
     Parameters
@@ -56,7 +56,7 @@ def bestfit_plane(points: CoordinatesType) -> "tuple[NDArray, NDArray]":
     return origin, axes[2]
 
 
-def bestfit_frame(points: CoordinatesType) -> "tuple[NDArray, NDArray, NDArray]":
+def bestfit_frame(points: PointsLike) -> "tuple[NDArray, NDArray, NDArray]":
     """Fit a frame to points using principal component analysis.
 
     Parameters
@@ -81,7 +81,7 @@ def bestfit_frame(points: CoordinatesType) -> "tuple[NDArray, NDArray, NDArray]"
     return origin, axes[0], axes[1]
 
 
-def bestfit_circle(points: CoordinatesType) -> "tuple[NDArray, NDArray, float]":
+def bestfit_circle(points: PointsLike) -> "tuple[NDArray, NDArray, float]":
     """Fit a circle to points using nonlinear least squares.
 
     Parameters
@@ -138,7 +138,7 @@ def bestfit_circle(points: CoordinatesType) -> "tuple[NDArray, NDArray, float]":
     return xyz, axes[2], radius
 
 
-def bestfit_sphere(points: CoordinatesType) -> tuple[list[float], float]:
+def bestfit_sphere(points: PointsLike) -> tuple[list[float], float]:
     """Fit a sphere to points using linear least squares.
 
     Parameters

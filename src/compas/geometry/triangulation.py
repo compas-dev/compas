@@ -2,10 +2,9 @@ from math import isfinite
 from numbers import Real
 from typing import Literal
 
-from compas._typing import CoordinatesInput
-from compas._typing import CoordinatesType
 from compas.data import Data
 from compas.tolerance import TOL
+from compas.typing import PointsLike
 
 __all__ = [
     "ConformingDelaunay",
@@ -295,13 +294,13 @@ class ConformingDelaunay(_PlanarTriangulationStrategy):
         return hash((type(self), self.quality))
 
 
-def _validate_finite_polygon(vertices: CoordinatesType) -> None:
+def _validate_finite_polygon(vertices: PointsLike) -> None:
     for vertex in vertices:
         if len(vertex) != 3 or any(not isfinite(vertex[axis]) for axis in range(3)):
             raise ValueError("Polygon vertices should have exactly three finite coordinates.")
 
 
-def _validate_polygon_boundary(vertices: CoordinatesType) -> None:
+def _validate_polygon_boundary(vertices: PointsLike) -> None:
     from compas.geometry import distance_point_point
 
     for index, vertex in enumerate(vertices):
@@ -314,7 +313,7 @@ def _validate_polygon_boundary(vertices: CoordinatesType) -> None:
                 raise ValueError("A polygon should not contain repeated vertices.")
 
 
-def _minimum_area_triangulation(vertices: CoordinatesType) -> list[list[int]]:
+def _minimum_area_triangulation(vertices: PointsLike) -> list[list[int]]:
     from compas.geometry import area_triangle
 
     _validate_polygon_boundary(vertices)
@@ -364,7 +363,7 @@ def _minimum_area_triangulation(vertices: CoordinatesType) -> list[list[int]]:
     return triangles
 
 
-def _projected_ear_clipping(vertices: CoordinatesType, strategy: ProjectedEarClipping) -> list[list[int]]:
+def _projected_ear_clipping(vertices: PointsLike, strategy: ProjectedEarClipping) -> list[list[int]]:
     from compas.geometry import Frame
     from compas.geometry import Plane
     from compas.geometry import Polygon
@@ -387,7 +386,7 @@ def _projected_ear_clipping(vertices: CoordinatesType, strategy: ProjectedEarCli
     return earclip_polygon(Polygon(projected))
 
 
-def triangulate_polygon(vertices: CoordinatesInput, strategy: TriangulationStrategy) -> list[list[int]]:
+def triangulate_polygon(vertices: PointsLike, strategy: TriangulationStrategy) -> list[list[int]]:
     """Triangulate one polygon represented by ordered vertex coordinates.
 
     Parameters
@@ -407,7 +406,7 @@ def triangulate_polygon(vertices: CoordinatesInput, strategy: TriangulationStrat
     return _triangulate_polygon(source, strategy)
 
 
-def _triangulate_polygon(vertices: CoordinatesType, strategy: TriangulationStrategy) -> list[list[int]]:
+def _triangulate_polygon(vertices: PointsLike, strategy: TriangulationStrategy) -> list[list[int]]:
     """Triangulate normalized polygon coordinates."""
     count = len(vertices)
     if count < 3:

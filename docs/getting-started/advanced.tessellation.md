@@ -225,7 +225,7 @@ buffers they create; callers must treat all buffers as immutable for the lifetim
 the tessellation. `to_polygonal_surface()` and `to_mesh()` create independent
 COMPAS objects.
 
-Validation is structural and capability-based. Coordinates must have the required
+Validation is structural and capability-based. PointsProtocol must have the required
 arity and support a finiteness check; triangle elements must support Python's index
 operation and be in range. Contiguous layout, writability, and a specific concrete
 container type are not required, and validation leaves every buffer unchanged.

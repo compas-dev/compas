@@ -8,11 +8,12 @@ from typing import Literal
 from typing import Self
 from typing import overload
 
-from compas._typing import CoordinateType
 from compas.geometry import Frame
 from compas.geometry import Plane
 from compas.geometry import Point
 from compas.geometry import Vector
+from compas.typing import PointLike
+from compas.typing import RealInput
 
 from .conic import Conic
 
@@ -68,7 +69,7 @@ class Circle(Conic):
     def __from_data__(cls, data: dict[str, Any]) -> Self:
         return cls(radius=data["radius"], frame=Frame.__from_data__(data["frame"]))
 
-    def __init__(self, radius: float, frame: Frame | None = None, name: str | None = None) -> None:
+    def __init__(self, radius: RealInput, frame: Frame | None = None, name: str | None = None) -> None:
         super().__init__(frame=frame, name=name)
         self._radius: float | None = None
         self.radius = radius
@@ -109,7 +110,7 @@ class Circle(Conic):
         return self.frame.point
 
     @center.setter
-    def center(self, point: CoordinateType) -> None:
+    def center(self, point: PointLike) -> None:
         self.frame.point = point
 
     @property
@@ -120,7 +121,7 @@ class Circle(Conic):
         return self._radius
 
     @radius.setter
-    def radius(self, radius: float) -> None:
+    def radius(self, radius: RealInput) -> None:
         if radius <= 0:
             raise ValueError("The radius of a circle must be positive.")
         self._radius = float(radius)
@@ -164,7 +165,7 @@ class Circle(Conic):
     # ==========================================================================
 
     @classmethod
-    def from_point_and_radius(cls, point: CoordinateType, radius: float) -> Self:
+    def from_point_and_radius(cls, point: PointLike, radius: RealInput) -> Self:
         """Construct a circle from a point and a radius.
 
         Parameters
@@ -195,7 +196,7 @@ class Circle(Conic):
         return cls(frame=frame, radius=radius)
 
     @classmethod
-    def from_plane_and_radius(cls, plane: Plane, radius: float) -> Self:
+    def from_plane_and_radius(cls, plane: Plane, radius: RealInput) -> Self:
         """Construct a circle from a plane and a radius.
 
         Parameters
@@ -227,7 +228,7 @@ class Circle(Conic):
         return cls(frame=frame, radius=radius)
 
     @classmethod
-    def from_three_points(cls, a: CoordinateType, b: CoordinateType, c: CoordinateType) -> Self:
+    def from_three_points(cls, a: PointLike, b: PointLike, c: PointLike) -> Self:
         """Construct a circle from three points.
 
         Parameters
@@ -286,7 +287,7 @@ class Circle(Conic):
         return cls.from_plane_and_radius(plane, radius)
 
     @classmethod
-    def from_points(cls, points: Sequence[CoordinateType]) -> Self:
+    def from_points(cls, points: Sequence[PointLike]) -> Self:
         """Construct a circle from a list of at least three points.
 
         Parameters
@@ -463,12 +464,12 @@ class Circle(Conic):
         return vector
 
     @overload
-    def closest_point(self, point: CoordinateType, return_parameter: Literal[False] = False) -> Point: ...
+    def closest_point(self, point: PointLike, return_parameter: Literal[False] = False) -> Point: ...
 
     @overload
-    def closest_point(self, point: CoordinateType, return_parameter: Literal[True]) -> tuple[Point, float]: ...
+    def closest_point(self, point: PointLike, return_parameter: Literal[True]) -> tuple[Point, float]: ...
 
-    def closest_point(self, point: CoordinateType, return_parameter: bool = False) -> Point | tuple[Point, float]:
+    def closest_point(self, point: PointLike, return_parameter: bool = False) -> Point | tuple[Point, float]:
         """Compute the closest point on the circle to a given point.
 
         Parameters
@@ -511,7 +512,7 @@ class Circle(Conic):
             return closest, parameter % 1.0
         return closest
 
-    def contains_point(self, point: CoordinateType, tol: float = 1e-6, dmax: float = 1e-6) -> bool:
+    def contains_point(self, point: PointLike, tol: float = 1e-6, dmax: float = 1e-6) -> bool:
         """Verify that the circle contains a given point.
 
         Parameters

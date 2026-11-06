@@ -2,9 +2,11 @@ from collections.abc import Iterator
 from collections.abc import Sequence
 from typing import TYPE_CHECKING
 from typing import Self
+from typing import SupportsFloat
 from typing import overload
 
-from compas._typing import Coordinate
+import numpy as np
+
 from compas.geometry import centroid_points
 from compas.geometry import distance_point_line
 from compas.geometry import distance_point_plane
@@ -19,8 +21,10 @@ from compas.geometry import is_point_on_segment
 from compas.geometry import normal_polygon
 from compas.geometry import transform_points
 from compas.tolerance import TOL
+from compas.typing import CoordinateProtocol
+from compas.typing import PointLike
+from compas.typing import VectorLike
 
-from ._typing import CoordinateType
 from ._typing import LineType
 from ._typing import PlaneType
 from ._typing import PolygonType
@@ -36,7 +40,7 @@ if TYPE_CHECKING:
     from compas.geometry import Polyhedron
 
 
-class Point(Geometry):
+class Point(Geometry, CoordinateProtocol[float]):
     """A point is defined by XYZ coordinates.
 
     Parameters
@@ -148,7 +152,7 @@ class Point(Geometry):
     # Dunder methods
     # ==========================================================================
 
-    def __init__(self, x: float, y: float, z: float = 0.0, name: str | None = None) -> None:
+    def __init__(self, x: SupportsFloat, y: SupportsFloat, z: SupportsFloat = 0.0, name: str | None = None) -> None:
         super().__init__(name=name)
         self._x = 0.0
         self._y = 0.0
@@ -193,7 +197,7 @@ class Point(Geometry):
             return self.z
         raise IndexError("Point index out of range.")
 
-    def __setitem__(self, key: int, value: float) -> None:
+    def __setitem__(self, key: int, value: SupportsFloat) -> None:
         if key == 0 or key == -3:
             self.x = value
             return
@@ -209,11 +213,11 @@ class Point(Geometry):
         return iter([self.x, self.y, self.z])
 
     def __eq__(self, other: object) -> bool:
-        if not isinstance(other, Coordinate) or len(other) != 3:
+        if not isinstance(other, CoordinateProtocol) or len(other) != 3:
             return False
         return TOL.is_allclose(self, other)
 
-    def __add__(self, other: CoordinateType) -> "Point":
+    def __add__(self, other: VectorLike) -> "Point":
         """Return the coordinate-wise sum of this point and another coordinate.
 
         Examples
@@ -224,7 +228,7 @@ class Point(Geometry):
         """
         return Point(self.x + other[0], self.y + other[1], self.z + other[2])
 
-    def __sub__(self, other: CoordinateType) -> Vector:
+    def __sub__(self, other: PointLike) -> Vector:
         """Return the displacement vector from another coordinate to this point.
 
         Examples
@@ -263,7 +267,7 @@ class Point(Geometry):
     def __pow__(self, n: float) -> "Point":
         return Point(self.x**n, self.y**n, self.z**n)
 
-    def __iadd__(self, other: CoordinateType) -> Self:
+    def __iadd__(self, other: VectorLike) -> Self:
         """Add another coordinate to this point in place and return this point.
 
         Examples
@@ -279,7 +283,7 @@ class Point(Geometry):
         self.z += other[2]
         return self
 
-    def __isub__(self, other: CoordinateType) -> Self:
+    def __isub__(self, other: VectorLike) -> Self:
         """Subtract another coordinate from this point in place and return this point.
 
         Examples
@@ -342,7 +346,7 @@ class Point(Geometry):
         return self._x
 
     @x.setter
-    def x(self, x: float) -> None:
+    def x(self, x: SupportsFloat) -> None:
         self._x = float(x)
 
     @property
@@ -350,7 +354,7 @@ class Point(Geometry):
         return self._y
 
     @y.setter
-    def y(self, y: float) -> None:
+    def y(self, y: SupportsFloat) -> None:
         self._y = float(y)
 
     @property
@@ -358,14 +362,14 @@ class Point(Geometry):
         return self._z
 
     @z.setter
-    def z(self, z: float) -> None:
+    def z(self, z: SupportsFloat) -> None:
         self._z = float(z)
 
     # ==========================================================================
     # Methods
     # ==========================================================================
 
-    def distance_to_point(self, point: CoordinateType) -> float:
+    def distance_to_point(self, point: PointLike) -> float:
         """Compute the distance to another point.
 
         Parameters
@@ -518,7 +522,7 @@ class Point(Geometry):
     # 3D predicates
     # ==========================================================================
 
-    def on_line(self, line: LineType, tol: float | None = None) -> bool:
+    def on_line(self, line: LineType, tol: float | None = None) -> bool | np.bool_:
         """Determine if the point lies on the given line.
 
         Parameters
@@ -599,7 +603,7 @@ class Point(Geometry):
         """
         return is_point_on_polyline(self, polyline)
 
-    def on_plane(self, plane: PlaneType, tol: float | None = None) -> bool:
+    def on_plane(self, plane: PlaneType, tol: float | None = None) -> bool | np.bool_:
         """Determine if the point lies on the given plane.
 
         Parameters
@@ -628,7 +632,7 @@ class Point(Geometry):
         """
         return TOL.is_zero(self.distance_to_plane(plane), tol)
 
-    def on_circle(self, circle: "Circle", tol: float | None = None) -> bool:
+    def on_circle(self, circle: "Circle", tol: float | None = None) -> bool | np.bool_:
         """Determine if the point lies on the given circle.
 
         Parameters
@@ -650,7 +654,7 @@ class Point(Geometry):
             return False
         return TOL.is_close(self.distance_to_point(circle.center), circle.radius, rtol=0, atol=tol)
 
-    def on_curve(self, curve: "Curve", tol: float | None = None) -> bool:
+    def on_curve(self, curve: "Curve", tol: float | None = None) -> bool | np.bool_:
         """Determine if the point lies on the given curve.
 
         Parameters
@@ -694,7 +698,7 @@ class Point(Geometry):
         """
         return is_point_in_triangle(self, triangle)
 
-    def in_circle(self, circle: "Circle") -> bool:
+    def in_circle(self, circle: "Circle") -> bool | np.bool_:
         """Determine if the point lies inside the given circle.
 
         Parameters

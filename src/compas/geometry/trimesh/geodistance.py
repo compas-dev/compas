@@ -1,11 +1,11 @@
 from typing import Literal
 
-from compas._typing import TriangleMeshInput
 from compas.plugins import PluginNotInstalledError
 from compas.plugins import pluggable
+from compas.typing import VerticesFaces
 
 
-def trimesh_geodistance(mesh: TriangleMeshInput, source: int, method: Literal["exact", "heat"] = "exact") -> list[float]:
+def trimesh_geodistance(mesh: VerticesFaces, source: int, method: Literal["exact", "heat"] = "exact") -> list[float]:
     """Compute geodesic distances from one mesh vertex.
 
     Parameters
@@ -32,5 +32,5 @@ def trimesh_geodistance(mesh: TriangleMeshInput, source: int, method: Literal["e
 
 
 @pluggable(category="trimesh")
-def _trimesh_geodistance(mesh: TriangleMeshInput, source: int, method: Literal["exact", "heat"] = "exact") -> list[float]:
+def _trimesh_geodistance(mesh: VerticesFaces, source: int, method: Literal["exact", "heat"] = "exact") -> list[float]:
     raise PluginNotInstalledError

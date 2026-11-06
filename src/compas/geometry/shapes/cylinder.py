@@ -5,14 +5,14 @@ from math import sqrt
 from typing import TYPE_CHECKING
 from typing import Self
 
-from compas._typing import CoordinatesType
-from compas._typing import CoordinateType
 from compas.geometry import Circle
 from compas.geometry import Frame
 from compas.geometry import Line
 from compas.geometry import Plane
 from compas.geometry import Point
 from compas.geometry import UGrid
+from compas.typing import PointLike
+from compas.typing import PointsLike
 
 from .box import Box
 from .shape import Shape
@@ -240,7 +240,7 @@ class Cylinder(Shape[UGrid]):
     # Discretisation
     # =============================================================================
 
-    def _compute_local_vertices(self, strategy: UGrid) -> list[CoordinateType]:
+    def _compute_local_vertices(self, strategy: UGrid) -> list[PointLike]:
         """Compute the vertices of the discrete representation of the cylinder.
 
         Returns
@@ -249,7 +249,7 @@ class Cylinder(Shape[UGrid]):
 
         """
         u = strategy.u
-        vertices: list[CoordinateType] = []
+        vertices: list[PointLike] = []
         a = 2 * pi / u
         z = self.height / 2
         for i in range(u):
@@ -327,7 +327,7 @@ class Cylinder(Shape[UGrid]):
     # Methods
     # =============================================================================
 
-    def contains_point(self, point: CoordinateType, tol: float = 1e-6) -> bool:
+    def contains_point(self, point: PointLike, tol: float = 1e-6) -> bool:
         """Verify if a point is inside the cylinder.
 
         Parameters
@@ -353,7 +353,7 @@ class Cylinder(Shape[UGrid]):
 
         return x**2 + y**2 <= (self.radius + tol) ** 2
 
-    def contains_points(self, points: CoordinatesType, tol: float = 1e-6) -> list[bool]:
+    def contains_points(self, points: PointsLike, tol: float = 1e-6) -> list[bool]:
         """Verify whether points are inside the cylinder.
 
         Parameters

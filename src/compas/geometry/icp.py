@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 
-from compas._typing import CoordinatesType
+from compas.typing import PointsLike
 
 if TYPE_CHECKING:
     from numpy.typing import NDArray
@@ -31,7 +31,7 @@ def _bestfit_transform(source: "NDArray", target: "NDArray") -> "NDArray":
     return transformation
 
 
-def icp(source: CoordinatesType, target: CoordinatesType, tol: float | None = None, maxiter: int = 100) -> "tuple[NDArray, NDArray]":
+def icp(source: PointsLike, target: PointsLike, tol: float | None = None, maxiter: int = 100) -> "tuple[NDArray, NDArray]":
     """Align two point clouds using the iterative closest point method.
 
     Parameters
@@ -77,9 +77,9 @@ def icp(source: CoordinatesType, target: CoordinatesType, tol: float | None = No
     origin, axes, _ = pca(source_points)
     # NumPy rows satisfy the coordinate protocol at runtime, but NumPy's
     # overloaded indexing stubs cannot express that structural compatibility.
-    source_frame = Frame(origin, axes[0], axes[1])  # pyright: ignore[reportArgumentType]
+    source_frame = Frame(origin, axes[0], axes[1])
     origin, axes, _ = pca(target_points)
-    target_frame = Frame(origin, axes[0], axes[1])  # pyright: ignore[reportArgumentType]
+    target_frame = Frame(origin, axes[0], axes[1])
 
     initial = Transformation.from_frame_to_frame(source_frame, target_frame)
     source_points = transform_points_numpy(source_points, initial.matrix)

@@ -5,12 +5,12 @@ from math import sqrt
 from typing import TYPE_CHECKING
 from typing import Self
 
-from compas._typing import CoordinatesType
-from compas._typing import CoordinateType
 from compas.geometry import Frame
 from compas.geometry import Plane
 from compas.geometry import Point
 from compas.geometry import UVGrid
+from compas.typing import PointLike
+from compas.typing import PointsLike
 
 from .box import Box
 from .shape import Shape
@@ -188,7 +188,7 @@ class Torus(Shape[UVGrid]):
     # Discretisation
     # ==========================================================================
 
-    def _compute_local_vertices(self, strategy: UVGrid) -> list[CoordinateType]:
+    def _compute_local_vertices(self, strategy: UVGrid) -> list[PointLike]:
         """Compute the vertices of the discrete representation of the torus.
 
         Returns
@@ -201,7 +201,7 @@ class Torus(Shape[UVGrid]):
         theta = pi * 2 / u
         phi = pi * 2 / v
 
-        vertices: list[CoordinateType] = []
+        vertices: list[PointLike] = []
         for i in range(u):
             for j in range(v):
                 x = cos(i * theta) * (self.radius_axis + self.radius_pipe * cos(j * phi))
@@ -280,7 +280,7 @@ class Torus(Shape[UVGrid]):
     # Methods
     # ==========================================================================
 
-    def contains_point(self, point: CoordinateType, tol: float = 1e-6) -> bool:
+    def contains_point(self, point: PointLike, tol: float = 1e-6) -> bool:
         """Verify whether a point is inside the torus.
 
         Parameters
@@ -299,7 +299,7 @@ class Torus(Shape[UVGrid]):
         radial = sqrt(x**2 + y**2) - self.radius_axis
         return radial**2 + z**2 <= (self.radius_pipe + tol) ** 2
 
-    def contains_points(self, points: CoordinatesType, tol: float = 1e-6) -> list[bool]:
+    def contains_points(self, points: PointsLike, tol: float = 1e-6) -> list[bool]:
         """Verify whether points are inside the torus.
 
         Parameters

@@ -3,9 +3,6 @@ from random import uniform
 from typing import TYPE_CHECKING
 from typing import Self
 
-from compas._typing import CoordinatesType
-from compas._typing import CoordinateType
-from compas._typing import FilePath
 from compas.geometry import Geometry
 from compas.geometry import KDTree
 from compas.geometry import Point
@@ -14,6 +11,10 @@ from compas.geometry import centroid_points
 from compas.geometry import closest_point_in_cloud
 from compas.geometry import transform_points
 from compas.tolerance import TOL
+from compas.typing import FilePath
+from compas.typing import PointLike
+from compas.typing import PointsLike
+from compas.typing import RealInput
 
 if TYPE_CHECKING:
     from compas.geometry import Box
@@ -50,7 +51,7 @@ class Pointcloud(Geometry):
     # Dunder methods
     # ==========================================================================
 
-    def __init__(self, points: CoordinatesType, name: str | None = None) -> None:
+    def __init__(self, points: PointsLike, name: str | None = None) -> None:
         super().__init__(name=name)
         self._points = None
         self._tree = None
@@ -70,7 +71,7 @@ class Pointcloud(Geometry):
             raise KeyError
         return self.points[key]
 
-    def __setitem__(self, key: int, value: CoordinateType) -> None:
+    def __setitem__(self, key: int, value: PointLike) -> None:
         if key > len(self) - 1:
             raise KeyError
         self.points[key] = Point(value[0], value[1], value[2])
@@ -100,7 +101,7 @@ class Pointcloud(Geometry):
         return self._points
 
     @points.setter
-    def points(self, points: CoordinatesType) -> None:
+    def points(self, points: PointsLike) -> None:
         self._points = [Point(point[0], point[1], point[2]) for point in points]
         self._tree = None
 
@@ -242,7 +243,7 @@ class Pointcloud(Geometry):
     # Methods
     # ==========================================================================
 
-    def centroid(self) -> list[float]:
+    def centroid(self) -> list[RealInput]:
         """Compute the centroid of the point cloud.
 
         Returns
@@ -280,7 +281,7 @@ class Pointcloud(Geometry):
 
         return Box.from_bounding_box(oriented_bounding_box(self.points))
 
-    def closest_point(self, point: CoordinateType) -> Point:
+    def closest_point(self, point: PointLike) -> Point:
         """Compute the closest point on the pointcloud to a given point.
 
         Parameters
@@ -297,7 +298,7 @@ class Pointcloud(Geometry):
         _, closest, _ = closest_point_in_cloud(point, self.points)
         return Point(closest[0], closest[1], closest[2])
 
-    def closest_points(self, point: CoordinateType, k: int = 1) -> list[Point]:
+    def closest_points(self, point: PointLike, k: int = 1) -> list[Point]:
         """Compute the closest point on the pointcloud to a given point.
 
         Parameters

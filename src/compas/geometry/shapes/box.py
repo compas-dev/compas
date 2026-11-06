@@ -2,8 +2,6 @@ from collections.abc import Sequence
 from typing import TYPE_CHECKING
 from typing import Self
 
-from compas._typing import CoordinatesType
-from compas._typing import CoordinateType
 from compas.geometry import Frame
 from compas.geometry import Line
 from compas.geometry import Native
@@ -12,6 +10,8 @@ from compas.geometry import Transformation
 from compas.geometry import Vector
 from compas.geometry import centroid_points
 from compas.geometry import transform_points
+from compas.typing import PointLike
+from compas.typing import PointsLike
 
 from .shape import Shape
 
@@ -287,7 +287,7 @@ class Box(Shape[Native]):
         return cls(width, depth, height)
 
     @classmethod
-    def from_bounding_box(cls, bbox: CoordinatesType) -> Self:
+    def from_bounding_box(cls, bbox: PointsLike) -> Self:
         """Construct a box from the result of a bounding box calculation.
 
         Parameters
@@ -330,7 +330,7 @@ class Box(Shape[Native]):
         return cls(xsize=xsize, ysize=ysize, zsize=zsize, frame=frame)
 
     @classmethod
-    def from_corner_corner_height(cls, corner1: CoordinateType, corner2: CoordinateType, height: float) -> Self:
+    def from_corner_corner_height(cls, corner1: PointLike, corner2: PointLike, height: float) -> Self:
         """Construct a box from the opposite corners of its base and its height.
 
         Parameters
@@ -371,7 +371,7 @@ class Box(Shape[Native]):
         return cls(xsize=width, ysize=depth, zsize=height, frame=frame)
 
     @classmethod
-    def from_diagonal(cls, diagonal: Line | Sequence[CoordinateType]) -> Self:
+    def from_diagonal(cls, diagonal: Line | Sequence[PointLike]) -> Self:
         """Construct a box from its main diagonal.
 
         Parameters
@@ -410,7 +410,7 @@ class Box(Shape[Native]):
         return cls(width, depth, height, frame)
 
     @classmethod
-    def from_points(cls, points: CoordinatesType) -> Self:
+    def from_points(cls, points: PointsLike) -> Self:
         """Construct a box from a set of points.
 
         Parameters
@@ -433,7 +433,7 @@ class Box(Shape[Native]):
     # Discretisation
     # ==========================================================================
 
-    def _compute_local_vertices(self, strategy: Native) -> list[CoordinateType]:
+    def _compute_local_vertices(self, strategy: Native) -> list[PointLike]:
         dx = 0.5 * self.xsize
         dy = 0.5 * self.ysize
         dz = 0.5 * self.zsize
@@ -572,7 +572,7 @@ class Box(Shape[Native]):
             raise ValueError("Index should be between 0 and 7.")
         return self.points[index]
 
-    def contains_point(self, point: CoordinateType, tol: float = 1e-6) -> bool:
+    def contains_point(self, point: PointLike, tol: float = 1e-6) -> bool:
         """Verify if the box contains a given point.
 
         Parameters
@@ -611,7 +611,7 @@ class Box(Shape[Native]):
 
         return True
 
-    def contains_points(self, points: CoordinatesType, tol: float = 1e-6) -> list[bool]:
+    def contains_points(self, points: PointsLike, tol: float = 1e-6) -> list[bool]:
         """Verify if the box contains the given points.
 
         Parameters

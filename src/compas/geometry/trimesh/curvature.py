@@ -1,11 +1,11 @@
 from math import pi
 from operator import index as integer_index
 
-from compas._typing import TriangleMeshInput
 from compas.geometry import angle_points
+from compas.typing import VerticesFaces
 
 
-def trimesh_gaussian_curvature(mesh: TriangleMeshInput) -> list[float]:
+def trimesh_gaussian_curvature(mesh: VerticesFaces) -> list[float]:
     r"""Compute the integrated Gaussian curvature of a triangle mesh.
 
     Parameters

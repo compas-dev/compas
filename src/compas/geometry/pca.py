@@ -4,10 +4,10 @@ if TYPE_CHECKING:
     from numpy.typing import ArrayLike
     from numpy.typing import NDArray
 
-    from compas._typing import CoordinatesType
+    from compas.typing import PointsLike
 
 
-def pca(data: "CoordinatesType | ArrayLike") -> "tuple[NDArray, NDArray, NDArray]":
+def pca(data: "PointsLike | ArrayLike") -> "tuple[NDArray, NDArray, NDArray]":
     """Compute the principal components of a dataset.
 
     Parameters

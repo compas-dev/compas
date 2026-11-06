@@ -5,11 +5,11 @@ from math import sqrt
 from typing import Any
 from typing import Self
 
-from compas._typing import CoordinateType
 from compas.geometry import Frame
 from compas.geometry import Plane
 from compas.geometry import Point
 from compas.geometry import Vector
+from compas.typing import PointLike
 
 from ..line import Line
 from .conic import Conic
@@ -120,7 +120,7 @@ class Ellipse(Conic):
         return self.frame.point
 
     @center.setter
-    def center(self, point: CoordinateType) -> None:
+    def center(self, point: PointLike) -> None:
         self.frame.point = point
 
     @property
@@ -249,7 +249,7 @@ class Ellipse(Conic):
     # ==========================================================================
 
     @classmethod
-    def from_point_major_minor(cls, point: CoordinateType, major: float, minor: float) -> Self:
+    def from_point_major_minor(cls, point: PointLike, major: float, minor: float) -> Self:
         """Construct a ellipse from a point and major and minor axis lengths.
 
         Parameters

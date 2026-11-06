@@ -43,12 +43,13 @@ from compas.linalg.vectors import normalize_vector
 from compas.linalg.vectors import scale_vector
 from compas.linalg.vectors import subtract_vectors
 from compas.tolerance import TOL
+from compas.typing import RealInput
 
 from .types import AttributeDict
 from .types import Cell
 from .types import Edge
 from .types import Face
-from .types import PointCoordinates
+from .types import PointLike
 from .types import Vertex
 
 _MISSING = object()
@@ -269,7 +270,7 @@ class CellNetwork(Datastructure):
     @classmethod
     def from_vertices_and_cells(
         cls,
-        vertices: Sequence[PointCoordinates],
+        vertices: Sequence[PointLike],
         cells: Sequence[Sequence[Sequence[Vertex]]],
     ) -> Self:
         """Construct a cell network object from vertices and cells.
@@ -1884,7 +1885,7 @@ class CellNetwork(Datastructure):
 
         Returns
         -------
-        list of list[float]
+        list[list[float]]
             Coordinates of the vertices.
 
         """
@@ -4652,7 +4653,7 @@ class CellNetwork(Datastructure):
         vertices, faces = self.cell_to_vertices_and_faces(cell)
         return Polyhedron(vertices, faces)
 
-    def cell_volume(self, cell: Cell) -> float:
+    def cell_volume(self, cell: Cell) -> RealInput:
         """Compute the volume of a cell.
 
         Parameters

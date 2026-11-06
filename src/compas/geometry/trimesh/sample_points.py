@@ -2,26 +2,26 @@ from typing import TYPE_CHECKING
 from typing import Literal
 from typing import overload
 
-from compas._typing import MeshType
+from compas.typing import VerticesFaces
 
 if TYPE_CHECKING:
     from numpy.typing import NDArray
 
 
 @overload
-def trimesh_sample_points(mesh: MeshType, num_points: int = 1000, return_normals: Literal[False] = False) -> "NDArray": ...
+def trimesh_sample_points(mesh: VerticesFaces, num_points: int = 1000, return_normals: Literal[False] = False) -> "NDArray": ...
 
 
 @overload
-def trimesh_sample_points(mesh: MeshType, num_points: int, return_normals: Literal[True]) -> "tuple[NDArray, NDArray]": ...
+def trimesh_sample_points(mesh: VerticesFaces, num_points: int, return_normals: Literal[True]) -> "tuple[NDArray, NDArray]": ...
 
 
 @overload
-def trimesh_sample_points(mesh: MeshType, num_points: int, return_normals: bool) -> "NDArray | tuple[NDArray, NDArray]": ...
+def trimesh_sample_points(mesh: VerticesFaces, num_points: int, return_normals: bool) -> "NDArray | tuple[NDArray, NDArray]": ...
 
 
 def trimesh_sample_points(
-    mesh: MeshType,
+    mesh: VerticesFaces,
     num_points: int = 1000,
     return_normals: bool = False,
 ) -> "NDArray | tuple[NDArray, NDArray]":

@@ -2,7 +2,7 @@ from typing import TYPE_CHECKING
 from typing import Literal
 from typing import overload
 
-from compas._typing import MeshType
+from compas.typing import VerticesFaces
 
 if TYPE_CHECKING:
     from numpy.typing import NDArray
@@ -11,18 +11,18 @@ if TYPE_CHECKING:
 
 
 @overload
-def trimesh_gradient(mesh: MeshType, rtype: Literal["array"] = "array") -> "NDArray": ...
+def trimesh_gradient(mesh: VerticesFaces, rtype: Literal["array"] = "array") -> "NDArray": ...
 
 
 @overload
-def trimesh_gradient(mesh: MeshType, rtype: Literal["list"]) -> list[list[float]]: ...
+def trimesh_gradient(mesh: VerticesFaces, rtype: Literal["list"]) -> list[list[float]]: ...
 
 
 @overload
-def trimesh_gradient(mesh: MeshType, rtype: Literal["csc", "csr", "coo"]) -> "spmatrix | sparray": ...
+def trimesh_gradient(mesh: VerticesFaces, rtype: Literal["csc", "csr", "coo"]) -> "spmatrix | sparray": ...
 
 
-def trimesh_gradient(mesh: MeshType, rtype: str = "array") -> "NDArray | spmatrix | sparray | list[list[float]]":
+def trimesh_gradient(mesh: VerticesFaces, rtype: str = "array") -> "NDArray | spmatrix | sparray | list[list[float]]":
     """Construct the gradient operator of a triangular mesh.
 
     Parameters

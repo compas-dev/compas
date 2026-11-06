@@ -8,7 +8,7 @@ from scipy.sparse import isspmatrix_coo
 from scipy.sparse import isspmatrix_csc
 from scipy.sparse import isspmatrix_csr
 
-from compas._typing import TriangleMeshInput
+from compas.typing import VerticesFaces
 from compas.datastructures import Mesh
 from compas.geometry import trimesh_cotangent_laplacian_matrix
 from compas.geometry import trimesh_gaussian_curvature
@@ -65,7 +65,7 @@ def test_trimesh_gaussian_curvature_does_not_mutate_numpy_buffers():
 
 
 def test_trimesh_gaussian_curvature_uses_structural_mesh_contract():
-    assert get_type_hints(trimesh_gaussian_curvature)["mesh"] == TriangleMeshInput
+    assert get_type_hints(trimesh_gaussian_curvature)["mesh"] == VerticesFaces
 
 
 def test_unsupported_curvature_operations_are_not_public():

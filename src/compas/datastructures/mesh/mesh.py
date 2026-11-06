@@ -31,11 +31,6 @@ from typing import Literal
 from typing import Self
 from typing import overload
 
-from compas._typing import CoordinateInput
-from compas._typing import CoordinatesInput
-from compas._typing import IndicesInput
-from compas._typing import IntegerArray
-from compas._typing import IntegralInput
 from compas.datastructures.attributes import EdgeAttributeView
 from compas.datastructures.attributes import FaceAttributeView
 from compas.datastructures.attributes import VertexAttributeView
@@ -90,6 +85,10 @@ from compas.tolerance import TOL
 from compas.topology import breadth_first_traverse
 from compas.topology import connected_components
 from compas.topology import unify_cycles
+from compas.typing import IndexGroupsLike
+from compas.typing import IndicesLike
+from compas.typing import PointsLike
+from compas.typing import RealInput
 
 from .duality import mesh_dual
 from .operations.collapse import mesh_collapse_edge
@@ -110,7 +109,7 @@ from .subdivision import mesh_subdivide
 from .types import AttributeDict
 from .types import Edge
 from .types import Face
-from .types import PointCoordinates
+from .types import PointLike
 from .types import Vertex
 
 _MISSING = object()
@@ -371,7 +370,7 @@ class Mesh(Datastructure):
     @classmethod
     def from_lines(
         cls,
-        lines: Iterable[Sequence[PointCoordinates]],
+        lines: Iterable[Sequence[PointLike]],
         delete_boundary_face: bool = False,
         precision: int | None = None,
     ) -> Self:
@@ -410,8 +409,8 @@ class Mesh(Datastructure):
     @classmethod
     def from_polylines(
         cls,
-        boundary_polylines: list[list[PointCoordinates]],
-        other_polylines: list[list[PointCoordinates]],
+        boundary_polylines: list[list[PointLike]],
+        other_polylines: list[list[PointLike]],
     ) -> Self:
         """Construct mesh from polylines.
 
@@ -484,8 +483,8 @@ class Mesh(Datastructure):
     @classmethod
     def from_vertices_and_faces(
         cls,
-        vertices: CoordinatesInput | Sequence[Iterable[float]] | Mapping[Vertex, CoordinateInput | Iterable[float]],
-        faces: Sequence[IndicesInput] | IntegerArray | Mapping[Face, IndicesInput],
+        vertices: PointsLike | Mapping[Vertex, PointLike | Iterable[float]],
+        faces: IndexGroupsLike | Mapping[Face, IndicesLike],
     ) -> Self:
         """Construct a mesh object from a list of vertices and faces.
 
@@ -541,7 +540,7 @@ class Mesh(Datastructure):
         return cls.from_vertices_and_faces(p.vertices, p.faces)
 
     @classmethod
-    def from_points(cls, points: Sequence[PointCoordinates]) -> Self:
+    def from_points(cls, points: Sequence[PointLike]) -> Self:
         """Construct a mesh from a planar Delaunay triangulation of points.
 
         Parameters
@@ -565,7 +564,7 @@ class Mesh(Datastructure):
     @classmethod
     def from_polygons(
         cls,
-        polygons: Iterable[Sequence[PointCoordinates]],
+        polygons: Iterable[Sequence[PointLike]],
         precision: int | None = None,
     ) -> Self:
         """Construct a mesh from a series of polygons.
@@ -1061,7 +1060,7 @@ class Mesh(Datastructure):
 
     def add_face(
         self,
-        vertices: Sequence[IntegralInput],
+        vertices: IndicesLike,
         fkey: Face | None = None,
         attr_dict: Mapping[str, Any] | None = None,
         **kwattr: Any,
@@ -1102,9 +1101,9 @@ class Mesh(Datastructure):
         highest integer key value, then the highest integer value is updated accordingly.
 
         """
+        vertices = [int(key) for key in vertices]
         if vertices[-1] == vertices[0]:
             vertices = vertices[:-1]
-        vertices = [int(key) for key in vertices]
         vertices[:] = [u for u, v in pairwise(vertices + vertices[:1]) if u != v]
         if len(vertices) < 3:
             return
@@ -1333,7 +1332,7 @@ class Mesh(Datastructure):
         self,
         fkey: Face,
         key: Vertex | None = None,
-        xyz: PointCoordinates | None = None,
+        xyz: PointLike | None = None,
         return_fkeys: bool = False,
     ) -> Vertex | tuple[Vertex, list[Face]]:
         """Insert a vertex in the specified face.
@@ -2123,7 +2122,7 @@ class Mesh(Datastructure):
         self,
         key: Vertex,
         names: Sequence[str] | None = None,
-        values: Sequence[Any] | None = None,
+        values: Iterable[Any] | None = None,
     ) -> Any:
         """Get or set multiple attributes of a vertex.
 
@@ -4288,7 +4287,7 @@ class Mesh(Datastructure):
         """
         return sum(self.face_area(fkey) for fkey in self.faces())
 
-    def volume(self, copy: bool = True, unify_cycles: bool = True) -> float | None:
+    def volume(self, copy: bool = True, unify_cycles: bool = True) -> RealInput | None:
         """Calculate the volume of the mesh.
 
         Parameters
@@ -4360,7 +4359,7 @@ class Mesh(Datastructure):
 
         return abs(volume)
 
-    def centroid(self) -> list[float]:
+    def centroid(self) -> list[RealInput]:
         """Calculate the mesh centroid.
 
         Returns
@@ -4374,7 +4373,7 @@ class Mesh(Datastructure):
             1.0 / self.area(),
         )
 
-    def normal(self) -> list[float]:
+    def normal(self) -> list[RealInput]:
         """Calculate the average mesh normal.
 
         Returns
@@ -4468,7 +4467,7 @@ class Mesh(Datastructure):
         """
         return [self.vertex_point(vertex) for vertex in vertices]
 
-    def set_vertex_point(self, vertex: Vertex, point: PointCoordinates) -> None:
+    def set_vertex_point(self, vertex: Vertex, point: PointLike) -> None:
         """Set the point of a vertex.
 
         Parameters

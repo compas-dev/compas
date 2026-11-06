@@ -7,7 +7,7 @@ from uuid import UUID
 from uuid import uuid4
 
 import compas
-from compas._typing import FilePath
+from compas.typing import FilePath
 
 JSONFile = FilePath | TextIO
 

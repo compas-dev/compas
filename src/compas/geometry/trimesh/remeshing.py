@@ -1,16 +1,16 @@
 from collections.abc import Sequence
 
-from compas._typing import NumericArray
-from compas._typing import TriangleMeshInput
 from compas.plugins import pluggable
+from compas.typing import FloatSequenceLike
+from compas.typing import VerticesFaces
 
 
 def trimesh_remesh(
-    mesh: TriangleMeshInput,
+    mesh: VerticesFaces,
     target_edge_length: float,
     number_of_iterations: int = 10,
     do_project: bool = True,
-) -> TriangleMeshInput:
+) -> VerticesFaces:
     """Remesh a triangle mesh toward a uniform target edge length.
 
     Parameters
@@ -43,21 +43,21 @@ def trimesh_remesh(
 
 @pluggable(category="trimesh")
 def _trimesh_remesh(
-    mesh: TriangleMeshInput,
+    mesh: VerticesFaces,
     target_edge_length: float,
     number_of_iterations: int = 10,
     do_project: bool = True,
-) -> TriangleMeshInput:
+) -> VerticesFaces:
     raise NotImplementedError
 
 
 def trimesh_remesh_constrained(
-    mesh: TriangleMeshInput,
+    mesh: VerticesFaces,
     target_edge_length: float,
     protected_edges: Sequence[Sequence[int]],
     number_of_iterations: int = 10,
     do_project: bool = True,
-) -> TriangleMeshInput:
+) -> VerticesFaces:
     """Remesh a triangle mesh while preserving selected edges.
 
     Parameters
@@ -90,20 +90,20 @@ def trimesh_remesh_constrained(
 
 @pluggable(category="trimesh")
 def _trimesh_remesh_constrained(
-    mesh: TriangleMeshInput,
+    mesh: VerticesFaces,
     target_edge_length: float,
     protected_edges: Sequence[Sequence[int]],
     number_of_iterations: int = 10,
     do_project: bool = True,
-) -> TriangleMeshInput:
+) -> VerticesFaces:
     raise NotImplementedError
 
 
 def trimesh_remesh_along_isoline(
-    mesh: TriangleMeshInput,
-    scalarfield: Sequence[float] | NumericArray,
+    mesh: VerticesFaces,
+    scalarfield: FloatSequenceLike,
     scalar: float,
-) -> TriangleMeshInput:
+) -> VerticesFaces:
     """Remesh a triangle mesh so an isoline follows mesh edges.
 
     Parameters
@@ -132,8 +132,8 @@ def trimesh_remesh_along_isoline(
 
 @pluggable(category="trimesh")
 def _trimesh_remesh_along_isoline(
-    mesh: TriangleMeshInput,
-    scalarfield: Sequence[float] | NumericArray,
+    mesh: VerticesFaces,
+    scalarfield: FloatSequenceLike,
     scalar: float,
-) -> TriangleMeshInput:
+) -> VerticesFaces:
     raise NotImplementedError

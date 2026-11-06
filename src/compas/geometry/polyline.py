@@ -3,11 +3,11 @@ from collections.abc import Sequence
 from typing import Self
 from typing import overload
 
-from compas._typing import Coordinates
-from compas._typing import CoordinatesType
-from compas._typing import CoordinateType
 from compas.itertools import pairwise
 from compas.tolerance import TOL
+from compas.typing import PointLike
+from compas.typing import PointsLike
+from compas.typing import PointsProtocol
 
 from ._core.predicates_3 import is_point_on_line
 from ._core.predicates_3 import is_point_on_polyline
@@ -69,7 +69,7 @@ class Polyline(Geometry):
     # Dunder methods
     # ==========================================================================
 
-    def __init__(self, points: CoordinatesType, name: str | None = None) -> None:
+    def __init__(self, points: PointsLike, name: str | None = None) -> None:
         super().__init__(name=name)
         self._points: list[Point] = []
         self.points = points
@@ -89,7 +89,7 @@ class Polyline(Geometry):
     def __getitem__(self, key: int | slice) -> Point | list[Point]:
         return self.points[key]
 
-    def __setitem__(self, key: int, value: CoordinateType) -> None:
+    def __setitem__(self, key: int, value: PointLike) -> None:
         self.points[key] = Point(value[0], value[1], value[2])
 
     def __iter__(self) -> Iterator[Point]:
@@ -99,7 +99,7 @@ class Polyline(Geometry):
         return len(self.points)
 
     def __eq__(self, other: object) -> bool:
-        if not isinstance(other, Coordinates) or len(self) != len(other):
+        if not isinstance(other, PointsProtocol) or len(self) != len(other):
             return False
         return TOL.is_allclose(self, other)
 
@@ -128,7 +128,7 @@ class Polyline(Geometry):
         return self._points
 
     @points.setter
-    def points(self, points: CoordinatesType) -> None:
+    def points(self, points: PointsLike) -> None:
         self._points = [Point(xyz[0], xyz[1], xyz[2]) for xyz in points]
 
     @property
@@ -226,7 +226,7 @@ class Polyline(Geometry):
     # Methods
     # ==========================================================================
 
-    def append(self, point: CoordinateType) -> None:
+    def append(self, point: PointLike) -> None:
         """Append a point to the end of the polyline.
 
         Parameters
@@ -237,7 +237,7 @@ class Polyline(Geometry):
         """
         self.points.append(Point(point[0], point[1], point[2]))
 
-    def insert(self, i: int, point: CoordinateType) -> None:
+    def insert(self, i: int, point: PointLike) -> None:
         """Insert a point at the specified index.
 
         Parameters
@@ -303,7 +303,7 @@ class Polyline(Geometry):
             x += dx
         return points[-1]
 
-    def parameter_at(self, point: CoordinateType, tol: float | None = None) -> float:
+    def parameter_at(self, point: PointLike, tol: float | None = None) -> float:
         """Parameter of the polyline at a specific point.
 
         Parameters
@@ -392,7 +392,7 @@ class Polyline(Geometry):
             x += dx
         return tangent
 
-    def tangent_at_point(self, point: CoordinateType) -> Vector:
+    def tangent_at_point(self, point: PointLike) -> Vector:
         """Calculate the tangent vector at a point on the polyline.
 
         Parameters

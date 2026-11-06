@@ -41,11 +41,14 @@ from typing import Self
 from typing import TypeGuard
 from typing import cast
 
-from compas._typing import CoordinateType
+import numpy as np
+
 from compas.data import Data
+from compas.typing import PointLike
+from compas.typing import RealInput
 
 type ToleranceValue = str | float | int
-type NestedNumbers = Iterable[float | NestedNumbers]
+type NestedNumbers = Iterable[RealInput | NestedNumbers]
 
 
 def _is_nested_numbers(value: object) -> TypeGuard[NestedNumbers]:
@@ -521,7 +524,7 @@ class Tolerance(Data):
             self._lineardeflection = saved["lineardeflection"]
             self._angulardeflection = saved["angulardeflection"]
 
-    def tolerance(self, truevalue: float, rtol: float, atol: float) -> float:
+    def tolerance(self, truevalue: RealInput, rtol: float, atol: float) -> RealInput:
         """Compute the tolerance for a comparison.
 
         Parameters
@@ -551,7 +554,7 @@ class Tolerance(Data):
         """
         return rtol * abs(truevalue) + atol
 
-    def compare(self, a: float, b: float, rtol: float, atol: float) -> bool:
+    def compare(self, a: RealInput, b: RealInput, rtol: float, atol: float) -> bool | np.bool_:
         """Compare two values.
 
         Parameters
@@ -587,7 +590,7 @@ class Tolerance(Data):
         """
         return abs(a - b) <= self.tolerance(b, rtol, atol)
 
-    def is_zero(self, a: float, tol: float | None = None) -> bool:
+    def is_zero(self, a: RealInput, tol: float | None = None) -> bool | np.bool_:
         """Check if a value is close enough to zero to be considered zero.
 
         Parameters
@@ -616,7 +619,7 @@ class Tolerance(Data):
         tol = self.absolute if tol is None else tol
         return abs(a) <= tol
 
-    def is_positive(self, a: float, tol: float | None = None) -> bool:
+    def is_positive(self, a: RealInput, tol: float | None = None) -> bool | np.bool_:
         """Check if a value can be considered a strictly positive number.
 
         Parameters
@@ -645,7 +648,7 @@ class Tolerance(Data):
         tol = self.absolute if tol is None else tol
         return a > tol
 
-    def is_negative(self, a: float, tol: float | None = None) -> bool:
+    def is_negative(self, a: RealInput, tol: float | None = None) -> bool | np.bool_:
         """Check if a value can be considered a strictly negative number.
 
         Parameters
@@ -674,7 +677,7 @@ class Tolerance(Data):
         tol = self.absolute if tol is None else tol
         return a < -tol
 
-    def is_between(self, value: float, minval: float, maxval: float, atol: float | None = None) -> bool:
+    def is_between(self, value: RealInput, minval: RealInput, maxval: RealInput, atol: float | None = None) -> bool | np.bool_:
         """Check if a value is between two other values.
 
         Parameters
@@ -707,7 +710,7 @@ class Tolerance(Data):
         atol = self.absolute if atol is None else atol
         return minval - atol <= value <= maxval + atol
 
-    def is_close(self, a: float, b: float, rtol: float | None = None, atol: float | None = None) -> bool:
+    def is_close(self, a: RealInput, b: RealInput, rtol: float | None = None, atol: float | None = None) -> bool | np.bool_:
         """Check if two values are close enough to be considered equal.
 
         Parameters
@@ -873,7 +876,7 @@ class Tolerance(Data):
         tol = self.angular if tol is None else tol
         return abs(a - b) <= tol
 
-    def geometric_key(self, xyz: CoordinateType, precision: int | None = None, sanitize: bool = True) -> str:
+    def geometric_key(self, xyz: PointLike, precision: int | None = None, sanitize: bool = True) -> str:
         """Compute the geometric key of a point.
 
         Parameters
@@ -949,7 +952,7 @@ class Tolerance(Data):
 
         return "{0:.{3}f},{1:.{3}f},{2:.{3}f}".format(x, y, z, precision)
 
-    def geometric_key_xy(self, xy: CoordinateType, precision: int | None = None, sanitize: bool = True) -> str:
+    def geometric_key_xy(self, xy: PointLike, precision: int | None = None, sanitize: bool = True) -> str:
         """Compute the geometric key of a point in the XY plane.
 
         Parameters
@@ -1024,7 +1027,7 @@ class Tolerance(Data):
 
         return "{0:.{2}f},{1:.{2}f}".format(x, y, precision)
 
-    def format_number(self, number: float, precision: int | None = None) -> str:
+    def format_number(self, number: RealInput, precision: int | None = None) -> str:
         """Format a number as a string.
 
         Parameters

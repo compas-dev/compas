@@ -9,11 +9,14 @@ from math import pi
 from math import sin
 from math import sqrt
 from math import tan
+from typing import SupportsFloat
 
-from compas._typing import CoordinatesType
-from compas._typing import CoordinateType
-from compas._typing import FloatSequenceType
 from compas.tolerance import TOL
+from compas.typing import FloatSequenceLike
+from compas.typing import PointLike
+from compas.typing import PointsLike
+from compas.typing import RealInput
+from compas.typing import VectorLike
 
 from .matrices import matrix_determinant
 from .matrices import matrix_inverse
@@ -63,8 +66,8 @@ _NEXT_SPEC = [1, 2, 0, 1]
 
 
 def decompose_matrix(
-    M: Sequence[Sequence[float]],
-) -> tuple[list[float], list[float], list[float], list[float], list[float]]:
+    M: Sequence[Sequence[RealInput]],
+) -> tuple[list[RealInput], list[RealInput], list[float], list[RealInput], list[RealInput]]:
     """Calculates the components of rotation, translation, scale, shear, and
     perspective of a given transformation matrix `M`.[^decompose-matrix-slabaugh]
 
@@ -127,7 +130,7 @@ def decompose_matrix(
             Mt[i][j] /= Mt[3][3]
 
     # copy Mt[:3, :3] into row
-    row = [
+    row: list[list[RealInput]] = [
         [0.0, 0.0, 0.0],
         [0.0, 0.0, 0.0],
         [0.0, 0.0, 0.0],
@@ -140,8 +143,8 @@ def decompose_matrix(
     translation = [M[0][3], M[1][3], M[2][3]]
 
     # scale, shear, angles
-    scale = [0.0, 0.0, 0.0]
-    shear = [0.0, 0.0, 0.0]
+    scale: list[RealInput] = [0.0, 0.0, 0.0]
+    shear: list[RealInput] = [0.0, 0.0, 0.0]
     angles = [0.0, 0.0, 0.0]
 
     scale[0] = norm_vector(row[0])
@@ -200,6 +203,7 @@ def decompose_matrix(
         angles = [alpha, beta, gamma]
 
     # perspective
+    perspective: list[RealInput]
     if not TOL.is_zero(Mt[0][3]) and not TOL.is_zero(Mt[1][3]) and not TOL.is_zero(Mt[2][3]):
         P = deepcopy(Mt)
         P[0][3], P[1][3], P[2][3], P[3][3] = 0.0, 0.0, 0.0, 1.0
@@ -217,7 +221,7 @@ def compose_matrix(
     angles: Sequence[float] | None = None,
     translation: Sequence[float] | None = None,
     perspective: Sequence[float] | None = None,
-) -> list[list[float]]:
+) -> list[list[RealInput]]:
     """Calculates a matrix from the components of scale, shear, euler_angles, translation and perspective.
 
     Parameters
@@ -235,7 +239,7 @@ def compose_matrix(
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         The 4x4 matrix that combines the provided transformation components.
 
     See Also
@@ -257,7 +261,7 @@ def compose_matrix(
     True
 
     """
-    M = [[1.0 if i == j else 0.0 for i in range(4)] for j in range(4)]
+    M: list[list[RealInput]] = [[1.0 if i == j else 0.0 for i in range(4)] for j in range(4)]
     if perspective is not None:
         P = matrix_from_perspective_entries(perspective)
         M = multiply_matrices(M, P)
@@ -279,7 +283,7 @@ def compose_matrix(
     return M
 
 
-def identity_matrix(dim: int) -> list[list[float]]:
+def identity_matrix(dim: int) -> list[list[RealInput]]:
     """Construct an identity matrix.
 
     Parameters
@@ -289,7 +293,7 @@ def identity_matrix(dim: int) -> list[list[float]]:
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         A list of `dim` lists, with each list containing `dim` elements.
         The items on the "diagonal" are one.
         All other items are zero.
@@ -312,10 +316,11 @@ def identity_matrix(dim: int) -> list[list[float]]:
     [[1.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 1.0, 0.0], [0.0, 0.0, 0.0, 1.0]]
 
     """
-    return [[1.0 if i == j else 0.0 for i in range(dim)] for j in range(dim)]
+    matrix: list[list[RealInput]] = [[1.0 if i == j else 0.0 for i in range(dim)] for j in range(dim)]
+    return matrix
 
 
-def matrix_from_frame(frame: CoordinatesType) -> list[list[float]]:
+def matrix_from_frame(frame: PointsLike) -> list[list[RealInput]]:
     """Computes a change of basis transformation from world XY to the frame.
 
     Parameters
@@ -325,7 +330,7 @@ def matrix_from_frame(frame: CoordinatesType) -> list[list[float]]:
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         A 4x4 transformation matrix representing the transformation from
         world coordinates to frame coordinates.
 
@@ -347,7 +352,7 @@ def matrix_from_frame(frame: CoordinatesType) -> list[list[float]]:
     return M
 
 
-def matrix_from_frame_to_frame(frame_from: Sequence[Sequence[float]], frame_to: Sequence[Sequence[float]]) -> list[list[float]]:
+def matrix_from_frame_to_frame(frame_from: Sequence[Sequence[RealInput]], frame_to: Sequence[Sequence[RealInput]]) -> list[list[RealInput]]:
     """Computes a transformation between two frames.
 
     This transformation allows to transform geometry from one Cartesian
@@ -363,7 +368,7 @@ def matrix_from_frame_to_frame(frame_from: Sequence[Sequence[float]], frame_to: 
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         A 4x4 transformation matrix representing the transformation
         from one frame to another.
 
@@ -380,7 +385,7 @@ def matrix_from_frame_to_frame(frame_from: Sequence[Sequence[float]], frame_to: 
     return multiply_matrices(T2, matrix_inverse(T1))
 
 
-def matrix_from_change_of_basis(frame_from: Sequence[Sequence[float]], frame_to: Sequence[Sequence[float]]) -> list[list[float]]:
+def matrix_from_change_of_basis(frame_from: Sequence[Sequence[RealInput]], frame_to: Sequence[Sequence[RealInput]]) -> list[list[RealInput]]:
     """Computes a change of basis transformation between two frames.
 
     A basis change is essentially a remapping of geometry from one
@@ -395,7 +400,7 @@ def matrix_from_change_of_basis(frame_from: Sequence[Sequence[float]], frame_to:
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         A 4x4 transformation matrix representing a change of basis.
 
     Examples
@@ -411,7 +416,7 @@ def matrix_from_change_of_basis(frame_from: Sequence[Sequence[float]], frame_to:
     return multiply_matrices(matrix_inverse(T2), T1)
 
 
-def matrix_from_euler_angles(euler_angles: Sequence[float], static: bool = True, axes: str = "xyz") -> list[list[float]]:
+def matrix_from_euler_angles(euler_angles: FloatSequenceLike | Sequence[SupportsFloat], static: bool = True, axes: str = "xyz") -> list[list[float]]:
     """Calculates a rotation matrix from Euler angles.
 
     In 3D space any orientation can be achieved by composing three elemental
@@ -460,11 +465,11 @@ def matrix_from_euler_angles(euler_angles: Sequence[float], static: bool = True,
 
     if frame:
         ai, ak = ak, ai
-    if parity:
-        ai, aj, ak = -ai, -aj, -ak
 
     si, sj, sk = sin(ai), sin(aj), sin(ak)
     ci, cj, ck = cos(ai), cos(aj), cos(ak)
+    if parity:
+        si, sj, sk = -si, -sj, -sk
     cc, cs = ci * ck, ci * sk
     sc, ss = si * ck, si * sk
 
@@ -494,7 +499,7 @@ def matrix_from_euler_angles(euler_angles: Sequence[float], static: bool = True,
     return M
 
 
-def euler_angles_from_matrix(M: Sequence[Sequence[float]], static: bool = True, axes: str = "xyz") -> list[float]:
+def euler_angles_from_matrix(M: Sequence[Sequence[RealInput]], static: bool = True, axes: str = "xyz") -> list[float]:
     """Returns Euler angles from the rotation matrix M according to specified
     axis sequence and type of rotation.
 
@@ -563,7 +568,7 @@ def euler_angles_from_matrix(M: Sequence[Sequence[float]], static: bool = True, 
     return [ax, ay, az]
 
 
-def matrix_from_axis_and_angle(axis: CoordinateType, angle: float, point: CoordinateType | None = None) -> list[list[float]]:
+def matrix_from_axis_and_angle(axis: VectorLike, angle: float, point: PointLike | None = None) -> list[list[RealInput]]:
     """Calculates a rotation matrix from an rotation axis, an angle and an optional
     point of rotation.
 
@@ -578,7 +583,7 @@ def matrix_from_axis_and_angle(axis: CoordinateType, angle: float, point: Coordi
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         A 4x4 transformation matrix representing a rotation.
 
     Raises
@@ -638,7 +643,7 @@ def matrix_from_axis_and_angle(axis: CoordinateType, angle: float, point: Coordi
     return M
 
 
-def matrix_from_axis_angle_vector(axis_angle_vector: CoordinateType, point: CoordinateType = (0, 0, 0)) -> list[list[float]]:
+def matrix_from_axis_angle_vector(axis_angle_vector: VectorLike, point: PointLike = (0, 0, 0)) -> list[list[RealInput]]:
     """Calculates a rotation matrix from an axis-angle vector.
 
     Parameters
@@ -651,7 +656,7 @@ def matrix_from_axis_angle_vector(axis_angle_vector: CoordinateType, point: Coor
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         The 4x4 transformation matrix representing a rotation.
 
     Notes
@@ -675,7 +680,7 @@ def matrix_from_axis_angle_vector(axis_angle_vector: CoordinateType, point: Coor
     return matrix_from_axis_and_angle(axis, angle, point)
 
 
-def axis_and_angle_from_matrix(M: Sequence[Sequence[float]]) -> tuple[list[float], float]:
+def axis_and_angle_from_matrix(M: Sequence[Sequence[RealInput]]) -> tuple[list[RealInput], float]:
     """Returns the axis and the angle of the rotation matrix M.
 
     Parameters
@@ -740,7 +745,7 @@ def axis_and_angle_from_matrix(M: Sequence[Sequence[float]]) -> tuple[list[float
     return [x, y, z], angle
 
 
-def axis_angle_vector_from_matrix(M: Sequence[Sequence[float]]) -> list[float]:
+def axis_angle_vector_from_matrix(M: Sequence[Sequence[RealInput]]) -> list[RealInput]:
     """Returns the axis-angle vector of the rotation matrix M.
 
     Parameters
@@ -758,7 +763,7 @@ def axis_angle_vector_from_matrix(M: Sequence[Sequence[float]]) -> list[float]:
     return scale_vector(axis, angle)
 
 
-def matrix_from_quaternion(quaternion: FloatSequenceType) -> list[list[float]]:
+def matrix_from_quaternion(quaternion: FloatSequenceLike) -> list[list[RealInput]]:
     """Calculates a rotation matrix from quaternion coefficients.
 
     Parameters
@@ -768,7 +773,7 @@ def matrix_from_quaternion(quaternion: FloatSequenceType) -> list[list[float]]:
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         The 4x4 transformation matrix representing a rotation.
 
     Raises
@@ -806,7 +811,7 @@ def matrix_from_quaternion(quaternion: FloatSequenceType) -> list[list[float]]:
     return rotation
 
 
-def quaternion_from_matrix(M: Sequence[Sequence[float]]) -> list[float]:
+def quaternion_from_matrix(M: Sequence[Sequence[RealInput]]) -> list[RealInput]:
     """Returns the 4 quaternion coefficients from a rotation matrix.
 
     Parameters
@@ -861,7 +866,7 @@ def quaternion_from_matrix(M: Sequence[Sequence[float]]) -> list[float]:
     return [qw, qx, qy, qz]
 
 
-def matrix_from_basis_vectors(xaxis: CoordinateType, yaxis: CoordinateType) -> list[list[float]]:
+def matrix_from_basis_vectors(xaxis: VectorLike, yaxis: VectorLike) -> list[list[RealInput]]:
     """Creates a rotation matrix from basis vectors (= orthonormal vectors).
 
     Parameters
@@ -873,7 +878,7 @@ def matrix_from_basis_vectors(xaxis: CoordinateType, yaxis: CoordinateType) -> l
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         A 4x4 transformation matrix representing a rotation.
 
     Notes
@@ -904,7 +909,7 @@ def matrix_from_basis_vectors(xaxis: CoordinateType, yaxis: CoordinateType) -> l
     return R
 
 
-def basis_vectors_from_matrix(R: Sequence[Sequence[float]]) -> tuple[list[float], list[float]]:
+def basis_vectors_from_matrix(R: Sequence[Sequence[RealInput]]) -> tuple[list[RealInput], list[RealInput]]:
     """Returns the basis vectors from the rotation matrix R.
 
     Parameters
@@ -940,7 +945,7 @@ def basis_vectors_from_matrix(R: Sequence[Sequence[float]]) -> tuple[list[float]
     return xaxis, yaxis
 
 
-def matrix_from_translation(translation: CoordinateType) -> list[list[float]]:
+def matrix_from_translation(translation: VectorLike) -> list[list[RealInput]]:
     """Returns a 4x4 translation matrix in row-major order.
 
     Parameters
@@ -950,7 +955,7 @@ def matrix_from_translation(translation: CoordinateType) -> list[list[float]]:
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         The 4x4 transformation matrix representing a translation.
 
     Notes
@@ -975,7 +980,7 @@ def matrix_from_translation(translation: CoordinateType) -> list[list[float]]:
     return M
 
 
-def translation_from_matrix(M: Sequence[Sequence[float]]) -> list[float]:
+def translation_from_matrix(M: Sequence[Sequence[RealInput]]) -> list[RealInput]:
     """Returns the 3 values of translation from the matrix M.
 
     Parameters
@@ -993,8 +998,8 @@ def translation_from_matrix(M: Sequence[Sequence[float]]) -> list[float]:
 
 
 def matrix_from_orthogonal_projection(
-    plane: CoordinatesType,
-) -> list[list[float]]:
+    plane: PointsLike,
+) -> list[list[RealInput]]:
     """Returns an orthogonal projection matrix to project onto a plane.
 
     Parameters
@@ -1004,7 +1009,7 @@ def matrix_from_orthogonal_projection(
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         The 4x4 transformation matrix representing an orthogonal projection.
 
     Raises
@@ -1034,7 +1039,7 @@ def matrix_from_orthogonal_projection(
     return T
 
 
-def matrix_from_parallel_projection(plane: CoordinatesType, direction: CoordinateType) -> list[list[float]]:
+def matrix_from_parallel_projection(plane: PointsLike, direction: VectorLike) -> list[list[RealInput]]:
     """Returns an parallel projection matrix to project onto a plane.
 
     Parameters
@@ -1046,7 +1051,7 @@ def matrix_from_parallel_projection(plane: CoordinatesType, direction: Coordinat
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         A 4-by-4 transformation matrix.
 
     Raises
@@ -1081,7 +1086,7 @@ def matrix_from_parallel_projection(plane: CoordinatesType, direction: Coordinat
     return T
 
 
-def matrix_from_perspective_projection(plane: CoordinatesType, center_of_projection: CoordinateType) -> list[list[float]]:
+def matrix_from_perspective_projection(plane: PointsLike, center_of_projection: PointLike) -> list[list[RealInput]]:
     """Returns a perspective projection matrix to project onto a plane along lines that emanate from a single point, called the center of projection.
 
     Parameters
@@ -1093,7 +1098,7 @@ def matrix_from_perspective_projection(plane: CoordinatesType, center_of_project
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         A 4-by-4 transformation matrix.
 
     Examples
@@ -1125,7 +1130,7 @@ def matrix_from_perspective_projection(plane: CoordinatesType, center_of_project
     return T
 
 
-def matrix_from_perspective_entries(perspective: Sequence[float]) -> list[list[float]]:
+def matrix_from_perspective_entries(perspective: FloatSequenceLike) -> list[list[RealInput]]:
     """Returns a matrix from perspective entries.
 
     Parameters
@@ -1135,7 +1140,7 @@ def matrix_from_perspective_entries(perspective: Sequence[float]) -> list[list[f
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         A 4-by-4 transformation matrix.
 
     Notes
@@ -1155,7 +1160,7 @@ def matrix_from_perspective_entries(perspective: Sequence[float]) -> list[list[f
     return M
 
 
-def matrix_from_shear_entries(shear_entries: Sequence[float]) -> list[list[float]]:
+def matrix_from_shear_entries(shear_entries: FloatSequenceLike) -> list[list[RealInput]]:
     """Returns a shear matrix from the 3 factors for x-y, x-z, and y-z axes.
 
     Parameters
@@ -1165,7 +1170,7 @@ def matrix_from_shear_entries(shear_entries: Sequence[float]) -> list[list[float
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         A 4-by-4 transformation matrix.
 
     Notes
@@ -1189,7 +1194,7 @@ def matrix_from_shear_entries(shear_entries: Sequence[float]) -> list[list[float
     return M
 
 
-def matrix_from_shear(angle: float, direction: CoordinateType, point: CoordinateType, normal: CoordinateType) -> list[list[float]]:
+def matrix_from_shear(angle: float, direction: VectorLike, point: PointLike, normal: VectorLike) -> list[list[RealInput]]:
     """Constructs a shear matrix by an angle along the direction vector on the
     shear plane (defined by point and normal).
 
@@ -1207,7 +1212,7 @@ def matrix_from_shear(angle: float, direction: CoordinateType, point: Coordinate
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         A 4-by-4 transformation matrix.
 
     Raises
@@ -1249,7 +1254,7 @@ def matrix_from_shear(angle: float, direction: CoordinateType, point: Coordinate
     return M
 
 
-def matrix_from_scale_factors(scale_factors: Sequence[float]) -> list[list[float]]:
+def matrix_from_scale_factors(scale_factors: FloatSequenceLike) -> list[list[RealInput]]:
     """Returns a 4x4 scaling transformation.
 
     Parameters
@@ -1259,7 +1264,7 @@ def matrix_from_scale_factors(scale_factors: Sequence[float]) -> list[list[float
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         A 4-by-4 transformation matrix.
 
     Notes

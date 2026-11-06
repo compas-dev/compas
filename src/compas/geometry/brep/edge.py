@@ -4,8 +4,8 @@ from typing import Any
 from typing import Literal
 from typing import Self
 
-from compas._typing import CoordinatesType
 from compas.data import Data
+from compas.typing import PointsLike
 
 if TYPE_CHECKING:
     from compas.geometry import Bezier
@@ -147,7 +147,7 @@ class BrepEdge(Data):
         raise NotImplementedError
 
     @classmethod
-    def from_points(cls, points: CoordinatesType) -> Self:
+    def from_points(cls, points: PointsLike) -> Self:
         """Construct an edge from two points.
 
         Parameters

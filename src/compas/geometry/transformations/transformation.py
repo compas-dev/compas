@@ -2,8 +2,8 @@ from collections.abc import Iterator
 from collections.abc import Sequence
 from typing import TYPE_CHECKING
 from typing import Self
+from typing import SupportsFloat
 
-from compas._typing import CoordinateType
 from compas.data import Data
 from compas.linalg.matrices import matrix_determinant
 from compas.linalg.matrices import matrix_inverse
@@ -17,6 +17,9 @@ from compas.linalg.transformations import matrix_from_frame
 from compas.linalg.transformations import matrix_from_translation
 from compas.linalg.transformations import translation_from_matrix
 from compas.tolerance import TOL
+from compas.typing import FloatSequenceLike
+from compas.typing import PointLike
+from compas.typing import RealInput
 
 if TYPE_CHECKING:
     from compas.geometry import Frame
@@ -27,7 +30,10 @@ if TYPE_CHECKING:
     from compas.geometry import Translation
     from compas.geometry import Vector
 
-Matrix = list[list[float]]
+type Matrix = list[list[RealInput]]
+# Retained mutable lists are invariant. Context-typed numeric literals fit these
+# two owned representations; pre-bound narrower lists cannot soundly be widened.
+type MatrixInput = Matrix | list[list[float]]
 
 
 class Transformation(Data):
@@ -66,14 +72,14 @@ class Transformation(Data):
     # ==========================================================================
 
     @property
-    def __data__(self) -> dict[str, Matrix]:
+    def __data__(self) -> dict[str, MatrixInput]:
         return {"matrix": self.matrix}
 
     # ==========================================================================
     # Dunder methods
     # ==========================================================================
 
-    def __init__(self, matrix: Matrix | None = None, name: str | None = None) -> None:
+    def __init__(self, matrix: MatrixInput | None = None, name: str | None = None) -> None:
         super().__init__(name=name)
         if not matrix:
             matrix = identity_matrix(4)
@@ -85,7 +91,7 @@ class Transformation(Data):
     def __imul__(self, other: "Transformation") -> "Transformation":
         return self.concatenated(other)
 
-    def __getitem__(self, key: tuple[int, int]) -> float:
+    def __getitem__(self, key: tuple[int, int]) -> RealInput:
         i, j = key
         return self.matrix[i][j]
 
@@ -93,7 +99,7 @@ class Transformation(Data):
         i, j = key
         self.matrix[i][j] = value
 
-    def __iter__(self) -> Iterator[list[float]]:
+    def __iter__(self) -> Iterator[Sequence[RealInput]]:
         return iter(self.matrix)
 
     def __eq__(self, other: object, tol: float | None = None) -> bool:
@@ -173,12 +179,12 @@ class Transformation(Data):
         return Vector(x[0], x[1], x[2]), Vector(y[0], y[1], y[2])
 
     @property
-    def list(self) -> list[float]:
+    def list(self) -> list[RealInput]:
         """The matrix entries flattened in row-major order."""
         return [a for c in self.matrix for a in c]
 
     @property
-    def determinant(self) -> float:
+    def determinant(self) -> RealInput:
         """The determinant of the transformation matrix."""
         return matrix_determinant(self.matrix)
 
@@ -187,7 +193,7 @@ class Transformation(Data):
     # ==========================================================================
 
     @classmethod
-    def from_matrix(cls, matrix: Matrix) -> Self:
+    def from_matrix(cls, matrix: MatrixInput) -> Self:
         """Creates a transformation from a list[list[float]] object.
 
         Parameters
@@ -204,7 +210,7 @@ class Transformation(Data):
         return cls(matrix)
 
     @classmethod
-    def from_list(cls, numbers: Sequence[float]) -> Self:
+    def from_list(cls, numbers: Sequence[RealInput]) -> Self:
         """Creates a transformation from a list of 16 numbers.
 
         Parameters
@@ -237,10 +243,10 @@ class Transformation(Data):
     @classmethod
     def from_euler_angles(
         cls,
-        euler_angles: Sequence[float],
+        euler_angles: FloatSequenceLike | Sequence[SupportsFloat],
         static: bool = True,
         axes: str = "xyz",
-        point: CoordinateType = (0.0, 0.0, 0.0),
+        point: PointLike = (0.0, 0.0, 0.0),
     ) -> Self:
         """Construct a transformation from a rotation represented by Euler angles.
 

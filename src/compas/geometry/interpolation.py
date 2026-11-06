@@ -1,16 +1,17 @@
 from collections.abc import Sequence
 
-from compas._typing import CoordinatesType
-from compas._typing import CoordinateType
 from compas.itertools import normalize_values
 from compas.linalg.vectors import add_vectors
 from compas.linalg.vectors import dot_vectors
 from compas.linalg.vectors import scale_vector
 from compas.linalg.vectors import subtract_vectors
 from compas.linalg.vectors import sum_vectors
+from compas.typing import PointLike
+from compas.typing import PointsLike
+from compas.typing import RealInput
 
 
-def barycentric_coordinates(point: CoordinateType, triangle: Sequence[CoordinateType]) -> list[float]:
+def barycentric_coordinates(point: PointLike, triangle: Sequence[PointLike]) -> list[RealInput]:
     """Compute the barycentric coordinates of a point with respect to a triangle.
 
     Parameters
@@ -43,10 +44,10 @@ def barycentric_coordinates(point: CoordinateType, triangle: Sequence[Coordinate
 
 
 def discrete_coons_patch(
-    ab: CoordinatesType | None,
-    bc: CoordinatesType | None,
-    dc: CoordinatesType | None,
-    ad: CoordinatesType | None,
+    ab: PointsLike | None,
+    bc: PointsLike | None,
+    dc: PointsLike | None,
+    ad: PointsLike | None,
 ) -> tuple[list[list[float]], list[list[int]]]:
     """Construct a discrete Coons patch from three or four boundary polylines.
 
@@ -125,7 +126,7 @@ def discrete_coons_patch(
     return vertices, faces
 
 
-def tween_points(points1: CoordinatesType, points2: CoordinatesType, num: int) -> list[list[list[float]]]:
+def tween_points(points1: PointsLike, points2: PointsLike, num: int) -> list[list[list[RealInput]]]:
     """Compute evenly spaced interpolations between two point sets.
 
     Parameters
@@ -153,11 +154,11 @@ def tween_points(points1: CoordinatesType, points2: CoordinatesType, num: int) -
 
 
 def tween_points_distance(
-    points1: CoordinatesType,
-    points2: CoordinatesType,
+    points1: PointsLike,
+    points2: PointsLike,
     dist: float,
     index: int | None = None,
-) -> list[list[float]]:
+) -> list[list[RealInput]]:
     """Interpolate two point sets at a specified reference-point distance.
 
     Parameters

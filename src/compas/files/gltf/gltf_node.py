@@ -9,12 +9,15 @@ from compas.linalg.transformations import identity_matrix
 from compas.linalg.transformations import matrix_from_quaternion
 from compas.linalg.transformations import matrix_from_scale_factors
 from compas.linalg.transformations import matrix_from_translation
+from compas.typing import RealInput
 
 if TYPE_CHECKING:
     from compas.datastructures import Mesh
 
     from .gltf_document import GLTFDocument
     from .gltf_mesh import GLTFMesh
+
+type Matrix = list[list[float]] | list[list[RealInput]]
 
 
 class GLTFNode:
@@ -87,8 +90,8 @@ class GLTFNode:
         self._mesh_key = None
         self.weights: list[float] | None = None
 
-        self.position: list[float] | None = None
-        self.transform: list[list[float]] | None = None
+        self.position: list[RealInput] | None = None
+        self.transform: Matrix | None = None
         self._key = None
 
         self._camera = None
@@ -192,13 +195,13 @@ class GLTFNode:
         self._scale = value
 
     @property
-    def matrix(self) -> list[list[float]] | None:
+    def matrix(self) -> Matrix | None:
         if not (self.translation or self.rotation or self.scale or self._matrix):
             return identity_matrix(4)
         return self._matrix
 
     @matrix.setter
-    def matrix(self, value: list[list[float]] | None) -> None:
+    def matrix(self, value: Matrix | None) -> None:
         if value is None:
             self._matrix = value
             return
@@ -232,7 +235,7 @@ class GLTFNode:
     # Methods
     # =============================================================================
 
-    def get_matrix_from_trs(self) -> list[list[float]]:
+    def get_matrix_from_trs(self) -> Matrix:
         """Compose the node's translation, rotation, and scale into a matrix.
 
         Returns

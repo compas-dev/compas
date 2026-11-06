@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
-from compas._typing import CoordinatesType
-from compas._typing import MeshType
+from compas.typing import PointsLike
+from compas.typing import VerticesFaces
 
 if TYPE_CHECKING:
     from numpy.typing import NDArray
@@ -69,7 +69,7 @@ def _closest_point_on_triangle(point: "NDArray", triangle: "NDArray") -> "NDArra
     return a + vb * denominator * ab + vc * denominator * ac
 
 
-def trimesh_pull_points(mesh: MeshType, points: CoordinatesType) -> list[list[float]]:
+def trimesh_pull_points(mesh: VerticesFaces, points: PointsLike) -> list[list[float]]:
     """Compute the closest point on a triangle mesh for each input point.
 
     Parameters

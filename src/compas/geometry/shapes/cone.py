@@ -5,14 +5,14 @@ from math import sqrt
 from typing import TYPE_CHECKING
 from typing import Self
 
-from compas._typing import CoordinatesType
-from compas._typing import CoordinateType
 from compas.geometry import Circle
 from compas.geometry import Frame
 from compas.geometry import Line
 from compas.geometry import Plane
 from compas.geometry import Point
 from compas.geometry import UGrid
+from compas.typing import PointLike
+from compas.typing import PointsLike
 
 from .box import Box
 from .shape import Shape
@@ -245,7 +245,7 @@ class Cone(Shape[UGrid]):
     # Discretisation
     # =============================================================================
 
-    def _compute_local_vertices(self, strategy: UGrid) -> list[CoordinateType]:
+    def _compute_local_vertices(self, strategy: UGrid) -> list[PointLike]:
         """Compute the vertices of the discrete representation of the cone.
 
         Returns
@@ -254,7 +254,7 @@ class Cone(Shape[UGrid]):
 
         """
         u = strategy.u
-        vertices: list[CoordinateType] = [[0, 0, 0]]
+        vertices: list[PointLike] = [[0, 0, 0]]
         a = 2 * pi / u
         radius = self.circle.radius
         for i in range(u):
@@ -328,7 +328,7 @@ class Cone(Shape[UGrid]):
     # Methods
     # ==========================================================================
 
-    def contains_point(self, point: CoordinateType, tol: float = 1e-6) -> bool:
+    def contains_point(self, point: PointLike, tol: float = 1e-6) -> bool:
         """Verify whether a point is inside the cone.
 
         Parameters
@@ -349,7 +349,7 @@ class Cone(Shape[UGrid]):
         radius = self.radius * max(0.0, 1.0 - z / self.height) + tol
         return x**2 + y**2 <= radius**2
 
-    def contains_points(self, points: CoordinatesType, tol: float = 1e-6) -> list[bool]:
+    def contains_points(self, points: PointsLike, tol: float = 1e-6) -> list[bool]:
         """Verify whether points are inside the cone.
 
         Parameters

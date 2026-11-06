@@ -1,10 +1,12 @@
 from collections import defaultdict
 from collections import deque
 from numbers import Real
+from operator import index as integer_index
 from typing import TYPE_CHECKING
 from typing import Self
 
-from compas._typing import CoordinatesType
+import numpy as np
+
 from compas.geometry import Geometry
 from compas.geometry import Line
 from compas.geometry import Point
@@ -13,6 +15,9 @@ from compas.geometry import Transformation
 from compas.geometry import transform_points
 from compas.itertools import pairwise
 from compas.tolerance import TOL
+from compas.typing import IndexGroupsLike
+from compas.typing import PointsLike
+from compas.typing import RealInput
 
 if TYPE_CHECKING:
     from compas.datastructures import Mesh
@@ -65,12 +70,12 @@ class PolygonalSurface(Geometry):
 
     def __init__(
         self,
-        vertices: CoordinatesType,
-        faces: list[list[int]],
+        vertices: PointsLike,
+        faces: IndexGroupsLike,
         name: str | None = None,
     ) -> None:
         super().__init__(name=name)
-        self._vertices: list[list[float]] = []
+        self._vertices: list[list[RealInput]] = []
         self._faces: list[list[int]] = []
         self.vertices = vertices
         self.faces = faces
@@ -87,7 +92,7 @@ class PolygonalSurface(Geometry):
     # =============================================================================
 
     @property
-    def vertices(self) -> list[list[float]]:
+    def vertices(self) -> list[list[RealInput]]:
         """The vertex coordinates of the surface.
 
         Notes
@@ -99,7 +104,7 @@ class PolygonalSurface(Geometry):
         return self._vertices
 
     @vertices.setter
-    def vertices(self, vertices: CoordinatesType) -> None:
+    def vertices(self, vertices: PointsLike) -> None:
         copied = []
         for vertex in vertices:
             if len(vertex) != 3:
@@ -122,8 +127,18 @@ class PolygonalSurface(Geometry):
         return self._faces
 
     @faces.setter
-    def faces(self, faces: list[list[int]]) -> None:
-        copied = [list(face) for face in faces]
+    def faces(self, faces: IndexGroupsLike) -> None:
+        copied = []
+        for face in faces:
+            copied_face = []
+            for value in face:
+                if isinstance(value, (bool, np.bool_)):
+                    raise TypeError("Polygonal-surface face indices should be integers.")
+                try:
+                    copied_face.append(integer_index(value))
+                except TypeError:
+                    raise TypeError("Polygonal-surface face indices should be integers.") from None
+            copied.append(copied_face)
         self._validate_faces(copied)
         self._faces = copied
 
@@ -239,7 +254,7 @@ class PolygonalSurface(Geometry):
             triangles.extend([[face[index] for index in triangle] for triangle in local])
         return Tessellation(self.vertices, triangles)
 
-    def to_vertices_and_faces(self) -> tuple[list[list[float]], list[list[int]]]:
+    def to_vertices_and_faces(self) -> tuple[list[list[RealInput]], list[list[int]]]:
         """Return independent copies of the vertices and faces.
 
         Returns
@@ -331,8 +346,6 @@ class PolygonalSurface(Geometry):
             if len(set(face)) != len(face):
                 raise ValueError("A polygonal-surface face cannot repeat vertex indices.")
             for index in face:
-                if not isinstance(index, int):
-                    raise TypeError("Polygonal-surface face indices should be integers.")
                 if index < 0 or index >= vertex_count:
                     raise IndexError("A polygonal-surface face index is outside the vertex range.")
 

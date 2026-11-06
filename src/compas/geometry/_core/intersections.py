@@ -3,9 +3,6 @@ from math import fabs
 from math import sqrt
 from typing import Literal
 
-from compas._typing import CoordinatesType
-from compas._typing import CoordinateType
-from compas._typing import SphereType
 from compas.linalg.vectors import add_vectors
 from compas.linalg.vectors import cross_vectors
 from compas.linalg.vectors import dot_vectors
@@ -16,6 +13,10 @@ from compas.linalg.vectors import scale_vector
 from compas.linalg.vectors import subtract_vectors
 from compas.linalg.vectors import subtract_vectors_xy
 from compas.tolerance import TOL
+from compas.typing import PointLike
+from compas.typing import PointsLike
+from compas.typing import RealInput
+from compas.typing import SphereData
 
 from .distance import distance_point_point
 from .predicates_3 import is_point_in_triangle
@@ -34,22 +35,20 @@ __all__ = [
     "intersection_sphere_sphere",
 ]
 
-PointCoordinates = tuple[float, float, float]
+type PointTuple = tuple[RealInput, RealInput, RealInput]
 SphereSphereIntersection = (
-    tuple[Literal["point"], list[float]] | tuple[Literal["circle"], tuple[list[float], float, list[float]]] | tuple[Literal["sphere"], tuple[list[float], float]]
+    tuple[Literal["point"], list[RealInput]] | tuple[Literal["circle"], tuple[list[RealInput], float, list[RealInput]]] | tuple[Literal["sphere"], tuple[list[RealInput], float]]
 )
 CircleCircleXYIntersection = (
-    tuple[Literal["point"], PointCoordinates]
-    | tuple[Literal["points"], tuple[PointCoordinates, PointCoordinates]]
-    | tuple[Literal["circle"], tuple[PointCoordinates, float, PointCoordinates]]
+    tuple[Literal["point"], PointTuple] | tuple[Literal["points"], tuple[PointTuple, PointTuple]] | tuple[Literal["circle"], tuple[PointTuple, RealInput, PointTuple]]
 )
 
 
 def closest_points_line_line(
-    line1: Sequence[CoordinateType],
-    line2: Sequence[CoordinateType],
+    line1: Sequence[PointLike],
+    line2: Sequence[PointLike],
     tol: float | None = None,
-) -> tuple[list[float] | None, list[float] | None]:
+) -> tuple[list[RealInput] | None, list[RealInput] | None]:
     a, b = line1
     c, d = line2
     ab = subtract_vectors(b, a)
@@ -67,10 +66,10 @@ def closest_points_line_line(
 
 
 def intersection_line_plane(
-    line: Sequence[CoordinateType],
-    plane: Sequence[CoordinateType],
+    line: PointsLike,
+    plane: PointsLike,
     tol: float | None = None,
-) -> list[float] | None:
+) -> list[RealInput] | None:
     a, b = line
     o, n = plane
     ab = subtract_vectors(b, a)
@@ -85,10 +84,10 @@ def intersection_line_plane(
 
 
 def intersection_line_line_xy(
-    line1: CoordinatesType,
-    line2: CoordinatesType,
+    line1: PointsLike,
+    line2: PointsLike,
     tol: float | None = None,
-) -> PointCoordinates | None:
+) -> PointTuple | None:
     a, b = line1
     c, d = line2
     x1, y1 = a[0], a[1]
@@ -108,8 +107,8 @@ def intersection_line_line_xy(
 
 
 def intersection_circle_circle_xy(
-    circle1: tuple[CoordinatesType, float],
-    circle2: tuple[CoordinatesType, float],
+    circle1: tuple[PointsLike, RealInput],
+    circle2: tuple[PointsLike, RealInput],
     tol: float | None = None,
 ) -> CircleCircleXYIntersection | None:
     plane1, radius1 = circle1
@@ -157,9 +156,9 @@ def intersection_circle_circle_xy(
 
 def intersection_ellipse_line_xy(
     ellipse: tuple[float, float],
-    line: CoordinatesType,
+    line: PointsLike,
     tol: float | None = None,
-) -> PointCoordinates | tuple[PointCoordinates, PointCoordinates] | None:
+) -> PointTuple | tuple[PointTuple, PointTuple] | None:
     x1, y1 = line[0][0], line[0][1]
     x2, y2 = line[1][0], line[1][1]
     major, minor = ellipse
@@ -189,10 +188,10 @@ def intersection_ellipse_line_xy(
 
 
 def intersection_plane_plane(
-    plane1: Sequence[CoordinateType],
-    plane2: Sequence[CoordinateType],
+    plane1: Sequence[PointLike],
+    plane2: Sequence[PointLike],
     tol: float | None = None,
-) -> tuple[list[float], list[float]] | None:
+) -> tuple[list[RealInput], list[RealInput]] | None:
     o1, n1 = plane1
     o2, n2 = plane2
     direction = cross_vectors(n1, n2)
@@ -208,8 +207,8 @@ def intersection_plane_plane(
 
 
 def intersection_sphere_sphere(
-    sphere1: SphereType,
-    sphere2: SphereType,
+    sphere1: SphereData,
+    sphere2: SphereData,
     tol: float | None = None,
 ) -> SphereSphereIntersection | None:
     center1, radius1 = sphere1
@@ -243,10 +242,10 @@ def intersection_sphere_sphere(
 
 
 def intersection_sphere_line(
-    sphere: SphereType,
-    line: Sequence[CoordinateType],
+    sphere: SphereData,
+    line: Sequence[PointLike],
     tol: float | None = None,
-) -> PointCoordinates | tuple[PointCoordinates, PointCoordinates] | None:
+) -> PointTuple | tuple[PointTuple, PointTuple] | None:
     start, end = line
     center, radius = sphere
 
@@ -298,10 +297,10 @@ def intersection_sphere_line(
 
 
 def intersection_plane_circle(
-    plane: Sequence[CoordinateType],
-    circle: tuple[Sequence[CoordinateType], float],
+    plane: Sequence[PointLike],
+    circle: tuple[Sequence[PointLike], RealInput],
     tol: float | None = None,
-) -> PointCoordinates | tuple[PointCoordinates, PointCoordinates] | None:
+) -> PointTuple | tuple[PointTuple, PointTuple] | None:
     circle_plane, circle_radius = circle
     line = intersection_plane_plane(plane, circle_plane, tol=tol)
     if line is None:
@@ -310,10 +309,10 @@ def intersection_plane_circle(
 
 
 def intersection_segment_plane(
-    segment: Sequence[CoordinateType],
-    plane: Sequence[CoordinateType],
+    segment: Sequence[PointLike],
+    plane: Sequence[PointLike],
     tol: float | None = None,
-) -> list[float] | None:
+) -> list[RealInput] | None:
     a, b = segment
     o, n = plane
     ab = subtract_vectors(b, a)
@@ -330,10 +329,10 @@ def intersection_segment_plane(
 
 
 def intersection_line_triangle(
-    line: Sequence[CoordinateType],
-    triangle: Sequence[CoordinateType],
+    line: PointsLike,
+    triangle: PointsLike,
     tol: float | None = None,
-) -> list[float] | None:
+) -> list[RealInput] | None:
     a, b, c = triangle
     ab = subtract_vectors(b, a)
     ac = subtract_vectors(c, a)

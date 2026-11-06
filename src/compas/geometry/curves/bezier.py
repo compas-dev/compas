@@ -3,10 +3,10 @@ from math import comb
 from math import factorial
 from typing import Any
 
-from compas._typing import CoordinateType
 from compas.geometry import Frame
 from compas.geometry import Point
 from compas.geometry import Vector
+from compas.typing import PointLike
 
 from .._typing import TransformationType
 from .curve import Curve
@@ -159,7 +159,7 @@ class Bezier(Curve):
     def __data__(self) -> dict[str, Any]:
         return {"points": [point.__data__ for point in self.points]}
 
-    def __init__(self, points: Sequence[CoordinateType], name: str | None = None) -> None:
+    def __init__(self, points: Sequence[PointLike], name: str | None = None) -> None:
         super().__init__(name=name)
         self._points: list[Point] = []
         self.points = points
@@ -207,7 +207,7 @@ class Bezier(Curve):
         return self._points
 
     @points.setter
-    def points(self, points: Sequence[CoordinateType]) -> None:
+    def points(self, points: Sequence[PointLike]) -> None:
         if len(points) < 2:
             raise ValueError("A Bezier curve requires at least two control points.")
         self._points = [Point(point[0], point[1], point[2]) for point in points]

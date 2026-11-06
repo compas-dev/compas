@@ -1,10 +1,10 @@
 from math import isfinite
 from typing import TYPE_CHECKING
 
-from compas._typing import CoordinatesCollectionInput
-from compas._typing import CoordinatesInput
 from compas.plugins import pluggable
 from compas.tolerance import TOL
+from compas.typing import PointGroupsLike
+from compas.typing import PointsLike
 
 from .triangulation import ConformingDelaunay
 from .triangulation import ConstrainedDelaunay
@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 
 
 def _planar_coordinates(
-    points: CoordinatesInput,
+    points: PointsLike,
     frame: "Frame | None",
     name: str,
     minimum: int,
@@ -53,7 +53,7 @@ def _planar_coordinates(
 
 
 def triangulate_planar_points(
-    points: CoordinatesInput,
+    points: PointsLike,
     *,
     strategy: Delaunay,
     frame: "Frame | None" = None,
@@ -91,7 +91,7 @@ def triangulate_planar_points(
 
 @pluggable(category="triangulation")
 def _triangulate_planar_points(
-    points: CoordinatesInput,
+    points: PointsLike,
     *,
     strategy: Delaunay,
     frame: "Frame | None" = None,
@@ -106,11 +106,11 @@ def _triangulate_planar_points(
 
 
 def triangulate_planar_domain(
-    boundary: CoordinatesInput,
+    boundary: PointsLike,
     *,
-    holes: CoordinatesCollectionInput = (),
-    constraints: CoordinatesCollectionInput = (),
-    points: CoordinatesInput = (),
+    holes: PointGroupsLike = (),
+    constraints: PointGroupsLike = (),
+    points: PointsLike = (),
     strategy: ConstrainedDelaunay | ConformingDelaunay,
     frame: "Frame | None" = None,
 ) -> "Tessellation":
@@ -168,11 +168,11 @@ def triangulate_planar_domain(
 
 @pluggable(category="triangulation")
 def _triangulate_planar_domain(
-    boundary: CoordinatesInput,
+    boundary: PointsLike,
     *,
-    holes: CoordinatesCollectionInput = (),
-    constraints: CoordinatesCollectionInput = (),
-    points: CoordinatesInput = (),
+    holes: PointGroupsLike = (),
+    constraints: PointGroupsLike = (),
+    points: PointsLike = (),
     strategy: ConstrainedDelaunay | ConformingDelaunay,
     frame: "Frame | None" = None,
 ) -> "Tessellation":

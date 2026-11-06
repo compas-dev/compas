@@ -1,9 +1,9 @@
 from typing import TYPE_CHECKING
 from typing import Any
 
-from compas._typing import CoordinatesType
-from compas._typing import TriangleMeshInput
 from compas.plugins import pluggable
+from compas.typing import PointsLike
+from compas.typing import VerticesFaces
 
 if TYPE_CHECKING:
     from .planar_region import PlanarRegion
@@ -14,7 +14,7 @@ def _xy_coordinates(points: Any) -> list[list[float]]:
     return [[point[0], point[1]] for point in points]
 
 
-def _shapely_polygon(region: "PlanarRegion | Polygon | CoordinatesType") -> Any:
+def _shapely_polygon(region: "PlanarRegion | Polygon | PointsLike") -> Any:
     from shapely.geometry import Polygon  # pyright: ignore[reportMissingModuleSource]
 
     outer = getattr(region, "outer", None)
@@ -47,7 +47,7 @@ def _planar_regions(geometry: Any) -> list["PlanarRegion"]:
     ]
 
 
-def boolean_union_mesh_mesh(A: TriangleMeshInput, B: TriangleMeshInput) -> TriangleMeshInput:
+def boolean_union_mesh_mesh(A: VerticesFaces, B: VerticesFaces) -> VerticesFaces:
     """Compute the boolean union of two triangle meshes.
 
     Parameters
@@ -89,11 +89,11 @@ def boolean_union_mesh_mesh(A: TriangleMeshInput, B: TriangleMeshInput) -> Trian
 
 
 @pluggable(category="booleans")
-def _boolean_union_mesh_mesh(A: TriangleMeshInput, B: TriangleMeshInput) -> TriangleMeshInput:
+def _boolean_union_mesh_mesh(A: VerticesFaces, B: VerticesFaces) -> VerticesFaces:
     raise NotImplementedError
 
 
-def boolean_difference_mesh_mesh(A: TriangleMeshInput, B: TriangleMeshInput) -> TriangleMeshInput:
+def boolean_difference_mesh_mesh(A: VerticesFaces, B: VerticesFaces) -> VerticesFaces:
     """Compute the boolean difference of two triangle meshes.
 
     Parameters
@@ -124,11 +124,11 @@ def boolean_difference_mesh_mesh(A: TriangleMeshInput, B: TriangleMeshInput) -> 
 
 
 @pluggable(category="booleans")
-def _boolean_difference_mesh_mesh(A: TriangleMeshInput, B: TriangleMeshInput) -> TriangleMeshInput:
+def _boolean_difference_mesh_mesh(A: VerticesFaces, B: VerticesFaces) -> VerticesFaces:
     raise NotImplementedError
 
 
-def boolean_intersection_mesh_mesh(A: TriangleMeshInput, B: TriangleMeshInput) -> TriangleMeshInput:
+def boolean_intersection_mesh_mesh(A: VerticesFaces, B: VerticesFaces) -> VerticesFaces:
     """Compute the boolean intersection of two triangle meshes.
 
     Parameters
@@ -159,12 +159,12 @@ def boolean_intersection_mesh_mesh(A: TriangleMeshInput, B: TriangleMeshInput) -
 
 
 @pluggable(category="booleans")
-def _boolean_intersection_mesh_mesh(A: TriangleMeshInput, B: TriangleMeshInput) -> TriangleMeshInput:
+def _boolean_intersection_mesh_mesh(A: VerticesFaces, B: VerticesFaces) -> VerticesFaces:
     raise NotImplementedError
 
 
 @pluggable(category="booleans")
-def boolean_union_polygon_polygon(A: "PlanarRegion | Polygon | CoordinatesType", B: "PlanarRegion | Polygon | CoordinatesType") -> list["PlanarRegion"]:
+def boolean_union_polygon_polygon(A: "PlanarRegion | Polygon | PointsLike", B: "PlanarRegion | Polygon | PointsLike") -> list["PlanarRegion"]:
     """Compute the Boolean union of two planar regions.
 
     The polygons are assumed to lie in the XY plane. Z coordinates are ignored.
@@ -198,7 +198,7 @@ def boolean_union_polygon_polygon(A: "PlanarRegion | Polygon | CoordinatesType",
 
 
 @pluggable(category="booleans")
-def boolean_difference_polygon_polygon(A: "PlanarRegion | Polygon | CoordinatesType", B: "PlanarRegion | Polygon | CoordinatesType") -> list["PlanarRegion"]:
+def boolean_difference_polygon_polygon(A: "PlanarRegion | Polygon | PointsLike", B: "PlanarRegion | Polygon | PointsLike") -> list["PlanarRegion"]:
     """Compute the Boolean difference of two planar regions.
 
     The polygons are assumed to lie in the XY plane. Z coordinates are ignored.
@@ -232,7 +232,7 @@ def boolean_difference_polygon_polygon(A: "PlanarRegion | Polygon | CoordinatesT
 
 
 @pluggable(category="booleans")
-def boolean_symmetric_difference_polygon_polygon(A: "PlanarRegion | Polygon | CoordinatesType", B: "PlanarRegion | Polygon | CoordinatesType") -> list["PlanarRegion"]:
+def boolean_symmetric_difference_polygon_polygon(A: "PlanarRegion | Polygon | PointsLike", B: "PlanarRegion | Polygon | PointsLike") -> list["PlanarRegion"]:
     """Compute the Boolean symmetric difference of two planar regions.
 
     The polygons are assumed to lie in the XY plane. Z coordinates are ignored.
@@ -266,7 +266,7 @@ def boolean_symmetric_difference_polygon_polygon(A: "PlanarRegion | Polygon | Co
 
 
 @pluggable(category="booleans")
-def boolean_intersection_polygon_polygon(A: "PlanarRegion | Polygon | CoordinatesType", B: "PlanarRegion | Polygon | CoordinatesType") -> list["PlanarRegion"]:
+def boolean_intersection_polygon_polygon(A: "PlanarRegion | Polygon | PointsLike", B: "PlanarRegion | Polygon | PointsLike") -> list["PlanarRegion"]:
     """Compute the Boolean intersection of two planar regions.
 
     The polygons are assumed to lie in the XY plane. Z coordinates are ignored.

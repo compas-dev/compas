@@ -1,8 +1,12 @@
 import math
 from collections.abc import Sequence
 
-from compas._typing import FloatSequenceType
+import numpy as np
+
 from compas.tolerance import TOL
+from compas.typing import FloatSequenceLike
+from compas.typing import RealInput
+from compas.typing import VectorLike
 
 from .transformations import axis_and_angle_from_matrix
 from .transformations import euler_angles_from_matrix
@@ -12,7 +16,7 @@ from .transformations import matrix_from_quaternion
 from .transformations import quaternion_from_matrix
 
 
-def quaternion_norm(q: FloatSequenceType) -> float:
+def quaternion_norm(q: FloatSequenceLike) -> float:
     """Calculates the length (euclidean norm) of a quaternion.
 
     Parameters
@@ -71,7 +75,7 @@ def quaternion_unitize(q: Sequence[float]) -> list[float]:
     return [x / n for x in q]
 
 
-def quaternion_is_unit(q: FloatSequenceType, tol: float | None = None) -> bool:
+def quaternion_is_unit(q: FloatSequenceLike, tol: float | None = None) -> bool | np.bool_:
     """Checks if a quaternion is unit-length.
 
     Parameters
@@ -205,7 +209,7 @@ def quaternion_conjugate(q: Sequence[float]) -> list[float]:
     return [q[0], -q[1], -q[2], -q[3]]
 
 
-def quaternion_from_euler_angles(e: Sequence[float], static: bool = True, axes: str = "xyz") -> list[float]:
+def quaternion_from_euler_angles(e: Sequence[float], static: bool = True, axes: str = "xyz") -> list[RealInput]:
     """Returns a quaternion from Euler angles.
 
     Parameters
@@ -253,7 +257,7 @@ def euler_angles_from_quaternion(q: Sequence[float], static: bool = True, axes: 
     return e
 
 
-def quaternion_from_axis_angle(axis: Sequence[float], angle: float) -> list[float]:
+def quaternion_from_axis_angle(axis: VectorLike, angle: float) -> list[RealInput]:
     """Returns a quaternion describing a rotation around the given axis by the given angle.
 
     Parameters
@@ -283,7 +287,7 @@ def quaternion_from_axis_angle(axis: Sequence[float], angle: float) -> list[floa
     return q
 
 
-def axis_angle_from_quaternion(q: Sequence[float]) -> tuple[list[float], float]:
+def axis_angle_from_quaternion(q: FloatSequenceLike) -> tuple[list[RealInput], float]:
     """Returns an axis and an angle of rotation from the given quaternion.
 
     Parameters

@@ -7,8 +7,8 @@ import numpy as np
 import pytest
 
 import compas.plugins
-from compas._typing import TriangleMeshInput
-from compas._typing import CoordinatesCollectionInput
+from compas.typing import VerticesFaces
+from compas.typing import PointGroupsLike
 from compas.geometry import boolean_difference_mesh_mesh
 from compas.geometry import boolean_intersection_mesh_mesh
 from compas.geometry import boolean_union_mesh_mesh
@@ -78,7 +78,7 @@ def test_geodistance_dispatches_raw_buffers(monkeypatch):
 )
 def test_libigl_backed_contracts_use_structural_triangle_meshes(operation):
     hints = get_type_hints(operation)
-    assert hints["mesh"] == TriangleMeshInput
+    assert hints["mesh"] == VerticesFaces
 
 
 @pytest.mark.parametrize(
@@ -134,9 +134,9 @@ def test_ray_mesh_intersection_dispatches_raw_buffers(monkeypatch):
 )
 def test_boolean_contracts_use_structural_triangle_meshes(operation):
     hints = get_type_hints(operation)
-    assert hints["A"] == TriangleMeshInput
-    assert hints["B"] == TriangleMeshInput
-    assert hints["return"] == TriangleMeshInput
+    assert hints["A"] == VerticesFaces
+    assert hints["B"] == VerticesFaces
+    assert hints["return"] == VerticesFaces
 
 
 def test_boolean_plugin_receives_and_returns_raw_mesh(monkeypatch):
@@ -203,8 +203,8 @@ def test_boolean_plugin_accepts_empty_result(monkeypatch):
 def test_natural_result_contracts_use_structural_triangle_meshes(operation, parameters):
     hints = get_type_hints(operation)
     for parameter in parameters:
-        assert hints[parameter] == TriangleMeshInput
-    assert hints["return"] == CoordinatesCollectionInput
+        assert hints[parameter] == VerticesFaces
+    assert hints["return"] == PointGroupsLike
 
 
 def test_mesh_intersection_dispatches_raw_buffers(monkeypatch):
@@ -250,8 +250,8 @@ def test_mesh_slice_dispatches_raw_buffers(monkeypatch):
 )
 def test_remesh_contracts_use_structural_triangle_meshes(operation):
     hints = get_type_hints(operation)
-    assert hints["mesh"] == TriangleMeshInput
-    assert hints["return"] == TriangleMeshInput
+    assert hints["mesh"] == VerticesFaces
+    assert hints["return"] == VerticesFaces
 
 
 def test_remesh_dispatches_raw_buffers(monkeypatch):

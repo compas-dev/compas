@@ -1,3 +1,5 @@
+import numpy as np
+
 from compas.geometry import Frame
 from compas.geometry import Projection
 from compas.geometry import Reflection
@@ -95,6 +97,23 @@ def test_from_matrix():
     T = Transformation()
     matrix = T.matrix
     assert Transformation.from_matrix(matrix).matrix == matrix
+
+
+def test_matrix_constructor_retains_mutable_float_and_numpy_scalar_lists():
+    float_matrix = [[1.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 1.0, 0.0], [0.0, 0.0, 0.0, 1.0]]
+    numpy_matrix = [[np.float64(value) for value in row] for row in float_matrix]
+
+    float_transformation = Transformation(float_matrix)
+    numpy_transformation = Transformation(numpy_matrix)
+
+    assert float_transformation.matrix is float_matrix
+    assert numpy_transformation.matrix is numpy_matrix
+
+    float_transformation[0, 3] = 2.0
+    numpy_transformation[0, 3] = 3.0
+
+    assert float_matrix[0][3] == 2.0
+    assert numpy_matrix[0][3] == 3.0
 
 
 def test_from_list():

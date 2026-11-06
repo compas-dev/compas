@@ -3,9 +3,11 @@ from typing import Literal
 from typing import Self
 from typing import overload
 
-from compas._typing import Coordinates
-from compas._typing import CoordinateType
 from compas.linalg.vectors import add_vectors
+from compas.typing import PointLike
+from compas.typing import PointsProtocol
+from compas.typing import RealInput
+from compas.typing import VectorLike
 
 from ._typing import TransformationType
 from .geometry import Geometry
@@ -82,7 +84,7 @@ class Line(Geometry):
     # Dunder methods
     # ==========================================================================
 
-    def __init__(self, start: CoordinateType, end: CoordinateType, name: str | None = None) -> None:
+    def __init__(self, start: PointLike, end: PointLike, name: str | None = None) -> None:
         super().__init__(name=name)
         self._point: Point | None = None
         self._vector: Vector | None = None
@@ -104,7 +106,7 @@ class Line(Geometry):
             return self.end
         raise KeyError
 
-    def __setitem__(self, key: int, value: CoordinateType) -> None:
+    def __setitem__(self, key: int, value: PointLike) -> None:
         if key == 0:
             self.start = value
         elif key == 1:
@@ -119,7 +121,7 @@ class Line(Geometry):
         return 2
 
     def __eq__(self, other: object) -> bool:
-        if not isinstance(other, Coordinates):
+        if not isinstance(other, PointsProtocol):
             return False
         if len(other) != 2:
             return False
@@ -158,7 +160,7 @@ class Line(Geometry):
         return self._point
 
     @point.setter
-    def point(self, point: CoordinateType) -> None:
+    def point(self, point: PointLike) -> None:
         self._point = Point(point[0], point[1], point[2])
 
     @property
@@ -190,7 +192,7 @@ class Line(Geometry):
         return self._vector
 
     @vector.setter
-    def vector(self, vector: CoordinateType) -> None:
+    def vector(self, vector: VectorLike) -> None:
         self._vector = Vector(vector[0], vector[1], vector[2])
         self._direction = None
 
@@ -256,7 +258,7 @@ class Line(Geometry):
         return self.point
 
     @start.setter
-    def start(self, point: CoordinateType) -> None:
+    def start(self, point: PointLike) -> None:
         self.point = point
 
     @property
@@ -283,7 +285,7 @@ class Line(Geometry):
         return self.start + self.vector
 
     @end.setter
-    def end(self, point: CoordinateType) -> None:
+    def end(self, point: PointLike) -> None:
         end = Point(point[0], point[1], point[2])
         self._vector = Vector.from_start_end(self.start, end)
         self._direction = None
@@ -305,7 +307,7 @@ class Line(Geometry):
     # ==========================================================================
 
     @classmethod
-    def from_point_and_vector(cls, point: CoordinateType, vector: CoordinateType) -> Self:
+    def from_point_and_vector(cls, point: PointLike, vector: VectorLike) -> Self:
         """Construct a line from a point and a vector.
 
         Parameters
@@ -337,7 +339,7 @@ class Line(Geometry):
         return cls(point, add_vectors(point, vector))
 
     @classmethod
-    def from_point_direction_length(cls, point: CoordinateType, direction: CoordinateType, length: float) -> Self:
+    def from_point_direction_length(cls, point: PointLike, direction: VectorLike, length: float) -> Self:
         """Construct a line from a point, a direction and a length.
 
         Parameters
@@ -376,7 +378,7 @@ class Line(Geometry):
     # Methods
     # ==========================================================================
 
-    def point_at(self, t: float) -> Point:
+    def point_at(self, t: RealInput) -> Point:
         """Construct a point along the line at a fractional position.
 
         Parameters
@@ -450,12 +452,12 @@ class Line(Geometry):
         return point
 
     @overload
-    def closest_point(self, point: CoordinateType, return_parameter: Literal[False] = False) -> Point: ...
+    def closest_point(self, point: PointLike, return_parameter: Literal[False] = False) -> Point: ...
 
     @overload
-    def closest_point(self, point: CoordinateType, return_parameter: Literal[True]) -> tuple[Point, float]: ...
+    def closest_point(self, point: PointLike, return_parameter: Literal[True]) -> tuple[Point, float]: ...
 
-    def closest_point(self, point: CoordinateType, return_parameter: bool = False) -> Point | tuple[Point, float]:
+    def closest_point(self, point: PointLike, return_parameter: bool = False) -> Point | tuple[Point, float]:
         """Compute the closest point on the line to a given point.
 
         Parameters

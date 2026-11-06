@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 
-from compas._typing import MeshType
+from compas.typing import VerticesFaces
 
 if TYPE_CHECKING:
     from numpy.typing import NDArray
@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 from .gradient import trimesh_gradient
 
 
-def trimesh_descent(mesh: MeshType) -> "NDArray":
+def trimesh_descent(mesh: VerticesFaces) -> "NDArray":
     """Compute the descent directions of a triangular mesh as the gradient of the vertex heights.
 
     Parameters

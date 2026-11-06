@@ -5,11 +5,11 @@ from typing import Any
 from typing import Literal
 from typing import overload
 
-from compas._typing import CoordinateType
-from compas._typing import FilePath
 from compas.geometry import Point
 from compas.itertools import linspace
 from compas.itertools import meshgrid
+from compas.typing import FilePath
+from compas.typing import PointLike
 
 from .._typing import TransformationType
 from .nurbs_operations import from_cylinder
@@ -61,7 +61,7 @@ if TYPE_CHECKING:
     from compas.geometry import Torus
     from compas.geometry import Vector
 
-ControlPointGrid = Sequence[Sequence[CoordinateType]]
+ControlPointGrid = Sequence[Sequence[PointLike]]
 WeightGrid = Sequence[Sequence[float]]
 
 
@@ -681,18 +681,18 @@ class NurbsSurface(Surface):
         return surface_frame_at(self, u, v)
 
     @overload
-    def closest_point(self, point: CoordinateType, return_parameters: Literal[False] = False) -> Point | None: ...
+    def closest_point(self, point: PointLike, return_parameters: Literal[False] = False) -> Point | None: ...
 
     @overload
     def closest_point(
         self,
-        point: CoordinateType,
+        point: PointLike,
         return_parameters: Literal[True],
     ) -> tuple[Point, tuple[float, float]] | None: ...
 
     def closest_point(
         self,
-        point: CoordinateType,
+        point: PointLike,
         return_parameters: bool = False,
     ) -> Point | tuple[Point, tuple[float, float]] | None:
         """Compute the closest point on the surface."""

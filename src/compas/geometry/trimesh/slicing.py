@@ -1,12 +1,12 @@
 from collections.abc import Sequence
 
-from compas._typing import CoordinatesCollectionInput
-from compas._typing import TriangleMeshInput
 from compas.geometry._typing import PlaneType
 from compas.plugins import pluggable
+from compas.typing import PointGroupsLike
+from compas.typing import VerticesFaces
 
 
-def trimesh_slice(mesh: TriangleMeshInput, planes: Sequence[PlaneType]) -> CoordinatesCollectionInput:
+def trimesh_slice(mesh: VerticesFaces, planes: Sequence[PlaneType]) -> PointGroupsLike:
     """Slice a triangle mesh with multiple planes.
 
     Parameters
@@ -18,7 +18,7 @@ def trimesh_slice(mesh: TriangleMeshInput, planes: Sequence[PlaneType]) -> Coord
 
     Returns
     -------
-    CoordinatesCollectionInput
+    PointGroupsLike
         Slice polyline coordinate buffers.
 
     Notes
@@ -30,5 +30,5 @@ def trimesh_slice(mesh: TriangleMeshInput, planes: Sequence[PlaneType]) -> Coord
 
 
 @pluggable(category="trimesh")
-def _trimesh_slice(mesh: TriangleMeshInput, planes: Sequence[PlaneType]) -> CoordinatesCollectionInput:
+def _trimesh_slice(mesh: VerticesFaces, planes: Sequence[PlaneType]) -> PointGroupsLike:
     raise NotImplementedError

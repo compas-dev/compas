@@ -5,8 +5,6 @@ from typing import Self
 from typing import TypeVar
 from typing import overload
 
-from compas._typing import Coordinates
-from compas._typing import CoordinateType
 from compas.geometry import Geometry
 from compas.geometry import Transformation
 from compas.itertools import linspace
@@ -22,6 +20,9 @@ from compas.linalg.transformations import quaternion_from_matrix
 from compas.linalg.vectors import argmax
 from compas.linalg.vectors import cross_vectors
 from compas.linalg.vectors import subtract_vectors
+from compas.typing import PointLike
+from compas.typing import PointsProtocol
+from compas.typing import VectorLike
 
 from ._typing import PlaneType
 from ._typing import QuaternionType
@@ -164,9 +165,9 @@ class Frame(Geometry):
 
     def __init__(
         self,
-        point: CoordinateType,
-        xaxis: CoordinateType | None = None,
-        yaxis: CoordinateType | None = None,
+        point: PointLike,
+        xaxis: VectorLike | None = None,
+        yaxis: VectorLike | None = None,
         name: str | None = None,
     ) -> None:
         super().__init__(name=name)
@@ -206,7 +207,7 @@ class Frame(Geometry):
             return self.yaxis
         raise KeyError
 
-    def __setitem__(self, key: int, value: CoordinateType) -> None:
+    def __setitem__(self, key: int, value: PointLike) -> None:
         if key == 0:
             self.point = value
             return
@@ -222,7 +223,7 @@ class Frame(Geometry):
         return iter((self.point, self.xaxis, self.yaxis))
 
     def __eq__(self, other: object) -> bool:
-        if not isinstance(other, Coordinates):
+        if not isinstance(other, PointsProtocol):
             return False
         if len(self) != len(other):
             return False
@@ -258,7 +259,7 @@ class Frame(Geometry):
         return self._point
 
     @point.setter
-    def point(self, point: CoordinateType) -> None:
+    def point(self, point: PointLike) -> None:
         self._point = Point(point[0], point[1], point[2])
 
     @property
@@ -287,7 +288,7 @@ class Frame(Geometry):
         return self._xaxis
 
     @xaxis.setter
-    def xaxis(self, vector: CoordinateType) -> None:
+    def xaxis(self, vector: VectorLike) -> None:
         xaxis = Vector(vector[0], vector[1], vector[2])
         if not xaxis.length:
             raise ValueError("The X axis cannot be a zero vector.")
@@ -329,7 +330,7 @@ class Frame(Geometry):
         return self._yaxis
 
     @yaxis.setter
-    def yaxis(self, vector: CoordinateType) -> None:
+    def yaxis(self, vector: VectorLike) -> None:
         yaxis = Vector(vector[0], vector[1], vector[2])
         if not yaxis.length:
             raise ValueError("The Y axis cannot be a zero vector.")
@@ -475,7 +476,7 @@ class Frame(Geometry):
         return cls._from_trusted_data((0, 0, 0), (0, 1, 0), (0, 0, 1))
 
     @classmethod
-    def from_points(cls, point: CoordinateType, point_xaxis: CoordinateType, point_xyplane: CoordinateType) -> Self:
+    def from_points(cls, point: PointLike, point_xaxis: PointLike, point_xyplane: PointLike) -> Self:
         """Constructs a frame from 3 points.
 
         Parameters
@@ -509,7 +510,7 @@ class Frame(Geometry):
         return cls(point, xaxis, yaxis)
 
     @classmethod
-    def from_rotation(cls, rotation: Transformation, point: CoordinateType = (0, 0, 0)) -> Self:
+    def from_rotation(cls, rotation: Transformation, point: PointLike = (0, 0, 0)) -> Self:
         """Constructs a frame from a Rotation.
 
         Parameters
@@ -640,7 +641,7 @@ class Frame(Geometry):
         return cls.from_matrix(matrix)
 
     @classmethod
-    def from_quaternion(cls, quaternion: QuaternionType, point: CoordinateType = (0, 0, 0)) -> Self:
+    def from_quaternion(cls, quaternion: QuaternionType, point: PointLike = (0, 0, 0)) -> Self:
         """Construct a frame from a rotation represented by quaternion coefficients.
 
         Parameters
@@ -670,7 +671,7 @@ class Frame(Geometry):
         return cls._from_trusted_data(point, xaxis, yaxis)
 
     @classmethod
-    def from_axis_angle_vector(cls, axis_angle_vector: CoordinateType, point: CoordinateType = (0, 0, 0)) -> Self:
+    def from_axis_angle_vector(cls, axis_angle_vector: VectorLike, point: PointLike = (0, 0, 0)) -> Self:
         """Construct a frame from an axis-angle vector representing the rotation.
 
         Parameters
@@ -706,7 +707,7 @@ class Frame(Geometry):
         euler_angles: Sequence[float],
         static: bool = True,
         axes: str = "xyz",
-        point: CoordinateType = (0, 0, 0),
+        point: PointLike = (0, 0, 0),
     ) -> Self:
         """Construct a frame from a rotation represented by Euler angles.
 
@@ -939,12 +940,12 @@ class Frame(Geometry):
         return euler_angles_from_matrix(R, static, axes)
 
     @overload
-    def to_local_coordinates(self, obj_in_wcf: CoordinateType) -> Point: ...
-
-    @overload
     def to_local_coordinates(self, obj_in_wcf: GeometryType) -> GeometryType: ...
 
-    def to_local_coordinates(self, obj_in_wcf: CoordinateType | GeometryType) -> Point | GeometryType:
+    @overload
+    def to_local_coordinates(self, obj_in_wcf: PointLike) -> Point: ...
+
+    def to_local_coordinates(self, obj_in_wcf: PointLike | Geometry) -> Point | Geometry:
         """Returns the object's coordinates in the local coordinate system of the frame.
 
         Parameters
@@ -979,12 +980,12 @@ class Frame(Geometry):
         return Point(obj_in_wcf[0], obj_in_wcf[1], obj_in_wcf[2]).transformed(T)
 
     @overload
-    def to_world_coordinates(self, obj_in_lcf: CoordinateType) -> Point: ...
-
-    @overload
     def to_world_coordinates(self, obj_in_lcf: GeometryType) -> GeometryType: ...
 
-    def to_world_coordinates(self, obj_in_lcf: CoordinateType | GeometryType) -> Point | GeometryType:
+    @overload
+    def to_world_coordinates(self, obj_in_lcf: PointLike) -> Point: ...
+
+    def to_world_coordinates(self, obj_in_lcf: PointLike | Geometry) -> Point | Geometry:
         """Returns the object's coordinates in the global coordinate frame.
 
         Parameters
@@ -1062,9 +1063,9 @@ class Frame(Geometry):
     @classmethod
     def _from_trusted_data(
         cls,
-        point: CoordinateType,
-        xaxis: CoordinateType,
-        yaxis: CoordinateType,
+        point: PointLike,
+        xaxis: VectorLike,
+        yaxis: VectorLike,
         name: str | None = None,
     ) -> Self:
         """Construct a frame by copying coordinates known to be valid.

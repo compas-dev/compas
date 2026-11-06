@@ -3,8 +3,6 @@ from math import pi
 from math import sin
 from typing import Self
 
-from compas._typing import CoordinatesType
-from compas._typing import CoordinateType
 from compas.geometry import Circle
 from compas.geometry import Frame
 from compas.geometry import Line
@@ -13,6 +11,8 @@ from compas.geometry import Point
 from compas.geometry import Transformation
 from compas.geometry import UVGrid
 from compas.geometry import transform_points
+from compas.typing import PointLike
+from compas.typing import PointsLike
 
 from .box import Box
 from .shape import Shape
@@ -232,7 +232,7 @@ class Capsule(Shape[UVGrid]):
     # Discretisation
     # =============================================================================
 
-    def _compute_local_vertices(self, strategy: UVGrid) -> list[CoordinateType]:
+    def _compute_local_vertices(self, strategy: UVGrid) -> list[PointLike]:
         """Compute the vertices of the discrete representation of the capsule.
 
         Returns
@@ -335,7 +335,7 @@ class Capsule(Shape[UVGrid]):
     # Methods
     # =============================================================================
 
-    def contains_point(self, point: CoordinateType, tol: float = 1e-6) -> bool:
+    def contains_point(self, point: PointLike, tol: float = 1e-6) -> bool:
         """Verify if a point is inside the capsule.
 
         Parameters
@@ -375,7 +375,7 @@ class Capsule(Shape[UVGrid]):
 
         return True
 
-    def contains_points(self, points: CoordinatesType, tol: float = 1e-6) -> list[bool]:
+    def contains_points(self, points: PointsLike, tol: float = 1e-6) -> list[bool]:
         """Verify if a list of points is inside the capsule.
 
         Parameters

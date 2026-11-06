@@ -2,8 +2,6 @@ import math
 from collections.abc import Iterable
 from collections.abc import Sequence
 
-from compas._typing import CoordinatesType
-from compas._typing import CoordinateType
 from compas.linalg.matrices import multiply_matrices
 from compas.linalg.matrices import multiply_matrix_vector
 from compas.linalg.matrices import transpose_matrix
@@ -22,6 +20,10 @@ from compas.linalg.vectors import subtract_vectors
 from compas.linalg.vectors import subtract_vectors_xy
 from compas.linalg.vectors import vector_component
 from compas.linalg.vectors import vector_component_xy
+from compas.typing import PointLike
+from compas.typing import PointsLike
+from compas.typing import RealInput
+from compas.typing import VectorLike
 
 from .angles import angle_vectors
 from .distance import closest_point_on_line
@@ -35,7 +37,7 @@ _WORLD_XY = ([0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0])
 
 # this function will not always work
 # it is also a duplicate of stuff found in matrices and frame
-def local_axes(a: Sequence[float], b: Sequence[float], c: Sequence[float]) -> tuple[list[float], list[float], list[float]]:
+def local_axes(a: PointLike, b: PointLike, c: PointLike) -> tuple[list[RealInput], list[RealInput], list[RealInput]]:
     # Raw coordinate sequences do not necessarily support vector subtraction.
     u = subtract_vectors(b, a)
     v = subtract_vectors(c, a)
@@ -44,7 +46,7 @@ def local_axes(a: Sequence[float], b: Sequence[float], c: Sequence[float]) -> tu
     return normalize_vector(u), normalize_vector(v), normalize_vector(w)
 
 
-def orthonormalize_axes(xaxis: CoordinateType, yaxis: CoordinateType) -> tuple[CoordinateType, CoordinateType]:
+def orthonormalize_axes(xaxis: VectorLike, yaxis: VectorLike) -> tuple[list[RealInput], list[RealInput]]:
     """Corrects xaxis and yaxis to be unit vectors and orthonormal.
 
     Parameters
@@ -56,7 +58,7 @@ def orthonormalize_axes(xaxis: CoordinateType, yaxis: CoordinateType) -> tuple[C
 
     Returns
     -------
-    tuple[Sequence[float], Sequence[float]]
+    tuple[list[RealInput], list[RealInput]]
         The corrected x and y axes, in that order.
 
     Raises
@@ -76,8 +78,12 @@ def orthonormalize_axes(xaxis: CoordinateType, yaxis: CoordinateType) -> tuple[C
     True
 
     """
-    xaxis_normalized = normalize_vector(xaxis)
-    yaxis_normalized = normalize_vector(yaxis)
+    xaxis_length = norm_vector(xaxis)
+    yaxis_length = norm_vector(yaxis)
+    if not xaxis_length or not yaxis_length:
+        raise ValueError("Xaxis and yaxis cannot span a plane.")
+    xaxis_normalized = scale_vector(xaxis, 1.0 / xaxis_length)
+    yaxis_normalized = scale_vector(yaxis, 1.0 / yaxis_length)
     zaxis = cross_vectors(xaxis_normalized, yaxis_normalized)
     if not norm_vector(zaxis):
         raise ValueError("Xaxis and yaxis cannot span a plane.")
@@ -85,7 +91,7 @@ def orthonormalize_axes(xaxis: CoordinateType, yaxis: CoordinateType) -> tuple[C
     return xaxis_normalized, yaxis_orthogonal
 
 
-def homogenize(xyz: Iterable[Iterable[float]], w: float = 1.0) -> list[list[float]]:
+def homogenize(xyz: PointsLike, w: float = 1.0) -> list[list[RealInput]]:
     """Homogenise a list of vectors.
 
     Parameters
@@ -98,7 +104,7 @@ def homogenize(xyz: Iterable[Iterable[float]], w: float = 1.0) -> list[list[floa
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         Homogenised data.
 
     Notes
@@ -117,7 +123,7 @@ def homogenize(xyz: Iterable[Iterable[float]], w: float = 1.0) -> list[list[floa
     return [[x * w, y * w, z * w, w] if w else [x, y, z, 0.0] for x, y, z in xyz]
 
 
-def dehomogenize(xyzw: Sequence[Sequence[float]]) -> list[list[float]]:
+def dehomogenize(xyzw: Sequence[Sequence[RealInput]]) -> list[list[RealInput]]:
     """Dehomogenise a list of vectors.
 
     Parameters
@@ -127,7 +133,7 @@ def dehomogenize(xyzw: Sequence[Sequence[float]]) -> list[list[float]]:
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         Dehomogenised vectors.
 
     """
@@ -135,8 +141,8 @@ def dehomogenize(xyzw: Sequence[Sequence[float]]) -> list[list[float]]:
 
 
 def homogenize_and_flatten_frames(
-    frames: Sequence[Sequence[Sequence[float]]],
-) -> list[list[float]]:
+    frames: Sequence[Sequence[Sequence[RealInput]]],
+) -> list[list[RealInput]]:
     """Homogenize a list of frames and flatten the 3D list into a 2D list.
 
     Parameters
@@ -145,7 +151,7 @@ def homogenize_and_flatten_frames(
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         A list with 3 entries per frame: a homogenized point, and two homogenized vectors.
 
     Examples
@@ -157,15 +163,15 @@ def homogenize_and_flatten_frames(
 
     """
 
-    def homogenize_frame(frame: Sequence[Sequence[float]]) -> list[list[float]]:
+    def homogenize_frame(frame: Sequence[Sequence[RealInput]]) -> list[list[RealInput]]:
         return homogenize([frame[0]], w=1.0) + homogenize([frame[1], frame[2]], w=0.0)
 
     return [v for frame in frames for v in homogenize_frame(frame)]
 
 
 def dehomogenize_and_unflatten_frames(
-    points_and_vectors: Sequence[Sequence[float]],
-) -> list[list[list[float]]]:
+    points_and_vectors: Sequence[Sequence[RealInput]],
+) -> list[list[list[RealInput]]]:
     """Dehomogenize a list of vectors and unflatten the 2D list into a 3D list.
 
     Parameters
@@ -175,7 +181,7 @@ def dehomogenize_and_unflatten_frames(
 
     Returns
     -------
-    list[list[list[float]]]
+    list[list[list[RealInput]]]
         The dehmogenized frame data.
 
     Examples
@@ -194,7 +200,7 @@ def dehomogenize_and_unflatten_frames(
 # ==============================================================================
 
 
-def transform_points(points: Iterable[Iterable[float]], T: Iterable[Iterable[float]]) -> list[list[float]]:
+def transform_points(points: PointsLike, T: Iterable[Iterable[RealInput]]) -> list[list[RealInput]]:
     """Transform multiple points with one transformation matrix.
 
     Parameters
@@ -206,7 +212,7 @@ def transform_points(points: Iterable[Iterable[float]], T: Iterable[Iterable[flo
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         Transformed points.
 
     Examples
@@ -219,7 +225,7 @@ def transform_points(points: Iterable[Iterable[float]], T: Iterable[Iterable[flo
     return dehomogenize(multiply_matrices(homogenize(points, w=1.0), transpose_matrix(T)))
 
 
-def transform_vectors(vectors: CoordinatesType, T: Iterable[Iterable[float]]) -> list[list[float]]:
+def transform_vectors(vectors: PointsLike, T: Iterable[Iterable[RealInput]]) -> list[list[RealInput]]:
     """Transform multiple vectors with one transformation matrix.
 
     Parameters
@@ -231,7 +237,7 @@ def transform_vectors(vectors: CoordinatesType, T: Iterable[Iterable[float]]) ->
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         Transformed vectors.
 
     Examples
@@ -244,7 +250,7 @@ def transform_vectors(vectors: CoordinatesType, T: Iterable[Iterable[float]]) ->
     return dehomogenize(multiply_matrices(homogenize(vectors, w=0.0), transpose_matrix(T)))
 
 
-def transform_frames(frames: Sequence[Sequence[Sequence[float]]], T: Sequence[Sequence[float]]) -> list[list[list[float]]]:
+def transform_frames(frames: Sequence[Sequence[Sequence[RealInput]]], T: Sequence[Sequence[RealInput]]) -> list[list[list[RealInput]]]:
     """Transform multiple frames with one transformation matrix.
 
     Parameters
@@ -256,7 +262,7 @@ def transform_frames(frames: Sequence[Sequence[Sequence[float]]], T: Sequence[Se
 
     Returns
     -------
-    list[list[list[float]]]
+    list[list[list[RealInput]]]
         Transformed frames.
 
     Examples
@@ -273,7 +279,7 @@ def transform_frames(frames: Sequence[Sequence[Sequence[float]]], T: Sequence[Se
     return dehomogenize_and_unflatten_frames(multiply_matrices(points_and_vectors, transpose_matrix(T)))
 
 
-def world_to_local_coordinates(frame: Sequence[Sequence[float]], xyz: Sequence[Sequence[float]]) -> list[list[float]]:
+def world_to_local_coordinates(frame: Sequence[Sequence[RealInput]], xyz: Sequence[Sequence[RealInput]]) -> list[list[RealInput]]:
     """Convert global coordinates to local coordinates.
 
     Parameters
@@ -285,7 +291,7 @@ def world_to_local_coordinates(frame: Sequence[Sequence[float]], xyz: Sequence[S
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         The coordinates of the given points in the local coordinate system.
 
     Examples
@@ -301,7 +307,7 @@ def world_to_local_coordinates(frame: Sequence[Sequence[float]], xyz: Sequence[S
     return transform_points(xyz, T)
 
 
-def local_to_world_coordinates(frame: Sequence[Sequence[float]], xyz: Sequence[Sequence[float]]) -> list[list[float]]:
+def local_to_world_coordinates(frame: Sequence[Sequence[RealInput]], xyz: Sequence[Sequence[RealInput]]) -> list[list[RealInput]]:
     """Convert local coordinates to global coordinates.
 
     Parameters
@@ -313,7 +319,7 @@ def local_to_world_coordinates(frame: Sequence[Sequence[float]], xyz: Sequence[S
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         The coordinates of the given points in the local coordinate system.
 
     Examples
@@ -334,7 +340,7 @@ def local_to_world_coordinates(frame: Sequence[Sequence[float]], xyz: Sequence[S
 # ==============================================================================
 
 
-def translate_points(points: Sequence[Sequence[float]], vector: Sequence[float]) -> list[list[float]]:
+def translate_points(points: PointsLike, vector: VectorLike) -> list[list[RealInput]]:
     """Translate points.
 
     Parameters
@@ -346,14 +352,14 @@ def translate_points(points: Sequence[Sequence[float]], vector: Sequence[float])
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         The translated points.
 
     """
     return [add_vectors(point, vector) for point in points]
 
 
-def translate_points_xy(points: Sequence[Sequence[float]], vector: Sequence[float]) -> list[list[float]]:
+def translate_points_xy(points: PointsLike, vector: VectorLike) -> list[list[RealInput]]:
     """Translate points and in the XY plane.
 
     Parameters
@@ -365,7 +371,7 @@ def translate_points_xy(points: Sequence[Sequence[float]], vector: Sequence[floa
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         The translated points in the XY plane (Z=0).
 
     """
@@ -377,7 +383,7 @@ def translate_points_xy(points: Sequence[Sequence[float]], vector: Sequence[floa
 # ==============================================================================
 
 
-def scale_points(points: Sequence[Sequence[float]], scale: float) -> list[list[float]]:
+def scale_points(points: PointsLike, scale: RealInput) -> list[list[RealInput]]:
     """Scale points.
 
     Parameters
@@ -389,7 +395,7 @@ def scale_points(points: Sequence[Sequence[float]], scale: float) -> list[list[f
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         The scaled points.
 
     """
@@ -397,7 +403,7 @@ def scale_points(points: Sequence[Sequence[float]], scale: float) -> list[list[f
     return transform_points(points, T)
 
 
-def scale_points_xy(points: Sequence[Sequence[float]], scale: float) -> list[list[float]]:
+def scale_points_xy(points: PointsLike, scale: RealInput) -> list[list[RealInput]]:
     """Scale points in the XY plane.
 
     Parameters
@@ -409,7 +415,7 @@ def scale_points_xy(points: Sequence[Sequence[float]], scale: float) -> list[lis
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         The scaled points in the XY plane (Z=0).
 
     """
@@ -423,11 +429,11 @@ def scale_points_xy(points: Sequence[Sequence[float]], scale: float) -> list[lis
 
 
 def rotate_points(
-    points: Sequence[Sequence[float]],
+    points: PointsLike,
     angle: float,
-    axis: Sequence[float] | None = None,
-    origin: Sequence[float] | None = None,
-) -> list[list[float]]:
+    axis: VectorLike | None = None,
+    origin: PointLike | None = None,
+) -> list[list[RealInput]]:
     """Rotates points around an arbitrary axis in 3D.
 
     Parameters
@@ -445,7 +451,7 @@ def rotate_points(
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         The rotated points
 
     Notes
@@ -467,7 +473,7 @@ def rotate_points(
     return points
 
 
-def rotate_points_xy(points: Sequence[Sequence[float]], angle: float, origin: Sequence[float] | None = None) -> list[list[float]]:
+def rotate_points_xy(points: PointsLike, angle: float, origin: PointLike | None = None) -> list[list[RealInput]]:
     """Rotates points in the XY plane around the Z axis at a specific origin.
 
     Parameters
@@ -482,7 +488,7 @@ def rotate_points_xy(points: Sequence[Sequence[float]], angle: float, origin: Se
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         The rotated points in the XY plane (Z=0).
 
     """
@@ -506,7 +512,7 @@ def rotate_points_xy(points: Sequence[Sequence[float]], angle: float, origin: Se
 # ==============================================================================
 
 
-def mirror_vector_vector(v1: Sequence[float], v2: Sequence[float]) -> list[float]:
+def mirror_vector_vector(v1: VectorLike, v2: VectorLike) -> list[RealInput]:
     """Mirrors vector about vector.
 
     Parameters
@@ -533,7 +539,7 @@ def mirror_vector_vector(v1: Sequence[float], v2: Sequence[float]) -> list[float
     return subtract_vectors(v1, scale_vector(v2, 2 * dot_vectors(v1, v2)))
 
 
-def mirror_point_point(point: Sequence[float], mirror: Sequence[float]) -> list[float]:
+def mirror_point_point(point: PointLike, mirror: PointLike) -> list[RealInput]:
     """Mirror a point about a point.
 
     Parameters
@@ -552,7 +558,7 @@ def mirror_point_point(point: Sequence[float], mirror: Sequence[float]) -> list[
     return add_vectors(mirror, subtract_vectors(mirror, point))
 
 
-def mirror_point_point_xy(point: Sequence[float], mirror: Sequence[float]) -> list[float]:
+def mirror_point_point_xy(point: PointLike, mirror: PointLike) -> list[RealInput]:
     """Mirror a point about a point.
 
     Parameters
@@ -571,7 +577,7 @@ def mirror_point_point_xy(point: Sequence[float], mirror: Sequence[float]) -> li
     return add_vectors_xy(mirror, subtract_vectors_xy(mirror, point))
 
 
-def mirror_points_point(points: Sequence[Sequence[float]], mirror: Sequence[float]) -> list[list[float]]:
+def mirror_points_point(points: PointsLike, mirror: PointLike) -> list[list[RealInput]]:
     """Mirror multiple points about a point.
 
     Parameters
@@ -583,14 +589,14 @@ def mirror_points_point(points: Sequence[Sequence[float]], mirror: Sequence[floa
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         The mirrored points, with Z=0.
 
     """
     return [mirror_point_point(point, mirror) for point in points]
 
 
-def mirror_points_point_xy(points: Sequence[Sequence[float]], mirror: Sequence[float]) -> list[list[float]]:
+def mirror_points_point_xy(points: PointsLike, mirror: PointLike) -> list[list[RealInput]]:
     """Mirror multiple points about a point.
 
     Parameters
@@ -602,14 +608,14 @@ def mirror_points_point_xy(points: Sequence[Sequence[float]], mirror: Sequence[f
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         The mirrored points, with Z=0.
 
     """
     return [mirror_point_point_xy(point, mirror) for point in points]
 
 
-def mirror_point_line(point: Sequence[float], line: Sequence[Sequence[float]]) -> list[float]:
+def mirror_point_line(point: PointLike, line: PointsLike) -> list[RealInput]:
     """Mirror a point about a line.
 
     Parameters
@@ -629,7 +635,7 @@ def mirror_point_line(point: Sequence[float], line: Sequence[Sequence[float]]) -
     return add_vectors(closest, subtract_vectors(closest, point))
 
 
-def mirror_point_line_xy(point: Sequence[float], line: Sequence[Sequence[float]]) -> list[float]:
+def mirror_point_line_xy(point: PointLike, line: PointsLike) -> list[RealInput]:
     """Mirror a point about a line.
 
     Parameters
@@ -650,7 +656,7 @@ def mirror_point_line_xy(point: Sequence[float], line: Sequence[Sequence[float]]
     return add_vectors_xy(closest, subtract_vectors_xy(closest, point))
 
 
-def mirror_points_line(points: Sequence[Sequence[float]], line: Sequence[Sequence[float]]) -> list[list[float]]:
+def mirror_points_line(points: PointsLike, line: PointsLike) -> list[list[RealInput]]:
     """Mirror a point about a line.
 
     Parameters
@@ -662,14 +668,14 @@ def mirror_points_line(points: Sequence[Sequence[float]], line: Sequence[Sequenc
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         The mirrored points.
 
     """
     return [mirror_point_line(point, line) for point in points]
 
 
-def mirror_points_line_xy(points: Sequence[Sequence[float]], line: Sequence[Sequence[float]]) -> list[list[float]]:
+def mirror_points_line_xy(points: PointsLike, line: PointsLike) -> list[list[RealInput]]:
     """Mirror a point about a line.
 
     Parameters
@@ -681,14 +687,14 @@ def mirror_points_line_xy(points: Sequence[Sequence[float]], line: Sequence[Sequ
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         The mirrored points.
 
     """
     return [mirror_point_line_xy(point, line) for point in points]
 
 
-def mirror_point_plane(point: Sequence[float], plane: Sequence[Sequence[float]]) -> list[float]:
+def mirror_point_plane(point: PointLike, plane: PointsLike) -> list[RealInput]:
     """Mirror a point about a plane.
 
     Parameters
@@ -708,7 +714,7 @@ def mirror_point_plane(point: Sequence[float], plane: Sequence[Sequence[float]])
     return add_vectors(closest, subtract_vectors(closest, point))
 
 
-def mirror_points_plane(points: Sequence[Sequence[float]], plane: Sequence[Sequence[float]]) -> list[list[float]]:
+def mirror_points_plane(points: PointsLike, plane: PointsLike) -> list[list[RealInput]]:
     """Mirror a point about a plane.
 
     Parameters
@@ -720,7 +726,7 @@ def mirror_points_plane(points: Sequence[Sequence[float]], plane: Sequence[Seque
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         The mirrored points.
 
     """
@@ -734,7 +740,7 @@ def mirror_points_plane(points: Sequence[Sequence[float]], plane: Sequence[Seque
 # ==============================================================================
 
 
-def project_point_plane(point: Sequence[float], plane: Sequence[Sequence[float]]) -> list[float]:
+def project_point_plane(point: PointLike, plane: PointsLike) -> list[RealInput]:
     """Project a point onto a plane.
 
     Parameters
@@ -782,7 +788,7 @@ def project_point_plane(point: Sequence[float], plane: Sequence[Sequence[float]]
     return subtract_vectors(point, snormal)
 
 
-def project_points_plane(points: Sequence[Sequence[float]], plane: Sequence[Sequence[float]]) -> list[list[float]]:
+def project_points_plane(points: PointsLike, plane: PointsLike) -> list[list[RealInput]]:
     """Project multiple points onto a plane.
 
     Parameters
@@ -794,7 +800,7 @@ def project_points_plane(points: Sequence[Sequence[float]], plane: Sequence[Sequ
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         The projected points.
 
     See Also
@@ -805,7 +811,7 @@ def project_points_plane(points: Sequence[Sequence[float]], plane: Sequence[Sequ
     return [project_point_plane(point, plane) for point in points]
 
 
-def project_point_line(point: Sequence[float], line: Sequence[Sequence[float]]) -> list[float]:
+def project_point_line(point: PointLike, line: PointsLike) -> list[RealInput]:
     """Project a point onto a line.
 
     Parameters
@@ -837,7 +843,7 @@ def project_point_line(point: Sequence[float], line: Sequence[Sequence[float]]) 
     return add_vectors(a, c)
 
 
-def project_point_line_xy(point: Sequence[float], line: Sequence[Sequence[float]]) -> list[float]:
+def project_point_line_xy(point: PointLike, line: PointsLike) -> list[RealInput]:
     """Project a point onto a line in the XY plane.
 
     Parameters
@@ -868,7 +874,7 @@ def project_point_line_xy(point: Sequence[float], line: Sequence[Sequence[float]
     return add_vectors_xy(a, c)
 
 
-def project_points_line(points: Sequence[Sequence[float]], line: Sequence[Sequence[float]]) -> list[list[float]]:
+def project_points_line(points: PointsLike, line: PointsLike) -> list[list[RealInput]]:
     """Project points onto a line.
 
     Parameters
@@ -880,7 +886,7 @@ def project_points_line(points: Sequence[Sequence[float]], line: Sequence[Sequen
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         XYZ coordinates of the projected points.
 
     Notes
@@ -895,7 +901,7 @@ def project_points_line(points: Sequence[Sequence[float]], line: Sequence[Sequen
     return [project_point_line(point, line) for point in points]
 
 
-def project_points_line_xy(points: Sequence[Sequence[float]], line: Sequence[Sequence[float]]) -> list[list[float]]:
+def project_points_line_xy(points: PointsLike, line: PointsLike) -> list[list[RealInput]]:
     """Project points onto a line in the XY plane.
 
     Parameters
@@ -907,7 +913,7 @@ def project_points_line_xy(points: Sequence[Sequence[float]], line: Sequence[Seq
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         XYZ coordinates of the projected points, with Z=0.
 
     Notes
@@ -928,10 +934,10 @@ def project_points_line_xy(points: Sequence[Sequence[float]], line: Sequence[Seq
 
 
 def reflect_line_plane(
-    line: Sequence[Sequence[float]],
-    plane: Sequence[Sequence[float]],
+    line: PointsLike,
+    plane: PointsLike,
     tol: float | None = None,
-) -> tuple[list[float], list[float]] | None:
+) -> tuple[list[RealInput], list[RealInput]] | None:
     """Bounce a line of a reflection plane.
 
     Parameters
@@ -983,10 +989,10 @@ def reflect_line_plane(
 
 
 def reflect_line_triangle(
-    line: Sequence[Sequence[float]],
-    triangle: Sequence[Sequence[float]],
+    line: PointsLike,
+    triangle: PointsLike,
     tol: float | None = None,
-) -> tuple[list[float], list[float]] | None:
+) -> tuple[list[RealInput], list[RealInput]] | None:
     """Bounce a line of a reflection triangle.
 
     Parameters
@@ -1049,10 +1055,10 @@ def reflect_line_triangle(
 
 
 def orient_points(
-    points: Sequence[Sequence[float]],
-    reference_plane: Sequence[Sequence[float]],
-    target_plane: Sequence[Sequence[float]],
-) -> list[list[float]]:
+    points: PointsLike,
+    reference_plane: PointsLike,
+    target_plane: PointsLike,
+) -> list[list[RealInput]]:
     """Orient points from one plane to another.
 
     Parameters
@@ -1066,7 +1072,7 @@ def orient_points(
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         XYZ coordinates of the oriented points.
 
     Notes

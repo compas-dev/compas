@@ -1,8 +1,9 @@
 from collections.abc import Iterable
 from collections.abc import Sequence
 
-from compas._typing import FloatSequenceType
 from compas.tolerance import TOL
+from compas.typing import FloatSequenceLike
+from compas.typing import RealInput
 
 from .vectors import dot_vectors
 
@@ -11,7 +12,7 @@ from .vectors import dot_vectors
 # =============================================================================
 
 
-def transpose_matrix(M: Iterable[Iterable[float]]) -> list[list[float]]:
+def transpose_matrix(M: Iterable[Iterable[RealInput]]) -> list[list[RealInput]]:
     """Transpose a matrix.
 
     Parameters
@@ -21,14 +22,14 @@ def transpose_matrix(M: Iterable[Iterable[float]]) -> list[list[float]]:
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         The result matrix.
 
     """
     return list(map(list, zip(*list(M))))
 
 
-def multiply_matrices(A: Sequence[Sequence[float]], B: Sequence[Sequence[float]]) -> list[list[float]]:
+def multiply_matrices(A: Sequence[Sequence[RealInput]], B: Sequence[Sequence[RealInput]]) -> list[list[RealInput]]:
     r"""Mutliply a matrix with a matrix.
 
     Parameters
@@ -40,7 +41,7 @@ def multiply_matrices(A: Sequence[Sequence[float]], B: Sequence[Sequence[float]]
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         The result matrix.
 
     Raises
@@ -79,7 +80,7 @@ def multiply_matrices(A: Sequence[Sequence[float]], B: Sequence[Sequence[float]]
     return [[dot_vectors(row, col) for col in B] for row in A]
 
 
-def multiply_matrix_vector(A: Sequence[Sequence[float]], b: FloatSequenceType) -> list[float]:
+def multiply_matrix_vector(A: Sequence[Sequence[RealInput]], b: FloatSequenceLike) -> list[RealInput]:
     r"""Multiply a matrix with a vector.
 
     Parameters
@@ -124,7 +125,7 @@ def multiply_matrix_vector(A: Sequence[Sequence[float]], b: FloatSequenceType) -
     return [dot_vectors(row, b) for row in A]
 
 
-def is_matrix_square(M: Sequence[Sequence[float]]) -> bool:
+def is_matrix_square(M: Sequence[Sequence[RealInput]]) -> bool:
     """Verify that a matrix is square.
 
     Parameters
@@ -153,7 +154,7 @@ def is_matrix_square(M: Sequence[Sequence[float]]) -> bool:
     return True
 
 
-def matrix_minor(M: Sequence[Sequence[float]], i: int, j: int) -> list[list[float]]:
+def matrix_minor(M: Sequence[Sequence[RealInput]], i: int, j: int) -> list[list[RealInput]]:
     """Construct the minor corresponding to an element of a matrix.
 
     Parameters
@@ -167,7 +168,7 @@ def matrix_minor(M: Sequence[Sequence[float]], i: int, j: int) -> list[list[floa
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         The minor.
 
     See Also
@@ -179,7 +180,7 @@ def matrix_minor(M: Sequence[Sequence[float]], i: int, j: int) -> list[list[floa
     return [list(row[:j]) + list(row[j + 1 :]) for index, row in enumerate(M) if index != i]
 
 
-def matrix_determinant(M: Sequence[Sequence[float]], check: bool = True) -> float:
+def matrix_determinant(M: Sequence[Sequence[RealInput]], check: bool = True) -> RealInput:
     """Calculate the determinant of a square matrix.
 
     Parameters
@@ -233,7 +234,7 @@ def matrix_determinant(M: Sequence[Sequence[float]], check: bool = True) -> floa
     return D
 
 
-def matrix_inverse(M: Sequence[Sequence[float]]) -> list[list[float]]:
+def matrix_inverse(M: Sequence[Sequence[RealInput]]) -> list[list[RealInput]]:
     """Calculate the inverse of a square matrix.
 
     Parameters
@@ -243,7 +244,7 @@ def matrix_inverse(M: Sequence[Sequence[float]]) -> list[list[float]]:
 
     Returns
     -------
-    list[list[float]]
+    list[list[RealInput]]
         The inverse matrix. The inverse of the 0x0 matrix is the 0x0 matrix.
 
     Raises

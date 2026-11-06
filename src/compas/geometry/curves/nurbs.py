@@ -5,8 +5,8 @@ from typing import Any
 from typing import Literal
 from typing import overload
 
-from compas._typing import CoordinateType
-from compas._typing import FilePath
+from compas.typing import FilePath
+from compas.typing import PointLike
 
 from .._typing import TransformationType
 from .curve import Curve
@@ -286,7 +286,7 @@ class NurbsCurve(Curve):
         return NurbsCurve.from_parameters(points=points, weights=weights, knots=knots, multiplicities=mults, degree=2)
 
     @classmethod
-    def from_interpolation(cls, points: Sequence[CoordinateType], precision: float = 1e-3) -> "NurbsCurve":
+    def from_interpolation(cls, points: Sequence[PointLike], precision: float = 1e-3) -> "NurbsCurve":
         """Construct a NURBS curve by interpolating a set of points.
 
         Parameters
@@ -361,7 +361,7 @@ class NurbsCurve(Curve):
     @classmethod
     def from_parameters(
         cls,
-        points: Sequence[CoordinateType],
+        points: Sequence[PointLike],
         weights: Sequence[float],
         knots: Sequence[float],
         multiplicities: Sequence[int],
@@ -404,7 +404,7 @@ class NurbsCurve(Curve):
         return from_parameters(points, weights, knots, multiplicities, degree, is_periodic=is_periodic)
 
     @classmethod
-    def from_points(cls, points: Sequence[CoordinateType], degree: int = 3, is_periodic: bool = False) -> "NurbsCurve":
+    def from_points(cls, points: Sequence[PointLike], degree: int = 3, is_periodic: bool = False) -> "NurbsCurve":
         """Construct a NURBS curve from control points.
 
         Parameters
@@ -513,12 +513,12 @@ class NurbsCurve(Curve):
         curve_reverse(self)
 
     @overload
-    def closest_point(self, point: CoordinateType, return_parameter: Literal[False] = False) -> "Point": ...
+    def closest_point(self, point: PointLike, return_parameter: Literal[False] = False) -> "Point": ...
 
     @overload
-    def closest_point(self, point: CoordinateType, return_parameter: Literal[True]) -> tuple["Point", float]: ...
+    def closest_point(self, point: PointLike, return_parameter: Literal[True]) -> tuple["Point", float]: ...
 
-    def closest_point(self, point: CoordinateType, return_parameter: bool = False) -> "Point | tuple[Point, float]":
+    def closest_point(self, point: PointLike, return_parameter: bool = False) -> "Point | tuple[Point, float]":
         """Compute the closest point on the curve."""
         return curve_closest_point(self, point, return_parameter=return_parameter)
 

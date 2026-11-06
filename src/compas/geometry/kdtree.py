@@ -2,7 +2,8 @@ from collections.abc import Collection
 from collections.abc import Sequence
 from typing import NamedTuple
 
-from compas._typing import CoordinateType
+from compas.typing import PointLike
+from compas.typing import RealInput
 
 from ._core.distance import distance_point_point_sqrd
 
@@ -10,7 +11,7 @@ from ._core.distance import distance_point_point_sqrd
 class Node(NamedTuple):
     """A node in a `KDTree`."""
 
-    point: CoordinateType
+    point: PointLike
     axis: int
     label: int
     left: "Node | None"
@@ -20,9 +21,9 @@ class Node(NamedTuple):
 class Neighbor(NamedTuple):
     """A nearest-neighbor search result."""
 
-    point: CoordinateType
+    point: PointLike
     label: int
-    distance: float
+    distance: RealInput
 
 
 class KDTree:
@@ -56,7 +57,7 @@ class KDTree:
     # Dunder methods
     # ==========================================================================
 
-    def __init__(self, objects: Sequence[CoordinateType] | None = None) -> None:
+    def __init__(self, objects: Sequence[PointLike] | None = None) -> None:
         self.root: Node | None = None
         if objects:
             self.root = self.build([(point, index) for index, point in enumerate(objects)])
@@ -65,7 +66,7 @@ class KDTree:
     # Methods
     # ==========================================================================
 
-    def build(self, objects: list[tuple[CoordinateType, int]], axis: int = 0) -> Node | None:
+    def build(self, objects: list[tuple[PointLike, int]], axis: int = 0) -> Node | None:
         """Build a tree from labeled points.
 
         Parameters
@@ -99,7 +100,7 @@ class KDTree:
 
     def nearest_neighbor(
         self,
-        point: CoordinateType,
+        point: PointLike,
         exclude: Collection[int] | None = None,
     ) -> Neighbor | None:
         """Find the nearest non-excluded point.
@@ -144,7 +145,7 @@ class KDTree:
             return None
         return Neighbor(best.point, best.label, best.distance**0.5)
 
-    def nearest_neighbors(self, point: CoordinateType, number: int, distance_sort: bool = False) -> list[Neighbor]:
+    def nearest_neighbors(self, point: PointLike, number: int, distance_sort: bool = False) -> list[Neighbor]:
         """Find up to a requested number of nearest neighbors.
 
         Parameters

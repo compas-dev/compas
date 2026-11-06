@@ -6,10 +6,10 @@ from typing import Any
 from typing import Literal
 from typing import Self
 
-from compas._typing import CoordinateType
 from compas.geometry import Frame
 from compas.geometry import Point
 from compas.geometry import Vector
+from compas.typing import PointLike
 
 from ..line import Line
 from .conic import Conic
@@ -112,7 +112,7 @@ class Hyperbola(Conic):
         return self.frame.point
 
     @center.setter
-    def center(self, point: CoordinateType) -> None:
+    def center(self, point: PointLike) -> None:
         self.frame.point = point
 
     @property

@@ -5,16 +5,16 @@ from typing import overload
 if TYPE_CHECKING:
     from .mesh import Mesh
 
-MeshType = TypeVar("MeshType", bound="Mesh")
-DualMeshType = TypeVar("DualMeshType", bound="Mesh")
+MeshT = TypeVar("MeshT", bound="Mesh")
+DualVerticesFaces = TypeVar("DualVerticesFaces", bound="Mesh")
 
 
 @overload
-def mesh_dual(mesh: MeshType, cls: None = None, include_boundary: bool = False) -> MeshType: ...
+def mesh_dual(mesh: MeshT, cls: None = None, include_boundary: bool = False) -> MeshT: ...
 
 
 @overload
-def mesh_dual(mesh: "Mesh", cls: type[DualMeshType], include_boundary: bool = False) -> DualMeshType: ...
+def mesh_dual(mesh: "Mesh", cls: type[DualVerticesFaces], include_boundary: bool = False) -> DualVerticesFaces: ...
 
 
 def mesh_dual(mesh: "Mesh", cls: type["Mesh"] | None = None, include_boundary: bool = False) -> "Mesh":

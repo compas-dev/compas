@@ -6,13 +6,13 @@ from typing import TYPE_CHECKING
 from typing import Any
 from typing import Self
 
-from compas._typing import CoordinateType
 from compas.geometry import Circle
 from compas.geometry import Frame
 from compas.geometry import Line
 from compas.geometry import Plane
 from compas.geometry import Point
 from compas.geometry import Vector
+from compas.typing import PointLike
 
 from .surface import Surface
 
@@ -137,7 +137,7 @@ class ConicalSurface(Surface):
         return self.frame.point
 
     @center.setter
-    def center(self, point: CoordinateType) -> None:
+    def center(self, point: PointLike) -> None:
         self.frame.point = point
 
     @property

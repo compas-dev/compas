@@ -1,7 +1,5 @@
-from collections.abc import Sequence
 from typing import Self
 
-from compas._typing import CoordinatesType
 from compas.itertools import flatten
 from compas.linalg.matrices import matrix_inverse
 from compas.linalg.matrices import multiply_matrices
@@ -9,8 +7,10 @@ from compas.linalg.transformations import decompose_matrix
 from compas.linalg.transformations import matrix_from_frame
 from compas.linalg.transformations import matrix_from_scale_factors
 from compas.tolerance import TOL
+from compas.typing import FloatSequenceLike
+from compas.typing import PointsLike
 
-from .transformation import Matrix
+from .transformation import MatrixInput
 from .transformation import Transformation
 
 
@@ -56,7 +56,7 @@ class Scale(Transformation):
     # Dunder methods
     # ==========================================================================
 
-    def __init__(self, matrix: Matrix | None = None, check: bool = False, name: str | None = None) -> None:
+    def __init__(self, matrix: MatrixInput | None = None, check: bool = False, name: str | None = None) -> None:
         if matrix and check:
             scale, _, _, _, _ = decompose_matrix(matrix)
             if not TOL.is_allclose(flatten(matrix), flatten(matrix_from_scale_factors(scale))):
@@ -68,7 +68,7 @@ class Scale(Transformation):
     # ==========================================================================
 
     @classmethod
-    def from_factors(cls, factors: Sequence[float], frame: CoordinatesType | None = None) -> Self:
+    def from_factors(cls, factors: FloatSequenceLike, frame: PointsLike | None = None) -> Self:
         """Construct a scale transformation from scale factors.
 
         Parameters

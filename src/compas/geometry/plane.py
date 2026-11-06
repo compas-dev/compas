@@ -4,13 +4,17 @@ from math import sqrt
 from typing import TYPE_CHECKING
 from typing import Self
 
-from compas._typing import Coordinates
-from compas._typing import CoordinatesType
-from compas._typing import CoordinateType
+import numpy as np
+
 from compas.geometry import Geometry
 from compas.geometry import bestfit_plane
 from compas.linalg.vectors import cross_vectors
 from compas.tolerance import TOL
+from compas.typing import PointLike
+from compas.typing import PointsLike
+from compas.typing import PointsProtocol
+from compas.typing import RealInput
+from compas.typing import VectorLike
 
 from ._typing import TransformationType
 from .point import Point
@@ -92,7 +96,7 @@ class Plane(Geometry):
     # Dunder methods
     # ==========================================================================
 
-    def __init__(self, point: CoordinateType, normal: CoordinateType, name: str | None = None) -> None:
+    def __init__(self, point: PointLike, normal: VectorLike, name: str | None = None) -> None:
         super().__init__(name=name)
         self._point: Point | None = None
         self._normal: Vector | None = None
@@ -123,7 +127,7 @@ class Plane(Geometry):
             return self.normal
         raise KeyError
 
-    def __setitem__(self, key: int, value: CoordinateType) -> None:
+    def __setitem__(self, key: int, value: PointLike) -> None:
         if key == 0:
             self.point = value
             return
@@ -136,7 +140,7 @@ class Plane(Geometry):
         return iter([self.point, self.normal])
 
     def __eq__(self, other: object) -> bool:
-        if not isinstance(other, Coordinates):
+        if not isinstance(other, PointsProtocol):
             return False
         if len(other) != 2:
             return False
@@ -172,7 +176,7 @@ class Plane(Geometry):
         return self._point
 
     @point.setter
-    def point(self, point: CoordinateType) -> None:
+    def point(self, point: PointLike) -> None:
         self._point = Point(point[0], point[1], point[2])
 
     @property
@@ -201,7 +205,7 @@ class Plane(Geometry):
         return self._normal
 
     @normal.setter
-    def normal(self, vector: CoordinateType) -> None:
+    def normal(self, vector: VectorLike) -> None:
         self._normal = Vector(vector[0], vector[1], vector[2])
         self._normal.unitize()
 
@@ -238,7 +242,7 @@ class Plane(Geometry):
     # ==========================================================================
 
     @classmethod
-    def from_three_points(cls, a: CoordinateType, b: CoordinateType, c: CoordinateType) -> Self:
+    def from_three_points(cls, a: PointLike, b: PointLike, c: PointLike) -> Self:
         """Construct a plane from three points in three-dimensional space.
 
         Parameters
@@ -273,7 +277,7 @@ class Plane(Geometry):
         return cls(a, normal)
 
     @classmethod
-    def from_point_and_two_vectors(cls, point: CoordinateType, u: CoordinateType, v: CoordinateType) -> Self:
+    def from_point_and_two_vectors(cls, point: PointLike, u: VectorLike, v: VectorLike) -> Self:
         """Construct a plane from a base point and two vectors.
 
         Parameters
@@ -399,7 +403,7 @@ class Plane(Geometry):
         return cls(frame.point, frame.normal)
 
     @classmethod
-    def from_points(cls, points: CoordinatesType) -> Self:
+    def from_points(cls, points: PointsLike) -> Self:
         """Construct a plane from a collection of points.
 
         If the list contains more than three points, a plane is constructed that minimizes the distance to all points.
@@ -438,7 +442,7 @@ class Plane(Geometry):
     # Methods
     # ==========================================================================
 
-    def is_parallel(self, other: "Plane", tol: float | None = None) -> bool:
+    def is_parallel(self, other: "Plane", tol: float | None = None) -> bool | np.bool_:
         """Verify if this plane is parallel to another plane.
 
         Parameters
@@ -469,7 +473,7 @@ class Plane(Geometry):
         """
         return TOL.is_close(abs(self.normal.dot(other.normal)), 1, rtol=0, atol=tol)
 
-    def is_perpendicular(self, other: "Plane", tol: float | None = None) -> bool:
+    def is_perpendicular(self, other: "Plane", tol: float | None = None) -> bool | np.bool_:
         """Verify if this plane is perpendicular to another plane.
 
         Parameters
@@ -496,7 +500,7 @@ class Plane(Geometry):
         """
         return TOL.is_zero(self.normal.dot(other.normal), tol)
 
-    def contains_point(self, point: CoordinateType, tol: float | None = None) -> bool:
+    def contains_point(self, point: PointLike, tol: float | None = None) -> bool | np.bool_:
         """Verify if a given point lies in the plane.
 
         Parameters
@@ -525,7 +529,7 @@ class Plane(Geometry):
 
     # move to Point.distance_to_plane?
     # point.distance_to_plane(plane)
-    def distance_to_point(self, point: CoordinateType) -> float:
+    def distance_to_point(self, point: PointLike) -> RealInput:
         """Compute the distance from a given point to the plane.
 
         Parameters
@@ -551,7 +555,7 @@ class Plane(Geometry):
     # move to Point.closest_on_plane?
     # point.closest_on_plane(plane)
     # remove entirely?
-    def closest_point(self, point: CoordinateType) -> Point:
+    def closest_point(self, point: PointLike) -> Point:
         """Compute the closest point on the plane to a given point.
 
         Parameters
@@ -580,7 +584,7 @@ class Plane(Geometry):
     # move to Point.projected_on_plane?
     # point.projected_on_plane(plane)
     # point.project_on_plane(plane)
-    def projected_point(self, point: CoordinateType, direction: CoordinateType | None = None) -> Point | None:
+    def projected_point(self, point: PointLike, direction: VectorLike | None = None) -> Point | None:
         """Returns the projection of a given point onto the plane.
 
         Parameters
@@ -619,7 +623,7 @@ class Plane(Geometry):
     # move to Point.mirrored_by_plane?
     # point.mirrored_by_plane(plane)
     # point.mirror_by_plane(plane)
-    def mirrored_point(self, point: CoordinateType) -> Point:
+    def mirrored_point(self, point: PointLike) -> Point:
         """Returns the mirror image of a given point.
 
         Parameters

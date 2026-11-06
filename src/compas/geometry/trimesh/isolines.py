@@ -1,14 +1,12 @@
-from collections.abc import Sequence
-
-from compas._typing import NumericArray
-from compas._typing import TriangleMeshInput
 from compas.plugins import PluginNotInstalledError
 from compas.plugins import pluggable
+from compas.typing import FloatSequenceLike
+from compas.typing import VerticesFaces
 
 
 def trimesh_isolines(
-    mesh: TriangleMeshInput,
-    scalarfield: Sequence[float] | NumericArray,
+    mesh: VerticesFaces,
+    scalarfield: FloatSequenceLike,
     number_of_isolines: int = 50,
 ) -> tuple[list[list[float]], list[list[int]]]:
     """Compute isolines of a scalar field on a triangle mesh.
@@ -38,8 +36,8 @@ def trimesh_isolines(
 
 @pluggable(category="trimesh")
 def _trimesh_isolines(
-    mesh: TriangleMeshInput,
-    scalarfield: Sequence[float] | NumericArray,
+    mesh: VerticesFaces,
+    scalarfield: FloatSequenceLike,
     number_of_isolines: int = 50,
 ) -> tuple[list[list[float]], list[list[int]]]:
     raise PluginNotInstalledError

@@ -1,13 +1,13 @@
 from typing import TYPE_CHECKING
 from typing import Self
 
-from compas._typing import CoordinateType
 from compas.itertools import flatten
 from compas.linalg.transformations import matrix_from_translation
 from compas.linalg.transformations import translation_from_matrix
 from compas.tolerance import TOL
+from compas.typing import VectorLike
 
-from .transformation import Matrix
+from .transformation import MatrixInput
 from .transformation import Transformation
 
 if TYPE_CHECKING:
@@ -64,7 +64,7 @@ class Translation(Transformation):
     # Dunder methods
     # ==========================================================================
 
-    def __init__(self, matrix: Matrix | None = None, check: bool = False, name: str | None = None) -> None:
+    def __init__(self, matrix: MatrixInput | None = None, check: bool = False, name: str | None = None) -> None:
         if matrix and check:
             translation = translation_from_matrix(matrix)
             if not TOL.is_allclose(flatten(matrix), flatten(matrix_from_translation(translation))):
@@ -90,7 +90,7 @@ class Translation(Transformation):
     # ==========================================================================
 
     @classmethod
-    def from_vector(cls, vector: CoordinateType) -> Self:
+    def from_vector(cls, vector: VectorLike) -> Self:
         """Construct a translation transformation from a vector.
 
         Parameters

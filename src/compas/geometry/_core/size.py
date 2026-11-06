@@ -1,7 +1,7 @@
 from collections.abc import Sequence
 from math import fabs
+from operator import index
 
-from compas._typing import CoordinatesType
 from compas.itertools import pairwise
 from compas.linalg.vectors import cross_vectors
 from compas.linalg.vectors import cross_vectors_xy
@@ -9,6 +9,9 @@ from compas.linalg.vectors import dot_vectors
 from compas.linalg.vectors import length_vector
 from compas.linalg.vectors import subtract_vectors
 from compas.linalg.vectors import subtract_vectors_xy
+from compas.typing import PointsLike
+from compas.typing import RealInput
+from compas.typing import VerticesFaces
 
 from .centroids import centroid_points
 from .centroids import centroid_points_xy
@@ -16,7 +19,7 @@ from .normals import normal_triangle
 from .normals import normal_triangle_xy
 
 
-def area_triangle(triangle: CoordinatesType) -> float:
+def area_triangle(triangle: PointsLike) -> float:
     """Compute the area of a triangle defined by three points.
 
     Parameters
@@ -62,7 +65,7 @@ def area_triangle_xy(triangle: Sequence[Sequence[float]]) -> float:
     return 0.5 * length_vector(normal_triangle_xy(triangle, False))
 
 
-def area_polygon(polygon: CoordinatesType) -> float:
+def area_polygon(polygon: PointsLike) -> float:
     """Compute the area of a polygon.
 
     Parameters
@@ -136,7 +139,7 @@ def area_polygon_xy(polygon: Sequence[Sequence[float]]) -> float:
     return fabs(a)
 
 
-def volume_polyhedron(polyhedron: tuple[list[list[float]], Sequence[list[int]]]) -> float:
+def volume_polyhedron(polyhedron: VerticesFaces) -> RealInput:
     r"""Compute the volume of a polyhedron represented by a closed mesh.
 
     Parameters
@@ -179,22 +182,23 @@ def volume_polyhedron(polyhedron: tuple[list[list[float]], Sequence[list[int]]])
 
     V = 0
     for vertices in faces:
-        if len(vertices) == 3:
-            triangles = [vertices]
-        else:
-            centroid = centroid_points([xyz[i] for i in vertices])
-            i = len(xyz)
-            xyz.append(centroid)
-            triangles = []
-            for u, v in pairwise(vertices + vertices[0:1]):
-                triangles.append([i, u, v])
-
-        for u, v, w in triangles:
-            a = xyz[u]
-            b = xyz[v]
-            c = xyz[w]
+        indices = [index(vertex) for vertex in vertices]
+        if len(indices) == 3:
+            a = xyz[indices[0]]
+            b = xyz[indices[1]]
+            c = xyz[indices[2]]
             ab = subtract_vectors(b, a)
             ac = subtract_vectors(c, a)
             n = cross_vectors(ab, ac)
             V += dot_vectors(a, n)
+        else:
+            centroid = centroid_points([xyz[i] for i in indices])
+            for u, v in pairwise(indices + indices[0:1]):
+                a = centroid
+                b = xyz[u]
+                c = xyz[v]
+                ab = subtract_vectors(b, a)
+                ac = subtract_vectors(c, a)
+                n = cross_vectors(ab, ac)
+                V += dot_vectors(a, n)
     return V / 6.0

@@ -1,13 +1,13 @@
 from collections.abc import Sequence
 
-from compas._typing import CoordinateType
 from compas.geometry import centroid_points
 from compas.itertools import pairwise
 from compas.topology.traversal import breadth_first_traverse
+from compas.typing import PointLike
 
 
 def _closest_faces(
-    vertices: Sequence[CoordinateType],
+    vertices: Sequence[PointLike],
     faces: Sequence[list[int]],
     nmax: int | None,
     max_distance: float | None,
@@ -48,7 +48,7 @@ def _closest_faces(
 
 
 def _face_adjacency(
-    vertices: Sequence[CoordinateType],
+    vertices: Sequence[PointLike],
     faces: Sequence[list[int]],
     nmax: int | None = None,
     max_distance: float | None = None,
@@ -89,7 +89,7 @@ def _face_adjacency(
 
 
 def face_adjacency(
-    points: Sequence[CoordinateType],
+    points: Sequence[PointLike],
     faces: Sequence[list[int]],
     nmax: int | None = None,
     max_distance: float | None = None,
@@ -154,7 +154,7 @@ def face_adjacency(
 
 
 def unify_cycles(
-    vertices: Sequence[CoordinateType],
+    vertices: Sequence[PointLike],
     faces: list[list[int]],
     root: int | None = None,
     nmax: int | None = None,

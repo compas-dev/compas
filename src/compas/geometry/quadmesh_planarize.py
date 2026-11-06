@@ -1,8 +1,11 @@
-from compas._typing import MeshType
+from operator import index as integer_index
+
 from compas.plugins import pluggable
+from compas.typing import RealInput
+from compas.typing import VerticesFaces
 
 
-def _face_flatness(vertices: list[list[float]], face: list[int]) -> float:
+def _face_flatness(vertices: list[list[RealInput]], face: list[int]) -> float:
     if len(face) == 3:
         return 0.0
 
@@ -16,7 +19,7 @@ def _face_flatness(vertices: list[list[float]], face: list[int]) -> float:
 
 
 @pluggable(category="quadmesh")
-def quadmesh_planarize(M: MeshType, kmax: int = 500, maxdev: float = 0.005) -> list[list[float]]:
+def quadmesh_planarize(M: VerticesFaces, kmax: int = 500, maxdev: float = 0.005) -> list[list[RealInput]]:
     """Planarize the faces of a quad mesh.
 
     Parameters
@@ -46,19 +49,17 @@ def quadmesh_planarize(M: MeshType, kmax: int = 500, maxdev: float = 0.005) -> l
     from compas.geometry import project_points_plane
 
     coordinates, mesh_faces = M
-    vertices = [[float(axis) for axis in point] for point in coordinates]
-    faces = [list(face) for face in mesh_faces]
+    vertices: list[list[RealInput]] = [[float(axis) for axis in point] for point in coordinates]
+    faces = [[integer_index(value) for value in face] for face in mesh_faces]
 
     for _ in range(kmax):
-        positions: list[list[list[float]]] = [[] for _ in vertices]
+        positions: list[list[list[RealInput]]] = [[] for _ in vertices]
 
         for face in faces:
             points = [vertices[index] for index in face]
             midpoints = [midpoint_point_point(points[index - 1], points[index]) for index in range(len(points))]
             plane = bestfit_plane(points + midpoints)
-            # NumPy rows support the coordinate operations used by the raw-data
-            # projection helper, although NumPy's stubs are not structurally compatible.
-            projections = project_points_plane(points, plane)  # pyright: ignore[reportArgumentType]
+            projections = project_points_plane(points, plane)
 
             for index, projection in zip(face, projections):
                 positions[index].append(projection)

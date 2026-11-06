@@ -7,6 +7,7 @@ from compas.colors import Color
 from compas.colors.color import ColorInput
 from compas.datastructures import Graph
 from compas.geometry import transform_points
+from compas.typing import RealInput
 
 from .descriptors.colordict import ColorDictAttribute
 from .sceneobject import SceneObject
@@ -40,7 +41,7 @@ class GraphObject(SceneObject):
         **kwargs: Any,
     ) -> None:
         super().__init__(**kwargs)
-        self._node_xyz: dict[Hashable, list[float]] | None = None
+        self._node_xyz: dict[Hashable, list[RealInput]] | None = None
         self._node_xyz_revision: tuple[int, ...] | None = None
         self.show_nodes = show_nodes
         self.show_edges = show_edges
@@ -87,7 +88,7 @@ class GraphObject(SceneObject):
         self._node_xyz_revision = None
 
     @property
-    def node_xyz(self) -> dict[Hashable, list[float]]:
+    def node_xyz(self) -> dict[Hashable, list[RealInput]]:
         """The node coordinates in the scene object's world coordinate system.
 
         Notes
@@ -106,7 +107,7 @@ class GraphObject(SceneObject):
         return self._node_xyz
 
     @node_xyz.setter
-    def node_xyz(self, node_xyz: dict[Hashable, list[float]]) -> None:
+    def node_xyz(self, node_xyz: dict[Hashable, list[RealInput]]) -> None:
         self._node_xyz = node_xyz
         self._node_xyz_revision = None
 

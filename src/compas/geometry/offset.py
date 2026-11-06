@@ -2,8 +2,8 @@ from collections.abc import Iterable
 from collections.abc import Sequence
 from typing import Any
 
-from compas._typing import CoordinatesType
-from compas._typing import CoordinateType
+import numpy as np
+
 from compas.data.validators import is_item_iterable
 from compas.geometry import centroid_points
 from compas.geometry import is_colinear
@@ -15,6 +15,9 @@ from compas.linalg.vectors import cross_vectors
 from compas.linalg.vectors import normalize_vector
 from compas.linalg.vectors import scale_vector
 from compas.linalg.vectors import subtract_vectors
+from compas.typing import PointsLike
+from compas.typing import RealInput
+from compas.typing import VectorLike
 
 from ._core.intersections import closest_points_line_line
 from ._typing import LineType
@@ -25,7 +28,7 @@ _LineDistance = float | Sequence[float]
 _OffsetDistance = float | Sequence[float | Sequence[float]]
 
 
-def intersect_lines(l1: LineType, l2: LineType, tol: float | None) -> list[float] | None:
+def intersect_lines(l1: LineType, l2: LineType, tol: float | None) -> list[RealInput] | None:
     a, b = l1
     c, d = l2
     x1, x2 = closest_points_line_line((a, b), (c, d), tol)
@@ -33,8 +36,8 @@ def intersect_lines(l1: LineType, l2: LineType, tol: float | None) -> list[float
         return centroid_points([x1, x2])
 
 
-def intersect_lines_colinear(l1: LineType, l2: LineType, tol: float | None) -> list[float] | None:
-    def are_segments_colinear(l1: LineType, l2: LineType, tol: float | None) -> bool:
+def intersect_lines_colinear(l1: LineType, l2: LineType, tol: float | None) -> list[RealInput] | None:
+    def are_segments_colinear(l1: LineType, l2: LineType, tol: float | None) -> bool | np.bool_:
         a, b = l1
         d, c = l2
         return is_colinear(a, b, c, tol)
@@ -43,7 +46,7 @@ def intersect_lines_colinear(l1: LineType, l2: LineType, tol: float | None) -> l
         return centroid_points([l1[1], l2[0]])
 
 
-def intersect(l1: LineType, l2: LineType, tol: float | None) -> list[float]:
+def intersect(l1: LineType, l2: LineType, tol: float | None) -> list[RealInput]:
     supported_funcs = [intersect_lines, intersect_lines_colinear]
     for func in supported_funcs:
         point = func(l1, l2, tol)
@@ -54,11 +57,11 @@ def intersect(l1: LineType, l2: LineType, tol: float | None) -> list[float]:
 
 
 def offset_segments(
-    point_list: CoordinatesType,
+    point_list: PointsLike,
     distances: Iterable[_LineDistance],
-    normal: CoordinateType,
-) -> list[tuple[list[float], list[float]]]:
-    segments: list[tuple[list[float], list[float]]] = []
+    normal: VectorLike,
+) -> list[tuple[list[RealInput], list[RealInput]]]:
+    segments: list[tuple[list[RealInput], list[RealInput]]] = []
     for line, distance in zip(pairwise(point_list), distances):
         segments.append(offset_line(line, distance, normal))
     return segments
@@ -67,8 +70,8 @@ def offset_segments(
 def offset_line(
     line: LineType,
     distance: _LineDistance,
-    normal: CoordinateType = (0.0, 0.0, 1.0),
-) -> tuple[list[float], list[float]]:
+    normal: VectorLike = (0.0, 0.0, 1.0),
+) -> tuple[list[RealInput], list[RealInput]]:
     """Offset a line by a distance.
 
     Parameters
@@ -120,7 +123,7 @@ def offset_polygon(
     polygon: PolygonType,
     distance: _OffsetDistance,
     tol: float | None = None,
-) -> list[list[float]]:
+) -> list[list[RealInput]]:
     """Offset a polygon (closed) by a distance.
 
     Parameters
@@ -186,9 +189,9 @@ def offset_polygon(
 def offset_polyline(
     polyline: PolylineType,
     distance: _OffsetDistance,
-    normal: CoordinateType = (0.0, 0.0, 1.0),
+    normal: VectorLike = (0.0, 0.0, 1.0),
     tol: float | None = None,
-) -> list[list[float]]:
+) -> list[list[RealInput]]:
     """Offset a polyline by a distance.
 
     Parameters

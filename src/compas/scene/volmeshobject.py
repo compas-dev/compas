@@ -6,6 +6,7 @@ from compas.colors import Color
 from compas.colors.color import ColorInput
 from compas.datastructures import VolMesh
 from compas.geometry import transform_points
+from compas.typing import RealInput
 
 from .descriptors.colordict import ColorDictAttribute
 from .sceneobject import SceneObject
@@ -45,7 +46,7 @@ class VolMeshObject(SceneObject):
         **kwargs: Any,
     ) -> None:
         super().__init__(**kwargs)
-        self._vertex_xyz: dict[int, list[float]] | None = None
+        self._vertex_xyz: dict[int, list[RealInput]] | None = None
         self._vertex_xyz_revision: tuple[int, ...] | None = None
         self.show_vertices = show_vertices
         self.show_edges = show_edges
@@ -98,7 +99,7 @@ class VolMeshObject(SceneObject):
         self._vertex_xyz_revision = None
 
     @property
-    def vertex_xyz(self) -> dict[int, list[float]]:
+    def vertex_xyz(self) -> dict[int, list[RealInput]]:
         """The vertex coordinates in the scene object's world coordinate system.
 
         Notes
@@ -117,7 +118,7 @@ class VolMeshObject(SceneObject):
         return self._vertex_xyz
 
     @vertex_xyz.setter
-    def vertex_xyz(self, vertex_xyz: dict[int, list[float]]) -> None:
+    def vertex_xyz(self, vertex_xyz: dict[int, list[RealInput]]) -> None:
         self._vertex_xyz = vertex_xyz
         self._vertex_xyz_revision = None
 

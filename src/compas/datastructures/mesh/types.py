@@ -1,9 +1,9 @@
 from typing import Any
 from typing import TypeAlias
 
-from compas._typing import PointCoordinates as _PointCoordinates
+from compas.typing import PointLike as _PointLike
 
-PointCoordinates: TypeAlias = _PointCoordinates
+PointLike: TypeAlias = _PointLike
 
 Vertex = int
 Face = int

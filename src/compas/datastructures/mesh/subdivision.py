@@ -19,7 +19,7 @@ from .types import Vertex
 if TYPE_CHECKING:
     from .mesh import Mesh
 
-MeshType = TypeVar("MeshType", bound="Mesh")
+MeshT = TypeVar("MeshT", bound="Mesh")
 SubdivisionScheme = Literal["tri", "quad", "corner", "catmullclark", "doosabin", "frames", "loop"]
 
 
@@ -60,7 +60,7 @@ def subd_factory(cls: Any) -> Any:
     return SubdMesh
 
 
-def mesh_fast_copy(other: MeshType) -> MeshType:
+def mesh_fast_copy(other: MeshT) -> MeshT:
     SubdMesh = subd_factory(type(other))
     subd = SubdMesh()
     subd.vertex = deepcopy(other.vertex)
@@ -82,7 +82,7 @@ def mesh_fast_copy(other: MeshType) -> MeshType:
 # any subd algorithm should return a new subd mesh, leaving the control mesh intact
 
 
-def mesh_subdivide(mesh: MeshType, scheme: SubdivisionScheme = "catmullclark", **options: Any) -> MeshType:
+def mesh_subdivide(mesh: MeshT, scheme: SubdivisionScheme = "catmullclark", **options: Any) -> MeshT:
     """Subdivide the input mesh.
 
     Parameters
@@ -123,7 +123,7 @@ def mesh_subdivide(mesh: MeshType, scheme: SubdivisionScheme = "catmullclark", *
     raise ValueError(f"Subdivision scheme is not supported: {scheme}")
 
 
-def mesh_subdivide_tri(mesh: MeshType, k: int = 1) -> MeshType:
+def mesh_subdivide_tri(mesh: MeshT, k: int = 1) -> MeshT:
     """Subdivide a mesh using simple insertion of vertices.
 
     Parameters
@@ -164,7 +164,7 @@ def mesh_subdivide_tri(mesh: MeshType, k: int = 1) -> MeshType:
     return cls.__from_data__(subd.__data__)
 
 
-def mesh_subdivide_quad(mesh: MeshType, k: int = 1) -> MeshType:
+def mesh_subdivide_quad(mesh: MeshT, k: int = 1) -> MeshT:
     """Subdivide a mesh such that all faces are quads.
 
     Parameters
@@ -229,7 +229,7 @@ def mesh_subdivide_quad(mesh: MeshType, k: int = 1) -> MeshType:
     return subd2
 
 
-def mesh_subdivide_corner(mesh: MeshType, k: int = 1) -> MeshType:
+def mesh_subdivide_corner(mesh: MeshT, k: int = 1) -> MeshT:
     """Subdivide a mesh by cutting corners.
 
     Parameters
@@ -273,10 +273,10 @@ def mesh_subdivide_corner(mesh: MeshType, k: int = 1) -> MeshType:
 
 
 def mesh_subdivide_catmullclark(
-    mesh: MeshType,
+    mesh: MeshT,
     k: int = 1,
     fixed: Collection[Vertex] | None = None,
-) -> MeshType:
+) -> MeshT:
     """Subdivide a mesh using the Catmull-Clark algorithm.
 
     Parameters
@@ -467,10 +467,10 @@ def mesh_subdivide_catmullclark(
 
 
 def mesh_subdivide_doosabin(
-    mesh: MeshType,
+    mesh: MeshT,
     k: int = 1,
     fixed: Collection[Vertex] | None = None,
-) -> MeshType:
+) -> MeshT:
     """Subdivide a mesh following the doo-sabin scheme.
 
     Parameters
@@ -587,10 +587,10 @@ def mesh_subdivide_doosabin(
 
 
 def mesh_subdivide_frames(
-    mesh: MeshType,
+    mesh: MeshT,
     offset: float | Mapping[Face, float],
     add_windows: bool = False,
-) -> MeshType:
+) -> MeshT:
     """Subdivide a mesh by creating offset frames and windows on its faces.
 
     Parameters
@@ -660,10 +660,10 @@ def mesh_subdivide_frames(
 
 
 def trimesh_subdivide_loop(
-    mesh: MeshType,
+    mesh: MeshT,
     k: int = 1,
     fixed: Collection[Vertex] | None = None,
-) -> MeshType:
+) -> MeshT:
     """Subdivide a triangle mesh using the Loop algorithm.
 
     Parameters

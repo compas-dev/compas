@@ -3,8 +3,8 @@ from typing import TYPE_CHECKING
 from typing import Self
 
 from compas.data import Data
-
-from ._typing import CoordinateType
+from compas.typing import PointLike
+from compas.typing import VectorLike
 
 if TYPE_CHECKING:
     from compas.geometry import Box
@@ -208,7 +208,7 @@ class Geometry(Data):
         geometry.translate(vector)
         return geometry
 
-    def rotate(self, angle: float, axis: Sequence[float] | None = None, point: CoordinateType | None = None) -> None:
+    def rotate(self, angle: float, axis: VectorLike | None = None, point: PointLike | None = None) -> None:
         """Rotate the geometry.
 
         Parameters
@@ -237,7 +237,7 @@ class Geometry(Data):
 
         self.transform(Rotation.from_axis_and_angle(axis, angle, point))
 
-    def rotated(self, angle: float, axis: Sequence[float] | None = None, point: CoordinateType | None = None) -> Self:
+    def rotated(self, angle: float, axis: VectorLike | None = None, point: PointLike | None = None) -> Self:
         """Returns a rotated copy of this geometry.
 
         Parameters

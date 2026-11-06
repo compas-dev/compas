@@ -3,12 +3,13 @@ from typing import Any
 from typing import Literal
 from typing import overload
 
-from compas._typing import TriangleMeshInput
 from compas.linalg.vectors import cross_vectors
 from compas.linalg.vectors import dot_vectors
 from compas.linalg.vectors import length_vector
 from compas.plugins import PluginNotInstalledError
 from compas.plugins import pluggable
+from compas.typing import RealInput
+from compas.typing import VerticesFaces
 
 if TYPE_CHECKING:
     from numpy.typing import NDArray
@@ -24,7 +25,7 @@ if TYPE_CHECKING:
     from compas.datastructures.mesh.types import Edge
 
 
-def trimesh_massmatrix(mesh: TriangleMeshInput) -> list[float]:
+def trimesh_massmatrix(mesh: VerticesFaces) -> list[float]:
     """Compute the per-vertex mass matrix of a triangle mesh.
 
     Parameters
@@ -46,11 +47,11 @@ def trimesh_massmatrix(mesh: TriangleMeshInput) -> list[float]:
 
 
 @pluggable(category="trimesh")
-def _trimesh_massmatrix(mesh: TriangleMeshInput) -> list[float]:
+def _trimesh_massmatrix(mesh: VerticesFaces) -> list[float]:
     raise PluginNotInstalledError
 
 
-def trimesh_edge_cotangent(mesh: "Mesh", edge: "Edge") -> float:
+def trimesh_edge_cotangent(mesh: "Mesh", edge: "Edge") -> RealInput:
     """Compute the cotangent of the angle opposite a halfedge of the triangle mesh.
 
     Parameters
@@ -80,7 +81,7 @@ def trimesh_edge_cotangent(mesh: "Mesh", edge: "Edge") -> float:
     return cotangent
 
 
-def trimesh_edge_cotangents(mesh: "Mesh", edge: "Edge") -> tuple[float, float]:
+def trimesh_edge_cotangents(mesh: "Mesh", edge: "Edge") -> tuple[RealInput, RealInput]:
     """Compute the cotangents of the angles opposite both sides of an edge of the triangle mesh.
 
     Parameters

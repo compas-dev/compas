@@ -1,10 +1,10 @@
-from collections.abc import Iterable
 from collections.abc import Sequence
 from math import sqrt
 from typing import overload
 
-from compas._typing import CoordinateType
-from compas._typing import FloatSequenceType
+from compas.typing import FloatSequenceLike
+from compas.typing import RealInput
+from compas.typing import VectorLike
 
 _SPEC2TUPLE = {
     "sxyz": (0, 0, 0, 0),
@@ -155,7 +155,7 @@ def argmin(values: Sequence[float]) -> int:
 # ==============================================================================
 
 
-def sum_vectors(vectors: Sequence[Sequence[float]], axis: int = 0) -> list[float]:
+def sum_vectors(vectors: Sequence[VectorLike], axis: int = 0) -> list[RealInput]:
     """Calculate the sum of a series of vectors along the specified axis.
 
     Parameters
@@ -192,7 +192,7 @@ def sum_vectors(vectors: Sequence[Sequence[float]], axis: int = 0) -> list[float
     raise ValueError("The axis must be 0 or 1.")
 
 
-def norm_vector(vector: Sequence[float]) -> float:
+def norm_vector(vector: VectorLike) -> float:
     """Calculate the length of a vector.
 
     Parameters
@@ -217,7 +217,7 @@ def norm_vector(vector: Sequence[float]) -> float:
     return sqrt(sum(axis**2 for axis in vector))
 
 
-def norm_vectors(vectors: Sequence[Sequence[float]]) -> list[float]:
+def norm_vectors(vectors: Sequence[VectorLike]) -> list[float]:
     """
     Calculate the norm of each vector in a list of vectors.
 
@@ -240,7 +240,7 @@ def norm_vectors(vectors: Sequence[Sequence[float]]) -> list[float]:
     return [norm_vector(vector) for vector in vectors]
 
 
-def length_vector(vector: CoordinateType) -> float:
+def length_vector(vector: VectorLike) -> float:
     """Calculate the length of the vector.
 
     Parameters
@@ -265,7 +265,7 @@ def length_vector(vector: CoordinateType) -> float:
     return sqrt(length_vector_sqrd(vector))
 
 
-def length_vector_xy(vector: CoordinateType) -> float:
+def length_vector_xy(vector: VectorLike) -> float:
     """Compute the length of a vector, assuming it lies in the XY plane.
 
     Parameters
@@ -293,7 +293,7 @@ def length_vector_xy(vector: CoordinateType) -> float:
     return sqrt(length_vector_sqrd_xy(vector))
 
 
-def length_vector_sqrd(vector: CoordinateType) -> float:
+def length_vector_sqrd(vector: VectorLike) -> RealInput:
     """Compute the squared length of a vector.
 
     Parameters
@@ -315,7 +315,7 @@ def length_vector_sqrd(vector: CoordinateType) -> float:
     return vector[0] ** 2 + vector[1] ** 2 + vector[2] ** 2
 
 
-def length_vector_sqrd_xy(vector: CoordinateType) -> float:
+def length_vector_sqrd_xy(vector: VectorLike) -> RealInput:
     """Compute the squared length of a vector, assuming it lies in the XY plane.
 
     Parameters
@@ -351,7 +351,7 @@ def length_vector_sqrd_xy(vector: CoordinateType) -> float:
 # ==============================================================================
 
 
-def scale_vector(vector: CoordinateType, factor: float) -> list[float]:
+def scale_vector(vector: VectorLike, factor: RealInput) -> list[RealInput]:
     """Scale a vector by a given factor.
 
     Parameters
@@ -379,7 +379,7 @@ def scale_vector(vector: CoordinateType, factor: float) -> list[float]:
     return [axis * factor for axis in vector]
 
 
-def scale_vector_xy(vector: Sequence[float], factor: float) -> list[float]:
+def scale_vector_xy(vector: VectorLike, factor: RealInput) -> list[RealInput]:
     """Scale a vector by a given factor, assuming it lies in the XY plane.
 
     Parameters
@@ -403,7 +403,7 @@ def scale_vector_xy(vector: Sequence[float], factor: float) -> list[float]:
     return [vector[0] * factor, vector[1] * factor, 0.0]
 
 
-def scale_vectors(vectors: Sequence[Sequence[float]], factor: float) -> list[list[float]]:
+def scale_vectors(vectors: Sequence[VectorLike], factor: RealInput) -> list[list[RealInput]]:
     """Scale multiple vectors by a given factor.
 
     Parameters
@@ -422,7 +422,7 @@ def scale_vectors(vectors: Sequence[Sequence[float]], factor: float) -> list[lis
     return [scale_vector(vector, factor) for vector in vectors]
 
 
-def scale_vectors_xy(vectors: Sequence[Sequence[float]], factor: float) -> list[list[float]]:
+def scale_vectors_xy(vectors: Sequence[VectorLike], factor: RealInput) -> list[list[RealInput]]:
     """Scale multiple vectors by a given factor, assuming they lie in the XY plane.
 
     Parameters
@@ -446,10 +446,14 @@ def normalize_vector(vector: list[float]) -> list[float]: ...
 
 
 @overload
-def normalize_vector(vector: FloatSequenceType) -> FloatSequenceType: ...
+def normalize_vector(vector: list[RealInput]) -> list[RealInput]: ...
 
 
-def normalize_vector(vector: FloatSequenceType) -> FloatSequenceType:
+@overload
+def normalize_vector(vector: FloatSequenceLike) -> FloatSequenceLike: ...
+
+
+def normalize_vector(vector: FloatSequenceLike) -> FloatSequenceLike:
     """Normalise a given vector.
 
     Parameters
@@ -474,10 +478,14 @@ def normalize_vector_xy(vector: list[float]) -> list[float]: ...
 
 
 @overload
-def normalize_vector_xy(vector: FloatSequenceType) -> FloatSequenceType: ...
+def normalize_vector_xy(vector: list[RealInput]) -> list[RealInput]: ...
 
 
-def normalize_vector_xy(vector: FloatSequenceType) -> FloatSequenceType:
+@overload
+def normalize_vector_xy(vector: FloatSequenceLike) -> FloatSequenceLike: ...
+
+
+def normalize_vector_xy(vector: FloatSequenceLike) -> FloatSequenceLike:
     """Normalize a vector, assuming it lies in the XY-plane.
 
     Parameters
@@ -497,7 +505,7 @@ def normalize_vector_xy(vector: FloatSequenceType) -> FloatSequenceType:
     return [vector[0] / length, vector[1] / length, 0.0]
 
 
-def normalize_vectors(vectors: Sequence[FloatSequenceType]) -> list[FloatSequenceType]:
+def normalize_vectors(vectors: Sequence[FloatSequenceLike]) -> list[FloatSequenceLike]:
     """Normalise multiple vectors.
 
     Parameters
@@ -514,7 +522,7 @@ def normalize_vectors(vectors: Sequence[FloatSequenceType]) -> list[FloatSequenc
     return [normalize_vector(vector) for vector in vectors]
 
 
-def normalize_vectors_xy(vectors: Sequence[FloatSequenceType]) -> list[FloatSequenceType]:
+def normalize_vectors_xy(vectors: Sequence[FloatSequenceLike]) -> list[FloatSequenceLike]:
     """Normalise multiple vectors, assuming they lie in the XY plane.
 
     Parameters
@@ -610,7 +618,7 @@ def square_vectors(vectors: Sequence[Sequence[float]]) -> list[list[float]]:
 # ==============================================================================
 
 
-def add_vectors(u: Iterable[float], v: Iterable[float]) -> list[float]:
+def add_vectors(u: VectorLike, v: VectorLike) -> list[RealInput]:
     """Add two vectors.
 
     Parameters
@@ -629,7 +637,7 @@ def add_vectors(u: Iterable[float], v: Iterable[float]) -> list[float]:
     return [a + b for (a, b) in zip(u, v)]
 
 
-def add_vectors_xy(u: Sequence[float], v: Sequence[float]) -> list[float]:
+def add_vectors_xy(u: VectorLike, v: VectorLike) -> list[RealInput]:
     """Add two vectors, assuming they lie in the XY-plane.
 
     Parameters
@@ -648,7 +656,7 @@ def add_vectors_xy(u: Sequence[float], v: Sequence[float]) -> list[float]:
     return [u[0] + v[0], u[1] + v[1], 0.0]
 
 
-def subtract_vectors(u: CoordinateType, v: CoordinateType) -> list[float]:
+def subtract_vectors(u: VectorLike, v: VectorLike) -> list[RealInput]:
     """Subtract one vector from another.
 
     Parameters
@@ -667,7 +675,7 @@ def subtract_vectors(u: CoordinateType, v: CoordinateType) -> list[float]:
     return [a - b for (a, b) in zip(u, v)]
 
 
-def subtract_vectors_xy(u: CoordinateType, v: CoordinateType) -> list[float]:
+def subtract_vectors_xy(u: VectorLike, v: VectorLike) -> list[RealInput]:
     """Subtract one vector from another, assuming they lie in the XY plane.
 
     Parameters
@@ -767,7 +775,7 @@ def divide_vectors_xy(u: Sequence[float], v: Sequence[float]) -> list[float]:
 # ==============================================================================
 
 
-def cross_vectors(u: CoordinateType, v: CoordinateType) -> list[float]:
+def cross_vectors(u: VectorLike, v: VectorLike) -> list[RealInput]:
     r"""Compute the cross product of two vectors.
 
     Parameters
@@ -822,7 +830,7 @@ def cross_vectors(u: CoordinateType, v: CoordinateType) -> list[float]:
     ]
 
 
-def cross_vectors_xy(u: Sequence[float], v: Sequence[float]) -> list[float]:
+def cross_vectors_xy(u: VectorLike, v: VectorLike) -> list[RealInput]:
     """Compute the cross product of two vectors, assuming they lie in the XY-plane.
 
     Parameters
@@ -853,7 +861,7 @@ def cross_vectors_xy(u: Sequence[float], v: Sequence[float]) -> list[float]:
     return [0.0, 0.0, u[0] * v[1] - u[1] * v[0]]
 
 
-def dot_vectors(u: CoordinateType, v: CoordinateType) -> float:
+def dot_vectors(u: VectorLike, v: VectorLike) -> RealInput:
     """Compute the dot product of two vectors.
 
     Parameters
@@ -877,7 +885,7 @@ def dot_vectors(u: CoordinateType, v: CoordinateType) -> float:
     return sum(a * b for a, b in zip(u, v))
 
 
-def dot_vectors_xy(u: Sequence[float], v: Sequence[float]) -> float:
+def dot_vectors_xy(u: VectorLike, v: VectorLike) -> RealInput:
     """Compute the dot product of two vectors, assuming they lie in the XY-plane.
 
     Parameters
@@ -907,7 +915,7 @@ def dot_vectors_xy(u: Sequence[float], v: Sequence[float]) -> float:
     return u[0] * v[0] + u[1] * v[1]
 
 
-def vector_component(u: Sequence[float], v: Sequence[float]) -> list[float]:
+def vector_component(u: VectorLike, v: VectorLike) -> list[RealInput]:
     """Compute the component of u in the direction of v.
 
     Parameters
@@ -940,7 +948,7 @@ def vector_component(u: Sequence[float], v: Sequence[float]) -> list[float]:
     return scale_vector(v, x)
 
 
-def vector_component_xy(u: Sequence[float], v: Sequence[float]) -> list[float]:
+def vector_component_xy(u: VectorLike, v: VectorLike) -> list[RealInput]:
     """Compute the component of u in the direction of v, assuming they lie in the XY-plane.
 
     Parameters

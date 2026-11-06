@@ -4,8 +4,6 @@ from typing import Self
 from typing import TypeVar
 from typing import cast
 
-from compas._typing import CoordinatesType
-from compas._typing import CoordinateType
 from compas.geometry import Frame
 from compas.geometry import Geometry
 from compas.geometry import Native
@@ -14,6 +12,8 @@ from compas.geometry import Transformation
 from compas.geometry import UGrid
 from compas.geometry import UVGrid
 from compas.geometry import transform_points
+from compas.typing import PointLike
+from compas.typing import PointsLike
 
 if TYPE_CHECKING:
     from compas.geometry import Brep
@@ -91,12 +91,12 @@ class Shape(Geometry, Generic[StrategyT]):
     # Discretisation
     # =============================================================================
 
-    def _compute_vertices(self, strategy: StrategyT) -> tuple[CoordinateType, ...]:
+    def _compute_vertices(self, strategy: StrategyT) -> tuple[PointLike, ...]:
         """Compute fresh vertex coordinates in world coordinates."""
         local_vertices = self._compute_local_vertices(strategy)
         return tuple(tuple(vertex) for vertex in transform_points(local_vertices, self.transformation))
 
-    def _compute_local_vertices(self, strategy: StrategyT) -> list[CoordinateType]:
+    def _compute_local_vertices(self, strategy: StrategyT) -> list[PointLike]:
         """Compute fresh vertex coordinates in the local shape frame."""
         raise NotImplementedError
 
@@ -159,7 +159,7 @@ class Shape(Geometry, Generic[StrategyT]):
     def tessellate(
         self,
         strategy: TessellationStrategy | None = None,
-    ) -> "Tessellation[list[CoordinateType], tuple[tuple[int, ...], ...]]":
+    ) -> "Tessellation[list[PointLike], tuple[tuple[int, ...], ...]]":
         """Tessellate the shape.
 
         Parameters
@@ -296,7 +296,7 @@ class Shape(Geometry, Generic[StrategyT]):
         """Compute the volume enclosed by the shape."""
         raise NotImplementedError
 
-    def contains_point(self, point: CoordinateType) -> bool:
+    def contains_point(self, point: PointLike) -> bool:
         """Verify if a point is inside the shape.
 
         Parameters
@@ -313,7 +313,7 @@ class Shape(Geometry, Generic[StrategyT]):
         """
         raise NotImplementedError
 
-    def contains_points(self, points: CoordinatesType) -> list[bool]:
+    def contains_points(self, points: PointsLike) -> list[bool]:
         """Verify if a list of points are inside the shape.
 
         Parameters

@@ -4,13 +4,13 @@ from math import sin
 from typing import TYPE_CHECKING
 from typing import Self
 
-from compas._typing import CoordinatesType
-from compas._typing import CoordinateType
 from compas.geometry import Circle
 from compas.geometry import Frame
 from compas.geometry import Line
 from compas.geometry import Point
 from compas.geometry import UVGrid
+from compas.typing import PointLike
+from compas.typing import PointsLike
 
 from .box import Box
 from .shape import Shape
@@ -134,7 +134,7 @@ class Sphere(Shape[UVGrid]):
     # ==========================================================================
 
     @classmethod
-    def from_point_and_radius(cls, point: CoordinateType, radius: float) -> Self:
+    def from_point_and_radius(cls, point: PointLike, radius: float) -> Self:
         """Construct a sphere from a point and a radius.
 
         Parameters
@@ -158,7 +158,7 @@ class Sphere(Shape[UVGrid]):
     # Discretisation
     # ==========================================================================
 
-    def _compute_local_vertices(self, strategy: UVGrid) -> list[CoordinateType]:
+    def _compute_local_vertices(self, strategy: UVGrid) -> list[PointLike]:
         """Compute the vertices of the discrete representation of the sphere.
 
         Returns
@@ -174,7 +174,7 @@ class Sphere(Shape[UVGrid]):
 
         x, y, z = 0, 0, 0
 
-        vertices: list[CoordinateType] = []
+        vertices: list[PointLike] = []
         for i in range(1, v):
             for j in range(u):
                 tx = self.radius * cos(i * theta - hpi) * cos(j * phi) + x
@@ -264,7 +264,7 @@ class Sphere(Shape[UVGrid]):
     # Methods
     # =============================================================================
 
-    def contains_point(self, point: CoordinateType, tol: float = 1e-6) -> bool:
+    def contains_point(self, point: PointLike, tol: float = 1e-6) -> bool:
         """Verify if a point is inside the sphere.
 
         Parameters
@@ -283,7 +283,7 @@ class Sphere(Shape[UVGrid]):
         """
         return self.frame.point.distance_to_point(point) <= self.radius + tol
 
-    def contains_points(self, points: CoordinatesType, tol: float = 1e-6) -> list[bool]:
+    def contains_points(self, points: PointsLike, tol: float = 1e-6) -> list[bool]:
         """Verify if a list of points are inside the sphere.
 
         Parameters

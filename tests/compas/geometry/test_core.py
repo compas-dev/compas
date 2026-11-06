@@ -1,5 +1,6 @@
 from math import pi, radians, sqrt
 
+import numpy as np
 import pytest
 
 from compas.geometry import Polyhedron
@@ -342,6 +343,20 @@ def test_volume_polyhedron(polyhedron, volume):
         volume = L * L * L
     V = volume_polyhedron(polyhedron)
     assert TOL.is_close(V, volume)
+
+
+def test_polyhedron_measurements_accept_numpy_buffers_without_mutating_inputs():
+    polyhedron = Polyhedron.from_platonicsolid(6)
+    vertices = [vertex[:] for vertex in polyhedron.vertices]
+    faces = [face[:] for face in polyhedron.faces]
+    vertex_count = len(vertices)
+    expected_centroid = centroid_polyhedron((vertices, faces))
+    expected_volume = volume_polyhedron((vertices, faces))
+
+    assert len(vertices) == vertex_count
+    assert TOL.is_allclose(centroid_polyhedron((np.asarray(vertices), np.asarray(faces))), expected_centroid)
+    assert TOL.is_close(volume_polyhedron((np.asarray(vertices), np.asarray(faces))), expected_volume)
+    assert len(vertices) == vertex_count
 
 
 def test_area_square(square, R):

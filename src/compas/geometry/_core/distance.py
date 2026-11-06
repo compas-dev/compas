@@ -10,8 +10,6 @@ if TYPE_CHECKING:
     from numpy.typing import ArrayLike
     from numpy.typing import NDArray
 
-from compas._typing import CoordinatesType
-from compas._typing import CoordinateType
 from compas.itertools import pairwise
 from compas.linalg.vectors import add_vectors
 from compas.linalg.vectors import add_vectors_xy
@@ -29,9 +27,12 @@ from compas.linalg.vectors import subtract_vectors_xy
 from compas.linalg.vectors import vector_component
 from compas.linalg.vectors import vector_component_xy
 from compas.tolerance import TOL
+from compas.typing import PointLike
+from compas.typing import PointsLike
+from compas.typing import RealInput
 
 
-def distance_point_point(a: CoordinateType, b: CoordinateType) -> float:
+def distance_point_point(a: PointLike, b: PointLike) -> float:
     """Compute the distance between two points.
 
     Parameters
@@ -60,7 +61,7 @@ def distance_point_point(a: CoordinateType, b: CoordinateType) -> float:
     return length_vector(ab)
 
 
-def distance_point_point_xy(a: CoordinateType, b: CoordinateType) -> float:
+def distance_point_point_xy(a: PointLike, b: PointLike) -> float:
     """Compute the distance between points a and b, assuming they lie in the XY plane.
 
     Parameters
@@ -91,7 +92,7 @@ def distance_point_point_xy(a: CoordinateType, b: CoordinateType) -> float:
     return length_vector_xy(ab)
 
 
-def distance_point_point_sqrd(a: CoordinateType, b: CoordinateType) -> float:
+def distance_point_point_sqrd(a: PointLike, b: PointLike) -> RealInput:
     """Compute the squared distance between points `a` and `b`.
 
     Parameters
@@ -120,7 +121,7 @@ def distance_point_point_sqrd(a: CoordinateType, b: CoordinateType) -> float:
     return length_vector_sqrd(ab)
 
 
-def distance_point_point_sqrd_xy(a: Sequence[float], b: Sequence[float]) -> float:
+def distance_point_point_sqrd_xy(a: PointLike, b: PointLike) -> RealInput:
     """Compute the squared distance between points a and b lying in the XY plane.
 
     Parameters
@@ -151,7 +152,7 @@ def distance_point_point_sqrd_xy(a: Sequence[float], b: Sequence[float]) -> floa
     return length_vector_sqrd_xy(ab)
 
 
-def distance_point_line(point: CoordinateType, line: CoordinatesType) -> float:
+def distance_point_line(point: PointLike, line: PointsLike) -> float:
     """Compute the distance between a point and a line.
 
     Parameters
@@ -186,7 +187,7 @@ def distance_point_line(point: CoordinateType, line: CoordinatesType) -> float:
     return length / length_ab
 
 
-def distance_point_line_xy(point: CoordinateType, line: CoordinatesType) -> float:
+def distance_point_line_xy(point: PointLike, line: PointsLike) -> float:
     """Compute the distance between a point and a line, assuming they lie in the XY-plane.
 
     Parameters
@@ -221,7 +222,7 @@ def distance_point_line_xy(point: CoordinateType, line: CoordinatesType) -> floa
     return length / length_ab
 
 
-def distance_point_line_sqrd(point: Sequence[float], line: Sequence[Sequence[float]]) -> float:
+def distance_point_line_sqrd(point: PointLike, line: PointsLike) -> RealInput:
     """Compute the squared distance between a point and a line.
 
     Parameters
@@ -254,7 +255,7 @@ def distance_point_line_sqrd(point: Sequence[float], line: Sequence[Sequence[flo
     return length / length_ab
 
 
-def distance_point_line_sqrd_xy(point: Sequence[float], line: Sequence[Sequence[float]]) -> float:
+def distance_point_line_sqrd_xy(point: PointLike, line: PointsLike) -> RealInput:
     """Compute the squared distance between a point and a line lying in the XY-plane.
 
     Parameters
@@ -289,7 +290,7 @@ def distance_point_line_sqrd_xy(point: Sequence[float], line: Sequence[Sequence[
     return length / length_ab
 
 
-def distance_point_plane(point: CoordinateType, plane: CoordinatesType) -> float:
+def distance_point_plane(point: PointLike, plane: PointsLike) -> float:
     r"""Compute the distance from a point to a plane defined by origin point and normal.
 
     Parameters
@@ -338,7 +339,7 @@ def distance_point_plane(point: CoordinateType, plane: CoordinatesType) -> float
     return fabs(distance_point_plane_signed(point, plane))
 
 
-def distance_point_plane_signed(point: CoordinateType, plane: CoordinatesType) -> float:
+def distance_point_plane_signed(point: PointLike, plane: PointsLike) -> RealInput:
     r"""Compute the signed distance from a point to a plane defined by origin point and normal.
 
     Parameters
@@ -389,7 +390,7 @@ def distance_point_plane_signed(point: CoordinateType, plane: CoordinatesType) -
     return dot_vectors(vector, normal)
 
 
-def distance_line_line(l1: Sequence[Sequence[float]], l2: Sequence[Sequence[float]], tol: float | None = None) -> float:
+def distance_line_line(l1: PointsLike, l2: PointsLike, tol: float | None = None) -> float:
     r"""Compute the shortest distance between two lines.
 
     Parameters
@@ -437,7 +438,7 @@ def distance_line_line(l1: Sequence[Sequence[float]], l2: Sequence[Sequence[floa
 # ==============================================================================
 
 
-def sort_points(point: CoordinateType, cloud: CoordinatesType) -> list[tuple[float, CoordinateType, int]]:
+def sort_points(point: PointLike, cloud: PointsLike) -> list[tuple[RealInput, PointLike, int]]:
     """Sorts points of a pointcloud based on their distance from a given point.
 
     Parameters
@@ -463,7 +464,7 @@ def sort_points(point: CoordinateType, cloud: CoordinatesType) -> list[tuple[flo
     return sorted(zip(minsq, cloud, range(len(cloud))), key=lambda x: x[0])
 
 
-def sort_points_xy(point: Sequence[float], cloud: Sequence[Sequence[float]]) -> list[tuple[float, Sequence[float], int]]:
+def sort_points_xy(point: PointLike, cloud: PointsLike) -> list[tuple[RealInput, PointLike, int]]:
     """Sorts points of a pointcloud based on their distance from a given point,
     assuming all points lie in the XY plane.
 
@@ -490,7 +491,7 @@ def sort_points_xy(point: Sequence[float], cloud: Sequence[Sequence[float]]) -> 
     return sorted(zip(minsq, cloud, range(len(cloud))), key=lambda x: x[0])
 
 
-def closest_point_in_cloud(point: CoordinateType, cloud: CoordinatesType) -> tuple[float, CoordinateType, int]:
+def closest_point_in_cloud(point: PointLike, cloud: PointsLike) -> tuple[float, PointLike, int]:
     """Calculates the closest point in a pointcloud.
 
     Parameters
@@ -586,7 +587,7 @@ def closest_points_in_cloud_numpy(
     return indices
 
 
-def closest_point_in_cloud_xy(point: Sequence[float], cloud: Sequence[Sequence[float]]) -> tuple[float, Sequence[float], int]:
+def closest_point_in_cloud_xy(point: PointLike, cloud: PointsLike) -> tuple[float, PointLike, int]:
     """Calculates the closest point in a list of points in the XY-plane.
 
     Parameters
@@ -611,7 +612,7 @@ def closest_point_in_cloud_xy(point: Sequence[float], cloud: Sequence[Sequence[f
     return sqrt(d), xyz, index
 
 
-def closest_point_on_line(point: CoordinateType, line: CoordinatesType) -> list[float]:
+def closest_point_on_line(point: PointLike, line: PointsLike) -> list[RealInput]:
     """Computes closest point on line to a given point.
 
     Parameters
@@ -638,7 +639,7 @@ def closest_point_on_line(point: CoordinateType, line: CoordinatesType) -> list[
     return add_vectors(a, c)
 
 
-def closest_point_on_line_xy(point: Sequence[float], line: Sequence[Sequence[float]]) -> list[float]:
+def closest_point_on_line_xy(point: PointLike, line: PointsLike) -> list[RealInput]:
     """Compute closest point on line (continuous) to a given point lying in the XY-plane.
 
     Parameters
@@ -661,7 +662,7 @@ def closest_point_on_line_xy(point: Sequence[float], line: Sequence[Sequence[flo
     return add_vectors_xy(a, c)
 
 
-def closest_point_on_segment(point: CoordinateType, segment: CoordinatesType) -> CoordinateType:
+def closest_point_on_segment(point: PointLike, segment: PointsLike) -> PointLike:
     """Computes closest point on line segment (p1, p2) to test point.
 
     Parameters
@@ -689,7 +690,7 @@ def closest_point_on_segment(point: CoordinateType, segment: CoordinatesType) ->
     return p
 
 
-def closest_point_on_segment_xy(point: Sequence[float], segment: Sequence[Sequence[float]]) -> list[float]:
+def closest_point_on_segment_xy(point: PointLike, segment: PointsLike) -> list[RealInput]:
     """Compute closest point on a line segment to a given point lying in the XY-plane.
 
     Parameters
@@ -717,7 +718,7 @@ def closest_point_on_segment_xy(point: Sequence[float], segment: Sequence[Sequen
     return p
 
 
-def closest_point_on_polyline(point: CoordinateType, polyline: CoordinatesType) -> CoordinateType:
+def closest_point_on_polyline(point: PointLike, polyline: PointsLike) -> PointLike:
     """Find the closest point on a polyline to a given point.
 
     Parameters
@@ -742,7 +743,7 @@ def closest_point_on_polyline(point: CoordinateType, polyline: CoordinatesType) 
     return closest_point_in_cloud(point, cloud)[1]
 
 
-def closest_point_on_polyline_xy(point: Sequence[float], polyline: Sequence[Sequence[float]]) -> Sequence[float]:
+def closest_point_on_polyline_xy(point: PointLike, polyline: PointsLike) -> list[RealInput]:
     """Compute closest point on a polyline to a given point,
     assuming they both lie in the XY-plane.
 
@@ -757,7 +758,7 @@ def closest_point_on_polyline_xy(point: Sequence[float], polyline: Sequence[Sequ
 
     Returns
     -------
-    Sequence[float]
+    list[RealInput]
         XYZ coordinates of closest point in the XY plane.
 
     """
@@ -766,10 +767,11 @@ def closest_point_on_polyline_xy(point: Sequence[float], polyline: Sequence[Sequ
     for segment in pairwise(polyline):
         cloud.append(closest_point_on_segment_xy(point, segment))
 
-    return closest_point_in_cloud_xy(point, cloud)[1]
+    index = closest_point_in_cloud_xy(point, cloud)[2]
+    return cloud[index]
 
 
-def closest_point_on_polygon_xy(point: Sequence[float], polygon: Sequence[Sequence[float]]) -> Sequence[float]:
+def closest_point_on_polygon_xy(point: PointLike, polygon: PointsLike) -> list[RealInput]:
     """Compute closest point on a polygon to a given point lying in the XY-plane.
 
     Parameters
@@ -784,7 +786,7 @@ def closest_point_on_polygon_xy(point: Sequence[float], polygon: Sequence[Sequen
 
     Returns
     -------
-    Sequence[float]
+    list[RealInput]
         XYZ coordinates of closest point in the XY plane.
 
     """
@@ -793,10 +795,11 @@ def closest_point_on_polygon_xy(point: Sequence[float], polygon: Sequence[Sequen
         segment = polygon[i - 1], polygon[i]
         points.append(closest_point_on_segment_xy(point, segment))
 
-    return closest_point_in_cloud_xy(point, points)[1]
+    index = closest_point_in_cloud_xy(point, points)[2]
+    return points[index]
 
 
-def closest_point_on_plane(point: Sequence[float], plane: Sequence[Sequence[float]]) -> list[float]:
+def closest_point_on_plane(point: PointLike, plane: PointsLike) -> list[RealInput]:
     """Compute closest point on a plane to a given point.
 
     Parameters

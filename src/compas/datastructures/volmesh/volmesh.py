@@ -63,7 +63,7 @@ from .types import Edge
 from .types import Face
 from .types import FaceVertices
 from .types import Halfface
-from .types import PointCoordinates
+from .types import PointLike
 from .types import Vertex
 
 _MISSING = object()
@@ -366,7 +366,7 @@ class VolMesh(Datastructure):
     @classmethod
     def from_vertices_and_cells(
         cls,
-        vertices: Sequence[PointCoordinates] | Mapping[Vertex, PointCoordinates],
+        vertices: Sequence[PointLike] | Mapping[Vertex, PointLike],
         cells: Sequence[CellFaces],
     ) -> Self:
         """Construct a volmesh object from vertices and cells.
@@ -993,7 +993,7 @@ class VolMesh(Datastructure):
 
         Parameters
         ----------
-        vertex : int
+        vertex
             The identifier of the vertex.
 
         Returns
@@ -1906,7 +1906,7 @@ class VolMesh(Datastructure):
         ----------
         vertex : int
             The identifier of the vertex.
-        axes : str, optional
+        axes
             The axes alon which to take the coordinates.
             Should be a combination of x, y, and z.
 
@@ -1917,7 +1917,9 @@ class VolMesh(Datastructure):
 
         See Also
         --------
-        vertex_point, vertex_laplacian, vertex_neighborhood_centroid
+        [`vertex_point`][compas.datastructures.VolMesh.vertex_point]
+        [`vertex_laplacian`][compas.datastructures.VolMesh.vertex_laplacian]
+        [`vertex_neighborhood_centroid`][compas.datastructures.VolMesh.vertex_neighborhood_centroid]
 
         """
         return [self._vertex[vertex][axis] for axis in axes]

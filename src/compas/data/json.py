@@ -6,9 +6,9 @@ from typing import TextIO
 from typing import cast
 
 from compas import _iotools
-from compas._typing import FilePath
 from compas.data import DataDecoder
 from compas.data import DataEncoder
+from compas.typing import FilePath
 
 _JSON_CONTENT_FILENAME = "content.json"
 JSONFile = FilePath | TextIO

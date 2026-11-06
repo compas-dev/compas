@@ -9,10 +9,10 @@ from typing import TypeVar
 
 import numpy as np
 
-from compas._typing import CoordinatesCollectionInput
-from compas._typing import CoordinatesInput
-from compas._typing import IndicesCollectionInput
 from compas.data import Data
+from compas.typing import IndexGroupsLike
+from compas.typing import PointGroupsLike
+from compas.typing import PointsLike
 
 if TYPE_CHECKING:
     from compas.datastructures import Mesh
@@ -28,8 +28,8 @@ __all__ = [
     "UVGrid",
 ]
 
-VerticesBuffer = TypeVar("VerticesBuffer", bound=CoordinatesInput)
-TrianglesBuffer = TypeVar("TrianglesBuffer", bound=IndicesCollectionInput)
+VerticesBuffer = TypeVar("VerticesBuffer", bound=PointsLike)
+TrianglesBuffer = TypeVar("TrianglesBuffer", bound=IndexGroupsLike)
 
 
 def _positive_integer(value: int, name: str) -> int:
@@ -248,9 +248,9 @@ class Tessellation(Generic[VerticesBuffer, TrianglesBuffer]):
 
     vertices: VerticesBuffer
     triangles: TrianglesBuffer
-    vertex_normals: CoordinatesInput | None = None
-    texture_coordinates: CoordinatesInput | None = None
-    polylines: CoordinatesCollectionInput = ()
+    vertex_normals: PointsLike | None = None
+    texture_coordinates: PointsLike | None = None
+    polylines: PointGroupsLike = ()
 
     def __post_init__(self) -> None:
         self._validate()
@@ -349,7 +349,7 @@ class Tessellation(Generic[VerticesBuffer, TrianglesBuffer]):
             self._validate_coordinates(polyline, "polyline point", 3)
 
     @staticmethod
-    def _validate_coordinates(coordinates: CoordinatesInput, name: str, dimension: int) -> None:
+    def _validate_coordinates(coordinates: PointsLike, name: str, dimension: int) -> None:
         for coordinate in coordinates:
             if len(coordinate) != dimension:
                 raise ValueError(f"A tessellation {name} requires exactly {dimension} coordinates.")

@@ -1,12 +1,14 @@
 from collections.abc import Sequence
 from typing import Any
 
-from compas._typing import CoordinatesType
-from compas._typing import CoordinateType
+import numpy as np
+
 from compas.geometry import closest_point_on_segment_xy
 from compas.geometry import distance_point_line_xy
 from compas.geometry import distance_point_point_xy
 from compas.tolerance import TOL
+from compas.typing import PointLike
+from compas.typing import PointsLike
 
 # =============================================================================
 # =============================================================================
@@ -25,7 +27,7 @@ from compas.tolerance import TOL
 # =============================================================================
 
 
-def is_ccw_xy(a: CoordinateType, b: CoordinateType, c: CoordinateType, colinear: bool = False) -> bool:
+def is_ccw_xy(a: PointLike, b: PointLike, c: PointLike, colinear: bool = False) -> bool | np.bool_:
     """Determine if c is on the left of ab when looking from a to b,
     and assuming that all points lie in the XY plane.
 
@@ -195,7 +197,7 @@ def is_polygon_convex_xy(polygon: Sequence[Sequence[float]], colinear: bool = Fa
 # =============================================================================
 
 
-def is_point_on_line_xy(point: CoordinateType, line: CoordinatesType, tol: float | None = None) -> bool:
+def is_point_on_line_xy(point: PointLike, line: PointsLike, tol: float | None = None) -> bool | np.bool_:
     """Determine if a point lies on a line on the XY-plane.
 
     Parameters
@@ -223,7 +225,7 @@ def is_point_on_line_xy(point: CoordinateType, line: CoordinatesType, tol: float
     return TOL.is_zero(distance_point_line_xy(point, line), tol)
 
 
-def is_point_on_segment_xy(point: CoordinateType, segment: CoordinatesType, tol: float | None = None) -> bool:
+def is_point_on_segment_xy(point: PointLike, segment: PointsLike, tol: float | None = None) -> bool:
     """Determine if a point lies on a given line segment on the XY-plane.
 
     Parameters
@@ -357,7 +359,7 @@ def is_point_in_triangle_xy(point: Sequence[float], triangle: Sequence[Sequence[
     return True
 
 
-def is_point_in_convex_polygon_xy(point: CoordinateType, polygon: CoordinatesType) -> bool:
+def is_point_in_convex_polygon_xy(point: PointLike, polygon: PointsLike) -> bool:
     """Determine if a point is in the interior of a convex polygon lying on the XY-plane.
 
     Parameters
@@ -398,7 +400,7 @@ def is_point_in_convex_polygon_xy(point: CoordinateType, polygon: CoordinatesTyp
     return True
 
 
-def is_point_in_polygon_xy(point: CoordinateType, polygon: CoordinatesType) -> bool:
+def is_point_in_polygon_xy(point: PointLike, polygon: PointsLike) -> bool:
     """Determine if a point is in the interior of a polygon lying on the XY-plane.
 
     Parameters

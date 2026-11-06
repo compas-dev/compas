@@ -1,7 +1,7 @@
 from collections.abc import Sequence
 from typing import TYPE_CHECKING
 
-from compas._typing import CoordinatesType
+from compas.typing import PointsLike
 
 if TYPE_CHECKING:
     from numpy.typing import NDArray
@@ -108,7 +108,7 @@ def _contours_from_grid(x: "NDArray", y: "NDArray", values: "NDArray", level: fl
 
 
 def scalarfield_contours(
-    xy: CoordinatesType,
+    xy: PointsLike,
     s: Sequence[float],
     levels: int | Sequence[float] = 50,
     density: int = 100,

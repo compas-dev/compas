@@ -1,8 +1,7 @@
 from collections.abc import Sequence
 from math import fabs
+from operator import index
 
-from compas._typing import CoordinatesType
-from compas._typing import CoordinateType
 from compas.itertools import pairwise
 from compas.linalg.vectors import add_vectors
 from compas.linalg.vectors import cross_vectors
@@ -14,9 +13,13 @@ from compas.linalg.vectors import scale_vector
 from compas.linalg.vectors import subtract_vectors
 from compas.linalg.vectors import subtract_vectors_xy
 from compas.linalg.vectors import sum_vectors
+from compas.typing import PointLike
+from compas.typing import PointsLike
+from compas.typing import RealInput
+from compas.typing import VerticesFaces
 
 
-def midpoint_point_point(a: Sequence[float], b: Sequence[float]) -> list[float]:
+def midpoint_point_point(a: PointLike, b: PointLike) -> list[RealInput]:
     """Compute the midpoint of two points.
 
     Parameters
@@ -35,7 +38,7 @@ def midpoint_point_point(a: Sequence[float], b: Sequence[float]) -> list[float]:
     return [0.5 * (a[0] + b[0]), 0.5 * (a[1] + b[1]), 0.5 * (a[2] + b[2])]
 
 
-def midpoint_point_point_xy(a: Sequence[float], b: Sequence[float]) -> list[float]:
+def midpoint_point_point_xy(a: PointLike, b: PointLike) -> list[RealInput]:
     """Compute the midpoint of two points lying in the XY-plane.
 
     Parameters
@@ -54,7 +57,7 @@ def midpoint_point_point_xy(a: Sequence[float], b: Sequence[float]) -> list[floa
     return [0.5 * (a[0] + b[0]), 0.5 * (a[1] + b[1]), 0.0]
 
 
-def midpoint_line(line: Sequence[Sequence[float]]) -> list[float]:
+def midpoint_line(line: PointsLike) -> list[RealInput]:
     """Compute the midpoint of a line defined by two points.
 
     Parameters
@@ -76,7 +79,7 @@ def midpoint_line(line: Sequence[Sequence[float]]) -> list[float]:
     return midpoint_point_point(*line)
 
 
-def midpoint_line_xy(line: Sequence[Sequence[float]]) -> list[float]:
+def midpoint_line_xy(line: PointsLike) -> list[RealInput]:
     """Compute the midpoint of a line defined by two points.
 
     Parameters
@@ -98,7 +101,7 @@ def midpoint_line_xy(line: Sequence[Sequence[float]]) -> list[float]:
     return midpoint_point_point_xy(*line)
 
 
-def centroid_points(points: CoordinatesType) -> list[float]:
+def centroid_points(points: PointsLike) -> list[RealInput]:
     """Compute the centroid of a set of points.
 
     Parameters
@@ -128,7 +131,7 @@ def centroid_points(points: CoordinatesType) -> list[float]:
     return [sum(x) / p, sum(y) / p, sum(z) / p]
 
 
-def centroid_points_weighted(points: Sequence[Sequence[float]], weights: Sequence[float]) -> list[float]:
+def centroid_points_weighted(points: Sequence[Sequence[float]], weights: Sequence[float]) -> list[RealInput]:
     """Compute the weighted centroid of a set of points. The weights can be any between minus and plus infinity.
 
     Parameters
@@ -149,7 +152,7 @@ def centroid_points_weighted(points: Sequence[Sequence[float]], weights: Sequenc
     return vector
 
 
-def centroid_points_xy(points: Sequence[Sequence[float]]) -> list[float]:
+def centroid_points_xy(points: PointsLike) -> list[RealInput]:
     """Compute the centroid of a set of points lying in the XY-plane.
 
     Parameters
@@ -179,7 +182,7 @@ def centroid_points_xy(points: Sequence[Sequence[float]]) -> list[float]:
     return [sum(x) / p, sum(y) / p, 0.0]
 
 
-def centroid_polygon(polygon: CoordinatesType) -> CoordinateType:
+def centroid_polygon(polygon: PointsLike) -> PointLike:
     r"""Compute the centroid of the surface of a polygon.
 
     Parameters
@@ -189,7 +192,7 @@ def centroid_polygon(polygon: CoordinatesType) -> CoordinateType:
 
     Returns
     -------
-    CoordinateType
+    PointLike
         The XYZ coordinates of the centroid.
 
     Raises
@@ -285,7 +288,7 @@ def centroid_polygon(polygon: CoordinatesType) -> CoordinateType:
     return [cx / A2, cy / A2, cz / A2]
 
 
-def centroid_polygon_xy(polygon: Sequence[Sequence[float]]) -> list[float]:
+def centroid_polygon_xy(polygon: PointsLike) -> list[RealInput]:
     r"""Compute the centroid of the surface of a polygon projected to the XY plane.
 
     Parameters
@@ -384,7 +387,7 @@ def centroid_polygon_xy(polygon: Sequence[Sequence[float]]) -> list[float]:
     return [cx / A2, cy / A2, 0.0]
 
 
-def centroid_polygon_vertices(polygon: Sequence[Sequence[float]]) -> list[float]:
+def centroid_polygon_vertices(polygon: PointsLike) -> list[RealInput]:
     """Compute the centroid of the vertices of a polygon.
 
     Parameters
@@ -401,7 +404,7 @@ def centroid_polygon_vertices(polygon: Sequence[Sequence[float]]) -> list[float]
     return centroid_points(polygon)
 
 
-def centroid_polygon_vertices_xy(polygon: Sequence[Sequence[float]]) -> list[float]:
+def centroid_polygon_vertices_xy(polygon: PointsLike) -> list[RealInput]:
     """Compute the centroid of the vertices of a polygon projected to the XY plane.
 
     Parameters
@@ -490,7 +493,7 @@ def centroid_polygon_edges_xy(polygon: Sequence[Sequence[float]]) -> list[float]
     return [cx / L, cy / L, 0.0]
 
 
-def centroid_polyhedron(polyhedron: tuple[list[Sequence[float]], Sequence[list[int]]]) -> list[float]:
+def centroid_polyhedron(polyhedron: VerticesFaces) -> list[RealInput]:
     """Compute the center of mass of a polyhedron.
 
     Parameters
@@ -529,18 +532,14 @@ def centroid_polyhedron(polyhedron: tuple[list[Sequence[float]], Sequence[list[i
     ez = [0.0, 0.0, 1.0]
 
     for face in faces:
-        if len(face) == 3:
-            triangles = [face]
+        indices = [index(vertex) for vertex in face]
+        if len(indices) == 3:
+            triangles = [(vertices[indices[0]], vertices[indices[1]], vertices[indices[2]])]
         else:
-            centroid = centroid_points([vertices[index] for index in face])
-            w = len(vertices)
-            vertices.append(centroid)
-            triangles = [[w, u, v] for u, v in pairwise(face + face[0:1])]
+            centroid = centroid_points([vertices[i] for i in indices])
+            triangles = [(centroid, vertices[u], vertices[v]) for u, v in pairwise(indices + indices[0:1])]
 
-        for triangle in triangles:
-            a = vertices[triangle[0]]
-            b = vertices[triangle[1]]
-            c = vertices[triangle[2]]
+        for a, b, c in triangles:
             ab = subtract_vectors(b, a)
             ac = subtract_vectors(c, a)
             n = cross_vectors(ab, ac)

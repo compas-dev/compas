@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added the public `compas.typing` structural vocabulary with NumPy-aware `PointLike`, `VectorLike`, collection, and neutral `VerticesFaces` aliases.
 * Added the PEP 561 `py.typed` marker and installed-wheel static-consumer verification.
 * Added serializable strategies and structural validation for polygonization, ephemeral `Tessellation` buffers, mixed-face triangulation, and planar Delaunay triangulation.
 * Added `polygonize(strategy)` and deterministic `tessellate(strategy=None)` operations for continuous geometry. Shape and surface defaults use `Native()`, `UGrid(64)`, or `UVGrid(64, 64)` according to parameter dimensionality.
@@ -21,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Migrated core geometry constructors and plugin contracts from private overlapping type aliases to semantic structural inputs, including copied NumPy coordinates and integral face indices.
 * Added a committed uv development lock, documented direct quality commands while retaining Invoke convenience tasks, and migrated CI, release, artifact, and documentation mechanics to immutably pinned shared actions.
 * Standardized numerical triangle-mesh plugin inputs and outputs on structural `(vertices, triangles)` buffers. `Tessellation` remains an ephemeral discrete representation for geometry producers and scene handoff, but is not required at numerical backend boundaries.
 * Defined core triangle-mesh Gaussian curvature as the dimensionless angle deficit, using $\pi - \sum_i \theta_i$ at boundary vertices and $2\pi - \sum_i \theta_i$ at interior vertices.
@@ -73,6 +75,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+* Removed the private `compas._typing` module and its ambiguous coordinate and tuple-valued mesh aliases.
 * Removed implicit and misspelled tessellation conversions, scalar resolution overrides, and implicit quad splitting in favor of explicit strategies and result types.
 * Removed the unsupported core triangle-mesh mean and principal curvature plugin contracts and the obsolete tessellation-specific pluggable decorator.
 * Removed stored shape and surface resolution state, derived discretization caches, generic sampled geometry properties, `Shape.to_vertices_and_faces()`, and `Mesh.from_shape()`.
