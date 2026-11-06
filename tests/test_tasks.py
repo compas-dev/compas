@@ -1,6 +1,14 @@
+from importlib.util import module_from_spec
+from importlib.util import spec_from_file_location
+from pathlib import Path
 import sys
 
-import tasks
+
+spec = spec_from_file_location("compas_tasks", Path(__file__).parents[1] / "tasks.py")
+assert spec
+assert spec.loader
+tasks = module_from_spec(spec)
+spec.loader.exec_module(tasks)
 
 
 class RecordingContext:
