@@ -1,5 +1,3 @@
-# type: ignore
-
 # import compas
 from compas_viewer.scene import Tag
 
@@ -48,7 +46,8 @@ def viewer_add_face():
 
 def viewer_add_halfvector(viewer, mesh: Mesh, halfedge, color=None, basewidth=0.01, arrowsize=5, distance=0.1):
     line: Line = mesh.edge_line(halfedge)
-    line = line.offset(line.length * distance)
+    offset = line.length * distance
+    line = Line(line.point_from_start(offset), line.point_from_end(offset))
 
     color = color or Color.black()
 

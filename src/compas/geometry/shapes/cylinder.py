@@ -10,7 +10,6 @@ from compas.geometry import Frame
 from compas.geometry import Line
 from compas.geometry import Plane
 from compas.geometry import Point
-from compas.geometry import UGrid
 from compas.typing import PointLike
 from compas.typing import PointsLike
 
@@ -19,9 +18,11 @@ from .shape import Shape
 
 if TYPE_CHECKING:
     from compas.geometry import Brep
+    from compas.geometry import PolygonalSurface
+    from compas.geometry import Tessellation
 
 
-class Cylinder(Shape[UGrid]):
+class Cylinder(Shape):
     """A cylinder is defined by a frame, radius, and height.
 
     The cylinder is oriented along the z-axis of the frame.
@@ -49,8 +50,6 @@ class Cylinder(Shape[UGrid]):
     >>> cylinder = Cylinder(0.3, 1.0)
 
     """
-
-    _tessellation_strategy = "u"
 
     @property
     def __data__(self) -> dict:
@@ -240,7 +239,7 @@ class Cylinder(Shape[UGrid]):
     # Discretisation
     # =============================================================================
 
-    def _compute_local_vertices(self, strategy: UGrid) -> list[PointLike]:
+    def _compute_local_vertices(self, resolution: tuple[int, ...]) -> list[PointLike]:
         """Compute the vertices of the discrete representation of the cylinder.
 
         Returns
@@ -248,7 +247,7 @@ class Cylinder(Shape[UGrid]):
         list[list[float]]
 
         """
-        u = strategy.u
+        (u,) = resolution
         vertices: list[PointLike] = []
         a = 2 * pi / u
         z = self.height / 2
@@ -263,7 +262,7 @@ class Cylinder(Shape[UGrid]):
 
         return vertices
 
-    def _compute_faces(self, strategy: UGrid) -> list[list[int]]:
+    def _compute_faces(self, resolution: tuple[int, ...]) -> list[list[int]]:
         """Compute the faces of the discrete representation of the cylinder.
 
         Returns
@@ -271,7 +270,7 @@ class Cylinder(Shape[UGrid]):
         list[list[int]]
 
         """
-        u = strategy.u
+        (u,) = resolution
         faces = []
         # side faces
         for i in range(0, u * 2, 2):
@@ -288,6 +287,39 @@ class Cylinder(Shape[UGrid]):
     # =============================================================================
     # Conversions
     # =============================================================================
+
+    def to_polygonal_surface(self, *, nu: int = 64) -> "PolygonalSurface":
+        """Convert the cylinder to a polygonal boundary.
+
+        Parameters
+        ----------
+        nu
+            The number of cells around the cylinder axis.
+
+        Returns
+        -------
+        PolygonalSurface
+            The independent polygonal boundary.
+
+        """
+        nu = self._validate_resolution(nu, "nu", 3)
+        return self._to_polygonal_surface((nu,))
+
+    def to_tessellation(self, *, nu: int = 64) -> "Tessellation":
+        """Triangulate the cylinder's polygonal boundary.
+
+        Parameters
+        ----------
+        nu
+            The number of cells around the cylinder axis.
+
+        Returns
+        -------
+        Tessellation
+            The indexed triangle representation.
+
+        """
+        return self.to_polygonal_surface(nu=nu).triangulated()
 
     def to_brep(self) -> "Brep":
         """Return a BRep representation of the cylinder.

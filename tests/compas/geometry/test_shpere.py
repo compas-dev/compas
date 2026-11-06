@@ -3,7 +3,6 @@ import pytest
 from compas.geometry import Frame
 from compas.geometry import Point
 from compas.geometry import Sphere
-from compas.geometry import UVGrid
 
 
 @pytest.fixture
@@ -16,7 +15,7 @@ def test_sphere_discretization(sphere):
     v = 16
     expected_face_count = v * u
     expected_vertex_count = (v - 1) * u + 2
-    surface = sphere.polygonize(UVGrid(u, v))
+    surface = sphere.to_polygonal_surface(nu=u, nv=v)
 
     assert len(surface.faces) == expected_face_count
     assert len(surface.vertices) == expected_vertex_count
@@ -77,7 +76,7 @@ def test_sphere_faces_do_not_compute_vertices(monkeypatch):
         raise AssertionError("Topology computation should not regenerate positions.")
 
     monkeypatch.setattr(sphere, "_compute_local_vertices", fail)
-    assert sphere._compute_faces(UVGrid(6, 4))
+    assert sphere._compute_faces((6, 4))
 
 
 def test_sphere_bounds_are_invalidated():

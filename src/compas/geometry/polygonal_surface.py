@@ -19,10 +19,13 @@ from compas.typing import IndexGroupsLike
 from compas.typing import PointsLike
 from compas.typing import RealInput
 
+from .triangulation import Triangulator
+from .triangulation import _validate_triangulation
+from .triangulation import triangulate_polygon
+
 if TYPE_CHECKING:
     from compas.datastructures import Mesh
     from compas.geometry import Box
-    from compas.geometry import FaceTriangulation
     from compas.geometry import Tessellation
 
 
@@ -227,13 +230,16 @@ class PolygonalSurface(Geometry):
     # Conversions
     # =============================================================================
 
-    def triangulated(self, strategy: "FaceTriangulation") -> "Tessellation":
+    def triangulated(self, triangulator: Triangulator | None = None) -> "Tessellation":
         """Triangulate the polygonal faces without modifying the surface.
 
         Parameters
         ----------
-        strategy
-            The collection-level face triangulation strategy.
+        triangulator
+            A callable that maps each face's ordered vertices to triangle
+            indices local to that face. It should return a complete,
+            nondegenerate triangulation with the winding of the source
+            boundary. If `None`, use `triangulate_polygon`.
 
         Returns
         -------
@@ -241,16 +247,14 @@ class PolygonalSurface(Geometry):
             The indexed triangular representation for visualization.
 
         """
-        from compas.geometry import FaceTriangulation
         from compas.geometry import Tessellation
-        from compas.geometry.triangulation import triangulate_polygon
 
-        if not isinstance(strategy, FaceTriangulation):
-            raise TypeError("strategy should be a FaceTriangulation.")
-
+        if triangulator is None:
+            triangulator = triangulate_polygon
         triangles = []
         for face in self.faces:
-            local = triangulate_polygon([self.vertices[index] for index in face], strategy)
+            face_vertices = [self.vertices[index] for index in face]
+            local = _validate_triangulation(triangulator(face_vertices), face_vertices)
             triangles.extend([[face[index] for index in triangle] for triangle in local])
         return Tessellation(self.vertices, triangles)
 

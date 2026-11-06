@@ -7,7 +7,6 @@ from compas.geometry import Vector  # noqa: F401
 from compas.geometry import Frame
 from compas.geometry import Plane
 from compas.geometry import PlanarSurface
-from compas.geometry import UVGrid
 from compas.tolerance import TOL
 from compas.itertools import linspace
 
@@ -178,12 +177,12 @@ def test_plane_conversion_to_mesh(xsize, ysize):
 
     area = plane.xsize * plane.ysize
 
-    mesh = plane.polygonize(UVGrid(1, 1)).to_mesh()
+    mesh = plane.to_polygonal_surface(nu=1, nv=1).to_mesh()
     assert mesh.number_of_vertices() == 4
     assert mesh.number_of_faces() == 1
     assert TOL.is_close(mesh.area(), area)
 
-    mesh = plane.polygonize(UVGrid(10, 10)).to_mesh()
+    mesh = plane.to_polygonal_surface(nu=10, nv=10).to_mesh()
     assert mesh.number_of_vertices() == 121
     assert mesh.number_of_faces() == 100
     assert TOL.is_close(mesh.area(), area)

@@ -2,7 +2,6 @@ import pytest
 
 from compas.geometry import Torus
 from compas.geometry import Frame
-from compas.geometry import UVGrid
 
 
 @pytest.fixture
@@ -13,7 +12,7 @@ def torus():
 def test_torus_discretization(torus):
     # just checking these don't break. Could not quickly find a formula that worked to test the actual values
     # as function of the resolution
-    surface = torus.polygonize(UVGrid(6, 4))
+    surface = torus.to_polygonal_surface(nu=6, nv=4)
     assert surface.vertices
     assert surface.faces
 
@@ -23,7 +22,7 @@ def test_torus_faces_do_not_compute_vertices(monkeypatch, torus):
         raise AssertionError("face generation should not compute positions")
 
     monkeypatch.setattr(torus, "_compute_local_vertices", fail)
-    assert torus._compute_faces(UVGrid(6, 4))
+    assert torus._compute_faces((6, 4))
 
 
 def test_torus_scaled():

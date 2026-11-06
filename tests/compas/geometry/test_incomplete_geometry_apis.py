@@ -10,8 +10,6 @@ from compas.geometry import BrepTrim
 from compas.geometry import BrepType
 from compas.geometry import BrepVertex
 from compas.geometry import Circle
-from compas.geometry import ConformingDelaunay
-from compas.geometry import ConstrainedDelaunay
 from compas.geometry import Cone
 from compas.geometry import Cylinder
 from compas.geometry import Ellipse
@@ -23,7 +21,8 @@ from compas.geometry import Polygon
 from compas.geometry import Polyline
 from compas.geometry import Sphere
 from compas.geometry import Torus
-from compas.geometry import triangulate_planar_domain
+from compas.geometry import conforming_delaunay_triangulation
+from compas.geometry import constrained_delaunay_triangulation
 from compas.plugins import PluginNotInstalledError
 from compas.plugins import plugin_manager
 
@@ -331,11 +330,11 @@ def test_constrained_delaunay_requires_plugin():
     boundary = [(0.0, 0.0, 0.0), (1.0, 0.0, 0.0), (0.0, 1.0, 0.0)]
 
     with pytest.raises(PluginNotInstalledError):
-        triangulate_planar_domain(boundary, strategy=ConstrainedDelaunay())
+        constrained_delaunay_triangulation(boundary)
 
 
 def test_conforming_delaunay_requires_plugin():
     boundary = [(0.0, 0.0, 0.0), (1.0, 0.0, 0.0), (0.0, 1.0, 0.0)]
 
     with pytest.raises(PluginNotInstalledError):
-        triangulate_planar_domain(boundary, strategy=ConformingDelaunay())
+        conforming_delaunay_triangulation(boundary)

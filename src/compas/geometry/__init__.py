@@ -231,8 +231,9 @@ from .offset import (
 )
 from .quadmesh_planarize import quadmesh_planarize
 from .triangulation_delaunay import (
-    triangulate_planar_domain,
-    triangulate_planar_points,
+    conforming_delaunay_triangulation,
+    constrained_delaunay_triangulation,
+    delaunay_triangulation,
 )
 from .triangulation_earclip import earclip_polygon
 from .trimesh import (
@@ -275,23 +276,13 @@ from .plane import Plane
 from .line import Line
 from .polyline import Polyline
 from .pointcloud import Pointcloud
-from .tessellation import Adaptive
-from .tessellation import Deflection
-from .tessellation import Native
 from .tessellation import Tessellation
-from .tessellation import TessellationStrategy
-from .tessellation import UGrid
-from .tessellation import UVGrid
-from .triangulation import ConformingDelaunay
-from .triangulation import ConstrainedDelaunay
-from .triangulation import Delaunay
-from .triangulation import DiagonalSplit
-from .triangulation import EarClipping
-from .triangulation import FaceTriangulation
-from .triangulation import MinimumAreaTriangulation
-from .triangulation import ProjectedEarClipping
-from .triangulation import TriangulationQuality
-from .triangulation import TriangulationStrategy
+from .triangulation import Triangulator
+from .triangulation import triangulate_polygon
+from .triangulation import triangulate_polygon_earclip
+from .triangulation import triangulate_polygon_minimum_area
+from .triangulation import triangulate_polygon_projected
+from .triangulation import triangulate_quadrilateral
 
 from .curves.curve import Curve
 from .curves.circle import Circle
@@ -533,8 +524,9 @@ __all__ = [
     "offset_polyline",
     "offset_polygon",
     "quadmesh_planarize",
-    "triangulate_planar_domain",
-    "triangulate_planar_points",
+    "conforming_delaunay_triangulation",
+    "constrained_delaunay_triangulation",
+    "delaunay_triangulation",
     "earclip_polygon",
     "trimesh_cotangent_laplacian_matrix",
     "trimesh_descent",
@@ -574,23 +566,13 @@ __all__ = [
     "Polyline",
     "Pointcloud",
     "IntersectionResult",
-    "Adaptive",
-    "Deflection",
-    "Native",
     "Tessellation",
-    "TessellationStrategy",
-    "UGrid",
-    "UVGrid",
-    "ConformingDelaunay",
-    "ConstrainedDelaunay",
-    "Delaunay",
-    "DiagonalSplit",
-    "EarClipping",
-    "FaceTriangulation",
-    "MinimumAreaTriangulation",
-    "ProjectedEarClipping",
-    "TriangulationQuality",
-    "TriangulationStrategy",
+    "Triangulator",
+    "triangulate_polygon",
+    "triangulate_polygon_earclip",
+    "triangulate_polygon_minimum_area",
+    "triangulate_polygon_projected",
+    "triangulate_quadrilateral",
     "Curve",
     "Circle",
     "Ellipse",

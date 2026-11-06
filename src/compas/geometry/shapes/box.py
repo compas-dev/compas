@@ -4,7 +4,6 @@ from typing import Self
 
 from compas.geometry import Frame
 from compas.geometry import Line
-from compas.geometry import Native
 from compas.geometry import Point
 from compas.geometry import Transformation
 from compas.geometry import Vector
@@ -17,9 +16,11 @@ from .shape import Shape
 
 if TYPE_CHECKING:
     from compas.geometry import Brep
+    from compas.geometry import PolygonalSurface
+    from compas.geometry import Tessellation
 
 
-class Box(Shape[Native]):
+class Box(Shape):
     """A box is defined by a frame and its dimensions along the frame's x-, y- and z-axes.
 
     The center of the box is positioned at the origin of the
@@ -72,8 +73,6 @@ class Box(Shape[Native]):
     22.0
 
     """
-
-    _tessellation_strategy = "native"
 
     @property
     def __data__(self) -> dict:
@@ -215,7 +214,7 @@ class Box(Shape[Native]):
     @property
     def points(self) -> list[Point]:
         """The eight defining corner points of the box."""
-        return [self.frame.to_world_coordinates(vertex) for vertex in self._compute_local_vertices(Native())]
+        return [self.frame.to_world_coordinates(vertex) for vertex in self._compute_local_vertices(())]
 
     @property
     def bottom(self) -> list[int]:
@@ -433,7 +432,7 @@ class Box(Shape[Native]):
     # Discretisation
     # ==========================================================================
 
-    def _compute_local_vertices(self, strategy: Native) -> list[PointLike]:
+    def _compute_local_vertices(self, resolution: tuple[int, ...]) -> list[PointLike]:
         dx = 0.5 * self.xsize
         dy = 0.5 * self.ysize
         dz = 0.5 * self.zsize
@@ -448,13 +447,35 @@ class Box(Shape[Native]):
             [-dx, +dy, +dz],
         ]
 
-    def _compute_faces(self, strategy: Native) -> list[list[int]]:
+    def _compute_faces(self, resolution: tuple[int, ...]) -> list[list[int]]:
         """Compute the faces of the discrete representation of the box."""
         return [self.bottom, self.front, self.right, self.back, self.left, self.top]
 
     # ==========================================================================
     # Conversions
     # ==========================================================================
+
+    def to_polygonal_surface(self) -> "PolygonalSurface":
+        """Convert the box to its natural polygonal boundary.
+
+        Returns
+        -------
+        PolygonalSurface
+            An independent surface with six quadrilateral faces.
+
+        """
+        return self._to_polygonal_surface(())
+
+    def to_tessellation(self) -> "Tessellation":
+        """Triangulate the natural polygonal boundary of the box.
+
+        Returns
+        -------
+        Tessellation
+            The indexed triangle representation.
+
+        """
+        return self.to_polygonal_surface().triangulated()
 
     def to_brep(self) -> "Brep":
         """Return a BRep representation of the box.

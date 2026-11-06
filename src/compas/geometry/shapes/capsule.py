@@ -1,6 +1,7 @@
 from math import cos
 from math import pi
 from math import sin
+from typing import TYPE_CHECKING
 from typing import Self
 
 from compas.geometry import Circle
@@ -9,7 +10,6 @@ from compas.geometry import Line
 from compas.geometry import Plane
 from compas.geometry import Point
 from compas.geometry import Transformation
-from compas.geometry import UVGrid
 from compas.geometry import transform_points
 from compas.typing import PointLike
 from compas.typing import PointsLike
@@ -17,8 +17,12 @@ from compas.typing import PointsLike
 from .box import Box
 from .shape import Shape
 
+if TYPE_CHECKING:
+    from compas.geometry import PolygonalSurface
+    from compas.geometry import Tessellation
 
-class Capsule(Shape[UVGrid]):
+
+class Capsule(Shape):
     """A capsule is defined by a frame, radius, and height.
 
     The capsule is oriented along the z-axis of the frame.
@@ -232,7 +236,7 @@ class Capsule(Shape[UVGrid]):
     # Discretisation
     # =============================================================================
 
-    def _compute_local_vertices(self, strategy: UVGrid) -> list[PointLike]:
+    def _compute_local_vertices(self, resolution: tuple[int, ...]) -> list[PointLike]:
         """Compute the vertices of the discrete representation of the capsule.
 
         Returns
@@ -240,10 +244,7 @@ class Capsule(Shape[UVGrid]):
         list[list[float]]
 
         """
-        u = strategy.u
-        v = strategy.v
-        if v % 2 == 1:
-            raise ValueError("Capsule V resolution should be even.")
+        u, v = resolution
 
         theta = pi / v
         phi = pi * 2 / u
@@ -270,7 +271,7 @@ class Capsule(Shape[UVGrid]):
 
         return vertices
 
-    def _compute_faces(self, strategy: UVGrid) -> list[list[int]]:
+    def _compute_faces(self, resolution: tuple[int, ...]) -> list[list[int]]:
         """Compute the faces of the discrete representation of the capsule.
 
         Returns
@@ -278,10 +279,7 @@ class Capsule(Shape[UVGrid]):
         list[list[int]]
 
         """
-        u = strategy.u
-        v = strategy.v
-        if v % 2 == 1:
-            raise ValueError("Capsule V resolution should be even.")
+        u, v = resolution
 
         faces = []
 
@@ -308,6 +306,50 @@ class Capsule(Shape[UVGrid]):
             faces.append([np, nn, nc])
 
         return faces
+
+    # =============================================================================
+    # Conversions
+    # =============================================================================
+
+    def to_polygonal_surface(self, *, nu: int = 64, nv: int = 64) -> "PolygonalSurface":
+        """Convert the capsule to a polygonal boundary.
+
+        Parameters
+        ----------
+        nu
+            The circumferential cell count.
+        nv
+            The even longitudinal cell count.
+
+        Returns
+        -------
+        PolygonalSurface
+            The independent polygonal boundary.
+
+        """
+        nu = self._validate_resolution(nu, "nu", 3)
+        nv = self._validate_resolution(nv, "nv", 4)
+        if nv % 2:
+            raise ValueError("nv should be even.")
+        return self._to_polygonal_surface((nu, nv))
+
+    def to_tessellation(self, *, nu: int = 64, nv: int = 64) -> "Tessellation":
+        """Triangulate the capsule's polygonal boundary.
+
+        Parameters
+        ----------
+        nu
+            The circumferential cell count.
+        nv
+            The even longitudinal cell count.
+
+        Returns
+        -------
+        Tessellation
+            The indexed triangle representation.
+
+        """
+        return self.to_polygonal_surface(nu=nu, nv=nv).triangulated()
 
     # =============================================================================
     # Transformations

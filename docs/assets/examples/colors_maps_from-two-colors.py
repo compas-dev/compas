@@ -1,5 +1,3 @@
-# type: ignore
-
 from compas_viewer import Viewer
 
 from compas.colors import Color

@@ -1,10 +1,14 @@
 """Pluggable operations for the backend-neutral Brep wrapper."""
 
 from collections.abc import Sequence
+from functools import wraps
+from math import isfinite
+from numbers import Real
 from os import PathLike
 from typing import TYPE_CHECKING
 from typing import Any
 from typing import Literal
+from typing import Protocol
 
 from compas.plugins import PluginNotInstalledError
 from compas.plugins import pluggable
@@ -15,12 +19,10 @@ if TYPE_CHECKING:
     from compas.geometry import Cone
     from compas.geometry import Curve
     from compas.geometry import Cylinder
-    from compas.geometry import Deflection
     from compas.geometry import Frame
     from compas.geometry import Plane
     from compas.geometry import Point
     from compas.geometry import Polygon
-    from compas.geometry import PolygonalSurface
     from compas.geometry import Polyline
     from compas.geometry import Sphere
     from compas.geometry import Surface
@@ -35,6 +37,45 @@ if TYPE_CHECKING:
     from .loop import BrepLoop
     from .trim import BrepTrim
     from .vertex import BrepVertex
+
+
+class _BrepTessellator(Protocol):
+    def __call__(
+        self,
+        brep: "Brep",
+        *,
+        linear_deflection: float,
+        angular_deflection: float,
+    ) -> "Tessellation": ...
+
+
+def _validate_brep_tessellation_control(value: object, name: str, *, maximum: float | None = None) -> float:
+    if not isinstance(value, Real) or isinstance(value, bool):
+        raise TypeError(f"{name} should be a real number.")
+    checked = float(value)
+    if not isfinite(checked) or checked <= 0 or maximum is not None and checked > maximum:
+        requirement = "positive and finite" if maximum is None else f"positive, finite, and no greater than {maximum:g}"
+        raise ValueError(f"{name} should be {requirement}.")
+    return checked
+
+
+def _guard_brep_tessellation_controls(operation: _BrepTessellator) -> _BrepTessellator:
+    @wraps(operation)
+    def guarded(
+        brep: "Brep",
+        *,
+        linear_deflection: float,
+        angular_deflection: float,
+    ) -> "Tessellation":
+        linear = _validate_brep_tessellation_control(linear_deflection, "linear_deflection")
+        angular = _validate_brep_tessellation_control(angular_deflection, "angular_deflection", maximum=180)
+        return operation(
+            brep,
+            linear_deflection=linear,
+            angular_deflection=angular,
+        )
+
+    return guarded
 
 
 @pluggable(category="brep-factories")
@@ -307,16 +348,14 @@ def brep_contours(brep: "Brep", planes: Sequence["Plane"]) -> list[list["Polylin
     raise PluginNotInstalledError
 
 
+@_guard_brep_tessellation_controls
 @pluggable(category="brep-operations")
-def brep_tessellate(
+def brep_to_tessellation(
     brep: "Brep",
-    strategy: "Deflection",
+    *,
+    linear_deflection: float,
+    angular_deflection: float,
 ) -> "Tessellation":
-    raise PluginNotInstalledError
-
-
-@pluggable(category="brep-operations")
-def brep_polygonize(brep: "Brep", strategy: "Deflection") -> "PolygonalSurface":
     raise PluginNotInstalledError
 
 

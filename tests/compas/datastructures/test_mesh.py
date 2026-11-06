@@ -1,4 +1,7 @@
 import tempfile
+from copy import deepcopy
+from functools import partial
+
 import pytest
 import json
 import random
@@ -7,15 +10,14 @@ import compas
 
 from compas.datastructures import Mesh
 from compas.geometry import Sphere
+from compas.geometry import Tessellation
 from compas.geometry import Box
-from compas.geometry import DiagonalSplit
-from compas.geometry import EarClipping
-from compas.geometry import FaceTriangulation
-from compas.geometry import Native
 from compas.geometry import Polygon
 from compas.geometry import Polyhedron
 from compas.geometry import Translation
-from compas.geometry import UVGrid
+from compas.geometry import triangulate_polygon
+from compas.geometry import triangulate_polygon_earclip
+from compas.geometry import triangulate_quadrilateral
 
 from compas.tolerance import TOL
 
@@ -50,13 +52,13 @@ def edge_key():
 @pytest.fixture
 def sphere():
     sphere = Sphere(radius=1.0)
-    mesh = sphere.polygonize(UVGrid(16, 16)).to_mesh()
+    mesh = sphere.to_polygonal_surface(nu=16, nv=16).to_mesh()
     return mesh
 
 
 def _box():
     box = Box.from_width_height_depth(2, 2, 2)
-    return box.polygonize(Native()).to_mesh()
+    return box.to_polygonal_surface().to_mesh()
 
 
 @pytest.fixture
@@ -305,28 +307,90 @@ def test_to_vertices_and_faces():
 def test_mesh_triangulated():
     # tri
     mesh = Polyhedron.from_platonicsolid(4).to_mesh()
-    result = mesh.triangulated(FaceTriangulation())
-    assert len(result.vertices) == 4
-    assert len(result.triangles) == 4
+    result = mesh.triangulated()
+    assert result.number_of_vertices() == 4
+    assert result.number_of_faces() == 4
+    assert result.is_trimesh()
 
     # quad
     mesh = Polyhedron.from_platonicsolid(6).to_mesh()
-    result = mesh.triangulated(FaceTriangulation(quad=DiagonalSplit("02")))
-    assert len(result.vertices) == 8
-    assert len(result.triangles) == 12
+    result = mesh.triangulated(partial(triangulate_quadrilateral, diagonal="02"))
+    assert result.number_of_vertices() == 8
+    assert result.number_of_faces() == 12
+    assert result.is_trimesh()
 
     # ngon
     mesh = Polyhedron.from_platonicsolid(12).to_mesh()
-    result = mesh.triangulated(FaceTriangulation())
-    assert len(result.vertices) == 20
-    assert len(result.triangles) == 36
+    result = mesh.triangulated()
+    assert result.number_of_vertices() == 20
+    assert result.number_of_faces() == 36
+    assert result.is_trimesh()
 
 
-def test_mesh_triangulated_requires_collection_strategy():
+def test_mesh_triangulated_preserves_representation_and_data():
+    class CustomMesh(Mesh):
+        pass
+
+    mesh = CustomMesh(
+        default_vertex_attributes={"weight": 0.0},
+        default_edge_attributes={"kind": "default"},
+        default_face_attributes={"material": "default"},
+        name="source",
+        project="example",
+    )
+    coordinates = {
+        10: [0.0, 0.0, 0.0],
+        11: [1.0, 0.0, 0.0],
+        12: [0.0, 1.0, 0.0],
+        20: [2.0, 0.0, 0.0],
+        21: [3.0, 0.0, 0.0],
+        22: [3.0, 1.0, 0.0],
+        23: [2.0, 1.0, 0.0],
+    }
+    for key, xyz in coordinates.items():
+        mesh.add_vertex(key=key, x=xyz[0], y=xyz[1], z=xyz[2], label=f"v{key}")
+    mesh.add_face([10, 11, 12], fkey=5, attr_dict={"source": "triangle"})
+    mesh.add_face([20, 21, 22, 23], fkey=9, attr_dict={"source": "quad"})
+    mesh.edge_attribute((20, 21), "kind", "boundary")
+
+    source_guid = mesh.guid
+    source_data = deepcopy(mesh.__data__)
+    source_edges = {frozenset(edge) for edge in mesh.edges()}
+
+    result = mesh.triangulated(lambda vertices: triangulate_quadrilateral(vertices, diagonal="02"))
+
+    assert type(result) is CustomMesh
+    assert result.guid != source_guid
+    assert result.name == mesh.name
+    assert result.attributes == mesh.attributes
+    assert result.default_vertex_attributes == mesh.default_vertex_attributes
+    assert result.default_edge_attributes == mesh.default_edge_attributes
+    assert result.default_face_attributes == mesh.default_face_attributes
+    assert result.vertex == mesh.vertex
+    assert result.face_vertices(5) == [10, 11, 12]
+    assert result.face_attribute(5, "source") == "triangle"
+    assert sum(result.face_attribute(face, "source") == "quad" for face in result.faces()) == 2
+    assert result.edge_attribute((20, 21), "kind") == "boundary"
+    new_edges = [edge for edge in result.edges() if frozenset(edge) not in source_edges]
+    assert len(new_edges) == 1
+    assert result.edge_attribute(new_edges[0], "kind") == "default"
+    assert result.is_trimesh()
+    assert mesh.guid == source_guid
+    assert mesh.__data__ == source_data
+
+    result.vertex_attribute(10, "label", "changed")
+    assert mesh.vertex_attribute(10, "label") == "v10"
+
+    vertices, triangles = result.to_vertices_and_faces()
+    tessellation = Tessellation(vertices, triangles)
+    assert tessellation.number_of_triangles == result.number_of_faces()
+
+
+def test_mesh_triangulated_requires_callable():
     mesh = Polyhedron.from_platonicsolid(6).to_mesh()
 
     with pytest.raises(TypeError):
-        mesh.triangulated(DiagonalSplit())  # type: ignore[arg-type]
+        mesh.triangulated(object())  # type: ignore[arg-type]
 
 
 def test_to_lines():
@@ -525,7 +589,7 @@ def test_triangulate_preserves_face_attributes_and_vertex_keys():
     mesh.face_attribute(0, "name", "quad")
 
     vertex_keys = list(mesh.vertices())
-    result = mesh.triangulate(FaceTriangulation(quad=DiagonalSplit("13")))
+    result = mesh.triangulate(lambda vertices: triangulate_quadrilateral(vertices, diagonal="13"))
 
     assert result is None
     assert mesh.number_of_faces() == 2
@@ -551,8 +615,13 @@ def test_triangulate_validates_before_mutating():
     )
     before = mesh.__data__
 
+    def fail_on_ngon(vertices):
+        if len(vertices) > 4:
+            raise ValueError("unsupported")
+        return triangulate_polygon(vertices)
+
     with pytest.raises(ValueError):
-        mesh.triangulate(FaceTriangulation())
+        mesh.triangulate(fail_on_ngon)
 
     assert mesh.__data__ == before
 
@@ -576,12 +645,18 @@ def test_triangulate_mixed_face_topology():
         [[0, 1, 2], [3, 4, 5, 6], [7, 8, 9, 10, 11]],
     )
 
-    tessellation = mesh.triangulated(FaceTriangulation(quad=DiagonalSplit("13"), ngon=EarClipping()))
+    def triangulator(vertices):
+        if len(vertices) == 4:
+            return triangulate_quadrilateral(vertices, diagonal="13")
+        return triangulate_polygon_earclip(vertices)
 
-    assert len(tessellation.vertices) == 12
-    assert len(tessellation.triangles) == 6
-    assert [3, 4, 6] in tessellation.triangles
-    assert [4, 5, 6] in tessellation.triangles
+    triangle_mesh = mesh.triangulated(triangulator)
+    _, triangles = triangle_mesh.to_vertices_and_faces()
+
+    assert triangle_mesh.number_of_vertices() == 12
+    assert len(triangles) == 6
+    assert [3, 4, 6] in triangles
+    assert [4, 5, 6] in triangles
 
 
 def test_triangulated_warped_quad_policy_is_explicit():
@@ -590,11 +665,11 @@ def test_triangulated_warped_quad_policy_is_explicit():
         [[0, 1, 2, 3]],
     )
 
-    tessellation = mesh.triangulated(FaceTriangulation(quad=DiagonalSplit("02")))
-    assert tessellation.triangles == [[0, 1, 2], [0, 2, 3]]
+    triangle_mesh = mesh.triangulated(lambda vertices: triangulate_quadrilateral(vertices, diagonal="02"))
+    assert triangle_mesh.to_vertices_and_faces()[1] == [[0, 1, 2], [0, 2, 3]]
 
     with pytest.raises(ValueError):
-        mesh.triangulated(FaceTriangulation(quad=EarClipping()))
+        mesh.triangulated(triangulate_polygon_earclip)
 
 
 # --------------------------------------------------------------------------
@@ -1183,14 +1258,14 @@ def test_volume():
 
     # Test with a box (3x4x5)
     box = Box.from_width_height_depth(3, 4, 5)
-    mesh = box.polygonize(Native()).to_mesh()
+    mesh = box.to_polygonal_surface().to_mesh()
     volume = mesh.volume()
     expected_volume = 3 * 4 * 5  # 60
     assert TOL.is_close(volume, expected_volume)
 
     # Test with a smaller box (2x2x2)
     box2 = Box.from_width_height_depth(2, 2, 2)
-    mesh2 = box2.polygonize(Native()).to_mesh()
+    mesh2 = box2.to_polygonal_surface().to_mesh()
     volume2 = mesh2.volume()
     expected_volume2 = 2 * 2 * 2  # 8
     assert TOL.is_close(volume2, expected_volume2)
@@ -1204,7 +1279,7 @@ def test_volume():
     assert TOL.is_close(volume, expected_tet_volume)
 
     # Test with a sphere approximation
-    sphere_mesh = Sphere(radius=1.0).polygonize(UVGrid(32, 32)).to_mesh()
+    sphere_mesh = Sphere(radius=1.0).to_polygonal_surface(nu=32, nv=32).to_mesh()
     volume = sphere_mesh.volume()
     assert volume is not None
     expected_sphere_volume = (4.0 / 3.0) * math.pi
@@ -1218,7 +1293,7 @@ def test_volume():
 
     # Test optional parameters
     box3 = Box.from_width_height_depth(2, 3, 4)
-    mesh3 = box3.polygonize(Native()).to_mesh()
+    mesh3 = box3.to_polygonal_surface().to_mesh()
 
     # Test with copy=False and unify_cycles=False (should still work for well-oriented mesh)
     volume3 = mesh3.volume(copy=False, unify_cycles=False)

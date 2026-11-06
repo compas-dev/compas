@@ -40,9 +40,8 @@ def test_astar_shortest_path_disconnected():
 
 
 def test_astar_shortest_path_mesh():
-    from compas.geometry import Native
 
-    mesh = Box(frame=Frame.worldXY(), xsize=1, ysize=1, zsize=1).polygonize(Native()).to_mesh()
+    mesh = Box(frame=Frame.worldXY(), xsize=1, ysize=1, zsize=1).to_polygonal_surface().to_mesh()
     a, b = mesh.vertex_sample(size=2)
     path = astar_shortest_path(mesh, a, b)
     assert path is not None

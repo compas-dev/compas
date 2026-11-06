@@ -94,10 +94,10 @@ The serialization mechanism applies recursively to nested structures of objects 
 
 ```pycon
 >>> from compas.datastructures import Network, Mesh
->>> from compas.geometry import Point, Transformation, Box, Frame, Native
+>>> from compas.geometry import Point, Transformation, Box, Frame
 >>> point = Point(0, 0, 0)
 >>> xform = Transformation()
->>> mesh = Box(Frame.worldXY(), 1, 1, 1).polygonize(Native()).to_mesh()
+>>> mesh = Box(Frame.worldXY(), 1, 1, 1).to_polygonal_surface().to_mesh()
 >>> network = Network()
 >>> a = network.add_node(point=point)
 >>> b = network.add_node(transformation=xform)

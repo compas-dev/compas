@@ -8,7 +8,6 @@ from typing import Self
 from compas.geometry import Frame
 from compas.geometry import Plane
 from compas.geometry import Point
-from compas.geometry import UVGrid
 from compas.typing import PointLike
 from compas.typing import PointsLike
 
@@ -17,9 +16,11 @@ from .shape import Shape
 
 if TYPE_CHECKING:
     from compas.geometry import Brep
+    from compas.geometry import PolygonalSurface
+    from compas.geometry import Tessellation
 
 
-class Torus(Shape[UVGrid]):
+class Torus(Shape):
     """A torus is defined by a plane and two radii.
 
     Parameters
@@ -188,7 +189,7 @@ class Torus(Shape[UVGrid]):
     # Discretisation
     # ==========================================================================
 
-    def _compute_local_vertices(self, strategy: UVGrid) -> list[PointLike]:
+    def _compute_local_vertices(self, resolution: tuple[int, ...]) -> list[PointLike]:
         """Compute the vertices of the discrete representation of the torus.
 
         Returns
@@ -196,8 +197,7 @@ class Torus(Shape[UVGrid]):
         list[list[float]]
 
         """
-        u = strategy.u
-        v = strategy.v
+        u, v = resolution
         theta = pi * 2 / u
         phi = pi * 2 / v
 
@@ -211,7 +211,7 @@ class Torus(Shape[UVGrid]):
 
         return vertices
 
-    def _compute_faces(self, strategy: UVGrid) -> list[list[int]]:
+    def _compute_faces(self, resolution: tuple[int, ...]) -> list[list[int]]:
         """Compute the faces of the discrete representation of the torus.
 
         Returns
@@ -219,8 +219,7 @@ class Torus(Shape[UVGrid]):
         list[list[int]]
 
         """
-        u = strategy.u
-        v = strategy.v
+        u, v = resolution
         faces = []
         for i in range(u):
             ii = (i + 1) % u
@@ -237,6 +236,44 @@ class Torus(Shape[UVGrid]):
     # ==========================================================================
     # Conversions
     # ==========================================================================
+
+    def to_polygonal_surface(self, *, nu: int = 64, nv: int = 64) -> "PolygonalSurface":
+        """Convert the torus to a polygonal boundary.
+
+        Parameters
+        ----------
+        nu
+            The cell count around the torus axis.
+        nv
+            The cell count around the pipe section.
+
+        Returns
+        -------
+        PolygonalSurface
+            The independent polygonal boundary.
+
+        """
+        nu = self._validate_resolution(nu, "nu", 3)
+        nv = self._validate_resolution(nv, "nv", 3)
+        return self._to_polygonal_surface((nu, nv))
+
+    def to_tessellation(self, *, nu: int = 64, nv: int = 64) -> "Tessellation":
+        """Triangulate the torus's polygonal boundary.
+
+        Parameters
+        ----------
+        nu
+            The cell count around the torus axis.
+        nv
+            The cell count around the pipe section.
+
+        Returns
+        -------
+        Tessellation
+            The indexed triangle representation.
+
+        """
+        return self.to_polygonal_surface(nu=nu, nv=nv).triangulated()
 
     def to_brep(self) -> "Brep":
         """Return a BRep representation of the torus.

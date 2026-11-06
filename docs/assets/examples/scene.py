@@ -79,5 +79,5 @@ for obj in scene.objects:
         y += 5
 
 
-scene.print_hierarchy()
+print(scene.tree.get_hierarchy_string())
 scene.draw()

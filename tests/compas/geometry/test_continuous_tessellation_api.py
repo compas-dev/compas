@@ -1,183 +1,88 @@
+import inspect
+
 import pytest
 
+import compas.geometry as geometry
 from compas.geometry import Box
-from compas.geometry import Brep
-from compas.geometry import BrepFace
 from compas.geometry import Capsule
 from compas.geometry import Cone
 from compas.geometry import Cylinder
-from compas.geometry import Native
 from compas.geometry import PlanarSurface
 from compas.geometry import Sphere
 from compas.geometry import Torus
-from compas.geometry import UGrid
-from compas.geometry import UVGrid
-
-
-def test_parametric_surface_requires_uvgrid():
-    surface = PlanarSurface()
-
-    polygonal = surface.polygonize(UVGrid(2, 3))
-    tessellation = surface.tessellate(UVGrid(2, 3))
-
-    assert len(polygonal.vertices) == 12
-    assert len(polygonal.faces) == 6
-    assert all(len(face) == 4 for face in polygonal.faces)
-    assert tessellation.number_of_vertices == 12
-    assert tessellation.number_of_triangles == 12
-    assert tessellation.vertex_normals is not None
-    assert tessellation.texture_coordinates is not None
-    assert not hasattr(surface, "resolution_u")
-    assert not hasattr(surface, "resolution_v")
-
-    with pytest.raises(TypeError):
-        surface.tessellate(UGrid(3))
-
-
-def test_surface_tessellation_default_is_uvgrid_64():
-    surface = PlanarSurface()
-    data = surface.__data__
-
-    omitted = surface.tessellate()
-    none = surface.tessellate(None)
-    explicit = surface.tessellate(UVGrid(64, 64))
-
-    assert omitted.number_of_vertices == 4225
-    assert omitted.number_of_triangles == 8192
-    assert omitted.vertices == explicit.vertices
-    assert omitted.triangles == explicit.triangles
-    assert none.vertices == explicit.vertices
-    assert none.triangles == explicit.triangles
-    assert omitted is not none
-    assert omitted.vertices is not none.vertices
-    assert surface.__data__ == data
 
 
 @pytest.mark.parametrize(
-    ("shape", "strategy", "vertex_count", "triangle_count"),
+    ("producer", "kwargs", "vertex_count", "face_count", "triangle_count"),
     [
-        (Box(1.0), Native(), 8, 12),
-        (Cylinder(1.0, 2.0), UGrid(64), 130, 256),
-        (Cone(1.0, 2.0), UGrid(64), 66, 128),
-        (Capsule(1.0, 2.0), UVGrid(64, 64), 4098, 8192),
-        (Sphere(1.0), UVGrid(64, 64), 4034, 8064),
-        (Torus(2.0, 0.5), UVGrid(64, 64), 4096, 8192),
+        (Box(1.0), {}, 8, 6, 12),
+        (Cylinder(1.0, 2.0), {"nu": 6}, 14, 18, 24),
+        (Cone(1.0, 2.0), {"nu": 6}, 8, 12, 12),
+        (Capsule(1.0, 2.0), {"nu": 6, "nv": 4}, 26, 30, 48),
+        (Sphere(1.0), {"nu": 6, "nv": 4}, 20, 24, 36),
+        (Torus(2.0, 0.5), {"nu": 6, "nv": 4}, 24, 24, 48),
+        (PlanarSurface(), {"nu": 2, "nv": 3}, 12, 6, 12),
     ],
 )
-def test_shape_tessellation_defaults(shape, strategy, vertex_count, triangle_count):
-    data = shape.__data__
-
-    omitted = shape.tessellate()
-    none = shape.tessellate(None)
-    explicit = shape.tessellate(strategy)
-
-    assert omitted.number_of_vertices == vertex_count
-    assert omitted.number_of_triangles == triangle_count
-    assert omitted.vertices == explicit.vertices
-    assert omitted.triangles == explicit.triangles
-    assert none.vertices == explicit.vertices
-    assert none.triangles == explicit.triangles
-    assert omitted is not none
-    assert omitted.vertices is not none.vertices
-    assert shape.__data__ == data
-
-
-def test_explicit_tessellation_strategy_overrides_default():
-    sphere = Sphere(1.0)
-
-    default = sphere.tessellate()
-    explicit = sphere.tessellate(UVGrid(6, 4))
-
-    assert default.number_of_vertices == 4034
-    assert explicit.number_of_vertices == 20
-
-
-@pytest.mark.parametrize("geometry", [Box(1.0), PlanarSurface(), Brep(), BrepFace()])
-def test_persistent_and_deflection_materialization_remain_explicit(geometry):
-    with pytest.raises(TypeError):
-        geometry.polygonize()
-
-    if isinstance(geometry, (Brep, BrepFace)):
-        with pytest.raises(TypeError):
-            geometry.tessellate()
-
-
-@pytest.mark.parametrize(
-    ("shape", "strategy", "vertex_count", "face_count"),
-    [
-        (Box(1.0), Native(), 8, 6),
-        (Cylinder(1.0, 2.0), UGrid(6), 14, 18),
-        (Cone(1.0, 2.0), UGrid(6), 8, 12),
-        (Capsule(1.0, 2.0), UVGrid(6, 4), 26, 30),
-        (Sphere(1.0), UVGrid(6, 4), 20, 24),
-        (Torus(2.0, 0.5), UVGrid(6, 4), 24, 24),
-    ],
-)
-def test_shapes_use_explicit_strategy_dimensions(shape, strategy, vertex_count, face_count):
-    polygonal = shape.polygonize(strategy)
-    tessellation = shape.tessellate(strategy)
+def test_structured_conversions_are_exactly_composed(producer, kwargs, vertex_count, face_count, triangle_count):
+    data = producer.__data__
+    polygonal = producer.to_polygonal_surface(**kwargs)
+    direct = producer.to_tessellation(**kwargs)
+    composed = polygonal.triangulated()
 
     assert len(polygonal.vertices) == vertex_count
     assert len(polygonal.faces) == face_count
-    assert tessellation.number_of_vertices == vertex_count
-    assert not hasattr(shape, "resolution_u")
-    assert not hasattr(shape, "resolution_v")
+    assert direct.number_of_triangles == triangle_count
+    assert direct.vertices == composed.vertices
+    assert direct.triangles == composed.triangles
+    assert producer.__data__ == data
 
 
-def test_continuous_materialization_is_fresh():
+def test_surface_preserves_aligned_normals_and_uvs():
+    result = PlanarSurface().to_tessellation(nu=2, nv=3)
+    assert len(result.vertex_normals) == result.number_of_vertices
+    assert len(result.texture_coordinates) == result.number_of_vertices
+
+
+def test_default_resolutions_and_exact_signatures():
+    assert str(inspect.signature(Box.to_polygonal_surface)) == "(self) -> 'PolygonalSurface'"
+    assert str(inspect.signature(Cone.to_polygonal_surface)) == "(self, *, nu: int = 64) -> 'PolygonalSurface'"
+    assert str(inspect.signature(Sphere.to_tessellation)) == "(self, *, nu: int = 64, nv: int = 64) -> 'Tessellation'"
+    assert str(inspect.signature(PlanarSurface.to_tessellation)) == "(self, *, nu: int = 64, nv: int = 64) -> 'Tessellation'"
+    assert Sphere(1.0).to_tessellation().number_of_vertices == 4034
+    assert PlanarSurface().to_tessellation().number_of_vertices == 4225
+
+
+@pytest.mark.parametrize("invalid", [True, 3.0, "3"])
+def test_resolution_rejects_bool_and_non_integral_values(invalid):
+    with pytest.raises(TypeError):
+        Sphere(1.0).to_polygonal_surface(nu=invalid)
+
+
+def test_resolution_minimums_and_capsule_even_nv():
+    with pytest.raises(ValueError):
+        Cone(1.0, 2.0).to_polygonal_surface(nu=2)
+    with pytest.raises(ValueError):
+        PlanarSurface().to_polygonal_surface(nu=0)
+    with pytest.raises(ValueError):
+        Capsule(1.0, 2.0).to_polygonal_surface(nv=3)
+    with pytest.raises(ValueError, match="even"):
+        Capsule(1.0, 2.0).to_polygonal_surface(nv=5)
+
+
+def test_structured_results_are_fresh():
     shape = Sphere(1.0)
-    strategy = UVGrid(6, 4)
-
-    first = shape.polygonize(strategy)
-    second = shape.polygonize(strategy)
-
-    assert first is not second
-    assert first.vertices is not second.vertices
+    first = shape.to_polygonal_surface(nu=6, nv=4)
+    second = shape.to_polygonal_surface(nu=6, nv=4)
     first.vertices[0][0] = 99
     assert second.vertices[0][0] != 99
 
 
-@pytest.mark.parametrize(
-    ("shape", "invalid_strategy"),
-    [
-        (Box(1.0), UVGrid(3, 4)),
-        (Cylinder(1.0, 2.0), UVGrid(3, 4)),
-        (Cone(1.0, 2.0), Native()),
-        (Capsule(1.0, 2.0), UGrid(4)),
-        (Sphere(1.0), UGrid(4)),
-        (Torus(2.0, 0.5), Native()),
-    ],
-)
-def test_shapes_reject_unsupported_strategies(shape, invalid_strategy):
-    with pytest.raises(TypeError):
-        shape.polygonize(invalid_strategy)
-    with pytest.raises(TypeError):
-        shape.tessellate(invalid_strategy)
-
-
-def test_capsule_rejects_odd_v_resolution():
-    capsule = Capsule(1.0, 2.0)
-
-    with pytest.raises(ValueError):
-        capsule.polygonize(UVGrid(6, 5))
-    with pytest.raises(ValueError):
-        capsule.tessellate(UVGrid(6, 5))
-
-
-def test_polygonize_returns_independent_serializable_geometry():
-    shape = Box(1.0)
-    surface = shape.polygonize(Native())
-    surface.vertices[0][0] = 100.0
-
-    assert shape.polygonize(Native()).vertices[0][0] != 100.0
-    assert surface.__data__
-
-
-@pytest.mark.parametrize("geometry", [PlanarSurface(), Box(1.0)])
-def test_legacy_continuous_tessellation_entry_points_are_removed(geometry):
-    assert not hasattr(geometry, "tessellation")
-    assert not hasattr(geometry, "compute_tessellation")
-    assert not hasattr(geometry, "to_tessellation")
-    assert not hasattr(geometry, "to_polygonal_surface")
-    assert not hasattr(geometry, "mesh")
-    assert not hasattr(geometry, "compute_mesh")
+def test_removed_continuous_entry_points_and_strategies_are_absent():
+    for producer in (Box(1.0), PlanarSurface()):
+        assert not hasattr(producer, "polygonize")
+        assert not hasattr(producer, "tessellate")
+    for producer in (Box(1.0), Cone(1.0, 2.0), Cylinder(1.0, 2.0)):
+        assert not hasattr(producer, "_tessellation_strategy")
+    for name in ("TessellationStrategy", "Native", "UGrid", "UVGrid", "Deflection", "Adaptive"):
+        assert not hasattr(geometry, name)

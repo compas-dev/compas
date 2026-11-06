@@ -11,9 +11,9 @@ from compas.typing import PointsLike
 from compas.typing import RealInput
 from compas.typing import VerticesFaces
 from compas.geometry import Tessellation
-from compas.geometry import Delaunay
 from compas.geometry import Transformation
-from compas.geometry import triangulate_planar_points
+from compas.geometry import delaunay_triangulation
+from compas.geometry import is_polygon_in_polygon_xy
 
 
 class IterableOnlyCoordinate:
@@ -38,7 +38,8 @@ indices_input: IndicesLike = np.asarray([0, 1, 2], dtype=np.float64)  # expected
 float64_array: Float64Array = np.asarray([1, 2, 3], dtype=np.float32)  # expected-error: reportAssignmentType
 Tessellation([["0", "0", "0"]], [[0, 0, 0]])  # expected-error: reportArgumentType
 Tessellation([[0.0, 0.0, 0.0]], np.asarray([[0.0, 0.0, 0.0]]))  # expected-error: reportArgumentType
-triangulate_planar_points(np.asarray([[0, 0, 0]], dtype=np.complex128), strategy=Delaunay())  # expected-error: reportArgumentType
+delaunay_triangulation(np.asarray([[0, 0, 0]], dtype=np.complex128))  # expected-error: reportArgumentType
+is_polygon_in_polygon_xy(np.asarray([[0, 0, 0]], dtype=np.complex128), [[0, 0, 0]])  # expected-error: reportArgumentType
 triangle_mesh_complex_vertices: VerticesFaces = (np.asarray([[0, 0, 0]], dtype=np.complex128), [[0, 0, 0]])  # expected-error: reportAssignmentType
 triangle_mesh_float_indices: VerticesFaces = ([[0.0, 0.0, 0.0]], np.asarray([[0.0, 0.0, 0.0]]))  # expected-error: reportAssignmentType
 narrow_int_matrix: list[list[int]] = [[1, 0], [0, 1]]

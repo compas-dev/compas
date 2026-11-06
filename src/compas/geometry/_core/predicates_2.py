@@ -148,7 +148,7 @@ def is_colinear_xy(a: Sequence[float], b: Sequence[float], c: Sequence[float]) -
 # =============================================================================
 
 
-def is_polygon_convex_xy(polygon: Sequence[Sequence[float]], colinear: bool = False) -> bool:
+def is_polygon_convex_xy(polygon: PointsLike, colinear: bool = False) -> bool:
     """Determine if the polygon is convex on the XY-plane.
 
     Parameters
@@ -477,7 +477,7 @@ def is_point_in_circle_xy(point: Sequence[float], circle: Sequence[Any]) -> bool
     return False
 
 
-def is_polygon_in_polygon_xy(polygon1: Sequence[Sequence[float]], polygon2: Sequence[Sequence[float]]) -> bool:
+def is_polygon_in_polygon_xy(polygon1: PointsLike, polygon2: PointsLike) -> bool:
     """Determine if a polygon is in the interior of another polygon on the XY-plane.
 
     Parameters
@@ -555,7 +555,7 @@ def is_intersection_line_line_xy(l1: Sequence[Sequence[float]], l2: Sequence[Seq
     raise NotImplementedError
 
 
-def is_intersection_segment_segment_xy(ab: Sequence[Sequence[float]], cd: Sequence[Sequence[float]]) -> bool:
+def is_intersection_segment_segment_xy(ab: PointsLike, cd: PointsLike) -> bool | np.bool_:
     """Determines if two segments, ab and cd, intersect.
 
     Parameters
@@ -569,7 +569,7 @@ def is_intersection_segment_segment_xy(ab: Sequence[Sequence[float]], cd: Sequen
 
     Returns
     -------
-    bool
+    bool | numpy.bool_
         True if the segments intersect.
         False otherwise.
 

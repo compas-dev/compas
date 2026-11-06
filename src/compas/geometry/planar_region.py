@@ -16,7 +16,6 @@ if TYPE_CHECKING:
     from compas.geometry import PolygonalSurface
     from compas.geometry import Tessellation
     from compas.geometry import Transformation
-    from compas.geometry import TriangulationStrategy
 
 
 class PlanarRegion(Geometry):
@@ -44,11 +43,10 @@ class PlanarRegion(Geometry):
     --------
     >>> outer = [[0, 0, 0], [4, 0, 0], [4, 4, 0], [0, 4, 0]]
     >>> hole = [[1, 1, 0], [1, 3, 0], [3, 3, 0], [3, 1, 0]]
-    >>> from compas.geometry import EarClipping
     >>> region = PlanarRegion(outer, holes=[hole])
     >>> region.area()
     12.0
-    >>> region.triangulated(EarClipping()).number_of_triangles
+    >>> region.triangulated().number_of_triangles
     8
 
     """
@@ -124,14 +122,8 @@ class PlanarRegion(Geometry):
     # Conversions
     # =============================================================================
 
-    def triangulated(self, strategy: "TriangulationStrategy") -> "Tessellation":
+    def triangulated(self) -> "Tessellation":
         """Triangulate the planar region without modifying it.
-
-        Parameters
-        ----------
-        strategy
-            The face triangulation strategy. Planar regions support
-            [`EarClipping`][compas.geometry.EarClipping].
 
         Returns
         -------
@@ -139,11 +131,8 @@ class PlanarRegion(Geometry):
             The indexed triangular representation.
 
         """
-        from compas.geometry import EarClipping
         from compas.geometry import Tessellation
 
-        if not isinstance(strategy, EarClipping):
-            raise TypeError("PlanarRegion supports only the EarClipping strategy.")
         vertices, triangles = _earclip_boundaries(self.outer, self.holes)
         return Tessellation(vertices, triangles)
 
@@ -155,9 +144,7 @@ class PlanarRegion(Geometry):
         PolygonalSurface
 
         """
-        from compas.geometry import EarClipping
-
-        return self.triangulated(EarClipping()).to_polygonal_surface()
+        return self.triangulated().to_polygonal_surface()
 
     def to_mesh(self) -> "Mesh":
         """Convert the region to a triangulated half-edge mesh.
@@ -167,9 +154,7 @@ class PlanarRegion(Geometry):
         Mesh
 
         """
-        from compas.geometry import EarClipping
-
-        return self.triangulated(EarClipping()).to_mesh()
+        return self.triangulated().to_mesh()
 
     # =============================================================================
     # Methods

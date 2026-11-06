@@ -86,6 +86,20 @@ def test_graph_from_pointcloud():
         assert graph.degree(node) <= 3
 
 
+def test_graph_from_pointcloud_accepts_generator():
+    points = ((float(index), 0.0, 0.0) for index in range(4))
+
+    graph = Graph.from_pointcloud(cloud=points, degree=2)
+
+    assert graph.number_of_nodes() == 4
+    assert [graph.node_coordinates(node) for node in graph.nodes()] == [
+        [0.0, 0.0, 0.0],
+        [1.0, 0.0, 0.0],
+        [2.0, 0.0, 0.0],
+        [3.0, 0.0, 0.0],
+    ]
+
+
 # ==============================================================================
 # Data
 # ==============================================================================
@@ -325,8 +339,8 @@ def test_graph_to_networkx():
 
     nxg = g.to_networkx()
 
-    assert nxg.graph["name"] == "DiGraph", "Graph attributes must be preserved"  # type: ignore
-    # assert nxg.graph["val"] == (0, 0, 0), "Graph attributes must be preserved"  # type: ignore
+    assert nxg.graph["name"] == "DiGraph", "Graph attributes must be preserved"
+    # assert nxg.graph["val"] == (0, 0, 0), "Graph attributes must be preserved"
     assert set(nxg.nodes()) == set(g.nodes()), "Node sets must match"
     assert nxg.nodes[1]["weight"] == 1.2, "Node attributes must be preserved"
     assert nxg.nodes[1]["height"] == "test", "Node attributes must be preserved"

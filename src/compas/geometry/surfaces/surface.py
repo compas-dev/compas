@@ -1,6 +1,7 @@
 from collections.abc import Iterator
 from itertools import product
 from math import isfinite
+from numbers import Integral
 from typing import TYPE_CHECKING
 from typing import Literal
 from typing import Self
@@ -11,9 +12,7 @@ import compas.geometry
 from compas.geometry import Frame
 from compas.geometry import Geometry
 from compas.geometry import Point
-from compas.geometry import TessellationStrategy
 from compas.geometry import Transformation
-from compas.geometry import UVGrid
 from compas.geometry import Vector
 from compas.itertools import linspace
 from compas.plugins import PluginNotInstalledError
@@ -38,12 +37,11 @@ def surface_from_native(cls: type[SurfaceType], *args: object, **kwargs: object)
 class Surface(Geometry):
     """Class representing a general surface object.
 
-    Polygonization samples a parameter domain into an independent
+    Conversion to a polygonal surface samples a parameter domain into an independent
     `PolygonalSurface` while preserving its polygonal grid topology.
     Tessellation creates an ephemeral indexed triangular representation with
-    aligned normals and texture coordinates. Polygonization requires an
-    explicit strategy. Tessellation uses `UVGrid(64, 64)` when none is
-    provided.
+    aligned normals and texture coordinates. Resolution is expressed as cell
+    counts in the two parameter directions.
 
     Parameters
     ----------
@@ -180,12 +178,15 @@ class Surface(Geometry):
 
     def _discretization_parameters(
         self,
-        strategy: TessellationStrategy,
+        nu: int,
+        nv: int,
     ) -> tuple[int, int, tuple[float, float], tuple[float, float]]:
-        if not isinstance(strategy, UVGrid):
-            raise TypeError(f"{type(self).__name__} discretization requires UVGrid.")
-        nu = strategy.u
-        nv = strategy.v
+        if not isinstance(nu, Integral) or isinstance(nu, bool):
+            raise TypeError("nu should be an integer.")
+        if not isinstance(nv, Integral) or isinstance(nv, bool):
+            raise TypeError("nv should be an integer.")
+        nu = int(nu)
+        nv = int(nv)
         if nu < 1 or nv < 1:
             raise ValueError("Surface discretization requires at least one face in each parameter direction.")
         domain_u = self.domain_u
@@ -222,42 +223,38 @@ class Surface(Geometry):
     # Conversions
     # ==============================================================================
 
-    def polygonize(self, strategy: TessellationStrategy) -> "PolygonalSurface":
-        """Polygonize the surface with an explicit approximation strategy.
+    def to_polygonal_surface(self, *, nu: int = 64, nv: int = 64) -> "PolygonalSurface":
+        """Convert the surface to a structured polygonal grid.
 
         Parameters
         ----------
-        strategy
-            The polygonization strategy.
+        nu
+            The number of cells in the U parameter direction.
+        nv
+            The number of cells in the V parameter direction.
 
         Returns
         -------
         PolygonalSurface
             An independent polygonal surface with quadrilateral cells.
 
-        Raises
-        ------
-        TypeError
-            If the strategy is not `UVGrid`.
-
         """
         from compas.geometry import PolygonalSurface
 
-        nu, nv, domain_u, domain_v = self._discretization_parameters(strategy)
+        nu, nv, domain_u, domain_v = self._discretization_parameters(nu, nv)
         vertices = self._compute_vertices(nu, nv, domain_u, domain_v)
         faces = self._compute_faces(nu, nv)
         return PolygonalSurface(vertices, faces)
 
-    def tessellate(
-        self,
-        strategy: TessellationStrategy | None = None,
-    ) -> "Tessellation[list[PointLike], list[list[int]]]":
-        """Tessellate the surface.
+    def to_tessellation(self, *, nu: int = 64, nv: int = 64) -> "Tessellation":
+        """Triangulate the surface's structured polygonal grid.
 
         Parameters
         ----------
-        strategy
-            The tessellation strategy. If `None`, `UVGrid(64, 64)` is used.
+        nu
+            The number of cells in the U parameter direction.
+        nv
+            The number of cells in the V parameter direction.
 
         Returns
         -------
@@ -265,33 +262,25 @@ class Surface(Geometry):
             The ephemeral indexed triangular representation, including
             analytic normals and normalized UV coordinates.
 
-        Raises
-        ------
-        TypeError
-            If the strategy is not `UVGrid`.
-
         """
         from compas.geometry import Tessellation
 
-        nu, nv, domain_u, domain_v = self._discretization_parameters(strategy if strategy is not None else UVGrid(64, 64))
+        nu, nv, domain_u, domain_v = self._discretization_parameters(nu, nv)
+        triangulation = self.to_polygonal_surface(nu=nu, nv=nv).triangulated()
         parameters = list(
             product(
                 linspace(domain_u[0], domain_u[1], nu + 1),
                 linspace(domain_v[0], domain_v[1], nv + 1),
             )
         )
-        vertices = self._compute_vertices(nu, nv, domain_u, domain_v)
         normals = [self.normal_at(u, v) for u, v in parameters]
         texture_coordinates = [[i / nu, j / nv] for i, j in product(range(nu + 1), range(nv + 1))]
-        triangles = []
-        for i, j in product(range(nu), range(nv)):
-            a = i * (nv + 1) + j
-            b = (i + 1) * (nv + 1) + j
-            c = (i + 1) * (nv + 1) + j + 1
-            d = i * (nv + 1) + j + 1
-            triangles.append([a, b, c])
-            triangles.append([a, c, d])
-        return Tessellation(vertices, triangles, vertex_normals=normals, texture_coordinates=texture_coordinates)
+        return Tessellation(
+            triangulation.vertices,
+            triangulation.triangles,
+            vertex_normals=normals,
+            texture_coordinates=texture_coordinates,
+        )
 
     def to_step(self, filepath: FilePath, schema: str = "AP203") -> None:
         """Write the surface geometry to a STP file.

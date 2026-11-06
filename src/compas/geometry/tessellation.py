@@ -1,7 +1,5 @@
 from dataclasses import dataclass
 from math import isfinite
-from numbers import Integral
-from numbers import Real
 from operator import index as integer_index
 from typing import TYPE_CHECKING
 from typing import Generic
@@ -9,7 +7,6 @@ from typing import TypeVar
 
 import numpy as np
 
-from compas.data import Data
 from compas.typing import IndexGroupsLike
 from compas.typing import PointGroupsLike
 from compas.typing import PointsLike
@@ -18,181 +15,10 @@ if TYPE_CHECKING:
     from compas.datastructures import Mesh
     from compas.geometry import PolygonalSurface
 
-__all__ = [
-    "Adaptive",
-    "Deflection",
-    "Native",
-    "Tessellation",
-    "TessellationStrategy",
-    "UGrid",
-    "UVGrid",
-]
+__all__ = ["Tessellation"]
 
 VerticesBuffer = TypeVar("VerticesBuffer", bound=PointsLike)
 TrianglesBuffer = TypeVar("TrianglesBuffer", bound=IndexGroupsLike)
-
-
-def _positive_integer(value: int, name: str) -> int:
-    if not isinstance(value, Integral) or isinstance(value, bool):
-        raise TypeError(f"{name} should be an integer.")
-    if value <= 0:
-        raise ValueError(f"{name} should be positive.")
-    return int(value)
-
-
-def _positive_finite(value: float, name: str) -> float:
-    if not isinstance(value, Real) or isinstance(value, bool):
-        raise TypeError(f"{name} should be a real number.")
-    value = float(value)
-    if not isfinite(value) or value <= 0.0:
-        raise ValueError(f"{name} should be positive and finite.")
-    return value
-
-
-class TessellationStrategy(Data):
-    """Base class for serializable tessellation policy configurations.
-
-    Strategies describe approximation policy. Geometry producers own the
-    algorithms that implement the supported strategies.
-
-    """
-
-    def __init__(self) -> None:
-        super().__init__()
-        self._frozen = False
-
-    def __setattr__(self, name: str, value: object) -> None:
-        if getattr(self, "_frozen", False) and name not in {"_guid", "_name"}:
-            raise AttributeError(f"{type(self).__name__} is immutable.")
-        super().__setattr__(name, value)
-
-    def __eq__(self, other: object) -> bool:
-        return type(self) is type(other) and isinstance(other, TessellationStrategy) and self.__data__ == other.__data__
-
-    def __hash__(self) -> int:
-        return hash((type(self), tuple(self.__data__.items())))
-
-    def _freeze(self) -> None:
-        self._frozen = True
-
-
-class Native(TessellationStrategy):
-    """Use a geometry's fixed natural topology."""
-
-    @property
-    def __data__(self) -> dict:
-        return {}
-
-    def __init__(self) -> None:
-        super().__init__()
-        self._freeze()
-
-
-class UGrid(TessellationStrategy):
-    """A one-dimensional parameter-grid strategy.
-
-    Parameters
-    ----------
-    u
-        The number of faces in the U direction.
-
-    """
-
-    @property
-    def __data__(self) -> dict:
-        return {"u": self.u}
-
-    def __init__(self, u: int) -> None:
-        super().__init__()
-        self.u = _positive_integer(u, "u")
-        self._freeze()
-
-
-class UVGrid(TessellationStrategy):
-    """A two-dimensional parameter-grid strategy.
-
-    Parameters
-    ----------
-    u
-        The number of faces in the U direction.
-    v
-        The number of faces in the V direction.
-
-    """
-
-    @property
-    def __data__(self) -> dict:
-        return {"u": self.u, "v": self.v}
-
-    def __init__(self, u: int, v: int) -> None:
-        super().__init__()
-        self.u = _positive_integer(u, "u")
-        self.v = _positive_integer(v, "v")
-        self._freeze()
-
-
-class Deflection(TessellationStrategy):
-    """A linear and angular deflection strategy.
-
-    Parameters
-    ----------
-    linear
-        The positive linear deflection in model units.
-    angular
-        The positive angular deflection in degrees, at most 180.
-
-    """
-
-    @property
-    def __data__(self) -> dict:
-        return {"linear": self.linear, "angular": self.angular}
-
-    def __init__(self, linear: float, angular: float) -> None:
-        super().__init__()
-        self.linear = _positive_finite(linear, "linear")
-        self.angular = _positive_finite(angular, "angular")
-        if self.angular > 180.0:
-            raise ValueError("angular should be at most 180 degrees.")
-        self._freeze()
-
-
-class Adaptive(TessellationStrategy):
-    """An adaptive tessellation request.
-
-    Parameters
-    ----------
-    max_deviation
-        The optional maximum deviation in model units.
-    max_angle
-        The optional maximum normal angle in degrees.
-    max_edge_length
-        The optional maximum edge length in model units.
-
-    """
-
-    @property
-    def __data__(self) -> dict:
-        return {
-            "max_deviation": self.max_deviation,
-            "max_angle": self.max_angle,
-            "max_edge_length": self.max_edge_length,
-        }
-
-    def __init__(
-        self,
-        max_deviation: float | None = None,
-        max_angle: float | None = None,
-        max_edge_length: float | None = None,
-    ) -> None:
-        super().__init__()
-        if max_deviation is None and max_angle is None and max_edge_length is None:
-            raise ValueError("At least one adaptive constraint is required.")
-        self.max_deviation = None if max_deviation is None else _positive_finite(max_deviation, "max_deviation")
-        self.max_angle = None if max_angle is None else _positive_finite(max_angle, "max_angle")
-        if self.max_angle is not None and self.max_angle > 180.0:
-            raise ValueError("max_angle should be at most 180 degrees.")
-        self.max_edge_length = None if max_edge_length is None else _positive_finite(max_edge_length, "max_edge_length")
-        self._freeze()
 
 
 @dataclass(frozen=True, slots=True, eq=False)

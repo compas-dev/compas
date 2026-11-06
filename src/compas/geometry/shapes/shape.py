@@ -1,16 +1,10 @@
+from numbers import Integral
 from typing import TYPE_CHECKING
-from typing import Generic
 from typing import Self
-from typing import TypeVar
-from typing import cast
 
 from compas.geometry import Frame
 from compas.geometry import Geometry
-from compas.geometry import Native
-from compas.geometry import TessellationStrategy
 from compas.geometry import Transformation
-from compas.geometry import UGrid
-from compas.geometry import UVGrid
 from compas.geometry import transform_points
 from compas.typing import PointLike
 from compas.typing import PointsLike
@@ -20,10 +14,8 @@ if TYPE_CHECKING:
     from compas.geometry import PolygonalSurface
     from compas.geometry import Tessellation
 
-StrategyT = TypeVar("StrategyT", bound=TessellationStrategy)
 
-
-class Shape(Geometry, Generic[StrategyT]):
+class Shape(Geometry):
     """Base class for geometric shapes.
 
     Shapes are parametrically defined with respect to a local coordinate frame.
@@ -32,12 +24,11 @@ class Shape(Geometry, Generic[StrategyT]):
     Shapes are finite, closed objects, with a boundary that separates the interior from the exterior.
     They have a well-defined surface area and volume.
 
-    Polygonization samples the parametric boundary into an independent
+    Conversion to a polygonal surface samples the parametric boundary into an independent
     `PolygonalSurface` while preserving its natural polygonal topology.
     Tessellation creates an ephemeral indexed triangular representation.
-    Polygonization requires an explicit strategy matching the dimensionality
-    of the shape. Tessellation uses a deterministic strategy when none is
-    provided. Supported backends can convert a shape to a `Brep`.
+    Each concrete producer exposes resolution parameters appropriate to its
+    own parameterization. Supported backends can convert a shape to a `Brep`.
 
     Breps support exact boolean operations.
 
@@ -49,8 +40,6 @@ class Shape(Geometry, Generic[StrategyT]):
         The name of the shape.
 
     """
-
-    _tessellation_strategy = "uv"
 
     def __init__(self, frame: Frame | None = None, name: str | None = None) -> None:
         super().__init__(name=name)
@@ -91,16 +80,16 @@ class Shape(Geometry, Generic[StrategyT]):
     # Discretisation
     # =============================================================================
 
-    def _compute_vertices(self, strategy: StrategyT) -> tuple[PointLike, ...]:
+    def _compute_vertices(self, resolution: tuple[int, ...]) -> tuple[PointLike, ...]:
         """Compute fresh vertex coordinates in world coordinates."""
-        local_vertices = self._compute_local_vertices(strategy)
+        local_vertices = self._compute_local_vertices(resolution)
         return tuple(tuple(vertex) for vertex in transform_points(local_vertices, self.transformation))
 
-    def _compute_local_vertices(self, strategy: StrategyT) -> list[PointLike]:
+    def _compute_local_vertices(self, resolution: tuple[int, ...]) -> list[PointLike]:
         """Compute fresh vertex coordinates in the local shape frame."""
         raise NotImplementedError
 
-    def _compute_faces(self, strategy: StrategyT) -> list[list[int]]:
+    def _compute_faces(self, resolution: tuple[int, ...]) -> list[list[int]]:
         """Compute fresh face cycles for the requested strategy."""
         raise NotImplementedError
 
@@ -108,90 +97,55 @@ class Shape(Geometry, Generic[StrategyT]):
     # Conversions
     # =============================================================================
 
-    def _validate_tessellation_strategy(self, strategy: TessellationStrategy) -> StrategyT:
-        if self._tessellation_strategy == "native":
-            if not isinstance(strategy, Native):
-                raise TypeError(f"{type(self).__name__} requires Native tessellation.")
-            return cast(StrategyT, strategy)
-        if self._tessellation_strategy == "u":
-            if not isinstance(strategy, UGrid):
-                raise TypeError(f"{type(self).__name__} requires UGrid tessellation.")
-            if strategy.u < 3:
-                raise ValueError("The U resolution should be at least 3.")
-            return cast(StrategyT, strategy)
-        if not isinstance(strategy, UVGrid):
-            raise TypeError(f"{type(self).__name__} requires UVGrid tessellation.")
-        if strategy.u < 3:
-            raise ValueError("The U resolution should be at least 3.")
-        if strategy.v < 3:
-            raise ValueError("The V resolution should be at least 3.")
-        return cast(StrategyT, strategy)
+    def to_polygonal_surface(self) -> "PolygonalSurface":
+        """Convert the shape to its default polygonal boundary.
 
-    def _default_tessellation_strategy(self) -> TessellationStrategy:
-        if self._tessellation_strategy == "native":
-            return Native()
-        if self._tessellation_strategy == "u":
-            return UGrid(64)
-        return UVGrid(64, 64)
-
-    def polygonize(self, strategy: TessellationStrategy) -> "PolygonalSurface":
-        """Polygonize the shape with an explicit approximation strategy.
-
-        Parameters
-        ----------
-        strategy
-            The polygonization strategy supported by this shape.
+        Concrete shapes override this method with their producer-specific
+        resolution keywords while preserving the no-argument default call.
 
         Returns
         -------
         PolygonalSurface
-            An independent polygonal boundary representation.
+            The independent polygonal boundary.
 
         """
-        from compas.geometry import PolygonalSurface
+        raise NotImplementedError
 
-        supported_strategy = self._validate_tessellation_strategy(strategy)
-        return PolygonalSurface(
-            list(self._compute_vertices(supported_strategy)),
-            [list(face) for face in self._compute_faces(supported_strategy)],
-        )
+    def to_tessellation(self) -> "Tessellation":
+        """Convert the shape to its default indexed-triangle representation.
 
-    def tessellate(
-        self,
-        strategy: TessellationStrategy | None = None,
-    ) -> "Tessellation[list[PointLike], tuple[tuple[int, ...], ...]]":
-        """Tessellate the shape.
-
-        Parameters
-        ----------
-        strategy
-            The tessellation strategy supported by this shape. If `None`,
-            `Native()` is used for native shapes, `UGrid(64)` for
-            one-parameter shapes, and `UVGrid(64, 64)` for two-parameter
-            shapes.
+        Concrete shapes override this method with their producer-specific
+        resolution keywords while preserving the no-argument default call.
 
         Returns
         -------
         Tessellation
-            The ephemeral indexed triangular representation.
+            The indexed triangle representation.
 
         """
-        from compas.geometry import Tessellation
+        raise NotImplementedError
 
-        supported_strategy = self._validate_tessellation_strategy(strategy if strategy is not None else self._default_tessellation_strategy())
-        vertices = list(self._compute_vertices(supported_strategy))
-        triangles = []
-        for raw_face in self._compute_faces(supported_strategy):
-            face = tuple(raw_face)
-            if len(face) == 3:
-                triangles.append(face)
-            elif len(face) == 4:
-                a, b, c, d = face
-                triangles.append((a, b, c))
-                triangles.append((a, c, d))
-            else:
-                raise ValueError("Shape tessellation requires triangular or quadrilateral faces.")
-        return Tessellation(vertices, tuple(triangles))
+    @staticmethod
+    def _validate_resolution(value: int, name: str, minimum: int) -> int:
+        if not isinstance(value, Integral) or isinstance(value, bool):
+            raise TypeError(f"{name} should be an integer.")
+        value = int(value)
+        if value < minimum:
+            raise ValueError(f"{name} should be at least {minimum}.")
+        return value
+
+    def _to_polygonal_surface(self, resolution: tuple[int, ...]) -> "PolygonalSurface":
+        """Build an independent polygonal boundary at the given resolution."""
+        from compas.geometry import PolygonalSurface
+
+        return PolygonalSurface(
+            list(self._compute_vertices(resolution)),
+            [list(face) for face in self._compute_faces(resolution)],
+        )
+
+    def _to_tessellation(self, resolution: tuple[int, ...]) -> "Tessellation":
+        """Triangulate the polygonal surface built at the given resolution."""
+        return self._to_polygonal_surface(resolution).triangulated()
 
     def to_brep(self) -> "Brep":
         """Convert the shape to a Brep.

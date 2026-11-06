@@ -3,14 +3,11 @@ import json
 import pytest
 
 from compas.geometry import Box
-from compas.geometry import DiagonalSplit
-from compas.geometry import EarClipping
-from compas.geometry import FaceTriangulation
-from compas.geometry import Native
 from compas.geometry import PlanarSurface
 from compas.geometry import PolygonalSurface
 from compas.geometry import Translation
-from compas.geometry import UVGrid
+from compas.geometry import triangulate_polygon_earclip
+from compas.geometry import triangulate_quadrilateral
 
 
 @pytest.fixture
@@ -112,7 +109,7 @@ def test_polygonal_surface_conversions(quad):
 
 
 def test_shape_to_polygonal_surface():
-    surface = Box(1.0).polygonize(Native())
+    surface = Box(1.0).to_polygonal_surface()
 
     assert isinstance(surface, PolygonalSurface)
     assert surface.is_closed
@@ -120,7 +117,7 @@ def test_shape_to_polygonal_surface():
 
 
 def test_parametric_surface_to_polygonal_surface():
-    surface = PlanarSurface().polygonize(UVGrid(2, 3))
+    surface = PlanarSurface().to_polygonal_surface(nu=2, nv=3)
 
     assert isinstance(surface, PolygonalSurface)
     assert not surface.is_closed
@@ -133,7 +130,7 @@ def test_polygonal_surface_triangulates_concave_faces():
         [[0, 0, 0], [2, 0, 0], [2, 1, 0], [1, 1, 0], [1, 2, 0], [0, 2, 0]],
         [[0, 1, 2, 3, 4, 5]],
     )
-    tessellation = surface.triangulated(FaceTriangulation())
+    tessellation = surface.triangulated()
     triangulated = PolygonalSurface(tessellation.vertices, tessellation.triangles)
 
     assert len(tessellation.triangles) == 4
@@ -142,16 +139,16 @@ def test_polygonal_surface_triangulates_concave_faces():
 
 
 def test_polygonal_surface_diagonal_split(quad):
-    split_02 = quad.triangulated(FaceTriangulation(quad=DiagonalSplit("02")))
-    split_13 = quad.triangulated(FaceTriangulation(quad=DiagonalSplit("13")))
+    split_02 = quad.triangulated(lambda vertices: triangulate_quadrilateral(vertices, diagonal="02"))
+    split_13 = quad.triangulated(lambda vertices: triangulate_quadrilateral(vertices, diagonal="13"))
 
     assert split_02.triangles == [[0, 1, 2], [0, 2, 3]]
     assert split_13.triangles == [[0, 1, 3], [1, 2, 3]]
 
 
 def test_polygonal_surface_requires_collection_strategy(quad):
-    with pytest.raises(TypeError, match="FaceTriangulation"):
-        quad.triangulated(DiagonalSplit())
+    with pytest.raises(TypeError):
+        quad.triangulated(object())  # type: ignore[arg-type]
 
 
 def test_polygonal_surface_triangulates_mixed_faces():
@@ -173,7 +170,15 @@ def test_polygonal_surface_triangulates_mixed_faces():
         ],
         [[0, 1, 2], [3, 4, 5, 6], [7, 8, 9, 10, 11, 12]],
     )
-    tessellation = surface.triangulated(FaceTriangulation(quad=DiagonalSplit("02"), ngon=EarClipping()))
+
+    def triangulator(vertices):
+        if len(vertices) == 4:
+            return triangulate_quadrilateral(vertices, diagonal="02")
+        if len(vertices) > 4:
+            return triangulate_polygon_earclip(vertices)
+        return [[0, 1, 2]]
+
+    tessellation = surface.triangulated(triangulator)
 
     assert tessellation.triangles[:3] == [[0, 1, 2], [3, 4, 5], [3, 5, 6]]
     assert len(tessellation.triangles) == 7
@@ -185,8 +190,8 @@ def test_polygonal_surface_warped_quad_policy():
         [[0, 1, 2, 3]],
     )
 
-    tessellation = surface.triangulated(FaceTriangulation(quad=DiagonalSplit("02")))
+    tessellation = surface.triangulated(lambda vertices: triangulate_quadrilateral(vertices, diagonal="02"))
     assert tessellation.triangles == [[0, 1, 2], [0, 2, 3]]
 
     with pytest.raises(ValueError, match="planar"):
-        surface.triangulated(FaceTriangulation(quad=EarClipping()))
+        surface.triangulated(triangulate_polygon_earclip)

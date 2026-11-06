@@ -2,7 +2,6 @@ import json
 
 import pytest
 
-from compas.geometry import EarClipping
 from compas.geometry import PlanarRegion
 from compas.geometry import Translation
 
@@ -16,7 +15,7 @@ def region():
 
 
 def test_planar_region_triangulates_holes(region):
-    tessellation = region.triangulated(EarClipping())
+    tessellation = region.triangulated()
     vertices, triangles = tessellation.to_vertices_and_triangles()
 
     assert len(vertices) == 8
@@ -76,7 +75,7 @@ def test_planar_region_defers_topology_validation_until_tessellation():
 
     assert len(region.outer) == 4
     with pytest.raises(ValueError, match="self-intersecting"):
-        region.triangulated(EarClipping())
+        region.triangulated()
 
 
 @pytest.mark.parametrize(
@@ -94,7 +93,7 @@ def test_planar_region_rejects_holes_not_strictly_inside_outer_boundary(hole):
     )
 
     with pytest.raises(ValueError, match="strictly inside"):
-        region.triangulated(EarClipping())
+        region.triangulated()
 
 
 @pytest.mark.parametrize(
@@ -115,11 +114,11 @@ def test_planar_region_rejects_overlapping_touching_and_nested_holes(second_hole
     )
 
     with pytest.raises(ValueError, match="must not overlap, touch, or contain"):
-        region.triangulated(EarClipping())
+        region.triangulated()
 
 
 def test_planar_region_rejects_repeated_nonconsecutive_vertices():
     region = PlanarRegion([[0, 0, 0], [3, 0, 0], [3, 3, 0], [0, 3, 0], [3, 0, 0]])
 
     with pytest.raises(ValueError, match="duplicate vertices"):
-        region.triangulated(EarClipping())
+        region.triangulated()

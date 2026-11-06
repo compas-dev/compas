@@ -6,7 +6,7 @@ from compas.datastructures import CellNetwork
 from compas.geometry import Line
 from compas.geometry import Polygon
 
-cell_network: CellNetwork = CellNetwork.from_json(compas.get("cellnetwork_example.json"))  # type: ignore
+cell_network: CellNetwork = CellNetwork.from_json(compas.get("cellnetwork_example.json"))
 
 viewer = Viewer(show_grid=False)
 

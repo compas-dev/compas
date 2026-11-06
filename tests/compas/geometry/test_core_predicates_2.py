@@ -1,10 +1,13 @@
 # from compas.geometry import Circle
 # from compas.geometry import Plane
 # from compas.geometry import Point
+import numpy as np
+
 from compas.geometry import Polygon
 
 # from compas.geometry import Vector
 from compas.geometry import is_point_in_circle_xy, is_polygon_in_polygon_xy
+from compas.geometry._core.predicates_2 import is_intersection_segment_segment_xy
 
 
 def test_is_point_in_circle_xy():
@@ -15,6 +18,20 @@ def test_is_point_in_circle_xy():
 
     pt_outside = [15, 15, 0]
     assert not is_point_in_circle_xy(pt_outside, circle)
+
+
+def test_is_intersection_segment_segment_xy_preserves_scalar_return_type():
+    python_result = is_intersection_segment_segment_xy(
+        [[0, 0, 0], [1, 1, 0]],
+        [[0, 1, 0], [1, 0, 0]],
+    )
+    numpy_result = is_intersection_segment_segment_xy(
+        np.asarray([[0, 0, 0], [1, 1, 0]], dtype=np.float32),
+        np.asarray([[0, 1, 0], [1, 0, 0]], dtype=np.float64),
+    )
+
+    assert type(python_result) is bool
+    assert type(numpy_result) is np.bool_
 
 
 # def test_is_point_in_circle_xy_class_input():

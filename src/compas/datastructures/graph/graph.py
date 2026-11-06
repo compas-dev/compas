@@ -35,6 +35,7 @@ from compas.tolerance import TOL
 from compas.topology import astar_shortest_path
 from compas.topology import breadth_first_traverse
 from compas.topology import connected_components
+from compas.typing import PointLike
 
 from .duality import graph_find_cycles
 from .operations.join import graph_join_edges
@@ -338,13 +339,13 @@ class Graph(Datastructure):
         return graph
 
     @classmethod
-    def from_pointcloud(cls, cloud: Iterable[Sequence[float]], degree: int = 3) -> Self:
+    def from_pointcloud(cls, cloud: Iterable[PointLike], degree: int = 3) -> Self:
         """Construct a graph from random connections between the points of a pointcloud.
 
         Parameters
         ----------
         cloud
-            A pointcloud object.
+            A point collection or iterator of XYZ point coordinates.
         degree
             The number of connections per node.
 
@@ -462,10 +463,10 @@ class Graph(Datastructure):
         import networkx as nx
 
         G = nx.DiGraph()
-        G.graph["name"] = self.name  # type: ignore
+        G.graph["name"] = self.name
 
         for node, attr in self.nodes(data=True):
-            G.add_node(node, **attr)  # type: ignore
+            G.add_node(node, **attr)
 
         for edge, attr in self.edges(data=True):
             G.add_edge(*edge, **attr)

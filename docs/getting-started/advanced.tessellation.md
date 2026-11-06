@@ -1,258 +1,133 @@
 # Geometry Discretization and Tessellation
 
-COMPAS uses explicit verbs and result types for approximating continuous geometry.
-The distinction matters because a sampled surface, a triangle buffer, and an editable
-half-edge mesh have different guarantees and costs.
-
-## Terminology
-
-| Operation | Meaning |
-| --- | --- |
-| Sampling | Evaluate points, tangents, normals, or other quantities on continuous geometry. |
-| Discretization | The broad category of operations that produce a finite representation of continuous geometry. |
-| Polygonization | Apply `polygonize(strategy)` to continuous defining geometry and produce a persistent `PolygonalSurface`, retaining polygonal topology where possible. |
-| Tessellation | Apply `tessellate(strategy)` to continuous defining geometry and produce an ephemeral, indexed `Tessellation` made exclusively of triangles. |
-| Triangulation | Split existing polygonal faces, or construct a planar triangle complex from points and constraints. |
-| Refinement | Add resolution while preserving the represented domain and constraints. |
-| Remeshing | Reconstruct an existing mesh to improve element size, shape, or distribution. |
-
-Continuous defining geometry uses `polygonize(strategy)` and `tessellate()` or
-`tessellate(strategy)`. Shape and Surface tessellation has a deterministic
-default; polygonization and BRep tessellation require an explicit strategy.
-Already polygonal geometry instead uses
-`triangulate(strategy)` for in-place mutation or `triangulated(strategy)` for an
-ephemeral triangle result. Refinement and remeshing are processing operations;
-they are not synonyms for tessellation.
+COMPAS separates structured polygonization, triangulation of existing discrete
+geometry, and precision-controlled BRep tessellation. The operations produce
+related representations, but their controls and guarantees are different.
 
 ## Choose the result representation
 
 | Type | Role | Serialized | Topology |
 | --- | --- | --- | --- |
-| `Tessellation` | Short-lived rendering and triangle-processing input | No | Indexed triangles, optional aligned attributes and boundary polylines |
-| `PolygonalSurface` | Lightweight persistent polygonal geometry | Yes | Indexed polygonal faces |
-| `Mesh` | Persistent editable data structure | Yes | Half-edge topology and attributes |
+| `Tessellation` | Short-lived rendering and triangle-processing result | No | Indexed triangles with optional aligned attributes and boundary polylines |
+| `PolygonalSurface` | Lightweight persistent polygonal geometry | Yes | Indexed polygonal faces of arbitrary arity |
+| `Mesh` | Persistent editable data structure | Yes | Half-edge topology, keys, and attributes |
 
-Use `Tessellation` when the next operation consumes triangle buffers. Convert it
-with `to_polygonal_surface()` or `to_mesh()` when an independent persistent object
-is required.
+## Structured shapes and surfaces
 
-## Polygonize and tessellate a surface
-
-Strategies are immutable `compas.data.Data` configurations. Grid counts are positive
-integers. Angular values use degrees at the public API boundary; linear values use
-the model's units.
+Shapes and untrimmed surfaces convert to a polygonal representation through
+producer-owned resolution keywords. `nu` and `nv` count cells in the relevant
+parameter directions; they are not geometric error bounds.
 
 ```python
-from compas.geometry import FaceTriangulation
 from compas.geometry import PlanarSurface
-from compas.geometry import UVGrid
+from compas.geometry import Sphere
 
 surface = PlanarSurface(xsize=4.0, ysize=2.0)
-strategy = UVGrid(u=8, v=4)
+polygonal = surface.to_polygonal_surface(nu=8, nv=4)
+triangles = surface.to_tessellation(nu=8, nv=4)
 
-polygonal = surface.polygonize(strategy)
-tessellation = surface.tessellate(strategy)
-default_tessellation = surface.tessellate()  # equivalent to UVGrid(64, 64)
-
-# Triangulation is also explicit when starting from polygonal geometry.
-triangulated = polygonal.triangulated(FaceTriangulation())
+sphere = Sphere(1.0)
+sphere_triangles = sphere.to_tessellation(nu=32, nv=16)
 ```
 
-The two triangle results need not have identical indexing. They do have the same
-representation contract: exactly three valid indices per face and finite 3D vertex
-coordinates.
+`to_tessellation(...)` uses exactly the vertices and triangle topology of
+`to_polygonal_surface(...).triangulated()` with the same arguments. Surface
+normals and texture coordinates are included when one aligned value exists for
+each polygonized vertex.
 
-## Strategies
+Default resolutions are:
 
-`Native` requests fixed natural topology. `UGrid` and `UVGrid` request parameter-grid
-sampling. `Deflection` supplies linear and angular targets, and `Adaptive` supplies
-one or more of maximum deviation, normal angle, and edge length. A producer implements
-only the strategies appropriate to its geometry. Producers validate the
-supplied strategy directly and raise `TypeError` or `ValueError` when it is not
-supported. Supported strategies are documented with each producer:
-
-```python
-from compas.geometry import PlanarSurface
-from compas.geometry import UVGrid
-
-surface = PlanarSurface()
-result = surface.tessellate(UVGrid(16, 8))
-```
-
-An omitted Shape or Surface tessellation strategy uses a fixed core default:
-
-| Geometry | Default strategy |
+| Producer | Default controls |
 | --- | --- |
-| `Box` | `Native()` |
-| `Cylinder`, `Cone` | `UGrid(64)` |
-| `Sphere`, `Torus`, `Capsule` | `UVGrid(64, 64)` |
-| every `Surface` | `UVGrid(64, 64)` |
+| `Box` | Natural six-face topology |
+| `Cylinder`, `Cone` | `nu=64` |
+| `Sphere`, `Torus`, `Capsule` | `nu=64, nv=64` |
+| untrimmed `Surface` | `nu=64, nv=64` |
 
-Grid values count cells, not sample points. Defaults are resolved for each
-operation and are neither stored nor cached. `polygonize(strategy)` remains
-explicit because its result is persistent. `Brep` and `BrepFace` tessellation
-also remain explicit because their deflection targets have no universal default.
+## Triangulate discrete geometry
 
-Deflection and adaptive values are requests, not proof of achieved error.
-Enriched results containing provenance and measured-error reports are deliberately
-deferred; the current operation result is `Tessellation` itself.
+Named functions select polygon algorithms. Aggregate `triangulated` methods
+accept any callable with the same structural contract. An omitted selector or
+explicit `None` uses `triangulate_polygon`.
 
-## Triangulate polygonal geometry and planar domains
-
-`EarClipping` triangulates an existing planar polygon or `PlanarRegion` without
-inserting free interior vertices. It supports holes and preserves the supplied
-boundary vertices. Constrained Delaunay triangulation instead constructs a planar
-domain triangulation and requires a plugin implementation of
-`triangulate_planar_domain()`.
+A callable returns exactly $n - 2$ nondegenerate triangles for an $n$-vertex
+face. Indices refer to the ordered source vertices, every source boundary edge
+appears once with the same direction, and every interior edge appears twice in
+opposite directions. Aggregate operations validate this result before creating
+or mutating topology.
 
 ```python
-from compas.geometry import ConstrainedDelaunay
-from compas.geometry import EarClipping
-from compas.geometry import PlanarRegion
-from compas.geometry import triangulate_planar_domain
+from functools import partial
 
-outer = [[0, 0, 0], [4, 0, 0], [4, 4, 0], [0, 4, 0]]
-hole = [[1, 1, 0], [1, 3, 0], [3, 3, 0], [3, 1, 0]]
+from compas.geometry import Polygon
+from compas.geometry import triangulate_polygon_projected
 
-region = PlanarRegion(outer, holes=[hole])
-local = region.triangulated(EarClipping())
+polygon = Polygon([[0, 0, 0], [2, 0, 0], [2, 2, 0.01], [0, 2, 0]])
+triangulator = partial(triangulate_polygon_projected, max_deviation=0.02)
+result = polygon.triangulated(triangulator)
+```
 
-# With a constrained-triangulation plugin such as compas_cgal installed:
-domain = triangulate_planar_domain(
-    outer,
-    holes=[hole],
-    strategy=ConstrainedDelaunay(),
+The public polygon operations are:
+
+- `triangulate_polygon` for the default arity-based behavior;
+- `triangulate_quadrilateral` for explicit diagonal selection, with
+  `"shortest"` choosing the shortest valid interior diagonal;
+- `triangulate_polygon_earclip` for planar polygons;
+- `triangulate_polygon_projected` for bounded near-planar projection; and
+- `triangulate_polygon_minimum_area` for a source-vertex minimum-area split.
+
+`Mesh.triangulate()` modifies a mesh in place after staging every replacement.
+`Mesh.triangulated()` returns an independent triangulated mesh of the same
+concrete type, preserving the mesh data model. Numerical consumers extract its
+structural buffers explicitly:
+
+```python
+triangle_mesh = mesh.triangulated()
+vertices, triangles = triangle_mesh.to_vertices_and_faces()
+```
+
+`Polygon`, `PolygonalSurface`, and `Polyhedron` instead return an ephemeral
+`Tessellation`. `PlanarRegion.triangulated()` also returns a `Tessellation` and
+has no algorithm argument because its exterior-and-holes contract determines
+the operation.
+
+## Planar Delaunay operations
+
+Planar point and domain functions return structural `(vertices, triangles)`
+buffers. They accept Python and NumPy coordinate buffers without requiring a
+COMPAS geometry representation.
+
+```python
+from compas.geometry import constrained_delaunay_triangulation
+from compas.geometry import delaunay_triangulation
+
+points = [[0, 0, 0], [2, 0, 0], [2, 1, 0], [0, 1, 0]]
+vertices, triangles = delaunay_triangulation(points)
+
+boundary = [[0, 0, 0], [4, 0, 0], [4, 4, 0], [0, 4, 0]]
+vertices, triangles = constrained_delaunay_triangulation(boundary)
+```
+
+Inputs lie in world XY unless an explicit frame is supplied. The constrained
+and conforming operations require a plugin. Conforming triangulation alone may
+insert Steiner vertices and accepts the optional positive finite
+`max_edge_length` refinement target.
+
+## BRep tessellation
+
+BReps and trimmed BRep faces expose only precision-controlled tessellation:
+
+```python
+tessellation = brep.to_tessellation(
+    linear_deflection=0.01,
+    angular_deflection=15.0,
 )
 ```
 
-Use ear clipping for a faithful split of an existing face. Use constrained Delaunay
-when constraints, interior points, or later quality refinement are part of the
-problem.
+Linear deflection uses model units and angular deflection uses degrees. Omitted
+values resolve from `TOL.lineardeflection` and the degree equivalent of
+`TOL.angulardeflection` before plugin dispatch. These values are requested
+approximation controls, not proof that a backend achieved an error bound.
 
-For a slightly warped polygon, projection must be explicit and bounded:
-
-```python
-from compas.geometry import FaceTriangulation
-from compas.geometry import PolygonalSurface
-from compas.geometry import ProjectedEarClipping
-
-surface = PolygonalSurface(
-    [[0, 0, 0], [2, 0, 0.01], [2, 2, 0], [0, 2, -0.01]],
-    [[0, 1, 2, 3]],
-)
-strategy = FaceTriangulation(
-    quad=ProjectedEarClipping(max_deviation=0.01),
-    ngon=ProjectedEarClipping(max_deviation=0.01),
-)
-tessellation = surface.triangulated(strategy)
-```
-
-`ProjectedEarClipping` uses a best-fit plane, rejects vertices beyond the maximum
-deviation, and rejects degenerate or self-intersecting projections. It returns
-indices into the original 3D vertices and never inserts vertices.
-
-For a heavily twisted ordered 3D boundary that should not be projected, use the
-minimum-area dynamic program explicitly:
-
-```python
-from compas.geometry import FaceTriangulation
-from compas.geometry import MinimumAreaTriangulation
-from compas.geometry import PolygonalSurface
-
-surface = PolygonalSurface(
-    [[0, 0, 0], [2, 0, 1], [3, 1, -1], [2, 3, 2], [0, 2, -1]],
-    [[0, 1, 2, 3, 4]],
-)
-strategy = FaceTriangulation(
-    quad=MinimumAreaTriangulation(),
-    ngon=MinimumAreaTriangulation(),
-)
-tessellation = surface.triangulated(strategy)
-```
-
-`MinimumAreaTriangulation` minimizes total triangle area using only the boundary
-vertices. It takes $O(n^3)$ time and $O(n^2)$ space. The result is a
-combinatorially manifold disk, but it is not guaranteed to be geometrically
-intersection-free. [^barequet-sharir]
-
-[^barequet-sharir]: G. Barequet and M. Sharir, “Filling gaps in the boundary of a
-    polyhedron,” *Computer Aided Geometric Design* 12(2), 1995.
-    <https://doi.org/10.1016/0167-8396(94)00011-G>
-
-## Pass structural meshes to Boolean plugins
-
-Boolean operations accept structural `(vertices, triangles)` pairs. Their
-buffers may be ordinary Python sequences or suitable NumPy arrays. This keeps
-the numerical boundary independent of `Tessellation`, `PolygonalSurface`, and
-`Mesh`; convert those representations explicitly when needed.
-
-```python
-from compas.geometry import Native
-from compas.geometry import Sphere
-from compas.geometry import UVGrid
-from compas.geometry import Box
-from compas.geometry import boolean_difference_mesh_mesh
-
-box = Box(2.0).tessellate(Native()).to_vertices_and_triangles()
-sphere = Sphere(1.25).tessellate(UVGrid(u=32, v=16)).to_vertices_and_triangles()
-result = boolean_difference_mesh_mesh(box, sphere)
-```
-
-Core dispatches these structural buffers without converting or pre-validating
-them. The selected backend normalizes once for its native ABI, enforces the
-minimal safety requirements of that ABI, and reports algorithm failure.
-Closedness, manifoldness, orientation, degeneracy, self-intersection, and other
-geometric validity conditions remain documented preconditions or failure modes
-of the selected backend. Construct a `Tessellation` explicitly only when a
-retained visualization or transfer representation is required.
-
-## Trims, seams, singularities, and validation
-
-A tessellator must respect trimmed domains. BRep tessellations may expose sampled
-trim and edge boundaries through `Tessellation.polylines`. Periodic seams and
-parametric singularities may require duplicate vertices. Normals and texture
-coordinates share vertex indexing, so a producer duplicates a vertex at a normal or
-texture seam rather than introducing a second index buffer.
-
-Construction validates coordinate dimensions and finiteness, triangle arity and
-index range, and alignment of normals and texture coordinates. Domain operations
-add their own geometric checks: planarity, simple boundary loops, valid hole
-containment, and non-intersection where applicable.
-
-`Tessellation` retains supplied buffers without copying or converting them. This
-permits Python sequences, NumPy arrays, and compatible native buffers. Producers own
-buffers they create; callers must treat all buffers as immutable for the lifetime of
-the tessellation. `to_polygonal_surface()` and `to_mesh()` create independent
-COMPAS objects.
-
-Validation is structural and capability-based. PointsProtocol must have the required
-arity and support a finiteness check; triangle elements must support Python's index
-operation and be in range. Contiguous layout, writability, and a specific concrete
-container type are not required, and validation leaves every buffer unchanged.
-Boolean coordinate and index elements are rejected explicitly because they do not
-represent geometric numbers despite supporting Python's numeric operations.
-Conversion to a `PolygonalSurface` or `Mesh` materializes built-in floats and
-integers once at that independent-object boundary.
-
-## Migration from pre-3.0 APIs
-
-COMPAS 3 intentionally has no compatibility aliases for the removed legacy
-conversion methods. Make the desired operation and representation explicit,
-and provide a strategy whenever the default tessellation density is not
-appropriate.
-
-| Removed or old pattern | COMPAS 3 replacement |
-| --- | --- |
-| `to_tessellation()`, `to_tesselation()`, `compute_tessellation()` | `tessellate()` or `tessellate(strategy)` |
-| `to_viewmesh()` for display triangles | `tessellate()` or `tessellate(strategy)` |
-| `to_polygonal_surface()` or backend-specific mesh conversion from continuous geometry | `polygonize(strategy)` |
-| Positional `u`, `v`, or resolution arguments | `UGrid(u)` or `UVGrid(u, v)` |
-| Backend-specific tolerance arguments | `Deflection(linear, angular)` or a supported `Adaptive(...)` |
-| `quads_to_triangles()` and implicit diagonal selection | `triangulate(FaceTriangulation(...))` or `triangulated(...)` |
-| `to_vertices_and_faces(triangulated=True)` | `triangulated(strategy).to_vertices_and_triangles()` |
-| Raw `(vertices, faces)` triangle-plugin input | `Tessellation(vertices, triangles)` |
-| Planar Delaunay entry points | `triangulate_planar_points(..., strategy=Delaunay())` or `triangulate_planar_domain(...)` |
-
-In-place `triangulate(strategy)` returns `None`. Non-mutating
-`triangulated(strategy)` returns a `Tessellation`. Polygonization and tessellation
-never imply remeshing or refinement.
+BReps do not provide `to_polygonal_surface`: their trimmed faces have no single
+uniform parameter-grid structure to preserve.

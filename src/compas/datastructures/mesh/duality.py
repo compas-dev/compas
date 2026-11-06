@@ -45,12 +45,11 @@ def mesh_dual(mesh: "Mesh", cls: type["Mesh"] | None = None, include_boundary: b
     --------
     >>> import compas
     >>> from compas.datastructures import Mesh
-    >>> from compas.geometry import FaceTriangulation
     >>> mesh = Mesh.from_obj(compas.get("faces.obj"))
     >>> mesh.delete_face(11)
     >>> mesh.delete_face(6)
     >>> mesh.delete_face(7)
-    >>> mesh.triangulate(FaceTriangulation())
+    >>> mesh.triangulate()
     >>> mesh = mesh.subdivided("corner")
     >>> dual = mesh.dual(include_boundary=True)
 

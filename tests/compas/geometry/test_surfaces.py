@@ -7,7 +7,6 @@ from compas.geometry import CylindricalSurface
 from compas.geometry import ConicalSurface
 from compas.geometry import ToroidalSurface
 from compas.geometry import PlanarSurface
-from compas.geometry import UVGrid
 
 
 @pytest.mark.parametrize(
@@ -88,10 +87,10 @@ def test_surface_transformation_reflects_direct_frame_mutation():
 
 def test_surface_placement_preserves_discretization_topology():
     surface = PlanarSurface()
-    before = surface.polygonize(UVGrid(2, 3))
+    before = surface.to_polygonal_surface(nu=2, nv=3)
 
     surface.frame.point.x = 10.0
-    after = surface.polygonize(UVGrid(2, 3))
+    after = surface.to_polygonal_surface(nu=2, nv=3)
 
     assert after.vertices != before.vertices
     assert after.faces == before.faces
@@ -119,14 +118,14 @@ def test_analytic_surface_periodicity(surface, periodic_u, periodic_v):
 
 def test_surface_discretization_counts():
     surface = PlanarSurface(xsize=2.0, ysize=3.0)
-    polygonal = surface.polygonize(UVGrid(2, 3))
+    polygonal = surface.to_polygonal_surface(nu=2, nv=3)
 
     assert len(polygonal.vertices) == 12
     assert len(polygonal.faces) == 6
-    assert surface.tessellate(UVGrid(2, 3)).number_of_triangles == 12
+    assert surface.to_tessellation(nu=2, nv=3).number_of_triangles == 12
 
 
-@pytest.mark.parametrize("operation", ["polygonize", "tessellate"])
+@pytest.mark.parametrize("operation", ["to_polygonal_surface", "to_tessellation"])
 def test_surface_discretization_rejects_nonfinite_domains(operation):
     class UnboundedPlanarSurface(PlanarSurface):
         @property
@@ -136,7 +135,7 @@ def test_surface_discretization_rejects_nonfinite_domains(operation):
     surface = UnboundedPlanarSurface()
 
     with pytest.raises(ValueError, match="finite parameter domains"):
-        getattr(surface, operation)(UVGrid(2, 3))
+        getattr(surface, operation)(nu=2, nv=3)
 
 
 def test_surface_face_computation_is_pure_topology():

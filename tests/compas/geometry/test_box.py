@@ -1,6 +1,5 @@
 import pytest
 from compas.geometry import Box
-from compas.geometry import Native
 from compas.geometry import Point
 
 
@@ -37,25 +36,24 @@ def test_box_corners(default_box):
 
 
 def test_box_native_materialization_has_no_synthetic_resolution(monkeypatch, unit_box):
-    strategies = []
+    calls = []
     compute_local_vertices = unit_box._compute_local_vertices
     compute_faces = unit_box._compute_faces
 
-    def record_vertices(strategy):
-        strategies.append(strategy)
-        return compute_local_vertices(strategy)
+    def record_vertices(resolution):
+        calls.append("vertices")
+        return compute_local_vertices(resolution)
 
-    def record_faces(strategy):
-        strategies.append(strategy)
-        return compute_faces(strategy)
+    def record_faces(resolution):
+        calls.append("faces")
+        return compute_faces(resolution)
 
     monkeypatch.setattr(unit_box, "_compute_local_vertices", record_vertices)
     monkeypatch.setattr(unit_box, "_compute_faces", record_faces)
 
-    unit_box.polygonize(Native())
+    unit_box.to_polygonal_surface()
 
-    assert len(strategies) == 2
-    assert all(isinstance(strategy, Native) for strategy in strategies)
+    assert calls == ["vertices", "faces"]
 
 
 def test_box_corner(default_box):

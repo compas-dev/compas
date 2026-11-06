@@ -75,13 +75,13 @@ def boolean_union_mesh_mesh(A: VerticesFaces, B: VerticesFaces) -> VerticesFaces
 
     Examples
     --------
-    >>> from compas.geometry import Box, Native, Sphere, UVGrid
+    >>> from compas.geometry import Box, Sphere
     >>> from compas.geometry import boolean_union_mesh_mesh  # doctest: +SKIP
     >>> box = Box.from_width_height_depth(2, 2, 2)
-    >>> A = box.tessellate(Native()).to_vertices_and_triangles()
+    >>> A = box.to_tessellation().to_vertices_and_triangles()
 
     >>> sphere = Sphere.from_point_and_radius([1, 1, 1], 1)
-    >>> B = sphere.tessellate(UVGrid(30, 30)).to_vertices_and_triangles()
+    >>> B = sphere.to_tessellation(nu=30, nv=30).to_vertices_and_triangles()
     >>> union = boolean_union_mesh_mesh(A, B)  # doctest: +SKIP
 
     """

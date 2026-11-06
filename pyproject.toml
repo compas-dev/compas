@@ -170,5 +170,5 @@ docstring-code-format = true
 docstring-code-line-length = "dynamic"
 
 [tool.pyright]
-include = ["src/compas"]
+include = ["src/compas", "docs/assets/examples"]
 pythonVersion = "3.12"

@@ -3,7 +3,6 @@ import pytest
 from compas.geometry import Capsule
 from compas.geometry import Frame
 from compas.geometry import Line
-from compas.geometry import UVGrid
 
 
 @pytest.fixture
@@ -14,7 +13,7 @@ def capsule():
 def test_capsule_discretization(capsule):
     # just checking these don't break. Could not quickly find a formula that worked to test the actual values
     # as function of the resolution
-    surface = capsule.polygonize(UVGrid(6, 4))
+    surface = capsule.to_polygonal_surface(nu=6, nv=4)
     assert surface.vertices
     assert surface.faces
 
@@ -83,7 +82,7 @@ def test_capsule_faces_do_not_compute_vertices(monkeypatch):
         raise AssertionError("Topology computation should not regenerate positions.")
 
     monkeypatch.setattr(capsule, "_compute_local_vertices", fail)
-    assert capsule._compute_faces(UVGrid(6, 4))
+    assert capsule._compute_faces((6, 4))
 
 
 def test_capsule_bounds_are_invalidated():

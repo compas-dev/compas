@@ -2,8 +2,7 @@ import json
 
 import pytest
 
-from compas.geometry import DiagonalSplit
-from compas.geometry import FaceTriangulation
+from compas.geometry import triangulate_quadrilateral
 from compas.geometry import Point
 from compas.geometry import PolygonalSurface
 from compas.geometry import Polyhedron
@@ -89,7 +88,7 @@ def test_polyhedron_rejects_collapsing_transform_without_mutation():
 
 def test_polyhedron_triangulates_polygonal_boundary():
     polyhedron = Polyhedron.from_platonicsolid(6)
-    tessellation = polyhedron.triangulated(FaceTriangulation(quad=DiagonalSplit("02")))
+    tessellation = polyhedron.triangulated(lambda vertices: triangulate_quadrilateral(vertices, diagonal="02"))
     vertices, faces = tessellation.to_vertices_and_triangles()
 
     assert len(vertices) == 8

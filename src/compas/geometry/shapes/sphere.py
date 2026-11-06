@@ -8,7 +8,6 @@ from compas.geometry import Circle
 from compas.geometry import Frame
 from compas.geometry import Line
 from compas.geometry import Point
-from compas.geometry import UVGrid
 from compas.typing import PointLike
 from compas.typing import PointsLike
 
@@ -17,9 +16,11 @@ from .shape import Shape
 
 if TYPE_CHECKING:
     from compas.geometry import Brep
+    from compas.geometry import PolygonalSurface
+    from compas.geometry import Tessellation
 
 
-class Sphere(Shape[UVGrid]):
+class Sphere(Shape):
     """A sphere is defined by a point and a radius.
 
     Parameters
@@ -158,7 +159,7 @@ class Sphere(Shape[UVGrid]):
     # Discretisation
     # ==========================================================================
 
-    def _compute_local_vertices(self, strategy: UVGrid) -> list[PointLike]:
+    def _compute_local_vertices(self, resolution: tuple[int, ...]) -> list[PointLike]:
         """Compute the vertices of the discrete representation of the sphere.
 
         Returns
@@ -166,8 +167,7 @@ class Sphere(Shape[UVGrid]):
         list[list[float]]
 
         """
-        u = strategy.u
-        v = strategy.v
+        u, v = resolution
         theta = pi / v
         phi = pi * 2 / u
         hpi = pi * 0.5
@@ -187,7 +187,7 @@ class Sphere(Shape[UVGrid]):
 
         return vertices
 
-    def _compute_faces(self, strategy: UVGrid) -> list[list[int]]:
+    def _compute_faces(self, resolution: tuple[int, ...]) -> list[list[int]]:
         """Compute the faces of the discrete representation of the sphere.
 
         Returns
@@ -195,8 +195,7 @@ class Sphere(Shape[UVGrid]):
         list[list[int]]
 
         """
-        u = strategy.u
-        v = strategy.v
+        u, v = resolution
         faces = []
         vertex_count = (v - 1) * u + 2
 
@@ -226,6 +225,44 @@ class Sphere(Shape[UVGrid]):
     # ==========================================================================
     # Conversions
     # ==========================================================================
+
+    def to_polygonal_surface(self, *, nu: int = 64, nv: int = 64) -> "PolygonalSurface":
+        """Convert the sphere to a polygonal boundary.
+
+        Parameters
+        ----------
+        nu
+            The longitudinal cell count.
+        nv
+            The latitudinal cell count.
+
+        Returns
+        -------
+        PolygonalSurface
+            The independent polygonal boundary.
+
+        """
+        nu = self._validate_resolution(nu, "nu", 3)
+        nv = self._validate_resolution(nv, "nv", 3)
+        return self._to_polygonal_surface((nu, nv))
+
+    def to_tessellation(self, *, nu: int = 64, nv: int = 64) -> "Tessellation":
+        """Triangulate the sphere's polygonal boundary.
+
+        Parameters
+        ----------
+        nu
+            The longitudinal cell count.
+        nv
+            The latitudinal cell count.
+
+        Returns
+        -------
+        Tessellation
+            The indexed triangle representation.
+
+        """
+        return self.to_polygonal_surface(nu=nu, nv=nv).triangulated()
 
     def to_brep(self) -> "Brep":
         """Return a BRep representation of the sphere.

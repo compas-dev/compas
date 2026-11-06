@@ -1,4 +1,5 @@
 from collections.abc import Sequence
+from math import degrees
 from os import PathLike
 from typing import TYPE_CHECKING
 from typing import Any
@@ -8,6 +9,7 @@ from typing import cast
 
 from compas.data import Data
 from compas.geometry import Geometry
+from compas.tolerance import TOL
 
 if TYPE_CHECKING:
     from compas.datastructures import Mesh
@@ -20,13 +22,11 @@ if TYPE_CHECKING:
     from compas.geometry import Cone
     from compas.geometry import Curve
     from compas.geometry import Cylinder
-    from compas.geometry import Deflection
     from compas.geometry import Frame
     from compas.geometry import Line
     from compas.geometry import Plane
     from compas.geometry import Point
     from compas.geometry import Polygon
-    from compas.geometry import PolygonalSurface
     from compas.geometry import Polyline
     from compas.geometry import Sphere
     from compas.geometry import Surface
@@ -69,18 +69,17 @@ from .operations import brep_make_solid
 from .operations import brep_obb
 from .operations import brep_orientation
 from .operations import brep_overlap
-from .operations import brep_polygonize
 from .operations import brep_rebuild
 from .operations import brep_sew
 from .operations import brep_shells
 from .operations import brep_slice
 from .operations import brep_solids
 from .operations import brep_split
-from .operations import brep_tessellate
 from .operations import brep_to_data
 from .operations import brep_to_iges
 from .operations import brep_to_step
 from .operations import brep_to_stl
+from .operations import brep_to_tessellation
 from .operations import brep_transform
 from .operations import brep_trimmed
 from .operations import brep_trims
@@ -883,13 +882,22 @@ class Brep(Geometry):
         """
         return brep_to_stl(self, filepath)
 
-    def tessellate(self, strategy: "Deflection") -> "Tessellation":
+    def to_tessellation(
+        self,
+        *,
+        linear_deflection: float | None = None,
+        angular_deflection: float | None = None,
+    ) -> "Tessellation":
         """Create a triangle tessellation of the trimmed shape.
 
         Parameters
         ----------
-        strategy
-            The linear and angular deflection targets.
+        linear_deflection
+            The positive linear deflection in model units. If `None`, use
+            `TOL.lineardeflection`.
+        angular_deflection
+            The positive angular deflection in degrees, no greater than 180.
+            If `None`, use the degree equivalent of `TOL.angulardeflection`.
 
         Returns
         -------
@@ -897,31 +905,13 @@ class Brep(Geometry):
             The ephemeral triangle representation.
 
         """
-        from compas.geometry import Deflection
-
-        if not isinstance(strategy, Deflection):
-            raise TypeError("Brep tessellation requires a Deflection strategy.")
-        return brep_tessellate(self, strategy)
-
-    def polygonize(self, strategy: "Deflection") -> "PolygonalSurface":
-        """Create a polygonal representation of the trimmed shape.
-
-        Parameters
-        ----------
-        strategy
-            The linear and angular deflection targets.
-
-        Returns
-        -------
-        PolygonalSurface
-            The fresh polygonal representation.
-
-        """
-        from compas.geometry import Deflection
-
-        if not isinstance(strategy, Deflection):
-            raise TypeError("Brep polygonization requires a Deflection strategy.")
-        return brep_polygonize(self, strategy)
+        linear = TOL.lineardeflection if linear_deflection is None else linear_deflection
+        angular = degrees(TOL.angulardeflection) if angular_deflection is None else angular_deflection
+        return brep_to_tessellation(
+            self,
+            linear_deflection=linear,
+            angular_deflection=angular,
+        )
 
     # ==============================================================================
     # Relationships

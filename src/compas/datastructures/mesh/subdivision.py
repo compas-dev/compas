@@ -141,10 +141,9 @@ def mesh_subdivide_tri(mesh: MeshT, k: int = 1) -> MeshT:
     Examples
     --------
     >>> from compas.geometry import Box
-    >>> from compas.geometry import Native
     >>> from compas.datastructures import Mesh
     >>> box = Box.from_corner_corner_height([0.0, 0.0, 0.0], [1.0, 1.0, 0.0], 1.0)
-    >>> mesh = box.polygonize(Native()).to_mesh()
+    >>> mesh = box.to_polygonal_surface().to_mesh()
     >>> k = 2
     >>> subd = mesh_subdivide_tri(mesh, k=k)
     >>> mesh is subd
@@ -187,10 +186,9 @@ def mesh_subdivide_quad(mesh: MeshT, k: int = 1) -> MeshT:
     Examples
     --------
     >>> from compas.geometry import Box
-    >>> from compas.geometry import Native
     >>> from compas.datastructures import Mesh
     >>> box = Box.from_corner_corner_height([0.0, 0.0, 0.0], [1.0, 1.0, 0.0], 1.0)
-    >>> mesh = box.polygonize(Native()).to_mesh()
+    >>> mesh = box.to_polygonal_surface().to_mesh()
     >>> k = 2
     >>> subd = mesh_subdivide_quad(mesh, k=k)
     >>> mesh is subd
@@ -314,10 +312,9 @@ def mesh_subdivide_catmullclark(
     Examples
     --------
     >>> from compas.geometry import Box
-    >>> from compas.geometry import Native
     >>> from compas.datastructures import Mesh
     >>> box = Box.from_corner_corner_height([0.0, 0.0, 0.0], [1.0, 1.0, 0.0], 1.0)
-    >>> mesh = box.polygonize(Native()).to_mesh()
+    >>> mesh = box.to_polygonal_surface().to_mesh()
     >>> k = 2
     >>> subd = mesh_subdivide_catmullclark(mesh, k=k)
     >>> mesh is subd
@@ -337,11 +334,10 @@ def mesh_subdivide_catmullclark(
     to a number higher than the number of subdivision steps.
 
     >>> from compas.geometry import Box
-    >>> from compas.geometry import Native
     >>> from compas.linalg import dot_vectors
     >>> from compas.datastructures import Mesh
 
-    >>> cage = Box.from_width_height_depth(1, 1, 1).polygonize(Native()).to_mesh()
+    >>> cage = Box.from_width_height_depth(1, 1, 1).to_polygonal_surface().to_mesh()
     >>> cage.update_default_edge_attributes({"crease": 0})
     >>> top = sorted(cage.faces(), key=lambda face: dot_vectors(cage.face_normal(face), [0, 0, 1]))[-1]
     >>> cage.edges_attribute("crease", 5, keys=list(cage.face_halfedges(top)))
@@ -495,10 +491,9 @@ def mesh_subdivide_doosabin(
     Examples
     --------
     >>> from compas.geometry import Box
-    >>> from compas.geometry import Native
     >>> from compas.datastructures import Mesh
     >>> box = Box.from_corner_corner_height([0.0, 0.0, 0.0], [1.0, 1.0, 0.0], 1.0)
-    >>> mesh = box.polygonize(Native()).to_mesh()
+    >>> mesh = box.to_polygonal_surface().to_mesh()
     >>> k = 2
     >>> subd = mesh_subdivide_doosabin(mesh, k=k)
     >>> mesh is subd
@@ -691,12 +686,10 @@ def trimesh_subdivide_loop(
     Triangulate the faces.
 
     >>> from compas.geometry import Box
-    >>> from compas.geometry import FaceTriangulation
-    >>> from compas.geometry import Native
     >>> from compas.datastructures import Mesh
     >>> box = Box.from_corner_corner_height([0.0, 0.0, 0.0], [1.0, 1.0, 0.0], 1.0)
-    >>> mesh = box.polygonize(Native()).to_mesh()
-    >>> mesh.triangulate(FaceTriangulation())
+    >>> mesh = box.to_polygonal_surface().to_mesh()
+    >>> mesh.triangulate()
 
     Subdivide 2 times.
 

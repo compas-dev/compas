@@ -21,16 +21,16 @@ from compas.typing import RealInput
 from compas.typing import VectorLike
 from compas.typing import VerticesFaces
 from compas.geometry import Point
+from compas.geometry import Pointcloud
+from compas.geometry import Polygon
 from compas.geometry import Frame
 from compas.geometry import Line
 from compas.geometry import Plane
 from compas.geometry import Quaternion
 from compas.geometry import Transformation
-from compas.geometry import ConstrainedDelaunay
 from compas.geometry import Circle
-from compas.geometry import Delaunay
-from compas.geometry import FaceTriangulation
 from compas.geometry import Tessellation
+from compas.geometry import Triangulator
 from compas.geometry import Vector
 from compas.geometry import boolean_union_mesh_mesh
 from compas.geometry import closest_point_on_polygon_xy
@@ -39,9 +39,10 @@ from compas.geometry import intersection_mesh_mesh
 from compas.geometry import intersection_line_plane
 from compas.geometry import intersection_plane_circle
 from compas.geometry import intersection_ray_mesh
+from compas.geometry import is_polygon_in_polygon_xy
 from compas.geometry import orthonormalize_axes
-from compas.geometry import triangulate_planar_domain
-from compas.geometry import triangulate_planar_points
+from compas.geometry import constrained_delaunay_triangulation
+from compas.geometry import delaunay_triangulation
 from compas.geometry import trimesh_remesh
 from compas.geometry import trimesh_remesh_along_isoline
 from compas.geometry import trimesh_remesh_constrained
@@ -52,7 +53,9 @@ from compas.geometry import trimesh_isolines
 from compas.geometry import trimesh_lscm
 from compas.geometry import trimesh_massmatrix
 from compas.geometry import transform_points
+from compas.geometry._core.predicates_2 import is_intersection_segment_segment_xy
 from compas.geometry.triangulation import triangulate_polygon
+from compas.datastructures import Graph
 from compas.datastructures import Mesh
 
 
@@ -160,6 +163,10 @@ coordinate_inputs: list[PointLike] = [
     int64_array,
 ]
 vector_inputs: list[VectorLike] = coordinate_inputs
+real_vector: list[RealInput] = [np.float32(1), np.float64(2), 3]
+
+Point(0, 0, 0).translate(real_vector)
+assert_type(Point(0, 0, 0).translated(float32_array), Point)
 
 
 def coordinate_arithmetic(coordinate: PointLike) -> RealInput:
@@ -209,6 +216,22 @@ Transformation(
     ]
 )
 coordinates_inputs: list[PointsLike] = [coordinate_inputs, np.asarray([[0, 0, 0], [1, 1, 1]], dtype=np.float64)]
+Graph.from_pointcloud(Pointcloud(coordinates_inputs[1]))
+Graph.from_pointcloud((point for point in coordinates_inputs[1]))
+outer_polygon = Polygon([[0, 0, 0], [2, 0, 0], [2, 2, 0], [0, 2, 0]])
+inner_polygon = Polygon([[0.5, 0.5, 0], [1.5, 0.5, 0], [1, 1.5, 0]])
+is_polygon_in_polygon_xy(outer_polygon, inner_polygon)
+assert_type(
+    is_intersection_segment_segment_xy([[0, 0, 0], [1, 1, 0]], [[0, 1, 0], [1, 0, 0]]),
+    bool | np.bool_,
+)
+assert_type(
+    is_intersection_segment_segment_xy(
+        np.asarray([[0, 0, 0], [1, 1, 0]], dtype=np.float32),
+        np.asarray([[0, 1, 0], [1, 0, 0]], dtype=np.float64),
+    ),
+    bool | np.bool_,
+)
 coordinates_collection_inputs: list[PointGroupsLike] = [
     [coordinates_inputs[1]],
     np.asarray([[[0, 0, 0], [1, 0, 0], [0, 1, 0]]], dtype=np.float32),
@@ -259,12 +282,19 @@ assert_type(custom_tessellation.vertices, CustomCoordinates)
 assert_type(custom_tessellation.triangles, CustomTriangles)
 Mesh.from_vertices_and_faces(vertices32, triangles32)
 
-triangulate_planar_points(vertices32, strategy=Delaunay())
-triangulate_polygon(vertices32, FaceTriangulation())
-triangulate_planar_domain(
+delaunay_triangulation(vertices32)
+triangulate_polygon(vertices32)
+
+
+def numpy_triangulator(vertices: PointsLike) -> np.ndarray[tuple[int, int], np.dtype[np.int64]]:
+    return np.asarray([[0, 1, 2], [0, 2, 3]], dtype=np.int64)
+
+
+triangulator: Triangulator = numpy_triangulator
+Polygon([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]]).triangulated(triangulator)
+constrained_delaunay_triangulation(
     vertices32,
     holes=np.asarray([vertices32], dtype=np.float32),
     constraints=np.asarray([vertices32[:2]], dtype=np.float64),
     points=np.asarray([[0.25, 0.25, 0]], dtype=np.int64),
-    strategy=ConstrainedDelaunay(),
 )

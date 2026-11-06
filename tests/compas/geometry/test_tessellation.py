@@ -5,13 +5,7 @@ import numpy as np  # pyright: ignore[reportMissingImports]
 import pytest
 
 import compas
-from compas.geometry import Adaptive
 from compas.geometry import Box
-from compas.geometry import Deflection
-from compas.geometry import DiagonalSplit
-from compas.geometry import EarClipping
-from compas.geometry import FaceTriangulation
-from compas.geometry import Native
 from compas.geometry import PlanarRegion
 from compas.geometry import PlanarSurface
 from compas.geometry import Polygon
@@ -19,9 +13,6 @@ from compas.geometry import PolygonalSurface
 from compas.geometry import Polyhedron
 from compas.geometry import Sphere
 from compas.geometry import Tessellation
-from compas.geometry import TessellationStrategy
-from compas.geometry import UGrid
-from compas.geometry import UVGrid
 from compas.geometry import normal_triangle
 from compas.tolerance import TOL
 
@@ -58,62 +49,6 @@ class DuckBuffer:
 
     def __iter__(self):
         return iter(self.values)
-
-
-@pytest.mark.parametrize(
-    "strategy",
-    [
-        Native(),
-        UGrid(8),
-        UVGrid(8, 4),
-        Deflection(0.01, 15.0),
-        Adaptive(max_deviation=0.01),
-        Adaptive(max_angle=5.0, max_edge_length=0.1),
-    ],
-)
-def test_tessellation_strategies_are_data(strategy):
-    assert isinstance(strategy, TessellationStrategy)
-    other = compas.json_loads(compas.json_dumps(strategy))
-    assert other == strategy
-    assert hash(other) == hash(strategy)
-
-
-def test_tessellation_strategies_are_immutable():
-    strategy = UVGrid(8, 4)
-    with pytest.raises(AttributeError):
-        strategy.u = 16
-
-
-@pytest.mark.parametrize("value", [0, -1, 1.5, True])
-def test_grid_strategies_require_positive_integers(value):
-    with pytest.raises((TypeError, ValueError)):
-        UGrid(value)
-    with pytest.raises((TypeError, ValueError)):
-        UVGrid(1, value)
-
-
-@pytest.mark.parametrize("value", [0.0, -1.0, math.inf, math.nan])
-def test_deflection_requires_positive_finite_values(value):
-    with pytest.raises(ValueError):
-        Deflection(value, 1.0)
-    with pytest.raises(ValueError):
-        Deflection(1.0, value)
-
-
-def test_deflection_uses_public_degrees():
-    strategy = Deflection(0.01, 180.0)
-    assert strategy.angular == 180.0
-    with pytest.raises(ValueError):
-        Deflection(0.01, 180.1)
-
-
-def test_adaptive_requires_at_least_one_constraint():
-    with pytest.raises(ValueError):
-        Adaptive()
-    with pytest.raises(ValueError):
-        Adaptive(max_deviation=0.0)
-    with pytest.raises(ValueError):
-        Adaptive(max_angle=180.1)
 
 
 def test_tessellation_retains_input_buffers():
@@ -311,16 +246,15 @@ def test_polygonal_geometry_produces_tessellations():
     surface = PolygonalSurface([[0, 0, 0], [1, 0, 0], [0, 1, 0]], [[0, 1, 2]])
     polyhedron = Polyhedron.from_platonicsolid(4)
 
-    face_strategy = FaceTriangulation(quad=EarClipping(), ngon=EarClipping())
-    assert polygon.triangulated(face_strategy).number_of_triangles == 1
-    assert region.triangulated(EarClipping()).number_of_triangles == 1
-    assert surface.triangulated(face_strategy).vertices is surface.vertices
-    assert polyhedron.triangulated(face_strategy).number_of_triangles == 4
+    assert polygon.triangulated().number_of_triangles == 1
+    assert region.triangulated().number_of_triangles == 1
+    assert surface.triangulated().vertices is surface.vertices
+    assert polyhedron.triangulated().number_of_triangles == 4
 
 
 def test_parametric_geometry_produces_tessellations():
-    shape_tessellation = Box(1.0).tessellate(Native())
-    surface_tessellation = PlanarSurface().tessellate(UVGrid(2, 3))
+    shape_tessellation = Box(1.0).to_tessellation()
+    surface_tessellation = PlanarSurface().to_tessellation(nu=2, nv=3)
 
     assert shape_tessellation.number_of_triangles == 12
     assert surface_tessellation.number_of_vertices == 12
@@ -328,7 +262,7 @@ def test_parametric_geometry_produces_tessellations():
 
 
 def test_surface_tessellation_aligns_positions_normals_uvs_and_winding():
-    tessellation = PlanarSurface().tessellate(UVGrid(2, 3))
+    tessellation = PlanarSurface().to_tessellation(nu=2, nv=3)
 
     assert tessellation.vertex_normals is not None
     assert tessellation.texture_coordinates is not None
@@ -345,7 +279,7 @@ def test_surface_tessellation_aligns_positions_normals_uvs_and_winding():
 
 
 def test_surface_tessellation_always_includes_aligned_attributes():
-    tessellation = PlanarSurface().tessellate(UVGrid(2, 3))
+    tessellation = PlanarSurface().to_tessellation(nu=2, nv=3)
 
     assert tessellation.vertex_normals is not None
     assert tessellation.texture_coordinates is not None
@@ -356,7 +290,7 @@ def test_surface_tessellation_always_includes_aligned_attributes():
 def test_shape_tessellation_has_no_stored_resolution():
     shape = Sphere(1.0)
 
-    tessellation = shape.tessellate(UVGrid(5, 7))
+    tessellation = shape.to_tessellation(nu=5, nv=7)
 
     assert tessellation.number_of_vertices == 32
     assert not hasattr(shape, "resolution_u")
@@ -371,33 +305,31 @@ def test_direct_conversions_preserve_polygonal_topology():
         [[0, 1, 2, 3]],
     )
 
-    assert shape.polygonize(Native()).to_mesh().number_of_faces() == 6
-    assert shape.tessellate(Native()).to_mesh().number_of_faces() == 12
-    assert surface.polygonize(UVGrid(2, 3)).to_mesh().number_of_faces() == 6
-    assert surface.tessellate(UVGrid(2, 3)).to_mesh().number_of_faces() == 12
+    assert shape.to_polygonal_surface().to_mesh().number_of_faces() == 6
+    assert shape.to_tessellation().to_mesh().number_of_faces() == 12
+    assert surface.to_polygonal_surface(nu=2, nv=3).to_mesh().number_of_faces() == 6
+    assert surface.to_tessellation(nu=2, nv=3).to_mesh().number_of_faces() == 12
     assert polygonal_surface.to_mesh().number_of_faces() == 1
-    assert polygonal_surface.triangulated(FaceTriangulation()).to_mesh().number_of_faces() == 2
+    assert polygonal_surface.triangulated().to_mesh().number_of_faces() == 2
 
 
 def test_shape_topology_results_are_independent():
     shape = Box(1.0)
-    first = shape.polygonize(Native())
-    second = shape.polygonize(Native())
-    triangles = shape.tessellate(Native()).triangles
+    first = shape.to_polygonal_surface()
+    second = shape.to_polygonal_surface()
+    triangles = shape.to_tessellation().triangles
 
     first.faces[0][0] = 99
 
     assert second.faces[0][0] != 99
-    assert isinstance(triangles, tuple)
-    assert all(isinstance(triangle, tuple) for triangle in triangles)
+    assert isinstance(triangles, list)
+    assert all(isinstance(triangle, list) for triangle in triangles)
 
 
 def test_surface_direct_and_two_step_tessellation_are_geometrically_consistent():
     surface = PlanarSurface()
-    strategy = UVGrid(2, 3)
-
-    direct = surface.tessellate(strategy)
-    two_step = surface.polygonize(strategy).triangulated(FaceTriangulation(quad=DiagonalSplit("02")))
+    direct = surface.to_tessellation(nu=2, nv=3)
+    two_step = surface.to_polygonal_surface(nu=2, nv=3).triangulated()
 
     assert TOL.is_allclose(direct.vertices, two_step.vertices)
     assert direct.number_of_triangles == two_step.number_of_triangles
@@ -405,12 +337,11 @@ def test_surface_direct_and_two_step_tessellation_are_geometrically_consistent()
 
 def test_surface_tessellation_and_polygonization_follow_placement():
     surface = PlanarSurface()
-    strategy = UVGrid(2, 3)
-    original = surface.tessellate(strategy)
+    original = surface.to_tessellation(nu=2, nv=3)
 
     surface.frame.point.x += 2.0
-    moved = surface.tessellate(strategy)
-    polygonal = surface.polygonize(strategy)
+    moved = surface.to_tessellation(nu=2, nv=3)
+    polygonal = surface.to_polygonal_surface(nu=2, nv=3)
 
     for before, after in zip(original.vertices, moved.vertices, strict=True):
         assert TOL.is_close(after[0] - before[0], 2.0)

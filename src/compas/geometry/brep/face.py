@@ -14,12 +14,10 @@ if TYPE_CHECKING:
     from compas.geometry import BrepVertex
     from compas.geometry import Cone
     from compas.geometry import Cylinder
-    from compas.geometry import Deflection
     from compas.geometry import Frame
     from compas.geometry import NurbsSurface
     from compas.geometry import Plane
     from compas.geometry import Point
-    from compas.geometry import PolygonalSurface
     from compas.geometry import Sphere
     from compas.geometry import Surface
     from compas.geometry import Tessellation
@@ -291,13 +289,33 @@ class BrepFace(Data):
         """Return the face surface as a NURBS surface."""
         raise NotImplementedError
 
-    def tessellate(self, strategy: "Deflection") -> "Tessellation":
-        """Create a triangle tessellation respecting this face's trims."""
-        return self.as_brep().tessellate(strategy)
+    def to_tessellation(
+        self,
+        *,
+        linear_deflection: float | None = None,
+        angular_deflection: float | None = None,
+    ) -> "Tessellation":
+        """Create a triangle tessellation respecting this face's trims.
 
-    def polygonize(self, strategy: "Deflection") -> "PolygonalSurface":
-        """Create a polygonal representation respecting this face's trims."""
-        return self.as_brep().polygonize(strategy)
+        Parameters
+        ----------
+        linear_deflection
+            The positive linear deflection in model units. If `None`, use
+            `TOL.lineardeflection` through the containing BRep operation.
+        angular_deflection
+            The positive angular deflection in degrees, no greater than 180.
+            If `None`, use the degree equivalent of `TOL.angulardeflection`.
+
+        Returns
+        -------
+        Tessellation
+            The indexed triangle representation.
+
+        """
+        return self.as_brep().to_tessellation(
+            linear_deflection=linear_deflection,
+            angular_deflection=angular_deflection,
+        )
 
     # ==========================================================================
     # Methods

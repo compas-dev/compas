@@ -23,6 +23,9 @@ from compas.typing import PointLike
 from compas.typing import PointsLike
 
 from ._typing import TransformationType
+from .triangulation import Triangulator
+from .triangulation import _validate_triangulation
+from .triangulation import triangulate_polygon
 
 if TYPE_CHECKING:
     from compas.datastructures import Mesh
@@ -30,7 +33,6 @@ if TYPE_CHECKING:
     from compas.geometry import Brep
     from compas.geometry import PlanarRegion
     from compas.geometry import Tessellation
-    from compas.geometry import TriangulationStrategy
     from compas.geometry import Vector
 
 
@@ -303,13 +305,16 @@ class Polygon(Geometry):
     # Conversions
     # =============================================================================
 
-    def triangulated(self, strategy: "TriangulationStrategy") -> "Tessellation":
+    def triangulated(self, triangulator: Triangulator | None = None) -> "Tessellation":
         """Triangulate the polygon without modifying it.
 
         Parameters
         ----------
-        strategy
-            The face triangulation strategy.
+        triangulator
+            A callable that maps ordered polygon vertices to triangle indices.
+            It should return a complete, nondegenerate triangulation with the
+            winding of the source boundary. If `None`, use
+            `triangulate_polygon`.
 
         Returns
         -------
@@ -318,9 +323,12 @@ class Polygon(Geometry):
 
         """
         from compas.geometry import Tessellation
-        from compas.geometry.triangulation import triangulate_polygon
 
-        return Tessellation(self.vertices, triangulate_polygon(self.vertices, strategy))
+        if triangulator is None:
+            triangulator = triangulate_polygon
+        vertices = self.vertices
+        triangles = _validate_triangulation(triangulator(vertices), vertices)
+        return Tessellation(vertices, triangles)
 
     def to_vertices_and_faces(self) -> tuple[list[Point], list[list[int]]]:
         """Return the polygon vertices and indexed faces.

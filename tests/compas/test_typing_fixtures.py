@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).parents[2]
 FIXTURES = ROOT / "tests" / "typing"
 EXPECTED_ERROR = re.compile(r"# expected-error: (?P<rule>[A-Za-z][A-Za-z0-9]+)\s*$")
+BROAD_TYPE_IGNORE = re.compile(r"#\s*type:\s*ignore\s*$")
 
 
 def run_pyright(fixture):
@@ -60,3 +61,15 @@ def test_expected_typing_errors_match_inline_markers():
     fixture = FIXTURES / "expected_errors.py"
 
     assert actual_diagnostics(run_pyright(fixture)) == expected_diagnostics(fixture)
+
+
+def test_executable_examples_have_no_broad_type_ignores():
+    examples = ROOT / "docs" / "assets" / "examples"
+    broad_ignores = []
+
+    for example in examples.rglob("*.py"):
+        for line_number, line in enumerate(example.read_text().splitlines(), start=1):
+            if BROAD_TYPE_IGNORE.search(line):
+                broad_ignores.append(f"{example.relative_to(ROOT)}:{line_number}")
+
+    assert broad_ignores == []

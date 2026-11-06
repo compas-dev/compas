@@ -11,9 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added the public `compas.typing` structural vocabulary with NumPy-aware `PointLike`, `VectorLike`, collection, and neutral `VerticesFaces` aliases.
 * Added the PEP 561 `py.typed` marker and installed-wheel static-consumer verification.
-* Added serializable strategies and structural validation for polygonization, ephemeral `Tessellation` buffers, mixed-face triangulation, and planar Delaunay triangulation.
-* Added `polygonize(strategy)` and deterministic `tessellate(strategy=None)` operations for continuous geometry. Shape and surface defaults use `Native()`, `UGrid(64)`, or `UVGrid(64, 64)` according to parameter dimensionality.
-* Added `FaceTriangulation` for mixed polygonal collections, explicit projected ear clipping for bounded near-planar polygons, and minimum-area dynamic programming for twisted 3D polygons.
+* Added structural validation for polygonization, ephemeral `Tessellation` buffers, mixed-face triangulation, and planar Delaunay triangulation.
+* Added producer-specific `to_polygonal_surface` and exactly composed `to_tessellation` conversions for structured shapes and untrimmed surfaces.
+* Added named polygon triangulators, including explicit projected ear clipping for bounded near-planar polygons and minimum-area dynamic programming for twisted 3D polygons.
 * Added parameter-derived continuous AABBs for analytic shapes and surfaces, minimum-volume OBBs where established, and certified conservative control-net bounds for positive-weight NURBS surfaces.
 * Added `TOL.update()` method for explicit global state modification. 
 * Added `TOL.temporary()` context manager for scoped changes.
@@ -26,7 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added a committed uv development lock, documented direct quality commands while retaining Invoke convenience tasks, and migrated CI, release, artifact, and documentation mechanics to immutably pinned shared actions.
 * Standardized numerical triangle-mesh plugin inputs and outputs on structural `(vertices, triangles)` buffers. `Tessellation` remains an ephemeral discrete representation for geometry producers and scene handoff, but is not required at numerical backend boundaries.
 * Defined core triangle-mesh Gaussian curvature as the dimensionless angle deficit, using $\pi - \sum_i \theta_i$ at boundary vertices and $2\pi - \sum_i \theta_i$ at interior vertices.
-* Renamed planar Delaunay operations to `triangulate_planar_points` and `triangulate_planar_domain`, with core-owned validation before backend dispatch.
+* Replaced strategy-selected planar Delaunay operations with `delaunay_triangulation`, `constrained_delaunay_triangulation`, and `conforming_delaunay_triangulation`, returning structural buffers with core-owned validation.
 * Replaced backend-specific `NurbsCurve` and `NurbsSurface` substitution with stable core wrappers and operation-level plugin contracts.
 * Modernized internal path, URL, text-stream, and binary-stream handling and made ownership of opened resources explicit.
 * Corrected variance, standard-deviation, Gram-Schmidt, determinant, inverse, matrix-decomposition, and projection edge-case behavior in `compas.linalg`.
@@ -56,7 +56,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Consolidated best-fit algorithms in `bestfit.py`, removed `_numpy` public names, made numerical imports lazy, switched the canonical plane fit to PCA, and standardized fitted radii as scalar floats.
 * Consolidated hull and ICP algorithms under unsuffixed APIs, corrected convex-hull polyhedron construction and stable ICP returns, and moved optional Shapely polygon Boolean defaults into `booleans.py`.
 * Added deferred topology validation to `PlanarRegion` triangulation, with clear errors for invalid boundary loops, holes outside or touching the exterior, and overlapping, touching, or nested holes.
-* Added a zero-copy, triangle-only `Tessellation` result with shared vertex indexing for triangles, normals, and texture coordinates. Continuous defining geometry uses explicit `polygonize(strategy)` for persistent `PolygonalSurface` results and fresh `tessellate(strategy=None)` for ephemeral triangle results; polygonal collections use composite `FaceTriangulation` policies.
+* Added a zero-copy, triangle-only `Tessellation` result with shared vertex indexing for triangles, normals, and texture coordinates. Continuous structured geometry uses producer-specific conversion keywords, BReps use deflection keywords, and polygonal collections accept named or duck-typed triangulation callables.
+* Changed `Mesh.triangulated()` to return an independent mesh of the same concrete type, preserving mesh data, existing keys and attributes, and editable topology while leaving other aggregate triangulation results as `Tessellation`.
+* Removed the public tessellation and triangulation strategy hierarchies and the old `polygonize`/`tessellate` operation aliases in favor of one explicit public path per operation.
 * Defined discretization as the broad category of operations producing finite representations of continuous geometry, polygonization as the persistent `PolygonalSurface` operation, and tessellation as the ephemeral indexed-triangle operation.
 * Renamed the NURBS surface defining-point grid from `points` to `control_points`.
 * Made shape and surface strategy arguments non-mutating and added aligned analytic normals and normalized UV coordinates to surface tessellations.
@@ -76,11 +78,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 * Removed the private `compas._typing` module and its ambiguous coordinate and tuple-valued mesh aliases.
-* Removed implicit and misspelled tessellation conversions, scalar resolution overrides, and implicit quad splitting in favor of explicit strategies and result types.
+* Removed implicit and misspelled tessellation conversions, scalar resolution overrides, and implicit quad splitting in favor of explicit producer controls, named triangulators, and result types.
 * Removed the unsupported core triangle-mesh mean and principal curvature plugin contracts and the obsolete tessellation-specific pluggable decorator.
 * Removed stored shape and surface resolution state, derived discretization caches, generic sampled geometry properties, `Shape.to_vertices_and_faces()`, and `Mesh.from_shape()`.
 * Removed unused runtime tessellation capability discovery and speculative approximation-error schemas.
-* Removed `Shape.to_polyhedron()` because `Polyhedron` represents a validated closed solid rather than the generic polygonal discretization of a shape. Use `polygonize(strategy)`, `tessellate(strategy)`, or convert the result to a mesh.
+* Removed `Shape.to_polyhedron()` because `Polyhedron` represents a validated closed solid rather than the generic polygonal discretization of a shape. Use `to_polygonal_surface()`, `to_tessellation()`, or convert the result to a mesh.
 * Removed the private `compas._os` compatibility module and its obsolete Python 2, IronPython, CAD-host, Conda-bootstrapper, and Windows elevation helpers.
 * Removed the deprecated `compas.linalg.close` and `compas.linalg.allclose` helpers in favor of `TOL.is_close` and `TOL.is_allclose`.
 * Removed the `compas.rpc` package and the `compas_rpc` command-line entry point.

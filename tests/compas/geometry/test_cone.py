@@ -3,7 +3,6 @@ import pytest
 from compas.geometry import Cone
 from compas.geometry import Frame
 from compas.geometry import Line
-from compas.geometry import UGrid
 
 
 @pytest.fixture
@@ -14,7 +13,7 @@ def cone():
 def test_cone_discretization(cone):
     # just checking these don't break. Could not quickly find a formula that worked to test the actual values
     # as function of the resolution
-    surface = cone.polygonize(UGrid(6))
+    surface = cone.to_polygonal_surface(nu=6)
     assert surface.vertices
     assert surface.faces
 
@@ -86,7 +85,7 @@ def test_cone_faces_do_not_compute_vertices(monkeypatch):
         raise AssertionError("Topology computation should not regenerate positions.")
 
     monkeypatch.setattr(cone, "_compute_local_vertices", fail)
-    assert cone._compute_faces(UGrid(6))
+    assert cone._compute_faces((6,))
 
 
 def test_cone_bounds_are_invalidated():

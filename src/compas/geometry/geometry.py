@@ -1,4 +1,3 @@
-from collections.abc import Sequence
 from typing import TYPE_CHECKING
 from typing import Self
 
@@ -163,7 +162,7 @@ class Geometry(Data):
         geometry.scale(x=x, y=y, z=z)
         return geometry
 
-    def translate(self, vector: Sequence[float]) -> None:
+    def translate(self, vector: VectorLike) -> None:
         """Translate the geometry.
 
         Parameters
@@ -183,7 +182,7 @@ class Geometry(Data):
 
         self.transform(Translation.from_vector(vector))
 
-    def translated(self, vector: Sequence[float]) -> Self:
+    def translated(self, vector: VectorLike) -> Self:
         """Returns a translated copy of this geometry.
 
         Parameters
