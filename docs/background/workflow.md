@@ -127,3 +127,19 @@ The procedure for submitting a PR is the following.
 6) Wait for the tests to pass and for the code to be reviewed.
 
    We review pull requests as soon as we can, typically within a week. If you get no review comments within two weeks, feel free to ask for feedback by adding a comment on your PR (this will notify maintainers). Thank you!
+
+## Candidate wheel artifacts
+
+The Linux Python 3.12 build is the producer for the core wheel used by the
+framework-wide candidate integration gate. The build creates the wheel from a
+clean `git archive`, verifies its contents and installed typing contract, and
+then uploads that same file as the `candidate-linux-py312` Actions artifact.
+The upload step does not rebuild the distribution and runs only after the
+verification step succeeds.
+
+The artifact contains exactly one wheel and is retained for 14 days. Its
+workflow run, source commit, artifact identifier, archive digest, wheel
+filename, and wheel digest are recorded separately in the framework candidate
+manifest. The framework gate accepts the artifact only when all recorded
+provenance and digests match. Producing this artifact does not publish or
+release COMPAS.

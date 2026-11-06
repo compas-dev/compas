@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added a verified Linux Python 3.12 candidate wheel artifact for framework-wide pre-release integration.
 * Added the public `compas.typing` structural vocabulary with NumPy-aware `PointLike`, `VectorLike`, collection, and neutral `VerticesFaces` aliases.
 * Added the PEP 561 `py.typed` marker and installed-wheel static-consumer verification.
 * Added structural validation for polygonization, ephemeral `Tessellation` buffers, mixed-face triangulation, and planar Delaunay triangulation.

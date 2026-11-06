@@ -79,6 +79,14 @@ jobs:
               --pythonpath "${RUNNER_TEMP}/compas-wheel/bin/python" \
               "${GITHUB_WORKSPACE}/tests/typing/installed_consumer.py"
           )
+      - name: Upload verified candidate wheel
+        if: matrix.os == 'ubuntu-latest' && matrix.python == '3.12'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: candidate-linux-py312
+          path: ${{ runner.temp }}/compas-wheelhouse/*.whl
+          if-no-files-found: error
+          retention-days: 14
 
   numpy-compatibility:
     name: NumPy ${{ matrix.numpy }}
