@@ -79,73 +79,7 @@ class MeshObject(SceneObject):
     def mesh(self, mesh: Mesh) -> None:
         if self.scene is None:
             self._item_guid = mesh.guid
-            self._detached_item = mesh
+            self._item = mesh
         else:
             self.scene.replace_item(self, mesh)
         self.transformation = None
-
-    # ==========================================================================
-    # Methods
-    # ==========================================================================
-
-    def draw_vertices(self) -> list[object]:
-        """Draw the vertices of the mesh.
-
-        Vertices are drawn based on the values of
-
-        * `self.show_vertices`
-        * `self.vertexcolor`
-        * `self.vertexsize`
-
-        Returns
-        -------
-        list[object]
-            The identifiers of the objects representing the vertices in the visualization context.
-
-        """
-        raise NotImplementedError
-
-    def draw_edges(self) -> list[object]:
-        """Draw the edges of the mesh.
-
-        Edges are drawn based on the values of
-
-        * `self.show_edges`
-        * `self.edgecolor`
-        * `self.edgewidth`
-
-        Returns
-        -------
-        list[object]
-            The identifiers of the objects representing the edges in the visualization context.
-
-        """
-        raise NotImplementedError
-
-    def draw_faces(self) -> list[object]:
-        """Draw the faces of the mesh.
-
-        Faces are drawn based on the values of
-
-        * `self.show_faces`
-        * `self.facecolor`
-
-        Returns
-        -------
-        list[object]
-            The identifiers of the objects representing the faces in the visualization context.
-
-        """
-        raise NotImplementedError
-
-    def clear_vertices(self) -> None:
-        """Clear the vertices of the mesh."""
-        raise NotImplementedError
-
-    def clear_edges(self) -> None:
-        """Clear the edges of the mesh."""
-        raise NotImplementedError
-
-    def clear_faces(self) -> None:
-        """Clear the faces of the mesh."""
-        raise NotImplementedError

@@ -2,7 +2,6 @@
 
 import warnings
 from collections.abc import Sequence
-from contextlib import contextmanager
 from typing import TYPE_CHECKING
 from typing import Any
 from typing import cast
@@ -28,27 +27,12 @@ from compas.scene import GeometryObject
 from compas.scene import Group
 from compas.scene import MeshObject
 from compas.scene import Scene
-from compas.scene.context import ITEM_SCENEOBJECT
-from compas.scene.context import register
+from compas.scene.context import register_sceneobject_type
 
 if TYPE_CHECKING:
     from compas.files.gltf.gltf_document import GLTFDocument
     from compas.files.gltf.gltf_node import GLTFNode
     from compas.scene import SceneObject  # noqa: F401
-
-
-@contextmanager
-def _base_scene_context():
-    """Provide base scene objects without triggering visualization plugin discovery."""
-    original = {context: registry.copy() for context, registry in ITEM_SCENEOBJECT.items()}
-    register(Geometry, GeometryObject, context=None)
-    register(Mesh, MeshObject, context=None)
-    try:
-        yield
-    finally:
-        ITEM_SCENEOBJECT.clear()
-        for context, registry in original.items():
-            ITEM_SCENEOBJECT[context].update(registry)
 
 
 def _indexed_positions(
@@ -308,10 +292,10 @@ def gltf_to_scene(
         for child_key in node.children:
             add_node(document.nodes[child_key], group)
 
-    with _base_scene_context():
-        for root_key in source_scene.children:
-            assert scene.root is not None
-            add_node(document.nodes[root_key], scene.root)
+    register_sceneobject_type(Geometry, GeometryObject)
+    register_sceneobject_type(Mesh, MeshObject)
+    for root_key in source_scene.children:
+        add_node(document.nodes[root_key], scene.root)
     return scene
 
 

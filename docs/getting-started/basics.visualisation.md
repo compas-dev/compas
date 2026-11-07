@@ -11,9 +11,9 @@ COMPAS (data) objects can be visualised by placing them into a "scene".
 >>> scene.draw()
 ```
 
-When a COMPAS object is added, the scene creates the corresponding scene object
-for the active visualisation context. Visualisation backends are provided by
-separate COMPAS packages.
+When a COMPAS object is added, the scene creates a stable, backend-neutral scene
+object for its semantic type. Visualisation backends are provided by separate
+COMPAS packages and register operations for these stable objects.
 
 ## Scene Objects
 
@@ -21,8 +21,8 @@ When a COMPAS object is added to a scene, a scene object is created automaticall
 
 ```pycon
 >>> sceneobj = scene.add(box)
->>> sceneobj
-BoxObject
+>>> type(sceneobj).__name__
+'GeometryObject'
 ```
 
 The scene object holds a reference to the COMPAS data object, and stores its visualisation settings and transformation matrix.
@@ -33,7 +33,7 @@ Multiple scene objects can be created for the same COMPAS data object, each with
 >>> sceneobj2 = scene.add(box)
 >>> sceneobj1 is sceneobj2
 False
->>> sceneobj1.data is sceneobj2.data
+>>> sceneobj1.item is sceneobj2.item
 True
 ```
 
@@ -45,7 +45,7 @@ All scene objects have a color attribute.
 ```pycon
 >>> sceneobj = scene.add(box)
 >>> sceneobj.color
-Color(0.0, 0.0, 0.0, alpha=1.0)
+Color(1.0, 1.0, 1.0, alpha=1.0)
 ```
 
 Color attributes can be set using a COMPAS Color object, or a tuple of RGB values, with the color components specified as floats in the range 0.0-1.0 or as integers in the range 0-255.
@@ -75,10 +75,11 @@ See the section about mesh visualisation for more information.
 
 ## Scene Hierarchy
 
-Scene objects are organised in a hierarchy under a root group. The durable
-hierarchy consists of serializable [`SceneNode`][compas.scene.SceneNode]
-instances. Runtime [`SceneObject`][compas.scene.SceneObject] adapters connect
-those nodes to a visualisation context.
+Scene objects are organised in a hierarchy under an ordinary root group. A
+[`SceneNode`][compas.scene.SceneNode] contains only an object GUID and child
+nodes. Presentation state and the referenced data GUID belong to the stable
+[`SceneObject`][compas.scene.SceneObject]. Each scene object has exactly one
+node in a scene.
 
 ```pycon
 >>> scene = Scene()
@@ -102,13 +103,14 @@ A serialized scene contains its hierarchy, presentation state, and references
 to data objects by GUID. It does not embed or own those data objects. Serialize
 the data separately when it should outlive the current Python process.
 
-After loading a scene, its nodes can be inspected immediately. Bind the
-independently loaded data before requesting runtime adapters or drawing.
+After loading a scene, its objects and hierarchy can be inspected immediately.
+Bind the independently loaded data explicitly before accessing an object's
+`item` or drawing it.
 
 ```pycon
 >>> description = scene.to_jsonstring()
 >>> loaded_scene = Scene.from_jsonstring(description)
->>> loaded_scene.find_node_by_name(sceneobj.name).item_guid == box.guid
+>>> loaded_scene.find_by_name(sceneobj.name).item_guid == box.guid
 True
 >>> loaded_scene.bind(box)
 >>> loaded_scene.find_by_name(sceneobj.name).item is box
@@ -126,8 +128,8 @@ To use a different scene object as the parent, pass it to `Scene.add`.
 >>> point = Point(1, 2, 3)
 >>> pointobj = scene.add(point)
 >>> boxobj = scene.add(box, parent=pointobj)
->>> boxobj.parent
-PointObject
+>>> type(boxobj.parent).__name__
+'GeometryObject'
 ```
 
 ## Object Frame And Transformation
@@ -161,8 +163,10 @@ True
 
 ## Scene Context
 
-Visualisation packages register their own scene contexts and scene object
-implementations. Users can select a registered context explicitly:
+Visualisation packages register `draw` and `clear` operations for stable scene
+object types. Selecting another context changes operation lookup; it never
+replaces the scene objects or changes their Python types. Users can select a
+registered context explicitly:
 
 ```pycon
 >>> scene = Scene(context="MyContextName")

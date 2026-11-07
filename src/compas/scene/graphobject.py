@@ -78,7 +78,7 @@ class GraphObject(SceneObject):
     def graph(self, graph: Graph) -> None:
         if self.scene is None:
             self._item_guid = graph.guid
-            self._detached_item = graph
+            self._item = graph
         else:
             self.scene.replace_item(self, graph)
         self.transformation = None
@@ -108,57 +108,6 @@ class GraphObject(SceneObject):
     def node_xyz(self, node_xyz: dict[Hashable, list[RealInput]]) -> None:
         self._node_xyz = node_xyz
         self._node_xyz_revision = None
-
-    # ==========================================================================
-    # Methods
-    # ==========================================================================
-
-    def draw_nodes(self) -> list[object]:
-        """Draw the nodes of the graph.
-
-        Nodes are drawn based on the values of
-
-        * `self.show_nodes`
-        * `self.nodecolor`
-        * `self.nodesize`
-
-        Returns
-        -------
-        list[object]
-            The identifiers of the objects representing the nodes in the visualization context.
-
-        """
-        raise NotImplementedError
-
-    def draw_edges(self) -> list[object]:
-        """Draw the edges of the graph.
-
-        Edges are drawn based on the values of
-
-        * `self.show_edges`
-        * `self.edgecolor`
-        * `self.edgewidth`
-
-        Returns
-        -------
-        list[object]
-            The identifiers of the objects representing the edges in the visualization context.
-
-        """
-        raise NotImplementedError
-
-    def clear_nodes(self) -> None:
-        """Clear the nodes of the graph."""
-        raise NotImplementedError
-
-    def clear_edges(self) -> None:
-        """Clear the edges of the graph."""
-        raise NotImplementedError
-
-    def clear(self) -> None:
-        """Clear the nodes and edges of the graph."""
-        self.clear_nodes()
-        self.clear_edges()
 
     # ==========================================================================
     # Private helpers

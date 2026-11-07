@@ -91,7 +91,7 @@ class VolMeshObject(SceneObject):
     def volmesh(self, volmesh: VolMesh) -> None:
         if self.scene is None:
             self._item_guid = volmesh.guid
-            self._detached_item = volmesh
+            self._item = volmesh
         else:
             self.scene.replace_item(self, volmesh)
         self.transformation = None
@@ -121,92 +121,6 @@ class VolMeshObject(SceneObject):
     def vertex_xyz(self, vertex_xyz: dict[int, list[RealInput]]) -> None:
         self._vertex_xyz = vertex_xyz
         self._vertex_xyz_revision = None
-
-    # ==========================================================================
-    # Methods
-    # ==========================================================================
-
-    def draw_vertices(self) -> list[object]:
-        """Draw the vertices of the volmesh.
-
-        The vertices are drawn based on the values of
-
-        * `self.show_vertices`
-        * `self.vertexcolor`
-        * `self.vertexsize`
-
-        Returns
-        -------
-        list[object]
-            The identifiers of the objects representing the vertices in the visualization context.
-
-        """
-        raise NotImplementedError
-
-    def draw_edges(self) -> list[object]:
-        """Draw the edges of the volmesh.
-
-        The edges are drawn based on the values of
-
-        * `self.show_edges`
-        * `self.edgecolor`
-        * `self.edgewidth`
-
-        Returns
-        -------
-        list[object]
-            The identifiers of the objects representing the edges in the visualization context.
-
-        """
-        raise NotImplementedError
-
-    def draw_faces(self) -> list[object]:
-        """Draw the faces of the volmesh.
-
-        The faces are drawn based on the values of
-
-        * `self.show_faces`
-        * `self.facecolor`
-
-        Returns
-        -------
-        list[object]
-            The identifiers of the objects representing the faces in the visualization context.
-
-        """
-        raise NotImplementedError
-
-    def draw_cells(self) -> list[object]:
-        """Draw the cells of the volmesh.
-
-        The cells are drawn based on the values of
-
-        * `self.show_cells`
-        * `self.cellcolor`
-
-        Returns
-        -------
-        list[object]
-            The identifiers of the objects representing the cells in the visualization context.
-
-        """
-        raise NotImplementedError
-
-    def clear_vertices(self) -> None:
-        """Clear the vertices of the volmesh."""
-        raise NotImplementedError
-
-    def clear_edges(self) -> None:
-        """Clear the edges of the volmesh."""
-        raise NotImplementedError
-
-    def clear_faces(self) -> None:
-        """Clear the faces of the volmesh."""
-        raise NotImplementedError
-
-    def clear_cells(self) -> None:
-        """Clear the cells of the volmesh."""
-        raise NotImplementedError
 
     # ==========================================================================
     # Private helpers

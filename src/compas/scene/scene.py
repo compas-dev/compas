@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from collections.abc import Iterable
 from collections.abc import Iterator
 from collections.abc import Mapping
@@ -11,17 +13,13 @@ from uuid import UUID
 import compas.data  # noqa: F401
 import compas.datastructures  # noqa: F401
 import compas.geometry  # noqa: F401
-from compas.colors import Color
 from compas.data import Data
 from compas.datastructures import Tree
-from compas.geometry import Transformation
 
-from . import sceneobject as sceneobject_module
 from ._scenenode import SceneNode
-from .context import after_draw
-from .context import before_draw
-from .context import clear
 from .context import detect_current_context
+from .context import get_scene_operation
+from .context import get_sceneobject_cls
 from .exceptions import SceneItemNotBoundError
 from .group import Group
 from .sceneobject import SceneObject
@@ -31,51 +29,37 @@ if TYPE_CHECKING:
 
 
 class Scene(Data):
-    """A backend-neutral visual description with runtime item bindings.
+    """Backend-neutral stable scene objects and their hierarchy.
 
-    Scene serialization contains durable node state and item GUID references,
-    but never embeds the referenced data objects. Load data independently and
-    bind it explicitly before adapter or drawing operations that need it.
+    Referenced data items remain independently serializable and are bound by
+    GUID. Visualization backends provide context-keyed `draw` and `clear`
+    operations without replacing scene-object classes.
 
     Parameters
     ----------
     name
-        The name of the scene.
+        Scene name.
     context
-        The runtime visualization context. If omitted, COMPAS selects the only
-        registered named context when one is available.
-
-    Examples
-    --------
-    >>> from compas.scene import Scene
-    >>> from compas.geometry import Box
-    >>> box = Box(1)
-    >>> scene = Scene()
-    >>> boxobject = scene.add(box)
-    >>> boxobject.item is box
-    True
+        Optional default runtime visualization context.
 
     """
 
-    SCHEMA_VERSION = 1
-
-    # ==========================================================================
-    # Data
-    # ==========================================================================
+    SCHEMA_VERSION = 2
 
     @property
     def __data__(self) -> dict[str, Any]:
-        """Return the reference-only scene description."""
+        """Return stable scene objects plus hierarchy references."""
         return {
             "version": self.SCHEMA_VERSION,
             "name": self.name,
-            "root": self.root_node.__data__,
+            "objects": [self._objects[node.object_guid] for node in self.tree.nodes],
+            "hierarchy": self.root_node.__data__,
         }
 
     @classmethod
     def __from_data__(cls, data: dict[str, Any]) -> Self:
-        """Construct an unresolved scene description without binding adapters."""
-        expected = {"version", "name", "root"}
+        """Construct an unresolved scene without visualization plugins."""
+        expected = {"version", "name", "objects", "hierarchy"}
         unknown = set(data) - expected
         if unknown:
             raise ValueError("Unknown scene fields: {}.".format(", ".join(sorted(unknown))))
@@ -84,17 +68,17 @@ class Scene(Data):
             raise ValueError("Missing scene fields: {}.".format(", ".join(sorted(missing))))
         if data["version"] != cls.SCHEMA_VERSION:
             raise ValueError(f"Unsupported scene schema version: {data['version']}.")
-
-        root = SceneNode.__from_data__(data["root"])
-        if root.kind != "group":
-            raise ValueError("The scene root should be a group node.")
-
-        scene = cls(data["name"], context=None, _detect_context=False, _root=root)
-        return scene
-
-    # ==========================================================================
-    # Dunder methods
-    # ==========================================================================
+        if not isinstance(data["name"], str):
+            raise TypeError("Scene name should be a string.")
+        if not isinstance(data["objects"], list) or not all(isinstance(obj, SceneObject) for obj in data["objects"]):
+            raise TypeError("Scene objects should be a list of SceneObject values.")
+        objects: dict[UUID, SceneObject] = {}
+        for obj in data["objects"]:
+            if obj.guid in objects:
+                raise ValueError(f"Duplicate scene-object GUID: {obj.guid}.")
+            objects[obj.guid] = obj
+        root = SceneNode.__from_data__(data["hierarchy"])
+        return cls(data["name"], context=None, _detect_context=False, _objects=objects, _root=root)
 
     def __init__(
         self,
@@ -102,82 +86,63 @@ class Scene(Data):
         context: str | None = None,
         *,
         _detect_context: bool = True,
+        _objects: dict[UUID, SceneObject] | None = None,
         _root: SceneNode | None = None,
     ) -> None:
         super().__init__(name=name)
         self.context = context if context is not None or not _detect_context else detect_current_context()
         self._items: dict[UUID, Data] = {}
-        self._objects: dict[UUID, SceneObject] = {}
+        self._objects: dict[UUID, SceneObject] = _objects or {}
         self._nodes: dict[UUID, SceneNode] = {}
+        self._resources: dict[str, dict[UUID, tuple[object | None, list[object]]]] = {}
         self.tree: Tree[SceneNode] = Tree(name=name)
-        root = _root or SceneNode(kind="group", name="ROOT")
-        self.tree.add(root)
+        if _root is None:
+            root_object = Group(name="ROOT")
+            self._objects[root_object.guid] = root_object
+            _root = SceneNode(root_object.guid)
+        self.tree.add(_root)
         self._index_nodes()
+        if set(self._objects) != set(self._nodes):
+            raise ValueError("Scene objects and hierarchy references should match exactly.")
+        if not isinstance(self.root, Group):
+            raise ValueError("The scene root should reference a Group.")
+        for obj in self._objects.values():
+            obj._scene = self
 
     def __str__(self) -> str:
         return str(self.tree)
 
-    # ==========================================================================
-    # Properties
-    # ==========================================================================
-
     @property
     def root_node(self) -> SceneNode:
-        """The durable root node of the scene hierarchy."""
-        root = self.tree.root
-        if root is None:
-            raise RuntimeError("The scene tree has no root node.")
-        return root
+        """Return the hierarchy root node."""
+        if self.tree.root is None:
+            raise RuntimeError("The scene hierarchy has no root.")
+        return self.tree.root
 
     @property
     def root(self) -> Group:
-        """The runtime group adapter bound to the root node."""
-        return cast(Group, self.object(self.root_node, object_type=Group))
+        """Return the stable root group."""
+        return cast(Group, self._objects[self.root_node.object_guid])
 
     @property
     def nodes(self) -> Iterator[SceneNode]:
-        """An iterator over durable scene nodes, including the root."""
+        """Iterate over hierarchy nodes, including the root."""
         return iter(self.tree.nodes)
 
     @property
     def objects(self) -> list[SceneObject]:
-        """Runtime adapters for all non-root scene nodes.
-
-        Raises
-        ------
-        SceneItemNotBoundError
-            If a node references data that has not been bound.
-
-        """
-        return [self.object(node) for node in self.tree.nodes if not node.is_root]
+        """Return non-root scene objects in hierarchy order."""
+        return [self._objects[node.object_guid] for node in self.tree.nodes if not node.is_root]
 
     @property
     def item_store(self) -> Mapping[UUID, Data]:
-        """The read-only runtime item-binding table.
-
-        Bindings are non-owning references and are not serialized with the
-        scene description.
-
-        """
+        """Return read-only runtime item bindings."""
         return MappingProxyType(self._items)
 
     @property
     def object_store(self) -> Mapping[UUID, SceneObject]:
-        """The read-only mapping of nodes to currently bound runtime adapters."""
+        """Return read-only durable scene-object storage."""
         return MappingProxyType(self._objects)
-
-    @property
-    def context_objects(self) -> list[object]:
-        """The identifiers of objects already drawn in the runtime context."""
-        guids: list[object] = []
-        for sceneobject in self._objects.values():
-            if sceneobject.node is not None and not sceneobject.node.is_root:
-                guids += sceneobject.guids
-        return guids
-
-    # ==========================================================================
-    # Constructors
-    # ==========================================================================
 
     @classmethod
     def from_gltf(cls, document: "GLTFDocument", scene_key: int | None = None) -> Self:
@@ -186,48 +151,14 @@ class Scene(Data):
 
         return gltf_to_scene(document, scene_key, scene_type=cls)
 
-    # ==========================================================================
-    # Conversions
-    # ==========================================================================
-
     def to_gltf(self) -> "GLTFDocument":
-        """Convert this scene to a glTF document.
-
-        Unsupported scene items are omitted with a warning.
-
-        Returns
-        -------
-        GLTFDocument
-            Converted document.
-
-        """
+        """Convert the scene to a glTF document."""
         from compas.files.gltf.gltf_conversions import scene_to_gltf
 
         return scene_to_gltf(self)
 
-    # ==========================================================================
-    # Item bindings and runtime adapters
-    # ==========================================================================
-
     def bind(self, item: Data) -> None:
-        """Bind an independently loaded data item to its referenced GUID.
-
-        Binding the same instance repeatedly is idempotent. A different object
-        carrying an already bound GUID is rejected.
-
-        Parameters
-        ----------
-        item
-            The independently loaded data item.
-
-        Raises
-        ------
-        KeyError
-            If no scene node references the item's GUID.
-        ValueError
-            If another object is already bound to the GUID.
-
-        """
+        """Bind an independently loaded item to referenced scene objects."""
         if item.guid not in self._referenced_item_guids():
             raise KeyError(f"Scene does not reference item {item.guid}.")
         existing = self._items.get(item.guid)
@@ -236,169 +167,64 @@ class Scene(Data):
         self._items[item.guid] = item
 
     def bind_many(self, items: Iterable[Data]) -> None:
-        """Bind multiple data items atomically.
-
-        Parameters
-        ----------
-        items
-            Independently loaded data items.
-
-        """
-        pending = list(items)
+        """Bind multiple referenced items atomically."""
+        staged = dict(self._items)
         references = self._referenced_item_guids()
-        staged: dict[UUID, Data] = {}
-        for item in pending:
+        for item in items:
             if item.guid not in references:
                 raise KeyError(f"Scene does not reference item {item.guid}.")
-            existing = self._items[item.guid] if item.guid in self._items else staged.get(item.guid)
+            existing = staged.get(item.guid)
             if existing is not None and existing is not item:
                 raise ValueError(f"A different data item with GUID {item.guid} is already bound.")
             staged[item.guid] = item
-        self._items.update(staged)
+        self._items = staged
 
-    def bind_context(self, context: str | None = None) -> None:
-        """Bind runtime adapters after the complete scene hierarchy exists.
-
-        Parameters
-        ----------
-        context
-            The visualization context. `None` uses context-independent core
-            adapters.
-
-        Raises
-        ------
-        SceneItemNotBoundError
-            If any item node remains unresolved.
-
-        """
-        for node in self.tree.nodes:
-            if node.item_guid is not None and node.item_guid not in self._items:
-                raise SceneItemNotBoundError(node.guid, node.item_guid)
-        for sceneobject in self._objects.values():
-            sceneobject._scene = None
-            sceneobject._node = None
-        self._objects.clear()
-        self.context = context
-        for node in self.tree.nodes:
-            self.object(node)
-
-    def item(self, guid: UUID, *, node_guid: UUID | None = None) -> Data:
-        """Return a bound data item.
-
-        Parameters
-        ----------
-        guid
-            The referenced item GUID.
-        node_guid
-            The node requesting the item, used in a precise error message.
-
-        Returns
-        -------
-        Data
-            The bound data item.
-
-        Raises
-        ------
-        SceneItemNotBoundError
-            If the item has not been bound.
-
-        """
+    def item(self, guid: UUID, *, object_guid: UUID | None = None) -> Data:
+        """Return a bound item or raise a precise unresolved-reference error."""
         try:
             return self._items[guid]
         except KeyError:
-            raise SceneItemNotBoundError(node_guid or "unknown", guid) from None
+            raise SceneItemNotBoundError(object_guid or "unknown", guid) from None
 
-    def object(self, node: SceneNode | UUID, *, object_type: type[SceneObject] | None = None) -> SceneObject:
-        """Return or create the runtime adapter for a durable node."""
-        if isinstance(node, UUID):
-            node = self._nodes[node]
-        existing = self._objects.get(node.guid)
-        if existing is not None:
-            return existing
+    def object(self, reference: SceneNode | UUID) -> SceneObject:
+        """Return a stable scene object by node or GUID."""
+        guid = reference.object_guid if isinstance(reference, SceneNode) else reference
+        return self._objects[guid]
 
-        if node.kind == "group":
-            sceneobject = Group(
-                name=node.name,
-                color=node.color,
-                opacity=node.opacity,
-                show=node.show,
-                transformation=node.transformation,
-                context=self.context,
-                _detect_context=False,
-            )
-        else:
-            if node.item_guid is None:
-                raise RuntimeError("An item node has no item GUID.")
-            item = self.item(node.item_guid, node_guid=node.guid)
-            sceneobject = SceneObject(
-                item=item,
-                context=self.context,
-                sceneobject_type=object_type,
-                name=node.name,
-                color=node.color,
-                opacity=node.opacity,
-                show=node.show,
-                transformation=node.transformation,
-                _detect_context=False,
-            )
-        sceneobject._bind(self, node)
-        self._objects[node.guid] = sceneobject
-        return sceneobject
+    def node(self, object_guid: UUID) -> SceneNode:
+        """Return the hierarchy node for a scene-object GUID."""
+        return self._nodes[object_guid]
 
-    # ==========================================================================
-    # Hierarchy mutation
-    # ==========================================================================
+    def add(self, item: Data, parent: SceneObject | SceneNode | None = None, **kwargs: Any) -> SceneObject:
+        """Create and attach the stable semantic scene object for an item."""
+        if not isinstance(item, Data):
+            raise TypeError("Scene.add expects a Data item. Use add_object for an existing scene object.")
+        sceneobject_type = get_sceneobject_cls(item)
+        return self.add_object(sceneobject_type(item=item, **kwargs), parent=parent)
 
-    def add(
-        self,
-        item: Data | SceneObject,
-        parent: SceneObject | SceneNode | None = None,
-        **kwargs: Any,
-    ) -> SceneObject:
-        """Add a bound data item or detached runtime adapter to the scene."""
+    def add_object(self, sceneobject: SceneObject, parent: SceneObject | SceneNode | None = None) -> SceneObject:
+        """Attach an existing stable scene object explicitly."""
+        if not isinstance(sceneobject, SceneObject):
+            raise TypeError("Expected a SceneObject.")
+        if sceneobject.scene is not None:
+            raise ValueError("The scene object already belongs to a scene.")
+        if sceneobject.guid in self._objects:
+            raise ValueError(f"Scene object {sceneobject.guid} is already stored.")
         parent_node = self._parent_node(parent)
-
-        if isinstance(item, SceneObject):
-            sceneobject = item
-            if sceneobject.scene is not None:
-                raise ValueError("The scene object already belongs to a scene.")
-            bound_item = sceneobject.item
-        else:
-            bound_item = item
-            parent_object = self._objects.get(parent_node.guid)
-            if isinstance(parent_object, Group):
-                group_kwargs = parent_object.kwargs.copy()
-                group_kwargs.update(kwargs)
-                kwargs = group_kwargs
-            supplied_context = kwargs.pop("context", self.context)
-            if supplied_context != self.context:
-                raise ValueError(f"Object context should be the same as scene context: {supplied_context} != {self.context}")
-            sceneobject = SceneObject(item=item, context=self.context, **kwargs)
-
-        kind = "item" if bound_item is not None else "group"
-        node = SceneNode(
-            kind=kind,
-            item_guid=bound_item.guid if bound_item is not None else None,
-            name=sceneobject.name,
-            transformation=sceneobject.transformation,
-            color=sceneobject.color,
-            opacity=sceneobject.opacity,
-            show=sceneobject.show,
-            extensions=sceneobject._capture_extension_state(),
-            guid=sceneobject.guid,
-        )
-        self._attach_node(node, parent_node)
-        if bound_item is not None:
+        node = SceneNode(sceneobject.guid)
+        self.tree.add(node, parent=parent_node)
+        self._nodes[sceneobject.guid] = node
+        self._objects[sceneobject.guid] = sceneobject
+        sceneobject._scene = self
+        if sceneobject.item_guid is not None and sceneobject._item is not None:
             try:
-                self.bind(bound_item)
+                self.bind(sceneobject._item)
             except Exception:
                 self.tree.remove(node)
-                self._nodes.pop(node.guid)
+                del self._nodes[sceneobject.guid]
+                del self._objects[sceneobject.guid]
+                sceneobject._scene = None
                 raise
-        sceneobject._bind(self, node)
-        self._objects[node.guid] = sceneobject
-        if hasattr(sceneobject, "_detached_item"):
-            del sceneobject._detached_item
         return sceneobject
 
     def add_reference(
@@ -407,157 +233,139 @@ class Scene(Data):
         *,
         name: str,
         parent: SceneObject | SceneNode | None = None,
-        transformation: Transformation | None = None,
-        color: Color | None = None,
-        opacity: float = 1.0,
-        show: bool = True,
-        extensions: Mapping[str, Mapping[str, Any]] | None = None,
-    ) -> SceneNode:
-        """Add an unresolved item reference to the scene description."""
-        node = SceneNode(
-            kind="item",
-            item_guid=item_guid,
-            name=name,
-            transformation=transformation,
-            color=color,
-            opacity=opacity,
-            show=show,
-            extensions=extensions,
-        )
-        self._attach_node(node, self._parent_node(parent))
-        return node
-
-    def add_group(
-        self,
-        name: str,
-        parent: SceneObject | SceneNode | None = None,
+        object_type: type[SceneObject] = SceneObject,
         **kwargs: Any,
-    ) -> Group:
-        """Add a group to the scene."""
-        group = Group(name=name, **kwargs)
-        return cast(Group, self.add(group, parent=parent))
+    ) -> SceneObject:
+        """Create and attach an unresolved stable scene object."""
+        return self.add_object(object_type(item_guid=item_guid, name=name, **kwargs), parent=parent)
+
+    def add_group(self, name: str, parent: SceneObject | SceneNode | None = None, **kwargs: Any) -> Group:
+        """Create and attach a stable group object."""
+        return cast(Group, self.add_object(Group(name=name, **kwargs), parent=parent))
 
     def remove(self, sceneobject: SceneObject | SceneNode) -> None:
-        """Remove a scene node and all descendants."""
-        node = sceneobject.node if isinstance(sceneobject, sceneobject_module.SceneObject) else sceneobject
-        if node is None or node.guid not in self._nodes:
-            raise ValueError("The scene object or node does not belong to this scene.")
+        """Remove an object hierarchy while preserving stable object identity."""
+        node = sceneobject if isinstance(sceneobject, SceneNode) else self.node(sceneobject.guid)
+        if node.object_guid not in self._nodes:
+            raise ValueError("The scene object does not belong to this scene.")
         if node.is_root:
             raise ValueError("The root group cannot be removed.")
-
         removed_nodes = list(node.traverse())
+        for removed_node in removed_nodes:
+            obj = self._objects[removed_node.object_guid]
+            for context_name, resources in tuple(self._resources.items()):
+                if obj.guid in resources:
+                    self.clear_object(obj, context=context_name)
         self.tree.remove(node)
         for removed_node in removed_nodes:
-            removed_object = self._objects.pop(removed_node.guid, None)
-            self._nodes.pop(removed_node.guid)
-            if removed_object is not None:
-                removed_object._detached_item = self._items.get(removed_node.item_guid) if removed_node.item_guid is not None else None
-                removed_object._scene = None
-                removed_object._node = None
+            obj = self._objects.pop(removed_node.object_guid)
+            self._nodes.pop(removed_node.object_guid)
+            obj._item = self._items.get(obj.item_guid) if obj.item_guid is not None else None
+            obj._scene = None
         self._prune_items()
 
     def replace_item(self, sceneobject: SceneObject, item: Data) -> None:
-        """Replace the bound data item referenced by a scene node."""
-        if sceneobject.scene is not self or sceneobject.node is None:
+        """Replace a scene object's represented item."""
+        if sceneobject.scene is not self:
             raise ValueError("The scene object does not belong to this scene.")
         existing = self._items.get(item.guid)
         if existing is not None and existing is not item:
             raise ValueError("A different data item with the same GUID is already bound.")
-        old_guid = sceneobject.node.item_guid
-        sceneobject.node.item_guid = item.guid
+        old_guid = sceneobject.item_guid
         sceneobject._item_guid = item.guid
+        sceneobject._item = item
         self._items[item.guid] = item
         sceneobject.invalidate()
         if old_guid is not None:
             self._prune_items()
 
-    # ==========================================================================
-    # Drawing and queries
-    # ==========================================================================
+    def draw_object(self, sceneobject: SceneObject, context: str | None = None, runtime: object | None = None) -> list[object]:
+        """Draw one stable scene object through a registered operation."""
+        context_name = self._context_name(context)
+        if sceneobject.guid in self._resources.get(context_name, {}):
+            self.clear_object(sceneobject, context=context_name)
+        implementation = get_scene_operation(context_name, type(sceneobject), "draw")
+        result = implementation(self, sceneobject, runtime)
+        handles = list(result or [])
+        self._resources.setdefault(context_name, {})[sceneobject.guid] = (runtime, handles)
+        return handles
 
-    def clear_context(self, guids: list[Any] | None = None) -> None:
-        """Clear objects from the visualization context."""
-        clear(guids)
+    def clear_object(self, sceneobject: SceneObject, context: str | None = None, runtime: object | None = None) -> None:
+        """Clear one object's transient context resources."""
+        context_name = self._context_name(context)
+        stored_runtime, resources = self._resources.get(context_name, {}).get(sceneobject.guid, (runtime, []))
+        implementation = get_scene_operation(context_name, type(sceneobject), "clear")
+        implementation(self, sceneobject, runtime if runtime is not None else stored_runtime, tuple(resources))
+        self._resources.get(context_name, {}).pop(sceneobject.guid, None)
 
-    def clear(self, clear_scene: bool = True, clear_context: bool = True) -> None:
-        """Clear the scene description and/or its visualization context."""
-        guids = self.context_objects
-        for sceneobject in self._objects.values():
-            sceneobject._guids = None
-        if clear_scene:
-            for node in tuple(self.root_node.children):
-                self.remove(node)
-        if clear_context:
-            self.clear_context(guids)
-
-    def draw(self) -> list[Any]:
-        """Draw all visible scene nodes in the current context."""
-        if not self.context:
-            raise ValueError("No context detected.")
-        self.bind_context(self.context)
-        before_draw()
-        drawn_objects: list[Any] = []
+    def draw(self, context: str | None = None, runtime: object | None = None) -> list[object]:
+        """Draw all visible non-root objects through one explicit context."""
+        context_name = self._context_name(context)
+        drawn: list[object] = []
         for sceneobject in self.objects:
             if sceneobject.show:
-                drawn_objects += sceneobject.draw()
-        after_draw(drawn_objects)
-        return drawn_objects
+                drawn.extend(self.draw_object(sceneobject, context=context_name, runtime=runtime))
+        return drawn
 
-    def redraw(self) -> None:
-        """Clear and draw the scene in the current context."""
-        self.clear(clear_scene=False, clear_context=True)
-        self.draw()
+    def clear(self, clear_scene: bool = True, clear_context: bool = True, context: str | None = None, runtime: object | None = None) -> None:
+        """Clear durable scene content and/or transient context resources."""
+        if clear_context:
+            contexts = [context] if context is not None else ([self.context] if self.context is not None else list(self._resources))
+            for context_name in contexts:
+                for sceneobject in tuple(self.objects):
+                    if sceneobject.guid in self._resources.get(context_name, {}):
+                        self.clear_object(sceneobject, context=context_name, runtime=runtime)
+        if clear_scene:
+            for child in tuple(self.root_node.children):
+                self.remove(child)
+
+    def redraw(self, context: str | None = None, runtime: object | None = None) -> None:
+        """Clear transient resources and draw the durable scene again."""
+        self.clear(clear_scene=False, clear_context=True, context=context, runtime=runtime)
+        self.draw(context=context, runtime=runtime)
 
     def find_node_by_name(self, name: str) -> SceneNode | None:
-        """Find the first durable node with the given name."""
-        return next((node for node in self.tree.nodes if not node.is_root and node.name == name), None)
+        """Find the first hierarchy node whose scene object has a name."""
+        return next((node for node in self.tree.nodes if not node.is_root and self.object(node).name == name), None)
 
     def find_by_name(self, name: str) -> SceneObject | None:
-        """Find the runtime adapter for the first node with the given name."""
+        """Find the first scene object with a name."""
         node = self.find_node_by_name(name)
         return self.object(node) if node is not None else None
 
     def find_by_itemtype(self, itemtype: type[Data]) -> SceneObject | None:
-        """Find the first bound scene object with a data item of the given type."""
-        return next((obj for obj in self.objects if isinstance(obj.item, itemtype)), None)
+        """Find the first resolved object representing an item type."""
+        return next((obj for obj in self.objects if obj.item_guid in self._items and isinstance(obj.item, itemtype)), None)
 
     def find_all_by_itemtype(self, itemtype: type[Data]) -> list[SceneObject]:
-        """Find all bound scene objects with data items of the given type."""
-        return [obj for obj in self.objects if isinstance(obj.item, itemtype)]
-
-    # ==========================================================================
-    # Private helpers
-    # ==========================================================================
-
-    def _attach_node(self, node: SceneNode, parent: SceneNode) -> None:
-        if node.guid in self._nodes:
-            raise ValueError(f"A scene node with GUID {node.guid} is already stored.")
-        self.tree.add(node, parent=parent)
-        self._nodes[node.guid] = node
+        """Find all resolved objects representing an item type."""
+        return [obj for obj in self.objects if obj.item_guid in self._items and isinstance(obj.item, itemtype)]
 
     def _index_nodes(self) -> None:
         indexed: dict[UUID, SceneNode] = {}
         for node in self.tree.nodes:
-            if node.guid in indexed:
-                raise ValueError(f"Duplicate scene-node GUID: {node.guid}.")
-            indexed[node.guid] = node
+            if node.object_guid in indexed:
+                raise ValueError(f"Scene object {node.object_guid} appears more than once in the hierarchy.")
+            indexed[node.object_guid] = node
         self._nodes = indexed
 
     def _parent_node(self, parent: SceneObject | SceneNode | None) -> SceneNode:
         if parent is None:
             return self.root_node
-        if isinstance(parent, SceneObject):
-            if parent.scene is not self or parent.node is None:
-                raise ValueError("The parent scene object does not belong to this scene.")
-            return parent.node
-        if parent.guid not in self._nodes:
-            raise ValueError("The parent scene node does not belong to this scene.")
-        return parent
-
-    def _prune_items(self) -> None:
-        referenced = self._referenced_item_guids()
-        for guid in set(self._items) - referenced:
-            del self._items[guid]
+        node = self.node(parent.guid) if isinstance(parent, SceneObject) else parent
+        if node.object_guid not in self._nodes:
+            raise ValueError("The parent does not belong to this scene.")
+        return node
 
     def _referenced_item_guids(self) -> set[UUID]:
-        return {node.item_guid for node in self.tree.nodes if node.item_guid is not None}
+        return {obj.item_guid for obj in self._objects.values() if obj.item_guid is not None}
+
+    def _prune_items(self) -> None:
+        for guid in set(self._items) - self._referenced_item_guids():
+            del self._items[guid]
+
+    def _context_name(self, context: str | None) -> str:
+        context_name = context or self.context or detect_current_context()
+        if context_name is None:
+            raise ValueError("No unambiguous visualization context is available.")
+        return context_name

@@ -9,8 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* Added durable, reference-only scene nodes with declarative persistent-state
-  fields, explicit data rebinding, and inspectable unresolved references.
+* Added durable, reference-only scene objects with declarative persistent-state
+  fields, explicit data rebinding, inspectable unresolved references, and
+  hierarchy-only scene nodes.
 * Added a verified Linux Python 3.12 candidate wheel artifact for framework-wide pre-release integration.
 * Added the public `compas.typing` structural vocabulary with NumPy-aware `PointLike`, `VectorLike`, collection, and neutral `VerticesFaces` aliases.
 * Added the PEP 561 `py.typed` marker and installed-wheel static-consumer verification.
@@ -25,8 +26,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-* Separated persistent scene state from runtime adapters and removed legacy
-  adapter-owned serialization and settings declarations.
+* Made scene objects stable backend-neutral data records and replaced class
+  substitution with deterministic context- and MRO-keyed `draw` and `clear`
+  operations. Runtime resources remain outside durable scene objects.
 * Migrated core geometry constructors and plugin contracts from private overlapping type aliases to semantic structural inputs, including copied NumPy coordinates and integral face indices.
 * Added a committed uv development lock, documented direct quality commands while retaining Invoke convenience tasks, and migrated CI, release, artifact, and documentation mechanics to immutably pinned shared actions.
 * Standardized numerical triangle-mesh plugin inputs and outputs on structural `(vertices, triangles)` buffers. `Tessellation` remains an ephemeral discrete representation for geometry producers and scene handoff, but is not required at numerical backend boundaries.
