@@ -3,7 +3,7 @@ name: verify pull request
 on:
   pull_request:
     types: [assigned, opened, synchronize, reopened, labeled, unlabeled]
-    branches: [main, initiative/repository-modernisation]
+    branches: [main, remove-future, initiative/repository-modernisation]
 
 permissions:
   contents: read
