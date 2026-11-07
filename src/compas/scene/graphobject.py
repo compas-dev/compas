@@ -11,6 +11,7 @@ from compas.typing import RealInput
 
 from .descriptors.colordict import ColorDictAttribute
 from .sceneobject import SceneObject
+from .sceneobject import SceneStateField
 
 
 class GraphObject(SceneObject):
@@ -25,6 +26,15 @@ class GraphObject(SceneObject):
 
     nodecolor = ColorDictAttribute()
     edgecolor = ColorDictAttribute()
+    __scene_state_namespace__ = "compas.scene.GraphObject"
+    __scene_state_fields__ = (
+        SceneStateField("show_nodes", (bool, list), default=True, required=False),
+        SceneStateField("show_edges", (bool, list), default=True, required=False),
+        SceneStateField("nodecolor", required=False),
+        SceneStateField("edgecolor", required=False),
+        SceneStateField("nodesize", (int, float), default=1.0, required=False),
+        SceneStateField("edgewidth", (int, float), default=1.0, required=False),
+    )
 
     # ==========================================================================
     # Dunder methods
@@ -55,18 +65,6 @@ class GraphObject(SceneObject):
     # ==========================================================================
 
     @property
-    def settings(self) -> dict[str, object]:
-        """The settings required to reconstruct the graph scene object."""
-        settings = super().settings
-        settings["show_nodes"] = self.show_nodes
-        settings["show_edges"] = self.show_edges
-        settings["nodecolor"] = self.nodecolor
-        settings["edgecolor"] = self.edgecolor
-        settings["nodesize"] = self.nodesize
-        settings["edgewidth"] = self.edgewidth
-        return settings
-
-    @property
     def graph(self) -> Graph:
         """The graph represented by this scene object.
 
@@ -83,7 +81,7 @@ class GraphObject(SceneObject):
             self._detached_item = graph
         else:
             self.scene.replace_item(self, graph)
-        self._transformation = None
+        self.transformation = None
         self._node_xyz = None
         self._node_xyz_revision = None
 

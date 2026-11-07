@@ -87,9 +87,10 @@ def _get_sceneobject_cls(
     data: Data,
     context: str | None = None,
     sceneobject_type: "type[SceneObject] | None" = None,
+    detect_context: bool = True,
 ) -> "type[SceneObject]":
     # in any case user gets to override the choice
-    context_name = context or detect_current_context()
+    context_name = detect_current_context() if detect_context and context is None else context
 
     dtype = type(data)
     cls = None
@@ -114,6 +115,7 @@ def get_sceneobject_cls(
     item: Data | None,
     context: str | None = None,
     sceneobject_type: "type[SceneObject] | None" = None,
+    detect_context: bool = True,
     **kwargs: object,
 ) -> "type[SceneObject]":
     """Get the registered scene object type for an item.
@@ -126,6 +128,8 @@ def get_sceneobject_cls(
         The visualization context used for registration lookup.
     sceneobject_type
         An explicit scene object type overriding registration lookup.
+    detect_context
+        Whether `None` should trigger automatic named-context detection.
     **kwargs
         Additional scene object options, ignored during type selection.
 
@@ -148,6 +152,11 @@ def get_sceneobject_cls(
     if item is None:
         raise ValueError("Cannot create a scene object for None. Please ensure you pass a instance of a supported class.")
 
-    cls = _get_sceneobject_cls(item, context=context, sceneobject_type=sceneobject_type)
+    cls = _get_sceneobject_cls(
+        item,
+        context=context,
+        sceneobject_type=sceneobject_type,
+        detect_context=detect_context,
+    )
     validate_plugin_implementation(cls)
     return cls

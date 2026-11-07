@@ -10,6 +10,7 @@ from compas.typing import RealInput
 
 from .descriptors.colordict import ColorDictAttribute
 from .sceneobject import SceneObject
+from .sceneobject import SceneStateField
 
 
 class VolMeshObject(SceneObject):
@@ -26,6 +27,19 @@ class VolMeshObject(SceneObject):
     edgecolor = ColorDictAttribute()
     facecolor = ColorDictAttribute()
     cellcolor = ColorDictAttribute()
+    __scene_state_namespace__ = "compas.scene.VolMeshObject"
+    __scene_state_fields__ = (
+        SceneStateField("show_vertices", (bool, list), default=False, required=False),
+        SceneStateField("show_edges", (bool, list), default=False, required=False),
+        SceneStateField("show_faces", (bool, list), default=True, required=False),
+        SceneStateField("show_cells", (bool, list), default=True, required=False),
+        SceneStateField("vertexcolor", required=False),
+        SceneStateField("edgecolor", required=False),
+        SceneStateField("facecolor", required=False),
+        SceneStateField("cellcolor", required=False),
+        SceneStateField("vertexsize", (int, float), default=1.0, required=False),
+        SceneStateField("edgewidth", (int, float), default=1.0, required=False),
+    )
 
     # ==========================================================================
     # Dunder methods
@@ -64,20 +78,6 @@ class VolMeshObject(SceneObject):
     # ==========================================================================
 
     @property
-    def settings(self) -> dict[str, object]:
-        """The settings required to reconstruct the volmesh scene object."""
-        settings = super().settings
-        settings["show_vertices"] = self.show_vertices
-        settings["show_edges"] = self.show_edges
-        settings["show_faces"] = self.show_faces
-        settings["show_cells"] = self.show_cells
-        settings["vertexcolor"] = self.vertexcolor
-        settings["edgecolor"] = self.edgecolor
-        settings["facecolor"] = self.facecolor
-        settings["cellcolor"] = self.cellcolor
-        return settings
-
-    @property
     def volmesh(self) -> VolMesh:
         """The volmesh represented by this scene object.
 
@@ -94,7 +94,7 @@ class VolMeshObject(SceneObject):
             self._detached_item = volmesh
         else:
             self.scene.replace_item(self, volmesh)
-        self._transformation = None
+        self.transformation = None
         self._vertex_xyz = None
         self._vertex_xyz_revision = None
 

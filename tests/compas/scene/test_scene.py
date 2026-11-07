@@ -10,6 +10,7 @@ from compas.geometry import Frame
 from compas.geometry import Translation
 from compas.geometry import Transformation
 from compas.scene import Group
+from compas.scene import GeometryObject
 from compas.datastructures import Tree
 from compas.datastructures import Graph
 from compas.datastructures import VolMesh
@@ -104,6 +105,19 @@ def test_context_detection_does_not_guess_between_registered_contexts():
     assert context.detect_current_context() is None
 
 
+def test_bind_context_none_uses_core_registry_without_auto_detection():
+    register(Box, FakeSceneObject, context="named")
+    register(Box, GeometryObject, context=None)
+    scene = Scene(context="named")
+    box = Box()
+    assert isinstance(scene.add(box), FakeSceneObject)
+
+    scene.bind_context(None)
+
+    assert scene.context is None
+    assert isinstance(scene.objects[0], GeometryObject)
+
+
 def test_sceneobject_transform():
     scene = Scene()
     sceneobj1 = scene.add(Box())
@@ -128,17 +142,25 @@ def test_sceneobject_transform():
     assert sceneobj3.frame.to_transformation() == Translation.from_vector([30.0, 20.0, 10.0])
 
 
-def test_sceneobject_settings_store_only_local_transformation():
+def test_scene_node_is_the_authority_for_adapter_base_state():
     scene = Scene()
-    parent = scene.add(Box())
-    child = scene.add(Box(), parent=parent)
-    parent.transformation = Translation.from_vector([10.0, 0.0, 0.0])
-    child.transformation = Translation.from_vector([0.0, 5.0, 0.0])
+    sceneobject = scene.add(Box(), name="Initial", opacity=0.5)
+    node = sceneobject.node
+    assert node is not None
 
-    assert "frame" not in parent.settings
-    assert "frame" not in child.settings
-    assert parent.settings["transformation"] == parent.transformation
-    assert child.settings["transformation"] == child.transformation
+    sceneobject.name = "Through adapter"
+    sceneobject.transformation = Translation.from_vector([10.0, 0.0, 0.0])
+    sceneobject.show = False
+    assert node.name == "Through adapter"
+    assert node.transformation == sceneobject.transformation
+    assert not node.show
+
+    node.name = "Through node"
+    node.transformation = Translation.from_vector([0.0, 5.0, 0.0])
+    node.opacity = 0.25
+    assert sceneobject.name == "Through node"
+    assert sceneobject.transformation == node.transformation
+    assert sceneobject.opacity == 0.25
 
 
 def test_sceneobject_frame_and_worldtransformation_setters():

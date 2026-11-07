@@ -60,6 +60,10 @@ class ColorAttribute:
         if obj is None:
             return self
 
+        node = getattr(obj, "_node", None)
+        if self.name == "color" and node is not None:
+            return node.color
+
         if not hasattr(obj, self.private_name):
             setattr(obj, self.private_name, None)
 
@@ -84,5 +88,9 @@ class ColorAttribute:
         """
         if value is None:
             return
-
-        setattr(obj, self.private_name, Color.coerce(value))
+        color = Color.coerce(value)
+        node = getattr(obj, "_node", None)
+        if self.name == "color" and node is not None:
+            node.color = color
+        else:
+            setattr(obj, self.private_name, color)

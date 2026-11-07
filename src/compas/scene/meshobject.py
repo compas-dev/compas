@@ -8,6 +8,7 @@ from compas.datastructures import Mesh
 
 from .descriptors.colordict import ColorDictAttribute
 from .sceneobject import SceneObject
+from .sceneobject import SceneStateField
 
 
 class MeshObject(SceneObject):
@@ -23,6 +24,17 @@ class MeshObject(SceneObject):
     vertexcolor = ColorDictAttribute()
     edgecolor = ColorDictAttribute()
     facecolor = ColorDictAttribute()
+    __scene_state_namespace__ = "compas.scene.MeshObject"
+    __scene_state_fields__ = (
+        SceneStateField("show_vertices", (bool, list), default=False, required=False),
+        SceneStateField("show_edges", (bool, list), default=False, required=False),
+        SceneStateField("show_faces", (bool, list), default=True, required=False),
+        SceneStateField("vertexcolor", required=False),
+        SceneStateField("edgecolor", required=False),
+        SceneStateField("facecolor", required=False),
+        SceneStateField("vertexsize", (int, float), default=1.0, required=False),
+        SceneStateField("edgewidth", (int, float), default=1.0, required=False),
+    )
 
     # ==========================================================================
     # Dunder methods
@@ -55,22 +67,6 @@ class MeshObject(SceneObject):
     # ==========================================================================
 
     @property
-    def settings(self) -> dict[str, object]:
-        """The settings required to reconstruct the mesh scene object."""
-        settings = super().settings
-        # perhaps this should be renamed to just "vertices", "edges", "faces"
-        settings["show_vertices"] = self.show_vertices
-        settings["show_edges"] = self.show_edges
-        settings["show_faces"] = self.show_faces
-        # end of perhaps
-        settings["vertexcolor"] = self.vertexcolor
-        settings["edgecolor"] = self.edgecolor
-        settings["facecolor"] = self.facecolor
-        settings["vertexsize"] = self.vertexsize
-        settings["edgewidth"] = self.edgewidth
-        return settings
-
-    @property
     def mesh(self) -> Mesh:
         """The mesh represented by this scene object.
 
@@ -86,7 +82,7 @@ class MeshObject(SceneObject):
             self._detached_item = mesh
         else:
             self.scene.replace_item(self, mesh)
-        self._transformation = None
+        self.transformation = None
 
     # ==========================================================================
     # Methods
