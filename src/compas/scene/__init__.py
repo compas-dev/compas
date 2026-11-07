@@ -5,8 +5,12 @@ contexts register specialized scene object implementations through plugins.
 
 """
 
+from ._scenenode import SceneNode
+from .exceptions import SceneItemNotBoundError
 from .exceptions import SceneObjectNotRegisteredError
+from .exceptions import SceneStateError
 from .sceneobject import SceneObject
+from .sceneobject import SceneStateField
 from .meshobject import MeshObject
 from .graphobject import GraphObject
 from .geometryobject import GeometryObject
@@ -40,7 +44,11 @@ def register_scene_objects_base() -> None:
 
 __all__ = [
     "SceneObjectNotRegisteredError",
+    "SceneItemNotBoundError",
+    "SceneStateError",
+    "SceneNode",
     "SceneObject",
+    "SceneStateField",
     "MeshObject",
     "GraphObject",
     "GeometryObject",

@@ -11,6 +11,7 @@ from compas.typing import RealInput
 
 from .descriptors.colordict import ColorDictAttribute
 from .sceneobject import SceneObject
+from .sceneobject import SceneStateField
 
 
 class GraphObject(SceneObject):
@@ -25,6 +26,15 @@ class GraphObject(SceneObject):
 
     nodecolor = ColorDictAttribute()
     edgecolor = ColorDictAttribute()
+    __scene_state_namespace__ = "compas.scene.GraphObject"
+    __scene_state_fields__ = (
+        SceneStateField("show_nodes", (bool, list)),
+        SceneStateField("show_edges", (bool, list)),
+        SceneStateField("nodecolor"),
+        SceneStateField("edgecolor"),
+        SceneStateField("nodesize", (int, float)),
+        SceneStateField("edgewidth", (int, float)),
+    )
 
     # ==========================================================================
     # Dunder methods
@@ -83,7 +93,7 @@ class GraphObject(SceneObject):
             self._detached_item = graph
         else:
             self.scene.replace_item(self, graph)
-        self._transformation = None
+        self.transformation = None
         self._node_xyz = None
         self._node_xyz_revision = None
 

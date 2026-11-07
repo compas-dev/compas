@@ -1,4 +1,5 @@
 import compas
+from uuid import uuid4
 
 import pytest  # noqa: F401
 from compas.data import Data
@@ -24,6 +25,9 @@ from compas.datastructures import Mesh
 from compas.datastructures import Graph
 from compas.datastructures import VolMesh
 from compas.scene import Group
+from compas.scene import SceneItemNotBoundError
+from compas.scene import SceneObject
+from compas.scene import SceneStateField
 
 
 @pytest.fixture
@@ -127,18 +131,22 @@ def test_scene_serialisation_preserves_shared_items():
     scene.add(box, name="Second")
 
     reconstructed = Scene.from_jsonstring(scene.to_jsonstring())
+    reconstructed.bind(box)
 
     assert reconstructed.objects[0].item is reconstructed.objects[1].item
 
 
 def test_scene_serialisation_reconstructs_world_transform_from_local_transforms():
     scene = Scene()
-    parent = scene.add(Box(), name="Parent")
-    child = scene.add(Box(), name="Child", parent=parent)
+    parent_box = Box()
+    child_box = Box()
+    parent = scene.add(parent_box, name="Parent")
+    child = scene.add(child_box, name="Child", parent=parent)
     parent.transformation = Translation.from_vector([10.0, 0.0, 0.0])
     child.transformation = Translation.from_vector([0.0, 5.0, 0.0])
 
     reconstructed = Scene.from_jsonstring(scene.to_jsonstring())
+    reconstructed.bind_many([parent_box, child_box])
     reconstructed_parent = reconstructed.find_by_name("Parent")
     reconstructed_child = reconstructed.find_by_name("Child")
 
@@ -163,6 +171,7 @@ def test_group_serialisation():
     group.add(box)
 
     scene2 = Scene.from_jsonstring(scene1.to_jsonstring())
+    scene2.bind(box)
 
     # Check if group was serialized correctly
     group2 = scene2.find_by_name("TestGroup")
@@ -184,6 +193,7 @@ def test_nested_group_serialisation():
     child_group.add(box)
 
     scene2 = Scene.from_jsonstring(scene1.to_jsonstring())
+    scene2.bind(box)
 
     # Check parent group
     parent2 = scene2.find_by_name("ParentGroup")
@@ -210,6 +220,7 @@ def test_group_kwargs_serialisation():
     group.add(box)
 
     scene2 = Scene.from_jsonstring(scene1.to_jsonstring())
+    scene2.bind(box)
 
     # Check if group kwargs were serialized correctly
     group2 = scene2.find_by_name("TestGroup")
@@ -220,3 +231,79 @@ def test_group_kwargs_serialisation():
     box2 = group2.children[0]
     assert not box2.show
     assert box2.opacity == 0.5
+
+
+def test_scene_serialisation_is_reference_only_and_loads_unresolved():
+    box = Box(2)
+    scene = Scene("Reference only")
+    sceneobject = scene.add(box, name="Box reference")
+
+    reconstructed = Scene.from_jsonstring(scene.to_jsonstring())
+    node = reconstructed.find_node_by_name("Box reference")
+
+    assert node is not None
+    assert node.guid == sceneobject.guid
+    assert node.item_guid == box.guid
+    assert not reconstructed.item_store
+    with pytest.raises(SceneItemNotBoundError, match=f"{node.guid}.*{box.guid}"):
+        reconstructed.object(node)
+
+    reconstructed.bind(box)
+    assert reconstructed.object(node).item is box
+
+
+def test_scene_preserves_unknown_namespaced_extensions_without_an_adapter():
+    scene = Scene()
+    scene.add_reference(
+        uuid4(),
+        name="External adapter",
+        extensions={"org.example.ViewerObject": {"overlay": True}},
+    )
+
+    reconstructed = Scene.from_jsonstring(scene.to_jsonstring())
+    node = reconstructed.find_node_by_name("External adapter")
+
+    assert node is not None
+    assert node.extensions == {"org.example.ViewerObject": {"overlay": True}}
+
+
+def test_adapter_extension_fields_are_composed_through_the_mro():
+    class BaseAdapter(SceneObject):
+        __scene_state_namespace__ = "org.example.BaseAdapter"
+        __scene_state_fields__ = (SceneStateField("base_value", int),)
+
+        def __init__(self, *args, base_value=1, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.base_value = base_value
+
+    class DerivedAdapter(BaseAdapter):
+        __scene_state_namespace__ = "org.example.DerivedAdapter"
+        __scene_state_fields__ = (SceneStateField("derived_value", str),)
+
+        def __init__(self, *args, derived_value="default", **kwargs):
+            super().__init__(*args, **kwargs)
+            self.derived_value = derived_value
+
+    box = Box()
+    scene = Scene()
+    adapter = scene.add(
+        SceneObject(
+            box,
+            sceneobject_type=DerivedAdapter,
+            base_value=7,
+            derived_value="saved",
+        )
+    )
+    reconstructed = Scene.from_jsonstring(scene.to_jsonstring())
+    reconstructed.bind(box)
+    node = next(node for node in reconstructed.nodes if node.item_guid)
+    restored = reconstructed.object(node, object_type=DerivedAdapter)
+
+    assert adapter.node is not None
+    assert adapter.node.extensions == {
+        "org.example.BaseAdapter": {"base_value": 7},
+        "org.example.DerivedAdapter": {"derived_value": "saved"},
+    }
+    assert isinstance(restored, DerivedAdapter)
+    assert restored.base_value == 7
+    assert restored.derived_value == "saved"

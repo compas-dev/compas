@@ -75,10 +75,10 @@ See the section about mesh visualisation for more information.
 
 ## Scene Hierarchy
 
-Scene objects are organised in a hierarchy under a private root group.
-The scene stores data and scene objects by GUID, while a COMPAS tree of
-lightweight internal nodes records the hierarchy. Public hierarchy properties
-on scene objects resolve these internal references.
+Scene objects are organised in a hierarchy under a root group. The durable
+hierarchy consists of serializable [`SceneNode`][compas.scene.SceneNode]
+instances. Runtime [`SceneObject`][compas.scene.SceneObject] adapters connect
+those nodes to a visualisation context.
 
 ```pycon
 >>> scene = Scene()
@@ -95,6 +95,29 @@ True
 >>> list(scene.root.children) == [sceneobj]
 True
 ```
+
+## Saving Scenes and Data
+
+A serialized scene contains its hierarchy, presentation state, and references
+to data objects by GUID. It does not embed or own those data objects. Serialize
+the data separately when it should outlive the current Python process.
+
+After loading a scene, its nodes can be inspected immediately. Bind the
+independently loaded data before requesting runtime adapters or drawing.
+
+```pycon
+>>> description = scene.to_jsonstring()
+>>> loaded_scene = Scene.from_jsonstring(description)
+>>> loaded_scene.find_node_by_name(sceneobj.name).item_guid == box.guid
+True
+>>> loaded_scene.bind(box)
+>>> loaded_scene.find_by_name(sceneobj.name).item is box
+True
+```
+
+Use [`Scene.bind_many`][compas.scene.Scene.bind_many] when restoring several
+referenced data objects at once. Bindings are runtime references: binding does
+not copy the object or add it to the serialized scene description.
 
 To use a different scene object as the parent, pass it to `Scene.add`.
 

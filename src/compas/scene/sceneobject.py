@@ -1,8 +1,10 @@
 from collections.abc import Iterator
+from dataclasses import dataclass
 from functools import reduce
 from operator import mul
 from typing import TYPE_CHECKING
 from typing import Any
+from typing import ClassVar
 from typing import Literal
 from typing import NoReturn
 from typing import Self
@@ -17,12 +19,30 @@ from compas.geometry import Transformation
 from .context import clear
 from .context import get_sceneobject_cls
 from .descriptors.color import ColorAttribute
+from .exceptions import SceneStateError
 
 if TYPE_CHECKING:
     from compas.datastructures import Tree
     from compas.scene import Scene
 
     from ._scenenode import SceneNode
+
+
+@dataclass(frozen=True, slots=True)
+class SceneStateField:
+    """Declaration of one durable adapter extension field.
+
+    Parameters
+    ----------
+    name
+        Stable serialized field name and adapter attribute name.
+    value_type
+        Runtime type or tuple of runtime types accepted for the field.
+
+    """
+
+    name: str
+    value_type: type[object] | tuple[type[object], ...] = object
 
 
 class SceneObject(Data):
@@ -58,6 +78,8 @@ class SceneObject(Data):
     """
 
     color = ColorAttribute()
+    __scene_state_namespace__: ClassVar[str | None] = None
+    __scene_state_fields__: ClassVar[tuple[SceneStateField, ...]] = ()
 
     # ==========================================================================
     # Data
@@ -102,12 +124,14 @@ class SceneObject(Data):
         context: str | None = None,
         **kwargs: object,
     ) -> None:
+        self._node: SceneNode | None = None
         if item and not isinstance(item, Data):
             raise ValueError("The item assigned to this scene object should be a data object: {}".format(type(item)))
 
         # This factory-only option has already been handled by __new__.
         kwargs.pop("sceneobject_type", None)
         name = name or getattr(item, "name", None)
+        self._node: SceneNode | None = None
         super().__init__(name=name)
         # the scene object needs to store the context
         # because it has no access to the tree and/or the scene before it is added
@@ -122,8 +146,8 @@ class SceneObject(Data):
         self._transformation_revision = 0
         self._contrastcolor = None
         self.color = color or self.color
-        self.opacity = opacity
-        self.show = show
+        self._opacity = opacity
+        self._show = show
 
     def __repr__(self) -> str:
         return "<{}: {}>".format(self.__class__.__name__, self.name)
@@ -131,6 +155,32 @@ class SceneObject(Data):
     # ==========================================================================
     # Properties
     # ==========================================================================
+
+    @property
+    def guid(self) -> UUID:
+        """Return the durable GUID of the bound scene node.
+
+        A detached adapter has its own temporary data-object GUID. Once bound,
+        this property exposes the node identity rather than an adapter identity.
+
+        """
+        if self._node is not None:
+            return self._node.guid
+        return super().guid
+
+    @property
+    def name(self) -> str:
+        """Return the scene-node name."""
+        if self._node is not None:
+            return self._node.name
+        return super().name
+
+    @name.setter
+    def name(self, name: str) -> None:
+        if self._node is not None:
+            self._node.name = name
+        else:
+            self._name = name
 
     @property
     def scene(self) -> "Scene | None":
@@ -144,30 +194,41 @@ class SceneObject(Data):
             return None
         if self.scene is None:
             return getattr(self, "_detached_item", None)
-        return self.scene.item_store[self._item_guid]
+        return self.scene.item(self._item_guid, node_guid=self.guid)
 
     @property
     def item_guid(self) -> UUID | None:
         """The GUID of the represented data item."""
+        if self._node is not None:
+            return self._node.item_guid
         return self._item_guid
+
+    @property
+    def node(self) -> "SceneNode | None":
+        """The durable scene node bound to this adapter."""
+        return self._node
 
     @property
     def parent(self) -> "SceneObject | None":
         """The parent scene object."""
         if self.scene is None:
             return None
-        node = self.scene._nodes[self.guid]
+        node = self._node
+        if node is None:
+            return None
         if node.parent is None:
             return None
-        return self.scene._objects[node.parent.object_guid]
+        return self.scene.object(node.parent)
 
     @property
     def children(self) -> tuple["SceneObject", ...]:
         """The child scene objects."""
         if self.scene is None:
             return ()
-        node = self.scene._nodes[self.guid]
-        return tuple(self.scene._objects[child.object_guid] for child in node.children)
+        node = self._node
+        if node is None:
+            return ()
+        return tuple(self.scene.object(child) for child in node.children)
 
     @property
     def tree(self) -> "Tree[SceneNode] | None":
@@ -232,13 +293,46 @@ class SceneObject(Data):
         on this object. Descendant caches detect the change lazily.
 
         """
+        if self._node is not None:
+            return self._node.transformation
         return self._transformation
 
     @transformation.setter
     def transformation(self, transformation: Transformation | None) -> None:
-        self._transformation = transformation
+        if self._node is not None:
+            self._node.transformation = transformation
+        else:
+            self._transformation = transformation
         self._transformation_revision += 1
         self.invalidate()
+
+    @property
+    def opacity(self) -> float:
+        """The display opacity of the scene node."""
+        if self._node is not None:
+            return self._node.opacity
+        return self._opacity
+
+    @opacity.setter
+    def opacity(self, opacity: float) -> None:
+        if self._node is not None:
+            self._node.opacity = opacity
+        else:
+            self._opacity = opacity
+
+    @property
+    def show(self) -> bool:
+        """Whether the scene node is visible."""
+        if self._node is not None:
+            return self._node.show
+        return self._show
+
+    @show.setter
+    def show(self, show: bool) -> None:
+        if self._node is not None:
+            self._node.show = show
+        else:
+            self._show = show
 
     @property
     def worldtransformation(self) -> Transformation:
@@ -303,6 +397,37 @@ class SceneObject(Data):
             settings["transformation"] = self.transformation
 
         return settings
+
+    @classmethod
+    def scene_state_fields(cls) -> dict[str, tuple[SceneStateField, ...]]:
+        """Return durable extension declarations composed across the MRO.
+
+        Returns
+        -------
+        dict[str, tuple[SceneStateField, ...]]
+            Fields grouped by their stable owning namespace.
+
+        Raises
+        ------
+        SceneStateError
+            If declarations have no namespace or contain conflicting names.
+
+        """
+        declarations: dict[str, tuple[SceneStateField, ...]] = {}
+        for owner in reversed(cls.mro()):
+            fields = owner.__dict__.get("__scene_state_fields__", ())
+            if not fields:
+                continue
+            namespace = owner.__dict__.get("__scene_state_namespace__")
+            if not namespace:
+                raise SceneStateError(f"{owner.__name__} declares scene state without a namespace.")
+            if namespace in declarations:
+                raise SceneStateError(f"Duplicate scene-state namespace: {namespace}.")
+            names = [field.name for field in fields]
+            if len(names) != len(set(names)):
+                raise SceneStateError(f"Duplicate scene-state field in namespace {namespace}.")
+            declarations[namespace] = tuple(fields)
+        return declarations
 
     # ==========================================================================
     # Methods
@@ -377,6 +502,54 @@ class SceneObject(Data):
     # ==========================================================================
     # Private helpers
     # ==========================================================================
+
+    def _bind(self, scene: "Scene", node: "SceneNode") -> None:
+        """Bind this runtime adapter to a durable scene node."""
+        self._scene = scene
+        self._node = node
+        self._guid = None
+        self._item_guid = node.item_guid
+        self._transformation = node.transformation
+        self._apply_extension_state()
+
+    def _capture_extension_state(self) -> dict[str, dict[str, object]]:
+        """Capture declared durable adapter state without inspecting other attributes."""
+        state = {namespace: dict(values) for namespace, values in (self._node.extensions if self._node else {}).items()}
+        for namespace, fields in self.scene_state_fields().items():
+            values = state.setdefault(namespace, {})
+            for field in fields:
+                value = getattr(self, field.name)
+                if not isinstance(value, field.value_type):
+                    raise SceneStateError(f"Invalid value for scene-state field {namespace}.{field.name}: {type(value).__name__}.")
+                values[field.name] = value
+        return state
+
+    def _apply_extension_state(self) -> None:
+        """Apply known declared state while preserving unknown namespaced values."""
+        if self._node is None:
+            return
+        for namespace, fields in self.scene_state_fields().items():
+            values = self._node.extensions.get(namespace)
+            if values is None:
+                continue
+            for field in fields:
+                if field.name not in values:
+                    raise SceneStateError(f"Missing scene-state field {namespace}.{field.name}.")
+                value = values[field.name]
+                if not isinstance(value, field.value_type):
+                    raise SceneStateError(f"Invalid value for scene-state field {namespace}.{field.name}: {type(value).__name__}.")
+                setattr(self, field.name, value)
+
+    def _sync_node_state(self) -> None:
+        """Synchronize mutable adapter-facing state to the durable node."""
+        if self._node is None:
+            return
+        self._node.name = self.name
+        self._node.transformation = self.transformation
+        self._node.color = self.color
+        self._node.opacity = self.opacity
+        self._node.show = self.show
+        self._node.extensions = self._capture_extension_state()
 
     def _invalidate_transformation_cache(self) -> None:
         """Invalidate cached data derived from the local transformation.

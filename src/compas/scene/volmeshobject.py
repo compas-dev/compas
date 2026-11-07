@@ -10,6 +10,7 @@ from compas.typing import RealInput
 
 from .descriptors.colordict import ColorDictAttribute
 from .sceneobject import SceneObject
+from .sceneobject import SceneStateField
 
 
 class VolMeshObject(SceneObject):
@@ -26,6 +27,19 @@ class VolMeshObject(SceneObject):
     edgecolor = ColorDictAttribute()
     facecolor = ColorDictAttribute()
     cellcolor = ColorDictAttribute()
+    __scene_state_namespace__ = "compas.scene.VolMeshObject"
+    __scene_state_fields__ = (
+        SceneStateField("show_vertices", (bool, list)),
+        SceneStateField("show_edges", (bool, list)),
+        SceneStateField("show_faces", (bool, list)),
+        SceneStateField("show_cells", (bool, list)),
+        SceneStateField("vertexcolor"),
+        SceneStateField("edgecolor"),
+        SceneStateField("facecolor"),
+        SceneStateField("cellcolor"),
+        SceneStateField("vertexsize", (int, float)),
+        SceneStateField("edgewidth", (int, float)),
+    )
 
     # ==========================================================================
     # Dunder methods
@@ -94,7 +108,7 @@ class VolMeshObject(SceneObject):
             self._detached_item = volmesh
         else:
             self.scene.replace_item(self, volmesh)
-        self._transformation = None
+        self.transformation = None
         self._vertex_xyz = None
         self._vertex_xyz_revision = None
 
