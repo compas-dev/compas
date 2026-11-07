@@ -1,3 +1,4 @@
+from typing import Any
 from uuid import uuid4
 
 import pytest
@@ -200,10 +201,17 @@ def test_missing_scene_operation_names_context_type_and_operation(operation_regi
 
 
 def test_scene_node_rejects_invalid_data():
+    with pytest.raises(ValueError, match="Unknown scene-node fields: extra"):
+        SceneNode.__from_data__({"object": str(uuid4()), "children": [], "extra": True})
+    with pytest.raises(ValueError, match="Missing scene-node fields: children"):
+        SceneNode.__from_data__({"object": str(uuid4())})
     with pytest.raises(ValueError, match="UUID string"):
         SceneNode.__from_data__({"object": "invalid", "children": []})
     with pytest.raises(TypeError, match="children"):
         SceneNode.__from_data__({"object": str(uuid4()), "children": ()})
+    with pytest.raises(TypeError, match="object_guid should be a UUID"):
+        invalid_guid: Any = "invalid"
+        SceneNode(invalid_guid)
 
 
 def test_remove_clears_resources_for_every_context(operation_registry):
