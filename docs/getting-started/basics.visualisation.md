@@ -22,11 +22,30 @@ When a COMPAS object is added to a scene, a scene object is created automaticall
 ```pycon
 >>> sceneobj = scene.add(box)
 >>> type(sceneobj).__name__
-'GeometryObject'
+'ShapeObject'
 ```
 
 The scene object holds a reference to the COMPAS data object, and stores its visualisation settings and transformation matrix.
 Multiple scene objects can be created for the same COMPAS data object, each with different visualisation settings and transformations.
+
+Core provides stable semantic scene-object types for data whose visualisation
+needs additional backend-neutral settings:
+
+- `ShapeObject` and `SurfaceObject` store the `u` and `v` discretization
+  counts used to display analytic shapes and parametric surfaces.
+- `FrameObject` and `PlaneObject` store their display `size`.
+- `VectorObject` stores the vector's display `anchor`.
+- `MeshObject` stores `hide_coplanaredges` and `use_vertexcolors` in addition
+  to its vertex, edge, and face settings.
+
+These settings describe durable presentation intent. A visualisation backend
+decides how to draw them; changing the backend does not change the scene-object
+type or its stored settings.
+
+For a `FrameObject`, the inherited `geometry` property is the represented
+[`Frame`][compas.geometry.Frame]. Its inherited `frame` property has the same
+meaning as on every `SceneObject`: it is the world-placement frame derived from
+the scene hierarchy. The two frames therefore serve different purposes.
 
 ```pycon
 >>> sceneobj1 = scene.add(box)

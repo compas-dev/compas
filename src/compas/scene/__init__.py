@@ -15,6 +15,11 @@ from .sceneobject import SceneStateField
 from .meshobject import MeshObject
 from .graphobject import GraphObject
 from .geometryobject import GeometryObject
+from .shapeobject import ShapeObject
+from .surfaceobject import SurfaceObject
+from .frameobject import FrameObject
+from .planeobject import PlaneObject
+from .vectorobject import VectorObject
 from .volmeshobject import VolMeshObject
 from .group import Group
 
@@ -29,6 +34,11 @@ from .scene import Scene
 
 from compas.plugins import plugin
 from compas.geometry import Geometry
+from compas.geometry import Shape
+from compas.geometry import Surface
+from compas.geometry import Frame
+from compas.geometry import Plane
+from compas.geometry import Vector
 from compas.datastructures import Mesh
 from compas.datastructures import Graph
 from compas.datastructures import VolMesh
@@ -38,6 +48,11 @@ from compas.datastructures import VolMesh
 def register_scene_objects_base() -> None:
     """Register stable core scene-object types."""
     register_sceneobject_type(Geometry, GeometryObject)
+    register_sceneobject_type(Shape, ShapeObject)
+    register_sceneobject_type(Surface, SurfaceObject)
+    register_sceneobject_type(Frame, FrameObject)
+    register_sceneobject_type(Plane, PlaneObject)
+    register_sceneobject_type(Vector, VectorObject)
     register_sceneobject_type(Mesh, MeshObject)
     register_sceneobject_type(Graph, GraphObject)
     register_sceneobject_type(VolMesh, VolMeshObject)
@@ -54,6 +69,11 @@ __all__ = [
     "MeshObject",
     "GraphObject",
     "GeometryObject",
+    "ShapeObject",
+    "SurfaceObject",
+    "FrameObject",
+    "PlaneObject",
+    "VectorObject",
     "VolMeshObject",
     "Group",
     "register_scene_objects",

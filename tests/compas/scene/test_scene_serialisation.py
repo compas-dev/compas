@@ -10,6 +10,11 @@ from compas.datastructures import VolMesh
 from compas.scene import GraphObject
 from compas.scene import GeometryObject
 from compas.scene import MeshObject
+from compas.scene import FrameObject
+from compas.scene import PlaneObject
+from compas.scene import ShapeObject
+from compas.scene import SurfaceObject
+from compas.scene import VectorObject
 from compas.scene import Scene
 from compas.scene import SceneItemNotBoundError
 from compas.scene import SceneObject
@@ -151,7 +156,13 @@ def test_type_specific_sceneobject_state_roundtrips():
     graph.add_node(0, x=0, y=0, z=0)
     volmesh = VolMesh.from_vertices_and_cells([[0, 0, 0]], [])
     scene = Scene()
-    meshobject = scene.add(mesh, show_vertices=True, vertexsize=3.0)
+    meshobject = scene.add(
+        mesh,
+        show_vertices=True,
+        vertexsize=3.0,
+        hide_coplanaredges=True,
+        use_vertexcolors=True,
+    )
     graphobject = scene.add(graph, show_nodes=False, edgewidth=2.0)
     volmeshobject = scene.add(volmesh, show_cells=False, vertexsize=4.0)
 
@@ -163,12 +174,48 @@ def test_type_specific_sceneobject_state_roundtrips():
     assert isinstance(restored_mesh, MeshObject)
     assert restored_mesh.show_vertices is True
     assert restored_mesh.vertexsize == 3.0
+    assert restored_mesh.hide_coplanaredges is True
+    assert restored_mesh.use_vertexcolors is True
     assert isinstance(restored_graph, GraphObject)
     assert restored_graph.show_nodes is False
     assert restored_graph.edgewidth == 2.0
     assert isinstance(restored_volmesh, VolMeshObject)
     assert restored_volmesh.show_cells is False
     assert restored_volmesh.vertexsize == 4.0
+
+
+def test_geometry_specific_sceneobject_state_roundtrips():
+    from compas.geometry import Box
+    from compas.geometry import Frame
+    from compas.geometry import Plane
+    from compas.geometry import PlanarSurface
+    from compas.geometry import Point
+    from compas.geometry import Vector
+
+    scene = Scene()
+    shapeobject = scene.add(Box(), u=8, v=12)
+    surfaceobject = scene.add(PlanarSurface(), u=5, v=7)
+    frameobject = scene.add(Frame.worldXY(), size=2.0)
+    planeobject = scene.add(Plane.worldXY(), size=3.0)
+    vectorobject = scene.add(Vector(1, 2, 3), anchor=Point(4, 5, 6))
+
+    restored = Scene.from_jsonstring(scene.to_jsonstring())
+
+    restored_shape = restored.object(shapeobject.guid)
+    restored_surface = restored.object(surfaceobject.guid)
+    restored_frame = restored.object(frameobject.guid)
+    restored_plane = restored.object(planeobject.guid)
+    restored_vector = restored.object(vectorobject.guid)
+    assert isinstance(restored_shape, ShapeObject)
+    assert (restored_shape.u, restored_shape.v) == (8, 12)
+    assert isinstance(restored_surface, SurfaceObject)
+    assert (restored_surface.u, restored_surface.v) == (5, 7)
+    assert isinstance(restored_frame, FrameObject)
+    assert restored_frame.size == 2.0
+    assert isinstance(restored_plane, PlaneObject)
+    assert restored_plane.size == 3.0
+    assert isinstance(restored_vector, VectorObject)
+    assert restored_vector.anchor == Point(4, 5, 6)
 
 
 def test_scene_state_fields_compose_defaults_and_omitted_defaults():

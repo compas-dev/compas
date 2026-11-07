@@ -7,15 +7,24 @@ from compas.datastructures import Graph
 from compas.datastructures import VolMesh
 from compas.geometry import Box
 from compas.geometry import Frame
+from compas.geometry import Plane
+from compas.geometry import PlanarSurface
+from compas.geometry import Point
 from compas.geometry import Translation
+from compas.geometry import Vector
+from compas.scene import FrameObject
 from compas.scene import GraphObject
 from compas.scene import GeometryObject
+from compas.scene import PlaneObject
 from compas.scene import Scene
 from compas.scene import SceneNode
 from compas.scene import SceneObject
 from compas.scene import SceneOperationNotRegisteredError
 from compas.scene import SceneStateError
 from compas.scene import SceneStateField
+from compas.scene import ShapeObject
+from compas.scene import SurfaceObject
+from compas.scene import VectorObject
 from compas.scene import VolMeshObject
 from compas.scene import get_sceneobject_cls
 from compas.scene import register_scene_operation
@@ -42,9 +51,39 @@ def test_scene_add_returns_a_stable_semantic_type():
 
     sceneobject = scene.add(box)
 
-    assert type(sceneobject) is GeometryObject
-    assert get_sceneobject_cls(box) is GeometryObject
+    assert type(sceneobject) is ShapeObject
+    assert get_sceneobject_cls(box) is ShapeObject
     assert sceneobject.item is box
+
+
+@pytest.mark.parametrize(
+    ("item", "sceneobject_type"),
+    [
+        (Point(1, 2, 3), GeometryObject),
+        (Box(), ShapeObject),
+        (PlanarSurface(), SurfaceObject),
+        (Frame.worldXY(), FrameObject),
+        (Plane.worldXY(), PlaneObject),
+        (Vector(1, 2, 3), VectorObject),
+    ],
+)
+def test_sceneobject_type_dispatch_is_exact_and_context_independent(item, sceneobject_type):
+    assert get_sceneobject_cls(item) is sceneobject_type
+    assert type(Scene(context="Viewer").add(item)) is sceneobject_type
+
+
+def test_semantic_fields_are_not_added_to_generic_geometry_objects():
+    sceneobject = Scene().add(Point(1, 2, 3))
+
+    assert not hasattr(sceneobject, "u")
+    assert not hasattr(sceneobject, "v")
+
+
+def test_plane_object_has_one_public_size_field():
+    sceneobject = Scene().add(Plane.worldXY(), size=2.0)
+
+    assert sceneobject.size == 2.0
+    assert not hasattr(sceneobject, "planesize")
 
 
 def test_scene_node_contains_hierarchy_only():
@@ -156,7 +195,7 @@ def test_missing_scene_operation_names_context_type_and_operation(operation_regi
     scene = Scene(context="Missing")
     sceneobject = scene.add(Box())
 
-    with pytest.raises(SceneOperationNotRegisteredError, match="draw.*GeometryObject.*Missing"):
+    with pytest.raises(SceneOperationNotRegisteredError, match="draw.*ShapeObject.*Missing"):
         sceneobject.draw()
 
 

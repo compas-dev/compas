@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added durable, reference-only scene objects with declarative persistent-state
   fields, explicit data rebinding, inspectable unresolved references, and
   hierarchy-only scene nodes.
+* Added stable semantic scene objects for shapes, surfaces, frames, planes, and
+  vectors, with backend-neutral discretization and display state.
 * Added a verified Linux Python 3.12 candidate wheel artifact for framework-wide pre-release integration.
 * Added the public `compas.typing` structural vocabulary with NumPy-aware `PointLike`, `VectorLike`, collection, and neutral `VerticesFaces` aliases.
 * Added the PEP 561 `py.typed` marker and installed-wheel static-consumer verification.

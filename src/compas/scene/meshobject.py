@@ -34,6 +34,8 @@ class MeshObject(SceneObject):
         SceneStateField("facecolor", required=False),
         SceneStateField("vertexsize", (int, float), default=1.0, required=False),
         SceneStateField("edgewidth", (int, float), default=1.0, required=False),
+        SceneStateField("hide_coplanaredges", bool, default=False, required=False),
+        SceneStateField("use_vertexcolors", bool, default=False, required=False),
     )
 
     # ==========================================================================
@@ -50,6 +52,8 @@ class MeshObject(SceneObject):
         facecolor: Mapping[Any, ColorInput] | Color | None = None,
         vertexsize: float = 1.0,
         edgewidth: float = 1.0,
+        hide_coplanaredges: bool = False,
+        use_vertexcolors: bool = False,
         **kwargs: Any,
     ) -> None:
         super().__init__(**kwargs)
@@ -61,6 +65,8 @@ class MeshObject(SceneObject):
         self.facecolor = facecolor or self.color
         self.vertexsize = vertexsize
         self.edgewidth = edgewidth
+        self.hide_coplanaredges = hide_coplanaredges
+        self.use_vertexcolors = use_vertexcolors
 
     # ==========================================================================
     # Properties
