@@ -17,14 +17,14 @@ class GeometryObject(SceneObject):
     surfacecolor = ColorAttribute()
     __scene_state_namespace__ = "compas.scene.GeometryObject"
     __scene_state_fields__ = (
-        SceneStateField("pointcolor", (Color, type(None))),
-        SceneStateField("linecolor", (Color, type(None))),
-        SceneStateField("surfacecolor", (Color, type(None))),
-        SceneStateField("pointsize", (int, float)),
-        SceneStateField("linewidth", (int, float)),
-        SceneStateField("show_points", bool),
-        SceneStateField("show_lines", bool),
-        SceneStateField("show_surfaces", bool),
+        SceneStateField("pointcolor", (Color, type(None)), default=None, required=False),
+        SceneStateField("linecolor", (Color, type(None)), default=None, required=False),
+        SceneStateField("surfacecolor", (Color, type(None)), default=None, required=False),
+        SceneStateField("pointsize", (int, float), default=1.0, required=False),
+        SceneStateField("linewidth", (int, float), default=1.0, required=False),
+        SceneStateField("show_points", bool, default=False, required=False),
+        SceneStateField("show_lines", bool, default=True, required=False),
+        SceneStateField("show_surfaces", bool, default=True, required=False),
     )
 
     # ==========================================================================

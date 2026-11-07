@@ -26,14 +26,14 @@ class MeshObject(SceneObject):
     facecolor = ColorDictAttribute()
     __scene_state_namespace__ = "compas.scene.MeshObject"
     __scene_state_fields__ = (
-        SceneStateField("show_vertices", (bool, list)),
-        SceneStateField("show_edges", (bool, list)),
-        SceneStateField("show_faces", (bool, list)),
-        SceneStateField("vertexcolor"),
-        SceneStateField("edgecolor"),
-        SceneStateField("facecolor"),
-        SceneStateField("vertexsize", (int, float)),
-        SceneStateField("edgewidth", (int, float)),
+        SceneStateField("show_vertices", (bool, list), default=False, required=False),
+        SceneStateField("show_edges", (bool, list), default=False, required=False),
+        SceneStateField("show_faces", (bool, list), default=True, required=False),
+        SceneStateField("vertexcolor", required=False),
+        SceneStateField("edgecolor", required=False),
+        SceneStateField("facecolor", required=False),
+        SceneStateField("vertexsize", (int, float), default=1.0, required=False),
+        SceneStateField("edgewidth", (int, float), default=1.0, required=False),
     )
 
     # ==========================================================================
@@ -65,22 +65,6 @@ class MeshObject(SceneObject):
     # ==========================================================================
     # Properties
     # ==========================================================================
-
-    @property
-    def settings(self) -> dict[str, object]:
-        """The settings required to reconstruct the mesh scene object."""
-        settings = super().settings
-        # perhaps this should be renamed to just "vertices", "edges", "faces"
-        settings["show_vertices"] = self.show_vertices
-        settings["show_edges"] = self.show_edges
-        settings["show_faces"] = self.show_faces
-        # end of perhaps
-        settings["vertexcolor"] = self.vertexcolor
-        settings["edgecolor"] = self.edgecolor
-        settings["facecolor"] = self.facecolor
-        settings["vertexsize"] = self.vertexsize
-        settings["edgewidth"] = self.edgewidth
-        return settings
 
     @property
     def mesh(self) -> Mesh:

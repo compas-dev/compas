@@ -1,3 +1,4 @@
+import inspect
 from collections.abc import Iterator
 from dataclasses import dataclass
 from functools import reduce
@@ -6,7 +7,6 @@ from typing import TYPE_CHECKING
 from typing import Any
 from typing import ClassVar
 from typing import Literal
-from typing import NoReturn
 from typing import Self
 from typing import cast
 from uuid import UUID
@@ -28,6 +28,9 @@ if TYPE_CHECKING:
     from ._scenenode import SceneNode
 
 
+_MISSING = object()
+
+
 @dataclass(frozen=True, slots=True)
 class SceneStateField:
     """Declaration of one durable adapter extension field.
@@ -35,14 +38,31 @@ class SceneStateField:
     Parameters
     ----------
     name
-        Stable serialized field name and adapter attribute name.
+        Stable serialized field name.
     value_type
         Runtime type or tuple of runtime types accepted for the field.
+    attribute_name
+        Adapter attribute carrying the value. Defaults to `name`.
+    default
+        Value applied when an omitted field is loaded.
+    required
+        Whether omission without a default is an error.
+    omit_default
+        Whether values equal to `default` are omitted when a node is created.
 
     """
 
     name: str
     value_type: type[object] | tuple[type[object], ...] = object
+    attribute_name: str | None = None
+    default: object = _MISSING
+    required: bool = True
+    omit_default: bool = False
+
+    @property
+    def attribute(self) -> str:
+        """Return the adapter attribute name carrying this field."""
+        return self.attribute_name or self.name
 
 
 class SceneObject(Data):
@@ -82,24 +102,6 @@ class SceneObject(Data):
     __scene_state_fields__: ClassVar[tuple[SceneStateField, ...]] = ()
 
     # ==========================================================================
-    # Data
-    # ==========================================================================
-
-    @property
-    def __data__(self) -> dict[str, object]:
-        if self.item_guid is None:
-            raise ValueError("A scene object without an item cannot be serialized independently.")
-        return {
-            "item": str(self.item_guid),
-            "settings": self.settings,
-            "children": [child.__data__ for child in self.children],
-        }
-
-    @classmethod
-    def __from_data__(cls, data: dict[str, object]) -> NoReturn:
-        raise TypeError("Serialisation outside Scene not allowed.")
-
-    # ==========================================================================
     # Dunder methods
     # ==========================================================================
 
@@ -108,9 +110,16 @@ class SceneObject(Data):
         item: Data | None = None,
         context: str | None = None,
         sceneobject_type: type["SceneObject"] | None = None,
+        _detect_context: bool = True,
         **kwargs: Any,
     ) -> Self:
-        sceneobject_cls = get_sceneobject_cls(item, context=context, sceneobject_type=sceneobject_type, **kwargs)
+        sceneobject_cls = get_sceneobject_cls(
+            item,
+            context=context,
+            sceneobject_type=sceneobject_type,
+            detect_context=_detect_context,
+            **kwargs,
+        )
         return cast(Self, object.__new__(sceneobject_cls))
 
     def __init__(
@@ -130,6 +139,7 @@ class SceneObject(Data):
 
         # This factory-only option has already been handled by __new__.
         kwargs.pop("sceneobject_type", None)
+        kwargs.pop("_detect_context", None)
         name = name or getattr(item, "name", None)
         self._node: SceneNode | None = None
         super().__init__(name=name)
@@ -151,6 +161,49 @@ class SceneObject(Data):
 
     def __repr__(self) -> str:
         return "<{}: {}>".format(self.__class__.__name__, self.name)
+
+    def __getattribute__(self, name: str) -> object:
+        """Read declared durable extension attributes from the bound node."""
+        if not name.startswith("_"):
+            try:
+                node = object.__getattribute__(self, "_node")
+            except AttributeError:
+                node = None
+            if node is not None:
+                for namespace, fields in type(self).scene_state_fields().items():
+                    for field in fields:
+                        if field.attribute == name:
+                            values = node.extensions.get(namespace, {})
+                            if field.name in values:
+                                value = values[field.name]
+                                if not isinstance(value, field.value_type):
+                                    raise SceneStateError(f"Invalid value for scene-state field {namespace}.{field.name}: {type(value).__name__}.")
+                                return value
+                            if field.default is not _MISSING:
+                                return field.default
+                            break
+        return object.__getattribute__(self, name)
+
+    def __setattr__(self, name: str, value: object) -> None:
+        """Write declared durable extension attributes directly to the bound node."""
+        if not name.startswith("_"):
+            try:
+                node = object.__getattribute__(self, "_node")
+            except AttributeError:
+                node = None
+            if node is not None:
+                for namespace, fields in type(self).scene_state_fields().items():
+                    for field in fields:
+                        if field.attribute == name:
+                            descriptor = inspect.getattr_static(type(self), name, None)
+                            if hasattr(descriptor, "__set__"):
+                                object.__setattr__(self, name, value)
+                                value = object.__getattribute__(self, name)
+                            if not isinstance(value, field.value_type):
+                                raise SceneStateError(f"Invalid value for scene-state field {namespace}.{field.name}: {type(value).__name__}.")
+                            node.extensions.setdefault(namespace, {})[field.name] = value
+                            return
+        object.__setattr__(self, name, value)
 
     # ==========================================================================
     # Properties
@@ -383,21 +436,6 @@ class SceneObject(Data):
     def contrastcolor(self, color: Color) -> None:
         self._contrastcolor = Color.coerce(color)
 
-    @property
-    def settings(self) -> dict[str, object]:
-        """The settings required to reconstruct the scene object."""
-        settings = {
-            "name": self.name,
-            "color": self.color,
-            "opacity": self.opacity,
-            "show": self.show,
-        }
-
-        if self.transformation:
-            settings["transformation"] = self.transformation
-
-        return settings
-
     @classmethod
     def scene_state_fields(cls) -> dict[str, tuple[SceneStateField, ...]]:
         """Return durable extension declarations composed across the MRO.
@@ -414,6 +452,7 @@ class SceneObject(Data):
 
         """
         declarations: dict[str, tuple[SceneStateField, ...]] = {}
+        attributes: set[str] = set()
         for owner in reversed(cls.mro()):
             fields = owner.__dict__.get("__scene_state_fields__", ())
             if not fields:
@@ -426,6 +465,22 @@ class SceneObject(Data):
             names = [field.name for field in fields]
             if len(names) != len(set(names)):
                 raise SceneStateError(f"Duplicate scene-state field in namespace {namespace}.")
+            for field in fields:
+                if not field.name or not field.attribute:
+                    raise SceneStateError(f"Scene-state field names in namespace {namespace} cannot be empty.")
+                try:
+                    isinstance(None, field.value_type)
+                except TypeError:
+                    raise SceneStateError(f"Invalid value type for scene-state field {namespace}.{field.name}.") from None
+                if field.default is not _MISSING and field.required:
+                    raise SceneStateError(f"Scene-state field {namespace}.{field.name} cannot have a default and be required.")
+                if field.default is not _MISSING and not isinstance(field.default, field.value_type):
+                    raise SceneStateError(f"Invalid default for scene-state field {namespace}.{field.name}.")
+                if field.omit_default and field.default is _MISSING:
+                    raise SceneStateError(f"Scene-state field {namespace}.{field.name} cannot omit an undeclared default.")
+                if field.attribute in attributes:
+                    raise SceneStateError(f"Duplicate scene-state adapter attribute: {field.attribute}.")
+                attributes.add(field.attribute)
             declarations[namespace] = tuple(fields)
         return declarations
 
@@ -505,6 +560,7 @@ class SceneObject(Data):
 
     def _bind(self, scene: "Scene", node: "SceneNode") -> None:
         """Bind this runtime adapter to a durable scene node."""
+        self._validate_declared_attributes()
         self._scene = scene
         self._node = node
         self._guid = None
@@ -513,15 +569,22 @@ class SceneObject(Data):
         self._apply_extension_state()
 
     def _capture_extension_state(self) -> dict[str, dict[str, object]]:
-        """Capture declared durable adapter state without inspecting other attributes."""
-        state = {namespace: dict(values) for namespace, values in (self._node.extensions if self._node else {}).items()}
+        """Capture declared state while creating a durable node."""
+        state: dict[str, dict[str, object]] = {}
         for namespace, fields in self.scene_state_fields().items():
-            values = state.setdefault(namespace, {})
+            values: dict[str, object] = {}
             for field in fields:
-                value = getattr(self, field.name)
+                try:
+                    value = getattr(self, field.attribute)
+                except AttributeError:
+                    raise SceneStateError(f"Missing adapter attribute for scene-state field {namespace}.{field.name}: {field.attribute}.") from None
                 if not isinstance(value, field.value_type):
                     raise SceneStateError(f"Invalid value for scene-state field {namespace}.{field.name}: {type(value).__name__}.")
+                if field.omit_default and value == field.default:
+                    continue
                 values[field.name] = value
+            if values:
+                state[namespace] = values
         return state
 
     def _apply_extension_state(self) -> None:
@@ -531,25 +594,28 @@ class SceneObject(Data):
         for namespace, fields in self.scene_state_fields().items():
             values = self._node.extensions.get(namespace)
             if values is None:
-                continue
+                values = {}
             for field in fields:
                 if field.name not in values:
-                    raise SceneStateError(f"Missing scene-state field {namespace}.{field.name}.")
+                    if field.default is not _MISSING:
+                        continue
+                    if field.required:
+                        raise SceneStateError(f"Missing scene-state field {namespace}.{field.name}.")
+                    continue
                 value = values[field.name]
                 if not isinstance(value, field.value_type):
                     raise SceneStateError(f"Invalid value for scene-state field {namespace}.{field.name}: {type(value).__name__}.")
-                setattr(self, field.name, value)
 
-    def _sync_node_state(self) -> None:
-        """Synchronize mutable adapter-facing state to the durable node."""
-        if self._node is None:
-            return
-        self._node.name = self.name
-        self._node.transformation = self.transformation
-        self._node.color = self.color
-        self._node.opacity = self.opacity
-        self._node.show = self.show
-        self._node.extensions = self._capture_extension_state()
+    def _validate_declared_attributes(self) -> None:
+        """Validate declared adapter attributes before binding to a node."""
+        for namespace, fields in self.scene_state_fields().items():
+            for field in fields:
+                try:
+                    value = getattr(self, field.attribute)
+                except AttributeError:
+                    raise SceneStateError(f"Missing adapter attribute for scene-state field {namespace}.{field.name}: {field.attribute}.") from None
+                if not isinstance(value, field.value_type):
+                    raise SceneStateError(f"Invalid adapter attribute for scene-state field {namespace}.{field.name}: {type(value).__name__}.")
 
     def _invalidate_transformation_cache(self) -> None:
         """Invalidate cached data derived from the local transformation.

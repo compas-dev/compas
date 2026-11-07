@@ -28,6 +28,8 @@ from compas.scene import Group
 from compas.scene import SceneItemNotBoundError
 from compas.scene import SceneObject
 from compas.scene import SceneStateField
+from compas.scene import SceneStateError
+from compas.scene import SceneNode
 
 
 @pytest.fixture
@@ -307,3 +309,166 @@ def test_adapter_extension_fields_are_composed_through_the_mro():
     assert isinstance(restored, DerivedAdapter)
     assert restored.base_value == 7
     assert restored.derived_value == "saved"
+
+
+def test_bound_extension_state_uses_the_node_as_sole_authority():
+    box = Box()
+    scene = Scene()
+    adapter = scene.add(box, pointsize=2.0)
+    assert adapter.node is not None
+
+    adapter.pointsize = 3.0
+    assert adapter.node.extensions["compas.scene.GeometryObject"]["pointsize"] == 3.0
+
+    adapter.node.extensions["compas.scene.GeometryObject"]["pointsize"] = 4.0
+    assert adapter.pointsize == 4.0
+
+
+def test_bound_extension_writes_preserve_property_setter_side_effects():
+    class Adapter(SceneObject):
+        __scene_state_namespace__ = "org.example.SetterAdapter"
+        __scene_state_fields__ = (SceneStateField("resolution", int, attribute_name="resolution"),)
+
+        def __init__(self, *args, resolution=4, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.setter_calls = 0
+            self.resolution = resolution
+
+        @property
+        def resolution(self):
+            return self._resolution
+
+        @resolution.setter
+        def resolution(self, value):
+            self.setter_calls += 1
+            self._resolution = value
+
+    adapter = Scene().add(SceneObject(Box(), sceneobject_type=Adapter))
+    adapter.resolution = 8
+
+    assert adapter.setter_calls == 2
+    assert adapter.resolution == 8
+    assert adapter.node is not None
+    assert adapter.node.extensions["org.example.SetterAdapter"]["resolution"] == 8
+
+
+@pytest.mark.parametrize(
+    ("field", "value", "message"),
+    [
+        ("name", 1, "name"),
+        ("transformation", "invalid", "transformation"),
+        ("color", "red", "color"),
+        ("opacity", True, "opacity"),
+        ("opacity", 2.0, "opacity"),
+        ("show", 1, "show"),
+        ("extensions", [], "extensions"),
+        ("extensions", {"valid": {1: "invalid"}}, "extension fields"),
+    ],
+)
+def test_scene_node_rejects_invalid_closed_schema_types(field, value, message):
+    data = SceneNode(kind="group", name="Root").__data__
+    data[field] = value
+
+    with pytest.raises((TypeError, ValueError), match=message):
+        SceneNode.__from_data__(data)
+
+
+def test_scene_state_field_supports_attribute_names_defaults_and_omission():
+    class Adapter(SceneObject):
+        __scene_state_namespace__ = "org.example.Adapter"
+        __scene_state_fields__ = (
+            SceneStateField(
+                "saved-size",
+                int,
+                attribute_name="size",
+                default=5,
+                required=False,
+                omit_default=True,
+            ),
+        )
+
+        def __init__(self, *args, size=5, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.size = size
+
+    box = Box()
+    scene = Scene()
+    adapter = scene.add(SceneObject(box, sceneobject_type=Adapter))
+
+    assert adapter.node is not None
+    assert "org.example.Adapter" not in adapter.node.extensions
+
+    reconstructed = Scene.from_jsonstring(scene.to_jsonstring())
+    reconstructed.bind(box)
+    node = next(node for node in reconstructed.nodes if node.item_guid)
+    restored = reconstructed.object(node, object_type=Adapter)
+    assert restored.size == 5
+    assert "org.example.Adapter" not in node.extensions
+
+
+def test_scene_state_field_rejects_missing_required_state_and_attributes():
+    class MissingAttributeAdapter(SceneObject):
+        __scene_state_namespace__ = "org.example.MissingAttribute"
+        __scene_state_fields__ = (SceneStateField("missing", int),)
+
+    box = Box()
+    with pytest.raises(SceneStateError, match="Missing adapter attribute"):
+        Scene().add(SceneObject(box, sceneobject_type=MissingAttributeAdapter))
+
+    class RequiredAdapter(SceneObject):
+        __scene_state_namespace__ = "org.example.Required"
+        __scene_state_fields__ = (SceneStateField("required", int),)
+
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.required = 1
+
+    scene = Scene()
+    node = scene.add_reference(box.guid, name="Required", extensions={})
+    scene.bind(box)
+    with pytest.raises(SceneStateError, match="org.example.Required.required"):
+        scene.object(node, object_type=RequiredAdapter)
+
+
+def test_scene_state_field_rejects_conflicting_declarations():
+    class Base(SceneObject):
+        __scene_state_namespace__ = "org.example.Base"
+        __scene_state_fields__ = (SceneStateField("first", int, attribute_name="value"),)
+
+    class Conflict(Base):
+        __scene_state_namespace__ = "org.example.Conflict"
+        __scene_state_fields__ = (SceneStateField("second", int, attribute_name="value"),)
+
+    with pytest.raises(SceneStateError, match="Duplicate scene-state adapter attribute"):
+        Conflict.scene_state_fields()
+
+
+def test_scene_objects_are_not_independently_serializable():
+    adapter = Scene().add(Box())
+
+    with pytest.raises(NotImplementedError):
+        compas.json_dumps(adapter)
+
+
+def test_bind_many_rejects_a_different_falsey_item_with_the_same_guid():
+    class FalseyData(Data):
+        @property
+        def __data__(self):
+            return {}
+
+        @classmethod
+        def __from_data__(cls, data):
+            return cls()
+
+        def __bool__(self):
+            return False
+
+    first = FalseyData()
+    second = FalseyData()
+    second._guid = first.guid
+    scene = Scene()
+    scene.add_reference(first.guid, name="Falsey")
+    scene.bind(first)
+
+    with pytest.raises(ValueError, match="different data item"):
+        scene.bind_many([second])

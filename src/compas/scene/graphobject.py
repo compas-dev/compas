@@ -28,12 +28,12 @@ class GraphObject(SceneObject):
     edgecolor = ColorDictAttribute()
     __scene_state_namespace__ = "compas.scene.GraphObject"
     __scene_state_fields__ = (
-        SceneStateField("show_nodes", (bool, list)),
-        SceneStateField("show_edges", (bool, list)),
-        SceneStateField("nodecolor"),
-        SceneStateField("edgecolor"),
-        SceneStateField("nodesize", (int, float)),
-        SceneStateField("edgewidth", (int, float)),
+        SceneStateField("show_nodes", (bool, list), default=True, required=False),
+        SceneStateField("show_edges", (bool, list), default=True, required=False),
+        SceneStateField("nodecolor", required=False),
+        SceneStateField("edgecolor", required=False),
+        SceneStateField("nodesize", (int, float), default=1.0, required=False),
+        SceneStateField("edgewidth", (int, float), default=1.0, required=False),
     )
 
     # ==========================================================================
@@ -63,18 +63,6 @@ class GraphObject(SceneObject):
     # ==========================================================================
     # Properties
     # ==========================================================================
-
-    @property
-    def settings(self) -> dict[str, object]:
-        """The settings required to reconstruct the graph scene object."""
-        settings = super().settings
-        settings["show_nodes"] = self.show_nodes
-        settings["show_edges"] = self.show_edges
-        settings["nodecolor"] = self.nodecolor
-        settings["edgecolor"] = self.edgecolor
-        settings["nodesize"] = self.nodesize
-        settings["edgewidth"] = self.edgewidth
-        return settings
 
     @property
     def graph(self) -> Graph:

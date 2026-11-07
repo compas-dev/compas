@@ -32,18 +32,6 @@ class Group(SceneObject):
     """
 
     # ==========================================================================
-    # Data
-    # ==========================================================================
-
-    @property
-    def __data__(self) -> dict[str, object]:
-        data = {
-            "settings": self.settings,
-            "children": [child.__data__ for child in self.children],
-        }
-        return data
-
-    # ==========================================================================
     # Dunder methods
     # ==========================================================================
 
@@ -52,6 +40,7 @@ class Group(SceneObject):
         return object.__new__(cls)
 
     def __init__(self, name: str, **kwargs: Any) -> None:
+        kwargs.pop("_detect_context", None)
         super().__init__(name=name, **kwargs)
         self.kwargs = kwargs
 

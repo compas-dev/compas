@@ -55,6 +55,20 @@ class SceneNode(TreeNode["SceneNode"]):
     @property
     def __data__(self) -> dict[str, Any]:
         """Return the serializable node state."""
+        if self.kind not in ("group", "item"):
+            raise ValueError("Scene-node kind should be 'group' or 'item'.")
+        if self.kind == "item" and not isinstance(self.item_guid, UUID):
+            raise TypeError("An item scene node requires a UUID item reference.")
+        if self.kind == "group" and self.item_guid is not None:
+            raise ValueError("A group scene node cannot reference an item.")
+        self._validate_base_state(
+            name=self.name,
+            transformation=self.transformation,
+            color=self.color,
+            opacity=self.opacity,
+            show=self.show,
+            extensions=self.extensions,
+        )
         data: dict[str, Any] = {
             "guid": str(self.guid),
             "kind": self.kind,
@@ -94,8 +108,14 @@ class SceneNode(TreeNode["SceneNode"]):
             raise ValueError("A group scene node cannot reference an item.")
 
         extensions = data["extensions"]
-        if not isinstance(extensions, dict) or not all(isinstance(namespace, str) and isinstance(values, dict) for namespace, values in extensions.items()):
-            raise TypeError("Scene-node extensions should map namespace strings to dictionaries.")
+        cls._validate_base_state(
+            name=data["name"],
+            transformation=data.get("transformation"),
+            color=data.get("color"),
+            opacity=data["opacity"],
+            show=data["show"],
+            extensions=extensions,
+        )
 
         node = cls(
             kind=kind,
@@ -133,6 +153,14 @@ class SceneNode(TreeNode["SceneNode"]):
             raise ValueError("An item scene node requires an item GUID.")
         if kind == "group" and item_guid is not None:
             raise ValueError("A group scene node cannot reference an item.")
+        self._validate_base_state(
+            name=name,
+            transformation=transformation,
+            color=color,
+            opacity=opacity,
+            show=show,
+            extensions={} if extensions is None else extensions,
+        )
         self.kind = kind
         self.item_guid = item_guid
         self.transformation = transformation
@@ -142,6 +170,37 @@ class SceneNode(TreeNode["SceneNode"]):
         self.extensions = {namespace: dict(values) for namespace, values in (extensions or {}).items()}
         if guid is not None:
             self._guid = guid
+
+    @staticmethod
+    def _validate_base_state(
+        *,
+        name: object,
+        transformation: object,
+        color: object,
+        opacity: object,
+        show: object,
+        extensions: object,
+    ) -> None:
+        """Validate the closed durable base-node schema."""
+        if not isinstance(name, str):
+            raise TypeError("Scene-node field 'name' should be a string.")
+        if transformation is not None and not isinstance(transformation, Transformation):
+            raise TypeError("Scene-node field 'transformation' should be a Transformation or None.")
+        if color is not None and not isinstance(color, Color):
+            raise TypeError("Scene-node field 'color' should be a Color or None.")
+        if isinstance(opacity, bool) or not isinstance(opacity, (int, float)):
+            raise TypeError("Scene-node field 'opacity' should be a number.")
+        if not 0.0 <= opacity <= 1.0:
+            raise ValueError("Scene-node field 'opacity' should be between 0.0 and 1.0.")
+        if not isinstance(show, bool):
+            raise TypeError("Scene-node field 'show' should be a boolean.")
+        if not isinstance(extensions, Mapping):
+            raise TypeError("Scene-node field 'extensions' should be a mapping.")
+        for namespace, values in extensions.items():
+            if not isinstance(namespace, str) or not isinstance(values, Mapping):
+                raise TypeError("Scene-node extensions should map namespace strings to mappings.")
+            if not all(isinstance(field, str) for field in values):
+                raise TypeError(f"Scene-node extension fields in '{namespace}' should be strings.")
 
     @property
     def object_guid(self) -> UUID:

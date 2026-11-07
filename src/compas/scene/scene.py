@@ -66,7 +66,6 @@ class Scene(Data):
     @property
     def __data__(self) -> dict[str, Any]:
         """Return the reference-only scene description."""
-        self._sync_adapters()
         return {
             "version": self.SCHEMA_VERSION,
             "name": self.name,
@@ -251,7 +250,7 @@ class Scene(Data):
         for item in pending:
             if item.guid not in references:
                 raise KeyError(f"Scene does not reference item {item.guid}.")
-            existing = self._items.get(item.guid) or staged.get(item.guid)
+            existing = self._items[item.guid] if item.guid in self._items else staged.get(item.guid)
             if existing is not None and existing is not item:
                 raise ValueError(f"A different data item with GUID {item.guid} is already bound.")
             staged[item.guid] = item
@@ -275,7 +274,6 @@ class Scene(Data):
         for node in self.tree.nodes:
             if node.item_guid is not None and node.item_guid not in self._items:
                 raise SceneItemNotBoundError(node.guid, node.item_guid)
-        self._sync_adapters()
         for sceneobject in self._objects.values():
             sceneobject._scene = None
             sceneobject._node = None
@@ -326,6 +324,7 @@ class Scene(Data):
                 show=node.show,
                 transformation=node.transformation,
                 context=self.context,
+                _detect_context=False,
             )
         else:
             if node.item_guid is None:
@@ -340,6 +339,7 @@ class Scene(Data):
                 opacity=node.opacity,
                 show=node.show,
                 transformation=node.transformation,
+                _detect_context=False,
             )
         sceneobject._bind(self, node)
         self._objects[node.guid] = sceneobject
@@ -561,7 +561,3 @@ class Scene(Data):
 
     def _referenced_item_guids(self) -> set[UUID]:
         return {node.item_guid for node in self.tree.nodes if node.item_guid is not None}
-
-    def _sync_adapters(self) -> None:
-        for sceneobject in self._objects.values():
-            sceneobject._sync_node_state()
