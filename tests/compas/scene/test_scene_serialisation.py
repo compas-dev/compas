@@ -373,6 +373,55 @@ def test_scene_node_rejects_invalid_closed_schema_types(field, value, message):
         SceneNode.__from_data__(data)
 
 
+@pytest.mark.parametrize(
+    ("change", "message"),
+    [
+        ({"unknown": True}, "Unknown scene-node fields"),
+        ({"name": None}, "Missing scene-node fields"),
+        ({"kind": "invalid"}, "kind"),
+        ({"kind": "item"}, "item GUID"),
+        ({"item": str(uuid4())}, "group scene node"),
+        ({"children": ()}, "children"),
+    ],
+)
+def test_scene_node_rejects_invalid_closed_schema_structure(change, message):
+    data = SceneNode(kind="group", name="Root").__data__
+    if change == {"name": None}:
+        del data["name"]
+    else:
+        data.update(change)
+
+    with pytest.raises((TypeError, ValueError), match=message):
+        SceneNode.__from_data__(data)
+
+
+@pytest.mark.parametrize(
+    ("change", "message"),
+    [
+        ({"unknown": True}, "Unknown scene fields"),
+        ({"name": None}, "Missing scene fields"),
+        ({"version": 2}, "Unsupported scene schema version"),
+    ],
+)
+def test_scene_rejects_invalid_closed_schema_structure(change, message):
+    data = Scene().__data__
+    if change == {"name": None}:
+        del data["name"]
+    else:
+        data.update(change)
+
+    with pytest.raises(ValueError, match=message):
+        Scene.__from_data__(data)
+
+
+def test_scene_rejects_an_item_node_as_its_root():
+    data = Scene().__data__
+    data["root"] = SceneNode(kind="item", item_guid=uuid4(), name="Item").__data__
+
+    with pytest.raises(ValueError, match="root should be a group"):
+        Scene.__from_data__(data)
+
+
 def test_scene_state_field_supports_attribute_names_defaults_and_omission():
     class Adapter(SceneObject):
         __scene_state_namespace__ = "org.example.Adapter"
