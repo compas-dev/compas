@@ -138,6 +138,53 @@ Editability does not add presentation metadata to
 durable scene-state field is not editable unless it explicitly sets
 `editable=True`.
 
+### Data, Scene State, and Extensions
+
+Every scene object is a [`Data`][compas.data.Data] object. COMPAS serialization
+wraps it in an envelope containing its data type, GUID, optional name, and the
+payload returned by `SceneObject.__data__`. The represented geometry or
+datastructure is another independent `Data` object; the scene object stores
+only its GUID in the `item` field.
+
+The scene-object payload has two state layers:
+
+- Common state such as `transformation`, `color`, `opacity`, and `show` is
+  stored directly in the payload.
+- Type-specific state declared by `SceneStateField` is stored under the
+  declaring class's namespace in the `extensions` mapping.
+
+For example, a shape scene object may serialize geometry display settings and
+shape resolution separately:
+
+```python
+from compas.colors import Color
+
+
+payload = {
+    "item": "<represented-data-guid>",
+    "transformation": None,
+    "color": Color.white(),
+    "opacity": 1.0,
+    "show": True,
+    "extensions": {
+        "compas.scene.GeometryObject": {
+            "show_points": False,
+            "show_lines": True,
+        },
+        "compas.scene.ShapeObject": {
+            "u": 16,
+            "v": 16,
+        },
+    },
+}
+```
+
+Namespaces let subclasses and external packages add durable state without
+widening the common scene-object payload. Unknown namespaced values are
+preserved during a round trip for forward compatibility. Runtime item
+bindings, editable-attribute callbacks, Viewer controls, selection, and render
+resources are not stored in `extensions` or elsewhere in the serialized scene.
+
 ## Scene Hierarchy
 
 Scene objects are organised in a hierarchy under an ordinary root group. A

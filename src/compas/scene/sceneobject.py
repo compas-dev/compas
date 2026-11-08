@@ -51,8 +51,8 @@ class SceneStateField[OwnerT]:
         Whether the ordinary object attribute may be edited by a consumer.
     update
         Optional synchronous data-only update callback. The callback must
-        leave the owner unchanged if it raises. Rendering and user-interface
-        refresh remain the responsibility of the visualization context.
+        leave the owner unchanged if it raises. The caller owns any rendering
+        or user-interface effects after a successful update.
 
     """
 
@@ -438,7 +438,26 @@ class SceneObject(Data):
 
     @classmethod
     def scene_state_fields(cls) -> dict[str, tuple[SceneStateField[Any], ...]]:
-        """Return durable field declarations composed across the MRO."""
+        """Return durable type-specific fields composed across the MRO.
+
+        The result groups fields by their declaring class's scene-state
+        namespace. During serialization, field values are written to the
+        matching namespace in `SceneObject.__data__["extensions"]`. Common
+        scene state such as `color`, `opacity`, and `show` remains in the base
+        scene-object payload instead.
+
+        Returns
+        -------
+        dict[str, tuple[SceneStateField, ...]]
+            Field declarations keyed by stable extension namespace.
+
+        Raises
+        ------
+        SceneStateError
+            If namespaces, field declarations, defaults, or editability
+            metadata are inconsistent.
+
+        """
         declarations: dict[str, tuple[SceneStateField[Any], ...]] = {}
         attributes: set[str] = set()
         for owner in reversed(cls.mro()):
