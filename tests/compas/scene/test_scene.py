@@ -1,3 +1,5 @@
+import subprocess
+import sys
 from typing import Any
 from uuid import uuid4
 
@@ -16,6 +18,7 @@ from compas.geometry import Vector
 from compas.scene import FrameObject
 from compas.scene import GraphObject
 from compas.scene import GeometryObject
+from compas.scene import MeshObject
 from compas.scene import PlaneObject
 from compas.scene import Scene
 from compas.scene import SceneNode
@@ -307,6 +310,9 @@ def test_graph_and_volmesh_coordinates_invalidate_on_ancestor_transform():
 
 
 def test_scene_state_field_declarations_are_fully_validated():
+    invalid_editable: Any = "yes"
+    invalid_update: Any = "update"
+
     class InvalidDefault(SceneObject):
         __scene_state_namespace__ = "test.invalid.default"
         __scene_state_fields__ = (SceneStateField("value", int, default=1),)
@@ -322,12 +328,186 @@ def test_scene_state_field_declarations_are_fully_validated():
             SceneStateField("two", int, attribute_name="value"),
         )
 
+    class UpdateWithoutEditable(SceneObject):
+        __scene_state_namespace__ = "test.update.without.editable"
+        __scene_state_fields__ = (SceneStateField("value", int, update=lambda owner, value: None),)
+
+    class InvalidEditable(SceneObject):
+        __scene_state_namespace__ = "test.invalid.editable"
+        __scene_state_fields__ = (SceneStateField("value", int, editable=invalid_editable),)
+
+    class InvalidUpdate(SceneObject):
+        __scene_state_namespace__ = "test.invalid.update"
+        __scene_state_fields__ = (SceneStateField("value", int, editable=True, update=invalid_update),)
+
     with pytest.raises(SceneStateError, match="default and be required"):
         InvalidDefault.scene_state_fields()
     with pytest.raises(SceneStateError, match="undeclared default"):
         InvalidOmission.scene_state_fields()
     with pytest.raises(SceneStateError, match="Duplicate scene-state adapter attribute"):
         DuplicateAttribute.scene_state_fields()
+    with pytest.raises(SceneStateError, match="cannot define update unless editable"):
+        UpdateWithoutEditable.scene_state_fields()
+    with pytest.raises(SceneStateError, match="Invalid editable flag"):
+        InvalidEditable.scene_state_fields()
+    with pytest.raises(SceneStateError, match="Invalid update callback"):
+        InvalidUpdate.scene_state_fields()
+
+
+def test_editable_attribute_declarations_compose_state_and_non_state_fields():
+    def update_replaced(owner, value):
+        owner.replaced = value
+
+    class BaseObject(SceneObject):
+        __editable_attributes__ = {
+            "first": None,
+            "replaced": None,
+        }
+
+        __scene_state_namespace__ = "test.editable.base"
+        __scene_state_fields__ = (SceneStateField("state", int, required=False, editable=True),)
+
+    class DerivedObject(BaseObject):
+        __editable_attributes__ = {
+            "replaced": update_replaced,
+            "last": None,
+        }
+
+        __scene_state_namespace__ = "test.editable.derived"
+        __scene_state_fields__ = (SceneStateField("derived_state", int, required=False, editable=True),)
+
+    attributes = DerivedObject.editable_attributes()
+
+    assert list(attributes) == ["name", "opacity", "first", "replaced", "state", "last", "derived_state"]
+    assert attributes["replaced"] is update_replaced
+    assert attributes["state"] is None
+    with pytest.raises(TypeError):
+        mutable_attributes: Any = attributes
+        mutable_attributes["extra"] = None
+
+
+def test_editable_attribute_declarations_are_fully_validated():
+    class InvalidContainer(SceneObject):
+        __editable_attributes__ = ()
+
+    class InvalidName(SceneObject):
+        __editable_attributes__ = {1: None}
+
+    class EmptyName(SceneObject):
+        __editable_attributes__ = {"": None}
+
+    class InvalidUpdate(SceneObject):
+        __editable_attributes__ = {"value": "invalid"}
+
+    class DuplicateStateField(SceneObject):
+        __editable_attributes__ = {"value": None}
+        __scene_state_namespace__ = "test.editable.duplicate"
+        __scene_state_fields__ = (SceneStateField("value", int, required=False, editable=True),)
+
+    with pytest.raises(TypeError, match="InvalidContainer.*mapping"):
+        InvalidContainer.editable_attributes()
+    with pytest.raises(TypeError, match="names.*strings"):
+        InvalidName.editable_attributes()
+    with pytest.raises(ValueError, match="cannot be empty"):
+        EmptyName.editable_attributes()
+    with pytest.raises(TypeError, match="update.*callable or None"):
+        InvalidUpdate.editable_attributes()
+    with pytest.raises(SceneStateError, match="duplicates"):
+        DuplicateStateField.editable_attributes()
+
+
+def test_update_editable_attribute_uses_default_and_declared_data_mutation():
+    calls = []
+
+    def update_value(owner, value):
+        calls.append((owner, value))
+        owner.value = value * 2
+
+    def reject_value(owner, value):
+        raise ValueError("rejected")
+
+    class EditableObject(SceneObject):
+        __editable_attributes__ = {
+            "name": None,
+        }
+        __scene_state_namespace__ = "test.editable.update"
+        __scene_state_fields__ = (
+            SceneStateField("value", (int, float), required=False, editable=True, update=update_value),
+            SceneStateField("rejected", (int, float), required=False, editable=True, update=reject_value),
+        )
+
+        def __init__(self):
+            super().__init__()
+            self.value = 1
+            self.rejected = 2
+
+    sceneobject = EditableObject()
+    sceneobject.update_editable_attribute("name", "Updated")
+    sceneobject.update_editable_attribute("value", 3)
+
+    assert sceneobject.name == "Updated"
+    assert sceneobject.value == 6
+    assert calls == [(sceneobject, 3)]
+    with pytest.raises(ValueError, match="rejected"):
+        sceneobject.update_editable_attribute("rejected", 4)
+    assert sceneobject.rejected == 2
+    with pytest.raises(KeyError, match="not editable: show"):
+        sceneobject.update_editable_attribute("show", False)
+
+
+def test_builtin_editable_attributes_match_stable_object_state():
+    assert list(SceneObject.editable_attributes()) == ["name", "opacity"]
+    assert list(GeometryObject.editable_attributes()) == [
+        "name",
+        "opacity",
+        "show_points",
+        "show_lines",
+        "show_surfaces",
+        "pointcolor",
+        "linecolor",
+        "surfacecolor",
+        "linewidth",
+        "pointsize",
+    ]
+    assert list(MeshObject.editable_attributes()) == [
+        "name",
+        "opacity",
+        "show_vertices",
+        "show_edges",
+        "show_faces",
+        "vertexcolor",
+        "edgecolor",
+        "facecolor",
+        "edgewidth",
+        "vertexsize",
+    ]
+    assert list(GraphObject.editable_attributes()) == [
+        "name",
+        "opacity",
+        "show_nodes",
+        "show_edges",
+        "nodecolor",
+        "edgecolor",
+        "edgewidth",
+        "nodesize",
+    ]
+    assert "u" not in ShapeObject.editable_attributes()
+    assert "size" not in FrameObject.editable_attributes()
+    assert "hide_coplanaredges" not in MeshObject.editable_attributes()
+    assert "show_vertices" not in VolMeshObject.editable_attributes()
+    assert "__editable_attributes__" not in GeometryObject.__dict__
+    assert "__editable_attributes__" not in MeshObject.__dict__
+    assert "__editable_attributes__" not in GraphObject.__dict__
+
+
+def test_editable_attribute_declarations_are_runtime_only_and_graphics_free():
+    sceneobject = GeometryObject()
+
+    assert "editable" not in sceneobject.__data__
+    assert "update" not in sceneobject.__data__
+
+    code = "import sys; import compas.scene; assert 'PySide6' not in sys.modules; assert 'OpenGL' not in sys.modules"
+    subprocess.run([sys.executable, "-c", code], check=True)
 
 
 def test_sceneobject_discovery_is_not_inferred_from_registry_emptiness(monkeypatch):

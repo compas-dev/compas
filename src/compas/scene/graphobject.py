@@ -28,12 +28,12 @@ class GraphObject(SceneObject):
     edgecolor = ColorDictAttribute()
     __scene_state_namespace__ = "compas.scene.GraphObject"
     __scene_state_fields__ = (
-        SceneStateField("show_nodes", (bool, list), default=True, required=False),
-        SceneStateField("show_edges", (bool, list), default=True, required=False),
-        SceneStateField("nodecolor", required=False),
-        SceneStateField("edgecolor", required=False),
-        SceneStateField("nodesize", (int, float), default=1.0, required=False),
-        SceneStateField("edgewidth", (int, float), default=1.0, required=False),
+        SceneStateField("show_nodes", (bool, list), default=True, required=False, editable=True),
+        SceneStateField("show_edges", (bool, list), default=True, required=False, editable=True),
+        SceneStateField("nodecolor", required=False, editable=True),
+        SceneStateField("edgecolor", required=False, editable=True),
+        SceneStateField("edgewidth", (int, float), default=1.0, required=False, editable=True),
+        SceneStateField("nodesize", (int, float), default=1.0, required=False, editable=True),
     )
 
     # ==========================================================================

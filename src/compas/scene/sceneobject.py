@@ -1,11 +1,15 @@
+from collections.abc import Callable
 from collections.abc import Iterator
+from collections.abc import Mapping
 from dataclasses import dataclass
 from functools import reduce
 from operator import mul
+from types import MappingProxyType
 from typing import Any
 from typing import ClassVar
 from typing import Literal
 from typing import Self
+from typing import cast
 from uuid import UUID
 
 from compas.colors import Color
@@ -21,8 +25,12 @@ from .exceptions import SceneStateError
 _MISSING = object()
 
 
+type SceneAttributeUpdate[OwnerT] = Callable[[OwnerT, object], None]
+type _SceneAttributeUpdate = Callable[[Any, object], None]
+
+
 @dataclass(frozen=True, slots=True)
-class SceneStateField:
+class SceneStateField[OwnerT]:
     """Declaration of one durable semantic scene-object field.
 
     Parameters
@@ -39,6 +47,12 @@ class SceneStateField:
         Whether omission without a default is an error.
     omit_default
         Whether a value equal to `default` is omitted.
+    editable
+        Whether the ordinary object attribute may be edited by a consumer.
+    update
+        Optional synchronous data-only update callback. The callback must
+        leave the owner unchanged if it raises. Rendering and user-interface
+        refresh remain the responsibility of the visualization context.
 
     """
 
@@ -48,6 +62,8 @@ class SceneStateField:
     default: object = _MISSING
     required: bool = True
     omit_default: bool = False
+    editable: bool = False
+    update: SceneAttributeUpdate[OwnerT] | None = None
 
     @property
     def attribute(self) -> str:
@@ -85,8 +101,12 @@ class SceneObject(Data):
     """
 
     color = ColorAttribute()
+    __editable_attributes__: ClassVar[Mapping[str, _SceneAttributeUpdate | None]] = {
+        "name": None,
+        "opacity": None,
+    }
     __scene_state_namespace__: ClassVar[str | None] = None
-    __scene_state_fields__: ClassVar[tuple[SceneStateField, ...]] = ()
+    __scene_state_fields__: ClassVar[tuple[SceneStateField[Any], ...]] = ()
 
     @property
     def __data__(self) -> dict[str, Any]:
@@ -327,9 +347,99 @@ class SceneObject(Data):
         self._contrastcolor = Color.coerce(color)
 
     @classmethod
-    def scene_state_fields(cls) -> dict[str, tuple[SceneStateField, ...]]:
+    def editable_attributes(cls) -> Mapping[str, SceneAttributeUpdate[Self] | None]:
+        """Return editable attributes composed across the MRO.
+
+        The result combines non-state declarations with editable durable
+        scene-state fields. A derived non-state declaration replaces an
+        inherited callback without changing attribute order. New attributes
+        append in declaration order.
+
+        Returns
+        -------
+        Mapping[str, SceneAttributeUpdate[Self] | None]
+            Read-only ordered mapping from attribute names to optional
+            data-side update callbacks. A value of `None` selects ordinary
+            `setattr` mutation.
+
+        Raises
+        ------
+        TypeError
+            If a class declaration is not a mapping or a callback is not
+            callable.
+        SceneStateError
+            If a non-state declaration duplicates an editable scene-state
+            field.
+        ValueError
+            If an attribute name is empty.
+
+        """
+        declarations: dict[str, SceneAttributeUpdate[Self] | None] = {}
+        sources: dict[str, Literal["non-state", "state"]] = {}
+        state_fields = cls.scene_state_fields()
+        for owner in reversed(cls.mro()):
+            local = owner.__dict__.get("__editable_attributes__", {})
+            if not isinstance(local, Mapping):
+                raise TypeError(f"Editable attributes on {owner.__name__} should be a mapping.")
+            for name, update in local.items():
+                if not isinstance(name, str):
+                    raise TypeError(f"Editable attribute names on {owner.__name__} should be strings.")
+                if not name:
+                    raise ValueError(f"Editable attribute names on {owner.__name__} cannot be empty.")
+                if update is not None and not callable(update):
+                    raise TypeError(f"Editable attribute update for {owner.__name__}.{name} should be callable or None.")
+                if sources.get(name) == "state":
+                    raise SceneStateError(f"Editable attribute {owner.__name__}.{name} duplicates a scene-state field.")
+                declarations[name] = cast(SceneAttributeUpdate[Self] | None, update)
+                sources[name] = "non-state"
+
+            namespace = owner.__dict__.get("__scene_state_namespace__")
+            if namespace not in state_fields:
+                continue
+            for field in state_fields[namespace]:
+                if not field.editable:
+                    continue
+                name = field.attribute
+                if name in declarations:
+                    raise SceneStateError(f"Editable scene-state field {namespace}.{field.name} duplicates {name}.")
+                declarations[name] = cast(SceneAttributeUpdate[Self] | None, field.update)
+                sources[name] = "state"
+        return MappingProxyType(declarations)
+
+    def update_editable_attribute(self, name: str, value: object) -> None:
+        """Update one declared editable attribute.
+
+        Ordinary declarations use `setattr`. A declaration-specific update
+        callback replaces that assignment and must leave this object unchanged
+        if it raises. This method performs no rendering or user-interface
+        refresh.
+
+        Parameters
+        ----------
+        name
+            Name of a declared editable attribute.
+        value
+            New attribute value.
+
+        Raises
+        ------
+        KeyError
+            If `name` is not declared editable for this scene-object type.
+
+        """
+        try:
+            update = self.editable_attributes()[name]
+        except KeyError:
+            raise KeyError(f"Scene object attribute is not editable: {name}.") from None
+        if update is None:
+            setattr(self, name, value)
+        else:
+            update(self, value)
+
+    @classmethod
+    def scene_state_fields(cls) -> dict[str, tuple[SceneStateField[Any], ...]]:
         """Return durable field declarations composed across the MRO."""
-        declarations: dict[str, tuple[SceneStateField, ...]] = {}
+        declarations: dict[str, tuple[SceneStateField[Any], ...]] = {}
         attributes: set[str] = set()
         for owner in reversed(cls.mro()):
             fields = owner.__dict__.get("__scene_state_fields__", ())
@@ -356,6 +466,12 @@ class SceneObject(Data):
                     raise SceneStateError(f"Invalid default for scene-state field {namespace}.{field.name}.")
                 if field.omit_default and field.default is _MISSING:
                     raise SceneStateError(f"Scene-state field {namespace}.{field.name} cannot omit an undeclared default.")
+                if not isinstance(field.editable, bool):
+                    raise SceneStateError(f"Invalid editable flag for scene-state field {namespace}.{field.name}.")
+                if field.update is not None and not callable(field.update):
+                    raise SceneStateError(f"Invalid update callback for scene-state field {namespace}.{field.name}.")
+                if field.update is not None and not field.editable:
+                    raise SceneStateError(f"Scene-state field {namespace}.{field.name} cannot define update unless editable.")
                 if field.attribute in attributes:
                     raise SceneStateError(f"Duplicate scene-state adapter attribute: {field.attribute}.")
                 attributes.add(field.attribute)

@@ -11,6 +11,7 @@ from .exceptions import SceneObjectNotRegisteredError
 from .exceptions import SceneStateError
 from .exceptions import SceneOperationNotRegisteredError
 from .sceneobject import SceneObject
+from .sceneobject import SceneAttributeUpdate
 from .sceneobject import SceneStateField
 from .meshobject import MeshObject
 from .graphobject import GraphObject
@@ -65,6 +66,7 @@ __all__ = [
     "SceneOperationNotRegisteredError",
     "SceneNode",
     "SceneObject",
+    "SceneAttributeUpdate",
     "SceneStateField",
     "MeshObject",
     "GraphObject",

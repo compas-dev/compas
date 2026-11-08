@@ -92,6 +92,52 @@ For example, meshes can have different colors for the vertices, the edges, and t
 And the colors of vertices, edges, and faces can be specified individually, per element.
 See the section about mesh visualisation for more information.
 
+### Editable Attributes
+
+Stable scene-object classes declare which of their attributes may be exposed by
+an object editor. The resolved mapping contains only attribute names and
+optional data-side update callbacks. Visualisation packages decide how to
+construct controls and refresh their views.
+
+```pycon
+>>> attributes = type(sceneobj).editable_attributes()
+>>> "show_surfaces" in attributes
+True
+>>> sceneobj.update_editable_attribute("opacity", 0.5)
+>>> sceneobj.opacity
+0.5
+```
+
+The declarations compose through the scene-object class hierarchy. A `None`
+callback uses ordinary attribute assignment. A declaration may instead provide
+an atomic, synchronous data-update callback when assignment alone is not
+sufficient. Update callbacks never draw, rebuild render data, or refresh a user
+interface.
+
+Durable editable attributes are declared once as scene state:
+
+```python
+from compas.scene import SceneObject
+from compas.scene import SceneStateField
+
+
+class CustomObject(SceneObject):
+    __scene_state_namespace__ = "example.CustomObject"
+    __scene_state_fields__ = (SceneStateField("quality", int, required=False, editable=True),)
+```
+
+The separate `__editable_attributes__` mapping is reserved for editable
+attributes that are not durable scene state. Derived callback overrides retain
+the inherited attribute position, while new attributes append in declaration
+order. Use
+[`SceneObject.update_editable_attribute`][compas.scene.SceneObject.update_editable_attribute]
+to apply the default assignment or the declared data-update callback.
+
+Editability does not add presentation metadata to
+[`SceneStateField`][compas.scene.SceneStateField] and is not serialized. A
+durable scene-state field is not editable unless it explicitly sets
+`editable=True`.
+
 ## Scene Hierarchy
 
 Scene objects are organised in a hierarchy under an ordinary root group. A

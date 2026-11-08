@@ -26,14 +26,14 @@ class MeshObject(SceneObject):
     facecolor = ColorDictAttribute()
     __scene_state_namespace__ = "compas.scene.MeshObject"
     __scene_state_fields__ = (
-        SceneStateField("show_vertices", (bool, list), default=False, required=False),
-        SceneStateField("show_edges", (bool, list), default=False, required=False),
-        SceneStateField("show_faces", (bool, list), default=True, required=False),
-        SceneStateField("vertexcolor", required=False),
-        SceneStateField("edgecolor", required=False),
-        SceneStateField("facecolor", required=False),
-        SceneStateField("vertexsize", (int, float), default=1.0, required=False),
-        SceneStateField("edgewidth", (int, float), default=1.0, required=False),
+        SceneStateField("show_vertices", (bool, list), default=False, required=False, editable=True),
+        SceneStateField("show_edges", (bool, list), default=False, required=False, editable=True),
+        SceneStateField("show_faces", (bool, list), default=True, required=False, editable=True),
+        SceneStateField("vertexcolor", required=False, editable=True),
+        SceneStateField("edgecolor", required=False, editable=True),
+        SceneStateField("facecolor", required=False, editable=True),
+        SceneStateField("edgewidth", (int, float), default=1.0, required=False, editable=True),
+        SceneStateField("vertexsize", (int, float), default=1.0, required=False, editable=True),
         SceneStateField("hide_coplanaredges", bool, default=False, required=False),
         SceneStateField("use_vertexcolors", bool, default=False, required=False),
     )
