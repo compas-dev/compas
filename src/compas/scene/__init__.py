@@ -23,6 +23,14 @@ from .planeobject import PlaneObject
 from .vectorobject import VectorObject
 from .volmeshobject import VolMeshObject
 from .group import Group
+from .annotations import ArrowAnnotation
+from .annotations import ComponentAnchor
+from .annotations import DistanceDimension
+from .annotations import PointAnchor
+from .annotations import TextAnnotation
+from .annotationobject import ArrowAnnotationObject
+from .annotationobject import DistanceDimensionObject
+from .annotationobject import TextAnnotationObject
 
 from .context import register_scene_objects
 from .context import register_scene_operations
@@ -57,6 +65,9 @@ def register_scene_objects_base() -> None:
     register_sceneobject_type(Mesh, MeshObject)
     register_sceneobject_type(Graph, GraphObject)
     register_sceneobject_type(VolMesh, VolMeshObject)
+    register_sceneobject_type(TextAnnotation, TextAnnotationObject)
+    register_sceneobject_type(ArrowAnnotation, ArrowAnnotationObject)
+    register_sceneobject_type(DistanceDimension, DistanceDimensionObject)
 
 
 __all__ = [
@@ -78,6 +89,14 @@ __all__ = [
     "VectorObject",
     "VolMeshObject",
     "Group",
+    "PointAnchor",
+    "ComponentAnchor",
+    "TextAnnotation",
+    "ArrowAnnotation",
+    "DistanceDimension",
+    "TextAnnotationObject",
+    "ArrowAnnotationObject",
+    "DistanceDimensionObject",
     "register_scene_objects",
     "register_scene_operations",
     "get_sceneobject_cls",

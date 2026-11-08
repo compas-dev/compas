@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added backend-neutral text, arrow, and fixed or associative distance
+  annotations to `compas.scene`.
 * Added durable, reference-only scene objects with declarative persistent-state
   fields, explicit data rebinding, inspectable unresolved references, and
   hierarchy-only scene nodes.
