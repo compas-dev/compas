@@ -244,34 +244,44 @@ To use a different scene object as the parent, pass it to `Scene.add`.
 'GeometryObject'
 ```
 
-## Object Frame And Transformation
+## Object transformations
 
-Every scene objects can have a reference "frame" that represents its local coordinate system relative to the frame of its hierarchical parent.
-In addition, an object can also have a local "transformation" which orientates this object from its frame.
-The final transformation of an object relative to the world coordinate system is the aggregated multiplication of all its hierarchical ancesters' frames,
-together with its own local frame and transformation. This prorperty can be accessed through the read-only attribute "worldtransformation".
+Every scene object stores an optional local `transformation` relative to its
+parent. A value of `None` represents the identity transformation. The
+`worldtransformation` property composes the local transformations of the object
+and its ancestors from the hierarchy root to the object.
 
 ```pycon
->>> from compas.geometry import Translation
 >>> from compas.geometry import Box
->>> from compas.geometry import Frame
->>> sceneobj1 = scene.add(Box())
->>> sceneobj1.frame = Frame(point=[1.0, 0.0, 0.0], xaxis=[1.0, 0.0, 0.0], yaxis=[0.0, 1.0, 0.0])
->>> sceneobj1.transformation = Translation.from_vector([10.0, 0.0, 0.0])
->>> sceneobj1.worldtransformation
-Transformation([[1.0, 0.0, 0.0, 11.0], [0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 1.0, 0.0], [0.0, 0.0, 0.0, 1.0]], check=False)
->>> sceneobj1.worldtransformation == sceneobj1.frame.to_transfromation() * sceneobj1.transformation
+>>> from compas.geometry import Translation
+>>> parent = scene.add_group(
+...     "Assembly",
+...     transformation=Translation.from_vector([10.0, 0.0, 0.0]),
+... )
+>>> child = scene.add(
+...     Box(1.0),
+...     parent=parent,
+...     transformation=Translation.from_vector([0.0, 2.0, 0.0]),
+... )
+>>> child.worldtransformation == Translation.from_vector([10.0, 2.0, 0.0])
 True
 ```
 
-The worldtransformation of a nestd "sceneobj2" will be calculated as: Frame of "sceneobj1" * Frame of "sceneobj2" * Transformation of "sceneobj2"
-\>>> sceneobj2 = scene.add(Box(), parent=sceneobj1)
-\>>> sceneobj2.frame = Frame([1.0, 1.0, 0.0], xaxis=[1.0, 0.0, 0.0],yaxis=[0.0, 1.0, 0.0])
-\>>> sceneobj2.transformation = Translation.from_vector([10.0, 10.0, 0.0])
-\>>> sceneobj.worldtransformation
-Transformation(\[[1.0, 0.0, 0.0, 12.0], [0.0, 1.0, 0.0, 11.0], [0.0, 0.0, 1.0, 0.0], [0.0, 0.0, 0.0, 1.0]\], check=False)
-\>>> sceneobj2.worldtransformation == sceneobj1.frame.to_transfromation() * sceneobj2.frame.to_transfrom() * sceneobj2.transformation
+Assigning `worldtransformation` converts the requested world transformation to
+the corresponding local transformation through the inverse parent world
+transformation. The parent remains unchanged.
+
+```pycon
+>>> child.worldtransformation = Translation.from_vector([20.0, 3.0, 0.0])
+>>> child.transformation == Translation.from_vector([10.0, 3.0, 0.0])
 True
+>>> parent.transformation == Translation.from_vector([10.0, 0.0, 0.0])
+True
+```
+
+`frame` is the frame represented by the current world transformation. Assigning
+a frame is therefore another way to set `worldtransformation`; it is not a
+separate local frame stored alongside `transformation`.
 
 ## Scene Context
 
