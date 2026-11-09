@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added backend-neutral text, arrow, and fixed or associative distance
+  annotations to `compas.scene`.
+* Added an ordered scene-scoped annotation collection and durable distance
+  styles with color, line width, text size, arrow size, and label offset.
+* Added durable, reference-only scene objects with declarative persistent-state
+  fields, explicit data rebinding, inspectable unresolved references, and
+  hierarchy-only scene nodes.
+* Added stable semantic scene objects for shapes, surfaces, frames, planes, and
+  vectors, with backend-neutral discretization and display state.
+* Added MRO-composed editable scene-state fields, narrowly scoped non-state
+  declarations, and data-only mutation callbacks for contextual object editors.
 * Added a verified Linux Python 3.12 candidate wheel artifact for framework-wide pre-release integration.
 * Added the public `compas.typing` structural vocabulary with NumPy-aware `PointLike`, `VectorLike`, collection, and neutral `VerticesFaces` aliases.
 * Added the PEP 561 `py.typed` marker and installed-wheel static-consumer verification.
@@ -23,6 +34,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Moved annotations out of the spatial scene hierarchy into schema-v3
+  `SceneAnnotation` entries. Annotation items remain independently serialized
+  and bound by GUID; the former annotation `SceneObject` classes are removed.
+* Made scene objects stable backend-neutral data records and replaced class
+  substitution with deterministic context- and MRO-keyed `draw` and `clear`
+  operations. Runtime resources remain outside durable scene objects.
 * Migrated core geometry constructors and plugin contracts from private overlapping type aliases to semantic structural inputs, including copied NumPy coordinates and integral face indices.
 * Added a committed uv development lock, documented direct quality commands while retaining Invoke convenience tasks, and migrated CI, release, artifact, and documentation mechanics to immutably pinned shared actions.
 * Standardized numerical triangle-mesh plugin inputs and outputs on structural `(vertices, triangles)` buffers. `Tessellation` remains an ephemeral discrete representation for geometry producers and scene handoff, but is not required at numerical backend boundaries.

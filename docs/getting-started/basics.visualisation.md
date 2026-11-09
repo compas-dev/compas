@@ -11,9 +11,9 @@ COMPAS (data) objects can be visualised by placing them into a "scene".
 >>> scene.draw()
 ```
 
-When a COMPAS object is added, the scene creates the corresponding scene object
-for the active visualisation context. Visualisation backends are provided by
-separate COMPAS packages.
+When a COMPAS object is added, the scene creates a stable, backend-neutral scene
+object for its semantic type. Visualisation backends are provided by separate
+COMPAS packages and register operations for these stable objects.
 
 ## Scene Objects
 
@@ -21,19 +21,38 @@ When a COMPAS object is added to a scene, a scene object is created automaticall
 
 ```pycon
 >>> sceneobj = scene.add(box)
->>> sceneobj
-BoxObject
+>>> type(sceneobj).__name__
+'ShapeObject'
 ```
 
 The scene object holds a reference to the COMPAS data object, and stores its visualisation settings and transformation matrix.
 Multiple scene objects can be created for the same COMPAS data object, each with different visualisation settings and transformations.
+
+Core provides stable semantic scene-object types for data whose visualisation
+needs additional backend-neutral settings:
+
+- `ShapeObject` and `SurfaceObject` store the `u` and `v` discretization
+  counts used to display analytic shapes and parametric surfaces.
+- `FrameObject` and `PlaneObject` store their display `size`.
+- `VectorObject` stores the vector's display `anchor`.
+- `MeshObject` stores `hide_coplanaredges` and `use_vertexcolors` in addition
+  to its vertex, edge, and face settings.
+
+These settings describe durable presentation intent. A visualisation backend
+decides how to draw them; changing the backend does not change the scene-object
+type or its stored settings.
+
+For a `FrameObject`, the inherited `geometry` property is the represented
+[`Frame`][compas.geometry.Frame]. Its inherited `frame` property has the same
+meaning as on every `SceneObject`: it is the world-placement frame derived from
+the scene hierarchy. The two frames therefore serve different purposes.
 
 ```pycon
 >>> sceneobj1 = scene.add(box)
 >>> sceneobj2 = scene.add(box)
 >>> sceneobj1 is sceneobj2
 False
->>> sceneobj1.data is sceneobj2.data
+>>> sceneobj1.item is sceneobj2.item
 True
 ```
 
@@ -45,7 +64,7 @@ All scene objects have a color attribute.
 ```pycon
 >>> sceneobj = scene.add(box)
 >>> sceneobj.color
-Color(0.0, 0.0, 0.0, alpha=1.0)
+Color(1.0, 1.0, 1.0, alpha=1.0)
 ```
 
 Color attributes can be set using a COMPAS Color object, or a tuple of RGB values, with the color components specified as floats in the range 0.0-1.0 or as integers in the range 0-255.
@@ -73,12 +92,106 @@ For example, meshes can have different colors for the vertices, the edges, and t
 And the colors of vertices, edges, and faces can be specified individually, per element.
 See the section about mesh visualisation for more information.
 
+### Editable Attributes
+
+Stable scene-object classes declare which of their attributes may be exposed by
+an object editor. The resolved mapping contains only attribute names and
+optional data-side update callbacks. Visualisation packages decide how to
+construct controls and refresh their views.
+
+```pycon
+>>> attributes = type(sceneobj).editable_attributes()
+>>> "show_surfaces" in attributes
+True
+>>> sceneobj.update_editable_attribute("opacity", 0.5)
+>>> sceneobj.opacity
+0.5
+```
+
+The declarations compose through the scene-object class hierarchy. A `None`
+callback uses ordinary attribute assignment. A declaration may instead provide
+an atomic, synchronous data-update callback when assignment alone is not
+sufficient. Update callbacks never draw, rebuild render data, or refresh a user
+interface.
+
+Durable editable attributes are declared once as scene state:
+
+```python
+from compas.scene import SceneObject
+from compas.scene import SceneStateField
+
+
+class CustomObject(SceneObject):
+    __scene_state_namespace__ = "example.CustomObject"
+    __scene_state_fields__ = (SceneStateField("quality", int, required=False, editable=True),)
+```
+
+The separate `__editable_attributes__` mapping is reserved for editable
+attributes that are not durable scene state. Derived callback overrides retain
+the inherited attribute position, while new attributes append in declaration
+order. Use
+[`SceneObject.update_editable_attribute`][compas.scene.SceneObject.update_editable_attribute]
+to apply the default assignment or the declared data-update callback.
+
+Editability does not add presentation metadata to
+[`SceneStateField`][compas.scene.SceneStateField] and is not serialized. A
+durable scene-state field is not editable unless it explicitly sets
+`editable=True`.
+
+### Data, Scene State, and Extensions
+
+Every scene object is a [`Data`][compas.data.Data] object. COMPAS serialization
+wraps it in an envelope containing its data type, GUID, optional name, and the
+payload returned by `SceneObject.__data__`. The represented geometry or
+datastructure is another independent `Data` object; the scene object stores
+only its GUID in the `item` field.
+
+The scene-object payload has two state layers:
+
+- Common state such as `transformation`, `color`, `opacity`, and `show` is
+  stored directly in the payload.
+- Type-specific state declared by `SceneStateField` is stored under the
+  declaring class's namespace in the `extensions` mapping.
+
+For example, a shape scene object may serialize geometry display settings and
+shape resolution separately:
+
+```python
+from compas.colors import Color
+
+
+payload = {
+    "item": "<represented-data-guid>",
+    "transformation": None,
+    "color": Color.white(),
+    "opacity": 1.0,
+    "show": True,
+    "extensions": {
+        "compas.scene.GeometryObject": {
+            "show_points": False,
+            "show_lines": True,
+        },
+        "compas.scene.ShapeObject": {
+            "u": 16,
+            "v": 16,
+        },
+    },
+}
+```
+
+Namespaces let subclasses and external packages add durable state without
+widening the common scene-object payload. Unknown namespaced values are
+preserved during a round trip for forward compatibility. Runtime item
+bindings, editable-attribute callbacks, Viewer controls, selection, and render
+resources are not stored in `extensions` or elsewhere in the serialized scene.
+
 ## Scene Hierarchy
 
-Scene objects are organised in a hierarchy under a private root group.
-The scene stores data and scene objects by GUID, while a COMPAS tree of
-lightweight internal nodes records the hierarchy. Public hierarchy properties
-on scene objects resolve these internal references.
+Scene objects are organised in a hierarchy under an ordinary root group. A
+[`SceneNode`][compas.scene.SceneNode] contains only an object GUID and child
+nodes. Presentation state and the referenced data GUID belong to the stable
+[`SceneObject`][compas.scene.SceneObject]. Each scene object has exactly one
+node in a scene.
 
 ```pycon
 >>> scene = Scene()
@@ -96,6 +209,69 @@ True
 True
 ```
 
+## Annotations
+
+Text, arrows, and dimensions belong to a separate ordered annotation
+collection. They are durable scene data, but they do not have a hierarchy node,
+parent, children, or transformation. Fixed dimension anchors therefore store
+world-coordinate points, while associative anchors resolve spatial scene
+objects by GUID.
+
+```pycon
+>>> from compas.colors import Color
+>>> from compas.scene import DimensionStyle
+>>> from compas.scene import DistanceDimension
+>>> from compas.scene import PointAnchor
+>>> dimension = DistanceDimension(
+...     PointAnchor([0, 0, 0]),
+...     PointAnchor([3, 4, 0]),
+...     unit="m",
+... )
+>>> entry = scene.add_annotation(
+...     dimension,
+...     name="Diagonal",
+...     style=DimensionStyle(color=Color.red(), text_size=14),
+... )
+>>> scene.annotations == (entry,)
+True
+>>> entry in scene.objects
+False
+```
+
+Annotation items remain independently serializable, just like geometry and
+data structures. [`Scene.add_annotation`][compas.scene.Scene.add_annotation]
+binds the supplied item for the current process. A scene loaded separately has
+unresolved annotation entries until their items are restored with
+[`Scene.bind`][compas.scene.Scene.bind] or
+[`Scene.bind_many`][compas.scene.Scene.bind_many]. Use
+[`Scene.remove_annotation`][compas.scene.Scene.remove_annotation] to remove an
+entry without deleting its independently owned item.
+
+## Saving Scenes and Data
+
+A serialized scene contains its hierarchy, ordered annotation collection,
+presentation state, and references to data objects by GUID. It does not embed
+or own those data objects. Serialize the data separately when it should outlive
+the current Python process.
+
+After loading a scene, its objects and hierarchy can be inspected immediately.
+Bind the independently loaded data explicitly before accessing an object's
+`item` or drawing it.
+
+```pycon
+>>> description = scene.to_jsonstring()
+>>> loaded_scene = Scene.from_jsonstring(description)
+>>> loaded_scene.find_by_name(sceneobj.name).item_guid == box.guid
+True
+>>> loaded_scene.bind(box)
+>>> loaded_scene.find_by_name(sceneobj.name).item is box
+True
+```
+
+Use [`Scene.bind_many`][compas.scene.Scene.bind_many] when restoring several
+referenced data objects at once. Bindings are runtime references: binding does
+not copy the object or add it to the serialized scene description.
+
 To use a different scene object as the parent, pass it to `Scene.add`.
 
 ```pycon
@@ -103,43 +279,55 @@ To use a different scene object as the parent, pass it to `Scene.add`.
 >>> point = Point(1, 2, 3)
 >>> pointobj = scene.add(point)
 >>> boxobj = scene.add(box, parent=pointobj)
->>> boxobj.parent
-PointObject
+>>> type(boxobj.parent).__name__
+'GeometryObject'
 ```
 
-## Object Frame And Transformation
+## Object transformations
 
-Every scene objects can have a reference "frame" that represents its local coordinate system relative to the frame of its hierarchical parent.
-In addition, an object can also have a local "transformation" which orientates this object from its frame.
-The final transformation of an object relative to the world coordinate system is the aggregated multiplication of all its hierarchical ancesters' frames,
-together with its own local frame and transformation. This prorperty can be accessed through the read-only attribute "worldtransformation".
+Every scene object stores an optional local `transformation` relative to its
+parent. A value of `None` represents the identity transformation. The
+`worldtransformation` property composes the local transformations of the object
+and its ancestors from the hierarchy root to the object.
 
 ```pycon
->>> from compas.geometry import Translation
 >>> from compas.geometry import Box
->>> from compas.geometry import Frame
->>> sceneobj1 = scene.add(Box())
->>> sceneobj1.frame = Frame(point=[1.0, 0.0, 0.0], xaxis=[1.0, 0.0, 0.0], yaxis=[0.0, 1.0, 0.0])
->>> sceneobj1.transformation = Translation.from_vector([10.0, 0.0, 0.0])
->>> sceneobj1.worldtransformation
-Transformation([[1.0, 0.0, 0.0, 11.0], [0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 1.0, 0.0], [0.0, 0.0, 0.0, 1.0]], check=False)
->>> sceneobj1.worldtransformation == sceneobj1.frame.to_transfromation() * sceneobj1.transformation
+>>> from compas.geometry import Translation
+>>> parent = scene.add_group(
+...     "Assembly",
+...     transformation=Translation.from_vector([10.0, 0.0, 0.0]),
+... )
+>>> child = scene.add(
+...     Box(1.0),
+...     parent=parent,
+...     transformation=Translation.from_vector([0.0, 2.0, 0.0]),
+... )
+>>> child.worldtransformation == Translation.from_vector([10.0, 2.0, 0.0])
 True
 ```
 
-The worldtransformation of a nestd "sceneobj2" will be calculated as: Frame of "sceneobj1" * Frame of "sceneobj2" * Transformation of "sceneobj2"
-\>>> sceneobj2 = scene.add(Box(), parent=sceneobj1)
-\>>> sceneobj2.frame = Frame([1.0, 1.0, 0.0], xaxis=[1.0, 0.0, 0.0],yaxis=[0.0, 1.0, 0.0])
-\>>> sceneobj2.transformation = Translation.from_vector([10.0, 10.0, 0.0])
-\>>> sceneobj.worldtransformation
-Transformation(\[[1.0, 0.0, 0.0, 12.0], [0.0, 1.0, 0.0, 11.0], [0.0, 0.0, 1.0, 0.0], [0.0, 0.0, 0.0, 1.0]\], check=False)
-\>>> sceneobj2.worldtransformation == sceneobj1.frame.to_transfromation() * sceneobj2.frame.to_transfrom() * sceneobj2.transformation
+Assigning `worldtransformation` converts the requested world transformation to
+the corresponding local transformation through the inverse parent world
+transformation. The parent remains unchanged.
+
+```pycon
+>>> child.worldtransformation = Translation.from_vector([20.0, 3.0, 0.0])
+>>> child.transformation == Translation.from_vector([10.0, 3.0, 0.0])
 True
+>>> parent.transformation == Translation.from_vector([10.0, 0.0, 0.0])
+True
+```
+
+`frame` is the frame represented by the current world transformation. Assigning
+a frame is therefore another way to set `worldtransformation`; it is not a
+separate local frame stored alongside `transformation`.
 
 ## Scene Context
 
-Visualisation packages register their own scene contexts and scene object
-implementations. Users can select a registered context explicitly:
+Visualisation packages register `draw` and `clear` operations for stable scene
+object and annotation-entry types. Selecting another context changes operation
+lookup; it never replaces durable scene state or changes its Python types.
+Users can select a registered context explicitly:
 
 ```pycon
 >>> scene = Scene(context="MyContextName")

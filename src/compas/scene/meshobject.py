@@ -8,6 +8,7 @@ from compas.datastructures import Mesh
 
 from .descriptors.colordict import ColorDictAttribute
 from .sceneobject import SceneObject
+from .sceneobject import SceneStateField
 
 
 class MeshObject(SceneObject):
@@ -23,6 +24,19 @@ class MeshObject(SceneObject):
     vertexcolor = ColorDictAttribute()
     edgecolor = ColorDictAttribute()
     facecolor = ColorDictAttribute()
+    __scene_state_namespace__ = "compas.scene.MeshObject"
+    __scene_state_fields__ = (
+        SceneStateField("show_vertices", (bool, list), default=False, required=False, editable=True),
+        SceneStateField("show_edges", (bool, list), default=False, required=False, editable=True),
+        SceneStateField("show_faces", (bool, list), default=True, required=False, editable=True),
+        SceneStateField("vertexcolor", required=False, editable=True),
+        SceneStateField("edgecolor", required=False, editable=True),
+        SceneStateField("facecolor", required=False, editable=True),
+        SceneStateField("edgewidth", (int, float), default=1.0, required=False, editable=True),
+        SceneStateField("vertexsize", (int, float), default=1.0, required=False, editable=True),
+        SceneStateField("hide_coplanaredges", bool, default=False, required=False),
+        SceneStateField("use_vertexcolors", bool, default=False, required=False),
+    )
 
     # ==========================================================================
     # Dunder methods
@@ -38,6 +52,8 @@ class MeshObject(SceneObject):
         facecolor: Mapping[Any, ColorInput] | Color | None = None,
         vertexsize: float = 1.0,
         edgewidth: float = 1.0,
+        hide_coplanaredges: bool = False,
+        use_vertexcolors: bool = False,
         **kwargs: Any,
     ) -> None:
         super().__init__(**kwargs)
@@ -49,26 +65,12 @@ class MeshObject(SceneObject):
         self.facecolor = facecolor or self.color
         self.vertexsize = vertexsize
         self.edgewidth = edgewidth
+        self.hide_coplanaredges = hide_coplanaredges
+        self.use_vertexcolors = use_vertexcolors
 
     # ==========================================================================
     # Properties
     # ==========================================================================
-
-    @property
-    def settings(self) -> dict[str, object]:
-        """The settings required to reconstruct the mesh scene object."""
-        settings = super().settings
-        # perhaps this should be renamed to just "vertices", "edges", "faces"
-        settings["show_vertices"] = self.show_vertices
-        settings["show_edges"] = self.show_edges
-        settings["show_faces"] = self.show_faces
-        # end of perhaps
-        settings["vertexcolor"] = self.vertexcolor
-        settings["edgecolor"] = self.edgecolor
-        settings["facecolor"] = self.facecolor
-        settings["vertexsize"] = self.vertexsize
-        settings["edgewidth"] = self.edgewidth
-        return settings
 
     @property
     def mesh(self) -> Mesh:
@@ -83,73 +85,7 @@ class MeshObject(SceneObject):
     def mesh(self, mesh: Mesh) -> None:
         if self.scene is None:
             self._item_guid = mesh.guid
-            self._detached_item = mesh
+            self._item = mesh
         else:
             self.scene.replace_item(self, mesh)
-        self._transformation = None
-
-    # ==========================================================================
-    # Methods
-    # ==========================================================================
-
-    def draw_vertices(self) -> list[object]:
-        """Draw the vertices of the mesh.
-
-        Vertices are drawn based on the values of
-
-        * `self.show_vertices`
-        * `self.vertexcolor`
-        * `self.vertexsize`
-
-        Returns
-        -------
-        list[object]
-            The identifiers of the objects representing the vertices in the visualization context.
-
-        """
-        raise NotImplementedError
-
-    def draw_edges(self) -> list[object]:
-        """Draw the edges of the mesh.
-
-        Edges are drawn based on the values of
-
-        * `self.show_edges`
-        * `self.edgecolor`
-        * `self.edgewidth`
-
-        Returns
-        -------
-        list[object]
-            The identifiers of the objects representing the edges in the visualization context.
-
-        """
-        raise NotImplementedError
-
-    def draw_faces(self) -> list[object]:
-        """Draw the faces of the mesh.
-
-        Faces are drawn based on the values of
-
-        * `self.show_faces`
-        * `self.facecolor`
-
-        Returns
-        -------
-        list[object]
-            The identifiers of the objects representing the faces in the visualization context.
-
-        """
-        raise NotImplementedError
-
-    def clear_vertices(self) -> None:
-        """Clear the vertices of the mesh."""
-        raise NotImplementedError
-
-    def clear_edges(self) -> None:
-        """Clear the edges of the mesh."""
-        raise NotImplementedError
-
-    def clear_faces(self) -> None:
-        """Clear the faces of the mesh."""
-        raise NotImplementedError
+        self.transformation = None

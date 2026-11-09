@@ -84,5 +84,5 @@ class ColorAttribute:
         """
         if value is None:
             return
-
-        setattr(obj, self.private_name, Color.coerce(value))
+        color = Color.coerce(value)
+        setattr(obj, self.private_name, color)

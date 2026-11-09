@@ -9,7 +9,6 @@ from compas.files.gltf.constants import MODE_TRIANGLE_FAN
 from compas.files.gltf.constants import MODE_TRIANGLE_STRIP
 from compas.files.gltf.data_classes import PrimitiveData
 from compas.files.gltf.gltf_conversions import GLTFConversionWarning
-from compas.files.gltf.gltf_conversions import _base_scene_context
 from compas.files.gltf.gltf_conversions import gltf_line_loop_to_polyline
 from compas.files.gltf.gltf_conversions import gltf_lines_to_lines
 from compas.files.gltf.gltf_conversions import gltf_points_to_pointcloud
@@ -108,13 +107,12 @@ def test_gltf_to_scene_expands_loop_and_fan_modes(mode):
 
 
 def test_scene_to_gltf_preserves_hierarchy_and_supported_geometry():
-    with _base_scene_context():
-        scene = Scene(name="Model")
-        group = scene.add_group("Group", transformation=Translation.from_vector([1, 2, 3]))
-        mesh = Mesh.from_vertices_and_faces([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]], [[0, 1, 2, 3]])
-        scene.add(mesh, parent=group, name="Surface")
-        scene.add(Pointcloud([[0, 0, 0], [1, 1, 1]]), parent=group, name="Points")
-        scene.add(Polyline([[0, 0, 0], [1, 0, 0], [1, 1, 0]]), parent=group, name="Path")
+    scene = Scene(name="Model")
+    group = scene.add_group("Group", transformation=Translation.from_vector([1, 2, 3]))
+    mesh = Mesh.from_vertices_and_faces([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]], [[0, 1, 2, 3]])
+    scene.add(mesh, parent=group, name="Surface")
+    scene.add(Pointcloud([[0, 0, 0], [1, 1, 1]]), parent=group, name="Points")
+    scene.add(Polyline([[0, 0, 0], [1, 0, 0], [1, 1, 0]]), parent=group, name="Path")
 
     document = scene.to_gltf()
 
@@ -131,10 +129,9 @@ def test_scene_to_gltf_preserves_hierarchy_and_supported_geometry():
 
 
 def test_scene_to_gltf_warns_for_unsupported_items_and_preserves_children():
-    with _base_scene_context():
-        scene = Scene(name="Model")
-        unsupported = scene.add(Vector(1, 0, 0), name="Direction")
-        scene.add(Pointcloud([[0, 0, 0]]), parent=unsupported, name="Child")
+    scene = Scene(name="Model")
+    unsupported = scene.add(Vector(1, 0, 0), name="Direction")
+    scene.add(Pointcloud([[0, 0, 0]]), parent=unsupported, name="Child")
 
     with pytest.warns(GLTFConversionWarning, match="Vector"):
         document = scene.to_gltf()
