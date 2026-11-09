@@ -209,11 +209,50 @@ True
 True
 ```
 
+## Annotations
+
+Text, arrows, and dimensions belong to a separate ordered annotation
+collection. They are durable scene data, but they do not have a hierarchy node,
+parent, children, or transformation. Fixed dimension anchors therefore store
+world-coordinate points, while associative anchors resolve spatial scene
+objects by GUID.
+
+```pycon
+>>> from compas.colors import Color
+>>> from compas.scene import DimensionStyle
+>>> from compas.scene import DistanceDimension
+>>> from compas.scene import PointAnchor
+>>> dimension = DistanceDimension(
+...     PointAnchor([0, 0, 0]),
+...     PointAnchor([3, 4, 0]),
+...     unit="m",
+... )
+>>> entry = scene.add_annotation(
+...     dimension,
+...     name="Diagonal",
+...     style=DimensionStyle(color=Color.red(), text_size=14),
+... )
+>>> scene.annotations == (entry,)
+True
+>>> entry in scene.objects
+False
+```
+
+Annotation items remain independently serializable, just like geometry and
+data structures. [`Scene.add_annotation`][compas.scene.Scene.add_annotation]
+binds the supplied item for the current process. A scene loaded separately has
+unresolved annotation entries until their items are restored with
+[`Scene.bind`][compas.scene.Scene.bind] or
+[`Scene.bind_many`][compas.scene.Scene.bind_many]. Use
+[`Scene.remove_annotation`][compas.scene.Scene.remove_annotation] to remove an
+entry without deleting its independently owned item.
+
 ## Saving Scenes and Data
 
-A serialized scene contains its hierarchy, presentation state, and references
-to data objects by GUID. It does not embed or own those data objects. Serialize
-the data separately when it should outlive the current Python process.
+A serialized scene contains its hierarchy, ordered annotation collection,
+presentation state, and references to data objects by GUID. It does not embed
+or own those data objects. Serialize the data separately when it should outlive
+the current Python process.
 
 After loading a scene, its objects and hierarchy can be inspected immediately.
 Bind the independently loaded data explicitly before accessing an object's
@@ -286,9 +325,9 @@ separate local frame stored alongside `transformation`.
 ## Scene Context
 
 Visualisation packages register `draw` and `clear` operations for stable scene
-object types. Selecting another context changes operation lookup; it never
-replaces the scene objects or changes their Python types. Users can select a
-registered context explicitly:
+object and annotation-entry types. Selecting another context changes operation
+lookup; it never replaces durable scene state or changes its Python types.
+Users can select a registered context explicitly:
 
 ```pycon
 >>> scene = Scene(context="MyContextName")

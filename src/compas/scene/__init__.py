@@ -1,7 +1,9 @@
-"""Visualize COMPAS geometry and data structures through scene objects.
+"""Visualize COMPAS data through spatial objects and annotations.
 
 Each supported item type is paired with one stable semantic scene-object type.
-Visualization contexts register operations rather than replacement classes.
+Text, arrow, and dimension items use the separate ordered annotation
+collection. Visualization contexts register operations rather than replacement
+classes.
 
 """
 
@@ -28,9 +30,8 @@ from .annotations import ComponentAnchor
 from .annotations import DistanceDimension
 from .annotations import PointAnchor
 from .annotations import TextAnnotation
-from .annotationobject import ArrowAnnotationObject
-from .annotationobject import DistanceDimensionObject
-from .annotationobject import TextAnnotationObject
+from .sceneannotation import DimensionStyle
+from .sceneannotation import SceneAnnotation
 
 from .context import register_scene_objects
 from .context import register_scene_operations
@@ -65,9 +66,6 @@ def register_scene_objects_base() -> None:
     register_sceneobject_type(Mesh, MeshObject)
     register_sceneobject_type(Graph, GraphObject)
     register_sceneobject_type(VolMesh, VolMeshObject)
-    register_sceneobject_type(TextAnnotation, TextAnnotationObject)
-    register_sceneobject_type(ArrowAnnotation, ArrowAnnotationObject)
-    register_sceneobject_type(DistanceDimension, DistanceDimensionObject)
 
 
 __all__ = [
@@ -94,9 +92,8 @@ __all__ = [
     "TextAnnotation",
     "ArrowAnnotation",
     "DistanceDimension",
-    "TextAnnotationObject",
-    "ArrowAnnotationObject",
-    "DistanceDimensionObject",
+    "DimensionStyle",
+    "SceneAnnotation",
     "register_scene_objects",
     "register_scene_operations",
     "get_sceneobject_cls",

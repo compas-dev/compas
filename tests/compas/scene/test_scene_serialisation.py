@@ -19,6 +19,7 @@ from compas.scene import Scene
 from compas.scene import SceneItemNotBoundError
 from compas.scene import SceneObject
 from compas.scene import SceneStateField
+from compas.scene import TextAnnotation
 from compas.scene import VolMeshObject
 
 
@@ -61,12 +62,35 @@ def test_scene_serialization_separates_objects_from_hierarchy():
     box = scene.add(Box(), name="Box")
     data = scene.__data__
 
-    assert data["version"] == 2
+    assert data["version"] == 3
     assert [obj.guid for obj in data["objects"]] == [scene.root.guid, box.guid]
+    assert data["annotations"] == []
     assert data["hierarchy"] == {
         "object": str(scene.root.guid),
         "children": [{"object": str(box.guid), "children": []}],
     }
+
+
+def test_scene_serialization_keeps_ordered_annotations_outside_hierarchy():
+    scene = Scene()
+    first = scene.add_annotation(TextAnnotation("First", [0, 0, 0]))
+    second = scene.add_annotation(TextAnnotation("Second", [1, 0, 0]), show=False)
+
+    data = scene.__data__
+    restored = Scene.from_jsonstring(scene.to_jsonstring())
+
+    assert data["annotations"] == [first, second]
+    assert [entry.guid for entry in restored.annotations] == [first.guid, second.guid]
+    assert restored.annotations[1].show is False
+    assert all(entry.guid not in restored.object_store for entry in restored.annotations)
+
+
+def test_scene_schema_v3_is_a_clean_break():
+    data = Scene().__data__
+    data["version"] = 2
+
+    with pytest.raises(ValueError, match="Unsupported scene schema version: 2"):
+        Scene.__from_data__(data)
 
 
 def test_unknown_namespaced_sceneobject_state_roundtrips():

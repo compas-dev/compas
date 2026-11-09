@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import inspect
 from collections.abc import Callable
 from typing import TYPE_CHECKING
@@ -10,11 +12,12 @@ from .exceptions import SceneObjectNotRegisteredError
 from .exceptions import SceneOperationNotRegisteredError
 
 if TYPE_CHECKING:
+    from .sceneannotation import SceneAnnotation
     from .sceneobject import SceneObject
 
 
 SCENEOBJECT_TYPES: dict[type[Data], type["SceneObject"]] = {}
-SCENE_OPERATIONS: dict[str, dict[type["SceneObject"], dict[str, Callable[..., Any]]]] = {}
+SCENE_OPERATIONS: dict[str, dict[type[SceneObject | SceneAnnotation], dict[str, Callable[..., Any]]]] = {}
 _SCENEOBJECTS_DISCOVERED = False
 _OPERATIONS_DISCOVERED = False
 
@@ -81,7 +84,7 @@ def get_sceneobject_cls(item: Data) -> type["SceneObject"]:
 
 def register_scene_operation(
     context: str,
-    sceneobject_type: type["SceneObject"],
+    sceneobject_type: type[SceneObject | SceneAnnotation],
     operation: str,
     implementation: Callable[..., Any],
 ) -> None:
@@ -92,7 +95,8 @@ def register_scene_operation(
     context
         Stable visualization-context name.
     sceneobject_type
-        Stable scene-object type accepted by the implementation.
+        Stable scene-object or annotation-entry type accepted by the
+        implementation.
     operation
         Operation name. Initially only `draw` and `clear` are supported.
     implementation
@@ -115,7 +119,7 @@ def register_scene_operation(
     operations[operation] = implementation
 
 
-def get_scene_operation(context: str, sceneobject_type: type["SceneObject"], operation: str) -> Callable[..., Any]:
+def get_scene_operation(context: str, sceneobject_type: type[SceneObject | SceneAnnotation], operation: str) -> Callable[..., Any]:
     """Resolve a scene operation using stable-type MRO fallback.
 
     Parameters
@@ -123,7 +127,7 @@ def get_scene_operation(context: str, sceneobject_type: type["SceneObject"], ope
     context
         Visualization-context name.
     sceneobject_type
-        Concrete stable scene-object type.
+        Concrete stable scene-object or annotation-entry type.
     operation
         Operation name.
 

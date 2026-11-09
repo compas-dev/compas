@@ -1,24 +1,24 @@
 import subprocess
 import sys
+from importlib import import_module
 from uuid import uuid4
 
 import pytest
 
+from compas.colors import Color
 from compas.datastructures import Graph
 from compas.datastructures import Mesh
 from compas.geometry import Line
 from compas.geometry import Point
-from compas.geometry import Scale
 from compas.geometry import Translation
 from compas.scene import ArrowAnnotation
-from compas.scene import ArrowAnnotationObject
 from compas.scene import ComponentAnchor
+from compas.scene import DimensionStyle
 from compas.scene import DistanceDimension
-from compas.scene import DistanceDimensionObject
 from compas.scene import PointAnchor
 from compas.scene import Scene
+from compas.scene import SceneAnnotation
 from compas.scene import TextAnnotation
-from compas.scene import TextAnnotationObject
 
 
 def test_annotation_roundtrip_is_headless():
@@ -34,6 +34,11 @@ assert 'compas_viewer' not in sys.modules
     result = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True)
 
     assert result.returncode == 0, result.stderr
+
+
+def test_legacy_annotation_sceneobject_module_is_removed():
+    with pytest.raises(ModuleNotFoundError):
+        import_module("compas.scene.annotationobject")
 
 
 @pytest.mark.parametrize(
@@ -55,20 +60,26 @@ def test_annotation_data_roundtrips(item):
 
 
 @pytest.mark.parametrize(
-    ("item", "object_type"),
+    "item",
     [
-        (TextAnnotation("A", [0, 0, 0]), TextAnnotationObject),
-        (ArrowAnnotation([0, 0, 0], [1, 0, 0]), ArrowAnnotationObject),
-        (DistanceDimension(PointAnchor([0, 0, 0]), PointAnchor([1, 0, 0])), DistanceDimensionObject),
+        TextAnnotation("A", [0, 0, 0]),
+        ArrowAnnotation([0, 0, 0], [1, 0, 0]),
+        DistanceDimension(PointAnchor([0, 0, 0]), PointAnchor([1, 0, 0])),
     ],
 )
-def test_scene_add_returns_stable_annotation_object_types(item, object_type):
+def test_annotations_use_the_flat_collection_only(item):
     scene = Scene(context=None, _detect_context=False)
 
-    sceneobject = scene.add(item)
+    with pytest.raises(TypeError, match="add_annotation"):
+        scene.add(item)
+    entry = scene.add_annotation(item)
 
-    assert type(sceneobject) is object_type
-    assert sceneobject.item is item
+    assert type(entry) is SceneAnnotation
+    assert entry.item is item
+    assert scene.annotations == (entry,)
+    assert entry not in scene.objects
+    assert not hasattr(entry, "node")
+    assert not hasattr(entry, "transformation")
 
 
 def test_scene_roundtrip_keeps_annotation_items_reference_only():
@@ -79,7 +90,7 @@ def test_scene_roundtrip_keeps_annotation_items_reference_only():
         ComponentAnchor(pointobject.guid, "point"),
         PointAnchor([4, 2, 3]),
     )
-    dimensionobject = scene.add(dimension)
+    dimensionentry = scene.add_annotation(dimension)
 
     restored_scene = Scene.from_jsonstring(scene.to_jsonstring())
     restored_dimension = DistanceDimension.from_jsonstring(dimension.to_jsonstring())
@@ -87,10 +98,9 @@ def test_scene_roundtrip_keeps_annotation_items_reference_only():
 
     assert restored_scene.item_store == {}
     restored_scene.bind_many([restored_point, restored_dimension])
-    restored_object = restored_scene.object(dimensionobject.guid)
-    assert isinstance(restored_object, DistanceDimensionObject)
-    assert restored_object.dimension is restored_dimension
-    assert restored_dimension.distance(restored_scene, restored_object.worldtransformation) == pytest.approx(3.0)
+    restored_entry = restored_scene.annotation(dimensionentry.guid)
+    assert restored_entry.item is restored_dimension
+    assert restored_dimension.distance(restored_scene) == pytest.approx(3.0)
 
 
 def test_fixed_dimension_derives_distance_and_deterministic_label():
@@ -108,20 +118,14 @@ def test_fixed_dimension_derives_distance_and_deterministic_label():
     assert DistanceDimension(dimension.start, dimension.end, label="clearance").formatted_label() == "clearance"
 
 
-def test_fixed_dimension_uses_owning_object_hierarchy_transformation():
+def test_fixed_dimension_points_are_world_coordinates_outside_the_hierarchy():
     scene = Scene(context=None, _detect_context=False)
-    parent = scene.add_group("Parent", transformation=Translation.from_vector([10, 0, 0]))
     dimension = DistanceDimension(PointAnchor([0, 0, 0]), PointAnchor([1, 0, 0]))
-    dimensionobject = scene.add(
-        dimension,
-        parent=parent,
-        transformation=Scale.from_factors([2, 2, 2]),
-    )
+    entry = scene.add_annotation(dimension)
 
-    points = dimension.resolve(scene, dimensionobject.worldtransformation)
-
-    assert points == (Point(10, 0, 0), Point(12, 0, 0))
-    assert dimension.distance(scene, dimensionobject.worldtransformation) == pytest.approx(2.0)
+    assert entry not in scene.objects
+    assert dimension.resolve(scene) == (Point(0, 0, 0), Point(1, 0, 0))
+    assert dimension.distance(scene) == pytest.approx(1.0)
 
 
 def test_component_anchors_follow_datastructure_and_scene_transformations():
@@ -176,16 +180,142 @@ def test_component_anchor_supports_serializable_tuple_graph_keys():
     assert restored_edge.resolve(scene) == Point(0.5, 0, 0)
 
 
-def test_mixed_dimension_transforms_only_its_fixed_anchor():
+def test_mixed_dimension_keeps_fixed_anchor_in_world_coordinates():
     scene = Scene(context=None, _detect_context=False)
     pointobject = scene.add(Point(5, 0, 0))
     dimension = DistanceDimension(
         PointAnchor([1, 0, 0]),
         ComponentAnchor(pointobject.guid, "point"),
     )
-    dimensionobject = scene.add(dimension, transformation=Translation.from_vector([10, 0, 0]))
+    scene.add_annotation(dimension)
 
-    assert dimension.resolve(scene, dimensionobject.worldtransformation) == (Point(11, 0, 0), Point(5, 0, 0))
+    assert dimension.resolve(scene) == (Point(1, 0, 0), Point(5, 0, 0))
+
+
+def test_dimension_style_roundtrips_and_mutates_independently():
+    style = DimensionStyle(
+        color=Color.red(),
+        line_width=2,
+        text_size=14,
+        arrow_size=9,
+        label_offset=-4,
+    )
+    restored = DimensionStyle.from_jsonstring(style.to_jsonstring())
+
+    assert restored == style
+    assert restored.line_width == 2.0
+    restored.line_width = 5
+    assert restored.line_width == 5.0
+
+
+def test_distance_entries_receive_default_style_and_other_annotations_reject_it():
+    scene = Scene(context=None, _detect_context=False)
+    dimension = DistanceDimension(PointAnchor([0, 0, 0]), PointAnchor([1, 0, 0]))
+
+    entry = scene.add_annotation(dimension)
+
+    assert entry.style == DimensionStyle()
+    entry.style = None
+    assert entry.style == DimensionStyle()
+    with pytest.raises(ValueError, match="only for DistanceDimension"):
+        scene.add_annotation(TextAnnotation("A", [0, 0, 0]), style=DimensionStyle())
+
+
+def test_annotation_remove_and_explicit_reattach_preserve_identity_and_state():
+    item = TextAnnotation("A", [0, 0, 0])
+    scene = Scene(context=None, _detect_context=False)
+    entry = scene.add_annotation(item, name="Label", show=False)
+    guid = entry.guid
+
+    scene.remove_annotation(entry)
+
+    assert entry.scene is None
+    assert entry.item is item
+    assert entry.guid == guid
+    assert entry.name == "Label"
+    assert entry.show is False
+    assert item.guid not in scene.item_store
+
+    other = Scene(context=None, _detect_context=False)
+    other.add_annotation_entry(entry)
+    assert other.annotation(guid) is entry
+    assert entry.item is item
+
+
+def test_shared_annotation_item_is_pruned_after_last_entry():
+    item = TextAnnotation("Shared", [0, 0, 0])
+    scene = Scene(context=None, _detect_context=False)
+    first = scene.add_annotation(item)
+    second = scene.add_annotation(item)
+
+    scene.remove_annotation(first)
+    assert scene.item_store[item.guid] is item
+
+    scene.remove_annotation(second)
+    assert item.guid not in scene.item_store
+
+
+def test_unresolved_distance_reference_normalizes_style_when_bound():
+    dimension = DistanceDimension(PointAnchor([0, 0, 0]), PointAnchor([1, 0, 0]))
+    scene = Scene(context=None, _detect_context=False)
+    entry = scene.add_annotation_reference(dimension.guid, name="Distance")
+
+    assert entry.style is None
+    scene.bind(dimension)
+
+    assert entry.item is dimension
+    assert entry.style == DimensionStyle()
+    entry.style = None
+    assert entry.style == DimensionStyle()
+
+
+def test_annotation_and_spatial_bindings_reject_wrong_item_domains():
+    text = TextAnnotation("A", [0, 0, 0])
+    point = Point(0, 0, 0)
+    scene = Scene(context=None, _detect_context=False)
+    scene.add_annotation_reference(point.guid, name="Invalid annotation")
+    scene.add_reference(text.guid, name="Invalid spatial item")
+
+    with pytest.raises(TypeError, match="scene-annotation item"):
+        scene.bind(point)
+    with pytest.raises(TypeError, match="Scene.annotations"):
+        scene.bind(text)
+
+    assert scene.item_store == {}
+
+
+def test_bound_text_reference_rejects_later_dimension_style_assignment():
+    text = TextAnnotation("A", [0, 0, 0])
+    scene = Scene(context=None, _detect_context=False)
+    entry = scene.add_annotation_reference(text.guid, name="Text")
+    scene.bind(text)
+
+    with pytest.raises(ValueError, match="only for DistanceDimension"):
+        entry.style = DimensionStyle()
+
+
+def test_scene_rejects_guid_collision_between_object_and_annotation():
+    scene = Scene(context=None, _detect_context=False)
+    sceneobject = scene.add(Point(0, 0, 0))
+    entry = SceneAnnotation(TextAnnotation("A", [0, 0, 0]))
+    entry._guid = sceneobject.guid
+
+    with pytest.raises(ValueError, match="already stored"):
+        scene.add_annotation_entry(entry)
+
+
+@pytest.mark.parametrize("field", ["line_width", "text_size", "arrow_size"])
+@pytest.mark.parametrize("value", [True, 0, -1, float("inf"), float("nan")])
+def test_dimension_style_rejects_invalid_positive_fields(field, value):
+    kwargs = {field: value}
+    with pytest.raises((TypeError, ValueError)):
+        DimensionStyle(**kwargs)
+
+
+@pytest.mark.parametrize("value", [True, float("inf"), float("nan")])
+def test_dimension_style_rejects_invalid_label_offset(value):
+    with pytest.raises((TypeError, ValueError)):
+        DimensionStyle(label_offset=value)
 
 
 def test_removed_or_unbound_components_are_explicitly_unresolved():
@@ -263,5 +393,22 @@ def test_serialized_annotation_schemas_reject_unknown_fields():
                 "horizontal_alignment": "left",
                 "vertical_alignment": "bottom",
                 "font": "renderer-specific.ttf",
+            }
+        )
+
+    with pytest.raises(ValueError, match="Unknown dimension-style fields"):
+        DimensionStyle.__from_data__(
+            {
+                **DimensionStyle().__data__,
+                "opacity": 0.5,
+            }
+        )
+
+    entry = SceneAnnotation(TextAnnotation("A", [0, 0, 0]))
+    with pytest.raises(ValueError, match="Unknown scene-annotation fields"):
+        SceneAnnotation.__from_data__(
+            {
+                **entry.__data__,
+                "parent": None,
             }
         )

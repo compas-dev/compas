@@ -21,6 +21,7 @@ from compas.scene import GeometryObject
 from compas.scene import MeshObject
 from compas.scene import PlaneObject
 from compas.scene import Scene
+from compas.scene import SceneAnnotation
 from compas.scene import SceneNode
 from compas.scene import SceneObject
 from compas.scene import SceneOperationNotRegisteredError
@@ -28,6 +29,7 @@ from compas.scene import SceneStateError
 from compas.scene import SceneStateField
 from compas.scene import ShapeObject
 from compas.scene import SurfaceObject
+from compas.scene import TextAnnotation
 from compas.scene import VectorObject
 from compas.scene import VolMeshObject
 from compas.scene import get_sceneobject_cls
@@ -168,6 +170,29 @@ def test_draw_and_clear_resolve_context_operations_by_mro(operation_registry):
     ]
 
 
+def test_annotation_draw_and_clear_use_shared_context_registry(operation_registry):
+    calls = []
+
+    def draw(scene, entry, runtime):
+        calls.append(("draw", entry.guid, runtime))
+        return ["annotation-handle"]
+
+    def clear(scene, entry, runtime, resources):
+        calls.append(("clear", entry.guid, runtime, resources))
+
+    register_scene_operation("Test", SceneAnnotation, "draw", draw)
+    register_scene_operation("Test", SceneAnnotation, "clear", clear)
+    scene = Scene(context="Test")
+    entry = scene.add_annotation(TextAnnotation("A", [0, 0, 0]))
+
+    assert entry.draw(runtime="runtime") == ["annotation-handle"]
+    entry.clear(runtime="runtime")
+    assert calls == [
+        ("draw", entry.guid, "runtime"),
+        ("clear", entry.guid, "runtime", ("annotation-handle",)),
+    ]
+
+
 def test_context_changes_do_not_replace_scene_objects(operation_registry):
     def draw(scene, sceneobject, runtime):
         return []
@@ -272,10 +297,12 @@ def test_repeated_draw_clears_the_previous_resource_before_replacing_it(operatio
 def test_clear_without_a_context_or_resources_is_backend_neutral():
     scene = Scene(context=None, _detect_context=False)
     scene.add(Box())
+    scene.add_annotation(TextAnnotation("A", [0, 0, 0]))
 
     scene.clear()
 
     assert scene.objects == []
+    assert scene.annotations == ()
 
 
 def test_world_transformation_and_frame_setter_preserve_local_coordinates():

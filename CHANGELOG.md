@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added backend-neutral text, arrow, and fixed or associative distance
   annotations to `compas.scene`.
+* Added an ordered scene-scoped annotation collection and durable distance
+  styles with color, line width, text size, arrow size, and label offset.
 * Added durable, reference-only scene objects with declarative persistent-state
   fields, explicit data rebinding, inspectable unresolved references, and
   hierarchy-only scene nodes.
@@ -32,6 +34,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Moved annotations out of the spatial scene hierarchy into schema-v3
+  `SceneAnnotation` entries. Annotation items remain independently serialized
+  and bound by GUID; the former annotation `SceneObject` classes are removed.
 * Made scene objects stable backend-neutral data records and replaced class
   substitution with deterministic context- and MRO-keyed `draw` and `clear`
   operations. Runtime resources remain outside durable scene objects.
