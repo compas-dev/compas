@@ -1,7 +1,7 @@
 name: blender_extension
 
 # Builds the COMPAS Blender extension packages (one per Blender version range and platform)
-# and uploads them as a workflow artifact.
+# and uploads each package as its own, unzipped workflow artifact.
 # Called by the release workflow, which attaches the packages to the GitHub release,
 # and run on pull requests that touch the Blender integration.
 
@@ -21,7 +21,21 @@ env:
 
 jobs:
   build:
+    name: build (Blender ${{ matrix.blender }}, ${{ matrix.platform }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { blender: "4.2-5.0", python: "3.11", platform: windows-x64 }
+          - { blender: "4.2-5.0", python: "3.11", platform: macos-arm64 }
+          - { blender: "4.2-5.0", python: "3.11", platform: macos-x64 }
+          - { blender: "4.2-5.0", python: "3.11", platform: linux-x64 }
+          - { blender: "5.1+", python: "3.13", platform: windows-x64 }
+          - { blender: "5.1+", python: "3.13", platform: windows-arm64 }
+          - { blender: "5.1+", python: "3.13", platform: macos-arm64 }
+          - { blender: "5.1+", python: "3.13", platform: linux-x64 }
+
     steps:
       - uses: actions/checkout@v4
 
@@ -53,12 +67,35 @@ jobs:
       - name: Check Blender
         run: ~/blender/blender --version
 
-      - name: Build extension packages
-        run: python extensions/blender/build.py --blender ~/blender/blender
+      - name: Build extension package
+        run: python extensions/blender/build.py --blender ~/blender/blender --python ${{ matrix.python }} --platform ${{ matrix.platform }}
 
-      - uses: actions/upload-artifact@v4
+      # Uploaded unzipped, so the artifact is the extension package itself (named after the file).
+      - uses: actions/upload-artifact@v7
         with:
-          name: blender-extension
           path: dist/blender/*.zip
+          archive: false
           if-no-files-found: error
           retention-days: 14
+
+  # Downloads the packages the same way the release workflow does, to catch problems before a release.
+  check:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: compas-*.zip
+          path: dist/blender
+          merge-multiple: true
+          skip-decompress: true
+
+      - name: Check extension packages
+        run: |
+          ls -l dist/blender
+          count=0
+          for package in dist/blender/*.zip; do
+            unzip -l "$package" | grep -q " blender_manifest.toml$" || { echo "::error::$package is not an extension package"; exit 1; }
+            count=$((count + 1))
+          done
+          [ "$count" -eq 8 ] || { echo "::error::Expected 8 extension packages, found $count"; exit 1; }

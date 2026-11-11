@@ -63,6 +63,8 @@ TARGETS = {
     },
 }
 
+ALL_PLATFORMS = sorted({platform for target in TARGETS.values() for platform in target["platforms"]})
+
 
 def log(message):
     print(message, flush=True)
@@ -131,7 +133,7 @@ def write_manifest(source, target, version, blender_min, blender_max, platforms,
     target.write_text(content.rstrip() + "\n" + "\n".join(lines) + "\n", encoding="utf-8")
 
 
-def build_target(blender, python_version, target, compas_wheel, version, output_dir, work_dir):
+def build_target(blender, python_version, target, compas_wheel, version, output_dir, work_dir, only_platforms=None):
     tag = "py" + python_version.replace(".", "")
     blender_min_short = ".".join(target["blender_min"].split(".")[:2])
     log("\nBuilding for Python {} (Blender {}{})".format(python_version, target["blender_min"], " to < " + target["blender_max"] if target["blender_max"] else "+"))
@@ -147,6 +149,8 @@ def build_target(blender, python_version, target, compas_wheel, version, output_
 
     platforms = []
     for platform, platform_tags in target["platforms"].items():
+        if only_platforms and platform not in only_platforms:
+            continue
         log("- {}".format(platform))
         if download_dependencies(wheels_dir, python_version, platform_tags):
             platforms.append(platform)
@@ -183,6 +187,7 @@ def main():
     parser = argparse.ArgumentParser(description="Build the COMPAS Blender extension.")
     parser.add_argument("--blender", help="Path to the Blender executable (defaults to $BLENDER, then PATH).")
     parser.add_argument("--python", choices=sorted(TARGETS), action="append", help="Only build for these Blender Python versions (default: all).")
+    parser.add_argument("--platform", choices=ALL_PLATFORMS, action="append", help="Only build for these platforms (default: all).")
     parser.add_argument("--output-dir", default=str(DEFAULT_OUTPUT), help="Output folder for the extension packages.")
     parser.add_argument("--from-pypi", action="store_true", help="Bundle the released compas wheel from PyPI instead of building it from this checkout.")
     args = parser.parse_args()
@@ -200,7 +205,14 @@ def main():
 
     packages = []
     for python_version in args.python or sorted(TARGETS):
-        packages += build_target(blender, python_version, TARGETS[python_version], compas_wheel, version, output_dir, work_dir)
+        target = TARGETS[python_version]
+        if args.platform and not set(args.platform) & set(target["platforms"]):
+            log("\nSkipping Python {}: none of {} supported.".format(python_version, ", ".join(args.platform)))
+            continue
+        packages += build_target(blender, python_version, target, compas_wheel, version, output_dir, work_dir, args.platform)
+
+    if not packages:
+        raise SystemExit("Nothing was built.")
 
     shutil.rmtree(work_dir, ignore_errors=True)
 
