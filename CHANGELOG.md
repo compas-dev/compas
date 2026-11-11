@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `TOL.temporary()` context manager for scoped changes.
 * Added missing implementation of `Brep.to_polygons()` in `compas_rhino.geometry.RhinoBrep`.
 * Added COMPAS as a Blender extension (Blender 4.2+), with all dependencies bundled as wheels. Build it with `invoke build-blender-extension`.
+* Added `blender_extension` workflow that builds the Blender extension packages and attaches them to GitHub releases.
 
 ### Changed
 

@@ -1,0 +1,64 @@
+name: blender_extension
+
+# Builds the COMPAS Blender extension packages (one per Blender version range and platform)
+# and uploads them as a workflow artifact.
+# Called by the release workflow, which attaches the packages to the GitHub release,
+# and run on pull requests that touch the Blender integration.
+
+on:
+  workflow_call:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "extensions/blender/**"
+      - "src/compas_blender/**"
+      - "requirements.txt"
+      - ".github/workflows/blender_extension.yml"
+
+env:
+  # Any Blender >= 4.2 can build packages for all supported Blender versions.
+  BLENDER_VERSION: "5.2.4"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Blender runtime libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libx11-6 libxi6 libxxf86vm1 libxfixes3 libxrender1 libxkbcommon0 \
+            libsm6 libice6 libgl1 libegl1
+
+      - name: Cache Blender
+        id: cache-blender
+        uses: actions/cache@v4
+        with:
+          path: ~/blender
+          key: blender-${{ env.BLENDER_VERSION }}-linux-x64
+
+      - name: Download Blender
+        if: steps.cache-blender.outputs.cache-hit != 'true'
+        run: |
+          series="${BLENDER_VERSION%.*}"
+          curl -sSfL "https://download.blender.org/release/Blender${series}/blender-${BLENDER_VERSION}-linux-x64.tar.xz" | tar -xJ -C ~
+          mv ~/blender-${BLENDER_VERSION}-linux-x64 ~/blender
+
+      - name: Check Blender
+        run: ~/blender/blender --version
+
+      - name: Build extension packages
+        run: python extensions/blender/build.py --blender ~/blender/blender
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: blender-extension
+          path: dist/blender/*.zip
+          if-no-files-found: error
+          retention-days: 14

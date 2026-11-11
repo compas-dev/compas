@@ -33,3 +33,23 @@ jobs:
           gh_source: src/compas_ghpython/components
           gh_target: src/compas_ghpython/components/ghuser
           release_name_prefix: COMPAS
+
+  blender_extension:
+    needs: build
+    uses: ./.github/workflows/blender_extension.yml
+
+  attach_blender_extension:
+    needs: [publish, blender_extension]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: blender-extension
+          path: dist/blender
+
+      - name: Attach Blender extension packages to the release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload "${{ github.ref_name }}" dist/blender/*.zip --repo "${{ github.repository }}" --clobber
