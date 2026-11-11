@@ -10,109 +10,74 @@ and :mod:`compas_blender` provides functionality for converting COMPAS objects t
 
 .. note::
 
-    These instructions are for the current LTS versions of Blender (3.3, 3.6 and 4.2).
-    Other versions are currently not supported.
-
-.. warning::
-
-    The installation procedure is a work in progress.
-    It has currently only been tested on macOS, and may change in the future.
+    COMPAS is distributed as a Blender extension for Blender 4.2 and newer.
+    Older versions of Blender are not supported.
 
 
 Installation
 ============
 
-The installation of COMPAS in Blender can be done in two ways:
+COMPAS is packaged as a `Blender extension <https://docs.blender.org/manual/en/latest/advanced/extensions/index.html>`_.
+The extension is self-contained: it bundles COMPAS and its dependencies (except ``numpy``, which ships with Blender),
+so there is no need to install anything into Blender's Python environment manually.
 
-* by installing COMPAS in Blender's Python environment using ``pip``, or
-* by using the ``compas_blender.install`` command.
+Blender ships different versions of Python, and some dependencies contain compiled code,
+so there is one extension package per Blender version range and operating system:
 
-Using ``pip`` (recommended)
----------------------------
+=========================  =======================================================
+Blender                    Extension package
+=========================  =======================================================
+4.2 to 5.0                 ``compas-<version>-blender4.2-<platform>.zip``
+5.1 and newer              ``compas-<version>-blender5.1-<platform>.zip``
+=========================  =======================================================
 
-Blender comes with its own Python installation.
-This procedure simply uses that Python installation and associated ``pip`` to install COMPAS.
-The location of the executable is different on different platforms.
-The default locations are:
+where ``<platform>`` is one of ``windows_x64``, ``windows_arm64`` (Blender 5.1+ only),
+``macos_arm64``, ``macos_x64`` (Blender 4.2 to 5.0 only) or ``linux_x64``.
 
-* Windows: ``C:\Program Files\Blender Foundation\Blender 4.2\4.2\python\bin\python.exe``
-* macOS: ``/Applications/Blender.app/Contents/Resources/4.2/python/bin/python3.10``
-* Linux: ``/usr/share/blender/4.2/python/bin/python3.10`` (i think :)
+Install from disk
+-----------------
 
-.. note::
+1. Download the extension package for your Blender version and operating system from the
+   `COMPAS releases <https://github.com/compas-dev/compas/releases>`_.
+2. In Blender, open *Edit > Preferences > Get Extensions*.
+3. In the drop-down menu in the top right corner, select *Install from Disk...* and pick the downloaded ``.zip`` file.
 
-    If you already have an installation of COMPAS on your system, you can try finding the Blender Python executable by running the following in a terminal or command prompt:
-
-    .. code-block:: python
-
-        python -m compas_blender.print_python_path
-
-Update `pip`
-~~~~~~~~~~~~
-
-Before installing `compas` with `pip`, it is highly recommended that you update `pip` itself.
+Alternatively, drag and drop the ``.zip`` file onto the Blender window,
+or install it from the command line:
 
 .. code-block:: bash
 
-    $ /Applications/Blender.app/Contents/Resources/4.2/python/bin/python3.10 -m pip install --upgrade pip
+    $ blender --command extension install-file -r user_default -e compas-<version>-blender5.1-macos_arm64.zip
 
+Once the extension is enabled, ``compas`` and ``compas_blender`` can be imported in the Python console,
+in scripts in the Text Editor, and from other add-ons.
+To update COMPAS, install the package of the newer version in the same way.
+To uninstall it, remove the extension from the *Get Extensions* panel.
 
-Install from PyPI
-~~~~~~~~~~~~~~~~~
+Build from source
+-----------------
 
-For example on Mac:
-
-.. code-block:: bash
-
-    $ /Applications/Blender.app/Contents/Resources/4.2/python/bin/python3.10 -m pip install compas
-
-
-Install from Source
-~~~~~~~~~~~~~~~~~~~
+To build the extension packages from a checkout of the COMPAS repository,
+you need a Python environment with ``pip`` and a Blender executable (4.2 or newer):
 
 .. code-block:: bash
 
     $ cd path/to/compas
-    $ /Applications/Blender.app/Contents/Resources/4.2/python/bin/python3.10 -m pip install -e .
+    $ invoke build-blender-extension --blender /Applications/Blender.app/Contents/MacOS/Blender
 
-
-Using ``compas_blender.install``
---------------------------------
-
-.. warning::
-
-    This procedure will not install any of the dependencies required by COMPAS.
-    They have to already be present in the Blender Python environment.
-
-The ``compas_blender.install`` command installs COMPAS in Blender's Python ``site-packages`` folder
-by creating symlinks to COMPAS packages installed in an existing (``conda``) environment.
-Therefore, before running the command below, you should activate the environment in which you have installed COMPAS.
-
-.. code-block:: bash
-
-    $ python -m compas_blender.install
-
-Optionally, you can specify the version of Blender using the ``-v`` flag.
-
-.. code-block:: bash
-
-    $ python -m compas_blender.install -v 4.2
-
-To remove all previously installed symlinks before installing new ones, use the ``--clean`` flag.
-
-.. code-block:: bash
-
-    $ python -m compas_blender.install --clean
+This builds a ``compas`` wheel from the source, downloads the wheels of all dependencies for every supported
+platform and Python version, and writes the extension packages to ``dist/blender``.
+See ``extensions/blender/build.py`` for more options.
 
 
 Verification
 ============
 
-To test if the installation was successful, you can run the following on the Blender command line.
+To test if the installation was successful, you can run the following on the Blender Python console.
 
 >>> import compas
 >>> print(compas.__version__)
-'2.4.0'
+'2.15.0'
 
 
 Visualisation
