@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `TOL.update()` method for explicit global state modification. 
 * Added `TOL.temporary()` context manager for scoped changes.
 * Added missing implementation of `Brep.to_polygons()` in `compas_rhino.geometry.RhinoBrep`.
+* Added COMPAS as a Blender extension (Blender 4.2+), with all dependencies bundled as wheels. Build it with `invoke build-blender-extension`.
+* Added `blender_extension` workflow that builds the Blender extension packages and attaches them to GitHub releases.
 
 ### Changed
 
@@ -26,8 +28,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `angle_vectors` to raise `ValueError` when one of the input vectors is a zero-length vector instead of returning 0.
 * Changed `transformation_to_rhino` and `transformation_matrix_to_rhino` to assign the matrix components directly to the fields of `Rhino.Geometry.Transform` instead of looping over its indexer. About 11x faster per conversion, noticable when used inside an animation loop.
 * Fixed the parameter names in the docstrings of `Shear.from_entries`, `Polyline.split_by_length` and `trimesh_gradient_numpy`.
+* Fixed `compas_blender.redraw` raising `RuntimeError` when Blender runs in background mode.
 
 ### Removed
+
+* Removed `compas_blender.install` and `compas_blender.print_python_path`. Install COMPAS in Blender as an extension instead.
+* Removed `compas_blender.INSTALLABLE_PACKAGES`, `compas_blender.SUPPORTED_VERSIONS`, `compas_blender.DEFAULT_VERSION` and `compas_blender.INSTALLATION_ARGUMENTS`.
+* Removed the `installable_blender_packages` and `after_blender_install` pluggables.
 
 
 ## [2.15.0] 2025-11-12

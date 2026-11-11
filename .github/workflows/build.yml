@@ -16,7 +16,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-24.04, macos-latest, windows-latest]  # ubuntu-24.04 is the last image with Python 3.9
         python: ["3.9", "3.10", "3.11", "3.12"]
 
     steps:

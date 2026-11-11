@@ -10,7 +10,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-24.04, macos-latest, windows-latest]  # ubuntu-24.04 is the last image with Python 3.9
         python: ["3.9", "3.10", "3.11", "3.12"]
 
     steps:
@@ -33,3 +33,25 @@ jobs:
           gh_source: src/compas_ghpython/components
           gh_target: src/compas_ghpython/components/ghuser
           release_name_prefix: COMPAS
+
+  blender_extension:
+    needs: build
+    uses: ./.github/workflows/blender_extension.yml
+
+  attach_blender_extension:
+    needs: [publish, blender_extension]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: compas-*.zip
+          path: dist/blender
+          merge-multiple: true
+          skip-decompress: true
+
+      - name: Attach Blender extension packages to the release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload "${{ github.ref_name }}" dist/blender/*.zip --repo "${{ github.repository }}" --clobber
