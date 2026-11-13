@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   annotations to `compas.scene`.
 * Added an ordered scene-scoped annotation collection and durable distance
   styles with color, line width, text size, arrow size, and label offset.
+* Added optional durable label background colors and nonnegative logical-pixel
+  padding for text and distance annotation entries.
+* Added durable world-space distance-dimension layouts with signed offsets and
+  optional plane normals.
 * Added durable, reference-only scene objects with declarative persistent-state
   fields, explicit data rebinding, inspectable unresolved references, and
   hierarchy-only scene nodes.
@@ -34,6 +38,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Made `DistanceDimension.unit` and `DistanceDimension.precision` validated
+  mutable properties. Unit declarations remain informational and precision
+  is limited to 0–15 inclusive; rejected assignments leave the stored value
+  unchanged, and neither property converts or rescales the dimension. Values
+  outside the precision domain are rejected rather than clamped or truncated.
+* Changed the color of newly constructed default distance-dimension styles from
+  white to magenta. Explicit and serialized colors remain unchanged.
+* Advanced Scene serialization to schema v5 for durable distance-dimension
+  layout, with schema-v4 annotation entries receiving type-safe defaults when
+  their independently loaded items are bound.
+* Advanced Scene serialization to schema v6, annotation entries to schema v3,
+  and dimension styles to schema v2 for independently durable extension-line
+  widths. Schema-v5 styles retain their appearance by copying the legacy main
+  line width to the extension-line width during migration.
 * Moved annotations out of the spatial scene hierarchy into schema-v3
   `SceneAnnotation` entries. Annotation items remain independently serialized
   and bound by GUID; the former annotation `SceneObject` classes are removed.

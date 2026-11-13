@@ -13,6 +13,7 @@ from uuid import UUID
 import compas.data  # noqa: F401
 import compas.datastructures  # noqa: F401
 import compas.geometry  # noqa: F401
+from compas.colors import Color
 from compas.data import Data
 from compas.datastructures import Tree
 
@@ -26,6 +27,7 @@ from .context import get_sceneobject_cls
 from .exceptions import SceneItemNotBoundError
 from .group import Group
 from .sceneannotation import DimensionStyle
+from .sceneannotation import DistanceDimensionLayout
 from .sceneannotation import SceneAnnotation
 from .sceneobject import SceneObject
 
@@ -51,7 +53,7 @@ class Scene(Data):
 
     """
 
-    SCHEMA_VERSION = 3
+    SCHEMA_VERSION = 6
 
     @property
     def __data__(self) -> dict[str, Any]:
@@ -74,7 +76,7 @@ class Scene(Data):
         missing = expected - set(data)
         if missing:
             raise ValueError("Missing scene fields: {}.".format(", ".join(sorted(missing))))
-        if data["version"] != cls.SCHEMA_VERSION:
+        if data["version"] not in {4, 5, cls.SCHEMA_VERSION}:
             raise ValueError(f"Unsupported scene schema version: {data['version']}.")
         if not isinstance(data["name"], str):
             raise TypeError("Scene name should be a string.")
@@ -82,6 +84,16 @@ class Scene(Data):
             raise TypeError("Scene objects should be a list of SceneObject values.")
         if not isinstance(data["annotations"], list) or not all(isinstance(entry, SceneAnnotation) for entry in data["annotations"]):
             raise TypeError("Scene annotations should be a list of SceneAnnotation values.")
+        if data["version"] == cls.SCHEMA_VERSION:
+            if any(entry._source_entry_version != SceneAnnotation.ENTRY_SCHEMA_VERSION for entry in data["annotations"]):
+                raise ValueError("Scene schema version 6 requires current scene-annotation entries.")
+            if any(entry.style is not None and entry.style._source_style_version != DimensionStyle.STYLE_SCHEMA_VERSION for entry in data["annotations"]):
+                raise ValueError("Scene schema version 6 requires current dimension-style payloads.")
+        if data["version"] == 5:
+            if any(entry._source_entry_version != 2 for entry in data["annotations"]):
+                raise ValueError("Scene schema version 5 requires version 2 scene-annotation entries.")
+            if any(entry.style is not None and entry.style._source_style_version is not None for entry in data["annotations"]):
+                raise ValueError("Scene schema version 5 requires legacy dimension-style payloads.")
         objects: dict[UUID, SceneObject] = {}
         for obj in data["objects"]:
             if obj.guid in objects:
@@ -237,7 +249,7 @@ class Scene(Data):
             self._validate_annotation_binding(entry, item)
         self._items[item.guid] = item
         for entry in entries:
-            self._normalize_annotation_style(entry, item)
+            self._normalize_annotation_presentation(entry, item)
 
     def bind_many(self, items: Iterable[Data]) -> None:
         """Bind multiple independently loaded items atomically.
@@ -280,7 +292,7 @@ class Scene(Data):
             staged[item.guid] = item
         self._items = staged
         for entry, item in annotation_items:
-            self._normalize_annotation_style(entry, item)
+            self._normalize_annotation_presentation(entry, item)
 
     def item(self, guid: UUID, *, object_guid: UUID | None = None) -> Data:
         """Return a bound item or raise a precise unresolved-reference error."""
@@ -378,6 +390,9 @@ class Scene(Data):
         name: str | None = None,
         show: bool = True,
         style: DimensionStyle | None = None,
+        layout: DistanceDimensionLayout | None = None,
+        label_background: Color | None = None,
+        label_background_padding: float = 2.0,
     ) -> SceneAnnotation:
         """Create and attach one annotation entry.
 
@@ -392,6 +407,13 @@ class Scene(Data):
         style
             Optional distance-dimension style. Distance entries receive a
             default style when omitted.
+        layout
+            Optional distance-dimension world-space layout. Distance entries
+            receive a zero-offset layout when omitted.
+        label_background
+            Optional background color for text-bearing annotation labels.
+        label_background_padding
+            Nonnegative logical-pixel padding around label glyph bounds.
 
         Returns
         -------
@@ -406,7 +428,17 @@ class Scene(Data):
             If the style is incompatible with the annotation item.
 
         """
-        return self.add_annotation_entry(SceneAnnotation(item, name=name, show=show, style=style))
+        return self.add_annotation_entry(
+            SceneAnnotation(
+                item,
+                name=name,
+                show=show,
+                style=style,
+                layout=layout,
+                label_background=label_background,
+                label_background_padding=label_background_padding,
+            )
+        )
 
     def add_annotation_entry(self, entry: SceneAnnotation) -> SceneAnnotation:
         """Attach an existing detached annotation entry.
@@ -437,6 +469,9 @@ class Scene(Data):
             raise ValueError("The scene annotation already belongs to a scene.")
         if entry.guid in self._objects or entry.guid in self._annotation_index:
             raise ValueError(f"Scene annotation {entry.guid} is already stored.")
+        bound_item = entry._item or self._items.get(entry.item_guid)
+        if bound_item is not None:
+            self._validate_annotation_binding(entry, bound_item)
         self._annotations.append(entry)
         self._annotation_index[entry.guid] = entry
         entry._scene = self
@@ -448,6 +483,8 @@ class Scene(Data):
                 del self._annotation_index[entry.guid]
                 entry._scene = None
                 raise
+        elif bound_item is not None:
+            self._normalize_annotation_presentation(entry, bound_item)
         return entry
 
     def add_annotation_reference(
@@ -457,6 +494,9 @@ class Scene(Data):
         name: str,
         show: bool = True,
         style: DimensionStyle | None = None,
+        layout: DistanceDimensionLayout | None = None,
+        label_background: Color | None = None,
+        label_background_padding: float = 2.0,
     ) -> SceneAnnotation:
         """Create and attach an unresolved annotation entry.
 
@@ -471,6 +511,13 @@ class Scene(Data):
         style
             Optional distance-dimension style. A reference with no style stays
             unstyled until binding identifies a distance dimension.
+        layout
+            Optional distance-dimension layout. A reference with no layout
+            stays unset until binding identifies a distance dimension.
+        label_background
+            Optional background color for a text-bearing annotation reference.
+        label_background_padding
+            Nonnegative logical-pixel padding around label glyph bounds.
 
         Returns
         -------
@@ -485,7 +532,17 @@ class Scene(Data):
             If the generated entry GUID collides with another scene element.
 
         """
-        return self.add_annotation_entry(SceneAnnotation(item_guid=item_guid, name=name, show=show, style=style))
+        return self.add_annotation_entry(
+            SceneAnnotation(
+                item_guid=item_guid,
+                name=name,
+                show=show,
+                style=style,
+                layout=layout,
+                label_background=label_background,
+                label_background_padding=label_background_padding,
+            )
+        )
 
     def remove(self, sceneobject: SceneObject | SceneNode) -> None:
         """Remove an object hierarchy while preserving stable object identity."""
@@ -731,11 +788,17 @@ class Scene(Data):
             raise TypeError("A scene-annotation item should be a TextAnnotation, ArrowAnnotation, or DistanceDimension.")
         if entry.style is not None and not isinstance(item, DistanceDimension):
             raise ValueError("DimensionStyle is supported only for DistanceDimension entries.")
+        if entry.layout is not None and not isinstance(item, DistanceDimension):
+            raise ValueError("DistanceDimensionLayout is supported only for DistanceDimension entries.")
+        if isinstance(item, ArrowAnnotation) and (entry.label_background is not None or entry.label_background_padding != 2.0):
+            raise ValueError("ArrowAnnotation entries accept only default label-background presentation.")
 
     @staticmethod
-    def _normalize_annotation_style(entry: SceneAnnotation, item: Data) -> None:
+    def _normalize_annotation_presentation(entry: SceneAnnotation, item: Data) -> None:
         if isinstance(item, DistanceDimension) and entry.style is None:
             entry.style = DimensionStyle()
+        if isinstance(item, DistanceDimension) and entry.layout is None:
+            entry.layout = DistanceDimensionLayout()
 
     @staticmethod
     def _validate_spatial_binding(item: Data) -> None:

@@ -425,7 +425,7 @@ class DistanceDimension(Data):
         Optional informational unit suffix. No coordinate conversion is
         performed.
     precision
-        Non-negative number of fixed-point decimal places.
+        Number of fixed-point decimal places from zero to 15, inclusive.
     label
         Optional verbatim label overriding derived distance formatting.
     name
@@ -479,14 +479,6 @@ class DistanceDimension(Data):
             raise TypeError("Distance-dimension start should be a PointAnchor or ComponentAnchor.")
         if not isinstance(end, (PointAnchor, ComponentAnchor)):
             raise TypeError("Distance-dimension end should be a PointAnchor or ComponentAnchor.")
-        if unit is not None and not isinstance(unit, str):
-            raise TypeError("Distance-dimension unit should be a string or None.")
-        if unit is not None and not unit.strip():
-            raise ValueError("Distance-dimension unit should be non-empty or None.")
-        if isinstance(precision, bool) or not isinstance(precision, int):
-            raise TypeError("Distance-dimension precision should be an integer.")
-        if precision < 0:
-            raise ValueError("Distance-dimension precision should be non-negative.")
         if label is not None and not isinstance(label, str):
             raise TypeError("Distance-dimension label should be a string or None.")
         self.start = start
@@ -497,6 +489,57 @@ class DistanceDimension(Data):
 
     def __eq__(self, other: object) -> bool:
         return isinstance(other, DistanceDimension) and self.__data__ == other.__data__
+
+    @property
+    def unit(self) -> str | None:
+        """The informational unit suffix, or `None` for no suffix.
+
+        The suffix is retained exactly as assigned and does not convert or
+        rescale coordinates. It must contain at least one non-whitespace
+        character when it is not `None`.
+
+        Raises
+        ------
+        TypeError
+            If the assigned value is not a string or `None`.
+        ValueError
+            If the assigned string contains only whitespace.
+
+        """
+        return self._unit
+
+    @unit.setter
+    def unit(self, unit: str | None) -> None:
+        if unit is not None and not isinstance(unit, str):
+            raise TypeError("Distance-dimension unit should be a string or None.")
+        if unit is not None and not unit.strip():
+            raise ValueError("Distance-dimension unit should be non-empty or None.")
+        self._unit = unit
+
+    @property
+    def precision(self) -> int:
+        """The number of fixed-point decimal places from zero to 15.
+
+        Raises
+        ------
+        TypeError
+            If the assigned value is a boolean or is not an integer.
+        ValueError
+            If the assigned integer is outside the inclusive range from zero
+            to 15.
+
+        """
+        return self._precision
+
+    @precision.setter
+    def precision(self, precision: int) -> None:
+        if isinstance(precision, bool) or not isinstance(precision, int):
+            raise TypeError("Distance-dimension precision should be an integer.")
+        if precision < 0:
+            raise ValueError("Distance-dimension precision should be non-negative.")
+        if precision > 15:
+            raise ValueError("Distance-dimension precision should be at most 15.")
+        self._precision = precision
 
     def resolve(
         self,

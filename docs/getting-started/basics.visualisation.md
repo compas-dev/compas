@@ -32,7 +32,9 @@ Core provides stable semantic scene-object types for data whose visualisation
 needs additional backend-neutral settings:
 
 - `ShapeObject` and `SurfaceObject` store the `u` and `v` discretization
-  counts used to display analytic shapes and parametric surfaces.
+  counts used to display analytic shapes and parametric surfaces. These counts
+  are editable for producer axes that affect the polygonal representation;
+  changing them does not mutate the represented analytic geometry.
 - `FrameObject` and `PlaneObject` store their display `size`.
 - `VectorObject` stores the vector's display `anchor`.
 - `MeshObject` stores `hide_coplanaredges` and `use_vertexcolors` in addition
@@ -219,8 +221,10 @@ objects by GUID.
 
 ```pycon
 >>> from compas.colors import Color
+>>> from compas.geometry import Vector
 >>> from compas.scene import DimensionStyle
 >>> from compas.scene import DistanceDimension
+>>> from compas.scene import DistanceDimensionLayout
 >>> from compas.scene import PointAnchor
 >>> dimension = DistanceDimension(
 ...     PointAnchor([0, 0, 0]),
@@ -231,12 +235,57 @@ objects by GUID.
 ...     dimension,
 ...     name="Diagonal",
 ...     style=DimensionStyle(color=Color.red(), text_size=14),
+...     layout=DistanceDimensionLayout(offset=1.5, plane_normal=Vector(0, 0, 1)),
+...     label_background=Color(1.0, 1.0, 1.0, 0.8),
+...     label_background_padding=3.0,
 ... )
 >>> scene.annotations == (entry,)
 True
 >>> entry in scene.objects
 False
 ```
+
+The layout offset is a signed world-coordinate distance. Its optional plane
+normal fixes the displacement direction independently of the camera. The
+stored normal magnitude is preserved; visualization backends normalize only
+the derived cross-product direction. A zero offset needs no normal and retains
+the ordinary anchor-to-anchor dimension line.
+
+The unit declaration and fixed-point display precision remain durable semantic
+data and may be corrected after construction:
+
+```pycon
+>>> dimension.unit = "mm"
+>>> dimension.precision = 3
+>>> (dimension.unit, dimension.precision)
+('mm', 3)
+```
+
+`unit` accepts `None` or a string containing at least one non-whitespace
+character; valid text is retained exactly as assigned. `precision` accepts a
+non-boolean integer from 0 through 15 inclusive. A value outside that range
+raises `ValueError` without changing the stored value; it is never clamped or
+truncated. Neither property converts or rescales coordinates, anchors, or
+measured distance. An explicit dimension label remains verbatim and therefore
+takes precedence over the generated value, unit, and precision display, but it
+does not relax validation. Existing serialized precision above 15 is rejected
+without migration or a Scene schema change.
+
+Text and distance entries may add an optional label background. Its alpha
+controls opacity, and padding is a nonnegative logical-pixel distance around
+the glyph bounds. These fields are durable presentation and do not change the
+annotation's semantic text, anchors, value, unit, or precision. Arrow entries
+have no label and accept only the transparent default and default padding.
+
+A newly constructed `DimensionStyle()` uses magenta for its line and label.
+Passing a color explicitly remains authoritative, and serialization preserves
+the stored color. The default is a visible starting point, not a universal
+contrast guarantee for every viewport background.
+
+The main dimension line and its arrowheads use `line_width`, which defaults to
+3 logical pixels. Displaced anchor-to-line extensions use the independent
+`extension_line_width`, which defaults to 1 logical pixel. Both widths must be
+positive and finite.
 
 Annotation items remain independently serializable, just like geometry and
 data structures. [`Scene.add_annotation`][compas.scene.Scene.add_annotation]

@@ -1,3 +1,4 @@
+import json
 from uuid import uuid4
 
 import pytest
@@ -16,10 +17,15 @@ from compas.scene import ShapeObject
 from compas.scene import SurfaceObject
 from compas.scene import VectorObject
 from compas.scene import Scene
+from compas.scene import SceneAnnotation
 from compas.scene import SceneItemNotBoundError
 from compas.scene import SceneObject
 from compas.scene import SceneStateField
 from compas.scene import TextAnnotation
+from compas.scene import DistanceDimension
+from compas.scene import DistanceDimensionLayout
+from compas.scene import DimensionStyle
+from compas.scene import PointAnchor
 from compas.scene import VolMeshObject
 
 
@@ -62,7 +68,7 @@ def test_scene_serialization_separates_objects_from_hierarchy():
     box = scene.add(Box(), name="Box")
     data = scene.__data__
 
-    assert data["version"] == 3
+    assert data["version"] == 6
     assert [obj.guid for obj in data["objects"]] == [scene.root.guid, box.guid]
     assert data["annotations"] == []
     assert data["hierarchy"] == {
@@ -85,12 +91,130 @@ def test_scene_serialization_keeps_ordered_annotations_outside_hierarchy():
     assert all(entry.guid not in restored.object_store for entry in restored.annotations)
 
 
-def test_scene_schema_v3_is_a_clean_break():
+def test_scene_schema_before_v4_is_a_clean_break():
     data = Scene().__data__
-    data["version"] = 2
+    data["version"] = 3
 
-    with pytest.raises(ValueError, match="Unsupported scene schema version: 2"):
+    with pytest.raises(ValueError, match="Unsupported scene schema version: 3"):
         Scene.__from_data__(data)
+
+
+def test_scene_schema_v4_distance_annotation_migrates_layout_on_binding():
+    dimension = DistanceDimension(PointAnchor([0, 0, 0]), PointAnchor([1, 0, 0]))
+    current_entry = SceneAnnotation(dimension)
+    legacy_entry_data = current_entry.__data__
+    del legacy_entry_data["layout"]
+    del legacy_entry_data["version"]
+    legacy_entry = SceneAnnotation.__from_data__(legacy_entry_data)
+    scene_data = Scene().__data__
+    scene_data["version"] = 4
+    scene_data["annotations"] = [legacy_entry]
+
+    restored = Scene.__from_data__(scene_data)
+
+    assert restored.annotations[0].layout is None
+    restored.bind(dimension)
+    assert restored.annotations[0].layout == DistanceDimensionLayout()
+
+
+def test_scene_schema_v4_text_annotation_keeps_layout_none_on_binding():
+    text = TextAnnotation("A", [0, 0, 0])
+    current_entry = SceneAnnotation(text)
+    legacy_entry_data = current_entry.__data__
+    del legacy_entry_data["layout"]
+    del legacy_entry_data["version"]
+    legacy_entry = SceneAnnotation.__from_data__(legacy_entry_data)
+    scene_data = Scene().__data__
+    scene_data["version"] = 4
+    scene_data["annotations"] = [legacy_entry]
+
+    restored = Scene.__from_data__(scene_data)
+    restored.bind(text)
+
+    assert restored.annotations[0].layout is None
+
+
+def test_real_schema_v4_json_migrates_unversioned_annotation_payload_before_binding():
+    dimension = DistanceDimension(PointAnchor([0, 0, 0]), PointAnchor([1, 0, 0]))
+    scene = Scene(context=None, _detect_context=False)
+    scene.add_annotation(dimension)
+    payload = json.loads(scene.to_jsonstring())
+    payload["data"]["version"] = 4
+    entry_data = payload["data"]["annotations"][0]["data"]
+    del entry_data["version"]
+    del entry_data["layout"]
+
+    restored = Scene.from_jsonstring(json.dumps(payload))
+
+    assert restored.annotations[0].layout is None
+    restored.bind(dimension)
+    assert restored.annotations[0].layout == DistanceDimensionLayout()
+
+
+def test_schema_v6_json_rejects_versioned_annotation_missing_layout():
+    dimension = DistanceDimension(PointAnchor([0, 0, 0]), PointAnchor([1, 0, 0]))
+    scene = Scene(context=None, _detect_context=False)
+    scene.add_annotation(dimension)
+    payload = json.loads(scene.to_jsonstring())
+    del payload["data"]["annotations"][0]["data"]["layout"]
+
+    with pytest.raises(ValueError, match="Missing scene-annotation fields: layout"):
+        Scene.from_jsonstring(json.dumps(payload))
+
+
+def test_schema_v6_json_rejects_unversioned_legacy_annotation_shape():
+    dimension = DistanceDimension(PointAnchor([0, 0, 0]), PointAnchor([1, 0, 0]))
+    scene = Scene(context=None, _detect_context=False)
+    scene.add_annotation(dimension)
+    payload = json.loads(scene.to_jsonstring())
+    entry_data = payload["data"]["annotations"][0]["data"]
+    del entry_data["version"]
+    del entry_data["layout"]
+
+    with pytest.raises(ValueError, match="version 6 requires current scene-annotation entries"):
+        Scene.from_jsonstring(json.dumps(payload))
+
+
+def test_scene_schema_v5_migrates_legacy_dimension_style_without_changing_appearance():
+    dimension = DistanceDimension(PointAnchor([0, 0, 0]), PointAnchor([1, 0, 0]))
+    scene = Scene(context=None, _detect_context=False)
+    scene.add_annotation(dimension, style=DimensionStyle(line_width=4.5))
+    payload = json.loads(scene.to_jsonstring())
+    payload["data"]["version"] = 5
+    entry_data = payload["data"]["annotations"][0]["data"]
+    entry_data["version"] = 2
+    style_data = entry_data["style"]["data"]
+    del style_data["version"]
+    del style_data["extension_line_width"]
+
+    restored = Scene.from_jsonstring(json.dumps(payload))
+
+    assert restored.annotations[0].style.line_width == 4.5
+    assert restored.annotations[0].style.extension_line_width == 4.5
+
+
+def test_scene_schema_v6_rejects_legacy_dimension_style():
+    dimension = DistanceDimension(PointAnchor([0, 0, 0]), PointAnchor([1, 0, 0]))
+    scene = Scene(context=None, _detect_context=False)
+    scene.add_annotation(dimension)
+    payload = json.loads(scene.to_jsonstring())
+    style_data = payload["data"]["annotations"][0]["data"]["style"]["data"]
+    del style_data["version"]
+    del style_data["extension_line_width"]
+
+    with pytest.raises(ValueError, match="version 6 requires current dimension-style payloads"):
+        Scene.from_jsonstring(json.dumps(payload))
+
+
+def test_scene_schema_v6_rejects_current_style_missing_extension_line_width():
+    dimension = DistanceDimension(PointAnchor([0, 0, 0]), PointAnchor([1, 0, 0]))
+    scene = Scene(context=None, _detect_context=False)
+    scene.add_annotation(dimension)
+    payload = json.loads(scene.to_jsonstring())
+    del payload["data"]["annotations"][0]["data"]["style"]["data"]["extension_line_width"]
+
+    with pytest.raises(ValueError, match="Missing dimension-style fields: extension_line_width"):
+        Scene.from_jsonstring(json.dumps(payload))
 
 
 def test_unknown_namespaced_sceneobject_state_roundtrips():

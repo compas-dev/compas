@@ -31,6 +31,7 @@ from .annotations import DistanceDimension
 from .annotations import PointAnchor
 from .annotations import TextAnnotation
 from .sceneannotation import DimensionStyle
+from .sceneannotation import DistanceDimensionLayout
 from .sceneannotation import SceneAnnotation
 
 from .context import register_scene_objects
@@ -92,6 +93,7 @@ __all__ = [
     "TextAnnotation",
     "ArrowAnnotation",
     "DistanceDimension",
+    "DistanceDimensionLayout",
     "DimensionStyle",
     "SceneAnnotation",
     "register_scene_objects",

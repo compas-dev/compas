@@ -9,10 +9,16 @@ from compas.data import Data
 from compas.datastructures import Graph
 from compas.datastructures import VolMesh
 from compas.geometry import Box
+from compas.geometry import Capsule
+from compas.geometry import Cone
+from compas.geometry import Cylinder
 from compas.geometry import Frame
 from compas.geometry import Plane
 from compas.geometry import PlanarSurface
 from compas.geometry import Point
+from compas.geometry import Shape
+from compas.geometry import Sphere
+from compas.geometry import Torus
 from compas.geometry import Translation
 from compas.geometry import Vector
 from compas.scene import FrameObject
@@ -518,13 +524,80 @@ def test_builtin_editable_attributes_match_stable_object_state():
         "edgewidth",
         "nodesize",
     ]
-    assert "u" not in ShapeObject.editable_attributes()
+    assert list(ShapeObject.editable_attributes())[-2:] == ["u", "v"]
+    assert list(SurfaceObject.editable_attributes())[-2:] == ["u", "v"]
     assert "size" not in FrameObject.editable_attributes()
     assert "hide_coplanaredges" not in MeshObject.editable_attributes()
     assert "show_vertices" not in VolMeshObject.editable_attributes()
     assert "__editable_attributes__" not in GeometryObject.__dict__
     assert "__editable_attributes__" not in MeshObject.__dict__
     assert "__editable_attributes__" not in GraphObject.__dict__
+
+
+@pytest.mark.parametrize("shape", [Cone(1, 2), Cylinder(1, 2), Sphere(1), Torus(2, 1), Capsule(1, 2)])
+def test_shape_object_u_resolution_updates_atomically(shape):
+    sceneobject = ShapeObject(item=shape)
+
+    sceneobject.update_editable_attribute("u", 24)
+
+    assert sceneobject.u == 24
+    assert sceneobject.item is shape
+    for value in (True, 3.5, 2):
+        with pytest.raises((TypeError, ValueError)):
+            sceneobject.update_editable_attribute("u", value)
+        assert sceneobject.u == 24
+
+
+@pytest.mark.parametrize("shape", [Sphere(1), Torus(2, 1)])
+def test_shape_object_v_resolution_updates_atomically(shape):
+    sceneobject = ShapeObject(item=shape)
+
+    sceneobject.update_editable_attribute("v", 24)
+
+    assert sceneobject.v == 24
+    for value in (False, 3.5, 2):
+        with pytest.raises((TypeError, ValueError)):
+            sceneobject.update_editable_attribute("v", value)
+        assert sceneobject.v == 24
+
+
+def test_capsule_v_resolution_requires_an_even_value_at_least_four():
+    sceneobject = ShapeObject(item=Capsule(1, 2))
+
+    sceneobject.update_editable_attribute("v", 24)
+
+    for value in (True, 4.5, 2, 5):
+        with pytest.raises((TypeError, ValueError)):
+            sceneobject.update_editable_attribute("v", value)
+        assert sceneobject.v == 24
+
+
+@pytest.mark.parametrize(
+    ("shape", "axis"),
+    [(Box(), "u"), (Box(), "v"), (Shape(), "u"), (Shape(), "v"), (Cone(1, 2), "v"), (Cylinder(1, 2), "v")],
+)
+def test_shape_object_rejects_resolution_axes_unused_by_the_producer(shape, axis):
+    sceneobject = ShapeObject(item=shape)
+
+    with pytest.raises(ValueError, match=f"does not use {axis.upper()} resolution"):
+        sceneobject.update_editable_attribute(axis, 24)
+
+    assert getattr(sceneobject, axis) == 16
+
+
+@pytest.mark.parametrize("axis", ["u", "v"])
+def test_surface_object_resolution_updates_atomically(axis):
+    surface = PlanarSurface()
+    sceneobject = SurfaceObject(item=surface)
+
+    sceneobject.update_editable_attribute(axis, 24)
+
+    assert getattr(sceneobject, axis) == 24
+    assert sceneobject.item is surface
+    for value in (True, 3.5, 0):
+        with pytest.raises((TypeError, ValueError)):
+            sceneobject.update_editable_attribute(axis, value)
+        assert getattr(sceneobject, axis) == 24
 
 
 def test_editable_attribute_declarations_are_runtime_only_and_graphics_free():
