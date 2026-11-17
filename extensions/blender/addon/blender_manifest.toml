@@ -1,0 +1,33 @@
+schema_version = "1.0.0"
+
+# COMPAS as a Blender extension.
+#
+# This is the source manifest. `extensions/blender/build.py` copies it into a staging folder
+# and fills in the build-specific values (`blender_version_min`, `blender_version_max`,
+# `platforms` and `wheels`) for each supported Blender Python version before running
+# `blender --command extension build`.
+#
+# https://docs.blender.org/manual/en/latest/advanced/extensions/getting_started.html
+
+id = "compas"
+version = "2.15.0"
+name = "COMPAS"
+tagline = "Computational framework for research and collaboration in AEC"
+maintainer = "COMPAS Association"
+type = "add-on"
+
+website = "https://compas.dev"
+
+tags = ["Development", "Modeling", "Mesh"]
+
+blender_version_min = "4.2.0"
+
+# The COMPAS extension is distributed outside the Blender Extensions Platform,
+# which requires add-ons to be GPL-3.0-or-later. Switching to the platform only
+# requires changing this to "SPDX:GPL-3.0-or-later"; the bundled `compas` wheel stays MIT.
+license = [
+  "SPDX:MIT",
+]
+copyright = [
+  "2017-2026 COMPAS Association",
+]

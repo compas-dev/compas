@@ -101,6 +101,11 @@ search = "{current_version}"
 replace = "{new_version}"
 
 [[tool.bumpversion.files]]
+filename = "extensions/blender/addon/blender_manifest.toml"
+search = 'version = "{current_version}"'
+replace = 'version = "{new_version}"'
+
+[[tool.bumpversion.files]]
 filename = "src/compas_ghpython/__init__.py"
 search = "{current_version}"
 replace = "{new_version}"
