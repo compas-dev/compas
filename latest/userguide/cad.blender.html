@@ -532,90 +532,70 @@ Blender is also a supported visualisation backend for COMPAS scenes,
 and <code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_blender</span></code> provides functionality for converting COMPAS objects to Blender objects, and vice versa.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>These instructions are for the current LTS versions of Blender (3.3, 3.6 and 4.2).
-Other versions are currently not supported.</p>
-</div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>The installation procedure is a work in progress.
-It has currently only been tested on macOS, and may change in the future.</p>
+<p>COMPAS is distributed as a Blender extension for Blender 4.2 and newer.
+Older versions of Blender are no longer supported.</p>
 </div>
 <section id="installation">
 <h2>Installation</h2>
-<p>The installation of COMPAS in Blender can be done in two ways:</p>
-<ul class="simple">
-<li><p>by installing COMPAS in Blender’s Python environment using <code class="docutils literal notranslate"><span class="pre">pip</span></code>, or</p></li>
-<li><p>by using the <code class="docutils literal notranslate"><span class="pre">compas_blender.install</span></code> command.</p></li>
-</ul>
-<section id="using-pip-recommended">
-<h3>Using <code class="docutils literal notranslate"><span class="pre">pip</span></code> (recommended)</h3>
-<p>Blender comes with its own Python installation.
-This procedure simply uses that Python installation and associated <code class="docutils literal notranslate"><span class="pre">pip</span></code> to install COMPAS.
-The location of the executable is different on different platforms.
-The default locations are:</p>
-<ul class="simple">
-<li><p>Windows: <code class="docutils literal notranslate"><span class="pre">C:\Program</span> <span class="pre">Files\Blender</span> <span class="pre">Foundation\Blender</span> <span class="pre">4.2\4.2\python\bin\python.exe</span></code></p></li>
-<li><p>macOS: <code class="docutils literal notranslate"><span class="pre">/Applications/Blender.app/Contents/Resources/4.2/python/bin/python3.10</span></code></p></li>
-<li><p>Linux: <code class="docutils literal notranslate"><span class="pre">/usr/share/blender/4.2/python/bin/python3.10</span></code> (i think :)</p></li>
-</ul>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If you already have an installation of COMPAS on your system, you can try finding the Blender Python executable by running the following in a terminal or command prompt:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">compas_blender</span><span class="o">.</span><span class="n">print_python_path</span>
+<p>COMPAS is packaged as a <a class="reference external" href="https://docs.blender.org/manual/en/latest/advanced/extensions/index.html">Blender extension</a>.
+The extension is self-contained: it bundles COMPAS and its dependencies (except <code class="docutils literal notranslate"><span class="pre">numpy</span></code>, which ships with Blender),
+so there is no need to install anything into Blender’s Python environment manually.</p>
+<p>Blender ships different versions of Python, and some dependencies contain compiled code,
+so there is one extension package per Blender version range and operating system:</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Blender</p></th>
+<th class="head"><p>Extension package</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>4.2 to 5.0</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">compas-&lt;version&gt;-blender4.2-&lt;platform&gt;.zip</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>5.1 and newer</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">compas-&lt;version&gt;-blender5.1-&lt;platform&gt;.zip</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>where <code class="docutils literal notranslate"><span class="pre">&lt;platform&gt;</span></code> is one of <code class="docutils literal notranslate"><span class="pre">windows_x64</span></code>, <code class="docutils literal notranslate"><span class="pre">windows_arm64</span></code> (Blender 5.1+ only),
+<code class="docutils literal notranslate"><span class="pre">macos_arm64</span></code>, <code class="docutils literal notranslate"><span class="pre">macos_x64</span></code> (Blender 4.2 to 5.0 only) or <code class="docutils literal notranslate"><span class="pre">linux_x64</span></code>.</p>
+<section id="install-from-disk">
+<h3>Install from disk</h3>
+<ol class="arabic simple">
+<li><p>Download the extension package for your Blender version and operating system from the
+<a class="reference external" href="https://github.com/compas-dev/compas/releases">COMPAS releases</a>.</p></li>
+<li><p>In Blender, open <em>Edit &gt; Preferences &gt; Get Extensions</em>.</p></li>
+<li><p>In the drop-down menu in the top right corner, select <em>Install from Disk…</em> and pick the downloaded <code class="docutils literal notranslate"><span class="pre">.zip</span></code> file.</p></li>
+</ol>
+<p>Alternatively, drag and drop the <code class="docutils literal notranslate"><span class="pre">.zip</span></code> file onto the Blender window,
+or install it from the command line:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>blender<span class="w"> </span>--command<span class="w"> </span>extension<span class="w"> </span>install-file<span class="w"> </span>-r<span class="w"> </span>user_default<span class="w"> </span>-e<span class="w"> </span>compas-&lt;version&gt;-blender5.1-macos_arm64.zip
 </pre></div>
 </div>
-</div>
-<section id="update-pip">
-<h4>Update <cite>pip</cite></h4>
-<p>Before installing <cite>compas</cite> with <cite>pip</cite>, it is highly recommended that you update <cite>pip</cite> itself.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>/Applications/Blender.app/Contents/Resources/4.2/python/bin/python3.10<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip
-</pre></div>
-</div>
+<p>Once the extension is enabled, <code class="docutils literal notranslate"><span class="pre">compas</span></code> and <code class="docutils literal notranslate"><span class="pre">compas_blender</span></code> can be imported in the Python console,
+in scripts in the Text Editor, and from other add-ons.
+To update COMPAS, install the package of the newer version in the same way.
+To uninstall it, remove the extension from the <em>Get Extensions</em> panel.</p>
 </section>
-<section id="install-from-pypi">
-<h4>Install from PyPI</h4>
-<p>For example on Mac:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>/Applications/Blender.app/Contents/Resources/4.2/python/bin/python3.10<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>compas
-</pre></div>
-</div>
-</section>
-<section id="install-from-source">
-<h4>Install from Source</h4>
+<section id="build-from-source">
+<h3>Build from source</h3>
+<p>To build the extension packages from a checkout of the COMPAS repository,
+you need a Python environment with <code class="docutils literal notranslate"><span class="pre">pip</span></code> and a Blender executable (4.2 or newer):</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>path/to/compas
-$<span class="w"> </span>/Applications/Blender.app/Contents/Resources/4.2/python/bin/python3.10<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
+$<span class="w"> </span>invoke<span class="w"> </span>build-blender-extension<span class="w"> </span>--blender<span class="w"> </span>/Applications/Blender.app/Contents/MacOS/Blender
 </pre></div>
 </div>
-</section>
-</section>
-<section id="using-compas-blender-install">
-<h3>Using <code class="docutils literal notranslate"><span class="pre">compas_blender.install</span></code></h3>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>This procedure will not install any of the dependencies required by COMPAS.
-They have to already be present in the Blender Python environment.</p>
-</div>
-<p>The <code class="docutils literal notranslate"><span class="pre">compas_blender.install</span></code> command installs COMPAS in Blender’s Python <code class="docutils literal notranslate"><span class="pre">site-packages</span></code> folder
-by creating symlinks to COMPAS packages installed in an existing (<code class="docutils literal notranslate"><span class="pre">conda</span></code>) environment.
-Therefore, before running the command below, you should activate the environment in which you have installed COMPAS.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>compas_blender.install
-</pre></div>
-</div>
-<p>Optionally, you can specify the version of Blender using the <code class="docutils literal notranslate"><span class="pre">-v</span></code> flag.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>compas_blender.install<span class="w"> </span>-v<span class="w"> </span><span class="m">4</span>.2
-</pre></div>
-</div>
-<p>To remove all previously installed symlinks before installing new ones, use the <code class="docutils literal notranslate"><span class="pre">--clean</span></code> flag.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>compas_blender.install<span class="w"> </span>--clean
-</pre></div>
-</div>
+<p>This builds a <code class="docutils literal notranslate"><span class="pre">compas</span></code> wheel from the source, downloads the wheels of all dependencies for every supported
+platform and Python version, and writes the extension packages to <code class="docutils literal notranslate"><span class="pre">dist/blender</span></code>.
+See <code class="docutils literal notranslate"><span class="pre">extensions/blender/build.py</span></code> for more options.</p>
 </section>
 </section>
 <section id="verification">
 <h2>Verification</h2>
-<p>To test if the installation was successful, you can run the following on the Blender command line.</p>
+<p>To test if the installation was successful, you can run the following on the Blender Python console.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">compas</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
-<span class="go">'2.4.0'</span>
+<span class="go">'2.15.0'</span>
 </pre></div>
 </div>
 </section>
@@ -678,13 +658,8 @@ For more information on visualisation scenes, see <a class="reference internal" 
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-pip-recommended">Using <code class="docutils literal notranslate"><span class="pre">pip</span></code> (recommended)</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#update-pip">Update <cite>pip</cite></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#install-from-pypi">Install from PyPI</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#install-from-source">Install from Source</a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-compas-blender-install">Using <code class="docutils literal notranslate"><span class="pre">compas_blender.install</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-from-disk">Install from disk</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#build-from-source">Build from source</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verification">Verification</a></li>
