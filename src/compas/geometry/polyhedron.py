@@ -284,7 +284,9 @@ class Polyhedron(Geometry):
 
     @vertices.setter
     def vertices(self, vertices):
-        self._vertices = vertices
+        self._vertices = []
+        for vertex in vertices:
+            self._vertices.append([*vertex])
 
     @property
     def faces(self):
