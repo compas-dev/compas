@@ -9,9 +9,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* Added `TOL.update()` method for explicit global state modification. 
-* Added `TOL.temporary()` context manager for scoped changes.
-* Added missing implementation of `Brep.to_polygons()` in `compas_rhino.geometry.RhinoBrep`.
 * Added COMPAS as a Blender extension (Blender 4.2+), with all dependencies bundled as wheels. Build it with `invoke build-blender-extension`.
 * Added `blender_extension` workflow that builds the Blender extension packages and attaches them to GitHub releases.
 
@@ -19,9 +16,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Changed `Data.__dtype__` to delegate to `Data.__clstype__` (removes duplicated dtype format logic).
 * Changed `pca_numpy` to run the SVD on the centered data matrix instead of the covariance matrix: forming the covariance squares the condition number, so near-degenerate inputs (e.g. almost collinear point clouds) returned wrong principal directions — `bestfit_plane_numpy` normals were off by 11–37 degrees on exactly planar sliver clouds (#1522). Well-conditioned results are unchanged (same eigenvectors; eigenvalues rescaled to keep their variance meaning).
-* Changed `Tolerance` class to no longer use singleton pattern. `Tolerance()` now creates independent instances instead of returning the global `TOL`. 
-* Renamed `Tolerance.units` to `Tolerance.unit` to better reflect the documented properties. Left `units` with deprecation warning.
-* Fixed `NotImplementedErorr` when calling `BrepLoop.vertices`.
 * Fixed `python -m compas` to detect extensions based on `importlib` rather than `pkg_resources`.
 * `compas_rhino.uninstall` will try to remove compas packages from all possible install locations.
 * Changed `angle_vectors_projected` to raise `ValueError` when an input vector is parallel to projection normal.

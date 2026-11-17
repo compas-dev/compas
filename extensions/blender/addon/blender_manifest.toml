@@ -10,7 +10,7 @@ schema_version = "1.0.0"
 # https://docs.blender.org/manual/en/latest/advanced/extensions/getting_started.html
 
 id = "compas"
-version = "2.15.0"
+version = "2.15.1"
 name = "COMPAS"
 tagline = "Computational framework for research and collaboration in AEC"
 maintainer = "COMPAS Association"
