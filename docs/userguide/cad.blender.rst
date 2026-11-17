@@ -11,7 +11,7 @@ and :mod:`compas_blender` provides functionality for converting COMPAS objects t
 .. note::
 
     COMPAS is distributed as a Blender extension for Blender 4.2 and newer.
-    Older versions of Blender are not supported.
+    Older versions of Blender are no longer supported.
 
 
 Installation
