@@ -37,6 +37,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed the `installable_blender_packages` and `after_blender_install` pluggables.
 
 
+## [2.15.1] 2026-03-19
+
+### Added
+
+* Added `TOL.update()` method for explicit global state modification. 
+* Added `TOL.temporary()` context manager for scoped changes.
+* Added missing implementation of `Brep.to_polygons()` in `compas_rhino.geometry.RhinoBrep`.
+
+### Changed
+
+* Changed `Tolerance` class to no longer use singleton pattern. `Tolerance()` now creates independent instances instead of returning the global `TOL`. 
+* Renamed `Tolerance.units` to `Tolerance.unit` to better reflect the documented properties. Left `units` with deprecation warning.
+* Fixed `NotImplementedErorr` when calling `BrepLoop.vertices`.
+
+### Removed
+
+
 ## [2.15.0] 2025-11-12
 
 ### Added
