@@ -94,15 +94,15 @@ def register(item_type, sceneobject_type, context=None):
 
 def detect_current_context():
     """Chooses an appropriate context depending on available contexts and open instances. with the following priority:
-    1. Viewer
-    2. Plotter
-    3. Rhino / GH - checked explicitly since SceneObjects for both get registered when code is run from either.
-    4. Other
+    1. Rhino / GH - checked explicitly since SceneObjects for both get registered when code is run from either.
+    2. Blender
+    3. None (default) - returns the base scene object type
 
     Returns
     -------
-    str
-        Name of an available context, used as key in :attr:`SceneObject.ITEM_SCENEOBJECT`
+    str or None
+        Name of an available context, used as key in :attr:`SceneObject.ITEM_SCENEOBJECT`,
+        or None if no explicit context is detected.
 
     """
 
@@ -112,9 +112,6 @@ def detect_current_context():
         return "Rhino"
     if compas.is_blender():
         return "Blender"
-    # other_contexts = [v for v in ITEM_SCENEOBJECT.keys()]
-    # if other_contexts:
-    #     return other_contexts[0]
 
     return None
 
