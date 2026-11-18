@@ -60,6 +60,18 @@ def test_volmesh_data():
         assert VolMesh.validate_data(other.__data__)
 
 
+def test_volmesh_cell_attributes_survive_json_roundtrip(halfface):
+    cells = list(halfface.cells())
+    halfface.cell_attribute(cells[0], "material", "mycelium")
+    halfface.cell_attribute(cells[-1], "density", 0.5)
+
+    restored = compas.json_loads(compas.json_dumps(halfface))
+
+    assert restored.cell_attribute(cells[0], "material") == "mycelium"
+    assert restored.cell_attribute(cells[-1], "density") == 0.5
+    assert restored.__data__["cell_data"] == halfface.__data__["cell_data"]
+
+
 # ==============================================================================
 # Builders
 # ==============================================================================
