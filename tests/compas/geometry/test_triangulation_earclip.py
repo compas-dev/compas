@@ -64,34 +64,41 @@ def test_earclip_polygon_wrong_winding():
 
     faces = earclip_polygon(polygon)
 
+    # Expected faces updated after changing Polygon.normal to use normal_polygon
+    # instead of normal_triangle for more robust concave polygon handling.
+    # Previous behavior: Used normal_triangle with centroid and first two points,
+    # which could give incorrect normals for concave polygons.
+    # New behavior: Uses normal_polygon which considers all vertices, correctly
+    # detecting the winding direction for this complex concave polygon.
+    # Result: Different but equally valid triangulation orientation.
     assert faces == [
-        [0, 28, 27],
-        [26, 25, 24],
-        [23, 22, 21],
-        [21, 20, 19],
-        [19, 18, 17],
-        [17, 16, 15],
-        [15, 14, 13],
-        [10, 9, 8],
-        [8, 7, 6],
-        [4, 3, 2],
-        [27, 26, 24],
-        [24, 23, 21],
-        [17, 15, 13],
-        [11, 10, 8],
-        [4, 2, 1],
-        [27, 24, 21],
-        [19, 17, 13],
-        [5, 4, 1],
-        [27, 21, 19],
-        [19, 13, 12],
-        [6, 5, 1],
-        [27, 19, 12],
-        [6, 1, 0],
-        [27, 12, 11],
-        [8, 6, 0],
-        [0, 27, 11],
-        [11, 8, 0],
+        [2, 3, 4],
+        [5, 6, 7],
+        [7, 8, 9],
+        [12, 13, 14],
+        [14, 15, 16],
+        [17, 18, 19],
+        [19, 20, 21],
+        [21, 22, 23],
+        [23, 24, 25],
+        [27, 28, 0],
+        [1, 2, 4],
+        [7, 9, 10],
+        [14, 16, 17],
+        [23, 25, 26],
+        [0, 1, 4],
+        [12, 14, 17],
+        [21, 23, 26],
+        [0, 4, 5],
+        [12, 17, 19],
+        [21, 26, 27],
+        [0, 5, 7],
+        [11, 12, 19],
+        [19, 21, 27],
+        [0, 7, 10],
+        [11, 19, 27],
+        [0, 10, 11],
+        [11, 27, 0],
     ]
 
 
