@@ -6,6 +6,7 @@ from compas.geometry import Geometry
 
 from .descriptors.color import ColorAttribute
 from .sceneobject import SceneObject
+from .sceneobject import SceneStateField
 
 
 class GeometryObject(SceneObject):
@@ -14,6 +15,17 @@ class GeometryObject(SceneObject):
     pointcolor = ColorAttribute()
     linecolor = ColorAttribute()
     surfacecolor = ColorAttribute()
+    __scene_state_namespace__ = "compas.scene.GeometryObject"
+    __scene_state_fields__ = (
+        SceneStateField("show_points", bool, default=False, required=False, editable=True),
+        SceneStateField("show_lines", bool, default=True, required=False, editable=True),
+        SceneStateField("show_surfaces", bool, default=True, required=False, editable=True),
+        SceneStateField("pointcolor", (Color, type(None)), default=None, required=False, editable=True),
+        SceneStateField("linecolor", (Color, type(None)), default=None, required=False, editable=True),
+        SceneStateField("surfacecolor", (Color, type(None)), default=None, required=False, editable=True),
+        SceneStateField("linewidth", (int, float), default=1.0, required=False, editable=True),
+        SceneStateField("pointsize", (int, float), default=1.0, required=False, editable=True),
+    )
 
     # ==========================================================================
     # Dunder methods

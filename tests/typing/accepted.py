@@ -1,4 +1,5 @@
 from collections.abc import Iterator
+from collections.abc import Mapping
 from decimal import Decimal
 from typing import SupportsFloat
 from typing import assert_type
@@ -57,6 +58,9 @@ from compas.geometry._core.predicates_2 import is_intersection_segment_segment_x
 from compas.geometry.triangulation import triangulate_polygon
 from compas.datastructures import Graph
 from compas.datastructures import Mesh
+from compas.scene import SceneAttributeUpdate
+from compas.scene import SceneObject
+from compas.scene import SceneStateField
 
 
 class CustomCoordinate:
@@ -298,3 +302,27 @@ constrained_delaunay_triangulation(
     constraints=np.asarray([vertices32[:2]], dtype=np.float64),
     points=np.asarray([[0.25, 0.25, 0]], dtype=np.int64),
 )
+
+
+def update_sceneobject(owner: "CustomSceneObject", value: object) -> None:
+    if not isinstance(value, (int, float)):
+        raise TypeError
+    owner.value = float(value)
+
+
+class CustomSceneObject(SceneObject):
+    __scene_state_namespace__ = "test.typing.CustomSceneObject"
+    __scene_state_fields__ = (SceneStateField("value", (int, float), required=False, editable=True, update=update_sceneobject),)
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.value = 1.0
+
+
+custom_sceneobject = CustomSceneObject()
+custom_update: SceneAttributeUpdate[CustomSceneObject] = update_sceneobject
+assert_type(
+    custom_sceneobject.editable_attributes(),
+    Mapping[str, SceneAttributeUpdate[CustomSceneObject] | None],
+)
+custom_sceneobject.update_editable_attribute("value", 2.0)

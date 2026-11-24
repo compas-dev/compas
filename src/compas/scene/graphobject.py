@@ -11,6 +11,7 @@ from compas.typing import RealInput
 
 from .descriptors.colordict import ColorDictAttribute
 from .sceneobject import SceneObject
+from .sceneobject import SceneStateField
 
 
 class GraphObject(SceneObject):
@@ -25,6 +26,15 @@ class GraphObject(SceneObject):
 
     nodecolor = ColorDictAttribute()
     edgecolor = ColorDictAttribute()
+    __scene_state_namespace__ = "compas.scene.GraphObject"
+    __scene_state_fields__ = (
+        SceneStateField("show_nodes", (bool, list), default=True, required=False, editable=True),
+        SceneStateField("show_edges", (bool, list), default=True, required=False, editable=True),
+        SceneStateField("nodecolor", required=False, editable=True),
+        SceneStateField("edgecolor", required=False, editable=True),
+        SceneStateField("edgewidth", (int, float), default=1.0, required=False, editable=True),
+        SceneStateField("nodesize", (int, float), default=1.0, required=False, editable=True),
+    )
 
     # ==========================================================================
     # Dunder methods
@@ -55,18 +65,6 @@ class GraphObject(SceneObject):
     # ==========================================================================
 
     @property
-    def settings(self) -> dict[str, object]:
-        """The settings required to reconstruct the graph scene object."""
-        settings = super().settings
-        settings["show_nodes"] = self.show_nodes
-        settings["show_edges"] = self.show_edges
-        settings["nodecolor"] = self.nodecolor
-        settings["edgecolor"] = self.edgecolor
-        settings["nodesize"] = self.nodesize
-        settings["edgewidth"] = self.edgewidth
-        return settings
-
-    @property
     def graph(self) -> Graph:
         """The graph represented by this scene object.
 
@@ -80,10 +78,10 @@ class GraphObject(SceneObject):
     def graph(self, graph: Graph) -> None:
         if self.scene is None:
             self._item_guid = graph.guid
-            self._detached_item = graph
+            self._item = graph
         else:
             self.scene.replace_item(self, graph)
-        self._transformation = None
+        self.transformation = None
         self._node_xyz = None
         self._node_xyz_revision = None
 
@@ -110,57 +108,6 @@ class GraphObject(SceneObject):
     def node_xyz(self, node_xyz: dict[Hashable, list[RealInput]]) -> None:
         self._node_xyz = node_xyz
         self._node_xyz_revision = None
-
-    # ==========================================================================
-    # Methods
-    # ==========================================================================
-
-    def draw_nodes(self) -> list[object]:
-        """Draw the nodes of the graph.
-
-        Nodes are drawn based on the values of
-
-        * `self.show_nodes`
-        * `self.nodecolor`
-        * `self.nodesize`
-
-        Returns
-        -------
-        list[object]
-            The identifiers of the objects representing the nodes in the visualization context.
-
-        """
-        raise NotImplementedError
-
-    def draw_edges(self) -> list[object]:
-        """Draw the edges of the graph.
-
-        Edges are drawn based on the values of
-
-        * `self.show_edges`
-        * `self.edgecolor`
-        * `self.edgewidth`
-
-        Returns
-        -------
-        list[object]
-            The identifiers of the objects representing the edges in the visualization context.
-
-        """
-        raise NotImplementedError
-
-    def clear_nodes(self) -> None:
-        """Clear the nodes of the graph."""
-        raise NotImplementedError
-
-    def clear_edges(self) -> None:
-        """Clear the edges of the graph."""
-        raise NotImplementedError
-
-    def clear(self) -> None:
-        """Clear the nodes and edges of the graph."""
-        self.clear_nodes()
-        self.clear_edges()
 
     # ==========================================================================
     # Private helpers

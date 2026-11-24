@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main, initiative/repository-modernisation]
+    branches: [main, remove-future, initiative/repository-modernisation]
 
 permissions:
   contents: read

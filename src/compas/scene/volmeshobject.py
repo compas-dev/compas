@@ -10,6 +10,7 @@ from compas.typing import RealInput
 
 from .descriptors.colordict import ColorDictAttribute
 from .sceneobject import SceneObject
+from .sceneobject import SceneStateField
 
 
 class VolMeshObject(SceneObject):
@@ -26,6 +27,19 @@ class VolMeshObject(SceneObject):
     edgecolor = ColorDictAttribute()
     facecolor = ColorDictAttribute()
     cellcolor = ColorDictAttribute()
+    __scene_state_namespace__ = "compas.scene.VolMeshObject"
+    __scene_state_fields__ = (
+        SceneStateField("show_vertices", (bool, list), default=False, required=False),
+        SceneStateField("show_edges", (bool, list), default=False, required=False),
+        SceneStateField("show_faces", (bool, list), default=True, required=False),
+        SceneStateField("show_cells", (bool, list), default=True, required=False),
+        SceneStateField("vertexcolor", required=False),
+        SceneStateField("edgecolor", required=False),
+        SceneStateField("facecolor", required=False),
+        SceneStateField("cellcolor", required=False),
+        SceneStateField("vertexsize", (int, float), default=1.0, required=False),
+        SceneStateField("edgewidth", (int, float), default=1.0, required=False),
+    )
 
     # ==========================================================================
     # Dunder methods
@@ -64,20 +78,6 @@ class VolMeshObject(SceneObject):
     # ==========================================================================
 
     @property
-    def settings(self) -> dict[str, object]:
-        """The settings required to reconstruct the volmesh scene object."""
-        settings = super().settings
-        settings["show_vertices"] = self.show_vertices
-        settings["show_edges"] = self.show_edges
-        settings["show_faces"] = self.show_faces
-        settings["show_cells"] = self.show_cells
-        settings["vertexcolor"] = self.vertexcolor
-        settings["edgecolor"] = self.edgecolor
-        settings["facecolor"] = self.facecolor
-        settings["cellcolor"] = self.cellcolor
-        return settings
-
-    @property
     def volmesh(self) -> VolMesh:
         """The volmesh represented by this scene object.
 
@@ -91,10 +91,10 @@ class VolMeshObject(SceneObject):
     def volmesh(self, volmesh: VolMesh) -> None:
         if self.scene is None:
             self._item_guid = volmesh.guid
-            self._detached_item = volmesh
+            self._item = volmesh
         else:
             self.scene.replace_item(self, volmesh)
-        self._transformation = None
+        self.transformation = None
         self._vertex_xyz = None
         self._vertex_xyz_revision = None
 
@@ -121,92 +121,6 @@ class VolMeshObject(SceneObject):
     def vertex_xyz(self, vertex_xyz: dict[int, list[RealInput]]) -> None:
         self._vertex_xyz = vertex_xyz
         self._vertex_xyz_revision = None
-
-    # ==========================================================================
-    # Methods
-    # ==========================================================================
-
-    def draw_vertices(self) -> list[object]:
-        """Draw the vertices of the volmesh.
-
-        The vertices are drawn based on the values of
-
-        * `self.show_vertices`
-        * `self.vertexcolor`
-        * `self.vertexsize`
-
-        Returns
-        -------
-        list[object]
-            The identifiers of the objects representing the vertices in the visualization context.
-
-        """
-        raise NotImplementedError
-
-    def draw_edges(self) -> list[object]:
-        """Draw the edges of the volmesh.
-
-        The edges are drawn based on the values of
-
-        * `self.show_edges`
-        * `self.edgecolor`
-        * `self.edgewidth`
-
-        Returns
-        -------
-        list[object]
-            The identifiers of the objects representing the edges in the visualization context.
-
-        """
-        raise NotImplementedError
-
-    def draw_faces(self) -> list[object]:
-        """Draw the faces of the volmesh.
-
-        The faces are drawn based on the values of
-
-        * `self.show_faces`
-        * `self.facecolor`
-
-        Returns
-        -------
-        list[object]
-            The identifiers of the objects representing the faces in the visualization context.
-
-        """
-        raise NotImplementedError
-
-    def draw_cells(self) -> list[object]:
-        """Draw the cells of the volmesh.
-
-        The cells are drawn based on the values of
-
-        * `self.show_cells`
-        * `self.cellcolor`
-
-        Returns
-        -------
-        list[object]
-            The identifiers of the objects representing the cells in the visualization context.
-
-        """
-        raise NotImplementedError
-
-    def clear_vertices(self) -> None:
-        """Clear the vertices of the volmesh."""
-        raise NotImplementedError
-
-    def clear_edges(self) -> None:
-        """Clear the edges of the volmesh."""
-        raise NotImplementedError
-
-    def clear_faces(self) -> None:
-        """Clear the faces of the volmesh."""
-        raise NotImplementedError
-
-    def clear_cells(self) -> None:
-        """Clear the cells of the volmesh."""
-        raise NotImplementedError
 
     # ==========================================================================
     # Private helpers

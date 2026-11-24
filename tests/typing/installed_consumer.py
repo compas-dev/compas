@@ -26,6 +26,9 @@ from compas.geometry import trimesh_gaussian_curvature
 from compas.typing import PointLike
 from compas.typing import RealInput
 from compas.typing import VerticesFaces
+from compas.scene import SceneAttributeUpdate
+from compas.scene import SceneObject
+from compas.scene import SceneStateField
 
 
 vertices = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0]]
@@ -53,6 +56,19 @@ class CustomMesh(Mesh):
 
 custom_mesh = CustomMesh.from_vertices_and_faces(vertices, triangles)
 
+
+def update_sceneobject(owner: "CustomSceneObject", value: object) -> None:
+    owner.name = str(value)
+
+
+class CustomSceneObject(SceneObject):
+    __scene_state_namespace__ = "test.typing.CustomSceneObject"
+    __scene_state_fields__ = (SceneStateField("value", object, required=False, editable=True, update=update_sceneobject),)
+
+
+custom_sceneobject = CustomSceneObject()
+custom_update: SceneAttributeUpdate[CustomSceneObject] = update_sceneobject
+
 assert_type(Point(0.0, 0.0, 0.0).x, float)
 assert_type(tessellation.number_of_triangles, int)
 assert_type(tessellation.to_vertices_and_triangles(), tuple[list[list[float]], list[list[int]]])
@@ -65,6 +81,10 @@ assert_type(polyhedron.triangulated(), Tessellation)
 assert_type(planar_region.triangulated(), Tessellation)
 assert_type(mesh.triangulated(), Mesh)
 assert_type(custom_mesh.triangulated(), CustomMesh)
+assert_type(
+    custom_sceneobject.editable_attributes()["value"],
+    SceneAttributeUpdate[CustomSceneObject] | None,
+)
 assert_type(triangulate_polygon(vertices), list[list[int]])
 assert_type(triangulate_polygon_earclip(vertices), list[list[int]])
 assert_type(triangulate_polygon_minimum_area(vertices), list[list[int]])
