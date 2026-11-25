@@ -96,6 +96,16 @@ def is_colinear_line_line(line1, line2, tol=None):
     return is_colinear(a, b, c, tol) and is_colinear(a, b, d, tol)
 
 
+def _cross_rounding_error(u, v):
+    """Bound the rounding error of the cross product of two vectors that are point differences."""
+    terms = [
+        abs(u[1] * v[2]) + abs(u[2] * v[1]),
+        abs(u[2] * v[0]) + abs(u[0] * v[2]),
+        abs(u[0] * v[1]) + abs(u[1] * v[0]),
+    ]
+    return 3 * sys.float_info.epsilon * length_vector(terms)
+
+
 def is_coplanar(points, tol=None):
     """Determine if the points are coplanar.
 
@@ -115,12 +125,14 @@ def is_coplanar(points, tol=None):
 
     Notes
     -----
-    Construct a stable frame from the farthest baseline endpoint and the point
-    farthest from that line. Points within the tolerance of the baseline, or
-    within the rounding error of the cross product, are considered collinear.
-    Otherwise, center the plane between the extreme projections of all points.
-    If this plane exceeds the tolerance, fit a plane to all points in the local
-    frame and repeat the centered distance check.
+    Construct a stable frame from the point farthest from the first one and the
+    point farthest from that baseline. Points within the tolerance of the
+    baseline are considered collinear, and so are points whose cross products
+    with the baseline do not exceed their rounding error. Otherwise, take the
+    normal perpendicular to the baseline and center the plane between the
+    extreme projections of all points. If this plane exceeds the tolerance, fit
+    a plane to all points in the local frame and repeat the centered distance
+    check.
     The tolerance applies to every point, including the frame's basis points.
 
     """
@@ -135,28 +147,33 @@ def is_coplanar(points, tol=None):
     if TOL.is_zero(baseline_length, tol):
         return True
 
-    # Take the collinearity check and the normal from the same cross product.
-    # Its rounding error is about eps * |ab| * |ac|, and below that the normal has no direction.
+    # Every point within the tolerance of the baseline means the points are collinear.
     vectors = [subtract_vectors(point, a) for point in points]
     normals = [cross_vectors(baseline, vector) for vector in vectors]
-    c = max(range(len(points)), key=lambda i: length_vector(normals[i]))
-    n = normals[c]
-    length = length_vector(n)
-    noise = 4 * sys.float_info.epsilon * baseline_length * length_vector(vectors[c])
-    if length <= noise or TOL.is_zero(length / baseline_length, tol):
+    if TOL.is_zero(max(length_vector(normal) for normal in normals) / baseline_length, tol):
         return True
 
-    distances = [dot_vectors(n, vector) / length for vector in vectors]
+    # Take the normal that exceeds its rounding error by the most, so that rounding
+    # noise never decides the plane. If none does, the points are collinear.
+    margins = [length_vector(normal) - _cross_rounding_error(baseline, vector) for normal, vector in zip(normals, vectors)]
+    c = max(range(len(points)), key=lambda i: margins[i])
+    if margins[c] <= 0:
+        return True
+
+    # Rounding also tilts the normal along the baseline, which would tilt the plane
+    # along the points, so remove that component before normalizing.
+    u = [value / baseline_length for value in baseline]
+    along = dot_vectors(normals[c], u)
+    n = [normals[c][i] - along * u[i] for i in range(3)]
+    length = length_vector(n)
+    n = [value / length for value in n]
+    distances = [dot_vectors(n, vector) for vector in vectors]
     if TOL.is_zero(0.5 * (max(distances) - min(distances)), tol):
         return True
 
     # Fit in a stable local frame to avoid cancellation in covariance minors of sliver clouds.
-    n = [value / length for value in n]
-    u = [value / baseline_length for value in baseline]
     v = cross_vectors(n, u)
-    local = []
-    for vector, distance in zip(vectors, distances):
-        local.append([dot_vectors(vector, u), dot_vectors(vector, v), distance])
+    local = [[dot_vectors(vector, u), dot_vectors(vector, v), distance] for vector, distance in zip(vectors, distances)]
     _, normal = bestfit_plane(local)
     world_normal = [normal[0] * u[i] + normal[1] * v[i] + normal[2] * n[i] for i in range(3)]
     projections = [dot_vectors(point, normal) for point in local]

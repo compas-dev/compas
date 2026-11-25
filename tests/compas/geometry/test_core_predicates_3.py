@@ -1,3 +1,5 @@
+import random
+
 from compas.geometry import is_coplanar
 from compas.geometry import Polygon
 import pytest
@@ -117,17 +119,38 @@ def test_is_coplanar_accepts_planar_degenerate_prefixes(points, offset):
     assert is_coplanar(translated)
 
 
+B1 = [100000000.1, 100000000.2, 0.0]
+B2 = [100000000.1, 100000000.2, 100000000.3]
+
+
 @pytest.mark.parametrize(
-    "b, fractions",
+    "points, expected",
     [
-        ([100000000.1, 100000000.2, 0.0], [0.25, 0.5]),
-        ([100000000.1, 100000000.2, 100000000.3], [0.5, 2.0 / 3.0]),
+        # cross products with the baseline that are zero or only rounding noise
+        ([[0, 0, 0], B1, [x / 4 for x in B1], [x / 2 for x in B1]], True),
+        ([[0, 0, 0], B2, [x / 2 for x in B2], [x * (2.0 / 3.0) for x in B2]], True),
+        # an exact normal from a point close to the baseline
+        ([[0, 0, 0], [1e8, 0, 0], [5e7, 2e-8, 0], [0, 0, 1e-8]], False),
+        # exactly on x + y + z = 0
+        ([[0.0, 0.0, 0.0], [1.0, 0.0, -1.0], [1e8, 200000001.0, -300000001.0], [25000002.0, 50000001.25, -75000003.25]], True),
     ],
 )
-def test_is_coplanar_collinear_points_far_from_origin(b, fractions):
-    # The cross products of these points with the baseline are zero or rounding noise,
-    # which must not decide the plane, although distance_point_line exceeds the tolerance.
-    points = [[0, 0, 0], b] + [[x * fraction for x in b] for fraction in fractions]
+def test_is_coplanar_far_from_origin(points, expected):
+    assert is_coplanar(points) == expected
+    assert Polygon(points).is_planar == expected
 
-    assert is_coplanar(points)
-    assert Polygon(points).is_planar
+
+def test_is_coplanar_line_with_one_point_barely_off_it():
+    # A line and one point always lie in a plane, also when the point is a few
+    # tolerances off a long line and the normal from their cross product is inexact.
+    rng = random.Random(1536)
+    for _ in range(1500):
+        a = [rng.uniform(-1e4, 1e4) for _ in range(3)]
+        d = [rng.uniform(-1e4, 1e4) for _ in range(3)]
+        points = [[a[i] + t * d[i] for i in range(3)] for t in [rng.uniform(-1, 1) for _ in range(rng.randint(4, 9))]]
+        lift = [rng.gauss(0, 1) for _ in range(3)]
+        scale = 3e-9 / sum(x * x for x in lift) ** 0.5
+        k = rng.randrange(len(points))
+        points[k] = [points[k][i] + scale * lift[i] for i in range(3)]
+
+        assert is_coplanar(points)
