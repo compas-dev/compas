@@ -11,10 +11,8 @@ def trimesh_gradient_numpy(M, rtype="array"):
 
     Parameters
     ----------
-    V : array
-        Vertex coordinates of the mesh.
-    F : array
-        Face vertex indices of the mesh.
+    M : tuple[array, array]
+        A mesh represented by an array of vertex coordinates and an array of face vertex indices.
     rtype : {'array', 'csc', 'csr', 'coo', 'list'}
         Format of the result.
 

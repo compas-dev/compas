@@ -527,8 +527,6 @@ class Polyline(Curve):
             Length of the segments.
         strict : bool, optional
             If False, the remainder segment will be added even if it is smaller than the desired length
-        tol : float, optional
-            Floating point error tolerance.
 
         Returns
         -------
