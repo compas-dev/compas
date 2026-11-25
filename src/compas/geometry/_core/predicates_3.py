@@ -161,10 +161,13 @@ def is_coplanar(points, tol=None):
         return True
 
     # Rounding also tilts the normal along the baseline, which would tilt the plane
-    # along the points, so remove that component before normalizing.
+    # along the points, so remove that component unless it is within the rounding
+    # error of its own computation.
     u = [value / baseline_length for value in baseline]
-    along = dot_vectors(normals[c], u)
-    n = [normals[c][i] - along * u[i] for i in range(3)]
+    n = normals[c]
+    along = dot_vectors(n, u)
+    if abs(along) > 4 * sys.float_info.epsilon * length_vector(n):
+        n = [n[i] - along * u[i] for i in range(3)]
     length = length_vector(n)
     n = [value / length for value in n]
     distances = [dot_vectors(n, vector) for vector in vectors]
