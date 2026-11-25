@@ -88,8 +88,8 @@ def intersection_line_line(l1, l2, tol=None):
     plane_1 = (a, n1)
     plane_2 = (c, n2)
 
-    i1 = intersection_line_plane(l1, plane_2, tol=tol)
-    i2 = intersection_line_plane(l2, plane_1, tol=tol)
+    i1 = intersection_line_plane(l1, plane_2)
+    i2 = intersection_line_plane(l2, plane_1)
 
     if not i1 or not i2:
         return None, None
