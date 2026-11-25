@@ -2,6 +2,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import sys
+
 from compas.geometry import area_triangle
 from compas.geometry import centroid_points
 from compas.geometry import closest_point_on_segment
@@ -114,10 +116,11 @@ def is_coplanar(points, tol=None):
     Notes
     -----
     Construct a stable frame from the farthest baseline endpoint and the point
-    farthest from that line. Points within the tolerance of the baseline are
-    considered collinear. Otherwise, center the plane between the extreme
-    projections of all points. If this plane exceeds the tolerance, fit a plane
-    to all points in the local frame and repeat the centered distance check.
+    farthest from that line. Points within the tolerance of the baseline, or
+    within the rounding error of the cross product, are considered collinear.
+    Otherwise, center the plane between the extreme projections of all points.
+    If this plane exceeds the tolerance, fit a plane to all points in the local
+    frame and repeat the centered distance check.
     The tolerance applies to every point, including the frame's basis points.
 
     """
@@ -132,14 +135,18 @@ def is_coplanar(points, tol=None):
     if TOL.is_zero(baseline_length, tol):
         return True
 
-    # Take the collinearity check and the normal from the same cross product,
-    # so a point counted as off the baseline always gives a nonzero normal.
-    n = max((cross_vectors(baseline, subtract_vectors(point, a)) for point in points), key=length_vector)
+    # Take the collinearity check and the normal from the same cross product.
+    # Its rounding error is about eps * |ab| * |ac|, and below that the normal has no direction.
+    vectors = [subtract_vectors(point, a) for point in points]
+    normals = [cross_vectors(baseline, vector) for vector in vectors]
+    c = max(range(len(points)), key=lambda i: length_vector(normals[i]))
+    n = normals[c]
     length = length_vector(n)
-    if TOL.is_zero(length / baseline_length, tol):
+    noise = 4 * sys.float_info.epsilon * baseline_length * length_vector(vectors[c])
+    if length <= noise or TOL.is_zero(length / baseline_length, tol):
         return True
 
-    distances = [dot_vectors(n, subtract_vectors(point, a)) / length for point in points]
+    distances = [dot_vectors(n, vector) / length for vector in vectors]
     if TOL.is_zero(0.5 * (max(distances) - min(distances)), tol):
         return True
 
@@ -148,8 +155,7 @@ def is_coplanar(points, tol=None):
     u = [value / baseline_length for value in baseline]
     v = cross_vectors(n, u)
     local = []
-    for point, distance in zip(points, distances):
-        vector = subtract_vectors(point, a)
+    for vector, distance in zip(vectors, distances):
         local.append([dot_vectors(vector, u), dot_vectors(vector, v), distance])
     _, normal = bestfit_plane(local)
     world_normal = [normal[0] * u[i] + normal[1] * v[i] + normal[2] * n[i] for i in range(3)]

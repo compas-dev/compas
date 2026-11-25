@@ -117,11 +117,17 @@ def test_is_coplanar_accepts_planar_degenerate_prefixes(points, offset):
     assert is_coplanar(translated)
 
 
-def test_is_coplanar_exactly_collinear_points_far_from_origin():
-    # The quarter point is about 1.8e-9 from the baseline by distance_point_line,
-    # but its cross product with the baseline is exactly zero.
-    b = [100000000.1, 100000000.2, 0.0]
-    points = [[0, 0, 0], b, [x / 4 for x in b], [x / 2 for x in b]]
+@pytest.mark.parametrize(
+    "b, fractions",
+    [
+        ([100000000.1, 100000000.2, 0.0], [0.25, 0.5]),
+        ([100000000.1, 100000000.2, 100000000.3], [0.5, 2.0 / 3.0]),
+    ],
+)
+def test_is_coplanar_collinear_points_far_from_origin(b, fractions):
+    # The cross products of these points with the baseline are zero or rounding noise,
+    # which must not decide the plane, although distance_point_line exceeds the tolerance.
+    points = [[0, 0, 0], b] + [[x * fraction for x in b] for fraction in fractions]
 
     assert is_coplanar(points)
     assert Polygon(points).is_planar
