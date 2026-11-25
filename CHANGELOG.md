@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Fixed `is_coplanar` and `Polygon.is_planar` discarding points, using a triangle-area-dependent tolerance and rejecting noisy coplanar clouds.
+
 ### Removed
 
 ## [2.16.0] 2026-11-18
