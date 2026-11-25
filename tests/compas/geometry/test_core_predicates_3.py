@@ -115,3 +115,13 @@ def test_is_coplanar_accepts_planar_degenerate_prefixes(points, offset):
     translated = [[value + delta for value, delta in zip(point, offset)] for point in points]
 
     assert is_coplanar(translated)
+
+
+def test_is_coplanar_exactly_collinear_points_far_from_origin():
+    # The quarter point is about 1.8e-9 from the baseline by distance_point_line,
+    # but its cross product with the baseline is exactly zero.
+    b = [100000000.1, 100000000.2, 0.0]
+    points = [[0, 0, 0], b, [x / 4 for x in b], [x / 2 for x in b]]
+
+    assert is_coplanar(points)
+    assert Polygon(points).is_planar

@@ -127,16 +127,17 @@ def is_coplanar(points, tol=None):
     a = points[0]
     b_index = max(range(1, len(points)), key=lambda i: distance_point_point(a, points[i]))
     b = points[b_index]
-    if TOL.is_zero(distance_point_point(a, b), tol):
+    baseline = subtract_vectors(b, a)
+    baseline_length = length_vector(baseline)
+    if TOL.is_zero(baseline_length, tol):
         return True
 
-    c_index = max(range(1, len(points)), key=lambda i: distance_point_line(points[i], (a, b)))
-    c = points[c_index]
-    if TOL.is_zero(distance_point_line(c, (a, b)), tol):
-        return True
-
-    n = cross_vectors(subtract_vectors(b, a), subtract_vectors(c, a))
+    # Take the collinearity check and the normal from the same cross product,
+    # so a point counted as off the baseline always gives a nonzero normal.
+    n = max((cross_vectors(baseline, subtract_vectors(point, a)) for point in points), key=length_vector)
     length = length_vector(n)
+    if TOL.is_zero(length / baseline_length, tol):
+        return True
 
     distances = [dot_vectors(n, subtract_vectors(point, a)) / length for point in points]
     if TOL.is_zero(0.5 * (max(distances) - min(distances)), tol):
@@ -144,8 +145,6 @@ def is_coplanar(points, tol=None):
 
     # Fit in a stable local frame to avoid cancellation in covariance minors of sliver clouds.
     n = [value / length for value in n]
-    baseline = subtract_vectors(b, a)
-    baseline_length = length_vector(baseline)
     u = [value / baseline_length for value in baseline]
     v = cross_vectors(n, u)
     local = []
