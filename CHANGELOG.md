@@ -9,24 +9,51 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+* Fixed polyhedron volume and centroid measurements modifying input vertices when triangulating polygonal faces.
+
+### Removed
+
+## [2.16.0] 2026-11-18
+
+### Added
+
+* Added COMPAS as a Blender extension (Blender 4.2+), with all dependencies bundled as wheels. Build it with `invoke build-blender-extension`.
+* Added `blender_extension` workflow that builds the Blender extension packages and attaches them to GitHub releases.
+
+### Changed
+
+* Changed `Data.__dtype__` to delegate to `Data.__clstype__` (removes duplicated dtype format logic).
+* Changed `pca_numpy` to run the SVD on the centered data matrix instead of the covariance matrix: forming the covariance squares the condition number, so near-degenerate inputs (e.g. almost collinear point clouds) returned wrong principal directions — `bestfit_plane_numpy` normals were off by 11–37 degrees on exactly planar sliver clouds (#1522). Well-conditioned results are unchanged (same eigenvectors; eigenvalues rescaled to keep their variance meaning).
+* Fixed `python -m compas` to detect extensions based on `importlib` rather than `pkg_resources`.
+* `compas_rhino.uninstall` will try to remove compas packages from all possible install locations.
+* Changed `angle_vectors_projected` to raise `ValueError` when an input vector is parallel to projection normal.
+* Changed `angle_vectors` to raise `ValueError` when one of the input vectors is a zero-length vector instead of returning 0.
+* Changed `transformation_to_rhino` and `transformation_matrix_to_rhino` to assign the matrix components directly to the fields of `Rhino.Geometry.Transform` instead of looping over its indexer. About 11x faster per conversion, noticable when used inside an animation loop.
+* Fixed the parameter names in the docstrings of `Shear.from_entries`, `Polyline.split_by_length` and `trimesh_gradient_numpy`.
+* Fixed `compas_blender.redraw` raising `RuntimeError` when Blender runs in background mode.
+
+### Removed
+
+* Removed `compas_blender.install` and `compas_blender.print_python_path`. Install COMPAS in Blender as an extension instead.
+* Removed `compas_blender.INSTALLABLE_PACKAGES`, `compas_blender.SUPPORTED_VERSIONS`, `compas_blender.DEFAULT_VERSION` and `compas_blender.INSTALLATION_ARGUMENTS`.
+* Removed the `installable_blender_packages` and `after_blender_install` pluggables.
+
+
+## [2.15.1] 2026-03-19
+
+### Added
+
 * Added `TOL.update()` method for explicit global state modification. 
 * Added `TOL.temporary()` context manager for scoped changes.
 * Added missing implementation of `Brep.to_polygons()` in `compas_rhino.geometry.RhinoBrep`.
 
 ### Changed
 
-* Fixed polyhedron volume and centroid measurements modifying input vertices when triangulating polygonal faces.
-
-* Changed `Data.__dtype__` to delegate to `Data.__clstype__` (removes duplicated dtype format logic).
-* Changed `pca_numpy` to run the SVD on the centered data matrix instead of the covariance matrix: forming the covariance squares the condition number, so near-degenerate inputs (e.g. almost collinear point clouds) returned wrong principal directions — `bestfit_plane_numpy` normals were off by 11–37 degrees on exactly planar sliver clouds (#1522). Well-conditioned results are unchanged (same eigenvectors; eigenvalues rescaled to keep their variance meaning).
 * Changed `Tolerance` class to no longer use singleton pattern. `Tolerance()` now creates independent instances instead of returning the global `TOL`. 
 * Renamed `Tolerance.units` to `Tolerance.unit` to better reflect the documented properties. Left `units` with deprecation warning.
 * Fixed `NotImplementedErorr` when calling `BrepLoop.vertices`.
-* Fixed `python -m compas` to detect extensions based on `importlib` rather than `pkg_resources`.
-* `compas_rhino.uninstall` will try to remove compas packages from all possible install locations.
-* Changed `angle_vectors_projected` to raise `ValueError` when an input vector is parallel to projection normal.
-* Changed `angle_vectors` to raise `ValueError` when one of the input vectors is a zero-length vector instead of returning 0.
-* Changed `transformation_to_rhino` and `transformation_matrix_to_rhino` to assign the matrix components directly to the fields of `Rhino.Geometry.Transform` instead of looping over its indexer. About 11x faster per conversion, noticable when used inside an animation loop.
 
 ### Removed
 

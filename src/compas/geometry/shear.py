@@ -98,7 +98,7 @@ class Shear(Transformation):
 
         Parameters
         ----------
-        shear_factors : [float, float, float]
+        shear_entries : [float, float, float]
             The 3 shear factors for x-y, x-z, and y-z axes.
 
         Returns

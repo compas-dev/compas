@@ -8,6 +8,24 @@ from compas_invocations2 import style
 from compas_invocations2 import tests
 from compas_invocations2 import grasshopper
 from invoke.collection import Collection
+from invoke.tasks import task
+
+
+@task(
+    help={
+        "blender": "Path to the Blender executable (defaults to $BLENDER, then PATH).",
+        "from_pypi": "Bundle the released compas wheel from PyPI instead of building it from this checkout.",
+    }
+)
+def build_blender_extension(ctx, blender=None, from_pypi=False):
+    """Build the COMPAS Blender extension packages into dist/blender."""
+    cmd = "python extensions/blender/build.py"
+    if blender:
+        cmd += ' --blender "{}"'.format(blender)
+    if from_pypi:
+        cmd += " --from-pypi"
+    ctx.run(cmd, pty=False)
+
 
 ns = Collection(
     docs.help,
@@ -24,6 +42,7 @@ ns = Collection(
     build.release,
     build.build_ghuser_components,
     build.build_cpython_ghuser_components,
+    build_blender_extension,
     grasshopper.yakerize,
     grasshopper.publish_yak,
     grasshopper.update_gh_header,
