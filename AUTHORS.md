@@ -46,3 +46,5 @@
 - Eric Gozzi <<eric.gozzi@arch.ethz.ch>> [@ericgozzi](https://github.com/ericgozzi)
 - Daniel Nunes Locatelli <<nuneslocatelli@arch.ethz.ch>> [@daniel-locatelli](https://github.com/daniel-locatelli)
 - Mengxi He <<m.he@lekolabs.com>> [@mengxihex](https://github.com/mengxihex)
+
+- Anton Soloviev <anton@praviel.com> [@antonsoo](https://github.com/antonsoo)

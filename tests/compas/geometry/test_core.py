@@ -1,3 +1,4 @@
+from copy import deepcopy
 from math import pi, radians, sqrt
 
 import pytest
@@ -290,3 +291,20 @@ def test_normal_polygon():
     area = area_polygon(polygon)
     assert TOL.is_close(area, 100.0)
     assert TOL.is_close(area, length_vector(normal))
+
+
+@pytest.mark.parametrize("face_count", [8, 6, 12])
+@pytest.mark.parametrize("container", [list, tuple])
+@pytest.mark.parametrize("measure", [centroid_polyhedron, volume_polyhedron])
+def test_polyhedron_measurement_preserves_input(face_count, container, measure):
+    polyhedron = Polyhedron.from_platonicsolid(face_count)
+    vertices = container(polyhedron.vertices)
+    faces = container(container(face) for face in polyhedron.faces)
+    before_vertices, before_faces = deepcopy(vertices), deepcopy(faces)
+    expected = measure((list(vertices), faces))
+    for _ in range(2):
+        result = measure((vertices, faces))
+        assert result == expected
+        assert vertices == before_vertices
+        assert faces == before_faces
+        assert all(a is b for a, b in zip(vertices, polyhedron.vertices))

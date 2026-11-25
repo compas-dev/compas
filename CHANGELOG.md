@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Fixed polyhedron volume and centroid measurements modifying input vertices when triangulating polygonal faces.
+
 ### Removed
 
 ## [2.16.0] 2026-11-18

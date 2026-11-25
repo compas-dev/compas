@@ -500,6 +500,7 @@ def centroid_polyhedron(polyhedron):
     [0.0, 0.0, 0.0]
     """
     vertices, faces = polyhedron
+    vertices = list(vertices)  # Face centers are temporary triangulation vertices.
 
     V = 0
     x = 0.0
